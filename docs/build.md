@@ -19,8 +19,13 @@
     - Add `eval "$(rbenv init - zsh)"` to your `~/.zshrc`
   - From inside the project directory:
     - `bundler install` (this will install Cocoapods)
+- If you're running Linux, use nvm to ensure the right version of nodejs, and install yarn
+  - nvm install 18
+  - nvm use 18
+  - npm install --global yarn
 - After initial setup:
   - Copy `google-services.json.example` to `google-services.json` or provide your own `google-services.json`. (A real firebase project is NOT required)
+  - `yarn` -> install local node modules
   - `npx expo prebuild` -> you will also need to run this anytime `app.json` or native `package.json` deps change
   - `yarn intl:build` -> you will also need to run this anytime `./src/locale/{locale}/messages.po` change
 - Start the dev servers
