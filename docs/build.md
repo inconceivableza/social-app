@@ -23,6 +23,7 @@
   - nvm install 18
   - nvm use 18
   - npm install --global yarn
+  - yarn global add eas-cli-local-build-plugin eas-cli
 - After initial setup:
   - Copy `google-services.json.example` to `google-services.json` or provide your own `google-services.json`. (A real firebase project is NOT required)
   - `yarn` -> install local node modules
