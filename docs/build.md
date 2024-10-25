@@ -27,6 +27,7 @@
 - After initial setup:
   - Copy `google-services.json.example` to `google-services.json` or provide your own `google-services.json`. (A real firebase project is NOT required)
   - `yarn` -> install local node modules
+  - `cd bskyembed ; yarn` -> install node modules for this subdirectory (can also do for bskylink, bskyogcard and lib/react-compiler-runtime - only if making changes)
   - `npx expo prebuild` -> you will also need to run this anytime `app.json` or native `package.json` deps change
   - `yarn intl:build` -> you will also need to run this anytime `./src/locale/{locale}/messages.po` change
 - Start the dev servers
