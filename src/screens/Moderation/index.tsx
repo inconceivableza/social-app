@@ -184,6 +184,7 @@ export function ModerationScreenInner({
   )
 
   const disabledOnIOS = isIOS && !adultContentEnabled
+  const hideAdultContentOptions = true
 
   return (
     <View style={[a.pt_2xl, a.px_lg, gtMobile && a.px_2xl]}>
@@ -260,117 +261,121 @@ export function ModerationScreenInner({
         </Link>
       </View>
 
-      <Text
-        style={[
-          a.pt_2xl,
-          a.pb_md,
-          a.text_md,
-          a.font_bold,
-          t.atoms.text_contrast_high,
-        ]}>
-        <Trans>Content filters</Trans>
-      </Text>
-
-      <View style={[a.gap_md]}>
-        {ageNotSet && (
-          <>
-            <Button
-              label={_(msg`Confirm your birthdate`)}
-              size="small"
-              variant="solid"
-              color="secondary"
-              onPress={() => {
-                birthdateDialogControl.open()
-              }}
-              style={[a.justify_between, a.rounded_md, a.px_lg, a.py_lg]}>
-              <ButtonText>
-                <Trans>Confirm your age:</Trans>
-              </ButtonText>
-              <ButtonText>
-                <Trans>Set birthdate</Trans>
-              </ButtonText>
-            </Button>
-
-            <BirthDateSettingsDialog control={birthdateDialogControl} />
-          </>
-        )}
-        <View
+      {!hideAdultContentOptions && (
+        <Text
           style={[
-            a.w_full,
-            a.rounded_md,
-            a.overflow_hidden,
-            t.atoms.bg_contrast_25,
+            a.pt_2xl,
+            a.pb_md,
+            a.text_md,
+            a.font_bold,
+            t.atoms.text_contrast_high,
           ]}>
-          {!ageNotSet && !isUnderage && (
+          <Trans>Content filters</Trans>
+        </Text>
+      )}
+
+      {!hideAdultContentOptions && (
+        <View style={[a.gap_md]}>
+          {ageNotSet && (
             <>
-              <View
-                style={[
-                  a.py_lg,
-                  a.px_lg,
-                  a.flex_row,
-                  a.align_center,
-                  a.justify_between,
-                  disabledOnIOS && {opacity: 0.5},
-                ]}>
-                <Text style={[a.font_bold, t.atoms.text_contrast_high]}>
-                  <Trans>Enable adult content</Trans>
-                </Text>
-                <Toggle.Item
-                  label={_(msg`Toggle to enable or disable adult content`)}
-                  disabled={disabledOnIOS}
-                  name="adultContent"
-                  value={adultContentEnabled}
-                  onChange={onToggleAdultContentEnabled}>
-                  <View style={[a.flex_row, a.align_center, a.gap_sm]}>
-                    <Text style={[t.atoms.text_contrast_medium]}>
-                      {adultContentEnabled ? (
-                        <Trans>Enabled</Trans>
-                      ) : (
-                        <Trans>Disabled</Trans>
-                      )}
-                    </Text>
-                    <Toggle.Switch />
-                  </View>
-                </Toggle.Item>
-              </View>
-              {disabledOnIOS && (
-                <View style={[a.pb_lg, a.px_lg]}>
-                  <Text>
-                    <Trans>
-                      Adult content can only be enabled via the Web at{' '}
-                      <InlineLinkText
-                        label={_(msg`The Bluesky web application`)}
-                        to=""
-                        onPress={evt => {
-                          evt.preventDefault()
-                          Linking.openURL('https://bsky.app/')
-                          return false
-                        }}>
-                        bsky.app
-                      </InlineLinkText>
-                      .
-                    </Trans>
+              <Button
+                label={_(msg`Confirm your birthdate`)}
+                size="small"
+                variant="solid"
+                color="secondary"
+                onPress={() => {
+                  birthdateDialogControl.open()
+                }}
+                style={[a.justify_between, a.rounded_md, a.px_lg, a.py_lg]}>
+                <ButtonText>
+                  <Trans>Confirm your age:</Trans>
+                </ButtonText>
+                <ButtonText>
+                  <Trans>Set birthdate</Trans>
+                </ButtonText>
+              </Button>
+
+              <BirthDateSettingsDialog control={birthdateDialogControl} />
+            </>
+          )}
+          <View
+            style={[
+              a.w_full,
+              a.rounded_md,
+              a.overflow_hidden,
+              t.atoms.bg_contrast_25,
+            ]}>
+            {!ageNotSet && !isUnderage && (
+              <>
+                <View
+                  style={[
+                    a.py_lg,
+                    a.px_lg,
+                    a.flex_row,
+                    a.align_center,
+                    a.justify_between,
+                    disabledOnIOS && {opacity: 0.5},
+                  ]}>
+                  <Text style={[a.font_bold, t.atoms.text_contrast_high]}>
+                    <Trans>Enable adult content</Trans>
                   </Text>
+                  <Toggle.Item
+                    label={_(msg`Toggle to enable or disable adult content`)}
+                    disabled={disabledOnIOS}
+                    name="adultContent"
+                    value={adultContentEnabled}
+                    onChange={onToggleAdultContentEnabled}>
+                    <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                      <Text style={[t.atoms.text_contrast_medium]}>
+                        {adultContentEnabled ? (
+                          <Trans>Enabled</Trans>
+                        ) : (
+                          <Trans>Disabled</Trans>
+                        )}
+                      </Text>
+                      <Toggle.Switch />
+                    </View>
+                  </Toggle.Item>
                 </View>
-              )}
-              <Divider />
-            </>
-          )}
-          {!isUnderage && adultContentEnabled && (
-            <>
-              <GlobalLabelPreference labelDefinition={LABELS.porn} />
-              <Divider />
-              <GlobalLabelPreference labelDefinition={LABELS.sexual} />
-              <Divider />
-              <GlobalLabelPreference
-                labelDefinition={LABELS['graphic-media']}
-              />
-              <Divider />
-            </>
-          )}
-          <GlobalLabelPreference labelDefinition={LABELS.nudity} />
+                {disabledOnIOS && (
+                  <View style={[a.pb_lg, a.px_lg]}>
+                    <Text>
+                      <Trans>
+                        Adult content can only be enabled via the Web at{' '}
+                        <InlineLinkText
+                          label={_(msg`The Foodios web application`)}
+                          to=""
+                          onPress={evt => {
+                            evt.preventDefault()
+                            Linking.openURL('https://foodios.app/')
+                            return false
+                          }}>
+                          foodios.app
+                        </InlineLinkText>
+                        .
+                      </Trans>
+                    </Text>
+                  </View>
+                )}
+                <Divider />
+              </>
+            )}
+            {!isUnderage && adultContentEnabled && (
+              <>
+                <GlobalLabelPreference labelDefinition={LABELS.porn} />
+                <Divider />
+                <GlobalLabelPreference labelDefinition={LABELS.sexual} />
+                <Divider />
+                <GlobalLabelPreference
+                  labelDefinition={LABELS['graphic-media']}
+                />
+                <Divider />
+              </>
+            )}
+            <GlobalLabelPreference labelDefinition={LABELS.nudity} />
+          </View>
         </View>
-      </View>
+      )}
 
       <Text
         style={[
