@@ -128,6 +128,7 @@ export function StepInfo({
     <ScreenTransition>
       <View style={[a.gap_md]}>
         <FormError error={state.error} />
+        {/*
         <View>
           <TextField.LabelText>
             <Trans>Hosting provider</Trans>
@@ -139,6 +140,7 @@ export function StepInfo({
             }
           />
         </View>
+        */}
         {state.isLoading || isLoadingStarterPack ? (
           <View style={[a.align_center]}>
             <Loader size="xl" />
