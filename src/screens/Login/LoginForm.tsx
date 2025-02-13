@@ -171,6 +171,7 @@ export const LoginForm = ({
 
   return (
     <FormContainer testID="loginForm" titleText={<Trans>Sign in</Trans>}>
+      {/*
       <View>
         <TextField.LabelText>
           <Trans>Hosting provider</Trans>
@@ -181,6 +182,7 @@ export const LoginForm = ({
           onOpenDialog={onPressSelectService}
         />
       </View>
+      */}
       <View>
         <TextField.LabelText>
           <Trans>Account</Trans>
