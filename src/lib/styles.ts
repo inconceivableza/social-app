@@ -52,15 +52,18 @@ export const colors = {
   green4: '#148203',
   green5: '#082b03',
 
+  orange1: '#e88627',
+  orange2: '#d04304',
+  
   unreadNotifBg: '#ebf6ff',
   brandBlue: '#0066FF',
   like: '#ec4899',
 }
 
 export const gradients = {
-  blueLight: {start: '#5A71FA', end: colors.blue3}, // buttons
-  blue: {start: '#5E55FB', end: colors.blue3}, // fab
-  blueDark: {start: '#5F45E0', end: colors.blue3}, // avis, banner
+  blueLight: {start: '#5A71FA', end: colors.orange1}, // buttons
+  blue: {start: '#5E55FB', end: colors.orange1}, // fab
+  blueDark: {start: '#5F45E0', end: colors.orange1}, // avis, banner
 }
 
 export const s = StyleSheet.create({
@@ -197,9 +200,9 @@ export const s = StyleSheet.create({
   gray5: {color: colors.gray5},
 
   blue1: {color: colors.blue1},
-  blue2: {color: colors.blue2},
-  blue3: {color: colors.blue3},
-  blue4: {color: colors.blue4},
+  blue2: {color: colors.orange2},
+  blue3: {color: colors.orange1},
+  blue4: {color: colors.orange1},
   blue5: {color: colors.blue5},
 
   red1: {color: colors.red1},

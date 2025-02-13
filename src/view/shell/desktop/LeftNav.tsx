@@ -620,7 +620,7 @@ export function DesktopLeftNav() {
             }
             label={_(msg`Notifications`)}
           />
-          <ChatNavItem />
+          
           <NavItem
             href="/feeds"
             icon={

@@ -135,7 +135,7 @@ export function useModerationCauseDescription(
         (labeler?.creator.handle ? '@' + labeler?.creator.handle : undefined)
       if (!source) {
         if (cause.label.src === BSKY_LABELER_DID) {
-          source = 'Bluesky Moderation Service'
+          source = 'Foodios Moderation Service'
         } else {
           source = cause.label.src
         }

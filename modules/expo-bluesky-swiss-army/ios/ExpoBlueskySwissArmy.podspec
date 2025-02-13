@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name           = 'ExpoBlueskySwissArmy'
   s.version        = '1.0.0'
-  s.summary        = 'A collection of native tools for Bluesky'
-  s.description    = 'A collection of native tools for Bluesky'
+  s.summary        = 'A collection of native tools for Foodios'
+  s.description    = 'A collection of native tools for Foodios'
   s.author         = ''
   s.homepage       = 'https://github.com/bluesky-social/social-app'
   s.platforms      = { :ios => '13.4', :tvos => '13.4' }

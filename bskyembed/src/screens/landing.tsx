@@ -12,11 +12,11 @@ import {Link} from '../components/link'
 import {Post} from '../components/post'
 import {niceDate} from '../utils'
 
-const DEFAULT_POST = 'https://bsky.app/profile/emilyliu.me/post/3jzn6g7ixgq2y'
+const DEFAULT_POST = 'https://foodios.app/profile/emilyliu.me/post/3jzn6g7ixgq2y'
 const DEFAULT_URI =
   'at://did:plc:vjug55kidv6sye7ykr5faxxn/app.bsky.feed.post/3jzn6g7ixgq2y'
 
-export const EMBED_SERVICE = 'https://embed.bsky.app'
+export const EMBED_SERVICE = 'https://embed.foodios.app'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
 
 const root = document.getElementById('app')
@@ -25,7 +25,7 @@ if (!root) throw new Error('No root element')
 initColorMode()
 
 const agent = new BskyAgent({
-  service: 'https://public.api.bsky.app',
+  service: 'https://public.api.foodios.app',
 })
 
 render(<LandingPage />, root)
@@ -52,7 +52,7 @@ function LandingPage() {
           } else {
             try {
               const urlp = new URL(uri)
-              if (!urlp.hostname.endsWith('bsky.app')) {
+              if (!urlp.hostname.endsWith('foodios.app')) {
                 throw new Error('Invalid hostname')
               }
               const split = urlp.pathname.slice(1).split('/')
@@ -78,7 +78,7 @@ function LandingPage() {
               atUri = `at://${did}/app.bsky.feed.post/${rkey}`
             } catch (err) {
               console.log(err)
-              throw new Error('Invalid Bluesky URL')
+              throw new Error('Invalid Foodios URL')
             }
           }
         }
@@ -103,7 +103,7 @@ function LandingPage() {
         setThread(data.thread)
       } catch (err) {
         console.error(err)
-        setError(err instanceof Error ? err.message : 'Invalid Bluesky URL')
+        setError(err instanceof Error ? err.message : 'Invalid Foodios URL')
       } finally {
         setLoading(false)
       }
@@ -113,12 +113,12 @@ function LandingPage() {
   return (
     <main className="w-full min-h-screen flex flex-col items-center gap-8 py-14 px-4 md:pt-32 dark:bg-dimmedBgDarken dark:text-slate-200">
       <Link
-        href="https://bsky.social/about"
+        href="https://foodios.social/about"
         className="transition-transform hover:scale-110">
         <img src={logo} className="h-10" />
       </Link>
 
-      <h1 className="text-4xl font-bold text-center">Embed a Bluesky Post</h1>
+      <h1 className="text-4xl font-bold text-center">Embed a Foodios Post</h1>
 
       <input
         type="text"
@@ -247,7 +247,7 @@ function Snippet({thread}: {thread: AppBskyFeedDefs.ThreadViewPost}) {
 }
 
 function toShareUrl(path: string) {
-  return `https://bsky.app${path}?ref_src=embed`
+  return `https://foodios.app${path}?ref_src=embed`
 }
 
 /**

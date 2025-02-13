@@ -1,6 +1,6 @@
 # Internationalization
 
-We want the official Bluesky app to be supported in as many languages as possible. If you want to help us translate the app, please open a PR or issue on the [Bluesky app repo on GitHub](https://github.com/bluesky-social/social-app)
+We want the official Foodios app to be supported in as many languages as possible. If you want to help us translate the app, please open a PR or issue on the [Foodios app repo on GitHub](https://github.com/bluesky-social/social-app)
 
 ## Tools
 We are using Lingui to manage translations. You can find the documentation [here](https://lingui.dev/).
@@ -116,4 +116,4 @@ export function Welcome() {
 ### Credits
 Please check each individual `messages.po` file for the credits of the translators. We are very grateful for their help! 
 
-If you would like to translate the Bluesky app into your language, please open a PR or issue on this repo.
+If you would like to translate the Foodios app into your language, please open a PR or issue on this repo.

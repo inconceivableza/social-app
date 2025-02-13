@@ -89,9 +89,9 @@ export function ServerInputDialog({
             label="Preferences"
             values={fixedOption}
             onChange={setFixedOption}>
-            <ToggleButton.Button name={BSKY_SERVICE} label={_(msg`Bluesky`)}>
+            <ToggleButton.Button name={BSKY_SERVICE} label={_(msg`Foodios`)}>
               <ToggleButton.ButtonText>
-                {_(msg`Bluesky`)}
+                {_(msg`Foodios`)}
               </ToggleButton.ButtonText>
             </ToggleButton.Button>
             <ToggleButton.Button
@@ -107,9 +107,9 @@ export function ServerInputDialog({
           {fixedOption[0] === BSKY_SERVICE && isFirstTimeUser && (
             <Admonition type="tip">
               <Trans>
-                Bluesky is an open network where you can choose your own
+                Foodios is an open network where you can choose your own
                 provider. If you're new here, we recommend sticking with the
-                default Bluesky Social option.
+                default Foodios Social option.
               </Trans>
             </Admonition>
           )}
@@ -170,7 +170,7 @@ export function ServerInputDialog({
                 </Trans>
               ) : (
                 <Trans>
-                  Bluesky is an open network where you can choose your hosting
+                  Foodios is an open network where you can choose your hosting
                   provider. If you're a developer, you can host your own server.
                 </Trans>
               )}{' '}

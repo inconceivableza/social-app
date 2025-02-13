@@ -31,7 +31,7 @@ export function useAppIconSets() {
     ] satisfies AppIconSet[]
 
     /**
-     * Bluesky+
+     * Foodios+
      */
     const core = [
       {
@@ -116,7 +116,7 @@ export function useAppIconSets() {
       },
       {
         id: 'core_classic',
-        name: _('Bluesky Classic™'),
+        name: _('Foodios Classic™'),
         iosImage: () => {
           return require(`../../../../assets/app-icons/ios_icon_core_classic.png`)
         },

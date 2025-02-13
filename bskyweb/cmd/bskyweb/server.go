@@ -160,7 +160,7 @@ func serve(cctx *cli.Context) error {
 			return id, nil
 		},
 		DenyHandler: func(c echo.Context, identifier string, err error) error {
-			return c.String(http.StatusTooManyRequests, "Your request has been rate limited. Please try again later. Contact security@bsky.app if you believe this was a mistake.\n")
+			return c.String(http.StatusTooManyRequests, "Your request has been rate limited. Please try again later. Contact security@foodios.app if you believe this was a mistake.\n")
 		},
 	}))
 
@@ -380,7 +380,7 @@ func (srv *Server) errorHandler(err error, c echo.Context) {
 func (srv *Server) Download(c echo.Context) error {
 	ua := c.Request().UserAgent()
 	if strings.Contains(ua, "Android") {
-		return c.Redirect(http.StatusFound, "https://play.google.com/store/apps/details?id=xyz.blueskyweb.app")
+		return c.Redirect(http.StatusFound, "https://play.google.com/store/apps/details?id=xyz.foodios.app")
 	}
 
 	if strings.Contains(ua, "iPhone") || strings.Contains(ua, "iPad") || strings.Contains(ua, "iPod") {

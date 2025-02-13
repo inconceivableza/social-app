@@ -20,10 +20,10 @@ module.exports = function (config) {
   const IS_DEV = !IS_TESTFLIGHT || !IS_PRODUCTION
 
   const ASSOCIATED_DOMAINS = [
-    'applinks:bsky.app',
-    'applinks:staging.bsky.app',
-    'appclips:bsky.app',
-    'appclips:go.bsky.app', // Allows App Clip to work when scanning QR codes
+    'applinks:foodios.app',
+    'applinks:staging.foodios.app',
+    'appclips:foodios.app',
+    'appclips:go.foodios.app', // Allows App Clip to work when scanning QR codes
     // When testing local services, enter an ngrok (et al) domain here. It must use a standard HTTP/HTTPS port.
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
@@ -43,10 +43,10 @@ module.exports = function (config) {
   return {
     expo: {
       version: VERSION,
-      name: 'Bluesky',
-      slug: 'bluesky',
-      scheme: 'bluesky',
-      owner: 'blueskysocial',
+      name: 'Foodios',
+      slug: 'foodios',
+      scheme: 'foodios',
+      owner: 'davidfinc-org',
       runtimeVersion: {
         policy: 'appVersion',
       },
@@ -55,7 +55,7 @@ module.exports = function (config) {
       primaryColor: '#1083fe',
       ios: {
         supportsTablet: false,
-        bundleIdentifier: 'xyz.blueskyweb.app',
+        bundleIdentifier: 'xyz.foodios.app',
         config: {
           usesNonExemptEncryption: false,
         },
@@ -111,7 +111,7 @@ module.exports = function (config) {
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': 'group.app.bsky',
+          'com.apple.security.application-groups': 'group.app.foodios',
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -152,10 +152,10 @@ module.exports = function (config) {
           foregroundImage: './assets/icon-android-foreground.png',
           monochromeImage: './assets/icon-android-foreground.png',
           backgroundImage: './assets/icon-android-background.png',
-          backgroundColor: '#1185FE',
+          backgroundColor: '#E88627',
         },
         googleServicesFile: './google-services.json',
-        package: 'xyz.blueskyweb.app',
+        package: 'xyz.foodios.app',
         intentFilters: [
           {
             action: 'VIEW',
@@ -163,7 +163,7 @@ module.exports = function (config) {
             data: [
               {
                 scheme: 'https',
-                host: 'bsky.app',
+                host: 'foodios.app',
               },
               IS_DEV && {
                 scheme: 'http',
@@ -178,7 +178,7 @@ module.exports = function (config) {
         favicon: './assets/favicon.png',
       },
       updates: {
-        url: 'https://updates.bsky.app/manifest',
+        url: 'https://updates.foodios.app/manifest',
         enabled: UPDATES_ENABLED,
         fallbackToCacheTimeout: 30000,
         codeSigningCertificate: UPDATES_ENABLED
@@ -199,7 +199,7 @@ module.exports = function (config) {
         USE_SENTRY && [
           '@sentry/react-native/expo',
           {
-            organization: 'blueskyweb',
+            organization: 'foodiosweb',
             project: 'react-native',
             release: VERSION,
             dist: SENTRY_DIST,
@@ -270,17 +270,17 @@ module.exports = function (config) {
               resizeMode: 'cover',
               dark: {
                 enableFullScreenImage_legacy: true,
-                backgroundColor: '#001429',
+                backgroundColor: '#371f06',
                 image: './assets/splash-dark.png',
                 resizeMode: 'cover',
               },
             },
             android: {
-              backgroundColor: '#0c7cff',
+              backgroundColor: '#e88627',
               image: './assets/splash-android-icon.png',
               imageWidth: 150,
               dark: {
-                backgroundColor: '#0c2a49',
+                backgroundColor: '#402911',
                 image: './assets/splash-android-icon-dark.png',
                 imageWidth: 150,
               },
@@ -305,7 +305,7 @@ module.exports = function (config) {
             },
 
             /**
-             * Bluesky+ core set
+             * Foodios+ core set
              */
             core_aurora: {
               ios: './assets/app-icons/ios_icon_core_aurora.png',
@@ -359,10 +359,10 @@ module.exports = function (config) {
           'react-native-vision-camera',
           {
             enableLocation: false,
-            cameraPermissionText: 'Bluesky needs access to your camera.',
+            cameraPermissionText: 'Foodios needs access to your camera.',
             enableMicrophonePermission: true,
             microphonePermissionText:
-              'Bluesky needs access to your microphone.',
+              'Foodios needs access to your microphone.',
           },
         ],
       ].filter(Boolean),
@@ -373,32 +373,32 @@ module.exports = function (config) {
               ios: {
                 appExtensions: [
                   {
-                    targetName: 'Share-with-Bluesky',
-                    bundleIdentifier: 'xyz.blueskyweb.app.Share-with-Bluesky',
+                    targetName: 'Share-with-Foodios',
+                    bundleIdentifier: 'xyz.foodios.app.Share-with-Foodios',
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        'group.app.foodios',
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyNSE',
-                    bundleIdentifier: 'xyz.blueskyweb.app.BlueskyNSE',
+                    bundleIdentifier: 'xyz.foodios.app.BlueskyNSE',
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        'group.app.foodios',
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyClip',
-                    bundleIdentifier: 'xyz.blueskyweb.app.AppClip',
+                    bundleIdentifier: 'xyz.foodios.app.AppClip',
                   },
                 ],
               },
             },
           },
-          projectId: '55bd077a-d905-4184-9c7f-94789ba0f302',
+          projectId: '87ab4766-b66c-489c-98ca-65e740fa205b',
         },
       },
       hooks: {
@@ -409,7 +409,7 @@ module.exports = function (config) {
           {
             file: './postHooks/uploadSentrySourcemapsPostHook',
             config: {
-              organization: 'blueskyweb',
+              organization: 'foodiosweb',
               project: 'react-native',
               release: VERSION,
               dist: SENTRY_DIST,
