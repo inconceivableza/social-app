@@ -47,7 +47,7 @@ export function HostingProvider({
           </Text>
           <Button
             label={toNiceDomain(serviceUrl)}
-            accessibilityHint={_(msg`Press to change hosting provider`)}
+            accessibilityHint={_(msg`Changes hosting provider`)}
             onPress={onPressSelectService}
             variant="ghost"
             color="secondary"
@@ -63,7 +63,7 @@ export function HostingProvider({
         <Button
           testID="selectServiceButton"
           label={toNiceDomain(serviceUrl)}
-          accessibilityHint={_(msg`Press to change hosting provider`)}
+          accessibilityHint={_(msg`Changes hosting provider`)}
           variant="solid"
           color="secondary"
           style={[
@@ -71,10 +71,10 @@ export function HostingProvider({
             a.flex_row,
             a.align_center,
             a.rounded_sm,
-            a.px_md,
+            a.pl_md,
             a.pr_sm,
             a.gap_xs,
-            {paddingVertical: isAndroid ? 14 : 9},
+            {paddingVertical: isAndroid ? 14 : 8},
           ]}
           onPress={onPressSelectService}>
           {({hovered, pressed}) => {
