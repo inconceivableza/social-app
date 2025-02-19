@@ -78,6 +78,7 @@ export const ForgotPasswordForm = ({
     <FormContainer
       testID="forgotPasswordForm"
       titleText={<Trans>Reset password</Trans>}>
+      {/*
       <View>
         <TextField.LabelText>
           <Trans>Hosting provider</Trans>
@@ -88,6 +89,7 @@ export const ForgotPasswordForm = ({
           onOpenDialog={onPressSelectService}
         />
       </View>
+      */}
       <View>
         <TextField.LabelText>
           <Trans>Email address</Trans>
