@@ -1,6 +1,6 @@
 # Logger
 
-Simple logger for Bluesky. Supports log levels, debug contexts, and separate
+Simple logger for Foodios. Supports log levels, debug contexts, and separate
 transports for production, dev, and test mode.
 
 ## At a Glance

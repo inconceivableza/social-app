@@ -109,29 +109,7 @@ export function BottomBarWeb() {
 
           {hasSession && (
             <>
-              <NavItem
-                routeName="Messages"
-                href="/messages"
-                notificationCount={
-                  unreadMessageCount.count > 0
-                    ? unreadMessageCount.numUnread
-                    : undefined
-                }>
-                {({isActive}) => {
-                  const Icon = isActive ? MessageFilled : Message
-                  return (
-                    <Icon
-                      aria-hidden={true}
-                      width={iconWidth - 1}
-                      style={[
-                        styles.ctrlIcon,
-                        t.atoms.text,
-                        styles.messagesIcon,
-                      ]}
-                    />
-                  )
-                }}
-              </NavItem>
+              
               <NavItem
                 routeName="Notifications"
                 href="/notifications"

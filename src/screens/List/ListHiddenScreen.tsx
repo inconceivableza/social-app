@@ -150,7 +150,7 @@ export function ListHiddenScreen({
                     ? _(msg`you`)
                     : sanitizeHandle(list.creator.handle, '@')}
                 </Text>{' '}
-                - contains possible violations of Bluesky's community guidelines
+                - contains possible violations of Foodios's community guidelines
                 in its name or description.
               </Trans>
             )}

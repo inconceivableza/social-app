@@ -4,7 +4,7 @@ const fs = require('fs')
 const projectRoot = path.join(__dirname, '..')
 const templateFile = path.join(
   projectRoot,
-  'bskyweb',
+  'foodiosweb',
   'templates',
   'scripts.html',
 )
@@ -44,6 +44,6 @@ function copyFiles(sourceDir, targetDir) {
   })
 }
 
-copyFiles('web-build/static/js', 'bskyweb/static/js')
-copyFiles('web-build/static/css', 'bskyweb/static/css')
-copyFiles('web-build/static/media', 'bskyweb/static/media')
+copyFiles('web-build/static/js', 'foodiosweb/static/js')
+copyFiles('web-build/static/css', 'foodiosweb/static/css')
+copyFiles('web-build/static/media', 'foodiosweb/static/media')

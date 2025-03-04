@@ -295,12 +295,12 @@ msgid "{numUnreadNotifications} unread items"
 msgstr "{numUnreadNotifications} elementi non letti"
 
 #: src/components/NewskieDialog.tsx:116
-msgid "{profileName} joined Bluesky {0} ago"
-msgstr "{profileName} si è iscritto a Bluesky {0} fa"
+msgid "{profileName} joined Foodios {0} ago"
+msgstr "{profileName} si è iscritto a Foodios {0} fa"
 
 #: src/components/NewskieDialog.tsx:111
-msgid "{profileName} joined Bluesky using a starter pack {0} ago"
-msgstr "{profileName} si è iscritto a Bluesky usando uno starter pack {0} fa"
+msgid "{profileName} joined Foodios using a starter pack {0} ago"
+msgstr "{profileName} si è iscritto a Foodios usando uno starter pack {0} fa"
 
 #: src/screens/StarterPack/Wizard/index.tsx:449
 msgctxt "profiles"
@@ -563,8 +563,8 @@ msgid "Adult Content"
 msgstr "Contenuto per adulti"
 
 #: src/screens/Moderation/index.tsx:355
-msgid "Adult content can only be enabled via the Web at <0>bsky.app</0>."
-msgstr "I contenuti per adulti possono essere abilitati solo dal sito Web a <0>bsky.app</0>."
+msgid "Adult content can only be enabled via the Web at <0>foodios.app</0>."
+msgstr "I contenuti per adulti possono essere abilitati solo dal sito Web a <0>foodios.app</0>."
 
 #: src/components/moderation/LabelPreference.tsx:242
 msgid "Adult content is disabled."
@@ -1064,45 +1064,45 @@ msgstr "Blog"
 
 #: src/view/com/auth/server-input/index.tsx:132
 #: src/view/com/auth/server-input/index.tsx:133
-msgid "Bluesky"
-msgstr "Bluesky"
+msgid "Foodios"
+msgstr "Foodios"
 
 #: src/view/com/post-thread/PostThreadItem.tsx:864
-msgid "Bluesky cannot confirm the authenticity of the claimed date."
-msgstr "Bluesky non può confermare l'autenticità della data dichiarata."
+msgid "Foodios cannot confirm the authenticity of the claimed date."
+msgstr "Foodios non può confermare l'autenticità della data dichiarata."
 
 #: src/view/com/auth/server-input/index.tsx:208
-msgid "Bluesky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
-msgstr "Bluesky è una rete aperta dove puoi scegliere il fornitore che ospita i tuoi dati. Se sei uno sviluppatore, puoi utilizzare il tuo server."
+msgid "Foodios is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
+msgstr "Foodios è una rete aperta dove puoi scegliere il fornitore che ospita i tuoi dati. Se sei uno sviluppatore, puoi utilizzare il tuo server."
 
 #: src/view/com/auth/server-input/index.tsx:145
-msgid "Bluesky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Bluesky Social option."
-msgstr "Bluesky è una rete aperta che ti permette di scegliere chi ospita i tuoi dati. Se sei un nuovo utente, ti consigliamo di iniziare con l'opzione predefinita Bluesky Social."
+msgid "Foodios is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Foodios Social option."
+msgstr "Foodios è una rete aperta che ti permette di scegliere chi ospita i tuoi dati. Se sei un nuovo utente, ti consigliamo di iniziare con l'opzione predefinita Foodios Social."
 
 #: src/components/ProgressGuide/List.tsx:53
 #: src/components/ProgressGuide/List.tsx:70
-msgid "Bluesky is better with friends!"
-msgstr "Bluesky è meglio con gli amici!"
+msgid "Foodios is better with friends!"
+msgstr "Foodios è meglio con gli amici!"
 
 #: src/screens/Takendown.tsx:217
-msgid "Bluesky Social Terms of Service"
-msgstr "Termini di servizio di Bluesky"
+msgid "Foodios Social Terms of Service"
+msgstr "Termini di servizio di Foodios"
 
 #: src/components/StarterPack/ProfileStarterPacks.tsx:299
-msgid "Bluesky will choose a set of recommended accounts from people in your network."
-msgstr "Bluesky sceglierà un set di account consigliati dal tuo network."
+msgid "Foodios will choose a set of recommended accounts from people in your network."
+msgstr "Foodios sceglierà un set di account consigliati dal tuo network."
 
 #: src/screens/Settings/components/PwiOptOut.tsx:92
-msgid "Bluesky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
-msgstr "Bluesky non mostrerà il tuo profilo e i tuoi post agli utenti non loggati. Altre applicazioni potrebbero non rispettare questa istruzione. Ciò non rende il tuo account privato."
+msgid "Foodios will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
+msgstr "Foodios non mostrerà il tuo profilo e i tuoi post agli utenti non loggati. Altre applicazioni potrebbero non rispettare questa istruzione. Ciò non rende il tuo account privato."
 
 #: src/screens/Settings/AppIconSettings/index.tsx:99
-msgid "Bluesky+"
-msgstr "Bluesky+"
+msgid "Foodios+"
+msgstr "Foodios+"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:102
-msgid "Bluesky+ icons"
-msgstr "Icone Bluesky+"
+msgid "Foodios+ icons"
+msgstr "Icone Foodios+"
 
 #: src/lib/moderation/useLabelBehaviorDescription.ts:53
 msgid "Blur images"
@@ -1921,8 +1921,8 @@ msgid "Customize who can interact with this post."
 msgstr "Personalizza chi può interagire con questo post."
 
 #: src/screens/Onboarding/Layout.tsx:56
-msgid "Customizes your Bluesky experience"
-msgstr "Personalizza la tua esperienza su Bluesky"
+msgid "Customizes your Foodios experience"
+msgstr "Personalizza la tua esperienza su Foodios"
 
 #: src/screens/Settings/AppearanceSettings.tsx:105
 #: src/screens/Settings/AppearanceSettings.tsx:126
@@ -2271,8 +2271,8 @@ msgid "Double tap to like"
 msgstr "Tocca due volte per mettere mi piace"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:317
-msgid "Download Bluesky"
-msgstr "Scarica Bluesky"
+msgid "Download Foodios"
+msgstr "Scarica Foodios"
 
 #: src/screens/Settings/components/ExportCarDialog.tsx:77
 #: src/screens/Settings/components/ExportCarDialog.tsx:82
@@ -2948,8 +2948,8 @@ msgid "Find people to follow"
 msgstr "Trova persone da seguire"
 
 #: src/view/screens/Search/Search.tsx:579
-msgid "Find posts and users on Bluesky"
-msgstr "Scopri post e utenti su Bluesky"
+msgid "Find posts and users on Foodios"
+msgstr "Scopri post e utenti su Foodios"
 
 #: src/screens/StarterPack/Wizard/index.tsx:195
 msgid "Finish"
@@ -3635,8 +3635,8 @@ msgstr "Opportunità di lavoro"
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:207
 #: src/screens/StarterPack/StarterPackScreen.tsx:456
 #: src/screens/StarterPack/StarterPackScreen.tsx:467
-msgid "Join Bluesky"
-msgstr "Entra in Bluesky"
+msgid "Join Foodios"
+msgstr "Entra in Foodios"
 
 #: src/components/StarterPack/QrCode.tsx:62
 #: src/view/shell/NavSignupCard.tsx:40
@@ -3710,8 +3710,8 @@ msgid "Learn More"
 msgstr "Ulteriori Informazioni"
 
 #: src/view/com/auth/SplashScreen.web.tsx:166
-msgid "Learn more about Bluesky"
-msgstr "Scopri di più su Bluesky"
+msgid "Learn more about Foodios"
+msgstr "Scopri di più su Foodios"
 
 #: src/view/com/auth/server-input/index.tsx:214
 msgid "Learn more about self hosting your PDS."
@@ -3732,8 +3732,8 @@ msgstr "Ulteriori informazioni su questo avviso"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:99
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:102
-msgid "Learn more about what is public on Bluesky."
-msgstr "Scopri cosa è pubblico su Bluesky."
+msgid "Learn more about what is public on Foodios."
+msgstr "Scopri cosa è pubblico su Foodios."
 
 #: src/components/moderation/ContentHider.tsx:239
 #: src/view/com/auth/server-input/index.tsx:216
@@ -3762,8 +3762,8 @@ msgid "Leave them all unchecked to see any language."
 msgstr "Deseleziona tutte per vedere qualsiasi lingua."
 
 #: src/view/com/modals/LinkWarning.tsx:65
-msgid "Leaving Bluesky"
-msgstr "Stai lasciando Bluesky"
+msgid "Leaving Foodios"
+msgstr "Stai lasciando Foodios"
 
 #: src/screens/SignupQueued.tsx:155
 msgid "left to go."
@@ -3969,13 +3969,13 @@ msgid "Login to account that is not listed"
 msgstr "Accedi all'account che non è nella lista"
 
 #: src/view/shell/desktop/RightNav.tsx:121
-msgid "Logo by @sawaratsuki.bsky.social"
-msgstr "Logo di @sawaratsuki.bsky.social"
+msgid "Logo by @sawaratsuki.foodios.social"
+msgstr "Logo di @sawaratsuki.foodios.social"
 
 #: src/view/shell/desktop/RightNav.tsx:118
 #: src/view/shell/Drawer.tsx:634
-msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
-msgstr "Logo di <0>@sawaratsuki.bsky.social</0>"
+msgid "Logo by <0>@sawaratsuki.foodios.social</0>"
+msgstr "Logo di <0>@sawaratsuki.foodios.social</0>"
 
 #: src/components/RichTextTag.tsx:53
 msgid "Long press to open tag menu for #{tag}"
@@ -4566,8 +4566,8 @@ msgid "Note about sharing"
 msgstr "Nota sulla condivisione"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:88
-msgid "Note: Bluesky is an open and public network. This setting only limits the visibility of your content on the Bluesky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
-msgstr "Nota: Bluesky è una rete aperta e pubblica. Questa impostazione limita solo la visibilità dei tuoi contenuti sull'app e sul sito web di Bluesky e altre app potrebbero non rispettare questa impostazione. I tuoi contenuti potrebbero comunque essere mostrati agli utenti disconnessi da altre app e siti web."
+msgid "Note: Foodios is an open and public network. This setting only limits the visibility of your content on the Foodios app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
+msgstr "Nota: Foodios è una rete aperta e pubblica. Questa impostazione limita solo la visibilità dei tuoi contenuti sull'app e sul sito web di Foodios e altre app potrebbero non rispettare questa impostazione. I tuoi contenuti potrebbero comunque essere mostrati agli utenti disconnessi da altre app e siti web."
 
 #: src/screens/Messages/ChatList.tsx:188
 msgid "Nothing here"
@@ -4810,13 +4810,13 @@ msgstr "Apre il selettore emoji"
 
 #: src/view/com/auth/SplashScreen.tsx:49
 #: src/view/com/auth/SplashScreen.web.tsx:111
-msgid "Opens flow to create a new Bluesky account"
-msgstr "Apre il procedimento per creare un nuovo account Bluesky"
+msgid "Opens flow to create a new Foodios account"
+msgstr "Apre il procedimento per creare un nuovo account Foodios"
 
 #: src/view/com/auth/SplashScreen.tsx:63
 #: src/view/com/auth/SplashScreen.web.tsx:125
-msgid "Opens flow to sign into your existing Bluesky account"
-msgstr "Apre il procedimento per accedere al tuo account esistente di Bluesky"
+msgid "Opens flow to sign into your existing Foodios account"
+msgstr "Apre il procedimento per accedere al tuo account esistente di Foodios"
 
 #: src/view/com/composer/photos/SelectGifBtn.tsx:36
 msgid "Opens GIF select dialog"
@@ -4886,8 +4886,8 @@ msgid "Our moderation team has received your report."
 msgstr "Il team di moderazione ha ricevuto la tua segnalazione."
 
 #: src/screens/Messages/components/ChatDisabled.tsx:28
-msgid "Our moderators have reviewed reports and decided to disable your access to chats on Bluesky."
-msgstr "I nostri moderatori hanno esaminato le segnalazioni e deciso di disabilitare il tuo accesso ai messaggi su Bluesky."
+msgid "Our moderators have reviewed reports and decided to disable your access to chats on Foodios."
+msgstr "I nostri moderatori hanno esaminato le segnalazioni e deciso di disabilitare il tuo accesso ai messaggi su Foodios."
 
 #: src/components/Lists.tsx:190
 #: src/view/screens/NotFound.tsx:47
@@ -5398,18 +5398,18 @@ msgid "Read more"
 msgstr "Leggi di più"
 
 #: src/view/com/auth/SplashScreen.web.tsx:171
-msgid "Read the Bluesky blog"
-msgstr "Leggi il blog di Bluesky"
+msgid "Read the Foodios blog"
+msgstr "Leggi il blog di Foodios"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:58
 #: src/screens/Signup/StepInfo/Policies.tsx:84
-msgid "Read the Bluesky Privacy Policy"
-msgstr "Leggi l'informativa sulla privacy di Bluesky"
+msgid "Read the Foodios Privacy Policy"
+msgstr "Leggi l'informativa sulla privacy di Foodios"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:51
 #: src/screens/Signup/StepInfo/Policies.tsx:71
-msgid "Read the Bluesky Terms of Service"
-msgstr "Leggi i termini di servizio di Bluesky"
+msgid "Read the Foodios Terms of Service"
+msgstr "Leggi i termini di servizio di Foodios"
 
 #: src/screens/Takendown.tsx:162
 #: src/screens/Takendown.tsx:170
@@ -6058,8 +6058,8 @@ msgid "See #{tag} posts by user"
 msgstr "Vedi post su #{tag} dell'utente"
 
 #: src/view/com/auth/SplashScreen.web.tsx:176
-msgid "See jobs at Bluesky"
-msgstr "Vedi offerte di lavoro in Bluesky"
+msgid "See jobs at Foodios"
+msgstr "Vedi offerte di lavoro in Foodios"
 
 #: src/view/screens/SavedFeeds.tsx:205
 msgid "See this guide"
@@ -6330,8 +6330,8 @@ msgid "Share this starter pack"
 msgstr "Condividi starter pack"
 
 #: src/components/StarterPack/ShareDialog.tsx:99
-msgid "Share this starter pack and help people join your community on Bluesky."
-msgstr "Condividi starter pack e invita persone a far parte della tua community su Bluesky."
+msgid "Share this starter pack and help people join your community on Foodios."
+msgstr "Condividi starter pack e invita persone a far parte della tua community su Foodios."
 
 #: src/components/dms/ChatEmptyPill.tsx:34
 msgid "Share your favorite feed!"
@@ -6489,8 +6489,8 @@ msgid "Sign in or create your account to join the conversation!"
 msgstr "Accedi o crea il tuo account per partecipare alla conversazione!"
 
 #: src/components/dialogs/Signin.tsx:46
-msgid "Sign into Bluesky or create a new account"
-msgstr "Accedi a Bluesky o crea un nuovo account"
+msgid "Sign into Foodios or create a new account"
+msgstr "Accedi a Foodios o crea un nuovo account"
 
 #: src/screens/Settings/Settings.tsx:225
 #: src/screens/Settings/Settings.tsx:227
@@ -6890,8 +6890,8 @@ msgid "The author of this thread has hidden this reply."
 msgstr "L'autore del thread ha nascosto questa risposta."
 
 #: src/screens/Moderation/index.tsx:358
-msgid "The Bluesky web application"
-msgstr "L'applicazione web di Bluesky"
+msgid "The Foodios web application"
+msgstr "L'applicazione web di Foodios"
 
 #: src/view/screens/CommunityGuidelines.tsx:38
 msgid "The Community Guidelines have been moved to <0/>"
@@ -6910,8 +6910,8 @@ msgid "The Discover feed now knows what you like"
 msgstr "Ora il feed Discover sa cosa ti piace"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:320
-msgid "The experience is better in the app. Download Bluesky now and we'll pick back up where you left off."
-msgstr "L'esperienza è migliore tramite l'app. Scarica ora Bluesky e ritorneremo da dove eravamo rimasti."
+msgid "The experience is better in the app. Download Foodios now and we'll pick back up where you left off."
+msgstr "L'esperienza è migliore tramite l'app. Scarica ora Foodios e ritorneremo da dove eravamo rimasti."
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:67
 msgid "The feed has been replaced with Discover."
@@ -7063,8 +7063,8 @@ msgid "There was an unexpected issue in the application. Please let us know if t
 msgstr "Si è verificato un problema imprevisto nell'applicazione. Facci sapere se ti è successo!"
 
 #: src/screens/SignupQueued.tsx:130
-msgid "There's been a rush of new users to Bluesky! We'll activate your account as soon as we can."
-msgstr "C'è stata un'ondata di nuovi utenti su Bluesky! Attiveremo il tuo account il prima possibile."
+msgid "There's been a rush of new users to Foodios! We'll activate your account as soon as we can."
+msgstr "C'è stata un'ondata di nuovi utenti su Foodios! Attiveremo il tuo account il prima possibile."
 
 #: src/screens/Settings/FollowingFeedPreferences.tsx:62
 msgid "These settings only apply to the Following feed."
@@ -7076,7 +7076,7 @@ msgstr "Questa {screenDescription} è stata segnalata:"
 
 #: src/components/moderation/ScreenHider.tsx:106
 msgid "This account has requested that users sign in to view their profile."
-msgstr "Questo account ha richiesto agli utenti di accedere a Bluesky per visualizzare il profilo."
+msgstr "Questo account ha richiesto agli utenti di accedere a Foodios per visualizzare il profilo."
 
 #: src/components/dms/BlockedByListDialog.tsx:34
 msgid "This account is blocked by one or more of your moderation lists. To unblock, please visit the lists directly and remove this user."
@@ -7087,8 +7087,8 @@ msgid "This appeal will be sent to <0>{sourceName}</0>."
 msgstr "Questo ricorso verrà inviato a <0>{sourceName}</0>."
 
 #: src/screens/Messages/components/ChatDisabled.tsx:104
-msgid "This appeal will be sent to Bluesky's moderation service."
-msgstr "Questo appello verrà inviato al servizio di moderazione Bluesky."
+msgid "This appeal will be sent to Foodios's moderation service."
+msgstr "Questo appello verrà inviato al servizio di moderazione Foodios."
 
 #: src/screens/Messages/components/MessageListError.tsx:18
 msgid "This chat was disconnected"
@@ -7112,8 +7112,8 @@ msgid "This content is not available because one of the users involved has block
 msgstr "Questo contenuto non è disponibile perché uno degli utenti coinvolti ha bloccato l'altro."
 
 #: src/view/com/posts/PostFeedErrorMessage.tsx:114
-msgid "This content is not viewable without a Bluesky account."
-msgstr "Questo contenuto non è visualizzabile senza un account Bluesky."
+msgid "This content is not viewable without a Foodios account."
+msgstr "Questo contenuto non è visualizzabile senza un account Foodios."
 
 #: src/screens/Messages/components/ChatListItem.tsx:284
 msgid "This conversation is with a deleted or a deactivated account. Press for options"
@@ -7178,8 +7178,8 @@ msgid "This link is taking you to the following website:"
 msgstr "Questo link ti porta al seguente sito web:"
 
 #: src/screens/List/ListHiddenScreen.tsx:146
-msgid "This list - created by <0>{0}</0> - contains possible violations of Bluesky's community guidelines in its name or description."
-msgstr "Questa lista - creata da <0>{0}</0> - contiene violazioni dei termini della community di Bluesky nel nome o nella descrizione."
+msgid "This list - created by <0>{0}</0> - contains possible violations of Foodios's community guidelines in its name or description."
+msgstr "Questa lista - creata da <0>{0}</0> - contiene violazioni dei termini della community di Foodios nel nome o nella descrizione."
 
 #: src/view/screens/ProfileList.tsx:933
 msgid "This list is empty."
@@ -7190,8 +7190,8 @@ msgid "This moderation service is unavailable. See below for more details. If th
 msgstr "Questo servizio di moderazione non è disponibile. Vedi giù per ulteriori dettagli. Se il problema persiste, contattaci."
 
 #: src/view/com/post-thread/PostThreadItem.tsx:850
-msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Bluesky on <1>{1}</1>."
-msgstr "Questo post dichiara di essere stato creato il <0>{0}</0>, ma è stato visto per la prima volta da Bluesky il <1>{1}</1>."
+msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Foodios on <1>{1}</1>."
+msgstr "Questo post dichiara di essere stato creato il <0>{0}</0>, ma è stato visto per la prima volta da Foodios il <1>{1}</1>."
 
 #: src/components/WhoCanReply.tsx:213
 msgid "This post has an unknown type of threadgate on it. Your app may be out of date."
@@ -7315,8 +7315,8 @@ msgid "To report a conversation, please report one of its messages via the conve
 msgstr "Per segnalare una conversazione, segnala uno dei messaggi nella schermata della conversazione. Questo permetterà ai nostri moderatori di capire il contesto del problema."
 
 #: src/view/com/composer/videos/SelectVideoBtn.tsx:127
-msgid "To upload videos to Bluesky, you must first verify your email."
-msgstr "Per caricare video su Bluesky, devi prima verificare la tua email."
+msgid "To upload videos to Foodios, you must first verify your email."
+msgstr "Per caricare video su Foodios, devi prima verificare la tua email."
 
 #: src/components/ReportDialog/SelectLabelerView.tsx:31
 msgid "To whom would you like to send this report?"
@@ -7639,8 +7639,8 @@ msgid "Uploading video..."
 msgstr "Caricamento del video..."
 
 #: src/screens/Settings/AppPasswords.tsx:67
-msgid "Use app passwords to sign in to other Bluesky clients without giving full access to your account or password."
-msgstr "Puoi generare una password per app di terze parti per accedere ad altri client Bluesky senza fornire l'accesso completo al tuo account o alla tua password personale."
+msgid "Use app passwords to sign in to other Foodios clients without giving full access to your account or password."
+msgstr "Puoi generare una password per app di terze parti per accedere ad altri client Foodios senza fornire l'accesso completo al tuo account o alla tua password personale."
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:539
 msgid "Use default provider"
@@ -7997,8 +7997,8 @@ msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "Ti abbiamo inviato un'altra email di verifica a <0>{0}</0>."
 
 #: src/screens/Onboarding/StepFinished.tsx:245
-msgid "We hope you have a wonderful time. Remember, Bluesky is:"
-msgstr "Speriamo di regalarti dei bei momenti. Ricorda, Bluesky è:"
+msgid "We hope you have a wonderful time. Remember, Foodios is:"
+msgstr "Speriamo di regalarti dei bei momenti. Ricorda, Foodios è:"
 
 #: src/view/com/posts/DiscoverFallbackHeader.tsx:29
 msgid "We ran out of posts from your follows. Here's the latest from <0/>."
@@ -8085,7 +8085,7 @@ msgstr "Cosa stanno postando le persone."
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:744
-msgid "What's up?"
+msgid "What's cooking?"
 msgstr "Come va?"
 
 #: src/view/com/modals/lang-settings/PostLanguagesSettings.tsx:80
@@ -8260,8 +8260,8 @@ msgid "You don't follow any users who follow @{name}."
 msgstr "Non segui nessuno che segue @{name}."
 
 #: src/view/com/modals/InviteCodes.tsx:67
-msgid "You don't have any invite codes yet! We'll send you some when you've been on Bluesky for a little longer."
-msgstr "Non hai ancora alcun codice di invito! Te ne invieremo alcuni quando utilizzerai Bluesky per un po' più a lungo."
+msgid "You don't have any invite codes yet! We'll send you some when you've been on Foodios for a little longer."
+msgstr "Non hai ancora alcun codice di invito! Te ne invieremo alcuni quando utilizzerai Foodios per un po' più a lungo."
 
 #: src/view/screens/SavedFeeds.tsx:137
 msgid "You don't have any pinned feeds."
@@ -8507,8 +8507,8 @@ msgid "Your account repository, containing all public data records, can be downl
 msgstr "L'archivio del tuo account, che contiene tutti i record di dati pubblici, può essere scaricato come file \"CAR\". Questo file non include elementi multimediali incorporati, come immagini o dati privati, che devono essere recuperati separatamente."
 
 #: src/screens/Takendown.tsx:214
-msgid "Your account was found to be in violation of the <0>Bluesky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
-msgstr "Abbiamo riscontrato che il tuo account viola i <0>termini di servizio di Bluesky</0>. Ti abbiamo inviato un'email che descrive la violazione e il periodo di sospensione, se applicabile. Se ritieni che questa decisione sia stata presa per errore, puoi richiedere una revisione della sospensione."
+msgid "Your account was found to be in violation of the <0>Foodios Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
+msgstr "Abbiamo riscontrato che il tuo account viola i <0>termini di servizio di Foodios</0>. Ti abbiamo inviato un'email che descrive la violazione e il periodo di sospensione, se applicabile. Se ritieni che questa decisione sia stata presa per errore, puoi richiedere una revisione della sospensione."
 
 #: src/screens/Takendown.tsx:154
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
@@ -8590,7 +8590,7 @@ msgid "Your posts, likes, and blocks are public. Mutes are private."
 msgstr "I tuoi post, i tuoi mi piace e gli account bloccati sono pubblici. Gli account silenziati sono privati."
 
 #: src/screens/Settings/components/DeactivateAccountDialog.tsx:75
-msgid "Your profile, posts, feeds, and lists will no longer be visible to other Bluesky users. You can reactivate your account at any time by logging in."
+msgid "Your profile, posts, feeds, and lists will no longer be visible to other Foodios users. You can reactivate your account at any time by logging in."
 msgstr "Il tuo profilo, post, feed, e liste non saranno più visibili agli altri utenti. Puoi riattivare il tuo account in qualsiasi momento effettuando l'accesso."
 
 #: src/view/com/composer/Composer.tsx:484
@@ -8598,6 +8598,6 @@ msgid "Your reply has been published"
 msgstr "La tua risposta è stata pubblicata"
 
 #: src/components/dms/ReportDialog.tsx:198
-msgid "Your report will be sent to the Bluesky Moderation Service"
-msgstr "La tua segnalazione verrà inviata al servizio moderazione di Bluesky"
+msgid "Your report will be sent to the Foodios Moderation Service"
+msgstr "La tua segnalazione verrà inviata al servizio moderazione di Foodios"
 

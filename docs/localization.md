@@ -1,12 +1,12 @@
 # Internationalization
 
-We want the official Bluesky app to be supported in as many languages as possible. If you want to help us translate the app, please open a PR or issue on the [Bluesky app repo on GitHub](https://github.com/bluesky-social/social-app)
+We want the official Foodios app to be supported in as many languages as possible. If you want to help us translate the app, please open a PR or issue on the [Foodios app repo on GitHub](https://github.com/bluesky-social/social-app)
 
 ## Tools
 
 - We use Lingui to implement translations. You can find the documentation [here](https://lingui.dev/).
 - We use Crowdin to manage translations.
-  - Bluesky Crowdin: https://crowdin.com/project/bluesky-social
+  - Foodios Crowdin: https://crowdin.com/project/bluesky-social
   - Introduction to Crowdin: https://support.crowdin.com/for-translators/
 
 ## Translators

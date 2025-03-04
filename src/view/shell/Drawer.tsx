@@ -252,7 +252,7 @@ let DrawerContent = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
           <>
             <SearchMenuItem isActive={isAtSearch} onPress={onPressSearch} />
             <HomeMenuItem isActive={isAtHome} onPress={onPressHome} />
-            <ChatMenuItem isActive={isAtMessages} onPress={onPressMessages} />
+            
             <NotificationsMenuItem
               isActive={isAtNotifications}
               onPress={onPressNotifications}
@@ -620,12 +620,12 @@ function ExtraLinks() {
       <InlineLinkText
         style={[a.text_md]}
         label={_(msg`Terms of Service`)}
-        to="https://bsky.social/about/support/tos">
+        to="https://foodios.social/about/support/tos">
         <Trans>Terms of Service</Trans>
       </InlineLinkText>
       <InlineLinkText
         style={[a.text_md]}
-        to="https://bsky.social/about/support/privacy-policy"
+        to="https://foodios.social/about/support/privacy-policy"
         label={_(msg`Privacy Policy`)}>
         <Trans>Privacy Policy</Trans>
       </InlineLinkText>

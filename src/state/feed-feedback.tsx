@@ -47,9 +47,9 @@ export function useFeedFeedback(feed: FeedDescriptor, hasSession: boolean) {
     const interactions = Array.from(queue.current).map(toInteraction)
     queue.current.clear()
 
-    let proxyDid = 'did:web:discover.bsky.app'
+    let proxyDid = 'did:web:discover.foodios.app'
     if (STAGING_FEEDS.includes(feed)) {
-      proxyDid = 'did:web:algo.pop2.bsky.app'
+      proxyDid = 'did:web:algo.pop2.foodios.app'
     }
 
     // Send to the feed

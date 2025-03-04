@@ -1,1 +1,1 @@
-export const DMCA_LINK = 'https://bsky.social/about/support/copyright'
+export const DMCA_LINK = 'https://foodios.social/about/support/copyright'

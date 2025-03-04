@@ -12,7 +12,7 @@ import BackgroundNotificationHandler from '../../../modules/expo-background-noti
 const SERVICE_DID = (serviceUrl?: string) =>
   serviceUrl?.includes('staging')
     ? 'did:web:api.staging.bsky.dev'
-    : 'did:web:api.bsky.app'
+    : 'did:web:api.foodios.app'
 
 async function registerPushToken(
   agent: BskyAgent,
@@ -24,7 +24,7 @@ async function registerPushToken(
       serviceDid: SERVICE_DID(account.service),
       platform: devicePlatform,
       token: token.data,
-      appId: 'xyz.blueskyweb.app',
+      appId: 'xyz.foodios.app',
     })
     logger.debug(
       'Notifications: Sent push token (init)',

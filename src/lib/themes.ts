@@ -32,15 +32,15 @@ export const defaultTheme: Theme = {
       borderLinkHover: lightPalette.contrast_300,
     },
     primary: {
-      background: colors.blue3,
-      backgroundLight: colors.blue2,
+      background: colors.orange1,
+      backgroundLight: colors.orange2,
       text: colors.white,
-      textLight: colors.blue0,
-      textInverted: colors.blue3,
-      link: colors.blue0,
-      border: colors.blue4,
+      textLight: colors.orange2,
+      textInverted: colors.orange1,
+      link: colors.orange2,
+      border: colors.orange1,
       borderDark: colors.blue5,
-      icon: colors.blue4,
+      icon: colors.orange1,
     },
     secondary: {
       background: colors.green3,
@@ -319,7 +319,7 @@ export const darkTheme: Theme = {
     },
     primary: {
       ...defaultTheme.palette.primary,
-      textInverted: colors.blue2,
+      textInverted: colors.orange2,
     },
     secondary: {
       ...defaultTheme.palette.secondary,

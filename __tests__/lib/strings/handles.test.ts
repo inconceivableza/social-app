@@ -2,12 +2,12 @@ import {IsValidHandle, validateServiceHandle} from '#/lib/strings/handles'
 
 describe('handle validation', () => {
   const valid = [
-    ['ali', 'bsky.social'],
-    ['alice', 'bsky.social'],
-    ['a-lice', 'bsky.social'],
-    ['a-----lice', 'bsky.social'],
-    ['123', 'bsky.social'],
-    ['123456789012345678', 'bsky.social'],
+    ['ali', 'foodios.social'],
+    ['alice', 'foodios.social'],
+    ['a-lice', 'foodios.social'],
+    ['a-----lice', 'foodios.social'],
+    ['123', 'foodios.social'],
+    ['123456789012345678', 'foodios.social'],
     ['alice', 'custom-pds.com'],
     ['alice', 'my-custom-pds-with-long-name.social'],
     ['123456789012345678', 'my-custom-pds-with-long-name.social'],
@@ -18,11 +18,11 @@ describe('handle validation', () => {
   })
 
   const invalid = [
-    ['al', 'bsky.social', 'frontLength'],
-    ['-alice', 'bsky.social', 'hyphenStartOrEnd'],
-    ['alice-', 'bsky.social', 'hyphenStartOrEnd'],
-    ['%%%', 'bsky.social', 'handleChars'],
-    ['1234567890123456789', 'bsky.social', 'frontLength'],
+    ['al', 'foodios.social', 'frontLength'],
+    ['-alice', 'foodios.social', 'hyphenStartOrEnd'],
+    ['alice-', 'foodios.social', 'hyphenStartOrEnd'],
+    ['%%%', 'foodios.social', 'handleChars'],
+    ['1234567890123456789', 'foodios.social', 'frontLength'],
     [
       '1234567890123456789',
       'my-custom-pds-with-long-name.social',

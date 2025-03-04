@@ -182,32 +182,7 @@ export function BottomBar({navigation}: BottomTabBarProps) {
               accessibilityLabel={_(msg`Search`)}
               accessibilityHint=""
             />
-            <Btn
-              testID="bottomBarMessagesBtn"
-              icon={
-                isAtMessages ? (
-                  <MessageFilled
-                    width={iconWidth - 1}
-                    style={[styles.ctrlIcon, pal.text, styles.feedsIcon]}
-                  />
-                ) : (
-                  <Message
-                    width={iconWidth - 1}
-                    style={[styles.ctrlIcon, pal.text, styles.feedsIcon]}
-                  />
-                )
-              }
-              onPress={onPressMessages}
-              notificationCount={numUnreadMessages.numUnread}
-              accessible={true}
-              accessibilityRole="tab"
-              accessibilityLabel={_(msg`Chat`)}
-              accessibilityHint={
-                numUnreadMessages.count > 0
-                  ? _(msg`${numUnreadMessages.numUnread} unread items`)
-                  : ''
-              }
-            />
+            
             <Btn
               testID="bottomBarNotificationsBtn"
               icon={

@@ -9,7 +9,7 @@ import {useQueryClient} from '@tanstack/react-query'
 
 import {uploadBlob} from '#/lib/api'
 import {
-  BSKY_APP_ACCOUNT_DID,
+  FOODIOS_WELCOME_ACCOUNT_DID,
   DISCOVER_SAVED_FEED,
   TIMELINE_SAVED_FEED,
   VIDEO_SAVED_FEED,
@@ -94,7 +94,7 @@ export function StepFinished() {
 
       await Promise.all([
         bulkWriteFollows(agent, [
-          BSKY_APP_ACCOUNT_DID,
+          FOODIOS_WELCOME_ACCOUNT_DID,
           ...(listItems?.map(i => i.subject.did) ?? []),
         ]),
         (async () => {
@@ -103,10 +103,7 @@ export function StepFinished() {
 
           // Default feeds that every user should have pinned when landing in the app
           const feedsToSave: SavedFeed[] = [
-            {
-              ...DISCOVER_SAVED_FEED,
-              id: TID.nextStr(),
-            },
+            
             {
               ...TIMELINE_SAVED_FEED,
               id: TID.nextStr(),
@@ -242,7 +239,7 @@ export function StepFinished() {
         <Trans>You're ready to go!</Trans>
       </TitleText>
       <DescriptionText>
-        <Trans>We hope you have a wonderful time. Remember, Bluesky is:</Trans>
+        <Trans>We hope you have a wonderful time. Remember, Foodios is:</Trans>
       </DescriptionText>
 
       <View style={[a.pt_5xl, a.gap_3xl]}>

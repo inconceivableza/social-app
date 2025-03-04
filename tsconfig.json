@@ -13,5 +13,5 @@
       "crypto": ["./src/platform/crypto.ts"]
     }
   },
-  "exclude": ["bskyweb", "bskyembed", "web-build"]
+  "exclude": ["foodiosweb", "bskyembed", "web-build"]
 }

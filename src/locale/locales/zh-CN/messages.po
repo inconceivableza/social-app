@@ -295,12 +295,12 @@ msgid "{numUnreadNotifications} unread items"
 msgstr "{numUnreadNotifications} 条未读通知"
 
 #: src/components/NewskieDialog.tsx:116
-msgid "{profileName} joined Bluesky {0} ago"
-msgstr "{profileName} 在 {0}前加入了 Bluesky"
+msgid "{profileName} joined Foodios {0} ago"
+msgstr "{profileName} 在 {0}前加入了 Foodios"
 
 #: src/components/NewskieDialog.tsx:111
-msgid "{profileName} joined Bluesky using a starter pack {0} ago"
-msgstr "{profileName} 在 {0}前使用新手包加入了 Bluesky"
+msgid "{profileName} joined Foodios using a starter pack {0} ago"
+msgstr "{profileName} 在 {0}前使用新手包加入了 Foodios"
 
 #: src/screens/StarterPack/Wizard/index.tsx:449
 msgctxt "profiles"
@@ -563,8 +563,8 @@ msgid "Adult Content"
 msgstr "成人内容"
 
 #: src/screens/Moderation/index.tsx:355
-msgid "Adult content can only be enabled via the Web at <0>bsky.app</0>."
-msgstr "仅可通过网页端（<0>bsky.app</0>）启用成人内容显示。"
+msgid "Adult content can only be enabled via the Web at <0>foodios.app</0>."
+msgstr "仅可通过网页端（<0>foodios.app</0>）启用成人内容显示。"
 
 #: src/components/moderation/LabelPreference.tsx:242
 msgid "Adult content is disabled."
@@ -1064,45 +1064,45 @@ msgstr "博客"
 
 #: src/view/com/auth/server-input/index.tsx:132
 #: src/view/com/auth/server-input/index.tsx:133
-msgid "Bluesky"
-msgstr "Bluesky"
+msgid "Foodios"
+msgstr "Foodios"
 
 #: src/view/com/post-thread/PostThreadItem.tsx:864
-msgid "Bluesky cannot confirm the authenticity of the claimed date."
-msgstr "Bluesky 无法确认帖文发布时间的真实性。"
+msgid "Foodios cannot confirm the authenticity of the claimed date."
+msgstr "Foodios 无法确认帖文发布时间的真实性。"
 
 #: src/view/com/auth/server-input/index.tsx:208
-msgid "Bluesky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
-msgstr "Bluesky 是一个开放的社交网络，你可以自行选择托管服务提供商。如果你是开发者，你还可以托管自己的服务器。"
+msgid "Foodios is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
+msgstr "Foodios 是一个开放的社交网络，你可以自行选择托管服务提供商。如果你是开发者，你还可以托管自己的服务器。"
 
 #: src/view/com/auth/server-input/index.tsx:145
-msgid "Bluesky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Bluesky Social option."
-msgstr "Bluesky 是一个开放的社交网络，你可以自行选择托管服务提供商。但如果你是新用户，我们建议你选择默认的 Bluesky Social 选项。"
+msgid "Foodios is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Foodios Social option."
+msgstr "Foodios 是一个开放的社交网络，你可以自行选择托管服务提供商。但如果你是新用户，我们建议你选择默认的 Foodios Social 选项。"
 
 #: src/components/ProgressGuide/List.tsx:53
 #: src/components/ProgressGuide/List.tsx:70
-msgid "Bluesky is better with friends!"
-msgstr "与天友们一起，Bluesky 更美好！"
+msgid "Foodios is better with friends!"
+msgstr "与天友们一起，Foodios 更美好！"
 
 #: src/screens/Takendown.tsx:217
-msgid "Bluesky Social Terms of Service"
-msgstr "Bluesky 服务条款"
+msgid "Foodios Social Terms of Service"
+msgstr "Foodios 服务条款"
 
 #: src/components/StarterPack/ProfileStarterPacks.tsx:299
-msgid "Bluesky will choose a set of recommended accounts from people in your network."
-msgstr "Bluesky 将从你的关系网中选择一组推荐关注的账户。"
+msgid "Foodios will choose a set of recommended accounts from people in your network."
+msgstr "Foodios 将从你的关系网中选择一组推荐关注的账户。"
 
 #: src/screens/Settings/components/PwiOptOut.tsx:92
-msgid "Bluesky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
-msgstr "Bluesky 将不会向未登录的用户显示你的个人资料和帖文。但第三方应用未必会遵从该请求，这不会使你的账号转为非公开状态。"
+msgid "Foodios will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
+msgstr "Foodios 将不会向未登录的用户显示你的个人资料和帖文。但第三方应用未必会遵从该请求，这不会使你的账号转为非公开状态。"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:99
-msgid "Bluesky+"
-msgstr "Bluesky+"
+msgid "Foodios+"
+msgstr "Foodios+"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:102
-msgid "Bluesky+ icons"
-msgstr "Bluesky+ 图标"
+msgid "Foodios+ icons"
+msgstr "Foodios+ 图标"
 
 #: src/lib/moderation/useLabelBehaviorDescription.ts:53
 msgid "Blur images"
@@ -1921,8 +1921,8 @@ msgid "Customize who can interact with this post."
 msgstr "自定义哪些人可以参与这则帖文的互动。"
 
 #: src/screens/Onboarding/Layout.tsx:56
-msgid "Customizes your Bluesky experience"
-msgstr "自定义你的 Bluesky 体验"
+msgid "Customizes your Foodios experience"
+msgstr "自定义你的 Foodios 体验"
 
 #: src/screens/Settings/AppearanceSettings.tsx:105
 #: src/screens/Settings/AppearanceSettings.tsx:126
@@ -2271,8 +2271,8 @@ msgid "Double tap to like"
 msgstr "双击以点赞"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:317
-msgid "Download Bluesky"
-msgstr "下载 Bluesky"
+msgid "Download Foodios"
+msgstr "下载 Foodios"
 
 #: src/screens/Settings/components/ExportCarDialog.tsx:77
 #: src/screens/Settings/components/ExportCarDialog.tsx:82
@@ -2948,8 +2948,8 @@ msgid "Find people to follow"
 msgstr "寻找一些用户关注"
 
 #: src/view/screens/Search/Search.tsx:579
-msgid "Find posts and users on Bluesky"
-msgstr "在 Bluesky 寻找感兴趣的帖文和用户"
+msgid "Find posts and users on Foodios"
+msgstr "在 Foodios 寻找感兴趣的帖文和用户"
 
 #: src/screens/StarterPack/Wizard/index.tsx:195
 msgid "Finish"
@@ -3635,8 +3635,8 @@ msgstr "工作"
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:207
 #: src/screens/StarterPack/StarterPackScreen.tsx:456
 #: src/screens/StarterPack/StarterPackScreen.tsx:467
-msgid "Join Bluesky"
-msgstr "加入 Bluesky"
+msgid "Join Foodios"
+msgstr "加入 Foodios"
 
 #: src/components/StarterPack/QrCode.tsx:62
 #: src/view/shell/NavSignupCard.tsx:40
@@ -3710,8 +3710,8 @@ msgid "Learn More"
 msgstr "了解详情"
 
 #: src/view/com/auth/SplashScreen.web.tsx:166
-msgid "Learn more about Bluesky"
-msgstr "深入了解有关 Bluesky 的信息"
+msgid "Learn more about Foodios"
+msgstr "深入了解有关 Foodios 的信息"
 
 #: src/view/com/auth/server-input/index.tsx:214
 msgid "Learn more about self hosting your PDS."
@@ -3732,8 +3732,8 @@ msgstr "深入了解有关此警告的信息"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:99
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:102
-msgid "Learn more about what is public on Bluesky."
-msgstr "深入了解有关 Bluesky 公开内容的信息。"
+msgid "Learn more about what is public on Foodios."
+msgstr "深入了解有关 Foodios 公开内容的信息。"
 
 #: src/components/moderation/ContentHider.tsx:239
 #: src/view/com/auth/server-input/index.tsx:216
@@ -3762,8 +3762,8 @@ msgid "Leave them all unchecked to see any language."
 msgstr "全部留空以显示所有语言的帖文。"
 
 #: src/view/com/modals/LinkWarning.tsx:65
-msgid "Leaving Bluesky"
-msgstr "离开 Bluesky"
+msgid "Leaving Foodios"
+msgstr "离开 Foodios"
 
 #: src/screens/SignupQueued.tsx:155
 msgid "left to go."
@@ -3969,13 +3969,13 @@ msgid "Login to account that is not listed"
 msgstr "登录未列出的账户"
 
 #: src/view/shell/desktop/RightNav.tsx:121
-msgid "Logo by @sawaratsuki.bsky.social"
-msgstr "网站标志由 @sawaratsuki.bsky.social 绘制"
+msgid "Logo by @sawaratsuki.foodios.social"
+msgstr "网站标志由 @sawaratsuki.foodios.social 绘制"
 
 #: src/view/shell/desktop/RightNav.tsx:118
 #: src/view/shell/Drawer.tsx:634
-msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
-msgstr "网站标志由 <0>@sawaratsuki.bsky.social</0> 绘制"
+msgid "Logo by <0>@sawaratsuki.foodios.social</0>"
+msgstr "网站标志由 <0>@sawaratsuki.foodios.social</0> 绘制"
 
 #: src/components/RichTextTag.tsx:53
 msgid "Long press to open tag menu for #{tag}"
@@ -4566,8 +4566,8 @@ msgid "Note about sharing"
 msgstr "分享注意事项"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:88
-msgid "Note: Bluesky is an open and public network. This setting only limits the visibility of your content on the Bluesky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
-msgstr "注意：Bluesky 是一个开放的社交网络。此设置仅限制你的内容在 Bluesky 应用及网页上的可见性，但第三方应用未必会遵从此设置，仍可能会向未登录的用户显示你发布的内容。"
+msgid "Note: Foodios is an open and public network. This setting only limits the visibility of your content on the Foodios app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
+msgstr "注意：Foodios 是一个开放的社交网络。此设置仅限制你的内容在 Foodios 应用及网页上的可见性，但第三方应用未必会遵从此设置，仍可能会向未登录的用户显示你发布的内容。"
 
 #: src/screens/Messages/ChatList.tsx:188
 msgid "Nothing here"
@@ -4810,13 +4810,13 @@ msgstr "开启表情符号选择器"
 
 #: src/view/com/auth/SplashScreen.tsx:49
 #: src/view/com/auth/SplashScreen.web.tsx:111
-msgid "Opens flow to create a new Bluesky account"
-msgstr "开启创建新 Bluesky 账户流程"
+msgid "Opens flow to create a new Foodios account"
+msgstr "开启创建新 Foodios 账户流程"
 
 #: src/view/com/auth/SplashScreen.tsx:63
 #: src/view/com/auth/SplashScreen.web.tsx:125
-msgid "Opens flow to sign into your existing Bluesky account"
-msgstr "开启登录到你现有的 Bluesky 账户流程"
+msgid "Opens flow to sign into your existing Foodios account"
+msgstr "开启登录到你现有的 Foodios 账户流程"
 
 #: src/view/com/composer/photos/SelectGifBtn.tsx:36
 msgid "Opens GIF select dialog"
@@ -4886,8 +4886,8 @@ msgid "Our moderation team has received your report."
 msgstr "我们的审核团队已收到你的举报。"
 
 #: src/screens/Messages/components/ChatDisabled.tsx:28
-msgid "Our moderators have reviewed reports and decided to disable your access to chats on Bluesky."
-msgstr "内容审核服务提供方已收到相关举报，并决定停用你的 Bluesky 私信功能。"
+msgid "Our moderators have reviewed reports and decided to disable your access to chats on Foodios."
+msgstr "内容审核服务提供方已收到相关举报，并决定停用你的 Foodios 私信功能。"
 
 #: src/components/Lists.tsx:190
 #: src/view/screens/NotFound.tsx:47
@@ -5398,18 +5398,18 @@ msgid "Read more"
 msgstr "查看更多"
 
 #: src/view/com/auth/SplashScreen.web.tsx:171
-msgid "Read the Bluesky blog"
-msgstr "浏览 Bluesky 博客"
+msgid "Read the Foodios blog"
+msgstr "浏览 Foodios 博客"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:58
 #: src/screens/Signup/StepInfo/Policies.tsx:84
-msgid "Read the Bluesky Privacy Policy"
-msgstr "浏览 Bluesky 隐私设置"
+msgid "Read the Foodios Privacy Policy"
+msgstr "浏览 Foodios 隐私设置"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:51
 #: src/screens/Signup/StepInfo/Policies.tsx:71
-msgid "Read the Bluesky Terms of Service"
-msgstr "浏览 Bluesky 服务条款"
+msgid "Read the Foodios Terms of Service"
+msgstr "浏览 Foodios 服务条款"
 
 #: src/screens/Takendown.tsx:162
 #: src/screens/Takendown.tsx:170
@@ -6058,8 +6058,8 @@ msgid "See #{tag} posts by user"
 msgstr "查看该用户包含 #{tag} 的帖文"
 
 #: src/view/com/auth/SplashScreen.web.tsx:176
-msgid "See jobs at Bluesky"
-msgstr "查看 Bluesky 的工作职缺"
+msgid "See jobs at Foodios"
+msgstr "查看 Foodios 的工作职缺"
 
 #: src/view/screens/SavedFeeds.tsx:205
 msgid "See this guide"
@@ -6330,8 +6330,8 @@ msgid "Share this starter pack"
 msgstr "分享此新手包"
 
 #: src/components/StarterPack/ShareDialog.tsx:99
-msgid "Share this starter pack and help people join your community on Bluesky."
-msgstr "分享此新手包，以帮助其他人更快融入你在 Bluesky 上的关系网。"
+msgid "Share this starter pack and help people join your community on Foodios."
+msgstr "分享此新手包，以帮助其他人更快融入你在 Foodios 上的关系网。"
 
 #: src/components/dms/ChatEmptyPill.tsx:34
 msgid "Share your favorite feed!"
@@ -6489,8 +6489,8 @@ msgid "Sign in or create your account to join the conversation!"
 msgstr "登录或创建你的账户来加入对话吧！"
 
 #: src/components/dialogs/Signin.tsx:46
-msgid "Sign into Bluesky or create a new account"
-msgstr "登录 Bluesky 或创建新账户"
+msgid "Sign into Foodios or create a new account"
+msgstr "登录 Foodios 或创建新账户"
 
 #: src/screens/Settings/Settings.tsx:225
 #: src/screens/Settings/Settings.tsx:227
@@ -6890,8 +6890,8 @@ msgid "The author of this thread has hidden this reply."
 msgstr "这条讨论串的发布者隐藏了这则回复。"
 
 #: src/screens/Moderation/index.tsx:358
-msgid "The Bluesky web application"
-msgstr "Bluesky 网页客户端"
+msgid "The Foodios web application"
+msgstr "Foodios 网页客户端"
 
 #: src/view/screens/CommunityGuidelines.tsx:38
 msgid "The Community Guidelines have been moved to <0/>"
@@ -6910,8 +6910,8 @@ msgid "The Discover feed now knows what you like"
 msgstr "现在“Discover”动态源了解你的喜好内容了"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:320
-msgid "The experience is better in the app. Download Bluesky now and we'll pick back up where you left off."
-msgstr "使用 App 的体验会更好。现在下载 Bluesky，我们将从你离开的的地方继续。"
+msgid "The experience is better in the app. Download Foodios now and we'll pick back up where you left off."
+msgstr "使用 App 的体验会更好。现在下载 Foodios，我们将从你离开的的地方继续。"
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:67
 msgid "The feed has been replaced with Discover."
@@ -7063,8 +7063,8 @@ msgid "There was an unexpected issue in the application. Please let us know if t
 msgstr "应用发生意外错误，请联系我们进行错误反馈！"
 
 #: src/screens/SignupQueued.tsx:130
-msgid "There's been a rush of new users to Bluesky! We'll activate your account as soon as we can."
-msgstr "Bluesky 目前迎来了大量新用户！我们将尽快启用你的账户。"
+msgid "There's been a rush of new users to Foodios! We'll activate your account as soon as we can."
+msgstr "Foodios 目前迎来了大量新用户！我们将尽快启用你的账户。"
 
 #: src/screens/Settings/FollowingFeedPreferences.tsx:62
 msgid "These settings only apply to the Following feed."
@@ -7087,8 +7087,8 @@ msgid "This appeal will be sent to <0>{sourceName}</0>."
 msgstr "这条申诉将提交给 <0>{sourceName}</0>。"
 
 #: src/screens/Messages/components/ChatDisabled.tsx:104
-msgid "This appeal will be sent to Bluesky's moderation service."
-msgstr "这条申诉将提交给 Bluesky 内容审核服务。"
+msgid "This appeal will be sent to Foodios's moderation service."
+msgstr "这条申诉将提交给 Foodios 内容审核服务。"
 
 #: src/screens/Messages/components/MessageListError.tsx:18
 msgid "This chat was disconnected"
@@ -7112,8 +7112,8 @@ msgid "This content is not available because one of the users involved has block
 msgstr "由于有用户被另一个用户屏蔽，导致无法查看该内容。"
 
 #: src/view/com/posts/PostFeedErrorMessage.tsx:114
-msgid "This content is not viewable without a Bluesky account."
-msgstr "该内容需要登录 Bluesky 账户方可查看。"
+msgid "This content is not viewable without a Foodios account."
+msgstr "该内容需要登录 Foodios 账户方可查看。"
 
 #: src/screens/Messages/components/ChatListItem.tsx:284
 msgid "This conversation is with a deleted or a deactivated account. Press for options"
@@ -7178,8 +7178,8 @@ msgid "This link is taking you to the following website:"
 msgstr "这条链接将带你前往以下网站："
 
 #: src/screens/List/ListHiddenScreen.tsx:146
-msgid "This list - created by <0>{0}</0> - contains possible violations of Bluesky's community guidelines in its name or description."
-msgstr "此列表由 <0>{0}</0> 创建，其名称或描述可能违反了 Bluesky 社群准则。"
+msgid "This list - created by <0>{0}</0> - contains possible violations of Foodios's community guidelines in its name or description."
+msgstr "此列表由 <0>{0}</0> 创建，其名称或描述可能违反了 Foodios 社群准则。"
 
 #: src/view/screens/ProfileList.tsx:933
 msgid "This list is empty."
@@ -7190,8 +7190,8 @@ msgid "This moderation service is unavailable. See below for more details. If th
 msgstr "该内容审核提供服务不可用，请查看下方获取更多详情。如果问题持续存在，请联系我们。"
 
 #: src/view/com/post-thread/PostThreadItem.tsx:850
-msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Bluesky on <1>{1}</1>."
-msgstr "这则帖文声称发布于 <0>{0}</0>，但首次出现在 Bluesky 的时间为 <1>{1}</1>。"
+msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Foodios on <1>{1}</1>."
+msgstr "这则帖文声称发布于 <0>{0}</0>，但首次出现在 Foodios 的时间为 <1>{1}</1>。"
 
 #: src/components/WhoCanReply.tsx:213
 msgid "This post has an unknown type of threadgate on it. Your app may be out of date."
@@ -7257,7 +7257,7 @@ msgstr "该用户包含在你已隐藏的 <0>{0}</0> 列表中。"
 
 #: src/components/NewskieDialog.tsx:65
 msgid "This user is new here. Press for more info about when they joined."
-msgstr "该用户是近期加入 Bluesky 的。点按此处可获取其加入的具体时间。"
+msgstr "该用户是近期加入 Foodios 的。点按此处可获取其加入的具体时间。"
 
 #: src/view/com/profile/ProfileFollows.tsx:95
 msgid "This user isn't following anyone."
@@ -7315,8 +7315,8 @@ msgid "To report a conversation, please report one of its messages via the conve
 msgstr "要举报对话，请在会话界面里选择一条私信并提交举报。这将有助于使内容审核服务提供方了解相关问题的前因后果。"
 
 #: src/view/com/composer/videos/SelectVideoBtn.tsx:127
-msgid "To upload videos to Bluesky, you must first verify your email."
-msgstr "要上传视频至 Bluesky，你必须首先验证你的电子邮箱。"
+msgid "To upload videos to Foodios, you must first verify your email."
+msgstr "要上传视频至 Foodios，你必须首先验证你的电子邮箱。"
 
 #: src/components/ReportDialog/SelectLabelerView.tsx:31
 msgid "To whom would you like to send this report?"
@@ -7639,8 +7639,8 @@ msgid "Uploading video..."
 msgstr "正在上传视频……"
 
 #: src/screens/Settings/AppPasswords.tsx:67
-msgid "Use app passwords to sign in to other Bluesky clients without giving full access to your account or password."
-msgstr "使用应用密码登录到其他 Bluesky 客户端，而无需对其授予你账户或密码的完全访问权限。"
+msgid "Use app passwords to sign in to other Foodios clients without giving full access to your account or password."
+msgstr "使用应用密码登录到其他 Foodios 客户端，而无需对其授予你账户或密码的完全访问权限。"
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:539
 msgid "Use default provider"
@@ -7997,8 +7997,8 @@ msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "我们将发送另一封验证邮件至 <0>{0}</0>。"
 
 #: src/screens/Onboarding/StepFinished.tsx:245
-msgid "We hope you have a wonderful time. Remember, Bluesky is:"
-msgstr "我们希望你在此度过愉快的时光。请记住，Bluesky 是："
+msgid "We hope you have a wonderful time. Remember, Foodios is:"
+msgstr "我们希望你在此度过愉快的时光。请记住，Foodios 是："
 
 #: src/view/com/posts/DiscoverFallbackHeader.tsx:29
 msgid "We ran out of posts from your follows. Here's the latest from <0/>."
@@ -8085,7 +8085,7 @@ msgstr "大家都在讨论的焦点话题。"
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:744
-msgid "What's up?"
+msgid "What's cooking?"
 msgstr "发生了什么新鲜事？"
 
 #: src/view/com/modals/lang-settings/PostLanguagesSettings.tsx:80
@@ -8260,8 +8260,8 @@ msgid "You don't follow any users who follow @{name}."
 msgstr "你没有关注任何同样关注 @{name} 的用户。"
 
 #: src/view/com/modals/InviteCodes.tsx:67
-msgid "You don't have any invite codes yet! We'll send you some when you've been on Bluesky for a little longer."
-msgstr "你目前还没有邀请码！当你持续使用 Bluesky 一段时间后，我们将提供一些给你。"
+msgid "You don't have any invite codes yet! We'll send you some when you've been on Foodios for a little longer."
+msgstr "你目前还没有邀请码！当你持续使用 Foodios 一段时间后，我们将提供一些给你。"
 
 #: src/view/screens/SavedFeeds.tsx:137
 msgid "You don't have any pinned feeds."
@@ -8507,8 +8507,8 @@ msgid "Your account repository, containing all public data records, can be downl
 msgstr "你可以将你的账户数据导出为一个“CAR”文件，该文件包含了该账户所有公开的数据记录，但不包括任何嵌入媒体，例如图像或你的私人资料，这些数据需要另外获取。"
 
 #: src/screens/Takendown.tsx:214
-msgid "Your account was found to be in violation of the <0>Bluesky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
-msgstr "你的账户被判定违反了<0>Bluesky 服务条款</0>。你应该已收到一封电子邮件，其中包含了具体的停用原因及停用时长（如适用）。若你认为你的账户被错误停用，你可以随时提出申诉。"
+msgid "Your account was found to be in violation of the <0>Foodios Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
+msgstr "你的账户被判定违反了<0>Foodios 服务条款</0>。你应该已收到一封电子邮件，其中包含了具体的停用原因及停用时长（如适用）。若你认为你的账户被错误停用，你可以随时提出申诉。"
 
 #: src/screens/Takendown.tsx:154
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
@@ -8590,14 +8590,14 @@ msgid "Your posts, likes, and blocks are public. Mutes are private."
 msgstr "你发布的帖文、喜欢的内容和屏蔽列表都是公开可见的，而隐藏列表仅对你自己可见。"
 
 #: src/screens/Settings/components/DeactivateAccountDialog.tsx:75
-msgid "Your profile, posts, feeds, and lists will no longer be visible to other Bluesky users. You can reactivate your account at any time by logging in."
-msgstr "其他 Bluesky 用户将无法看到你的个人资料、帖文、列表与其他相关个人信息。你可以随时登录以重新启用你的账户。"
+msgid "Your profile, posts, feeds, and lists will no longer be visible to other Foodios users. You can reactivate your account at any time by logging in."
+msgstr "其他 Foodios 用户将无法看到你的个人资料、帖文、列表与其他相关个人信息。你可以随时登录以重新启用你的账户。"
 
 #: src/view/com/composer/Composer.tsx:484
 msgid "Your reply has been published"
 msgstr "你的回复已发布"
 
 #: src/components/dms/ReportDialog.tsx:198
-msgid "Your report will be sent to the Bluesky Moderation Service"
-msgstr "你的举报将发送至 Bluesky 内容审核服务"
+msgid "Your report will be sent to the Foodios Moderation Service"
+msgstr "你的举报将发送至 Foodios 内容审核服务"
 

@@ -112,7 +112,7 @@ export type Modal =
   // Posts
   | CropImageModal
 
-  // Bluesky access
+  // Foodios access
   | WaitlistModal
   | InviteCodesModal
 
