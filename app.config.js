@@ -113,6 +113,9 @@ module.exports = function (config) {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
           'com.apple.security.application-groups': 'group.app.foodios',
+          'com.apple.developer.associated-appclip-app-identifiers': [
+            '$(AppIdentifierPrefix)xyz.foodios.app',
+          ],
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -394,6 +397,17 @@ module.exports = function (config) {
                   {
                     targetName: 'FoodiosClip',
                     bundleIdentifier: 'xyz.foodios.app.AppClip',
+                    entitlements: {
+                      'com.apple.security.application-groups': [
+                        'group.app.foodios',
+                      ],
+                      'com.apple.developer.associated-domains':
+                        ASSOCIATED_DOMAINS,
+                      'com.apple.developer.on-demand-install-capable': true,
+                      'com.apple.developer.parent-application-identifiers': [
+                        '$(AppIdentifierPrefix)${config.ios.bundleIdentifier}',
+                      ],
+                    },
                   },
                 ],
               },
