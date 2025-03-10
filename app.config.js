@@ -113,9 +113,9 @@ module.exports = function (config) {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
           'com.apple.security.application-groups': 'group.app.foodios',
-          'com.apple.developer.associated-appclip-app-identifiers': [
+          /* 'com.apple.developer.associated-appclip-app-identifiers': [
             '$(AppIdentifierPrefix)xyz.foodios.app',
-          ],
+          ], */
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -239,7 +239,7 @@ module.exports = function (config) {
             networkInstrumentation: true,
           },
         ],
-        './plugins/starterPackAppClipExtension/withStarterPackAppClip.js',
+        // './plugins/starterPackAppClipExtension/withStarterPackAppClip.js',
         './plugins/withAndroidManifestPlugin.js',
         './plugins/withAndroidManifestFCMIconPlugin.js',
         './plugins/withAndroidStylesAccentColorPlugin.js',
@@ -394,6 +394,7 @@ module.exports = function (config) {
                       ],
                     },
                   },
+                  /* Commenting this out
                   {
                     targetName: 'FoodiosClip',
                     bundleIdentifier: 'xyz.foodios.app.AppClip',
@@ -409,6 +410,7 @@ module.exports = function (config) {
                       ],
                     },
                   },
+                  */
                 ],
               },
             },
