@@ -2,11 +2,12 @@ import React, {ComponentProps} from 'react'
 import {GestureResponderEvent, View} from 'react-native'
 import Animated from 'react-native-reanimated'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {msg, Trans} from '@lingui/macro'
+import {msg, plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs'
 import {StackActions} from '@react-navigation/native'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {PressableScale} from '#/lib/custom-animations/PressableScale'
 import {useHaptics} from '#/lib/haptics'
 import {useDedupe} from '#/lib/hooks/useDedupe'
@@ -182,32 +183,40 @@ export function BottomBar({navigation}: BottomTabBarProps) {
               accessibilityLabel={_(msg`Search`)}
               accessibilityHint=""
             />
-            <Btn
-              testID="bottomBarMessagesBtn"
-              icon={
-                isAtMessages ? (
-                  <MessageFilled
-                    width={iconWidth - 1}
-                    style={[styles.ctrlIcon, pal.text, styles.feedsIcon]}
-                  />
-                ) : (
-                  <Message
-                    width={iconWidth - 1}
-                    style={[styles.ctrlIcon, pal.text, styles.feedsIcon]}
-                  />
-                )
-              }
-              onPress={onPressMessages}
-              notificationCount={numUnreadMessages.numUnread}
-              accessible={true}
-              accessibilityRole="tab"
-              accessibilityLabel={_(msg`Chat`)}
-              accessibilityHint={
-                numUnreadMessages.count > 0
-                  ? _(msg`${numUnreadMessages.numUnread} unread items`)
-                  : ''
-              }
-            />
+            {!CHAT_DISABLED && (
+              <Btn
+                testID="bottomBarMessagesBtn"
+                icon={
+                  isAtMessages ? (
+                    <MessageFilled
+                      width={iconWidth - 1}
+                      style={[styles.ctrlIcon, pal.text, styles.feedsIcon]}
+                    />
+                  ) : (
+                    <Message
+                      width={iconWidth - 1}
+                      style={[styles.ctrlIcon, pal.text, styles.feedsIcon]}
+                    />
+                  )
+                }
+                onPress={onPressMessages}
+                notificationCount={numUnreadMessages.numUnread}
+                hasNew={numUnreadMessages.hasNew}
+                accessible={true}
+                accessibilityRole="tab"
+                accessibilityLabel={_(msg`Chat`)}
+                accessibilityHint={
+                  numUnreadMessages.count > 0
+                    ? _(
+                        msg`${plural(numUnreadMessages.numUnread ?? 0, {
+                          one: '# unread item',
+                          other: '# unread items',
+                        })}` || '',
+                      )
+                    : ''
+                }
+              />
+            )}
             <Btn
               testID="bottomBarNotificationsBtn"
               icon={
@@ -231,7 +240,12 @@ export function BottomBar({navigation}: BottomTabBarProps) {
               accessibilityHint={
                 numUnreadNotifications === ''
                   ? ''
-                  : _(msg`${numUnreadNotifications} unread items`)
+                  : _(
+                      msg`${plural(numUnreadNotifications ?? 0, {
+                        one: '# unread item',
+                        other: '# unread items',
+                      })}` || '',
+                    )
               }
             />
             <Btn

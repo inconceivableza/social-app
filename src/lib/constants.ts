@@ -13,6 +13,7 @@ export const EMBED_SERVICE = 'https://embed.bsky.app'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
 export const BSKY_DOWNLOAD_URL = 'https://bsky.app/download'
 export const STARTER_PACK_MAX_SIZE = 150
+export const CHAT_DISABLED = true
 
 // HACK
 // Yes, this is exactly what it looks like. It's a hard-coded constant
@@ -167,6 +168,9 @@ export const MAX_LABELERS = 20
 
 export const VIDEO_SERVICE = 'https://video.bsky.app'
 export const VIDEO_SERVICE_DID = 'did:web:video.bsky.app'
+
+export const VIDEO_MAX_DURATION_MS = 3 * 60 * 1000 // 3 minutes in milliseconds
+export const VIDEO_MAX_SIZE = 1000 * 1000 * 100 // 100mb
 
 export const SUPPORTED_MIME_TYPES = [
   'video/mp4',
