@@ -185,6 +185,7 @@ export function ModerationScreenInner({
   )
 
   const disabledOnIOS = isIOS && !adultContentEnabled
+  const hideAdultContentOptions = true
 
   return (
     <View style={[a.pt_2xl, a.px_lg, gtMobile && a.px_2xl]}>
@@ -276,6 +277,7 @@ export function ModerationScreenInner({
         </Link>
       </View>
 
+      {!hideAdultContentOptions && (
       <Text
         style={[
           a.pt_2xl,
@@ -286,7 +288,9 @@ export function ModerationScreenInner({
         ]}>
         <Trans>Content filters</Trans>
       </Text>
+      )}
 
+      {!hideAdultContentOptions && (
       <View style={[a.gap_md]}>
         {ageNotSet && (
           <>
@@ -387,6 +391,7 @@ export function ModerationScreenInner({
           <GlobalLabelPreference labelDefinition={LABELS.nudity} />
         </View>
       </View>
+      )}
 
       <Text
         style={[
