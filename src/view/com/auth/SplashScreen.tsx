@@ -35,7 +35,7 @@ export const SplashScreen = ({
           </View>
 
           <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
-            <Trans>What's up?</Trans>
+            <Trans>What's cooking?</Trans>
           </Text>
         </View>
         <View
@@ -46,7 +46,7 @@ export const SplashScreen = ({
             onPress={onPressCreateAccount}
             label={_(msg`Create new account`)}
             accessibilityHint={_(
-              msg`Opens flow to create a new Bluesky account`,
+              msg`Opens flow to create a new Foodios account`,
             )}
             size="large"
             variant="solid"
@@ -60,7 +60,7 @@ export const SplashScreen = ({
             onPress={onPressSignin}
             label={_(msg`Sign in`)}
             accessibilityHint={_(
-              msg`Opens flow to sign in to your existing Bluesky account`,
+              msg`Opens flow to sign in to your existing Foodios account`,
             )}
             size="large"
             variant="solid"
