@@ -42,22 +42,22 @@ RUN \. "$NVM_DIR/nvm.sh" && \
   EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER EXPO_PUBLIC_BUNDLE_DATE=$() yarn build-web
 
 # DEBUG
-RUN find ./bskyweb/static && find ./web-build/static
+RUN find ./foodiosweb/static && find ./web-build/static
 
 #
-# Generate the bskyweb Go binary.
+# Generate the foodiosweb Go binary.
 #
-RUN cd bskyweb/ && \
+RUN cd foodiosweb/ && \
   go mod download && \
   go mod verify
 
-RUN cd bskyweb/ && \
+RUN cd foodiosweb/ && \
   go build \
     -v  \
     -trimpath \
     -tags timetzdata \
-    -o /bskyweb \
-    ./cmd/bskyweb
+    -o /foodiosweb \
+    ./cmd/foodiosweb
 
 FROM debian:bullseye-slim
 
@@ -71,13 +71,13 @@ RUN apt-get update && apt-get install --yes \
 
 ENTRYPOINT ["dumb-init", "--"]
 
-WORKDIR /bskyweb
-COPY --from=build-env /bskyweb /usr/bin/bskyweb
+WORKDIR /foodiosweb
+COPY --from=build-env /foodiosweb /usr/bin/foodiosweb
 
-CMD ["/usr/bin/bskyweb"]
+CMD ["/usr/bin/foodiosweb"]
 
 LABEL org.opencontainers.image.source=https://github.com/bluesky-social/social-app
-LABEL org.opencontainers.image.description="bsky.app Web App"
+LABEL org.opencontainers.image.description="foodios.app Web App"
 LABEL org.opencontainers.image.licenses=MIT
 
 # NOOP

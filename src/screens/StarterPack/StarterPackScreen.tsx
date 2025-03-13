@@ -458,7 +458,7 @@ function Header({
           ) : null}
           {!hasSession ? (
             <Button
-              label={_(msg`Join Bluesky`)}
+              label={_(msg`Join Foodios`)}
               onPress={() => {
                 setActiveStarterPack({
                   uri: starterPack.uri,
@@ -469,7 +469,7 @@ function Header({
               color="primary"
               size="large">
               <ButtonText style={[a.text_lg]}>
-                <Trans>Join Bluesky</Trans>
+                <Trans>Join Foodios</Trans>
               </ButtonText>
             </Button>
           ) : null}

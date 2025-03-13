@@ -62,7 +62,7 @@ export function Component({
             </>
           ) : (
             <Text type="title-lg" style={[pal.text, styles.title]}>
-              <Trans>Leaving Bluesky</Trans>
+              <Trans>Leaving Foodios</Trans>
             </Text>
           )}
         </View>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 32,
     padding: 14,
-    backgroundColor: colors.blue3,
+    backgroundColor: colors.orange1,
   },
   btnContainer: {
     paddingTop: 20,
