@@ -5,7 +5,7 @@ import {msg, Plural, plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {StackActions, useNavigation} from '@react-navigation/native'
 
-import {FEEDBACK_FORM_URL, HELP_DESK_URL} from '#/lib/constants'
+import {CHAT_DISABLED,FEEDBACK_FORM_URL, HELP_DESK_URL} from '#/lib/constants'
 import {PressableScale} from '#/lib/custom-animations/PressableScale'
 import {useNavigationTabState} from '#/lib/hooks/useNavigationTabState'
 import {getTabState, TabState} from '#/lib/routes/helpers'
@@ -252,7 +252,9 @@ let DrawerContent = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
           <>
             <SearchMenuItem isActive={isAtSearch} onPress={onPressSearch} />
             <HomeMenuItem isActive={isAtHome} onPress={onPressHome} />
-            <ChatMenuItem isActive={isAtMessages} onPress={onPressMessages} />
+            {!CHAT_DISABLED && (
+              <ChatMenuItem isActive={isAtMessages} onPress={onPressMessages} />
+            )}
             <NotificationsMenuItem
               isActive={isAtNotifications}
               onPress={onPressNotifications}
