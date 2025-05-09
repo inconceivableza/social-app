@@ -22,8 +22,9 @@ module.exports = function (config) {
   const ASSOCIATED_DOMAINS = [
     'applinks:bsky.app',
     'applinks:staging.bsky.app',
-    'appclips:bsky.app',
-    'appclips:go.bsky.app', // Allows App Clip to work when scanning QR codes
+    // Disabling AppClip as build failing
+    // 'appclips:bsky.app',
+    // 'appclips:go.bsky.app', // Allows App Clip to work when scanning QR codes
     // When testing local services, enter an ngrok (et al) domain here. It must use a standard HTTP/HTTPS port.
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
@@ -235,7 +236,7 @@ module.exports = function (config) {
             networkInstrumentation: true,
           },
         ],
-        './plugins/starterPackAppClipExtension/withStarterPackAppClip.js',
+        // './plugins/starterPackAppClipExtension/withStarterPackAppClip.js',
         './plugins/withGradleJVMHeapSizeIncrease.js',
         './plugins/withAndroidManifestPlugin.js',
         './plugins/withAndroidManifestFCMIconPlugin.js',
@@ -392,10 +393,10 @@ module.exports = function (config) {
                       ],
                     },
                   },
-                  {
+                  /* {
                     targetName: 'BlueskyClip',
                     bundleIdentifier: 'xyz.blueskyweb.app.AppClip',
-                  },
+                  }, */
                 ],
               },
             },
