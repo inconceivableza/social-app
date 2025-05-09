@@ -10,6 +10,7 @@ import {
 } from '@react-navigation/native'
 
 import {useActorStatus} from '#/lib/actor-status'
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
@@ -653,7 +654,7 @@ export function DesktopLeftNav() {
             }
             label={_(msg`Notifications`)}
           />
-          <ChatNavItem />
+          {!CHAT_DISABLED && <ChatNavItem />}
           <NavItem
             href="/feeds"
             icon={
