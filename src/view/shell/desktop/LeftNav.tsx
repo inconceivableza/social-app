@@ -9,6 +9,7 @@ import {
   useNavigationState,
 } from '@react-navigation/native'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
@@ -635,7 +636,7 @@ export function DesktopLeftNav() {
             }
             label={_(msg`Notifications`)}
           />
-          <ChatNavItem />
+          {!CHAT_DISABLED && <ChatNavItem />}
           <NavItem
             href="/feeds"
             icon={

@@ -5,6 +5,7 @@ import {msg, plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigationState} from '@react-navigation/native'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useMinimalShellFooterTransform} from '#/lib/hooks/useMinimalShellTransform'
 import {getCurrentRoute, isTab} from '#/lib/routes/helpers'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -109,26 +110,28 @@ export function BottomBarWeb() {
 
           {hasSession && (
             <>
-              <NavItem
-                routeName="Messages"
-                href="/messages"
-                notificationCount={unreadMessageCount.numUnread}
-                hasNew={unreadMessageCount.hasNew}>
-                {({isActive}) => {
-                  const Icon = isActive ? MessageFilled : Message
-                  return (
-                    <Icon
-                      aria-hidden={true}
-                      width={iconWidth - 1}
-                      style={[
-                        styles.ctrlIcon,
-                        t.atoms.text,
-                        styles.messagesIcon,
-                      ]}
-                    />
-                  )
-                }}
-              </NavItem>
+              {!CHAT_DISABLED && (
+                <NavItem
+                  routeName="Messages"
+                  href="/messages"
+                  notificationCount={unreadMessageCount.numUnread}
+                  hasNew={unreadMessageCount.hasNew}>
+                  {({isActive}) => {
+                    const Icon = isActive ? MessageFilled : Message
+                    return (
+                      <Icon
+                        aria-hidden={true}
+                        width={iconWidth - 1}
+                        style={[
+                          styles.ctrlIcon,
+                          t.atoms.text,
+                          styles.messagesIcon,
+                        ]}
+                      />
+                    )
+                  }}
+                </NavItem>
+              )}
               <NavItem
                 routeName="Notifications"
                 href="/notifications"
