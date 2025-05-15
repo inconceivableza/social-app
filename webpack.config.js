@@ -49,8 +49,8 @@ module.exports = async function (env, argv) {
   if (process.env.SENTRY_AUTH_TOKEN) {
     config.plugins.push(
       sentryWebpackPlugin({
-        org: 'blueskyweb',
-        project: 'app',
+        org: process.env.SENTRY_ORG || 'blueskyweb',
+        project: process.env.SENTRY_PROJECT || 'app',
         authToken: process.env.SENTRY_AUTH_TOKEN,
         release: {
           // env is undefined for Render.com builds, fall back
