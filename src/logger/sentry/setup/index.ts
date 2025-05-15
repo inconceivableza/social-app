@@ -19,10 +19,14 @@ const release = process.env.SENTRY_RELEASE || version
  */
 const dist = process.env.SENTRY_DIST || 'dev'
 
+const dsn =
+  process.env.EXPO_PUBLIC_SENTRY_DSN ||
+  'https://8fb55ba4807fca137eedfc8403ee27ba@o4505071687041024.ingest.us.sentry.io/4508807082278912'
+
 init({
   enabled: !__DEV__,
   autoSessionTracking: false,
-  dsn: 'https://8fb55ba4807fca137eedfc8403ee27ba@o4505071687041024.ingest.us.sentry.io/4508807082278912',
+  dsn: dsn,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   environment: process.env.NODE_ENV,
   dist,

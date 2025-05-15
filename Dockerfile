@@ -39,6 +39,14 @@ ENV SENTRY_RELEASE=$SENTRY_RELEASE
 ARG SENTRY_DIST
 # Default to RENDER_GIT_COMMIT if not set by GitHub workflows
 ENV SENTRY_DIST=${SENTRY_DIST:-$RENDER_GIT_COMMIT}
+# dsn for reporting sentry events to, in the form https://[0-9a-f]+@o[0-9]+.ingest.[a-z]+.sentry.io/[0-9]+
+ARG EXPO_PUBLIC_SENTRY_DSN
+ENV EXPO_PUBLIC_SENTRY_DSN=$EXPO_PUBLIC_SENTRY_DSN
+# sentry org and project for webpack source maps
+ARG SENTRY_ORG
+ENV SENTRY_ORG=$SENTRY_ORG
+ARG SENTRY_PROJECT
+ENV SENTRY_PROJECT=$SENTRY_PROJECT
 
 #
 # Copy everything into the container
