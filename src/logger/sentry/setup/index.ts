@@ -24,7 +24,7 @@ init({
   autoSessionTracking: false,
   dsn: process.env.SENTRY_DSN,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-  environment: process.env.NODE_ENV,
+  environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
   dist,
   release,
   ignoreErrors: [
