@@ -87,6 +87,15 @@ However, if you're a part of the Bluesky team and want to enable Sentry, fill in
 
 If you change `SENTRY_AUTH_TOKEN`, you need to do `yarn prebuild` before running `yarn ios` or `yarn android` again.
 
+The default sentry dsn url can be adjusted by setting `SENTRY_DSN` in `.env`.
+The default sentry organization name and project for uploading source maps can be adjusted by setting `SENTRY_ORG` and `SENTRY_PROJECT` in `.env`.
+
+### Configuring Statsig
+
+By default Statsig will report to the Bluesky servers with the appropriate client key.
+
+You can override this by setting `EXPO_PUBLIC_STATSIG_CLIENT_KEY` and `EXPO_PUBLIC_STATSIG_API_URL` in `.env`.
+
 ### Adding bitdrift
 
 Adding bitdirft is NOT required. You can keep `BITDRIFT_API_KEY=` in `.env` which will avoid initializing bitdrift during startup.
