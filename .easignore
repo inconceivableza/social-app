@@ -99,3 +99,8 @@ web-build/
 
 # Firebase (Android) Google services
 # INCLUDED: google-services.json
+
+# android builds
+*.aab
+*.apk
+
