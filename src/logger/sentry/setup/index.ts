@@ -20,9 +20,9 @@ const release = process.env.SENTRY_RELEASE || pkgJson.version
 const dist = process.env.SENTRY_DIST || 'dev'
 
 init({
-  enabled: !__DEV__ && !!process.env.SENTRY_DSN,
+  enabled: !__DEV__ && !!process.env.EXPO_PUBLIC_SENTRY_DSN,
   autoSessionTracking: false,
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
   dist,
