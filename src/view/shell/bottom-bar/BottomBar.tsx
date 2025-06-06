@@ -70,7 +70,8 @@ export function BottomBar({navigation}: BottomTabBarProps) {
   const {isAtHome, isAtSearch, isAtNotifications, isAtMyProfile, isAtMessages} =
     useNavigationTabState()
   const numUnreadNotifications = useUnreadNotifications()
-  const numUnreadMessages = useUnreadMessageCount()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const numUnreadMessages = !CHAT_DISABLED ? useUnreadMessageCount() : 0
   const footerMinimalShellTransform = useMinimalShellFooterTransform()
   const {data: profile} = useProfileQuery({did: currentAccount?.did})
   const {requestSwitchToAccount} = useLoggedOutViewControls()

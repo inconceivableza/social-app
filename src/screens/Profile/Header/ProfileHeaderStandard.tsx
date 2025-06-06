@@ -10,6 +10,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
+import {CHAT_DISABLED} from '#/lib/constants'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {logger} from '#/logger'
@@ -198,7 +199,9 @@ let ProfileHeaderStandard = ({
             )
           ) : !profile.viewer?.blockedBy ? (
             <>
-              {hasSession && <MessageProfileButton profile={profile} />}
+              {!CHAT_DISABLED && hasSession && (
+                <MessageProfileButton profile={profile} />
+              )}
 
               <Button
                 testID={profile.viewer?.following ? 'unfollowBtn' : 'followBtn'}
