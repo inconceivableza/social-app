@@ -16,6 +16,6 @@ export function MessagesProvider({children}: {children: React.ReactNode}) {
       </MessageDraftsProvider>
     </CurrentConvoIdProvider>
   ) : (
-    {children}
+    <>{children}</>
   )
 }
