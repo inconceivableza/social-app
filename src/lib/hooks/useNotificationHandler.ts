@@ -6,6 +6,7 @@ import {useLingui} from '@lingui/react'
 import {CommonActions, useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
 import {type NavigationProp} from '#/lib/routes/types'
 import {Logger} from '#/logger'
@@ -83,35 +84,38 @@ export function useNotificationsHandler() {
   // handler.
   useEffect(() => {
     if (!isAndroid) return
-    // assign both chat notifications to a group
-    // NOTE: I don't think that it will retroactively move them into the group
-    // if the channels already exist. no big deal imo -sfn
-    const CHAT_GROUP = 'chat'
-    Notifications.setNotificationChannelGroupAsync(CHAT_GROUP, {
-      name: _(msg`Chat`),
-      description: _(
-        msg`You can choose whether chat notifications have sound in the chat settings within the app`,
-      ),
-    })
-    Notifications.setNotificationChannelAsync('chat-messages', {
-      name: _(msg`Chat messages - sound`),
-      groupId: CHAT_GROUP,
-      importance: Notifications.AndroidImportance.MAX,
-      sound: 'dm.mp3',
-      showBadge: true,
-      vibrationPattern: [250],
-      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PRIVATE,
-    })
-    Notifications.setNotificationChannelAsync('chat-messages-muted', {
-      name: _(msg`Chat messages - silent`),
-      groupId: CHAT_GROUP,
-      importance: Notifications.AndroidImportance.MAX,
-      sound: null,
-      showBadge: true,
-      vibrationPattern: [250],
-      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PRIVATE,
-    })
-
+    if (!CHAT_DISABLED) {
+      // assign both chat notifications to a group
+      // NOTE: I don't think that it will retroactively move them into the group
+      // if the channels already exist. no big deal imo -sfn
+      const CHAT_GROUP = 'chat'
+      Notifications.setNotificationChannelGroupAsync(CHAT_GROUP, {
+        name: _(msg`Chat`),
+        description: _(
+          msg`You can choose whether chat notifications have sound in the chat settings within the app`,
+        ),
+      })
+      Notifications.setNotificationChannelAsync('chat-messages', {
+        name: _(msg`Chat messages - sound`),
+        groupId: CHAT_GROUP,
+        importance: Notifications.AndroidImportance.MAX,
+        sound: 'dm.mp3',
+        showBadge: true,
+        vibrationPattern: [250],
+        lockscreenVisibility:
+          Notifications.AndroidNotificationVisibility.PRIVATE,
+      })
+      Notifications.setNotificationChannelAsync('chat-messages-muted', {
+        name: _(msg`Chat messages - silent`),
+        groupId: CHAT_GROUP,
+        importance: Notifications.AndroidImportance.MAX,
+        sound: null,
+        showBadge: true,
+        vibrationPattern: [250],
+        lockscreenVisibility:
+          Notifications.AndroidNotificationVisibility.PRIVATE,
+      })
+    }
     Notifications.setNotificationChannelAsync(
       'like' satisfies NotificationReason,
       {
