@@ -9,7 +9,7 @@ import {CHAT_DISABLED} from '#/lib/constants'
 import {useMinimalShellFooterTransform} from '#/lib/hooks/useMinimalShellTransform'
 import {getCurrentRoute, isTab} from '#/lib/routes/helpers'
 import {makeProfileLink} from '#/lib/routes/links'
-import {CommonNavigatorParams} from '#/lib/routes/types'
+import {type CommonNavigatorParams} from '#/lib/routes/types'
 import {useGate} from '#/lib/statsig/statsig'
 import {useHomeBadge} from '#/state/home-badge'
 import {useUnreadMessageCount} from '#/state/queries/messages/list-conversations'
@@ -52,7 +52,8 @@ export function BottomBarWeb() {
   const closeAllActiveElements = useCloseAllActiveElements()
   const iconWidth = 26
 
-  const unreadMessageCount = useUnreadMessageCount()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const unreadMessageCount = !CHAT_DISABLED ? useUnreadMessageCount() : 0
   const notificationCountStr = useUnreadNotifications()
   const hasHomeBadge = useHomeBadge()
   const gate = useGate()

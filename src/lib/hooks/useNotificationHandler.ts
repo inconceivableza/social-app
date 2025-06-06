@@ -3,6 +3,7 @@ import * as Notifications from 'expo-notifications'
 import {CommonActions, useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
 import {type NavigationProp} from '#/lib/routes/types'
 import {Logger} from '#/logger'
@@ -74,23 +75,27 @@ export function useNotificationsHandler() {
   // handler.
   React.useEffect(() => {
     if (!isAndroid) return
-    Notifications.setNotificationChannelAsync('chat-messages', {
-      name: 'Chat',
-      importance: Notifications.AndroidImportance.MAX,
-      sound: 'dm.mp3',
-      showBadge: true,
-      vibrationPattern: [250],
-      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PRIVATE,
-    })
+    if (!CHAT_DISABLED) {
+      Notifications.setNotificationChannelAsync('chat-messages', {
+        name: 'Chat',
+        importance: Notifications.AndroidImportance.MAX,
+        sound: 'dm.mp3',
+        showBadge: true,
+        vibrationPattern: [250],
+        lockscreenVisibility:
+          Notifications.AndroidNotificationVisibility.PRIVATE,
+      })
 
-    Notifications.setNotificationChannelAsync('chat-messages-muted', {
-      name: 'Chat - Muted',
-      importance: Notifications.AndroidImportance.MAX,
-      sound: null,
-      showBadge: true,
-      vibrationPattern: [250],
-      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PRIVATE,
-    })
+      Notifications.setNotificationChannelAsync('chat-messages-muted', {
+        name: 'Chat - Muted',
+        importance: Notifications.AndroidImportance.MAX,
+        sound: null,
+        showBadge: true,
+        vibrationPattern: [250],
+        lockscreenVisibility:
+          Notifications.AndroidNotificationVisibility.PRIVATE,
+      })
+    }
   }, [])
 
   React.useEffect(() => {
