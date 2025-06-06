@@ -56,7 +56,8 @@ export function BottomBarWeb() {
   const hideBorder = useHideBottomBarBorder()
   const iconWidth = 26
 
-  const unreadMessageCount = useUnreadMessageCount()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const unreadMessageCount = !CHAT_DISABLED ? useUnreadMessageCount() : 0
   const notificationCountStr = useUnreadNotifications()
   const hasHomeBadge = useHomeBadge()
   const gate = useGate()
