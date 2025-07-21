@@ -15,6 +15,7 @@ import {
 } from '@react-navigation/native'
 
 import {timeout} from '#/lib/async/timeout'
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useColorSchemeStyle} from '#/lib/hooks/useColorSchemeStyle'
 import {useWebScrollRestoration} from '#/lib/hooks/useWebScrollRestoration'
 import {buildStateObject} from '#/lib/routes/helpers'
@@ -528,21 +529,25 @@ function commonScreens(Stack: typeof Flat, unreadCountLabel?: string) {
         getComponent={() => TopicScreen}
         options={{title: title(msg`Topic`)}}
       />
-      <Stack.Screen
-        name="MessagesConversation"
-        getComponent={() => MessagesConversationScreen}
-        options={{title: title(msg`Chat`), requireAuth: true}}
-      />
-      <Stack.Screen
-        name="MessagesSettings"
-        getComponent={() => MessagesSettingsScreen}
-        options={{title: title(msg`Chat settings`), requireAuth: true}}
-      />
-      <Stack.Screen
-        name="MessagesInbox"
-        getComponent={() => MessagesInboxScreen}
-        options={{title: title(msg`Chat request inbox`), requireAuth: true}}
-      />
+      {!CHAT_DISABLED && (
+        <>
+          <Stack.Screen
+            name="MessagesConversation"
+            getComponent={() => MessagesConversationScreen}
+            options={{title: title(msg`Chat`), requireAuth: true}}
+          />
+          <Stack.Screen
+            name="MessagesSettings"
+            getComponent={() => MessagesSettingsScreen}
+            options={{title: title(msg`Chat settings`), requireAuth: true}}
+          />
+          <Stack.Screen
+            name="MessagesInbox"
+            getComponent={() => MessagesInboxScreen}
+            options={{title: title(msg`Chat request inbox`), requireAuth: true}}
+          />
+        </>
+      )}
       <Stack.Screen
         name="NotificationsActivityList"
         getComponent={() => NotificationsActivityListScreen}
@@ -610,10 +615,12 @@ function TabsNavigator() {
       tabBar={tabBar}>
       <Tab.Screen name="HomeTab" getComponent={() => HomeTabNavigator} />
       <Tab.Screen name="SearchTab" getComponent={() => SearchTabNavigator} />
-      <Tab.Screen
-        name="MessagesTab"
-        getComponent={() => MessagesTabNavigator}
-      />
+      {!CHAT_DISABLED && (
+        <Tab.Screen
+          name="MessagesTab"
+          getComponent={() => MessagesTabNavigator}
+        />
+      )}
       <Tab.Screen
         name="NotificationsTab"
         getComponent={() => NotificationsTabNavigator}
@@ -740,11 +747,13 @@ const FlatNavigator = () => {
         getComponent={() => NotificationsScreen}
         options={{title: title(msg`Notifications`), requireAuth: true}}
       />
-      <Flat.Screen
-        name="Messages"
-        getComponent={() => MessagesScreen}
-        options={{title: title(msg`Messages`), requireAuth: true}}
-      />
+      {!CHAT_DISABLED && (
+        <Flat.Screen
+          name="Messages"
+          getComponent={() => MessagesScreen}
+          options={{title: title(msg`Messages`), requireAuth: true}}
+        />
+      )}
       <Flat.Screen
         name="Start"
         getComponent={() => HomeScreen}
