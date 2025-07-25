@@ -30,7 +30,7 @@ import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
-import {MAX_POST_LINES} from '#/lib/constants'
+import {CHAT_DISABLED, MAX_POST_LINES} from '#/lib/constants'
 import {useAnimatedValue} from '#/lib/hooks/useAnimatedValue'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -134,7 +134,9 @@ let NotificationFeedItem = ({
         for (const post of [item.notification, ...(item.additional ?? [])]) {
           posts.push(post.uri)
         }
-        return `/notifications/activity?posts=${encodeURIComponent(posts.slice(0, 25).join(','))}`
+        return `/notifications/activity?posts=${encodeURIComponent(
+          posts.slice(0, 25).join(','),
+        )}`
       }
     }
 
@@ -820,7 +822,9 @@ function CondensedAuthorsList({
           moderation={authors[0].moderation.ui('avatar')}
           type={authors[0].profile.associated?.labeler ? 'labeler' : 'user'}
         />
-        {showDmButton ? <SayHelloBtn profile={authors[0].profile} /> : null}
+        {!CHAT_DISABLED && showDmButton ? (
+          <SayHelloBtn profile={authors[0].profile} />
+        ) : null}
       </View>
     )
   }

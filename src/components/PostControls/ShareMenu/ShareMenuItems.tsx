@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {makeProfileLink} from '#/lib/routes/links'
 import {type NavigationProp} from '#/lib/routes/types'
 import {shareText, shareUrl} from '#/lib/sharing'
@@ -91,7 +92,7 @@ let ShareMenuItems = ({
   return (
     <>
       <Menu.Outer>
-        {hasSession && !isAgeRestricted && (
+        {!CHAT_DISABLED && hasSession && !isAgeRestricted && (
           <Menu.Group>
             <Menu.ContainerItem>
               <RecentChats postUri={postUri} />
