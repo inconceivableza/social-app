@@ -20,29 +20,29 @@ export function Links() {
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to="https://bsky.social"
+          to="https://foodios.social"
           style={[a.text_md, t.atoms.text_contrast_low]}>
-          Internal (bsky.social)
+          Internal (foodios.social)
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to="https://bsky.app/profile/bsky.app"
+          to="https://foodios.app/profile/foodios.app"
           style={[a.text_md]}>
-          Internal (bsky.app)
+          Internal (foodios.app)
         </InlineLinkText>
 
         <Link
           variant="solid"
           color="primary"
           size="large"
-          label="View @bsky.app's profile"
-          to="https://bsky.app/profile/bsky.app">
+          label="View @foodios.app's profile"
+          to="https://foodios.app/profile/foodios.app">
           <ButtonText>Link as a button</ButtonText>
         </Link>
 
         <Link
-          label="View @bsky.app's profile"
-          to="https://bsky.app/profile/bsky.app">
+          label="View @foodios.app's profile"
+          to="https://foodios.app/profile/foodios.app">
           <View
             style={[
               a.flex_row,
@@ -59,7 +59,7 @@ export function Links() {
                 t.atoms.bg_contrast_200,
               ]}
             />
-            <Text>View @bsky.app's profile</Text>
+            <Text>View @foodios.app's profile</Text>
           </View>
         </Link>
       </View>

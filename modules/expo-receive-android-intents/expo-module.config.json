@@ -1,6 +1,6 @@
 {
   "platforms": ["android"],
   "android": {
-    "modules": ["xyz.blueskyweb.app.exporeceiveandroidintents.ExpoReceiveAndroidIntentsModule"]
+    "modules": ["xyz.foodios.app.exporeceiveandroidintents.ExpoReceiveAndroidIntentsModule"]
   }
 }

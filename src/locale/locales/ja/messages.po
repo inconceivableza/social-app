@@ -123,7 +123,7 @@ msgstr "{0, plural, other {リポスト}}"
 msgid "{0, plural, other {{1} posts}}"
 msgstr "{0, plural, other {{1}件の投稿}}"
 
-#. Number of users (always at least 25) who have joined Bluesky using a specific starter pack
+#. Number of users (always at least 25) who have joined Foodios using a specific starter pack
 #: src/screens/StarterPack/StarterPackScreen.tsx:490
 msgid "{0, plural, other {# people have}} used this starter pack!"
 msgstr "{0, plural, other {#人が}}このスターターパックを使用しました！"
@@ -397,7 +397,7 @@ msgstr "{hours, plural, other {#時間{minutesString}}}"
 msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr "{hours, plural, other {#時間}}"
 
-#. Number of users (always at least 50) who have joined Bluesky using a specific starter pack
+#. Number of users (always at least 50) who have joined Foodios using a specific starter pack
 #: src/components/StarterPack/StarterPackCard.tsx:101
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr "{joinedAllTimeCount, plural, other {#人のユーザーが}}参加しました！"
@@ -411,11 +411,11 @@ msgid "{notificationCount, plural, one {# unread item} other {# unread items}}"
 msgstr "{notificationCount, plural, other {#件の未読}}"
 
 #: src/components/NewskieDialog.tsx:116
-msgid "{profileName} joined Bluesky {0} ago"
-msgstr "{profileName}はBlueskyに{0}前に参加しました"
+msgid "{profileName} joined Foodios {0} ago"
+msgstr "{profileName}はFoodiosに{0}前に参加しました"
 
 #: src/components/NewskieDialog.tsx:111
-msgid "{profileName} joined Bluesky using a starter pack {0} ago"
+msgid "{profileName} joined Foodios using a starter pack {0} ago"
 msgstr "{profileName}はスターターパックを使って{0}前に参加しました"
 
 #. The trending topic rank, i.e. "1. March Madness", "2. The Bachelor"
@@ -609,8 +609,8 @@ msgid "Account unmuted"
 msgstr "アカウントのミュートを解除しました"
 
 #: src/components/verification/VerifierDialog.tsx:96
-msgid "Accounts with a scalloped blue check mark <0><1/></0> can verify others. These trusted verifiers are selected by Bluesky."
-msgstr "スカラップ状（帆立貝の形状）の青色のチェックマーク <0><1/></0> のあるアカウントは他のユーザを認証できます。これらの信頼できる認証者はBlueskyによって選択されています。"
+msgid "Accounts with a scalloped blue check mark <0><1/></0> can verify others. These trusted verifiers are selected by Foodios."
+msgstr "スカラップ状（帆立貝の形状）の青色のチェックマーク <0><1/></0> のあるアカウントは他のユーザを認証できます。これらの信頼できる認証者はFoodiosによって選択されています。"
 
 #: src/lib/hooks/useNotificationHandler.ts:182
 #: src/screens/Settings/NotificationSettings/ActivityNotificationSettings.tsx:102
@@ -778,8 +778,8 @@ msgid "Adult Content"
 msgstr "成人向けコンテンツ"
 
 #: src/screens/Moderation/index.tsx:404
-msgid "Adult content can only be enabled via the Web at <0>bsky.app</0>."
-msgstr "成人向けコンテンツは<0>bsky.app</0>のウェブ版からしか有効にできません。"
+msgid "Adult content can only be enabled via the Web at <0>foodios.app</0>."
+msgstr "成人向けコンテンツは<0>foodios.app</0>のウェブ版からしか有効にできません。"
 
 #: src/components/moderation/LabelPreference.tsx:247
 msgid "Adult content is disabled."
@@ -949,8 +949,8 @@ msgstr "ビデオのアップロード中にエラーが発生しました。"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:84
 #: src/components/verification/VerifierDialog.tsx:86
-msgid "An illustration showing that Bluesky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts."
-msgstr "Blueskyが信頼された認証者を選択し、信頼された認証者が個々のユーザアカウントを認証することを示す図。"
+msgid "An illustration showing that Foodios selects trusted verifiers, and trusted verifiers in turn verify individual user accounts."
+msgstr "Foodiosが信頼された認証者を選択し、信頼された認証者が個々のユーザアカウントを認証することを示す図。"
 
 #: src/components/moderation/ReportDialog/utils/useReportOptions.ts:28
 #: src/lib/moderation/useReportOptions.ts:28
@@ -975,8 +975,8 @@ msgid "An issue occurred, please try again."
 msgstr "問題が発生しました。もう一度お試しください。"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:118
-msgid "An mockup of a iPhone showing the Bluesky app open to the profile of a verified user with a blue checkmark next to their display name."
-msgstr "Blueskyアプリが表示されているiPhoneのモックアップで、認証されたユーザーのプロフィールを開くと、表示名の横に青色のチェックマークが表示されています。"
+msgid "An mockup of a iPhone showing the Foodios app open to the profile of a verified user with a blue checkmark next to their display name."
+msgstr "Foodiosアプリが表示されているiPhoneのモックアップで、認証されたユーザーのプロフィールを開くと、表示名の横に青色のチェックマークが表示されています。"
 
 #: src/screens/Onboarding/StepInterests/index.tsx:185
 msgid "an unknown error occurred"
@@ -1001,8 +1001,8 @@ msgid "Animated GIF"
 msgstr "アニメーションGIF"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:37
-msgid "Announcing verification on Bluesky"
-msgstr "Blueskyでの認証のお知らせ"
+msgid "Announcing verification on Foodios"
+msgstr "Foodiosでの認証のお知らせ"
 
 #: src/components/moderation/ReportDialog/utils/useReportOptions.ts:33
 #: src/lib/moderation/useReportOptions.ts:33
@@ -1356,55 +1356,55 @@ msgstr "ブログ"
 
 #: src/view/com/auth/server-input/index.tsx:136
 #: src/view/com/auth/server-input/index.tsx:137
-msgid "Bluesky"
-msgstr "Bluesky"
+msgid "Foodios"
+msgstr "Foodios"
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:662
 #: src/view/com/post-thread/PostThreadItem.tsx:980
-msgid "Bluesky cannot confirm the authenticity of the claimed date."
-msgstr "Blueskyでは、この投稿日時の信憑性を確認できません。"
+msgid "Foodios cannot confirm the authenticity of the claimed date."
+msgstr "Foodiosでは、この投稿日時の信憑性を確認できません。"
 
 #: src/screens/Settings/AppIconSettings/useAppIconSets.ts:165
 msgctxt "Name of app icon variant"
-msgid "Bluesky Classic™"
-msgstr "Bluesky Classic™"
+msgid "Foodios Classic™"
+msgstr "Foodios Classic™"
 
 #: src/view/com/auth/server-input/index.tsx:212
-msgid "Bluesky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
-msgstr "Bluesky は、ホスティング プロバイダーを選択できるオープン ネットワークです。 あなたが開発者であれば、自分のサーバーをホストできます。"
+msgid "Foodios is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
+msgstr "Foodios は、ホスティング プロバイダーを選択できるオープン ネットワークです。 あなたが開発者であれば、自分のサーバーをホストできます。"
 
 #: src/view/com/auth/server-input/index.tsx:149
-msgid "Bluesky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Bluesky Social option."
-msgstr "Blueskyはオープンなネットワークで、自分自身でプロバイダーを選ぶことができます。初めて利用するのであれば、デフォルトのオプションであるBluesky Socialのままにしておくのをお勧めします。"
+msgid "Foodios is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Foodios Social option."
+msgstr "Foodiosはオープンなネットワークで、自分自身でプロバイダーを選ぶことができます。初めて利用するのであれば、デフォルトのオプションであるFoodios Socialのままにしておくのをお勧めします。"
 
 #: src/components/ProgressGuide/List.tsx:53
 #: src/components/ProgressGuide/List.tsx:70
-msgid "Bluesky is better with friends!"
-msgstr "Blueskyは友達と一緒のほうが楽しい！"
+msgid "Foodios is better with friends!"
+msgstr "Foodiosは友達と一緒のほうが楽しい！"
 
 #: src/screens/Takendown.tsx:217
-msgid "Bluesky Social Terms of Service"
-msgstr "Bluesky Social利用規約"
+msgid "Foodios Social Terms of Service"
+msgstr "Foodios Social利用規約"
 
 #: src/components/StarterPack/ProfileStarterPacks.tsx:310
-msgid "Bluesky will choose a set of recommended accounts from people in your network."
-msgstr "Blueskyはあなたのつながっているユーザーからおすすめのアカウントを選びます。"
+msgid "Foodios will choose a set of recommended accounts from people in your network."
+msgstr "Foodiosはあなたのつながっているユーザーからおすすめのアカウントを選びます。"
 
 #: src/screens/Settings/components/PwiOptOut.tsx:99
-msgid "Bluesky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
-msgstr "Blueskyはログアウトしたユーザーにあなたのプロフィールや投稿を表示しません。他のアプリはこのリクエストに応じない場合があります。この設定はあなたのアカウントを非公開にするものではありません。"
+msgid "Foodios will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
+msgstr "Foodiosはログアウトしたユーザーにあなたのプロフィールや投稿を表示しません。他のアプリはこのリクエストに応じない場合があります。この設定はあなたのアカウントを非公開にするものではありません。"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:132
-msgid "Bluesky will proactively verify notable and authentic accounts."
-msgstr "Blueskyは著名な本物のアカウントを積極的に認証します。"
+msgid "Foodios will proactively verify notable and authentic accounts."
+msgstr "Foodiosは著名な本物のアカウントを積極的に認証します。"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:99
-msgid "Bluesky+"
-msgstr "Bluesky+"
+msgid "Foodios+"
+msgstr "Foodios+"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:102
-msgid "Bluesky+ icons"
-msgstr "Bluesky+アイコン"
+msgid "Foodios+ icons"
+msgstr "Foodios+アイコン"
 
 #: src/lib/moderation/useLabelBehaviorDescription.ts:53
 msgid "Blur images"
@@ -2363,8 +2363,8 @@ msgid "Customize who can interact with this post."
 msgstr "この投稿に誰が反応できるかカスタマイズする。"
 
 #: src/screens/Onboarding/Layout.tsx:56
-msgid "Customizes your Bluesky experience"
-msgstr "Blueskyでの体験をカスタマイズ"
+msgid "Customizes your Foodios experience"
+msgstr "Foodiosでの体験をカスタマイズ"
 
 #: src/components/dialogs/Embed.tsx:167
 #: src/components/dialogs/Embed.tsx:169
@@ -2764,8 +2764,8 @@ msgid "Double tap to like"
 msgstr "ダブルタップでいいね"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:321
-msgid "Download Bluesky"
-msgstr "Blueskyをダウンロード"
+msgid "Download Foodios"
+msgstr "Foodiosをダウンロード"
 
 #: src/screens/Settings/components/ExportCarDialog.tsx:79
 #: src/screens/Settings/components/ExportCarDialog.tsx:84
@@ -3579,8 +3579,8 @@ msgid "Find people to follow"
 msgstr "フォローするユーザーを探す"
 
 #: src/screens/Search/Shell.tsx:476
-msgid "Find posts, users, and feeds on Bluesky"
-msgstr "Blueskyの投稿、ユーザー、フィードを検索"
+msgid "Find posts, users, and feeds on Foodios"
+msgstr "Foodiosの投稿、ユーザー、フィードを検索"
 
 #: src/screens/StarterPack/Wizard/index.tsx:195
 msgid "Finish"
@@ -4434,7 +4434,7 @@ msgstr "今はあなただけ！上で検索してスターターパックによ
 msgid "Job ID: {0}"
 msgstr "ジョブID：{0}"
 
-#. Link to a page with job openings at Bluesky
+#. Link to a page with job openings at Foodios
 #: src/view/com/auth/SplashScreen.web.tsx:180
 msgid "Jobs"
 msgstr "仕事"
@@ -4443,8 +4443,8 @@ msgstr "仕事"
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:211
 #: src/screens/StarterPack/StarterPackScreen.tsx:466
 #: src/screens/StarterPack/StarterPackScreen.tsx:477
-msgid "Join Bluesky"
-msgstr "Blueskyに参加"
+msgid "Join Foodios"
+msgstr "Foodiosに参加"
 
 #: src/components/StarterPack/QrCode.tsx:68
 #: src/view/shell/NavSignupCard.tsx:40
@@ -4554,8 +4554,8 @@ msgid "Learn more about age assurance"
 msgstr "年齢保証について詳しく知る"
 
 #: src/view/com/auth/SplashScreen.web.tsx:168
-msgid "Learn more about Bluesky"
-msgstr "Blueskyについての詳細"
+msgid "Learn more about Foodios"
+msgstr "Foodiosについての詳細"
 
 #: src/view/com/auth/server-input/index.tsx:218
 msgid "Learn more about self hosting your PDS."
@@ -4576,13 +4576,13 @@ msgstr "この警告の詳細"
 
 #: src/components/verification/VerificationsDialog.tsx:150
 #: src/components/verification/VerifierDialog.tsx:117
-msgid "Learn more about verification on Bluesky"
-msgstr "Blueskyの認証についてもっと詳しく"
+msgid "Learn more about verification on Foodios"
+msgstr "Foodiosの認証についてもっと詳しく"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:128
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:131
-msgid "Learn more about what is public on Bluesky."
-msgstr "Blueskyで公開されている内容はこちらを参照してください。"
+msgid "Learn more about what is public on Foodios."
+msgstr "Foodiosで公開されている内容はこちらを参照してください。"
 
 #: src/components/ageAssurance/AgeAssuranceAdmonition.tsx:86
 msgid "Learn more in your <0>account settings.</0>"
@@ -4616,8 +4616,8 @@ msgstr "すべての言語を表示するには、選択されていないまま
 
 #: src/components/dialogs/LinkWarning.tsx:67
 #: src/components/dialogs/LinkWarning.tsx:75
-msgid "Leaving Bluesky"
-msgstr "Blueskyから離れる"
+msgid "Leaving Foodios"
+msgstr "Foodiosから離れる"
 
 #: src/screens/SignupQueued.tsx:155
 msgid "left to go."
@@ -4853,13 +4853,13 @@ msgid "Logged-out visibility"
 msgstr "ログアウトしたユーザーからの可視性"
 
 #: src/view/shell/desktop/RightNav.tsx:130
-msgid "Logo by @sawaratsuki.bsky.social"
-msgstr "@sawaratsuki.bsky.socialによるロゴ"
+msgid "Logo by @sawaratsuki.foodios.social"
+msgstr "@sawaratsuki.foodios.socialによるロゴ"
 
 #: src/view/shell/desktop/RightNav.tsx:127
 #: src/view/shell/Drawer.tsx:672
-msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
-msgstr "<0>@sawaratsuki.bsky.social</0>によるロゴ"
+msgid "Logo by <0>@sawaratsuki.foodios.social</0>"
+msgstr "<0>@sawaratsuki.foodios.social</0>によるロゴ"
 
 #: src/components/RichTextTag.tsx:53
 msgid "Long press to open tag menu for #{tag}"
@@ -5580,8 +5580,8 @@ msgid "Note about sharing"
 msgstr "共有についての注意事項"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:117
-msgid "Note: Bluesky is an open and public network. This setting only limits the visibility of your content on the Bluesky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
-msgstr "注記：Blueskyはオープンでパブリックなネットワークです。この設定はBlueskyのアプリおよびウェブサイト上のみでのあなたのコンテンツの可視性を制限するものであり、他のアプリではこの設定を尊重しない場合があります。他のアプリやウェブサイトでは、ログアウトしたユーザーにあなたのコンテンツが表示される場合があります。"
+msgid "Note: Foodios is an open and public network. This setting only limits the visibility of your content on the Foodios app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
+msgstr "注記：Foodiosはオープンでパブリックなネットワークです。この設定はFoodiosのアプリおよびウェブサイト上のみでのあなたのコンテンツの可視性を制限するものであり、他のアプリではこの設定を尊重しない場合があります。他のアプリやウェブサイトでは、ログアウトしたユーザーにあなたのコンテンツが表示される場合があります。"
 
 #: src/components/PostControls/ShareMenu/ShareMenuItems.web.tsx:134
 msgid "Note: This post is only visible to logged-in users."
@@ -5875,13 +5875,13 @@ msgstr "絵文字選択を開く"
 
 #: src/view/com/auth/SplashScreen.tsx:49
 #: src/view/com/auth/SplashScreen.web.tsx:111
-msgid "Opens flow to create a new Bluesky account"
-msgstr "新しいBlueskyのアカウントを作成するフローを開く"
+msgid "Opens flow to create a new Foodios account"
+msgstr "新しいFoodiosのアカウントを作成するフローを開く"
 
 #: src/view/com/auth/SplashScreen.tsx:63
 #: src/view/com/auth/SplashScreen.web.tsx:125
-msgid "Opens flow to sign in to your existing Bluesky account"
-msgstr "既存のBlueskyアカウントにサインインする画面を開きます"
+msgid "Opens flow to sign in to your existing Foodios account"
+msgstr "既存のFoodiosアカウントにサインインする画面を開きます"
 
 #: src/view/com/composer/photos/SelectGifBtn.tsx:36
 msgid "Opens GIF select dialog"
@@ -5972,8 +5972,8 @@ msgid "Our moderation team has received your report."
 msgstr "あなたの報告をモデレーションチームが受け付けました。"
 
 #: src/screens/Messages/components/ChatDisabled.tsx:28
-msgid "Our moderators have reviewed reports and decided to disable your access to chats on Bluesky."
-msgstr "モデレーターが報告をレビューし、Blueskyであなたがチャットにアクセスできないようにしました。"
+msgid "Our moderators have reviewed reports and decided to disable your access to chats on Foodios."
+msgstr "モデレーターが報告をレビューし、Foodiosであなたがチャットにアクセスできないようにしました。"
 
 #: src/components/Lists.tsx:190
 #: src/view/screens/NotFound.tsx:47
@@ -6151,8 +6151,8 @@ msgid "Please choose your password."
 msgstr "パスワードを選択してください。"
 
 #: src/components/dialogs/EmailDialog/screens/Update.tsx:290
-msgid "Please click on the link in the email we just sent you to verify your new email address. This is an important step to allow you to continue enjoying all the features of Bluesky."
-msgstr "新しいメールアドレスを確認するために送信したメールのリンクをクリックしてください。 これは、Blueskyのすべての機能を楽しみ続けるための重要なステップです。"
+msgid "Please click on the link in the email we just sent you to verify your new email address. This is an important step to allow you to continue enjoying all the features of Foodios."
+msgstr "新しいメールアドレスを確認するために送信したメールのリンクをクリックしてください。 これは、Foodiosのすべての機能を楽しみ続けるための重要なステップです。"
 
 #: src/screens/Signup/state.ts:301
 msgid "Please complete the verification captcha."
@@ -6632,18 +6632,18 @@ msgid "Read more replies"
 msgstr "さらに返信を読む"
 
 #: src/view/com/auth/SplashScreen.web.tsx:173
-msgid "Read the Bluesky blog"
-msgstr "Blueskyのブログを読む"
+msgid "Read the Foodios blog"
+msgstr "Foodiosのブログを読む"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:58
 #: src/screens/Signup/StepInfo/Policies.tsx:84
-msgid "Read the Bluesky Privacy Policy"
-msgstr "Blueskyのプライバシーポリシーを読む"
+msgid "Read the Foodios Privacy Policy"
+msgstr "Foodiosのプライバシーポリシーを読む"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:51
 #: src/screens/Signup/StepInfo/Policies.tsx:71
-msgid "Read the Bluesky Terms of Service"
-msgstr "Blueskyの利用規約を読む"
+msgid "Read the Foodios Terms of Service"
+msgstr "Foodiosの利用規約を読む"
 
 #: src/screens/Takendown.tsx:162
 #: src/screens/Takendown.tsx:170
@@ -7383,8 +7383,8 @@ msgid "See #{tag} posts by user"
 msgstr "#{tag} の投稿を表示（このユーザーのみ）"
 
 #: src/view/com/auth/SplashScreen.web.tsx:178
-msgid "See jobs at Bluesky"
-msgstr "Blueskyの求人を見る"
+msgid "See jobs at Foodios"
+msgstr "Foodiosの求人を見る"
 
 #: src/view/screens/SavedFeeds.tsx:213
 msgid "See this guide"
@@ -7734,8 +7734,8 @@ msgid "Share this starter pack"
 msgstr "このスターターパックを共有"
 
 #: src/components/StarterPack/ShareDialog.tsx:80
-msgid "Share this starter pack and help people join your community on Bluesky."
-msgstr "このスターターパックを共有して、他のユーザーがBlueskyでのコミュニティに参加するよう手伝います"
+msgid "Share this starter pack and help people join your community on Foodios."
+msgstr "このスターターパックを共有して、他のユーザーがFoodiosでのコミュニティに参加するよう手伝います"
 
 #: src/components/PostControls/ShareMenu/ShareMenuItems.tsx:117
 #: src/components/PostControls/ShareMenu/ShareMenuItems.tsx:120
@@ -7920,8 +7920,8 @@ msgid "Sign in to account that is not listed"
 msgstr "リストにないアカウントにサインイン"
 
 #: src/components/dialogs/Signin.tsx:46
-msgid "Sign in to Bluesky or create a new account"
-msgstr "Blueskyにサインイン または 新規アカウントの登録"
+msgid "Sign in to Foodios or create a new account"
+msgstr "Foodiosにサインイン または 新規アカウントの登録"
 
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:461
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:463
@@ -8421,8 +8421,8 @@ msgid "The author of this thread has hidden this reply."
 msgstr "このスレッドの投稿者がこの返信を非表示にしました"
 
 #: src/screens/Moderation/index.tsx:407
-msgid "The Bluesky web application"
-msgstr "Blueskyウェブアプリ"
+msgid "The Foodios web application"
+msgstr "Foodiosウェブアプリ"
 
 #: src/view/screens/CommunityGuidelines.tsx:38
 msgid "The Community Guidelines have been moved to <0/>"
@@ -8441,8 +8441,8 @@ msgid "The Discover feed now knows what you like"
 msgstr "Discoverフィードはあなたの好みを学習しました"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:324
-msgid "The experience is better in the app. Download Bluesky now and we'll pick back up where you left off."
-msgstr "アプリのほうがより良い体験をすることができます。今すぐBlueskyをダウンロードして、中断したところから再開しましょう。"
+msgid "The experience is better in the app. Download Foodios now and we'll pick back up where you left off."
+msgstr "アプリのほうがより良い体験をすることができます。今すぐFoodiosをダウンロードして、中断したところから再開しましょう。"
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:67
 msgid "The feed has been replaced with Discover."
@@ -8461,8 +8461,8 @@ msgid "The following settings will be used as your defaults when creating new po
 msgstr "新しい投稿を作成する場合、以下の設定がデフォルトとして使用されます。個々の投稿に対する設定は編集画面から変更できます。"
 
 #: src/components/ageAssurance/useAgeAssuranceCopy.ts:11
-msgid "The laws in your location require you to verify you're an adult before accessing certain features on Bluesky, like adult content and direct messaging."
-msgstr "あなたの地域の法律は、成人向けコンテンツやダイレクトメッセージなど、Blueskyの特定の機能にアクセスする前に成人あることを確認する必要があります。"
+msgid "The laws in your location require you to verify you're an adult before accessing certain features on Foodios, like adult content and direct messaging."
+msgstr "あなたの地域の法律は、成人向けコンテンツやダイレクトメッセージなど、Foodiosの特定の機能にアクセスする前に成人あることを確認する必要があります。"
 
 #: src/components/ageAssurance/useAgeAssuranceCopy.ts:14
 msgid "The laws in your location require you to verify you're an adult to access certain features. Tap to learn more."
@@ -8606,8 +8606,8 @@ msgid "There was an unexpected issue in the application. Please let us know if t
 msgstr "アプリケーションに予期しない問題が発生しました。このようなことが繰り返した場合はサポートへお知らせください！"
 
 #: src/screens/SignupQueued.tsx:130
-msgid "There's been a rush of new users to Bluesky! We'll activate your account as soon as we can."
-msgstr "Blueskyに新規ユーザーが殺到しています！できるだけ早くアカウントを有効にできるよう努めます。"
+msgid "There's been a rush of new users to Foodios! We'll activate your account as soon as we can."
+msgstr "Foodiosに新規ユーザーが殺到しています！できるだけ早くアカウントを有効にできるよう努めます。"
 
 #: src/screens/Settings/FollowingFeedPreferences.tsx:65
 msgid "These settings only apply to the Following feed."
@@ -8642,8 +8642,8 @@ msgid "This appeal will be sent to <0>{sourceName}</0>."
 msgstr "この申し立ては<0>{sourceName}</0>に送られます。"
 
 #: src/screens/Messages/components/ChatDisabled.tsx:104
-msgid "This appeal will be sent to Bluesky's moderation service."
-msgstr "この異議申し立てはBlueskyのモデレーション・サービスに送られます。"
+msgid "This appeal will be sent to Foodios's moderation service."
+msgstr "この異議申し立てはFoodiosのモデレーション・サービスに送られます。"
 
 #: src/screens/Messages/components/MessageListError.tsx:18
 msgid "This chat was disconnected"
@@ -8667,8 +8667,8 @@ msgid "This content is not available because one of the users involved has block
 msgstr "このコンテンツは関係するユーザーの一方が他方をブロックしているため、利用できません。"
 
 #: src/view/com/posts/PostFeedErrorMessage.tsx:118
-msgid "This content is not viewable without a Bluesky account."
-msgstr "このコンテンツはBlueskyのアカウントがないと閲覧できません。"
+msgid "This content is not viewable without a Foodios account."
+msgstr "このコンテンツはFoodiosのアカウントがないと閲覧できません。"
 
 #: src/screens/Messages/components/ChatListItem.tsx:362
 msgid "This conversation is with a deleted or a deactivated account. Press for options"
@@ -8742,12 +8742,12 @@ msgid "This link is taking you to the following website:"
 msgstr "このリンクは次のウェブサイトへリンクしています："
 
 #: src/screens/List/ListHiddenScreen.tsx:151
-msgid "This list – created by <0>{0}</0> – contains possible violations of Bluesky's community guidelines in its name or description."
-msgstr "<0>{0}</0>が作成したこのリストは名前または説明がBlueskyのコミュニティガイドラインに違反している可能性があります。"
+msgid "This list – created by <0>{0}</0> – contains possible violations of Foodios's community guidelines in its name or description."
+msgstr "<0>{0}</0>が作成したこのリストは名前または説明がFoodiosのコミュニティガイドラインに違反している可能性があります。"
 
 #: src/screens/List/ListHiddenScreen.tsx:146
-msgid "This list – created by you – contains possible violations of Bluesky's community guidelines in its name or description."
-msgstr "あなたが作成したこのリストは名前または説明がBlueskyのコミュニティガイドラインに違反している可能性があります。"
+msgid "This list – created by you – contains possible violations of Foodios's community guidelines in its name or description."
+msgstr "あなたが作成したこのリストは名前または説明がFoodiosのコミュニティガイドラインに違反している可能性があります。"
 
 #: src/view/screens/ProfileList.tsx:962
 msgid "This list is empty."
@@ -8759,8 +8759,8 @@ msgstr "このモデレーションのサービスはご利用できません。
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:648
 #: src/view/com/post-thread/PostThreadItem.tsx:966
-msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Bluesky on <1>{1}</1>."
-msgstr "<0>{0}</0>に投稿されたと表示されていますが、Blueskyに初めて登場したのは<1>{1}</1>です。"
+msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Foodios on <1>{1}</1>."
+msgstr "<0>{0}</0>に投稿されたと表示されていますが、Foodiosに初めて登場したのは<1>{1}</1>です。"
 
 #: src/components/WhoCanReply.tsx:240
 msgid "This post has an unknown type of threadgate on it. Your app may be out of date."
@@ -9285,8 +9285,8 @@ msgid "Uploading video..."
 msgstr "ビデオをアップロード中…"
 
 #: src/screens/Settings/AppPasswords.tsx:67
-msgid "Use app passwords to sign in to other Bluesky clients without giving full access to your account or password."
-msgstr "アプリパスワードを使うことで、アカウントやパスワードに完全にアクセスする権限を与えることなく、他のBlueskyクライアントにサインインします。"
+msgid "Use app passwords to sign in to other Foodios clients without giving full access to your account or password."
+msgstr "アプリパスワードを使うことで、アカウントやパスワードに完全にアクセスする権限を与えることなく、他のFoodiosクライアントにサインインします。"
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:558
 msgid "Use default provider"
@@ -9316,8 +9316,8 @@ msgid "Use this to sign in to the other app along with your handle."
 msgstr "ハンドルと一緒にこのパスワードを使用して、他のアプリにサインインします。"
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:279
-msgid "Use your account email address, or another real email address you control, in case KWS or Bluesky needs to contact you."
-msgstr "KWSまたはBlueskyがあなたに連絡する必要がある場合に備えて、あなたが持っているアカウントの電子メールアドレスまたは別の実際の電子メールアドレスを使用してください。"
+msgid "Use your account email address, or another real email address you control, in case KWS or Foodios needs to contact you."
+msgstr "KWSまたはFoodiosがあなたに連絡する必要がある場合に備えて、あなたが持っているアカウントの電子メールアドレスまたは別の実際の電子メールアドレスを使用してください。"
 
 #: src/view/com/modals/InviteCodes.tsx:201
 msgid "Used by:"
@@ -9414,8 +9414,8 @@ msgid "Verification Settings"
 msgstr "認証設定"
 
 #: src/screens/Moderation/VerificationSettings.tsx:41
-msgid "Verifications on Bluesky work differently than on other platforms. <0>Learn more here.</0>"
-msgstr "Blueskyでの認証は他のプラットフォームとは異なります。<0>詳細はこちら</0>"
+msgid "Verifications on Foodios work differently than on other platforms. <0>Learn more here.</0>"
+msgstr "Foodiosでの認証は他のプラットフォームとは異なります。<0>詳細はこちら</0>"
 
 #: src/components/verification/VerificationsDialog.tsx:103
 msgid "Verified by:"
@@ -9716,16 +9716,16 @@ msgid "We estimate {estimatedTime} until your account is ready."
 msgstr "あなたのアカウントが準備できるまで{estimatedTime}ほどかかります。"
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:196
-msgid "We have partnered with <0>KWS</0> to verify that you’re an adult. When you click \"Begin\" below, KWS will check if you have previously verified your age using this email address for other games/services powered by KWS technology. If not, KWS will email you instructions for verifying your age. When you’re done, you'll be brought back to continue using Bluesky."
-msgstr "私たちは <0>KWS</0> と提携して、あなたが成人であることを確認します。 下の「開始」をクリックすると、 KWSは、KWSテクノロジーを搭載した他のゲーム/サービスについて、このメールアドレスを使用して年齢を確認しているかどうかを確認します。 そうでない場合、KWSはあなたの年齢を確認するための指示をメールでお送りします。完了したら、Blueskyを引き続きご利用いただけます。"
+msgid "We have partnered with <0>KWS</0> to verify that you’re an adult. When you click \"Begin\" below, KWS will check if you have previously verified your age using this email address for other games/services powered by KWS technology. If not, KWS will email you instructions for verifying your age. When you’re done, you'll be brought back to continue using Foodios."
+msgstr "私たちは <0>KWS</0> と提携して、あなたが成人であることを確認します。 下の「開始」をクリックすると、 KWSは、KWSテクノロジーを搭載した他のゲーム/サービスについて、このメールアドレスを使用して年齢を確認しているかどうかを確認します。 そうでない場合、KWSはあなたの年齢を確認するための指示をメールでお送りします。完了したら、Foodiosを引き続きご利用いただけます。"
 
 #: src/components/intents/VerifyEmailIntentDialog.tsx:107
 msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "別の確認コードを<0>{0}</0>へ送りました。"
 
 #: src/screens/Onboarding/StepFinished.tsx:256
-msgid "We hope you have a wonderful time. Remember, Bluesky is:"
-msgstr "素敵なひとときをお過ごしください。覚えておいてください、Blueskyは："
+msgid "We hope you have a wonderful time. Remember, Foodios is:"
+msgstr "素敵なひとときをお過ごしください。覚えておいてください、Foodiosは："
 
 #: src/view/com/posts/DiscoverFallbackHeader.tsx:29
 msgid "We ran out of posts from your follows. Here's the latest from <0/>."
@@ -9785,8 +9785,8 @@ msgid "We're having network issues, try again"
 msgstr "ネットワークで問題が発生しています。もう一度試してください"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:94
-msgid "We’re introducing a new layer of verification on Bluesky — an easy-to-see checkmark."
-msgstr "Blueskyに新しい認証方式を導入しました。見やすいチェックマークです。"
+msgid "We’re introducing a new layer of verification on Foodios — an easy-to-see checkmark."
+msgstr "Foodiosに新しい認証方式を導入しました。見やすいチェックマークです。"
 
 #: src/screens/Signup/index.tsx:109
 msgid "We're so excited to have you join us!"
@@ -9840,7 +9840,7 @@ msgstr "あなたのスターターパックを何と呼びたいですか？"
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:774
-msgid "What's up?"
+msgid "What's cooking?"
 msgstr "最近どう？"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:146
@@ -9986,8 +9986,8 @@ msgid "You are creating an account on"
 msgstr "アカウントを作成するホスティングプロバイダー："
 
 #: src/components/ageAssurance/AgeAssuranceAccountCard.tsx:80
-msgid "You are currently unable to access Bluesky's Age Assurance flow. Please <0>contact our moderation team</0> if you believe this is an error."
-msgstr "現在Blueskyの年齢保証手順にアクセスできません。これがエラーだと思われる場合は<0>モデレーションチーム</0>までご連絡ください。"
+msgid "You are currently unable to access Foodios's Age Assurance flow. Please <0>contact our moderation team</0> if you believe this is an error."
+msgstr "現在Foodiosの年齢保証手順にアクセスできません。これがエラーだと思われる場合は<0>モデレーションチーム</0>までご連絡ください。"
 
 #: src/screens/SignupQueued.tsx:157
 msgid "You are in line."
@@ -10087,8 +10087,8 @@ msgid "You don't have any chat requests at the moment."
 msgstr "現在、チャットの要求はありません。"
 
 #: src/view/com/modals/InviteCodes.tsx:67
-msgid "You don't have any invite codes yet! We'll send you some when you've been on Bluesky for a little longer."
-msgstr "まだ招待コードがありません！Blueskyをもうしばらく利用したらお送りします。"
+msgid "You don't have any invite codes yet! We'll send you some when you've been on Foodios for a little longer."
+msgstr "まだ招待コードがありません！Foodiosをもうしばらく利用したらお送りします。"
 
 #: src/view/screens/SavedFeeds.tsx:145
 msgid "You don't have any pinned feeds."
@@ -10379,8 +10379,8 @@ msgid "Your account repository, containing all public data records, can be downl
 msgstr "あなたのアカウントの公開データの全記録を含むリポジトリは、「CAR」ファイルとしてダウンロードできます。このファイルには、画像などのメディア埋め込み、また非公開のデータは含まれていないため、それらは個別に取得する必要があります。"
 
 #: src/screens/Takendown.tsx:214
-msgid "Your account was found to be in violation of the <0>Bluesky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
-msgstr "あなたのアカウントは<0>Bluesky Social利用規約</0>に違反していることが判明しました。該当している場合、違反している具体的内容と停止期間を説明したメールが贈られています。この決定が誤りであると思うのであれば異議申し立てを行うことができます。"
+msgid "Your account was found to be in violation of the <0>Foodios Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
+msgstr "あなたのアカウントは<0>Foodios Social利用規約</0>に違反していることが判明しました。該当している場合、違反している具体的内容と停止期間を説明したメールが贈られています。この決定が誤りであると思うのであれば異議申し立てを行うことができます。"
 
 #: src/screens/Takendown.tsx:154
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
@@ -10420,8 +10420,8 @@ msgid "Your email appears to be invalid."
 msgstr "メールアドレスが無効なようです。"
 
 #: src/components/dialogs/EmailDialog/screens/VerificationReminder.tsx:65
-msgid "Your email has not yet been verified. Please verify your email in order to enjoy all the features of Bluesky."
-msgstr "あなたのメールアドレスはまだ確認されていません。Blueskyのすべての機能を楽しむためにあなたのメールアドレスを確認してください。"
+msgid "Your email has not yet been verified. Please verify your email in order to enjoy all the features of Foodios."
+msgstr "あなたのメールアドレスはまだ確認されていません。Foodiosのすべての機能を楽しむためにあなたのメールアドレスを確認してください。"
 
 #: src/state/shell/progress-guide.tsx:213
 msgid "Your first like!"
@@ -10489,8 +10489,8 @@ msgid "Your preferred language"
 msgstr "あなたの主要言語"
 
 #: src/screens/Settings/components/DeactivateAccountDialog.tsx:75
-msgid "Your profile, posts, feeds, and lists will no longer be visible to other Bluesky users. You can reactivate your account at any time by logging in."
-msgstr "あなたのプロフィール、投稿、フィード、そしてリストは他のBlueskyユーザーに見えなくなります。ログインすることでいつでもアカウントを再有効化できます。"
+msgid "Your profile, posts, feeds, and lists will no longer be visible to other Foodios users. You can reactivate your account at any time by logging in."
+msgstr "あなたのプロフィール、投稿、フィード、そしてリストは他のFoodiosユーザーに見えなくなります。ログインすることでいつでもアカウントを再有効化できます。"
 
 #: src/view/com/composer/Composer.tsx:521
 msgid "Your reply has been published"
@@ -10501,8 +10501,8 @@ msgid "Your report will be sent to <0>{0}</0>."
 msgstr "報告は <0>{0}</0>に送信されます。"
 
 #: src/components/dms/ReportDialog.tsx:200
-msgid "Your report will be sent to the Bluesky Moderation Service"
-msgstr "あなたの報告はBluesky Moderation Serviceに送られます"
+msgid "Your report will be sent to the Foodios Moderation Service"
+msgstr "あなたの報告はFoodios Moderation Serviceに送られます"
 
 #: src/screens/Settings/InterestsSettings.tsx:56
 msgid "Your selected interests help us serve you content you care about."

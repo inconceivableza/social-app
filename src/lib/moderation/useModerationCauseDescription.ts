@@ -138,8 +138,8 @@ export function useModerationCauseDescription(
       let sourceDisplayName = labeler?.creator.displayName
       if (!source) {
         if (cause.label.src === BSKY_LABELER_DID) {
-          source = 'moderation.bsky.app'
-          sourceDisplayName = 'Bluesky Moderation Service'
+          source = 'moderation.foodios.app'
+          sourceDisplayName = 'Foodios Moderation Service'
         } else {
           source = _(msg`an unknown labeler`)
         }

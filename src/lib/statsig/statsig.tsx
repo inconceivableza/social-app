@@ -63,7 +63,7 @@ function createStatsigOptions(prefetchUsers: StatsigUser[]) {
     // Get fresh flags for other accounts as well, if any.
     prefetchUsers,
     api:
-      process.env.EXPO_PUBLIC_STATSIG_API_URL || 'https://events.bsky.app/v2',
+      process.env.EXPO_PUBLIC_STATSIG_API_URL || 'https://events.foodios.app/v2',
   }
 }
 

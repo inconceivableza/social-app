@@ -405,14 +405,14 @@ export function ModerationScreenInner({
                         <Trans>
                           Adult content can only be enabled via the Web at{' '}
                           <InlineLinkText
-                            label={_(msg`The Bluesky web application`)}
+                            label={_(msg`The Foodios web application`)}
                             to=""
                             onPress={evt => {
                               evt.preventDefault()
-                              Linking.openURL('https://bsky.app/')
+                              Linking.openURL('https://foodios.app/')
                               return false
                             }}>
-                            bsky.app
+                            foodios.app
                           </InlineLinkText>
                           .
                         </Trans>

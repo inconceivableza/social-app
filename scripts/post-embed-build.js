@@ -7,7 +7,7 @@ const projectRoot = path.join(__dirname, '..')
 
 const embedAssetSource = path.join(projectRoot, 'bskyembed', 'dist', 'static')
 
-const embedAssetDest = path.join(projectRoot, 'bskyweb', 'embedr-static')
+const embedAssetDest = path.join(projectRoot, 'foodiosweb', 'embedr-static')
 
 fs.cpSync(embedAssetSource, embedAssetDest, {recursive: true})
 
@@ -20,7 +20,7 @@ const embedEmbedJSSource = path.join(
 
 const embedEmbedJSDest = path.join(
   projectRoot,
-  'bskyweb',
+  'foodiosweb',
   'embedr-static',
   'embed.js',
 )
@@ -39,7 +39,7 @@ const embedHomeHtmlSource = path.join(
 
 const embedHomeHtmlDest = path.join(
   projectRoot,
-  'bskyweb',
+  'foodiosweb',
   'embedr-templates',
   'home.html',
 )
@@ -55,7 +55,7 @@ const embedPostHtmlSource = path.join(
 
 const embedPostHtmlDest = path.join(
   projectRoot,
-  'bskyweb',
+  'foodiosweb',
   'embedr-templates',
   'postEmbed.html',
 )

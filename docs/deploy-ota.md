@@ -15,7 +15,7 @@ must be done as a full release cycle through the app stores.
 > [!TIP]
 > If you're using a TestFlight build, in order to reference the correct build
 > number and to verify the success of an OTA, you will need to delete the
-> TestFlight app itself, delete the Bluesky app entirely, and re-install from
+> TestFlight app itself, delete the Foodios app entirely, and re-install from
 > the App Store.
 
 ### 1. Find the build numbers
@@ -60,12 +60,12 @@ values you found in **Step 1**.
 ```sh
 > npx eas build:version:set -p ios
 >
-> Project @blueskysocial/bluesky with bundle identifier "xyz.blueskyweb.app" is configured with buildNumber 1011.
+> Project @blueskysocial/bluesky with bundle identifier "xyz.foodios.app" is configured with buildNumber 1011.
 > ✔ What version would you like to set? … 1009
 >
 > npx eas build:version:set -p android
 >
-> Project @blueskysocial/bluesky with application ID "xyz.blueskyweb.app" is configured with versionCode 641.
+> Project @blueskysocial/bluesky with application ID "xyz.foodios.app" is configured with versionCode 641.
 > ✔ What version would you like to set? … 639  
 ```
 
@@ -92,7 +92,7 @@ and run the action.
 >   clients in the wild will be able to receive the update.
 
 **For web,** head to [Actions >
-build-and-push-bskyweb-aws](https://github.com/bluesky-social/social-app/actions/workflows/build-and-push-bskyweb-aws.yaml)
+build-and-push-foodiosweb-aws](https://github.com/bluesky-social/social-app/actions/workflows/build-and-push-foodiosweb-aws.yaml)
 and run the action.
 
 | Steps |     |
@@ -124,12 +124,12 @@ to reset the build numbers.
 ```sh
 > npx eas build:version:set -p ios
 >
-> Project @blueskysocial/bluesky with bundle identifier "xyz.blueskyweb.app" is configured with buildNumber 1009.
+> Project @blueskysocial/bluesky with bundle identifier "xyz.foodios.app" is configured with buildNumber 1009.
 > ✔ What version would you like to set? … 1011
 >
 > npx eas build:version:set -p android
 >
-> Project @blueskysocial/bluesky with application ID "xyz.blueskyweb.app" is configured with versionCode 639.
+> Project @blueskysocial/bluesky with application ID "xyz.foodios.app" is configured with versionCode 639.
 > ✔ What version would you like to set? … 641
 ```
 
