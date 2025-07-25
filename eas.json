@@ -6,7 +6,7 @@
   },
   "build": {
     "base": {
-      "node": "18.18.2"
+      "node": "20.18.2"
     },
     "development": {
       "extends": "base",
@@ -80,7 +80,8 @@
         "autoIncrement": true
       },
       "android": {
-        "autoIncrement": true
+        "autoIncrement": true,
+        "buildType": "app-bundle"
       },
       "channel": "testflight",
       "env": {
@@ -92,6 +93,13 @@
     "production": {
       "ios": {
         "ascAppId": "6444370199"
+      }
+    },
+    "testflight-android": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft",
+        "changesNotSentForReview": true
       }
     }
   }
