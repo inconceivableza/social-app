@@ -101,6 +101,11 @@
         "releaseStatus": "draft",
         "changesNotSentForReview": true
       }
+    },
+    "testflight-ios": {
+      "ios": {
+        "ascAppId": "6444370199"
+      }
     }
   }
 }
