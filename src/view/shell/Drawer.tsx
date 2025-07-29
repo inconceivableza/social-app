@@ -6,7 +6,7 @@ import {useLingui} from '@lingui/react'
 import {StackActions, useNavigation} from '@react-navigation/native'
 
 import {useActorStatus} from '#/lib/actor-status'
-import {FEEDBACK_FORM_URL, HELP_DESK_URL} from '#/lib/constants'
+import {CHAT_DISABLED, FEEDBACK_FORM_URL, HELP_DESK_URL} from '#/lib/constants'
 import {type PressableScale} from '#/lib/custom-animations/PressableScale'
 import {useNavigationTabState} from '#/lib/hooks/useNavigationTabState'
 import {getTabState, TabState} from '#/lib/routes/helpers'
@@ -15,7 +15,9 @@ import {sanitizeHandle} from '#/lib/strings/handles'
 import {colors} from '#/lib/styles'
 import {isWeb} from '#/platform/detection'
 import {emitSoftReset} from '#/state/events'
+import {useModalControls} from '#/state/modals'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
+import {useInviteCodesQuery} from '#/state/queries/invites'
 import {useUnreadNotifications} from '#/state/queries/notifications/unread'
 import {useProfileQuery} from '#/state/queries/profile'
 import {type SessionAccount, useSession} from '#/state/session'
@@ -46,6 +48,7 @@ import {
   Message_Stroke2_Corner0_Rounded_Filled as MessageFilled,
 } from '#/components/icons/Message'
 import {SettingsGear2_Stroke2_Corner0_Rounded as Settings} from '#/components/icons/SettingsGear2'
+import {Ticket_Stroke2_Corner0_Rounded as TicketIcon} from '#/components/icons/Ticket'
 import {
   UserCircle_Filled_Corner0_Rounded as UserCircleFilled,
   UserCircle_Stroke2_Corner0_Rounded as UserCircle,
@@ -140,6 +143,53 @@ let DrawerProfileCard = ({
 }
 DrawerProfileCard = React.memo(DrawerProfileCard)
 export {DrawerProfileCard}
+
+let InviteCodes = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
+  const setDrawerOpen = useSetDrawerOpen()
+  const {data: invites} = useInviteCodesQuery()
+  const invitesAvailable = invites?.available?.length ?? 0
+  const {openModal} = useModalControls()
+  const {_} = useLingui()
+  const t = useTheme()
+
+  const onPress = React.useCallback(() => {
+    setDrawerOpen(false)
+    openModal({name: 'invite-codes'})
+  }, [openModal, setDrawerOpen])
+
+  return (
+    <TouchableOpacity
+      testID="menuItemInviteCodes"
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={_(msg`Invite codes: ${invitesAvailable} available`)}
+      accessibilityHint={_(msg`Opens list of invite codes`)}
+      disabled={invites?.disabled}>
+      <TicketIcon
+        style={[
+          invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
+        ]}
+        size="md"
+      />
+      <Text
+        style={[
+          a.text_lg,
+          invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
+        ]}>
+        {invites?.disabled ? (
+          <Trans>
+            Your invite codes are hidden when logged in using an App Password
+          </Trans>
+        ) : invitesAvailable === 1 ? (
+          <Trans>{invitesAvailable} invite code available</Trans>
+        ) : (
+          <Trans>{invitesAvailable} invite codes available</Trans>
+        )}
+      </Text>
+    </TouchableOpacity>
+  )
+}
+InviteCodes = React.memo(InviteCodes)
 
 let DrawerContent = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
   const t = useTheme()
@@ -283,9 +333,12 @@ let DrawerContent = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
 
         {hasSession ? (
           <>
+            <InviteCodes />
             <SearchMenuItem isActive={isAtSearch} onPress={onPressSearch} />
             <HomeMenuItem isActive={isAtHome} onPress={onPressHome} />
-            <ChatMenuItem isActive={isAtMessages} onPress={onPressMessages} />
+            {!CHAT_DISABLED && (
+              <ChatMenuItem isActive={isAtMessages} onPress={onPressMessages} />
+            )}
             <NotificationsMenuItem
               isActive={isAtNotifications}
               onPress={onPressNotifications}

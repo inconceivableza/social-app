@@ -5,6 +5,7 @@ import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 import type React from 'react'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {makeProfileLink} from '#/lib/routes/links'
 import {type NavigationProp} from '#/lib/routes/types'
 import {shareText, shareUrl} from '#/lib/sharing'
@@ -98,7 +99,7 @@ let ShareMenuItems = ({
       <Menu.Outer>
         {!hideInPWI && copyLinkItem}
 
-        {hasSession && !isAgeRestricted && (
+        {!CHAT_DISABLED && hasSession && !isAgeRestricted && (
           <Menu.Item
             testID="postDropdownSendViaDMBtn"
             label={_(msg`Send via direct message`)}
@@ -172,10 +173,12 @@ let ShareMenuItems = ({
         />
       )}
 
-      <SendViaChatDialog
-        control={sendViaChatControl}
-        onSelectChat={onSelectChatToShareTo}
-      />
+      {!CHAT_DISABLED && (
+        <SendViaChatDialog
+          control={sendViaChatControl}
+          onSelectChat={onSelectChatToShareTo}
+        />
+      )}
     </>
   )
 }

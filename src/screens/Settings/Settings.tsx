@@ -21,6 +21,7 @@ import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {isIOS, isNative} from '#/platform/detection'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
+import {useModalControls} from '#/state/modals'
 import * as persisted from '#/state/persisted'
 import {clearStorage} from '#/state/persisted'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
@@ -55,6 +56,7 @@ import {
   PersonX_Stroke2_Corner0_Rounded as PersonXIcon,
 } from '#/components/icons/Person'
 import {RaisingHand4Finger_Stroke2_Corner2_Rounded as HandIcon} from '#/components/icons/RaisingHand'
+import {Ticket_Stroke2_Corner0_Rounded as TicketIcon} from '#/components/icons/Ticket'
 import {Window_Stroke2_Corner2_Rounded as WindowIcon} from '#/components/icons/Window'
 import * as Layout from '#/components/Layout'
 import {Loader} from '#/components/Loader'
@@ -166,6 +168,8 @@ export function SettingsScreen({}: Props) {
           ) : (
             <AddAccountRow />
           )}
+          <SettingsList.Divider />
+          <InviteFriendRow />
           <SettingsList.Divider />
           <SettingsList.LinkItem to="/settings/account" label={_(msg`Account`)}>
             <SettingsList.ItemIcon icon={PersonIcon} />
@@ -523,6 +527,26 @@ function AddAccountRow() {
       <SettingsList.ItemIcon icon={PersonPlusIcon} />
       <SettingsList.ItemText>
         <Trans>Add another account</Trans>
+      </SettingsList.ItemText>
+    </SettingsList.PressableItem>
+  )
+}
+
+function InviteFriendRow() {
+  const {_} = useLingui()
+  const {openModal} = useModalControls()
+
+  const onPressInviteCodes = () => {
+    openModal({name: 'invite-codes'})
+  }
+
+  return (
+    <SettingsList.PressableItem
+      onPress={onPressInviteCodes}
+      label={_(msg`Invite a Friend`)}>
+      <SettingsList.ItemIcon icon={TicketIcon} />
+      <SettingsList.ItemText>
+        <Trans>Invite a Friend</Trans>
       </SettingsList.ItemText>
     </SettingsList.PressableItem>
   )

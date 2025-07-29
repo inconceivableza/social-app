@@ -14,7 +14,9 @@ import {timeout} from '../async/timeout'
 import {useNonReactiveCallback} from '../hooks/useNonReactiveCallback'
 import {type Gate} from './gates'
 
-const SDK_KEY = 'client-SXJakO39w9vIhl3D44u8UupyzFl4oZ2qPIkjwcvuPsV'
+const SDK_KEY =
+  process.env.EXPO_PUBLIC_STATSIG_CLIENT_KEY ||
+  'client-SXJakO39w9vIhl3D44u8UupyzFl4oZ2qPIkjwcvuPsV'
 
 export const initPromise = initialize()
 
@@ -62,7 +64,8 @@ function createStatsigOptions(prefetchUsers: StatsigUser[]) {
     initTimeoutMs: 1,
     // Get fresh flags for other accounts as well, if any.
     prefetchUsers,
-    api: 'https://events.bsky.app/v2',
+    api:
+      process.env.EXPO_PUBLIC_STATSIG_API_URL || 'https://events.bsky.app/v2',
   }
 }
 
