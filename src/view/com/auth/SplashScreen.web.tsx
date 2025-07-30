@@ -96,7 +96,7 @@ export const SplashScreen = ({
 
               <Text
                 style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
-                <Trans>What's up?</Trans>
+                <Trans>What's going down?</Trans>
               </Text>
             </View>
 
@@ -108,7 +108,7 @@ export const SplashScreen = ({
                 onPress={onPressCreateAccount}
                 label={_(msg`Create new account`)}
                 accessibilityHint={_(
-                  msg`Opens flow to create a new Bluesky account`,
+                  msg`Opens flow to create a new Opensky account`,
                 )}
                 size="large"
                 variant="solid"
@@ -122,7 +122,7 @@ export const SplashScreen = ({
                 onPress={onPressSignin}
                 label={_(msg`Sign in`)}
                 accessibilityHint={_(
-                  msg`Opens flow to sign in to your existing Bluesky account`,
+                  msg`Opens flow to sign in to your existing Opensky account`,
                 )}
                 size="large"
                 variant="solid"
@@ -165,19 +165,19 @@ function Footer() {
         t.atoms.border_contrast_medium,
       ]}>
       <InlineLinkText
-        label={_(msg`Learn more about Bluesky`)}
-        to="https://bsky.social">
+        label={_(msg`Learn more about Opensky`)}
+        to="https://pds.mysky.local.social">
         <Trans>Business</Trans>
       </InlineLinkText>
       <InlineLinkText
-        label={_(msg`Read the Bluesky blog`)}
-        to="https://bsky.social/about/blog">
+        label={_(msg`Read the Opensky blog`)}
+        to="https://pds.mysky.local.social/about/blog">
         <Trans>Blog</Trans>
       </InlineLinkText>
       <InlineLinkText
-        label={_(msg`See jobs at Bluesky`)}
-        to="https://bsky.social/about/join">
-        <Trans comment="Link to a page with job openings at Bluesky">
+        label={_(msg`See jobs at Opensky`)}
+        to="https://pds.mysky.local.social/about/join">
+        <Trans comment="Link to a page with job openings at Opensky">
           Jobs
         </Trans>
       </InlineLinkText>

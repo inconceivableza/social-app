@@ -4,14 +4,14 @@ import {type AppBskyActorDefs} from '@atproto/api'
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
 export const STAGING_SERVICE = 'https://staging.bsky.dev'
-export const BSKY_SERVICE = 'https://bsky.social'
-export const PUBLIC_BSKY_SERVICE = 'https://public.api.bsky.app'
+export const BSKY_SERVICE = 'https://pds.mysky.local.social'
+export const PUBLIC_BSKY_SERVICE = 'https://public.api.mysky.local.app'
 export const DEFAULT_SERVICE = BSKY_SERVICE
 const HELP_DESK_LANG = 'en-us'
 export const HELP_DESK_URL = `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
-export const EMBED_SERVICE = 'https://embed.bsky.app'
+export const EMBED_SERVICE = 'https://embed.mysky.local.app'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
-export const BSKY_DOWNLOAD_URL = 'https://bsky.app/download'
+export const BSKY_DOWNLOAD_URL = 'https://mysky.local.social/download'
 export const STARTER_PACK_MAX_SIZE = 150
 export const CHAT_DISABLED = true
 
@@ -31,8 +31,8 @@ export const DISCOVER_DEBUG_DIDS: Record<string, true> = {
   'did:plc:vpkhqolt662uhesyj6nxm7ys': true, // why.bsky.team
   'did:plc:3jpt2mvvsumj2r7eqk4gzzjz': true, // esb.lol
   'did:plc:vjug55kidv6sye7ykr5faxxn': true, // emilyliu.me
-  'did:plc:tgqseeot47ymot4zro244fj3': true, // iwsmith.bsky.social
-  'did:plc:2dzyut5lxna5ljiaasgeuffz': true, // mrnuma.bsky.social
+  'did:plc:tgqseeot47ymot4zro244fj3': true, // iwsmith.pds.mysky.local.social
+  'did:plc:2dzyut5lxna5ljiaasgeuffz': true, // mrnuma.pds.mysky.local.social
 }
 
 const BASE_FEEDBACK_FORM_URL = `${HELP_DESK_URL}/requests/new`
@@ -101,7 +101,7 @@ export const POST_IMG_MAX = {
 export const STAGING_LINK_META_PROXY =
   'https://cardyb.staging.bsky.dev/v1/extract?url='
 
-export const PROD_LINK_META_PROXY = 'https://cardyb.bsky.app/v1/extract?url='
+export const PROD_LINK_META_PROXY = 'https://cardyb.mysky.local.app/v1/extract?url='
 
 export function LINK_META_PROXY(serviceUrl: string) {
   if (IS_PROD_SERVICE(serviceUrl)) {
@@ -111,7 +111,7 @@ export function LINK_META_PROXY(serviceUrl: string) {
   return STAGING_LINK_META_PROXY
 }
 
-export const STATUS_PAGE_URL = 'https://status.bsky.app/'
+export const STATUS_PAGE_URL = 'https://status.mysky.local.app/'
 
 // Hitslop constants
 export const createHitslop = (size: number): Insets => ({
@@ -129,6 +129,7 @@ export const BACK_HITSLOP = HITSLOP_30
 export const MAX_POST_LINES = 25
 
 export const BSKY_APP_ACCOUNT_DID = 'did:plc:z72i7hdynmk6r22z27h6tvur'
+export const FOODIOS_WELCOME_ACCOUNT_DID = 'did:plc:hu7sh5pz4vxroyq3rmyuylh7'
 
 export const BSKY_FEED_OWNER_DIDS = [
   BSKY_APP_ACCOUNT_DID,
@@ -162,13 +163,13 @@ export const VIDEO_SAVED_FEED = {
 export const RECOMMENDED_SAVED_FEEDS: Pick<
   AppBskyActorDefs.SavedFeed,
   'type' | 'value' | 'pinned'
->[] = [DISCOVER_SAVED_FEED, TIMELINE_SAVED_FEED]
+>[] = [TIMELINE_SAVED_FEED]
 
 export const KNOWN_SHUTDOWN_FEEDS = [
   'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm', // for you by skygaze
 ]
 
-export const GIF_SERVICE = 'https://gifs.bsky.app'
+export const GIF_SERVICE = 'https://gifs.mysky.local.app'
 
 export const GIF_SEARCH = (params: string) =>
   `${GIF_SERVICE}/tenor/v2/search?${params}`
@@ -177,8 +178,8 @@ export const GIF_FEATURED = (params: string) =>
 
 export const MAX_LABELERS = 20
 
-export const VIDEO_SERVICE = 'https://video.bsky.app'
-export const VIDEO_SERVICE_DID = 'did:web:video.bsky.app'
+export const VIDEO_SERVICE = 'https://video.mysky.local.app'
+export const VIDEO_SERVICE_DID = 'did:web:video.mysky.local.app'
 
 export const VIDEO_MAX_DURATION_MS = 3 * 60 * 1000 // 3 minutes in milliseconds
 export const VIDEO_MAX_SIZE = 1000 * 1000 * 100 // 100mb
@@ -198,13 +199,13 @@ export const EMOJI_REACTION_LIMIT = 5
 export const urls = {
   website: {
     blog: {
-      initialVerificationAnnouncement: `https://bsky.social/about/blog/04-21-2025-verification`,
+      initialVerificationAnnouncement: `https://pds.mysky.local.social/about/blog/04-21-2025-verification`,
     },
   },
 }
 
-export const PUBLIC_APPVIEW = 'https://api.bsky.app'
-export const PUBLIC_APPVIEW_DID = 'did:web:api.bsky.app'
+export const PUBLIC_APPVIEW = 'https://bsky.mysky.local.app'
+export const PUBLIC_APPVIEW_DID = 'did:web:api.mysky.local.app'
 export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
 
 export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same

@@ -1,5 +1,5 @@
 #!/bin/bash
-IOS_SHARE_EXTENSION_DIRECTORY="./ios/Share-with-Bluesky"
+IOS_SHARE_EXTENSION_DIRECTORY="./ios/Share-with-Opensky"
 IOS_NOTIFICATION_EXTENSION_DIRECTORY="./ios/BlueskyNSE"
 IOS_APP_CLIP_DIRECTORY="./ios/BlueskyClip"
 MODULES_DIRECTORY="./modules"

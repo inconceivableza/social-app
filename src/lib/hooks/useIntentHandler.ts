@@ -34,7 +34,7 @@ export function useIntentHandler() {
   React.useEffect(() => {
     const handleIncomingURL = (url: string) => {
       const referrerInfo = Referrer.getReferrerInfo()
-      if (referrerInfo && referrerInfo.hostname !== 'bsky.app') {
+      if (referrerInfo && referrerInfo.hostname !== 'mysky.local.app') {
         logger.metric('deepLink:referrerReceived', {
           to: url,
           referrer: referrerInfo?.referrer,
@@ -46,8 +46,8 @@ export function useIntentHandler() {
       // slashes, like bluesky:///intent/follow. However, supporting just two slashes causes us to have to take care
       // of two cases when parsing the url. If we ensure there is a third slash, we can always ensure the first
       // path parameter is in pathname rather than in hostname.
-      if (url.startsWith('bluesky://') && !url.startsWith('bluesky:///')) {
-        url = url.replace('bluesky://', 'bluesky:///')
+      if (url.startsWith('foodios://') && !url.startsWith('foodios:///')) {
+        url = url.replace('foodios://', 'foodios:///')
       }
 
       const urlp = new URL(url)

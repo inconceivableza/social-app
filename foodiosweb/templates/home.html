@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head_title %}Opensky{% endblock %}
+
+{% block html_head_extra -%}
+  <meta property="og:title" content="Opensky" />
+  <meta name="twitter:title" content="Opensky" />
+
+  <meta name="description" content="Social media as it should be. Find your community among millions of users, unleash your creativity, and have some fun again." />
+  <meta name="og:description" content="Social media as it should be. Find your community among millions of users, unleash your creativity, and have some fun again." />
+  <meta name="twitter:description" content="Social media as it should be. Find your community among millions of users, unleash your creativity, and have some fun again." />
+
+  <meta property="og:url" content="https://mysky.local.social" />
+  <meta name="twitter:url" content="https://mysky.local.social" />
+
+  <meta property="og:image" content="https://mysky.local.social/static/social-card-default-gradient.png" />
+  <meta property="twitter:image" content="https://mysky.local.social/static/social-card-default-gradient.png"  />
+
+  <meta name="twitter:site" content="@bluesky" />
+  <meta name="twitter:card" content="summary_large_image" />
+{%- endblock %}
+
+{% block noscript_extra %}
+<p>This is the home page.
+{% endblock %}

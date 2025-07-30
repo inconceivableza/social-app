@@ -1,6 +1,6 @@
 # Logger
 
-Simple logger for Bluesky.
+Simple logger for Opensky.
 
 ## At a Glance
 

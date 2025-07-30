@@ -123,7 +123,7 @@ msgstr "{0, plural, one {athphostáil} two {athphostáil} few {athphostáil} man
 msgid "{0, plural, other {{1} posts}}"
 msgstr ""
 
-#. Number of users (always at least 25) who have joined Bluesky using a specific starter pack
+#. Number of users (always at least 25) who have joined Opensky using a specific starter pack
 #: src/screens/StarterPack/StarterPackScreen.tsx:490
 msgid "{0, plural, other {# people have}} used this starter pack!"
 msgstr ""
@@ -397,7 +397,7 @@ msgstr ""
 msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr ""
 
-#. Number of users (always at least 50) who have joined Bluesky using a specific starter pack
+#. Number of users (always at least 50) who have joined Opensky using a specific starter pack
 #: src/components/StarterPack/StarterPackCard.tsx:101
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr ""
@@ -411,12 +411,12 @@ msgid "{notificationCount, plural, one {# unread item} other {# unread items}}"
 msgstr ""
 
 #: src/components/NewskieDialog.tsx:116
-msgid "{profileName} joined Bluesky {0} ago"
-msgstr "Chláraigh {profileName} le Bluesky {0} ó shin"
+msgid "{profileName} joined Opensky {0} ago"
+msgstr "Chláraigh {profileName} le Opensky {0} ó shin"
 
 #: src/components/NewskieDialog.tsx:111
-msgid "{profileName} joined Bluesky using a starter pack {0} ago"
-msgstr "Chláraigh {profileName} le Bluesky le pacáiste fáilte {0} ó shin"
+msgid "{profileName} joined Opensky using a starter pack {0} ago"
+msgstr "Chláraigh {profileName} le Opensky le pacáiste fáilte {0} ó shin"
 
 #. The trending topic rank, i.e. "1. March Madness", "2. The Bachelor"
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:111
@@ -609,7 +609,7 @@ msgid "Account unmuted"
 msgstr "Níl an cuntas balbhaithe a thuilleadh"
 
 #: src/components/verification/VerifierDialog.tsx:96
-msgid "Accounts with a scalloped blue check mark <0><1/></0> can verify others. These trusted verifiers are selected by Bluesky."
+msgid "Accounts with a scalloped blue check mark <0><1/></0> can verify others. These trusted verifiers are selected by Opensky."
 msgstr ""
 
 #: src/lib/hooks/useNotificationHandler.ts:182
@@ -778,8 +778,8 @@ msgid "Adult Content"
 msgstr "Ábhar do dhaoine fásta"
 
 #: src/screens/Moderation/index.tsx:404
-msgid "Adult content can only be enabled via the Web at <0>bsky.app</0>."
-msgstr "Ní féidir ábhar do dhaoine fásta a chur ar fáil ach tríd an nGréasán ag <0>bsky.app</0>."
+msgid "Adult content can only be enabled via the Web at <0>mysky.local.app</0>."
+msgstr "Ní féidir ábhar do dhaoine fásta a chur ar fáil ach tríd an nGréasán ag <0>mysky.local.app</0>."
 
 #: src/components/moderation/LabelPreference.tsx:247
 msgid "Adult content is disabled."
@@ -949,7 +949,7 @@ msgstr "Tharla earráid agus an físeán á uaslódáil."
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:84
 #: src/components/verification/VerifierDialog.tsx:86
-msgid "An illustration showing that Bluesky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts."
+msgid "An illustration showing that Opensky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts."
 msgstr ""
 
 #: src/components/moderation/ReportDialog/utils/useReportOptions.ts:28
@@ -975,7 +975,7 @@ msgid "An issue occurred, please try again."
 msgstr "Tharla fadhb. Déan iarracht eile, le do thoil."
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:118
-msgid "An mockup of a iPhone showing the Bluesky app open to the profile of a verified user with a blue checkmark next to their display name."
+msgid "An mockup of a iPhone showing the Opensky app open to the profile of a verified user with a blue checkmark next to their display name."
 msgstr ""
 
 #: src/screens/Onboarding/StepInterests/index.tsx:185
@@ -1001,7 +1001,7 @@ msgid "Animated GIF"
 msgstr "GIF beo"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:37
-msgid "Announcing verification on Bluesky"
+msgid "Announcing verification on Opensky"
 msgstr ""
 
 #: src/components/moderation/ReportDialog/utils/useReportOptions.ts:33
@@ -1356,55 +1356,55 @@ msgstr "Blag"
 
 #: src/view/com/auth/server-input/index.tsx:136
 #: src/view/com/auth/server-input/index.tsx:137
-msgid "Bluesky"
-msgstr "Bluesky"
+msgid "Opensky"
+msgstr "Opensky"
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:662
 #: src/view/com/post-thread/PostThreadItem.tsx:980
-msgid "Bluesky cannot confirm the authenticity of the claimed date."
-msgstr "Ní féidir le Bluesky an dáta maíte a dheimhniú."
+msgid "Opensky cannot confirm the authenticity of the claimed date."
+msgstr "Ní féidir le Opensky an dáta maíte a dheimhniú."
 
 #: src/screens/Settings/AppIconSettings/useAppIconSets.ts:165
 msgctxt "Name of app icon variant"
-msgid "Bluesky Classic™"
+msgid "Opensky Classic™"
 msgstr ""
 
 #: src/view/com/auth/server-input/index.tsx:212
-msgid "Bluesky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
-msgstr "Is líonra oscailte é Bluesky, lenar féidir do sholáthraí óstála féin a roghnú. Más forbróir thú, is féidir leat do fhreastalaí féin a óstáil."
+msgid "Opensky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
+msgstr "Is líonra oscailte é Opensky, lenar féidir do sholáthraí óstála féin a roghnú. Más forbróir thú, is féidir leat do fhreastalaí féin a óstáil."
 
 #: src/view/com/auth/server-input/index.tsx:149
-msgid "Bluesky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Bluesky Social option."
+msgid "Opensky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Opensky Social option."
 msgstr ""
 
 #: src/components/ProgressGuide/List.tsx:53
 #: src/components/ProgressGuide/List.tsx:70
-msgid "Bluesky is better with friends!"
-msgstr "Déanann mathshlua meidhréis ar Bluesky!"
+msgid "Opensky is better with friends!"
+msgstr "Déanann mathshlua meidhréis ar Opensky!"
 
 #: src/screens/Takendown.tsx:217
-msgid "Bluesky Social Terms of Service"
-msgstr "Téarmaí Seirbhíse Bluesky Social"
+msgid "Opensky Social Terms of Service"
+msgstr "Téarmaí Seirbhíse Opensky Social"
 
 #: src/components/StarterPack/ProfileStarterPacks.tsx:310
-msgid "Bluesky will choose a set of recommended accounts from people in your network."
-msgstr "Roghnóidh Bluesky roinnt cuntas molta ó dhaoine i do líonra."
+msgid "Opensky will choose a set of recommended accounts from people in your network."
+msgstr "Roghnóidh Opensky roinnt cuntas molta ó dhaoine i do líonra."
 
 #: src/screens/Settings/components/PwiOptOut.tsx:99
-msgid "Bluesky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
-msgstr "Ní thaispeánfaidh Bluesky do phróifíl ná do chuid postálacha d’úsáideoirí atá logáilte amach. Is féidir nach gcloífidh aipeanna eile leis an iarratas seo. I bhfocail eile, ní bheidh do chuntas anseo príobháideach."
+msgid "Opensky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
+msgstr "Ní thaispeánfaidh Opensky do phróifíl ná do chuid postálacha d’úsáideoirí atá logáilte amach. Is féidir nach gcloífidh aipeanna eile leis an iarratas seo. I bhfocail eile, ní bheidh do chuntas anseo príobháideach."
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:132
-msgid "Bluesky will proactively verify notable and authentic accounts."
+msgid "Opensky will proactively verify notable and authentic accounts."
 msgstr ""
 
 #: src/screens/Settings/AppIconSettings/index.tsx:99
-msgid "Bluesky+"
-msgstr "Bluesky+"
+msgid "Opensky+"
+msgstr "Opensky+"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:102
-msgid "Bluesky+ icons"
-msgstr "Deilbhíní Bluesky+"
+msgid "Opensky+ icons"
+msgstr "Deilbhíní Opensky+"
 
 #: src/lib/moderation/useLabelBehaviorDescription.ts:53
 msgid "Blur images"
@@ -2363,7 +2363,7 @@ msgid "Customize who can interact with this post."
 msgstr "Cé atá in ann idirghníomhú leis an bpostáil seo?"
 
 #: src/screens/Onboarding/Layout.tsx:56
-msgid "Customizes your Bluesky experience"
+msgid "Customizes your Opensky experience"
 msgstr ""
 
 #: src/components/dialogs/Embed.tsx:167
@@ -2764,8 +2764,8 @@ msgid "Double tap to like"
 msgstr ""
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:321
-msgid "Download Bluesky"
-msgstr "Íoslódáil Bluesky"
+msgid "Download Opensky"
+msgstr "Íoslódáil Opensky"
 
 #: src/screens/Settings/components/ExportCarDialog.tsx:79
 #: src/screens/Settings/components/ExportCarDialog.tsx:84
@@ -3579,7 +3579,7 @@ msgid "Find people to follow"
 msgstr "Aimsigh daoine le leanúint"
 
 #: src/screens/Search/Shell.tsx:476
-msgid "Find posts, users, and feeds on Bluesky"
+msgid "Find posts, users, and feeds on Opensky"
 msgstr ""
 
 #: src/screens/StarterPack/Wizard/index.tsx:195
@@ -4434,7 +4434,7 @@ msgstr "Níl ann ach tusa anois! Cuardaigh thuas le tuilleadh daoine a chur le d
 msgid "Job ID: {0}"
 msgstr "ID an Jab: {0}"
 
-#. Link to a page with job openings at Bluesky
+#. Link to a page with job openings at Opensky
 #: src/view/com/auth/SplashScreen.web.tsx:180
 msgid "Jobs"
 msgstr "Jabanna"
@@ -4443,8 +4443,8 @@ msgstr "Jabanna"
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:211
 #: src/screens/StarterPack/StarterPackScreen.tsx:466
 #: src/screens/StarterPack/StarterPackScreen.tsx:477
-msgid "Join Bluesky"
-msgstr "Cláraigh le Bluesky"
+msgid "Join Opensky"
+msgstr "Cláraigh le Opensky"
 
 #: src/components/StarterPack/QrCode.tsx:68
 #: src/view/shell/NavSignupCard.tsx:40
@@ -4554,8 +4554,8 @@ msgid "Learn more about age assurance"
 msgstr ""
 
 #: src/view/com/auth/SplashScreen.web.tsx:168
-msgid "Learn more about Bluesky"
-msgstr "Tuilleadh eolais maidir le Bluesky"
+msgid "Learn more about Opensky"
+msgstr "Tuilleadh eolais maidir le Opensky"
 
 #: src/view/com/auth/server-input/index.tsx:218
 msgid "Learn more about self hosting your PDS."
@@ -4576,13 +4576,13 @@ msgstr "Le tuilleadh a fhoghlaim faoin rabhadh seo"
 
 #: src/components/verification/VerificationsDialog.tsx:150
 #: src/components/verification/VerifierDialog.tsx:117
-msgid "Learn more about verification on Bluesky"
+msgid "Learn more about verification on Opensky"
 msgstr ""
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:128
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:131
-msgid "Learn more about what is public on Bluesky."
-msgstr "Le tuilleadh a fhoghlaim faoi céard atá poiblí ar Bluesky"
+msgid "Learn more about what is public on Opensky."
+msgstr "Le tuilleadh a fhoghlaim faoi céard atá poiblí ar Opensky"
 
 #: src/components/ageAssurance/AgeAssuranceAdmonition.tsx:86
 msgid "Learn more in your <0>account settings.</0>"
@@ -4616,8 +4616,8 @@ msgstr ""
 
 #: src/components/dialogs/LinkWarning.tsx:67
 #: src/components/dialogs/LinkWarning.tsx:75
-msgid "Leaving Bluesky"
-msgstr "Ag fágáil slán ag Bluesky"
+msgid "Leaving Opensky"
+msgstr "Ag fágáil slán ag Opensky"
 
 #: src/screens/SignupQueued.tsx:155
 msgid "left to go."
@@ -4853,13 +4853,13 @@ msgid "Logged-out visibility"
 msgstr "Feiceálacht le linn a bheith logáilte amach"
 
 #: src/view/shell/desktop/RightNav.tsx:130
-msgid "Logo by @sawaratsuki.bsky.social"
-msgstr "@sawaratsuki.bsky.social a rinne an lógó"
+msgid "Logo by @sawaratsuki.pds.mysky.local.social"
+msgstr "@sawaratsuki.pds.mysky.local.social a rinne an lógó"
 
 #: src/view/shell/desktop/RightNav.tsx:127
 #: src/view/shell/Drawer.tsx:672
-msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
-msgstr "<0>@sawaratsuki.bsky.social</0> a rinne an lógó"
+msgid "Logo by <0>@sawaratsuki.pds.mysky.local.social</0>"
+msgstr "<0>@sawaratsuki.pds.mysky.local.social</0> a rinne an lógó"
 
 #: src/components/RichTextTag.tsx:53
 msgid "Long press to open tag menu for #{tag}"
@@ -5580,8 +5580,8 @@ msgid "Note about sharing"
 msgstr "Nóta faoi roinnt"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:117
-msgid "Note: Bluesky is an open and public network. This setting only limits the visibility of your content on the Bluesky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
-msgstr "Nod leat: is gréasán oscailte poiblí Bluesky. Ní chuireann an socrú seo srian ar fheiceálacht do chuid ábhair ach amháin ar aip agus suíomh Bluesky. Is féidir nach gcloífidh aipeanna eile leis an socrú seo. Is féidir go dtaispeánfar do chuid ábhair d’úsáideoirí atá logáilte amach ar aipeanna agus suíomhanna eile."
+msgid "Note: Opensky is an open and public network. This setting only limits the visibility of your content on the Opensky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
+msgstr "Nod leat: is gréasán oscailte poiblí Opensky. Ní chuireann an socrú seo srian ar fheiceálacht do chuid ábhair ach amháin ar aip agus suíomh Opensky. Is féidir nach gcloífidh aipeanna eile leis an socrú seo. Is féidir go dtaispeánfar do chuid ábhair d’úsáideoirí atá logáilte amach ar aipeanna agus suíomhanna eile."
 
 #: src/components/PostControls/ShareMenu/ShareMenuItems.web.tsx:134
 msgid "Note: This post is only visible to logged-in users."
@@ -5875,12 +5875,12 @@ msgstr ""
 
 #: src/view/com/auth/SplashScreen.tsx:49
 #: src/view/com/auth/SplashScreen.web.tsx:111
-msgid "Opens flow to create a new Bluesky account"
-msgstr "Osclaíonn sé seo an próiseas le cuntas nua Bluesky a chruthú"
+msgid "Opens flow to create a new Opensky account"
+msgstr "Osclaíonn sé seo an próiseas le cuntas nua Opensky a chruthú"
 
 #: src/view/com/auth/SplashScreen.tsx:63
 #: src/view/com/auth/SplashScreen.web.tsx:125
-msgid "Opens flow to sign in to your existing Bluesky account"
+msgid "Opens flow to sign in to your existing Opensky account"
 msgstr ""
 
 #: src/view/com/composer/photos/SelectGifBtn.tsx:36
@@ -5972,8 +5972,8 @@ msgid "Our moderation team has received your report."
 msgstr ""
 
 #: src/screens/Messages/components/ChatDisabled.tsx:28
-msgid "Our moderators have reviewed reports and decided to disable your access to chats on Bluesky."
-msgstr "Tá ár modhnóirí tar éis athbhreithniú a dhéanamh ar thuairiscí. Chinn siad gan ligean duit comhráite a úsáid ar Bluesky."
+msgid "Our moderators have reviewed reports and decided to disable your access to chats on Opensky."
+msgstr "Tá ár modhnóirí tar éis athbhreithniú a dhéanamh ar thuairiscí. Chinn siad gan ligean duit comhráite a úsáid ar Opensky."
 
 #: src/components/Lists.tsx:190
 #: src/view/screens/NotFound.tsx:47
@@ -6151,7 +6151,7 @@ msgid "Please choose your password."
 msgstr "Roghnaigh do phasfhocal, le do thoil."
 
 #: src/components/dialogs/EmailDialog/screens/Update.tsx:290
-msgid "Please click on the link in the email we just sent you to verify your new email address. This is an important step to allow you to continue enjoying all the features of Bluesky."
+msgid "Please click on the link in the email we just sent you to verify your new email address. This is an important step to allow you to continue enjoying all the features of Opensky."
 msgstr ""
 
 #: src/screens/Signup/state.ts:301
@@ -6632,18 +6632,18 @@ msgid "Read more replies"
 msgstr ""
 
 #: src/view/com/auth/SplashScreen.web.tsx:173
-msgid "Read the Bluesky blog"
-msgstr "Léigh blag Bluesky"
+msgid "Read the Opensky blog"
+msgstr "Léigh blag Opensky"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:58
 #: src/screens/Signup/StepInfo/Policies.tsx:84
-msgid "Read the Bluesky Privacy Policy"
-msgstr "Léigh Polasaí Príobháideachta Bluesky"
+msgid "Read the Opensky Privacy Policy"
+msgstr "Léigh Polasaí Príobháideachta Opensky"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:51
 #: src/screens/Signup/StepInfo/Policies.tsx:71
-msgid "Read the Bluesky Terms of Service"
-msgstr "Léigh Téarmaí Seirbhíse Bluesky"
+msgid "Read the Opensky Terms of Service"
+msgstr "Léigh Téarmaí Seirbhíse Opensky"
 
 #: src/screens/Takendown.tsx:162
 #: src/screens/Takendown.tsx:170
@@ -7383,8 +7383,8 @@ msgid "See #{tag} posts by user"
 msgstr ""
 
 #: src/view/com/auth/SplashScreen.web.tsx:178
-msgid "See jobs at Bluesky"
-msgstr "Féach ar phostanna le Bluesky"
+msgid "See jobs at Opensky"
+msgstr "Féach ar phostanna le Opensky"
 
 #: src/view/screens/SavedFeeds.tsx:213
 msgid "See this guide"
@@ -7734,8 +7734,8 @@ msgid "Share this starter pack"
 msgstr "Roinn an pacáiste fáilte seo"
 
 #: src/components/StarterPack/ShareDialog.tsx:80
-msgid "Share this starter pack and help people join your community on Bluesky."
-msgstr "Roinn an pacáiste fáilte seo agus cuidigh le daoine páirt a ghlacadh i do phobal ar Bluesky."
+msgid "Share this starter pack and help people join your community on Opensky."
+msgstr "Roinn an pacáiste fáilte seo agus cuidigh le daoine páirt a ghlacadh i do phobal ar Opensky."
 
 #: src/components/PostControls/ShareMenu/ShareMenuItems.tsx:117
 #: src/components/PostControls/ShareMenu/ShareMenuItems.tsx:120
@@ -7920,7 +7920,7 @@ msgid "Sign in to account that is not listed"
 msgstr ""
 
 #: src/components/dialogs/Signin.tsx:46
-msgid "Sign in to Bluesky or create a new account"
+msgid "Sign in to Opensky or create a new account"
 msgstr ""
 
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:461
@@ -8421,8 +8421,8 @@ msgid "The author of this thread has hidden this reply."
 msgstr "Chuir údar an tsnáithe seo an freagra seo i bhfolach."
 
 #: src/screens/Moderation/index.tsx:407
-msgid "The Bluesky web application"
-msgstr "Feidhmchlár gréasáin Bluesky"
+msgid "The Opensky web application"
+msgstr "Feidhmchlár gréasáin Opensky"
 
 #: src/view/screens/CommunityGuidelines.tsx:38
 msgid "The Community Guidelines have been moved to <0/>"
@@ -8441,8 +8441,8 @@ msgid "The Discover feed now knows what you like"
 msgstr "Tá an fotha Discover eolach ar a bhfuil ag taitneamh leat anois"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:324
-msgid "The experience is better in the app. Download Bluesky now and we'll pick back up where you left off."
-msgstr "Tá an t-eispéireas níos fearr san aip. Íoslódáil Bluesky anois agus tosóidh muid arís san áit ar stop tú."
+msgid "The experience is better in the app. Download Opensky now and we'll pick back up where you left off."
+msgstr "Tá an t-eispéireas níos fearr san aip. Íoslódáil Opensky anois agus tosóidh muid arís san áit ar stop tú."
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:67
 msgid "The feed has been replaced with Discover."
@@ -8461,7 +8461,7 @@ msgid "The following settings will be used as your defaults when creating new po
 msgstr ""
 
 #: src/components/ageAssurance/useAgeAssuranceCopy.ts:11
-msgid "The laws in your location require you to verify you're an adult before accessing certain features on Bluesky, like adult content and direct messaging."
+msgid "The laws in your location require you to verify you're an adult before accessing certain features on Opensky, like adult content and direct messaging."
 msgstr ""
 
 #: src/components/ageAssurance/useAgeAssuranceCopy.ts:14
@@ -8606,8 +8606,8 @@ msgid "There was an unexpected issue in the application. Please let us know if t
 msgstr "D’éirigh fadhb gan choinne leis an aip. Abair linn, le do thoil, má tharla sé sin duit!"
 
 #: src/screens/SignupQueued.tsx:130
-msgid "There's been a rush of new users to Bluesky! We'll activate your account as soon as we can."
-msgstr "Tá ráchairt ar Bluesky le déanaí! Cuirfidh muid do chuntas ag obair chomh luath agus is féidir."
+msgid "There's been a rush of new users to Opensky! We'll activate your account as soon as we can."
+msgstr "Tá ráchairt ar Opensky le déanaí! Cuirfidh muid do chuntas ag obair chomh luath agus is féidir."
 
 #: src/screens/Settings/FollowingFeedPreferences.tsx:65
 msgid "These settings only apply to the Following feed."
@@ -8642,8 +8642,8 @@ msgid "This appeal will be sent to <0>{sourceName}</0>."
 msgstr "Cuirfear an t-achomharc seo chuig <0>{sourceName}</0>."
 
 #: src/screens/Messages/components/ChatDisabled.tsx:104
-msgid "This appeal will be sent to Bluesky's moderation service."
-msgstr "Seolfar an t-achomharc seo go dtí seirbhís modhnóireachta Bluesky."
+msgid "This appeal will be sent to Opensky's moderation service."
+msgstr "Seolfar an t-achomharc seo go dtí seirbhís modhnóireachta Opensky."
 
 #: src/screens/Messages/components/MessageListError.tsx:18
 msgid "This chat was disconnected"
@@ -8667,8 +8667,8 @@ msgid "This content is not available because one of the users involved has block
 msgstr "Níl an t-ábhar seo le feiceáil toisc gur bhlocáil duine de na húsáideoirí an duine eile."
 
 #: src/view/com/posts/PostFeedErrorMessage.tsx:118
-msgid "This content is not viewable without a Bluesky account."
-msgstr "Níl an t-ábhar seo le feiceáil gan chuntas Bluesky."
+msgid "This content is not viewable without a Opensky account."
+msgstr "Níl an t-ábhar seo le feiceáil gan chuntas Opensky."
 
 #: src/screens/Messages/components/ChatListItem.tsx:362
 msgid "This conversation is with a deleted or a deactivated account. Press for options"
@@ -8742,11 +8742,11 @@ msgid "This link is taking you to the following website:"
 msgstr "Téann an nasc seo go dtí an suíomh idirlín seo:"
 
 #: src/screens/List/ListHiddenScreen.tsx:151
-msgid "This list – created by <0>{0}</0> – contains possible violations of Bluesky's community guidelines in its name or description."
+msgid "This list – created by <0>{0}</0> – contains possible violations of Opensky's community guidelines in its name or description."
 msgstr ""
 
 #: src/screens/List/ListHiddenScreen.tsx:146
-msgid "This list – created by you – contains possible violations of Bluesky's community guidelines in its name or description."
+msgid "This list – created by you – contains possible violations of Opensky's community guidelines in its name or description."
 msgstr ""
 
 #: src/view/screens/ProfileList.tsx:962
@@ -8759,8 +8759,8 @@ msgstr "Níl an tseirbhís modhnóireachta ar fáil. Féach tuilleadh sonraí th
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:648
 #: src/view/com/post-thread/PostThreadItem.tsx:966
-msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Bluesky on <1>{1}</1>."
-msgstr "Deir an phostáil seo gur cruthaíodh í ar <0>{0}</0>, ach chonacthas í ar Bluesky den chéad uair ar <1>{1}</1>."
+msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Opensky on <1>{1}</1>."
+msgstr "Deir an phostáil seo gur cruthaíodh í ar <0>{0}</0>, ach chonacthas í ar Opensky den chéad uair ar <1>{1}</1>."
 
 #: src/components/WhoCanReply.tsx:240
 msgid "This post has an unknown type of threadgate on it. Your app may be out of date."
@@ -9285,8 +9285,8 @@ msgid "Uploading video..."
 msgstr "Físeán á uaslódáil..."
 
 #: src/screens/Settings/AppPasswords.tsx:67
-msgid "Use app passwords to sign in to other Bluesky clients without giving full access to your account or password."
-msgstr "Bain úsáid as pasfhocail aipe chun logáil isteach i gcliaint Bluesky eile gan rochtain iomlán a thabhairt ar do chuntas nó ar do phasfhocal."
+msgid "Use app passwords to sign in to other Opensky clients without giving full access to your account or password."
+msgstr "Bain úsáid as pasfhocail aipe chun logáil isteach i gcliaint Opensky eile gan rochtain iomlán a thabhairt ar do chuntas nó ar do phasfhocal."
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:558
 msgid "Use default provider"
@@ -9316,7 +9316,7 @@ msgid "Use this to sign in to the other app along with your handle."
 msgstr ""
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:279
-msgid "Use your account email address, or another real email address you control, in case KWS or Bluesky needs to contact you."
+msgid "Use your account email address, or another real email address you control, in case KWS or Opensky needs to contact you."
 msgstr ""
 
 #: src/view/com/modals/InviteCodes.tsx:201
@@ -9414,7 +9414,7 @@ msgid "Verification Settings"
 msgstr ""
 
 #: src/screens/Moderation/VerificationSettings.tsx:41
-msgid "Verifications on Bluesky work differently than on other platforms. <0>Learn more here.</0>"
+msgid "Verifications on Opensky work differently than on other platforms. <0>Learn more here.</0>"
 msgstr ""
 
 #: src/components/verification/VerificationsDialog.tsx:103
@@ -9716,7 +9716,7 @@ msgid "We estimate {estimatedTime} until your account is ready."
 msgstr "Measaimid go mbeidh do chuntas réidh i gceann {estimatedTime}"
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:196
-msgid "We have partnered with <0>KWS</0> to verify that you’re an adult. When you click \"Begin\" below, KWS will check if you have previously verified your age using this email address for other games/services powered by KWS technology. If not, KWS will email you instructions for verifying your age. When you’re done, you'll be brought back to continue using Bluesky."
+msgid "We have partnered with <0>KWS</0> to verify that you’re an adult. When you click \"Begin\" below, KWS will check if you have previously verified your age using this email address for other games/services powered by KWS technology. If not, KWS will email you instructions for verifying your age. When you’re done, you'll be brought back to continue using Opensky."
 msgstr ""
 
 #: src/components/intents/VerifyEmailIntentDialog.tsx:107
@@ -9724,8 +9724,8 @@ msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "Sheolamar ríomhphost dearbhaithe eile chuig <0>{0}</0>."
 
 #: src/screens/Onboarding/StepFinished.tsx:256
-msgid "We hope you have a wonderful time. Remember, Bluesky is:"
-msgstr "Tá súil againn go mbeidh an-chraic agat anseo. Ná déan dearmad go bhfuil Bluesky:"
+msgid "We hope you have a wonderful time. Remember, Opensky is:"
+msgstr "Tá súil againn go mbeidh an-chraic agat anseo. Ná déan dearmad go bhfuil Opensky:"
 
 #: src/view/com/posts/DiscoverFallbackHeader.tsx:29
 msgid "We ran out of posts from your follows. Here's the latest from <0/>."
@@ -9785,7 +9785,7 @@ msgid "We're having network issues, try again"
 msgstr "Tá fadhbanna líonra againn, bain triail as arís"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:94
-msgid "We’re introducing a new layer of verification on Bluesky — an easy-to-see checkmark."
+msgid "We’re introducing a new layer of verification on Opensky — an easy-to-see checkmark."
 msgstr ""
 
 #: src/screens/Signup/index.tsx:109
@@ -9840,7 +9840,7 @@ msgstr "Cén t-ainm ar mhaith leat a thabhairt ar do phacáiste fáilte?"
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:774
-msgid "What's up?"
+msgid "What's going down?"
 msgstr "Aon scéal?"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:146
@@ -9986,7 +9986,7 @@ msgid "You are creating an account on"
 msgstr ""
 
 #: src/components/ageAssurance/AgeAssuranceAccountCard.tsx:80
-msgid "You are currently unable to access Bluesky's Age Assurance flow. Please <0>contact our moderation team</0> if you believe this is an error."
+msgid "You are currently unable to access Opensky's Age Assurance flow. Please <0>contact our moderation team</0> if you believe this is an error."
 msgstr ""
 
 #: src/screens/SignupQueued.tsx:157
@@ -10087,7 +10087,7 @@ msgid "You don't have any chat requests at the moment."
 msgstr ""
 
 #: src/view/com/modals/InviteCodes.tsx:67
-msgid "You don't have any invite codes yet! We'll send you some when you've been on Bluesky for a little longer."
+msgid "You don't have any invite codes yet! We'll send you some when you've been on Opensky for a little longer."
 msgstr "Níl aon chóid chuiridh agat fós! Cuirfidh muid cúpla cód chugat tar éis duit beagán ama a chaitheamh anseo."
 
 #: src/view/screens/SavedFeeds.tsx:145
@@ -10379,7 +10379,7 @@ msgid "Your account repository, containing all public data records, can be downl
 msgstr "Is féidir cartlann do chuntais, a bhfuil na taifid phoiblí uile inti, a íoslódáil mar chomhad “CAR”. Ní bheidh aon mheáin leabaithe (íomhánna, mar shampla) ná do shonraí príobháideacha inti. Ní mór iad a fháil ar dhóigh eile."
 
 #: src/screens/Takendown.tsx:214
-msgid "Your account was found to be in violation of the <0>Bluesky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
+msgid "Your account was found to be in violation of the <0>Opensky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
 msgstr ""
 
 #: src/screens/Takendown.tsx:154
@@ -10420,7 +10420,7 @@ msgid "Your email appears to be invalid."
 msgstr "Is cosúil go bhfuil do ríomhphost neamhbhailí."
 
 #: src/components/dialogs/EmailDialog/screens/VerificationReminder.tsx:65
-msgid "Your email has not yet been verified. Please verify your email in order to enjoy all the features of Bluesky."
+msgid "Your email has not yet been verified. Please verify your email in order to enjoy all the features of Opensky."
 msgstr ""
 
 #: src/state/shell/progress-guide.tsx:213
@@ -10489,8 +10489,8 @@ msgid "Your preferred language"
 msgstr ""
 
 #: src/screens/Settings/components/DeactivateAccountDialog.tsx:75
-msgid "Your profile, posts, feeds, and lists will no longer be visible to other Bluesky users. You can reactivate your account at any time by logging in."
-msgstr "Ní bheidh do phróifíl, postálacha, fothaí ná liostaí infheicthe ag úsáideoirí eile Bluesky. Is féidir leat do chuntas a athghníomhú uair ar bith trí logáil isteach."
+msgid "Your profile, posts, feeds, and lists will no longer be visible to other Opensky users. You can reactivate your account at any time by logging in."
+msgstr "Ní bheidh do phróifíl, postálacha, fothaí ná liostaí infheicthe ag úsáideoirí eile Opensky. Is féidir leat do chuntas a athghníomhú uair ar bith trí logáil isteach."
 
 #: src/view/com/composer/Composer.tsx:521
 msgid "Your reply has been published"
@@ -10501,8 +10501,8 @@ msgid "Your report will be sent to <0>{0}</0>."
 msgstr ""
 
 #: src/components/dms/ReportDialog.tsx:200
-msgid "Your report will be sent to the Bluesky Moderation Service"
-msgstr "Seolfar do thuairisc go dtí Seirbhís Modhnóireachta Bluesky"
+msgid "Your report will be sent to the Opensky Moderation Service"
+msgstr "Seolfar do thuairisc go dtí Seirbhís Modhnóireachta Opensky"
 
 #: src/screens/Settings/InterestsSettings.tsx:56
 msgid "Your selected interests help us serve you content you care about."

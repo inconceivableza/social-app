@@ -23,13 +23,13 @@ export function Typography() {
       <RichText
         // TODO: This only supports already resolved facets.
         // Resolving them on read is bad anyway.
-        value={`This is rich text. It can have mentions like @bsky.app or links like https://bsky.social`}
+        value={`This is rich text. It can have mentions like @mysky.local.app or links like https://pds.mysky.local.social`}
       />
       <RichText
         selectable
         // TODO: This only supports already resolved facets.
         // Resolving them on read is bad anyway.
-        value={`This is rich text. It can have mentions like @bsky.app or links like https://bsky.social`}
+        value={`This is rich text. It can have mentions like @mysky.local.app or links like https://pds.mysky.local.social`}
         style={[a.text_xl]}
       />
     </View>

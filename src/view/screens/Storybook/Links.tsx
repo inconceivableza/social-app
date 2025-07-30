@@ -20,29 +20,29 @@ export function Links() {
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to="https://bsky.social"
+          to="https://pds.mysky.local.social"
           style={[a.text_md, t.atoms.text_contrast_low]}>
-          Internal (bsky.social)
+          Internal (pds.mysky.local.social)
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to="https://bsky.app/profile/bsky.app"
+          to="https://mysky.local.social/profile/mysky.local.app"
           style={[a.text_md]}>
-          Internal (bsky.app)
+          Internal (mysky.local.app)
         </InlineLinkText>
 
         <Link
           variant="solid"
           color="primary"
           size="large"
-          label="View @bsky.app's profile"
-          to="https://bsky.app/profile/bsky.app">
+          label="View @mysky.local.app's profile"
+          to="https://mysky.local.social/profile/mysky.local.app">
           <ButtonText>Link as a button</ButtonText>
         </Link>
 
         <Link
-          label="View @bsky.app's profile"
-          to="https://bsky.app/profile/bsky.app">
+          label="View @mysky.local.app's profile"
+          to="https://mysky.local.social/profile/mysky.local.app">
           <View
             style={[
               a.flex_row,
@@ -59,7 +59,7 @@ export function Links() {
                 t.atoms.bg_contrast_200,
               ]}
             />
-            <Text>View @bsky.app's profile</Text>
+            <Text>View @mysky.local.app's profile</Text>
           </View>
         </Link>
       </View>

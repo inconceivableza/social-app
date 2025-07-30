@@ -18,11 +18,11 @@ module.exports = function (_config) {
   const IS_DEV = !IS_TESTFLIGHT || !IS_PRODUCTION
 
   const ASSOCIATED_DOMAINS = [
-    'applinks:bsky.app',
-    'applinks:staging.bsky.app',
+    'applinks:mysky.local.app',
+    'applinks:staging.mysky.local.app',
     // Disabling AppClip as build failing
-    // 'appclips:bsky.app',
-    // 'appclips:go.bsky.app', // Allows App Clip to work when scanning QR codes
+    // 'appclips:mysky.local.app',
+    // 'appclips:go.mysky.local.app', // Allows App Clip to work when scanning QR codes
     // When testing local services, enter an ngrok (et al) domain here. It must use a standard HTTP/HTTPS port.
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
@@ -34,10 +34,10 @@ module.exports = function (_config) {
   return {
     expo: {
       version: VERSION,
-      name: 'Bluesky',
-      slug: 'bluesky',
-      scheme: 'bluesky',
-      owner: 'blueskysocial',
+      name: 'Opensky',
+      slug: 'mysky',
+      scheme: 'mysky',
+      owner: 'davidfinc-org',
       runtimeVersion: {
         policy: 'appVersion',
       },
@@ -46,7 +46,7 @@ module.exports = function (_config) {
       primaryColor: '#1083fe',
       ios: {
         supportsTablet: false,
-        bundleIdentifier: 'xyz.blueskyweb.app',
+        bundleIdentifier: 'xyz.mysky.app',
         config: {
           usesNonExemptEncryption: false,
         },
@@ -108,7 +108,7 @@ module.exports = function (_config) {
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': 'group.app.bsky',
+          'com.apple.security.application-groups': 'group.app.mysky',
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -147,10 +147,10 @@ module.exports = function (_config) {
           foregroundImage: './assets/icon-android-foreground.png',
           monochromeImage: './assets/icon-android-foreground.png',
           backgroundImage: './assets/icon-android-background.png',
-          backgroundColor: '#1185FE',
+          backgroundColor: '#6A87A5',
         },
         googleServicesFile: './google-services.json',
-        package: 'xyz.blueskyweb.app',
+        package: 'xyz.mysky.app',
         intentFilters: [
           {
             action: 'VIEW',
@@ -158,7 +158,7 @@ module.exports = function (_config) {
             data: [
               {
                 scheme: 'https',
-                host: 'bsky.app',
+                host: 'mysky.local.app',
               },
               IS_DEV && {
                 scheme: 'http',
@@ -173,7 +173,7 @@ module.exports = function (_config) {
         favicon: './assets/favicon.png',
       },
       updates: {
-        url: 'https://updates.bsky.app/manifest',
+        url: 'https://updates.mysky.local.app/manifest',
         enabled: UPDATES_ENABLED,
         fallbackToCacheTimeout: 30000,
         codeSigningCertificate: UPDATES_ENABLED
@@ -198,7 +198,7 @@ module.exports = function (_config) {
         USE_SENTRY && [
           '@sentry/react-native/expo',
           {
-            organization: 'blueskyweb',
+            organization: 'myskyweb',
             project: 'app',
             url: 'https://sentry.io',
           },
@@ -268,17 +268,17 @@ module.exports = function (_config) {
               resizeMode: 'cover',
               dark: {
                 enableFullScreenImage_legacy: true,
-                backgroundColor: '#001429',
+                backgroundColor: '#371f06',
                 image: './assets/splash-dark.png',
                 resizeMode: 'cover',
               },
             },
             android: {
-              backgroundColor: '#0c7cff',
+              backgroundColor: '#e88627',
               image: './assets/splash-android-icon.png',
               imageWidth: 150,
               dark: {
-                backgroundColor: '#0c2a49',
+                backgroundColor: '#402911',
                 image: './assets/splash-android-icon-dark.png',
                 imageWidth: 150,
               },
@@ -303,7 +303,7 @@ module.exports = function (_config) {
             },
 
             /**
-             * Bluesky+ core set
+             * Opensky+ core set
              */
             core_aurora: {
               ios: './assets/app-icons/ios_icon_core_aurora.png',
@@ -361,32 +361,32 @@ module.exports = function (_config) {
               ios: {
                 appExtensions: [
                   {
-                    targetName: 'Share-with-Bluesky',
-                    bundleIdentifier: 'xyz.blueskyweb.app.Share-with-Bluesky',
+                    targetName: 'Share-with-Opensky',
+                    bundleIdentifier: 'xyz.mysky.app.Share-with-Opensky',
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        'group.app.mysky',
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyNSE',
-                    bundleIdentifier: 'xyz.blueskyweb.app.BlueskyNSE',
+                    bundleIdentifier: 'xyz.mysky.app.BlueskyNSE',
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        'group.app.mysky',
                       ],
                     },
                   },
                   /* {
                     targetName: 'BlueskyClip',
-                    bundleIdentifier: 'xyz.blueskyweb.app.AppClip',
+                    bundleIdentifier: 'xyz.mysky.app.AppClip',
                   }, */
                 ],
               },
             },
           },
-          projectId: '55bd077a-d905-4184-9c7f-94789ba0f302',
+          projectId: '87ab4766-b66c-489c-98ca-65e740fa205b',
         },
       },
     },

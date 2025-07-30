@@ -123,7 +123,7 @@ msgstr "{0, plural, other {yeniden gönderi}}"
 msgid "{0, plural, other {{1} posts}}"
 msgstr "{0, plural, other {{1} gönderi}}"
 
-#. Number of users (always at least 25) who have joined Bluesky using a specific starter pack
+#. Number of users (always at least 25) who have joined Opensky using a specific starter pack
 #: src/screens/StarterPack/StarterPackScreen.tsx:490
 msgid "{0, plural, other {# people have}} used this starter pack!"
 msgstr "{0, plural, other {# kişi}} bu başlangıç paketini kullandı!"
@@ -397,7 +397,7 @@ msgstr "{hours, plural, other {# saat {minutesString}}}"
 msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr "{hours, plural, other {# saat}}"
 
-#. Number of users (always at least 50) who have joined Bluesky using a specific starter pack
+#. Number of users (always at least 50) who have joined Opensky using a specific starter pack
 #: src/components/StarterPack/StarterPackCard.tsx:101
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr "{joinedAllTimeCount, plural, other {# kullanıcı}} katıldı!"
@@ -411,12 +411,12 @@ msgid "{notificationCount, plural, one {# unread item} other {# unread items}}"
 msgstr "{notificationCount, plural, other {# okunmamış öğe}}"
 
 #: src/components/NewskieDialog.tsx:116
-msgid "{profileName} joined Bluesky {0} ago"
-msgstr "{profileName} Bluesky'a {0} önce katıldı"
+msgid "{profileName} joined Opensky {0} ago"
+msgstr "{profileName} Opensky'a {0} önce katıldı"
 
 #: src/components/NewskieDialog.tsx:111
-msgid "{profileName} joined Bluesky using a starter pack {0} ago"
-msgstr "{profileName} Bluesky'a başlangıç paketi kullanarak {0} önce katıldı"
+msgid "{profileName} joined Opensky using a starter pack {0} ago"
+msgstr "{profileName} Opensky'a başlangıç paketi kullanarak {0} önce katıldı"
 
 #. The trending topic rank, i.e. "1. March Madness", "2. The Bachelor"
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:111
@@ -609,8 +609,8 @@ msgid "Account unmuted"
 msgstr "Hesap susturulması kaldırıldı"
 
 #: src/components/verification/VerifierDialog.tsx:96
-msgid "Accounts with a scalloped blue check mark <0><1/></0> can verify others. These trusted verifiers are selected by Bluesky."
-msgstr "Çıkıntılı onay tikine sahip hesaplar <0><1/></0> başka hesapları doğrulayabilir. Bu güvenilir doğrulayıcılar Bluesky tarafından seçilir."
+msgid "Accounts with a scalloped blue check mark <0><1/></0> can verify others. These trusted verifiers are selected by Opensky."
+msgstr "Çıkıntılı onay tikine sahip hesaplar <0><1/></0> başka hesapları doğrulayabilir. Bu güvenilir doğrulayıcılar Opensky tarafından seçilir."
 
 #: src/lib/hooks/useNotificationHandler.ts:182
 #: src/screens/Settings/NotificationSettings/ActivityNotificationSettings.tsx:102
@@ -778,8 +778,8 @@ msgid "Adult Content"
 msgstr "Yetişkin İçerik"
 
 #: src/screens/Moderation/index.tsx:404
-msgid "Adult content can only be enabled via the Web at <0>bsky.app</0>."
-msgstr "Yetişkin içerik yalnızca Web üzerinden <0>bsky.app</0> etkinleştirilebilir."
+msgid "Adult content can only be enabled via the Web at <0>mysky.local.app</0>."
+msgstr "Yetişkin içerik yalnızca Web üzerinden <0>mysky.local.app</0> etkinleştirilebilir."
 
 #: src/components/moderation/LabelPreference.tsx:247
 msgid "Adult content is disabled."
@@ -949,8 +949,8 @@ msgstr "Video yüklenirken bir hata oluştu."
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:84
 #: src/components/verification/VerifierDialog.tsx:86
-msgid "An illustration showing that Bluesky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts."
-msgstr "Bluesky'ın güvenilir doğrulayıcıları seçmesini ve güvenilir doğrulayıcıların da bireysel hesapları doğrulamasını gösteren bir çizim."
+msgid "An illustration showing that Opensky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts."
+msgstr "Opensky'ın güvenilir doğrulayıcıları seçmesini ve güvenilir doğrulayıcıların da bireysel hesapları doğrulamasını gösteren bir çizim."
 
 #: src/components/moderation/ReportDialog/utils/useReportOptions.ts:28
 #: src/lib/moderation/useReportOptions.ts:28
@@ -975,8 +975,8 @@ msgid "An issue occurred, please try again."
 msgstr "Bir sorun oluştu, lütfen tekrar deneyin."
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:118
-msgid "An mockup of a iPhone showing the Bluesky app open to the profile of a verified user with a blue checkmark next to their display name."
-msgstr "Bir kurgu iPhone açık Bluesky uygulamasında doğrulanmış bir kullanıcıyı adının yanındaki doğrulanma tikiyle birlikte gösteriyor."
+msgid "An mockup of a iPhone showing the Opensky app open to the profile of a verified user with a blue checkmark next to their display name."
+msgstr "Bir kurgu iPhone açık Opensky uygulamasında doğrulanmış bir kullanıcıyı adının yanındaki doğrulanma tikiyle birlikte gösteriyor."
 
 #: src/screens/Onboarding/StepInterests/index.tsx:185
 msgid "an unknown error occurred"
@@ -1001,8 +1001,8 @@ msgid "Animated GIF"
 msgstr "Animasyonlu GIF"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:37
-msgid "Announcing verification on Bluesky"
-msgstr "Bluesky'da doğrulamayı duyurma"
+msgid "Announcing verification on Opensky"
+msgstr "Opensky'da doğrulamayı duyurma"
 
 #: src/components/moderation/ReportDialog/utils/useReportOptions.ts:33
 #: src/lib/moderation/useReportOptions.ts:33
@@ -1356,55 +1356,55 @@ msgstr "Blog"
 
 #: src/view/com/auth/server-input/index.tsx:136
 #: src/view/com/auth/server-input/index.tsx:137
-msgid "Bluesky"
-msgstr "Bluesky"
+msgid "Opensky"
+msgstr "Opensky"
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:662
 #: src/view/com/post-thread/PostThreadItem.tsx:980
-msgid "Bluesky cannot confirm the authenticity of the claimed date."
-msgstr "Bluesky iddia edilen tarihin doğruluğunu onaylayamaz."
+msgid "Opensky cannot confirm the authenticity of the claimed date."
+msgstr "Opensky iddia edilen tarihin doğruluğunu onaylayamaz."
 
 #: src/screens/Settings/AppIconSettings/useAppIconSets.ts:165
 msgctxt "Name of app icon variant"
-msgid "Bluesky Classic™"
-msgstr "Bluesky Klasik™"
+msgid "Opensky Classic™"
+msgstr "Opensky Klasik™"
 
 #: src/view/com/auth/server-input/index.tsx:212
-msgid "Bluesky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
-msgstr "Bluesky, barındırma sağlayıcınızı seçebileceğiniz açık bir ağdır. Geliştiriciyseniz kendi sunucunuzu barındırabilirsiniz."
+msgid "Opensky is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
+msgstr "Opensky, barındırma sağlayıcınızı seçebileceğiniz açık bir ağdır. Geliştiriciyseniz kendi sunucunuzu barındırabilirsiniz."
 
 #: src/view/com/auth/server-input/index.tsx:149
-msgid "Bluesky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Bluesky Social option."
-msgstr "Bluesky kendi sağlayıcınızı seçebildiğiniz açık bir ağdır. Eğer burada yeniyseniz varsayılan \"Bluesky Social\" seçeneğinde kalmanızı öneririz."
+msgid "Opensky is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default Opensky Social option."
+msgstr "Opensky kendi sağlayıcınızı seçebildiğiniz açık bir ağdır. Eğer burada yeniyseniz varsayılan \"Opensky Social\" seçeneğinde kalmanızı öneririz."
 
 #: src/components/ProgressGuide/List.tsx:53
 #: src/components/ProgressGuide/List.tsx:70
-msgid "Bluesky is better with friends!"
-msgstr "Bluesky arkadaşlarla daha güzel!"
+msgid "Opensky is better with friends!"
+msgstr "Opensky arkadaşlarla daha güzel!"
 
 #: src/screens/Takendown.tsx:217
-msgid "Bluesky Social Terms of Service"
-msgstr "Bluesky Social Kullanım Koşulları"
+msgid "Opensky Social Terms of Service"
+msgstr "Opensky Social Kullanım Koşulları"
 
 #: src/components/StarterPack/ProfileStarterPacks.tsx:310
-msgid "Bluesky will choose a set of recommended accounts from people in your network."
-msgstr "Bluesky, ağınızdaki kişilerden bir dizi önerilen hesap seçecektir."
+msgid "Opensky will choose a set of recommended accounts from people in your network."
+msgstr "Opensky, ağınızdaki kişilerden bir dizi önerilen hesap seçecektir."
 
 #: src/screens/Settings/components/PwiOptOut.tsx:99
-msgid "Bluesky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
-msgstr "Bluesky, profilinizi ve gönderilerinizi oturum açmamış kullanıcılara göstermeyecektir. Diğer uygulamalar bu isteği yerine getirmeyebilir. Bu, hesabınızı özel yapmaz."
+msgid "Opensky will not show your profile and posts to logged-out users. Other apps may not honor this request. This does not make your account private."
+msgstr "Opensky, profilinizi ve gönderilerinizi oturum açmamış kullanıcılara göstermeyecektir. Diğer uygulamalar bu isteği yerine getirmeyebilir. Bu, hesabınızı özel yapmaz."
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:132
-msgid "Bluesky will proactively verify notable and authentic accounts."
-msgstr "Bluesky, kayda değer ve gerçek hesapları inisiyatif alarak doğrulayacaktır."
+msgid "Opensky will proactively verify notable and authentic accounts."
+msgstr "Opensky, kayda değer ve gerçek hesapları inisiyatif alarak doğrulayacaktır."
 
 #: src/screens/Settings/AppIconSettings/index.tsx:99
-msgid "Bluesky+"
-msgstr "Bluesky+"
+msgid "Opensky+"
+msgstr "Opensky+"
 
 #: src/screens/Settings/AppIconSettings/index.tsx:102
-msgid "Bluesky+ icons"
-msgstr "Bluesky+ simgeleri"
+msgid "Opensky+ icons"
+msgstr "Opensky+ simgeleri"
 
 #: src/lib/moderation/useLabelBehaviorDescription.ts:53
 msgid "Blur images"
@@ -2363,8 +2363,8 @@ msgid "Customize who can interact with this post."
 msgstr "Bu gönderiyle kimin etkileşime geçebileceğini özelleştirin."
 
 #: src/screens/Onboarding/Layout.tsx:56
-msgid "Customizes your Bluesky experience"
-msgstr "Bluesky deneyiminizi özelleştirir"
+msgid "Customizes your Opensky experience"
+msgstr "Opensky deneyiminizi özelleştirir"
 
 #: src/components/dialogs/Embed.tsx:167
 #: src/components/dialogs/Embed.tsx:169
@@ -2764,8 +2764,8 @@ msgid "Double tap to like"
 msgstr "Beğenmek için çift dokunun"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:321
-msgid "Download Bluesky"
-msgstr "Bluesky'ı İndir"
+msgid "Download Opensky"
+msgstr "Opensky'ı İndir"
 
 #: src/screens/Settings/components/ExportCarDialog.tsx:79
 #: src/screens/Settings/components/ExportCarDialog.tsx:84
@@ -3579,8 +3579,8 @@ msgid "Find people to follow"
 msgstr "Takip edilecek kişiler bulun"
 
 #: src/screens/Search/Shell.tsx:476
-msgid "Find posts, users, and feeds on Bluesky"
-msgstr "Bluesky'da gönderileri, kullanıcıları ve akışları bulun"
+msgid "Find posts, users, and feeds on Opensky"
+msgstr "Opensky'da gönderileri, kullanıcıları ve akışları bulun"
 
 #: src/screens/StarterPack/Wizard/index.tsx:195
 msgid "Finish"
@@ -4434,7 +4434,7 @@ msgstr "Şu anda yalnızca siz varsınız! Yukarıdan arama yaparak başlangıç
 msgid "Job ID: {0}"
 msgstr "İş ID: {0}"
 
-#. Link to a page with job openings at Bluesky
+#. Link to a page with job openings at Opensky
 #: src/view/com/auth/SplashScreen.web.tsx:180
 msgid "Jobs"
 msgstr "İşler"
@@ -4443,8 +4443,8 @@ msgstr "İşler"
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:211
 #: src/screens/StarterPack/StarterPackScreen.tsx:466
 #: src/screens/StarterPack/StarterPackScreen.tsx:477
-msgid "Join Bluesky"
-msgstr "Bluesky'a Katıl"
+msgid "Join Opensky"
+msgstr "Opensky'a Katıl"
 
 #: src/components/StarterPack/QrCode.tsx:68
 #: src/view/shell/NavSignupCard.tsx:40
@@ -4554,8 +4554,8 @@ msgid "Learn more about age assurance"
 msgstr "Yaş güvencesiyle ilgili daha çok bilgi edinin"
 
 #: src/view/com/auth/SplashScreen.web.tsx:168
-msgid "Learn more about Bluesky"
-msgstr "Bluesky hakkında daha fazlasını öğren"
+msgid "Learn more about Opensky"
+msgstr "Opensky hakkında daha fazlasını öğren"
 
 #: src/view/com/auth/server-input/index.tsx:218
 msgid "Learn more about self hosting your PDS."
@@ -4576,13 +4576,13 @@ msgstr "Bu uyarı hakkında daha fazla bilgi edinin"
 
 #: src/components/verification/VerificationsDialog.tsx:150
 #: src/components/verification/VerifierDialog.tsx:117
-msgid "Learn more about verification on Bluesky"
-msgstr "Bluesky'da doğrulama ile ilgili daha fazla bilgi edinin"
+msgid "Learn more about verification on Opensky"
+msgstr "Opensky'da doğrulama ile ilgili daha fazla bilgi edinin"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:128
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:131
-msgid "Learn more about what is public on Bluesky."
-msgstr "Bluesky'da neyin herkese açık olduğu hakkında daha fazla bilgi edinin."
+msgid "Learn more about what is public on Opensky."
+msgstr "Opensky'da neyin herkese açık olduğu hakkında daha fazla bilgi edinin."
 
 #: src/components/ageAssurance/AgeAssuranceAdmonition.tsx:86
 msgid "Learn more in your <0>account settings.</0>"
@@ -4616,8 +4616,8 @@ msgstr "Tüm dilleri görmek için burada hiçbirini seçmeyin."
 
 #: src/components/dialogs/LinkWarning.tsx:67
 #: src/components/dialogs/LinkWarning.tsx:75
-msgid "Leaving Bluesky"
-msgstr "Bluesky'dan ayrılıyor"
+msgid "Leaving Opensky"
+msgstr "Opensky'dan ayrılıyor"
 
 #: src/screens/SignupQueued.tsx:155
 msgid "left to go."
@@ -4853,13 +4853,13 @@ msgid "Logged-out visibility"
 msgstr "Çıkış yapan görünürlüğü"
 
 #: src/view/shell/desktop/RightNav.tsx:130
-msgid "Logo by @sawaratsuki.bsky.social"
-msgstr "Logo: @sawaratsuki.bsky.social"
+msgid "Logo by @sawaratsuki.pds.mysky.local.social"
+msgstr "Logo: @sawaratsuki.pds.mysky.local.social"
 
 #: src/view/shell/desktop/RightNav.tsx:127
 #: src/view/shell/Drawer.tsx:672
-msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
-msgstr "Logo: <0>@sawaratsuki.bsky.social</0>"
+msgid "Logo by <0>@sawaratsuki.pds.mysky.local.social</0>"
+msgstr "Logo: <0>@sawaratsuki.pds.mysky.local.social</0>"
 
 #: src/components/RichTextTag.tsx:53
 msgid "Long press to open tag menu for #{tag}"
@@ -5580,8 +5580,8 @@ msgid "Note about sharing"
 msgstr "Paylaşıma dair dikkatinize"
 
 #: src/screens/Settings/PrivacyAndSecuritySettings.tsx:117
-msgid "Note: Bluesky is an open and public network. This setting only limits the visibility of your content on the Bluesky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
-msgstr "Not: Bluesky açık ve kamusal bir ağdır. Bu ayar yalnızca içeriğinizin Bluesky uygulaması ve web sitesindeki görünürlüğünü sınırlar, diğer uygulamalar bu ayarı dikkate almayabilir. İçeriğiniz hala diğer uygulamalar ve web siteleri tarafından çıkış yapan kullanıcılara gösterilebilir."
+msgid "Note: Opensky is an open and public network. This setting only limits the visibility of your content on the Opensky app and website, and other apps may not respect this setting. Your content may still be shown to logged-out users by other apps and websites."
+msgstr "Not: Opensky açık ve kamusal bir ağdır. Bu ayar yalnızca içeriğinizin Opensky uygulaması ve web sitesindeki görünürlüğünü sınırlar, diğer uygulamalar bu ayarı dikkate almayabilir. İçeriğiniz hala diğer uygulamalar ve web siteleri tarafından çıkış yapan kullanıcılara gösterilebilir."
 
 #: src/components/PostControls/ShareMenu/ShareMenuItems.web.tsx:134
 msgid "Note: This post is only visible to logged-in users."
@@ -5875,13 +5875,13 @@ msgstr "Emoji seçiciyi açar"
 
 #: src/view/com/auth/SplashScreen.tsx:49
 #: src/view/com/auth/SplashScreen.web.tsx:111
-msgid "Opens flow to create a new Bluesky account"
-msgstr "Yeni bir Bluesky hesabı oluşturma adımlarını açar"
+msgid "Opens flow to create a new Opensky account"
+msgstr "Yeni bir Opensky hesabı oluşturma adımlarını açar"
 
 #: src/view/com/auth/SplashScreen.tsx:63
 #: src/view/com/auth/SplashScreen.web.tsx:125
-msgid "Opens flow to sign in to your existing Bluesky account"
-msgstr "Var olan Bluesky hesabınıza giriş yapma adımlarını açar"
+msgid "Opens flow to sign in to your existing Opensky account"
+msgstr "Var olan Opensky hesabınıza giriş yapma adımlarını açar"
 
 #: src/view/com/composer/photos/SelectGifBtn.tsx:36
 msgid "Opens GIF select dialog"
@@ -5972,8 +5972,8 @@ msgid "Our moderation team has received your report."
 msgstr "Moderasyon ekibimiz raporunuzu aldı."
 
 #: src/screens/Messages/components/ChatDisabled.tsx:28
-msgid "Our moderators have reviewed reports and decided to disable your access to chats on Bluesky."
-msgstr "Moderatörlerimiz raporları inceledi ve Bluesky'daki sohbetlere erişiminizi engellemeye karar verdi."
+msgid "Our moderators have reviewed reports and decided to disable your access to chats on Opensky."
+msgstr "Moderatörlerimiz raporları inceledi ve Opensky'daki sohbetlere erişiminizi engellemeye karar verdi."
 
 #: src/components/Lists.tsx:190
 #: src/view/screens/NotFound.tsx:47
@@ -6151,8 +6151,8 @@ msgid "Please choose your password."
 msgstr "Şifrenizi seçin."
 
 #: src/components/dialogs/EmailDialog/screens/Update.tsx:290
-msgid "Please click on the link in the email we just sent you to verify your new email address. This is an important step to allow you to continue enjoying all the features of Bluesky."
-msgstr "Yeni e-posta adresinizi doğrulamak için lütfen size şimdi yolladığımız e-postadaki bağlantıya tıklayın. Bu, Bluesky'ın tüm özelliklerinin tadını çıkarabilmeniz için önemli bir adımdır."
+msgid "Please click on the link in the email we just sent you to verify your new email address. This is an important step to allow you to continue enjoying all the features of Opensky."
+msgstr "Yeni e-posta adresinizi doğrulamak için lütfen size şimdi yolladığımız e-postadaki bağlantıya tıklayın. Bu, Opensky'ın tüm özelliklerinin tadını çıkarabilmeniz için önemli bir adımdır."
 
 #: src/screens/Signup/state.ts:301
 msgid "Please complete the verification captcha."
@@ -6632,18 +6632,18 @@ msgid "Read more replies"
 msgstr "Daha fazla yanıt oku"
 
 #: src/view/com/auth/SplashScreen.web.tsx:173
-msgid "Read the Bluesky blog"
-msgstr "Bluesky blog'unu oku"
+msgid "Read the Opensky blog"
+msgstr "Opensky blog'unu oku"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:58
 #: src/screens/Signup/StepInfo/Policies.tsx:84
-msgid "Read the Bluesky Privacy Policy"
-msgstr "Bluesky Gizlilik Politikasını Oku"
+msgid "Read the Opensky Privacy Policy"
+msgstr "Opensky Gizlilik Politikasını Oku"
 
 #: src/screens/Signup/StepInfo/Policies.tsx:51
 #: src/screens/Signup/StepInfo/Policies.tsx:71
-msgid "Read the Bluesky Terms of Service"
-msgstr "Bluesky Hizmet Şartlarını Oku"
+msgid "Read the Opensky Terms of Service"
+msgstr "Opensky Hizmet Şartlarını Oku"
 
 #: src/screens/Takendown.tsx:162
 #: src/screens/Takendown.tsx:170
@@ -7383,8 +7383,8 @@ msgid "See #{tag} posts by user"
 msgstr "Kullanıcının #{tag} gönderilerini gör"
 
 #: src/view/com/auth/SplashScreen.web.tsx:178
-msgid "See jobs at Bluesky"
-msgstr "Bluesky'daki iş fırsatlarını görün"
+msgid "See jobs at Opensky"
+msgstr "Opensky'daki iş fırsatlarını görün"
 
 #: src/view/screens/SavedFeeds.tsx:213
 msgid "See this guide"
@@ -7734,8 +7734,8 @@ msgid "Share this starter pack"
 msgstr "Bu başlangıç paketini paylaş"
 
 #: src/components/StarterPack/ShareDialog.tsx:80
-msgid "Share this starter pack and help people join your community on Bluesky."
-msgstr "Bu başlangıç paketini paylaş ve insanların Bluesky'deki topluluğunuza katılmasına yardımcı ol."
+msgid "Share this starter pack and help people join your community on Opensky."
+msgstr "Bu başlangıç paketini paylaş ve insanların Opensky'deki topluluğunuza katılmasına yardımcı ol."
 
 #: src/components/PostControls/ShareMenu/ShareMenuItems.tsx:117
 #: src/components/PostControls/ShareMenu/ShareMenuItems.tsx:120
@@ -7920,8 +7920,8 @@ msgid "Sign in to account that is not listed"
 msgstr "Listelenmeyen bir hesaba giriş yap"
 
 #: src/components/dialogs/Signin.tsx:46
-msgid "Sign in to Bluesky or create a new account"
-msgstr "Bluesky'da oturum aç veya yeni bir üyelik oluştur"
+msgid "Sign in to Opensky or create a new account"
+msgstr "Opensky'da oturum aç veya yeni bir üyelik oluştur"
 
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:461
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:463
@@ -8421,8 +8421,8 @@ msgid "The author of this thread has hidden this reply."
 msgstr "Bu konunun yazarı bu yanıtı gizlemiş."
 
 #: src/screens/Moderation/index.tsx:407
-msgid "The Bluesky web application"
-msgstr "Bluesky web uygulaması"
+msgid "The Opensky web application"
+msgstr "Opensky web uygulaması"
 
 #: src/view/screens/CommunityGuidelines.tsx:38
 msgid "The Community Guidelines have been moved to <0/>"
@@ -8441,8 +8441,8 @@ msgid "The Discover feed now knows what you like"
 msgstr "Keşif akışı (\"Discover\") artık ne beğendiğinizi biliyor"
 
 #: src/screens/StarterPack/StarterPackLandingScreen.tsx:324
-msgid "The experience is better in the app. Download Bluesky now and we'll pick back up where you left off."
-msgstr "Uygulama deneyimi daha iyi. Bluesky'ı şimdi indirin ve kaldığınız yerden devam edelim."
+msgid "The experience is better in the app. Download Opensky now and we'll pick back up where you left off."
+msgstr "Uygulama deneyimi daha iyi. Opensky'ı şimdi indirin ve kaldığınız yerden devam edelim."
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:67
 msgid "The feed has been replaced with Discover."
@@ -8461,8 +8461,8 @@ msgid "The following settings will be used as your defaults when creating new po
 msgstr "Aşağıdaki ayarlar yeni gönderi oluştururken varsayılan olarak kullanılacaktır. Bunları içerik üreticisine ait belirli bir gönderi için düzenleyebilirsiniz."
 
 #: src/components/ageAssurance/useAgeAssuranceCopy.ts:11
-msgid "The laws in your location require you to verify you're an adult before accessing certain features on Bluesky, like adult content and direct messaging."
-msgstr "Bulunduğunuz bölgedeki yasalar Bluesky'daki yetişkin içerik ve doğrudan mesajlaşma gibi belirli özelliklere ulaşmadan önce bir yetişkin olduğunuzu onaylamanızı gerektirmektedir."
+msgid "The laws in your location require you to verify you're an adult before accessing certain features on Opensky, like adult content and direct messaging."
+msgstr "Bulunduğunuz bölgedeki yasalar Opensky'daki yetişkin içerik ve doğrudan mesajlaşma gibi belirli özelliklere ulaşmadan önce bir yetişkin olduğunuzu onaylamanızı gerektirmektedir."
 
 #: src/components/ageAssurance/useAgeAssuranceCopy.ts:14
 msgid "The laws in your location require you to verify you're an adult to access certain features. Tap to learn more."
@@ -8606,8 +8606,8 @@ msgid "There was an unexpected issue in the application. Please let us know if t
 msgstr "Uygulamada beklenmeyen bir sorun oluştu. Bu size de olduysa lütfen bize bildirin!"
 
 #: src/screens/SignupQueued.tsx:130
-msgid "There's been a rush of new users to Bluesky! We'll activate your account as soon as we can."
-msgstr "Bluesky'e bir dizi yeni kullanıcı geldi! Hesabınızı en kısa sürede etkinleştireceğiz."
+msgid "There's been a rush of new users to Opensky! We'll activate your account as soon as we can."
+msgstr "Opensky'e bir dizi yeni kullanıcı geldi! Hesabınızı en kısa sürede etkinleştireceğiz."
 
 #: src/screens/Settings/FollowingFeedPreferences.tsx:65
 msgid "These settings only apply to the Following feed."
@@ -8642,8 +8642,8 @@ msgid "This appeal will be sent to <0>{sourceName}</0>."
 msgstr "Bu itiraz <0>{sourceName}</0> hesabına yollanacaktır."
 
 #: src/screens/Messages/components/ChatDisabled.tsx:104
-msgid "This appeal will be sent to Bluesky's moderation service."
-msgstr "Bu itiraz Bluesky'ın moderasyon hizmetine gönderilecektir."
+msgid "This appeal will be sent to Opensky's moderation service."
+msgstr "Bu itiraz Opensky'ın moderasyon hizmetine gönderilecektir."
 
 #: src/screens/Messages/components/MessageListError.tsx:18
 msgid "This chat was disconnected"
@@ -8667,8 +8667,8 @@ msgid "This content is not available because one of the users involved has block
 msgstr "Bu içerik, içerikte yer alan kullanıcılardan biri diğerini engellediği için mevcut değil."
 
 #: src/view/com/posts/PostFeedErrorMessage.tsx:118
-msgid "This content is not viewable without a Bluesky account."
-msgstr "Bu içerik, bir Bluesky hesabı olmadan görüntülenemez."
+msgid "This content is not viewable without a Opensky account."
+msgstr "Bu içerik, bir Opensky hesabı olmadan görüntülenemez."
 
 #: src/screens/Messages/components/ChatListItem.tsx:362
 msgid "This conversation is with a deleted or a deactivated account. Press for options"
@@ -8742,12 +8742,12 @@ msgid "This link is taking you to the following website:"
 msgstr "Bu bağlantı sizi aşağıdaki web sitesine götürüyor:"
 
 #: src/screens/List/ListHiddenScreen.tsx:151
-msgid "This list – created by <0>{0}</0> – contains possible violations of Bluesky's community guidelines in its name or description."
-msgstr "<0>{0}</0> tarafından oluşturulan bu liste, adında ya da açıklamasında Bluesky topluluk kuralları ihlalleri içeriyor olabilir."
+msgid "This list – created by <0>{0}</0> – contains possible violations of Opensky's community guidelines in its name or description."
+msgstr "<0>{0}</0> tarafından oluşturulan bu liste, adında ya da açıklamasında Opensky topluluk kuralları ihlalleri içeriyor olabilir."
 
 #: src/screens/List/ListHiddenScreen.tsx:146
-msgid "This list – created by you – contains possible violations of Bluesky's community guidelines in its name or description."
-msgstr "Sizin tarafınızdan oluşturulan bu liste, adında ya da açıklamasında Bluesky topluluk kuralları ihlalleri içeriyor olabilir."
+msgid "This list – created by you – contains possible violations of Opensky's community guidelines in its name or description."
+msgstr "Sizin tarafınızdan oluşturulan bu liste, adında ya da açıklamasında Opensky topluluk kuralları ihlalleri içeriyor olabilir."
 
 #: src/view/screens/ProfileList.tsx:962
 msgid "This list is empty."
@@ -8759,8 +8759,8 @@ msgstr "Bu moderasyon hizmeti kullanılamıyor. Daha fazla ayrıntı için aşa�
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:648
 #: src/view/com/post-thread/PostThreadItem.tsx:966
-msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Bluesky on <1>{1}</1>."
-msgstr "Bu gönderi <0>{0}</0> tarihinde oluşturulduğunu beyan ediyor, ancak Bluesky'da ilk olarak <1>{1}</1> tarihinde görüldü."
+msgid "This post claims to have been created on <0>{0}</0>, but was first seen by Opensky on <1>{1}</1>."
+msgstr "Bu gönderi <0>{0}</0> tarihinde oluşturulduğunu beyan ediyor, ancak Opensky'da ilk olarak <1>{1}</1> tarihinde görüldü."
 
 #: src/components/WhoCanReply.tsx:240
 msgid "This post has an unknown type of threadgate on it. Your app may be out of date."
@@ -9285,8 +9285,8 @@ msgid "Uploading video..."
 msgstr "Video yükleniyor..."
 
 #: src/screens/Settings/AppPasswords.tsx:67
-msgid "Use app passwords to sign in to other Bluesky clients without giving full access to your account or password."
-msgstr "Hesabınıza veya şifrenize tam erişim vermeden diğer Bluesky istemcilerine giriş yapmak için uygulama şifrelerini kullanın."
+msgid "Use app passwords to sign in to other Opensky clients without giving full access to your account or password."
+msgstr "Hesabınıza veya şifrenize tam erişim vermeden diğer Opensky istemcilerine giriş yapmak için uygulama şifrelerini kullanın."
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:558
 msgid "Use default provider"
@@ -9316,8 +9316,8 @@ msgid "Use this to sign in to the other app along with your handle."
 msgstr "Bunu, kullanıcı adınızla birlikte diğer uygulamada giriş yapmak için kullanın."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:279
-msgid "Use your account email address, or another real email address you control, in case KWS or Bluesky needs to contact you."
-msgstr "KWS veya Bluesky'ın size ulaşma ihtimaline karşın hesabınızın e-posta adresini ya da sizin kontrolünüzde olan başka bir gerçek e-posta adresi kullanın."
+msgid "Use your account email address, or another real email address you control, in case KWS or Opensky needs to contact you."
+msgstr "KWS veya Opensky'ın size ulaşma ihtimaline karşın hesabınızın e-posta adresini ya da sizin kontrolünüzde olan başka bir gerçek e-posta adresi kullanın."
 
 #: src/view/com/modals/InviteCodes.tsx:201
 msgid "Used by:"
@@ -9414,8 +9414,8 @@ msgid "Verification Settings"
 msgstr "Doğrulama Ayarları"
 
 #: src/screens/Moderation/VerificationSettings.tsx:41
-msgid "Verifications on Bluesky work differently than on other platforms. <0>Learn more here.</0>"
-msgstr "Bluesky'daki doğrulamalar diğer platformlardan farklı çalışır. <0>Buradan daha fazlasını öğrenin.</0>"
+msgid "Verifications on Opensky work differently than on other platforms. <0>Learn more here.</0>"
+msgstr "Opensky'daki doğrulamalar diğer platformlardan farklı çalışır. <0>Buradan daha fazlasını öğrenin.</0>"
 
 #: src/components/verification/VerificationsDialog.tsx:103
 msgid "Verified by:"
@@ -9716,16 +9716,16 @@ msgid "We estimate {estimatedTime} until your account is ready."
 msgstr "Hesabınızın hazır olmasına {estimatedTime} tahmin ediyoruz."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:196
-msgid "We have partnered with <0>KWS</0> to verify that you’re an adult. When you click \"Begin\" below, KWS will check if you have previously verified your age using this email address for other games/services powered by KWS technology. If not, KWS will email you instructions for verifying your age. When you’re done, you'll be brought back to continue using Bluesky."
-msgstr "Yetişkin olduğunuzu onaylamak için <0>KWS</0> ile işbirliği yapmaktayız. Aşağıdaki \"Başla\"ya tıkladığınızda KWS verdiğiniz email adresini kullanarak KWS teknolojisi kullanan başka oyunlar/hizmetler tarafından daha önce onaylı olup olmadığınızı kontrol edecektir. Eğer değilse, KWS size yaşınızı onaylama adımlarını e-posta ile yollayacaktır. Bitirdiğinizde Bluesky'ı kullanmaya devam etmeniz için geri yönlendirileceksiniz."
+msgid "We have partnered with <0>KWS</0> to verify that you’re an adult. When you click \"Begin\" below, KWS will check if you have previously verified your age using this email address for other games/services powered by KWS technology. If not, KWS will email you instructions for verifying your age. When you’re done, you'll be brought back to continue using Opensky."
+msgstr "Yetişkin olduğunuzu onaylamak için <0>KWS</0> ile işbirliği yapmaktayız. Aşağıdaki \"Başla\"ya tıkladığınızda KWS verdiğiniz email adresini kullanarak KWS teknolojisi kullanan başka oyunlar/hizmetler tarafından daha önce onaylı olup olmadığınızı kontrol edecektir. Eğer değilse, KWS size yaşınızı onaylama adımlarını e-posta ile yollayacaktır. Bitirdiğinizde Opensky'ı kullanmaya devam etmeniz için geri yönlendirileceksiniz."
 
 #: src/components/intents/VerifyEmailIntentDialog.tsx:107
 msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "<0>{0}</0> adresine başka bir doğrulama e-postası gönderdik."
 
 #: src/screens/Onboarding/StepFinished.tsx:256
-msgid "We hope you have a wonderful time. Remember, Bluesky is:"
-msgstr "Harika vakit geçirmenizi umuyoruz. Unutmayın, Bluesky:"
+msgid "We hope you have a wonderful time. Remember, Opensky is:"
+msgstr "Harika vakit geçirmenizi umuyoruz. Unutmayın, Opensky:"
 
 #: src/view/com/posts/DiscoverFallbackHeader.tsx:29
 msgid "We ran out of posts from your follows. Here's the latest from <0/>."
@@ -9785,8 +9785,8 @@ msgid "We're having network issues, try again"
 msgstr "Ağ sorunları yaşıyoruz, tekrar deneyin"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:94
-msgid "We’re introducing a new layer of verification on Bluesky — an easy-to-see checkmark."
-msgstr "Bluesky'da yeni bir doğrulama katmanı sunuyoruz - kolay görülebilen bir onay işareti."
+msgid "We’re introducing a new layer of verification on Opensky — an easy-to-see checkmark."
+msgstr "Opensky'da yeni bir doğrulama katmanı sunuyoruz - kolay görülebilen bir onay işareti."
 
 #: src/screens/Signup/index.tsx:109
 msgid "We're so excited to have you join us!"
@@ -9840,7 +9840,7 @@ msgstr "Başlangıç ​​paketinize ne ad vermek istersiniz?"
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:774
-msgid "What's up?"
+msgid "What's going down?"
 msgstr "Nasılsınız?"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:146
@@ -9986,8 +9986,8 @@ msgid "You are creating an account on"
 msgstr "Hesabınızın oluşturulacağı yer sağlayıcı"
 
 #: src/components/ageAssurance/AgeAssuranceAccountCard.tsx:80
-msgid "You are currently unable to access Bluesky's Age Assurance flow. Please <0>contact our moderation team</0> if you believe this is an error."
-msgstr "Şu anda Bluesky'ın Yaş Güvencesi işlemine erişemiyorsunuz. Bunun bir hatadan kaynaklı olduğunu düşünüyorsanız lütfen <0>moderasyon ekibimize ulaşın</0>."
+msgid "You are currently unable to access Opensky's Age Assurance flow. Please <0>contact our moderation team</0> if you believe this is an error."
+msgstr "Şu anda Opensky'ın Yaş Güvencesi işlemine erişemiyorsunuz. Bunun bir hatadan kaynaklı olduğunu düşünüyorsanız lütfen <0>moderasyon ekibimize ulaşın</0>."
 
 #: src/screens/SignupQueued.tsx:157
 msgid "You are in line."
@@ -10087,8 +10087,8 @@ msgid "You don't have any chat requests at the moment."
 msgstr "Şu anda herhangi bir sohbet isteğiniz yok."
 
 #: src/view/com/modals/InviteCodes.tsx:67
-msgid "You don't have any invite codes yet! We'll send you some when you've been on Bluesky for a little longer."
-msgstr "Henüz hiç davet kodunuz yok! Bluesky'de biraz daha uzun süre kaldıktan sonra size bazı kodlar göndereceğiz."
+msgid "You don't have any invite codes yet! We'll send you some when you've been on Opensky for a little longer."
+msgstr "Henüz hiç davet kodunuz yok! Opensky'de biraz daha uzun süre kaldıktan sonra size bazı kodlar göndereceğiz."
 
 #: src/view/screens/SavedFeeds.tsx:145
 msgid "You don't have any pinned feeds."
@@ -10379,8 +10379,8 @@ msgid "Your account repository, containing all public data records, can be downl
 msgstr "Herkese açık tüm veri kayıtlarınızı içeren hesap deponuz bir \"CAR\" dosyası olarak indirilebilir. Bu dosya görselleri, özel verilerinizi veya gömülü medyayı içermez; onların ayrıca indirilmeleri gerekir."
 
 #: src/screens/Takendown.tsx:214
-msgid "Your account was found to be in violation of the <0>Bluesky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
-msgstr "Hesabınızın <0>Bluesky Social Hizmet Şartları</0>'nı ihlal ettiği tespit edildi. Size, varsa belirli ihlali ve askıya alma süresini özetleyen bir e-posta gönderildi. Hatalı olduğuna inanıyorsanız bu karara itiraz edebilirsiniz."
+msgid "Your account was found to be in violation of the <0>Opensky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
+msgstr "Hesabınızın <0>Opensky Social Hizmet Şartları</0>'nı ihlal ettiği tespit edildi. Size, varsa belirli ihlali ve askıya alma süresini özetleyen bir e-posta gönderildi. Hatalı olduğuna inanıyorsanız bu karara itiraz edebilirsiniz."
 
 #: src/screens/Takendown.tsx:154
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
@@ -10420,8 +10420,8 @@ msgid "Your email appears to be invalid."
 msgstr "E-postanız geçersiz gibi görünüyor."
 
 #: src/components/dialogs/EmailDialog/screens/VerificationReminder.tsx:65
-msgid "Your email has not yet been verified. Please verify your email in order to enjoy all the features of Bluesky."
-msgstr "E-posta adresiniz doğrulanmamış. Lütfen Bluesky'ın tüm özelliklerinin tadını çıkarabilmek için e-postanızı doğrulayın."
+msgid "Your email has not yet been verified. Please verify your email in order to enjoy all the features of Opensky."
+msgstr "E-posta adresiniz doğrulanmamış. Lütfen Opensky'ın tüm özelliklerinin tadını çıkarabilmek için e-postanızı doğrulayın."
 
 #: src/state/shell/progress-guide.tsx:213
 msgid "Your first like!"
@@ -10489,8 +10489,8 @@ msgid "Your preferred language"
 msgstr "Tercih ettiğiniz dil"
 
 #: src/screens/Settings/components/DeactivateAccountDialog.tsx:75
-msgid "Your profile, posts, feeds, and lists will no longer be visible to other Bluesky users. You can reactivate your account at any time by logging in."
-msgstr "Profiliniz, gönderileriniz, akışlarınız ve listeleriniz artık diğer Bluesky kullanıcıları tarafından görülemeyecek. Hesabınızı istediğiniz zaman oturum açarak yeniden etkinleştirebilirsiniz."
+msgid "Your profile, posts, feeds, and lists will no longer be visible to other Opensky users. You can reactivate your account at any time by logging in."
+msgstr "Profiliniz, gönderileriniz, akışlarınız ve listeleriniz artık diğer Opensky kullanıcıları tarafından görülemeyecek. Hesabınızı istediğiniz zaman oturum açarak yeniden etkinleştirebilirsiniz."
 
 #: src/view/com/composer/Composer.tsx:521
 msgid "Your reply has been published"
@@ -10501,8 +10501,8 @@ msgid "Your report will be sent to <0>{0}</0>."
 msgstr "Raporunuz <0>{0}</0> işaretleyicisine gönderilecektir."
 
 #: src/components/dms/ReportDialog.tsx:200
-msgid "Your report will be sent to the Bluesky Moderation Service"
-msgstr "Raporunuz Bluesky Moderasyon Hizmetine gönderilecektir"
+msgid "Your report will be sent to the Opensky Moderation Service"
+msgstr "Raporunuz Opensky Moderasyon Hizmetine gönderilecektir"
 
 #: src/screens/Settings/InterestsSettings.tsx:56
 msgid "Your selected interests help us serve you content you care about."
