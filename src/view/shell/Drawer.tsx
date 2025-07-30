@@ -149,7 +149,7 @@ let InviteCodes = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
   const {data: invites} = useInviteCodesQuery()
   const invitesAvailable = invites?.available?.length ?? 0
   const {openModal} = useModalControls()
-  const {_} = useLingui()
+  const {_, i18n} = useLingui()
   const t = useTheme()
 
   const onPress = React.useCallback(() => {
@@ -165,27 +165,38 @@ let InviteCodes = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
       accessibilityLabel={_(msg`Invite codes: ${invitesAvailable} available`)}
       accessibilityHint={_(msg`Opens list of invite codes`)}
       disabled={invites?.disabled}>
-      <TicketIcon
+      <View
         style={[
-          invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
-        ]}
-        size="md"
-      />
-      <Text
-        style={[
-          a.text_lg,
-          invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
+          a.pl_sm,
+          a.pr_md,
+          a.py_sm,
+          a.rounded_full,
+          a.flex_row,
+          a.align_center,
+          a.gap_xs,
+          {
+            backgroundColor: t.palette.primary_25,
+          },
         ]}>
-        {invites?.disabled ? (
+        <TicketIcon
+          style={[
+            invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
+          ]}
+          size="md"
+        />
+        <Text style={[a.text_lg, t.atoms.text]}>
           <Trans>
-            Your invite codes are hidden when logged in using an App Password
-          </Trans>
-        ) : invitesAvailable === 1 ? (
-          <Trans>{invitesAvailable} invite code available</Trans>
-        ) : (
-          <Trans>{invitesAvailable} invite codes available</Trans>
-        )}
-      </Text>
+            <Text style={[a.text_md, a.font_bold]}>
+              {formatCount(i18n, invitesAvailable)}
+            </Text>
+          </Trans>{' '}
+          <Plural
+            value={invitesAvailable}
+            one="invite code available"
+            other="invites code available"
+          />
+        </Text>
+      </View>
     </TouchableOpacity>
   )
 }
