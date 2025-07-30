@@ -165,24 +165,38 @@ let InviteCodes = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
       accessibilityLabel={_(msg`Invite codes: ${invitesAvailable} available`)}
       accessibilityHint={_(msg`Opens list of invite codes`)}
       disabled={invites?.disabled}>
-      <TicketIcon
+      <View
         style={[
-          invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
-        ]}
-        size="md"
-      />
-      <Text style={[a.text_lg, t.atoms.text]}>
-        <Trans>
-          <Text style={[a.text_md, a.font_bold]}>
-            {formatCount(i18n, invitesAvailable)}
-          </Text>
-        </Trans>{' '}
-        <Plural
-          value={invitesAvailable}
-          one="invite code available"
-          other="invites code available"
+          a.pl_sm,
+          a.pr_md,
+          a.py_sm,
+          a.rounded_full,
+          a.flex_row,
+          a.align_center,
+          a.gap_xs,
+          {
+            backgroundColor: t.palette.primary_25,
+          },
+        ]}>
+        <TicketIcon
+          style={[
+            invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
+          ]}
+          size="md"
         />
-      </Text>
+        <Text style={[a.text_lg, t.atoms.text]}>
+          <Trans>
+            <Text style={[a.text_md, a.font_bold]}>
+              {formatCount(i18n, invitesAvailable)}
+            </Text>
+          </Trans>{' '}
+          <Plural
+            value={invitesAvailable}
+            one="invite code available"
+            other="invites code available"
+          />
+        </Text>
+      </View>
     </TouchableOpacity>
   )
 }
