@@ -16,7 +16,7 @@ import (
 	"github.com/bluesky-social/indigo/atproto/identity"
 	"github.com/bluesky-social/indigo/util/cliutil"
 	"github.com/bluesky-social/indigo/xrpc"
-	"github.com/bluesky-social/social-app/bskyweb"
+	"github.com/bluesky-social/social-app/foodiosweb"
 
 	"github.com/klauspost/compress/gzhttp"
 	"github.com/klauspost/compress/gzip"
@@ -86,7 +86,7 @@ func serve(cctx *cli.Context) error {
 	e.HideBanner = true
 
 	tmpl := &Template{
-		templates: template.Must(template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.html")),
+		templates: template.Must(template.ParseFS(foodiosweb.EmbedrTemplateFS, "embedr-templates/*.html")),
 	}
 	e.Renderer = tmpl
 	e.HTTPErrorHandler = server.errorHandler
@@ -141,7 +141,7 @@ func serve(cctx *cli.Context) error {
 			log.Debugf("serving static file from the local file system")
 			return http.FS(os.DirFS("embedr-static"))
 		}
-		fsys, err := fs.Sub(bskyweb.EmbedrStaticFS, "embedr-static")
+		fsys, err := fs.Sub(foodiosweb.EmbedrStaticFS, "embedr-static")
 		if err != nil {
 			log.Fatal(err)
 		}
