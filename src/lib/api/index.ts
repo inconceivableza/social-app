@@ -1,3 +1,5 @@
+import type AtpAgent from '@atproto/api'
+import {type AppFoodiosFeedRecipePost} from '@atproto/api'
 import {
   type $Typed,
   type AppBskyEmbedExternal,
@@ -39,6 +41,7 @@ import {
   type PostDraft,
   type ThreadDraft,
 } from '#/view/com/composer/state/composer'
+import {type RecipePostDraft} from '#/view/com/composer/state/composerRecipe'
 import {createGIFDescription} from '../gif-alt-text'
 import {uploadBlob} from './upload-blob'
 
