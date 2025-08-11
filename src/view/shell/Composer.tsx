@@ -37,7 +37,7 @@ export function Composer({winHeight}: {winHeight: number}) {
   // rendering
   // =
 
-  if (!state) {
+  if (state?.type !== 'post') {
     return null
   }
 
