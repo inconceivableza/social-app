@@ -89,8 +89,11 @@ import {usePreferencesQuery} from '#/state/queries/preferences'
 import {useProfileQuery} from '#/state/queries/profile'
 import {type Gif} from '#/state/queries/tenor'
 import {useAgent, useSession} from '#/state/session'
-import {useComposerControls} from '#/state/shell/composer'
-import {type ComposerOpts, type OnPostSuccessData} from '#/state/shell/composer'
+import {
+  type PostComposerOpts,
+  useComposerControls,
+} from '#/state/shell/composer'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {CharProgress} from '#/view/com/composer/char-progress/CharProgress'
 import {ComposerReplyTo} from '#/view/com/composer/ComposerReplyTo'
 import {
@@ -152,7 +155,7 @@ type CancelRef = {
   onPressCancel: () => void
 }
 
-type Props = ComposerOpts
+type Props = Omit<PostComposerOpts, 'type'>
 export const ComposePost = ({
   replyTo,
   onPost,
@@ -1493,7 +1496,7 @@ function useScrollTracker({
   }
 }
 
-function useKeyboardVerticalOffset() {
+export function useKeyboardVerticalOffset() {
   const {top, bottom} = useSafeAreaInsets()
 
   // Android etc
