@@ -193,6 +193,67 @@ export async function post(
   return {uris}
 }
 
+interface RecipePostOpts {
+  post: RecipePostDraft
+}
+export async function postRecipe(agent: AtpAgent, {post}: RecipePostOpts) {
+  const now = new Date()
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
+  const recipeRecord: AppFoodiosFeedRecipePost.Record = {
+    $type: 'app.foodios.feed.recipePost',
+    createdAt: now.toISOString(),
+    ingredients: post.ingredients,
+    steps: post.steps,
+    text: post.text,
+    title: post.title,
+  }
+  const rkey = TID.next().toString()
+
+  writes.push({
+    $type: 'com.atproto.repo.applyWrites#create',
+    collection: 'app.foodios.feed.recipePost',
+    value: recipeRecord,
+    rkey,
+  })
+
+  // TODO add post record
+  // const ref = {
+  //   cid: await computeCid(recipeRecord),
+  //   uri,
+  // }
+
+  // const postRecord: AppBskyFeedPost.Record = {
+  //   $type: 'app.bsky.feed.post',
+  //   createdAt: now.toISOString(),
+  //   embed: { record: {
+  //     record: {}
+  //   }}
+  // }
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create recipe post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
+  const did = agent.assertDid
+  const uri = `at://${did}/app.bsky.feed.post/${rkey}`
+
+  return uri
+}
+
 async function resolveRT(agent: BskyAgent, richtext: RichText) {
   const trimmedText = richtext.text
     // Trim leading whitespace-only lines (but don't break ASCII art).
