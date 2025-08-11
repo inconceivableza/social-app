@@ -464,60 +464,24 @@ function NavItem({ count, hasNew, href, icon, iconFilled, label }: NavItemProps)
   )
 }
 
-// TODO: refactor duplicated logic from ComposeBtn
+// TODO: look at ComposeBtn - why is fetch handle logic required?
 function ComposeRecipeBtn() {
   const { currentAccount } = useSession()
-  const [isFetchingHandle, setIsFetchingHandle] = useState(false)
-  const { getState } = useNavigation()
-  const fetchHandle = useFetchHandle()
   const { openComposer } = useOpenComposer()
 
-  const getProfileHandle = async () => {
-    const routes = getState()?.routes
-    const currentRoute = routes?.[routes?.length - 1]
-
-    if (currentRoute?.name === 'Profile') {
-      let handle: string | undefined = (
-        currentRoute.params as CommonNavigatorParams['Profile']
-      ).name
-
-      if (handle.startsWith('did:')) {
-        try {
-          setIsFetchingHandle(true)
-          handle = await fetchHandle(handle)
-        } catch (e) {
-          handle = undefined
-        } finally {
-          setIsFetchingHandle(false)
-        }
-      }
-
-      if (
-        !handle ||
-        handle === currentAccount?.handle ||
-        isInvalidHandle(handle)
-      )
-        return undefined
-
-      return handle
-    }
-
-    return undefined
-  }
+  const { _ } = useLingui()
 
   const onPressCompose = async () =>
     openComposer({ type: "recipe" })
 
+  if (!currentAccount) {
+    return null
+  }
+
   return (
     <View style={[a.flex_row, a.pl_md, a.pt_xl]}>
       <Button
-        disabled={isFetchingHandle}
-        label={
-          // TODO: localize
-          "Compose new recipe"
-          // _(msg`Compose new recipe`)
-        }
-
+        label={_(msg`Compose new recipe`)}
         onPress={onPressCompose}
         size="large"
         variant="solid"
