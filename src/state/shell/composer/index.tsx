@@ -32,7 +32,8 @@ export type OnPostSuccessData =
     }
   | undefined
 
-export interface ComposerOpts {
+export interface PostComposerOpts {
+  type: 'post'
   replyTo?: ComposerOptsPostRef
   onPost?: (postUri: string | undefined) => void
   onPostSuccess?: (data: OnPostSuccessData) => void
@@ -43,6 +44,12 @@ export interface ComposerOpts {
   imageUris?: {uri: string; width: number; height: number; altText?: string}[]
   videoUri?: {uri: string; width: number; height: number}
 }
+
+export interface RecipeComposerOpts {
+  type: 'recipe'
+}
+
+export type ComposerOpts = PostComposerOpts | RecipeComposerOpts
 
 type StateContext = ComposerOpts | undefined
 type ControlsContext = {
@@ -64,41 +71,45 @@ export function Provider({children}: React.PropsWithChildren<{}>) {
   const queryClient = useQueryClient()
 
   const openComposer = useNonReactiveCallback((opts: ComposerOpts) => {
-    if (opts.quote) {
-      const path = postUriToRelativePath(opts.quote.uri)
-      if (path) {
-        const appUrl = toBskyAppUrl(path)
-        precacheResolveLinkQuery(queryClient, appUrl, {
-          type: 'record',
-          kind: 'post',
-          record: {
-            cid: opts.quote.cid,
-            uri: opts.quote.uri,
-          },
-          view: opts.quote,
+    if (opts.type === 'post') {
+      if (opts.quote) {
+        const path = postUriToRelativePath(opts.quote.uri)
+        if (path) {
+          const appUrl = toBskyAppUrl(path)
+          precacheResolveLinkQuery(queryClient, appUrl, {
+            type: 'record',
+            kind: 'post',
+            record: {
+              cid: opts.quote.cid,
+              uri: opts.quote.uri,
+            },
+            view: opts.quote,
+          })
+        }
+      }
+      const author = opts.replyTo?.author || opts.quote?.author
+      const isBlocked = Boolean(
+        author &&
+          (author.viewer?.blocking ||
+            author.viewer?.blockedBy ||
+            author.viewer?.blockingByList),
+      )
+      if (isBlocked) {
+        Toast.show(
+          _(msg`Cannot interact with a blocked user`),
+          'exclamation-circle',
+        )
+      } else {
+        setState(prevOpts => {
+          if (prevOpts) {
+            // Never replace an already open composer.
+            return prevOpts
+          }
+          return opts
         })
       }
-    }
-    const author = opts.replyTo?.author || opts.quote?.author
-    const isBlocked = Boolean(
-      author &&
-        (author.viewer?.blocking ||
-          author.viewer?.blockedBy ||
-          author.viewer?.blockingByList),
-    )
-    if (isBlocked) {
-      Toast.show(
-        _(msg`Cannot interact with a blocked user`),
-        'exclamation-circle',
-      )
     } else {
-      setState(prevOpts => {
-        if (prevOpts) {
-          // Never replace an already open composer.
-          return prevOpts
-        }
-        return opts
-      })
+      setState(opts)
     }
   })
 
