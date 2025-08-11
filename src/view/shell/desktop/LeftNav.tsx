@@ -464,6 +464,73 @@ function NavItem({count, hasNew, href, icon, iconFilled, label}: NavItemProps) {
   )
 }
 
+// TODO: refactor duplicated logic from ComposeBtn
+function ComposeRecipeBtn() {
+  const {currentAccount} = useSession()
+  const [isFetchingHandle, setIsFetchingHandle] = useState(false)
+  const {getState} = useNavigation()
+  const fetchHandle = useFetchHandle()
+  const {openComposer} = useOpenComposer()
+
+  const getProfileHandle = async () => {
+    const routes = getState()?.routes
+    const currentRoute = routes?.[routes?.length - 1]
+
+    if (currentRoute?.name === 'Profile') {
+      let handle: string | undefined = (
+        currentRoute.params as CommonNavigatorParams['Profile']
+      ).name
+
+      if (handle.startsWith('did:')) {
+        try {
+          setIsFetchingHandle(true)
+          handle = await fetchHandle(handle)
+        } catch (e) {
+          handle = undefined
+        } finally {
+          setIsFetchingHandle(false)
+        }
+      }
+
+      if (
+        !handle ||
+        handle === currentAccount?.handle ||
+        isInvalidHandle(handle)
+      )
+        return undefined
+
+      return handle
+    }
+
+    return undefined
+  }
+
+  const onPressCompose = async () =>
+    openComposer({mention: await getProfileHandle(), type: 'recipe'})
+
+  return (
+    <View style={[a.flex_row, a.pl_md, a.pt_xl]}>
+      <Button
+        disabled={isFetchingHandle}
+        label={
+          // TODO: localize
+          'Compose new recipe'
+          // _(msg`Compose new recipe`)
+        }
+        onPress={onPressCompose}
+        size="large"
+        variant="solid"
+        color="primary"
+        style={[a.rounded_full]}>
+        <ButtonIcon icon={EditBig} position="left" />
+        <ButtonText>
+          <Trans context="action">New Recipe</Trans>
+        </ButtonText>
+      </Button>
+    </View>
+  )
+}
+
 function ComposeBtn() {
   const {currentAccount} = useSession()
   const {getState} = useNavigation()
@@ -730,6 +797,7 @@ export function DesktopLeftNav() {
           />
 
           <ComposeBtn />
+          <ComposeRecipeBtn />
         </>
       )}
     </View>
