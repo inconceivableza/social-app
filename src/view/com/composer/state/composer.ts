@@ -1,15 +1,15 @@
-import {type ImagePickerAsset} from 'expo-image-picker'
+import { type ImagePickerAsset } from 'expo-image-picker'
 import {
   type AppBskyFeedPostgate,
   AppBskyRichtextFacet,
   type BskyPreferences,
   RichText,
 } from '@atproto/api'
-import {nanoid} from 'nanoid/non-secure'
+import { nanoid } from 'nanoid/non-secure'
 
-import {type SelfLabel} from '#/lib/moderation'
-import {insertMentionAt} from '#/lib/strings/mention-manip'
-import {shortenLinks} from '#/lib/strings/rich-text-manip'
+import { type SelfLabel } from '#/lib/moderation'
+import { insertMentionAt } from '#/lib/strings/mention-manip'
+import { shortenLinks } from '#/lib/strings/rich-text-manip'
 import {
   isBskyPostUrl,
   postUriToRelativePath,
@@ -72,24 +72,24 @@ export type PostDraft = {
 }
 
 export type PostAction =
-  | {type: 'update_richtext'; richtext: RichText}
-  | {type: 'update_labels'; labels: SelfLabel[]}
-  | {type: 'embed_add_images'; images: ComposerImage[]}
-  | {type: 'embed_update_image'; image: ComposerImage}
-  | {type: 'embed_remove_image'; image: ComposerImage}
+  | { type: 'update_richtext'; richtext: RichText }
+  | { type: 'update_labels'; labels: SelfLabel[] }
+  | { type: 'embed_add_images'; images: ComposerImage[] }
+  | { type: 'embed_update_image'; image: ComposerImage }
+  | { type: 'embed_remove_image'; image: ComposerImage }
   | {
-      type: 'embed_add_video'
-      asset: ImagePickerAsset
-      abortController: AbortController
-    }
-  | {type: 'embed_remove_video'}
-  | {type: 'embed_update_video'; videoAction: VideoAction}
-  | {type: 'embed_add_uri'; uri: string}
-  | {type: 'embed_remove_quote'}
-  | {type: 'embed_remove_link'}
-  | {type: 'embed_add_gif'; gif: Gif}
-  | {type: 'embed_update_gif'; alt: string}
-  | {type: 'embed_remove_gif'}
+    type: 'embed_add_video'
+    asset: ImagePickerAsset
+    abortController: AbortController
+  }
+  | { type: 'embed_remove_video' }
+  | { type: 'embed_update_video'; videoAction: VideoAction }
+  | { type: 'embed_add_uri'; uri: string }
+  | { type: 'embed_remove_quote' }
+  | { type: 'embed_remove_link' }
+  | { type: 'embed_add_gif'; gif: Gif }
+  | { type: 'embed_update_gif'; alt: string }
+  | { type: 'embed_remove_gif' }
 
 export type ThreadDraft = {
   posts: PostDraft[]
@@ -104,24 +104,24 @@ export type ComposerState = {
 }
 
 export type ComposerAction =
-  | {type: 'update_postgate'; postgate: AppBskyFeedPostgate.Record}
-  | {type: 'update_threadgate'; threadgate: ThreadgateAllowUISetting[]}
+  | { type: 'update_postgate'; postgate: AppBskyFeedPostgate.Record }
+  | { type: 'update_threadgate'; threadgate: ThreadgateAllowUISetting[] }
   | {
-      type: 'update_post'
-      postId: string
-      postAction: PostAction
-    }
+    type: 'update_post'
+    postId: string
+    postAction: PostAction
+  }
   | {
-      type: 'add_post'
-    }
+    type: 'add_post'
+  }
   | {
-      type: 'remove_post'
-      postId: string
-    }
+    type: 'remove_post'
+    postId: string
+  }
   | {
-      type: 'focus_post'
-      postId: string
-    }
+    type: 'focus_post'
+    postId: string
+  }
 
 export const MAX_IMAGES = 4
 
@@ -173,7 +173,7 @@ export function composerReducer(
       const nextPosts = [...state.thread.posts]
       nextPosts.splice(activePostIndex + 1, 0, {
         id: nanoid(),
-        richtext: new RichText({text: ''}),
+        richtext: new RichText({ text: '' }),
         shortenedGraphemeLength: 0,
         labels: [],
         embed: {
@@ -494,8 +494,8 @@ export function createComposerState({
   initImageUris: PostComposerOpts['imageUris']
   initQuoteUri: string | undefined
   initInteractionSettings:
-    | BskyPreferences['postInteractionSettings']
-    | undefined
+  | BskyPreferences['postInteractionSettings']
+  | undefined
 }): ComposerState {
   let media: ImagesMedia | undefined
   if (initImageUris?.length) {
@@ -520,10 +520,10 @@ export function createComposerState({
       ? initText
       : initMention
         ? insertMentionAt(
-            `@${initMention}`,
-            initMention.length + 1,
-            `${initMention}`,
-          )
+          `@${initMention}`,
+          initMention.length + 1,
+          `${initMention}`,
+        )
         : '',
   })
 
@@ -547,9 +547,9 @@ export function createComposerState({
         for (const feature of facet.features) {
           if (AppBskyRichtextFacet.isLink(feature)) {
             if (isBskyPostUrl(feature.uri)) {
-              detectedPostUris.set(feature.uri, {facet, rt: initRichText})
+              detectedPostUris.set(feature.uri, { facet, rt: initRichText })
             } else {
-              detectedExtUris.set(feature.uri, {facet, rt: initRichText})
+              detectedExtUris.set(feature.uri, { facet, rt: initRichText })
             }
           }
         }
