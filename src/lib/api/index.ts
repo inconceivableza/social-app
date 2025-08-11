@@ -1,6 +1,4 @@
-import type AtpAgent from '@atproto/api'
-import {type AppFoodiosFeedRecipePost} from '@atproto/api'
-import {
+import AtpAgent, {
   type $Typed,
   type AppBskyEmbedExternal,
   type AppBskyEmbedImages,
@@ -15,19 +13,20 @@ import {
   type ComAtprotoRepoApplyWrites,
   type ComAtprotoRepoStrongRef,
   RichText,
+  AppFoodiosFeedRecipePost,
 } from '@atproto/api'
-import {TID} from '@atproto/common-web'
+import { TID } from '@atproto/common-web'
 import * as dcbor from '@ipld/dag-cbor'
-import {t} from '@lingui/macro'
-import {type QueryClient} from '@tanstack/react-query'
-import {sha256} from 'js-sha256'
-import {CID} from 'multiformats/cid'
+import { t } from '@lingui/macro'
+import { type QueryClient } from '@tanstack/react-query'
+import { sha256 } from 'js-sha256'
+import { CID } from 'multiformats/cid'
 import * as Hasher from 'multiformats/hashes/hasher'
 
-import {isNetworkError} from '#/lib/strings/errors'
-import {shortenLinks, stripInvalidMentions} from '#/lib/strings/rich-text-manip'
-import {logger} from '#/logger'
-import {compressImage} from '#/state/gallery'
+import { isNetworkError } from '#/lib/strings/errors'
+import { shortenLinks, stripInvalidMentions } from '#/lib/strings/rich-text-manip'
+import { logger } from '#/logger'
+import { compressImage } from '#/state/gallery'
 import {
   fetchResolveGifQuery,
   fetchResolveLinkQuery,
@@ -41,11 +40,12 @@ import {
   type PostDraft,
   type ThreadDraft,
 } from '#/view/com/composer/state/composer'
-import {type RecipePostDraft} from '#/view/com/composer/state/composerRecipe'
-import {createGIFDescription} from '../gif-alt-text'
-import {uploadBlob} from './upload-blob'
+import { createGIFDescription } from '../gif-alt-text'
+import { uploadBlob } from './upload-blob'
+import { RecipePostDraft } from '#/view/com/composer/state/composerRecipe'
+import { BskyAppAgent } from '#/state/session/agent'
 
-export {uploadBlob}
+export { uploadBlob }
 
 interface PostOpts {
   thread: ThreadDraft
@@ -99,7 +99,7 @@ export async function post(
     if (draft.labels.length) {
       labels = {
         $type: 'com.atproto.label.defs#selfLabels',
-        values: draft.labels.map(val => ({val})),
+        values: draft.labels.map(val => ({ val })),
       }
     }
 
@@ -193,30 +193,30 @@ export async function post(
     }
   }
 
-  return {uris}
+  return { uris }
 }
 
 interface RecipePostOpts {
   post: RecipePostDraft
 }
-export async function postRecipe(agent: AtpAgent, {post}: RecipePostOpts) {
+export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
   const now = new Date()
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
   const recipeRecord: AppFoodiosFeedRecipePost.Record = {
-    $type: 'app.foodios.feed.recipePost',
+    $type: "app.foodios.feed.recipePost",
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
     steps: post.steps,
     text: post.text,
-    title: post.title,
+    title: post.title
   }
   const rkey = TID.next().toString()
-
+  // add recipe label
   writes.push({
-    $type: 'com.atproto.repo.applyWrites#create',
-    collection: 'app.foodios.feed.recipePost',
+    $type: "com.atproto.repo.applyWrites#create",
+    collection: "app.foodios.feed.recipePost",
     value: recipeRecord,
-    rkey,
+    rkey
   })
 
   // TODO add post record
@@ -263,7 +263,7 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
     .replace(/^(\s*\n)+/, '')
     // Trim any trailing whitespace.
     .trimEnd()
-  let rt = new RichText({text: trimmedText}, {cleanNewlines: true})
+  let rt = new RichText({ text: trimmedText }, { cleanNewlines: true })
   await rt.detectFacets(agent)
 
   rt = shortenLinks(rt)
@@ -367,13 +367,13 @@ async function resolveMedia(
     const images: AppBskyEmbedImages.Image[] = await Promise.all(
       imagesDraft.map(async (image, i) => {
         logger.debug(`Compressing image #${i}`)
-        const {path, width, height, mime} = await compressImage(image)
+        const { path, width, height, mime } = await compressImage(image)
         logger.debug(`Uploading image #${i}`)
         const res = await uploadBlob(agent, path, mime)
         return {
           image: res.data.blob,
           alt: image.alt,
-          aspectRatio: {width, height},
+          aspectRatio: { width, height },
         }
       }),
     )
@@ -391,10 +391,10 @@ async function resolveMedia(
       videoDraft.captions
         .filter(caption => caption.lang !== '')
         .map(async caption => {
-          const {data} = await agent.uploadBlob(caption.file, {
+          const { data } = await agent.uploadBlob(caption.file, {
             encoding: 'text/vtt',
           })
-          return {lang: caption.lang, file: data.blob}
+          return { lang: caption.lang, file: data.blob }
         }),
     )
 
@@ -404,7 +404,7 @@ async function resolveMedia(
 
     // aspect ratio values must be >0 - better to leave as unset otherwise
     // posting will fail if aspect ratio is set to 0
-    const aspectRatio = width > 0 && height > 0 ? {width, height} : undefined
+    const aspectRatio = width > 0 && height > 0 ? { width, height } : undefined
 
     if (!aspectRatio) {
       logger.error(
@@ -430,7 +430,7 @@ async function resolveMedia(
     let blob: BlobRef | undefined
     if (resolvedGif.thumb) {
       onStateChange?.(t`Uploading link thumbnail...`)
-      const {path, mime} = resolvedGif.thumb.source
+      const { path, mime } = resolvedGif.thumb.source
       const response = await uploadBlob(agent, path, mime)
       blob = response.data.blob
     }
@@ -454,7 +454,7 @@ async function resolveMedia(
       let blob: BlobRef | undefined
       if (resolvedLink.thumb) {
         onStateChange?.(t`Uploading link thumbnail...`)
-        const {path, mime} = resolvedLink.thumb.source
+        const { path, mime } = resolvedLink.thumb.source
         const response = await uploadBlob(agent, path, mime)
         blob = response.data.blob
       }
