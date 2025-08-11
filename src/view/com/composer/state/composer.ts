@@ -20,7 +20,7 @@ import {createPostgateRecord} from '#/state/queries/postgate/util'
 import {type Gif} from '#/state/queries/tenor'
 import {threadgateRecordToAllowUISetting} from '#/state/queries/threadgate'
 import {type ThreadgateAllowUISetting} from '#/state/queries/threadgate'
-import {type ComposerOpts} from '#/state/shell/composer'
+import {type PostComposerOpts} from '#/state/shell/composer'
 import {
   type LinkFacetMatch,
   suggestLinkCardUri,
@@ -491,7 +491,7 @@ export function createComposerState({
 }: {
   initText: string | undefined
   initMention: string | undefined
-  initImageUris: ComposerOpts['imageUris']
+  initImageUris: PostComposerOpts['imageUris']
   initQuoteUri: string | undefined
   initInteractionSettings:
     | BskyPreferences['postInteractionSettings']
