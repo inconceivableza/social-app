@@ -574,7 +574,7 @@ function ComposeBtn() {
   }
 
   const onPressCompose = async () =>
-    openComposer({mention: await getProfileHandle()})
+    openComposer({mention: await getProfileHandle(), type: 'post'})
 
   if (leftNavMinimal) {
     return null
