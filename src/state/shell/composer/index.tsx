@@ -5,15 +5,15 @@ import {
   type AppBskyUnspeccedGetPostThreadV2,
   type ModerationDecision,
 } from '@atproto/api'
-import {msg} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
-import {useQueryClient} from '@tanstack/react-query'
+import { msg } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
+import { useQueryClient } from '@tanstack/react-query'
 
-import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
-import {postUriToRelativePath, toBskyAppUrl} from '#/lib/strings/url-helpers'
-import {purgeTemporaryImageFiles} from '#/state/gallery'
-import {precacheResolveLinkQuery} from '#/state/queries/resolve-link'
-import {type EmojiPickerPosition} from '#/view/com/composer/text-input/web/EmojiPicker'
+import { useNonReactiveCallback } from '#/lib/hooks/useNonReactiveCallback'
+import { postUriToRelativePath, toBskyAppUrl } from '#/lib/strings/url-helpers'
+import { purgeTemporaryImageFiles } from '#/state/gallery'
+import { precacheResolveLinkQuery } from '#/state/queries/resolve-link'
+import { type EmojiPickerPosition } from '#/view/com/composer/text-input/web/EmojiPicker'
 import * as Toast from '#/view/com/util/Toast'
 
 export interface ComposerOptsPostRef {
@@ -27,9 +27,9 @@ export interface ComposerOptsPostRef {
 
 export type OnPostSuccessData =
   | {
-      replyToUri?: string
-      posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
-    }
+    replyToUri?: string
+    posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
+  }
   | undefined
 
 export interface PostComposerOpts {
@@ -41,8 +41,8 @@ export interface PostComposerOpts {
   mention?: string // handle of user to mention
   openEmojiPicker?: (pos: EmojiPickerPosition | undefined) => void
   text?: string
-  imageUris?: {uri: string; width: number; height: number; altText?: string}[]
-  videoUri?: {uri: string; width: number; height: number}
+  imageUris?: { uri: string; width: number; height: number; altText?: string }[]
+  videoUri?: { uri: string; width: number; height: number }
 }
 
 export interface RecipeComposerOpts {
@@ -59,14 +59,14 @@ type ControlsContext = {
 
 const stateContext = React.createContext<StateContext>(undefined)
 const controlsContext = React.createContext<ControlsContext>({
-  openComposer(_opts: ComposerOpts) {},
+  openComposer(_opts: ComposerOpts) { },
   closeComposer() {
     return false
   },
 })
 
-export function Provider({children}: React.PropsWithChildren<{}>) {
-  const {_} = useLingui()
+export function Provider({ children }: React.PropsWithChildren<{}>) {
+  const { _ } = useLingui()
   const [state, setState] = React.useState<StateContext>()
   const queryClient = useQueryClient()
 
@@ -145,8 +145,8 @@ export function useComposerState() {
 }
 
 export function useComposerControls() {
-  const {closeComposer} = React.useContext(controlsContext)
-  return React.useMemo(() => ({closeComposer}), [closeComposer])
+  const { closeComposer } = React.useContext(controlsContext)
+  return React.useMemo(() => ({ closeComposer }), [closeComposer])
 }
 
 /**
@@ -156,6 +156,6 @@ export function useComposerControls() {
  * @deprecated use `#/lib/hooks/useOpenComposer` instead
  */
 export function useOpenComposer() {
-  const {openComposer} = React.useContext(controlsContext)
-  return React.useMemo(() => ({openComposer}), [openComposer])
+  const { openComposer } = React.useContext(controlsContext)
+  return React.useMemo(() => ({ openComposer }), [openComposer])
 }
