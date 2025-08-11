@@ -7,10 +7,28 @@ import { useKeyboardVerticalOffset } from "./Composer";
 import { useRecipePostReducer } from "./state/composerRecipe";
 import * as apilib from '#/lib/api/index'
 import { useAgent } from "#/state/session";
-import { Button, ButtonText } from '#/components/Button'
+import { Button, ButtonText, ButtonIcon } from '#/components/Button'
 import { msg } from "@lingui/macro";
 import { Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
+
+const msgs = {
+    button_add_ingredient: msg({
+        message: 'Add ingredient',
+        comment:
+            'Accessibility label for adding an ingredient to a recipe',
+    }),
+    button_add_step: msg({
+        message: 'Add step',
+        comment:
+            'Accessibility label for adding a step to a recipe',
+    }),
+    button_post_recipe: msg({
+        message: 'Publish post',
+        comment:
+            'Accessibility label for button to publish a single post',
+    })
+}
 
 export function ComposerRecipe() {
     const keyboardVerticalOffset = useKeyboardVerticalOffset()
@@ -18,6 +36,7 @@ export function ComposerRecipe() {
     const agent = useAgent()
     const { _ } = useLingui()
     async function onPressPublish() {
+        // TODO: validation
         const postUri = await apilib.postRecipe(agent, {
             post: state
         })
@@ -41,12 +60,52 @@ export function ComposerRecipe() {
                     dispatch({ type: "update_main_text", value: ev.target.value })
                 }} value={state.text} />
             </label>
-            <Button onPress={onPressPublish} label={_(
-                msg({
-                    message: 'Publish post',
-                    comment:
-                        'Accessibility label for button to publish a single post',
-                }))}>
+            <fieldset>
+                <legend><Trans context="recipe">Ingredients</Trans></legend>
+                <ul>
+                    {state.ingredients.map(({ name, quantity, unit }, i) => <div key={i}>
+                        <label><Trans context="recipe">Item</Trans>
+                            <input value={name} onChange={ev => {
+                                dispatch({ type: "edit_ingredient", prop: "name", value: ev.target.value, index: i })
+                            }} />
+                        </label>
+                        <label><Trans context="recipe">Quantity</Trans>
+                            <input value={quantity} onChange={ev => {
+                                dispatch({ type: "edit_ingredient", prop: "quantity", value: ev.target.value, index: i })
+                            }} />
+                        </label>
+                        <label><Trans context="recipe">Unit</Trans>
+                            <input value={unit} onChange={ev => {
+                                dispatch({ type: "edit_ingredient", prop: "unit", value: ev.target.value, index: i })
+                            }} />
+                        </label>
+                    </div>)}
+                </ul>
+                <Button onPress={() => {
+                    dispatch({ type: "add_ingredient" })
+                }} label={_(msgs.button_add_ingredient)}>
+                    <ButtonText><Trans context="action">Add ingredient</Trans></ButtonText>
+                </Button>
+            </fieldset>
+
+            <fieldset>
+                <legend><Trans context="recipe">Steps</Trans></legend>
+                {/* TODO: use different key if steps can be reordered */}
+                <ol>
+                    {state.steps.map((step, i) => <div key={i}>
+                        <label><Trans context="recipe">Step</Trans>
+                            <input value={step.text}
+                                onChange={ev => dispatch({ type: "edit_step_text", index: i, value: ev.target.value })} />
+                        </label>
+                    </div>)}
+                </ol>
+                <Button onPress={() => {
+                    dispatch({ type: "add_step" })
+                }} label={_(msgs.button_add_step)}>
+                    <ButtonText><Trans context="action">Add step</Trans></ButtonText>
+                </Button>
+            </fieldset>
+            <Button onPress={onPressPublish} label={_(msgs.button_post_recipe)}>
                 <ButtonText>
                     <Trans context="action">Post</Trans>
                 </ButtonText>
