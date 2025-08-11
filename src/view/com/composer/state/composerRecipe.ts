@@ -30,6 +30,7 @@ export interface RecipePostDraft {
     embed?: EmbedDraft
     labels?: SelfLabel
     tags?: string[]
+    postToFeed: boolean
 }
 
 type Action = TaggedUnion<
@@ -41,6 +42,7 @@ type Action = TaggedUnion<
         edit_step_text: { value: TextType, index: number }
         add_ingredient: {}
         edit_ingredient: { value: TextType, prop: keyof IngredientDraft, index: number }
+        toggle_post_to_feed: {}
     }
 >
 
@@ -75,6 +77,7 @@ function recipePostReducer(
             ingredients[action.index] = { ...ingredients[action.index], [action.prop]: action.value }
             return { ...state, ingredients }
         }
+        case 'toggle_post_to_feed': return { ...state, postToFeed: !state.postToFeed }
     }
 }
 
@@ -84,5 +87,6 @@ export function useRecipePostReducer() {
         text: '',
         ingredients: [],
         steps: [],
+        postToFeed: false
     })
 }

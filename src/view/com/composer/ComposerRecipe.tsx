@@ -105,6 +105,11 @@ export function ComposerRecipe() {
                     <ButtonText><Trans context="action">Add step</Trans></ButtonText>
                 </Button>
             </fieldset>
+            <label>
+                <Trans context="recipe">Post to feed</Trans>
+                <input onChange={() => dispatch({ type: "toggle_post_to_feed" })} type="checkbox" />
+            </label>
+
             <Button onPress={onPressPublish} label={_(msgs.button_post_recipe)}>
                 <ButtonText>
                     <Trans context="action">Post</Trans>

@@ -201,7 +201,9 @@ interface RecipePostOpts {
 }
 export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
   const now = new Date()
+  const did = agent.assertDid
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
+
   const recipeRecord: AppFoodiosFeedRecipePost.Record = {
     $type: "app.foodios.feed.recipePost",
     createdAt: now.toISOString(),
@@ -210,14 +212,41 @@ export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
     text: post.text,
     title: post.title
   }
-  const rkey = TID.next().toString()
-  // add recipe label
+  const tid = TID.next()
+  const rkey = tid.toString()
+  // TODO: add recipe label
   writes.push({
     $type: "com.atproto.repo.applyWrites#create",
     collection: "app.foodios.feed.recipePost",
     value: recipeRecord,
-    rkey
+    rkey,
   })
+  const uri = `at://${did}/app.bsky.feed.post/${rkey}`
+
+  if (post.postToFeed) {
+    const cid = await computeCid(recipeRecord)
+    const embed: $Typed<AppBskyEmbedRecord.Main> = {
+      $type: "app.bsky.embed.record",
+      record: {
+        $type: "com.atproto.repo.strongRef",
+        uri, cid
+      },
+    }
+    const feedRecord: AppBskyFeedPost.Record = {
+      // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
+      // present and will produce the wrong CID if you omit it.
+      $type: 'app.bsky.feed.post',
+      createdAt: now.toISOString(),
+      text: "",
+      embed
+    }
+    writes.push({
+      $type: 'com.atproto.repo.applyWrites#create',
+      collection: 'app.bsky.feed.post',
+      rkey: TID.next(tid).toString(),
+      value: feedRecord,
+    })
+  }
 
   // TODO add post record
   // const ref = {
@@ -251,8 +280,6 @@ export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
       throw e
     }
   }
-  const did = agent.assertDid
-  const uri = `at://${did}/app.bsky.feed.post/${rkey}`
 
   return uri
 }
@@ -495,7 +522,7 @@ const mf_sha256 = Hasher.from({
   },
 })
 
-async function computeCid(record: AppBskyFeedPost.Record): Promise<string> {
+async function computeCid(record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record): Promise<string> {
   // IMPORTANT: `prepareObject` prepares the record to be hashed by removing
   // fields with undefined value, and converting BlobRef instances to the
   // right IPLD representation.
