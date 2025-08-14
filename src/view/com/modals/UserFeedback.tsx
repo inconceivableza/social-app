@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import {
   ActivityIndicator,
+  Platform,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
@@ -12,7 +13,7 @@ import {useLingui} from '@lingui/react'
 import {FEEDBACK_POST_TOKEN, FEEDBACK_POST_URL} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useTheme} from '#/lib/ThemeContext'
-import {isAndroid} from '#/platform/detection'
+import {isAndroid, isIOS, isWeb} from '#/platform/detection'
 import {useModalControls} from '#/state/modals'
 import {useSession} from '#/state/session'
 import {ErrorMessage} from '../util/error/ErrorMessage'
@@ -42,6 +43,45 @@ export function Component() {
 
   const isFormValid = rating > 0 || comment.trim().length > 0
 
+  const getCurrentURL = () => {
+    if (isWeb) {
+      return window.location.href
+    }
+    return 'mobile-app'
+  }
+
+  const getPlatform = () => {
+    if (isWeb) return 'web'
+    if (isIOS) return 'ios'
+    if (isAndroid) return 'android'
+    return 'unknown'
+  }
+
+  const getDeviceInfo = () => {
+    if (anonymous) return null
+
+    if (isWeb) {
+      const screen = window.screen
+      const devicePixelRatio = window.devicePixelRatio || 1
+
+      return {
+        userAgent: navigator.userAgent,
+        screenResolution: `${screen.width}x${screen.height}`,
+        devicePixelRatio,
+        language: navigator.language,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+      }
+    } else {
+      // Mobile platforms - exclude userAgent for privacy
+      return {
+        platform: Platform.OS,
+        platformVersion: Platform.Version,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }
+    }
+  }
+
   const onSubmit = async () => {
     if (!isFormValid) return
 
@@ -58,6 +98,9 @@ export function Component() {
         anonymous: anonymous ? 'true' : '',
         handle: anonymous ? '' : currentAccount?.handle || '',
         email: anonymous ? '' : currentAccount?.email || '',
+        url: getCurrentURL(),
+        platform: getPlatform(),
+        device: getDeviceInfo(),
       }
 
       const urlWithToken = `${submitUrl}?bearerToken=${encodeURIComponent(bearerToken)}`
