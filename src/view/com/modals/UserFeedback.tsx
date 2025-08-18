@@ -7,14 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import * as Device from 'expo-device'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {FEEDBACK_POST_TOKEN, FEEDBACK_POST_URL} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useTheme} from '#/lib/ThemeContext'
+import {deviceLocales} from '#/locale/deviceLocales'
 import {isAndroid, isIOS, isWeb} from '#/platform/detection'
 import {useModalControls} from '#/state/modals'
+import {useLanguagePrefs} from '#/state/preferences'
 import {useSession} from '#/state/session'
 import {ErrorMessage} from '../util/error/ErrorMessage'
 import {Text} from '../util/text/Text'
@@ -36,6 +39,10 @@ export function Component() {
   const [anonymous, setAnonymous] = useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
+
+  const {appLanguage} = useLanguagePrefs()
+  const languageTag =
+    deviceLocales.at(0)?.languageTag || appLanguage || 'undetected'
 
   const onStarPress = (starRating: number) => {
     setRating(rating === starRating ? 0 : starRating)
@@ -59,16 +66,16 @@ export function Component() {
 
   const getDeviceInfo = () => {
     if (anonymous) return null
-
     if (isWeb) {
       const screen = window.screen
       const devicePixelRatio = window.devicePixelRatio || 1
 
       return {
+        platform: Platform.OS, // will be 'web'
         userAgent: navigator.userAgent,
         screenResolution: `${screen.width}x${screen.height}`,
         devicePixelRatio,
-        language: navigator.language,
+        language: languageTag,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         viewport: `${window.innerWidth}x${window.innerHeight}`,
       }
@@ -77,6 +84,8 @@ export function Component() {
       return {
         platform: Platform.OS,
         platformVersion: Platform.Version,
+        language: languageTag,
+        device: {type: Device.deviceType, yearClass: Device.deviceYearClass}, // phone or tablet, and how relatively powerful it is
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }
     }
