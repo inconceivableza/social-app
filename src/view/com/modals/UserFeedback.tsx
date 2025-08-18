@@ -93,6 +93,10 @@ export function Component() {
 
   const onSubmit = async () => {
     if (!isFormValid) return
+    if (!FEEDBACK_POST_URL) {
+      setError('Feedback URL not set in app environment')
+      return
+    }
 
     setError('')
     setIsSubmitting(true)
