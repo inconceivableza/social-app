@@ -35,6 +35,8 @@ export const DISCOVER_DEBUG_DIDS: Record<string, true> = {
 }
 
 const BASE_FEEDBACK_FORM_URL = `${HELP_DESK_URL}/requests/new`
+export const FEEDBACK_POST_URL = 'https://dummy_feedback_url/'
+export const FEEDBACK_POST_TOKEN = 'fillthisin'
 export function FEEDBACK_FORM_URL({
   email,
   handle,

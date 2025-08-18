@@ -43,6 +43,10 @@ export interface ChangePasswordModal {
   name: 'change-password'
 }
 
+export interface UserFeedbackModal {
+  name: 'user-feedback'
+}
+
 export type Modal =
   // Account
   | DeleteAccountModal
@@ -59,6 +63,7 @@ export type Modal =
   // Bluesky access
   | WaitlistModal
   | InviteCodesModal
+  | UserFeedbackModal
 
 const ModalContext = React.createContext<{
   isModalActive: boolean
