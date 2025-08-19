@@ -116,7 +116,8 @@ export function LINK_META_PROXY(serviceUrl: string) {
   return STAGING_LINK_META_PROXY
 }
 
-export const STATUS_PAGE_URL = 'https://status.bsky.app/'
+export const STATUS_PAGE_URL =
+  process.env.STATUS_PAGE_URL || 'https://status.bsky.app/'
 
 // Hitslop constants
 export const createHitslop = (size: number): Insets => ({
