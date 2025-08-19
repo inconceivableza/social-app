@@ -4,14 +4,20 @@ import {type AppBskyActorDefs} from '@atproto/api'
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
 export const STAGING_SERVICE = 'https://staging.bsky.dev'
-export const BSKY_SERVICE = 'https://bsky.social'
-export const PUBLIC_BSKY_SERVICE = 'https://public.api.bsky.app'
+export const BSKY_SERVICE = process.env.ATP_PDS_HOST || 'https://bsky.social'
+export const PUBLIC_BSKY_SERVICE =
+  process.env.ATP_PUBLIC_APPVIEW_HOST || 'https://public.api.bsky.app'
 export const DEFAULT_SERVICE = BSKY_SERVICE
 const HELP_DESK_LANG = 'en-us'
-export const HELP_DESK_URL = `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
-export const EMBED_SERVICE = 'https://embed.bsky.app'
+export const HELP_DESK_URL =
+  process.env.SOCIAL_HELP_DESK_URL ||
+  `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
+export const EMBED_SERVICE =
+  process.env.SOCIAL_EMBED_SERVICE || 'https://embed.bsky.app'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
-export const BSKY_DOWNLOAD_URL = 'https://bsky.app/download'
+export const BSKY_DOWNLOAD_URL = process.env.SOCIAL_APP_URL
+  ? `${process.env.SOCIAL_APP_URL}/download`
+  : 'https://bsky.app/download'
 export const STARTER_PACK_MAX_SIZE = 150
 
 // HACK
@@ -202,7 +208,9 @@ export const urls = {
   },
 }
 
-export const PUBLIC_APPVIEW = 'https://api.bsky.app'
+// ironically named, as this points to the non-public api host
+export const PUBLIC_APPVIEW =
+  process.env.ATP_APPVIEW_HOST || 'https://api.bsky.app'
 export const PUBLIC_APPVIEW_DID = 'did:web:api.bsky.app'
 export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
 
