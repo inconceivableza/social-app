@@ -10,6 +10,7 @@ import {
   type ModerationDecision,
   type ModerationPrefs,
 } from '@atproto/api'
+import { type AppFoodiosFeedDefs } from "@atproto/api/client"
 import {
   type InfiniteData,
   type QueryClient,
@@ -79,7 +80,8 @@ export function RQKEY(feedDesc: FeedDescriptor, params?: FeedParams) {
   return [RQKEY_ROOT, feedDesc, params || {}]
 }
 
-export interface FeedPostSliceItem {
+export type FeedPostSliceItem = {
+  type: "post"
   _reactKey: string
   uri: string
   post: AppBskyFeedDefs.PostView
@@ -88,6 +90,14 @@ export interface FeedPostSliceItem {
   parentAuthor?: AppBskyActorDefs.ProfileViewBasic
   isParentBlocked?: boolean
   isParentNotFound?: boolean
+} | FeedRecipeSliceItem
+
+interface FeedRecipeSliceItem {
+  type: "recipe"
+  _reactKey: string
+  uri: string
+  post: AppFoodiosFeedDefs.RecipePostView
+
 }
 
 export interface FeedPostSlice {
@@ -109,7 +119,7 @@ export interface FeedPostSlice {
 export interface FeedPageUnselected {
   api: FeedAPI
   cursor: string | undefined
-  feed: AppBskyFeedDefs.FeedViewPost[]
+  feed: AppFoodiosFeedDefs.FeedViewPost[]
   fetchedAt: number
 }
 
@@ -267,7 +277,7 @@ export function usePostFeedQuery(
 
         // Keep track of the last run and whether we can reuse
         // some already selected pages from there.
-        let reusedPages = []
+        let reusedPages: FeedPage[] = []
         if (lastRun.current) {
           const {
             data: lastData,
@@ -298,7 +308,7 @@ export function usePostFeedQuery(
           }
         }
 
-        const result = {
+        const result: InfiniteData<FeedPage> = {
           pageParams: data.pageParams,
           pages: [
             ...reusedPages,
@@ -310,31 +320,35 @@ export function usePostFeedQuery(
               slices: tuner
                 .tune(page.feed)
                 .map(slice => {
-                  const moderations = slice.items.map(item =>
-                    moderatePost(item.post, moderationOpts!),
-                  )
+                  // TODO: double check that it's okay to merge the loops
+                  const moderations: Record<string, ModerationDecision> = {}
 
                   // apply moderation filter
                   for (let i = 0; i < slice.items.length; i++) {
-                    const ignoreFilter =
-                      slice.items[i].post.author.did === ignoreFilterFor
-                    if (ignoreFilter) {
-                      // remove mutes to avoid confused UIs
-                      moderations[i].causes = moderations[i].causes.filter(
-                        cause => cause.type !== 'muted',
-                      )
-                    }
-                    if (
-                      !ignoreFilter &&
-                      moderations[i]?.ui('contentList').filter
-                    ) {
-                      return undefined
+                    const post = slice.items[i].post
+                    // TODO: moderate recipes as well
+                    if (AppBskyFeedDefs.isPostView(post)) {
+                      moderations[post.uri] = moderatePost(post, moderationOpts!)
+                      const ignoreFilter = post.author.did === ignoreFilterFor
+                      if (ignoreFilter) {
+                    // remove mutes to avoid confused UIs
+                        moderations[post.uri].causes = moderations[post.uri].causes.filter(
+                          cause => cause.type !== 'muted',
+                        )
+                      }
+                      if (
+                        !ignoreFilter &&
+                        moderations[post.uri]?.ui('contentList').filter
+                      ) {
+                        return undefined
+                      }
                     }
                   }
 
                   if (isDiscover) {
+                    // TODO: do this for recipes as well
                     userActionHistory.seen(
-                      slice.items.map(item => ({
+                      slice.items.flatMap(item => item.type === "post" ? [{
                         feedContext: slice.feedContext,
                         reqId: slice.reqId,
                         likeCount: item.post.likeCount ?? 0,
@@ -344,7 +358,7 @@ export function usePostFeedQuery(
                           item.post.author.viewer?.followedBy,
                         ),
                         uri: item.post.uri,
-                      })),
+                      }] : []),
                     )
                   }
 
@@ -358,22 +372,29 @@ export function usePostFeedQuery(
                     reason: slice.reason,
                     feedPostUri: slice.feedPostUri,
                     items: slice.items.map((item, i) => {
-                      const feedPostSliceItem: FeedPostSliceItem = {
+
+                      const feedPostSliceItem: FeedPostSliceItem = item.type === "post" ? {
+                        type: 'post',
                         _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
                         uri: item.post.uri,
                         post: item.post,
                         record: item.record,
-                        moderation: moderations[i],
+                        moderation: moderations[item.post.uri],
                         parentAuthor: item.parentAuthor,
                         isParentBlocked: item.isParentBlocked,
                         isParentNotFound: item.isParentNotFound,
+                      } : {
+                        type: 'recipe',
+                        _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
+                        uri: item.post.uri,
+                        post: item.post,
                       }
                       return feedPostSliceItem
                     }),
                   }
                   return feedPostSlice
                 })
-                .filter(n => !!n),
+                .filter((v): v is FeedPostSlice => !!v),
             })),
           ],
         }
@@ -521,7 +542,7 @@ function createApi({
 export function* findAllPostsInQueryData(
   queryClient: QueryClient,
   uri: string,
-): Generator<AppBskyFeedDefs.PostView, undefined> {
+): Generator<AppFoodiosFeedDefs.FeedViewPost["post"], undefined> {
   const atUri = new AtUri(uri)
 
   const queryDatas = queryClient.getQueriesData<
@@ -613,7 +634,7 @@ export function* findAllProfilesInQueryData(
 }
 
 function assertSomePostsPassModeration(
-  feed: AppBskyFeedDefs.FeedViewPost[],
+  feed: AppFoodiosFeedDefs.FeedViewPost[],
   moderationPrefs: ModerationPrefs,
 ) {
   // no posts in this feed

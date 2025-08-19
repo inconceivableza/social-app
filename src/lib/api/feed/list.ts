@@ -1,10 +1,10 @@
 import {
   type Agent,
   type AppBskyFeedDefs,
-  type AppBskyFeedGetListFeed as GetListFeed,
+  type AppBskyFeedGetListFeed as GetListFeed, AppFoodiosFeedDefs
 } from '@atproto/api'
 
-import {type FeedAPI, type FeedAPIResponse} from './types'
+import { type FeedAPI, type FeedAPIResponse } from './types'
 
 export class ListFeedAPI implements FeedAPI {
   agent: Agent
@@ -21,8 +21,8 @@ export class ListFeedAPI implements FeedAPI {
     this.params = feedParams
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
-    const res = await this.agent.app.bsky.feed.getListFeed({
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
+    const res = await this.agent.app.foodios.feed.getListFeed({
       ...this.params,
       limit: 1,
     })
@@ -36,7 +36,7 @@ export class ListFeedAPI implements FeedAPI {
     cursor: string | undefined
     limit: number
   }): Promise<FeedAPIResponse> {
-    const res = await this.agent.app.bsky.feed.getListFeed({
+    const res = await this.agent.app.foodios.feed.getListFeed({
       ...this.params,
       cursor,
       limit,

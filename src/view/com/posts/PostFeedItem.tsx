@@ -190,6 +190,7 @@ let FeedItemInner = ({
       reqId,
     })
     openComposer({
+      type: "post",
       replyTo: {
         uri: post.uri,
         cid: post.cid,

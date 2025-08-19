@@ -1,10 +1,11 @@
 import {
+  AppFoodiosFeedDefs,
   AppBskyFeedDefs,
   AppBskyFeedGetAuthorFeed as GetAuthorFeed,
   BskyAgent,
 } from '@atproto/api'
 
-import {FeedAPI, FeedAPIResponse} from './types'
+import { FeedAPI, FeedAPIResponse } from './types'
 
 export class AuthorFeedAPI implements FeedAPI {
   agent: BskyAgent
@@ -22,14 +23,14 @@ export class AuthorFeedAPI implements FeedAPI {
   }
 
   get params() {
-    const params = {...this._params}
+    const params = { ...this._params }
     params.includePins =
       params.filter === 'posts_with_replies' ||
       params.filter === 'posts_and_author_threads'
     return params
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
     const res = await this.agent.getAuthorFeed({
       ...this.params,
       limit: 1,
@@ -60,7 +61,7 @@ export class AuthorFeedAPI implements FeedAPI {
     }
   }
 
-  _filter(feed: AppBskyFeedDefs.FeedViewPost[]) {
+  _filter(feed: AppFoodiosFeedDefs.FeedViewPost[]) {
     if (this.params.filter === 'posts_and_author_threads') {
       return feed.filter(post => {
         const isReply = post.reply
@@ -78,20 +79,23 @@ export class AuthorFeedAPI implements FeedAPI {
 
 function isAuthorReplyChain(
   actor: string,
-  post: AppBskyFeedDefs.FeedViewPost,
-  posts: AppBskyFeedDefs.FeedViewPost[],
+  { post, reply }: AppFoodiosFeedDefs.FeedViewPost,
+  posts: AppFoodiosFeedDefs.FeedViewPost[],
 ): boolean {
+  if (!AppBskyFeedDefs.isPostView(post)) {
+    return false
+  }
   // current post is by a different user (shouldn't happen)
-  if (post.post.author.did !== actor) return false
+  if (post.author.did !== actor) return false
 
-  const replyParent = post.reply?.parent
+  const replyParent = reply?.parent
 
   if (AppBskyFeedDefs.isPostView(replyParent)) {
     // reply parent is by a different user
     if (replyParent.author.did !== actor) return false
 
     // A top-level post that matches the parent of the current post.
-    const parentPost = posts.find(p => p.post.uri === replyParent.uri)
+    const parentPost = posts.find(p => AppBskyFeedDefs.isPostView(p.post) && p.post.uri === replyParent.uri)
 
     /*
      * Either we haven't fetched the parent at the top level, or the only

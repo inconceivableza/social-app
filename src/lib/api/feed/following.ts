@@ -1,4 +1,4 @@
-import {AppBskyFeedDefs, BskyAgent} from '@atproto/api'
+import { AppBskyFeedDefs, BskyAgent, AppFoodiosFeedDefs } from '@atproto/api'
 
 import {FeedAPI, FeedAPIResponse} from './types'
 
@@ -9,7 +9,7 @@ export class FollowingFeedAPI implements FeedAPI {
     this.agent = agent
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
     const res = await this.agent.getTimeline({
       limit: 1,
     })

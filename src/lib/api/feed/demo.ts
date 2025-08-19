@@ -1,4 +1,4 @@
-import {type AppBskyFeedDefs, type BskyAgent} from '@atproto/api'
+import { type AppBskyFeedDefs, type BskyAgent, AppFoodiosFeedDefs } from '@atproto/api'
 
 import {DEMO_FEED} from '#/lib/demo'
 import {type FeedAPI, type FeedAPIResponse} from './types'
@@ -10,7 +10,7 @@ export class DemoFeedAPI implements FeedAPI {
     this.agent = agent
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
     return DEMO_FEED.feed[0]
   }
 

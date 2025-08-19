@@ -1,12 +1,12 @@
-import {AppBskyFeedDefs} from '@atproto/api'
+import { AppFoodiosFeedDefs } from '@atproto/api'
 
 export interface FeedAPIResponse {
   cursor?: string
-  feed: AppBskyFeedDefs.FeedViewPost[]
+  feed: AppFoodiosFeedDefs.FeedViewPost[]
 }
 
 export interface FeedAPI {
-  peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost>
+  peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost>
   fetch({
     cursor,
     limit,

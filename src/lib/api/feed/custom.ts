@@ -1,5 +1,6 @@
 import {
   AppBskyFeedDefs,
+  AppFoodiosFeedDefs,
   AppBskyFeedGetFeed as GetCustomFeed,
   BskyAgent,
   jsonStringToLex,
@@ -31,9 +32,9 @@ export class CustomFeedAPI implements FeedAPI {
     this.userInterests = userInterests
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
     const contentLangs = getContentLanguages().join(',')
-    const res = await this.agent.app.bsky.feed.getFeed(
+    const res = await this.agent.app.foodios.feed.getFeed(
       {
         ...this.params,
         limit: 1,
@@ -55,7 +56,7 @@ export class CustomFeedAPI implements FeedAPI {
     const isBlueskyOwned = isBlueskyOwnedFeed(this.params.feed)
 
     const res = agent.did
-      ? await this.agent.app.bsky.feed.getFeed(
+      ? await this.agent.app.foodios.feed.getFeed(
           {
             ...this.params,
             cursor,

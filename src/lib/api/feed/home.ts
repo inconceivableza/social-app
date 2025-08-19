@@ -1,4 +1,4 @@
-import {type AppBskyFeedDefs, type BskyAgent} from '@atproto/api'
+import { type AppBskyFeedDefs, type BskyAgent, AppFoodiosFeedDefs } from '@atproto/api'
 
 import {PROD_DEFAULT_FEED} from '#/lib/constants'
 import {CustomFeedAPI} from './custom'
@@ -13,8 +13,9 @@ import {type FeedAPI, type FeedAPIResponse} from './types'
 // we use this fallback marker post to drive this instead. see Feed.tsx
 // for the usage.
 // -prf
-export const FALLBACK_MARKER_POST: AppBskyFeedDefs.FeedViewPost = {
+export const FALLBACK_MARKER_POST: AppFoodiosFeedDefs.FeedViewPost = {
   post: {
+    "$type": "app.bsky.feed.defs#postView",
     uri: 'fallback-marker-post',
     cid: 'fake',
     record: {},
@@ -61,7 +62,7 @@ export class HomeFeedAPI implements FeedAPI {
     this.itemCursor = 0
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
     if (this.usingDiscover) {
       return this.discover.peekLatest()
     }
@@ -80,7 +81,7 @@ export class HomeFeedAPI implements FeedAPI {
     }
 
     let returnCursor
-    let posts: AppBskyFeedDefs.FeedViewPost[] = []
+    let posts: AppFoodiosFeedDefs.FeedViewPost[] = []
 
     if (!this.usingDiscover) {
       const res = await this.following.fetch({cursor, limit})

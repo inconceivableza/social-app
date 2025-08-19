@@ -2,6 +2,7 @@ import {
   type Agent,
   type AppBskyFeedDefs,
   type AppBskyFeedGetPosts,
+  AppFoodiosFeedDefs
 } from '@atproto/api'
 
 import {logger} from '#/logger'
@@ -10,7 +11,7 @@ import {type FeedAPI, type FeedAPIResponse} from './types'
 export class PostListFeedAPI implements FeedAPI {
   agent: Agent
   params: AppBskyFeedGetPosts.QueryParams
-  peek: AppBskyFeedDefs.FeedViewPost | null = null
+  peek: AppFoodiosFeedDefs.FeedViewPost | null = null
 
   constructor({
     agent,
@@ -30,13 +31,13 @@ export class PostListFeedAPI implements FeedAPI {
     }
   }
 
-  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
     if (this.peek) return this.peek
     throw new Error('Has not fetched yet')
   }
 
-  async fetch({}: {}): Promise<FeedAPIResponse> {
-    const res = await this.agent.app.bsky.feed.getPosts({
+  async fetch({ }: {}): Promise<FeedAPIResponse> {
+    const res = await this.agent.app.foodios.feed.getPosts({
       ...this.params,
     })
     if (res.success) {

@@ -221,7 +221,7 @@ export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
     value: recipeRecord,
     rkey,
   })
-  const uri = `at://${did}/app.bsky.feed.post/${rkey}`
+  const uri = `at://${did}/app.foodios.feed.recipePost/${rkey}`
 
   if (post.postToFeed) {
     const cid = await computeCid(recipeRecord)
