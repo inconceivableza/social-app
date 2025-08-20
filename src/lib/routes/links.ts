@@ -50,9 +50,9 @@ export function makeStarterPackLink(
   rkey?: string,
 ) {
   if (typeof starterPackOrName === 'string') {
-    return `${process.env.SOCIAL_APP_URL || 'https://bsky.app'}/start/${starterPackOrName}/${rkey}`
+    return `${process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'}/start/${starterPackOrName}/${rkey}`
   } else {
     const uriRkey = new AtUri(starterPackOrName.uri).rkey
-    return `${process.env.SOCIAL_APP_URL || 'https://bsky.app'}/start/${starterPackOrName.creator.handle}/${uriRkey}`
+    return `${process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'}/start/${starterPackOrName.creator.handle}/${uriRkey}`
   }
 }

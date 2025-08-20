@@ -7,7 +7,8 @@ import {isInvalidHandle} from '#/lib/strings/handles'
 import {startUriToStarterPackUri} from '#/lib/strings/starter-pack'
 import {logger} from '#/logger'
 
-export const BSKY_APP_HOST = process.env.SOCIAL_APP_URL || 'https://bsky.app'
+export const BSKY_APP_HOST =
+  process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'
 const BSKY_TRUSTED_HOSTS = [
   'bsky\\.app',
   'bsky\\.social',
@@ -337,11 +338,13 @@ export function createProxiedUrl(url: string): string {
     return url
   }
 
-  return `https://${process.env.LINK_HOST || 'go.bsky.app'}/redirect?u=${encodeURIComponent(url)}`
+  return `https://${process.env.EXPO_PUBLIC_LINK_HOST || 'go.bsky.app'}/redirect?u=${encodeURIComponent(url)}`
 }
 
 export function isShortLink(url: string): boolean {
-  return url.startsWith(`https://${process.env.LINK_HOST || 'go.bsky.app'}/`)
+  return url.startsWith(
+    `https://${process.env.EXPO_PUBLIC_LINK_HOST || 'go.bsky.app'}/`,
+  )
 }
 
 export function shortLinkToHref(url: string): string {

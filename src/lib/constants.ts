@@ -4,21 +4,24 @@ import {type AppBskyActorDefs} from '@atproto/api'
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
 export const STAGING_SERVICE = 'https://staging.bsky.dev'
-export const BSKY_SERVICE = process.env.ATP_PDS_HOST || 'https://bsky.social'
+export const BSKY_SERVICE =
+  process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.social'
 export const PUBLIC_BSKY_SERVICE =
-  process.env.ATP_PUBLIC_APPVIEW_HOST || 'https://public.api.bsky.app'
+  process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_HOST ||
+  'https://public.api.bsky.app'
 export const DEFAULT_SERVICE = BSKY_SERVICE
 const HELP_DESK_LANG = 'en-us'
 export const HELP_DESK_URL =
-  process.env.SOCIAL_HELP_DESK_URL ||
+  process.env.EXPO_PUBLIC_SOCIAL_HELP_DESK_URL ||
   `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
 export const EMBED_SERVICE =
-  process.env.SOCIAL_EMBED_SERVICE || 'https://embed.bsky.app'
+  process.env.EXPO_PUBLIC_SOCIAL_EMBED_SERVICE || 'https://embed.bsky.app'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
-export const BSKY_DOWNLOAD_URL = process.env.SOCIAL_APP_URL
-  ? `${process.env.SOCIAL_APP_URL}/download`
+export const BSKY_DOWNLOAD_URL = process.env.EXPO_PUBLIC_SOCIAL_APP_URL
+  ? `${process.env.EXPO_PUBLIC_SOCIAL_APP_URL}/download`
   : 'https://bsky.app/download'
 export const STARTER_PACK_MAX_SIZE = 150
+export const CHAT_DISABLED = true
 
 // HACK
 // Yes, this is exactly what it looks like. It's a hard-coded constant
@@ -117,7 +120,7 @@ export function LINK_META_PROXY(serviceUrl: string) {
 }
 
 export const STATUS_PAGE_URL =
-  process.env.STATUS_PAGE_URL || 'https://status.bsky.app/'
+  process.env.EXPO_PUBLIC_STATUS_PAGE_URL || 'https://status.bsky.app/'
 
 // Hitslop constants
 export const createHitslop = (size: number): Insets => ({
@@ -211,8 +214,18 @@ export const urls = {
 
 // ironically named, as this points to the non-public api host
 export const PUBLIC_APPVIEW =
-  process.env.ATP_APPVIEW_HOST || 'https://api.bsky.app'
+  process.env.EXPO_PUBLIC_ATP_APPVIEW_HOST || 'https://api.bsky.app'
 export const PUBLIC_APPVIEW_DID = 'did:web:api.bsky.app'
 export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
 
 export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
+
+const POLICY_BASE_URL =
+  process.env.EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL ||
+  'https://bsky.social/about/support'
+export const webLinks = {
+  tos: `${POLICY_BASE_URL}/tos`,
+  privacy: `${POLICY_BASE_URL}/privacy-policy`,
+  community: `${POLICY_BASE_URL}/community-guidelines`,
+  communityDeprecated: `${POLICY_BASE_URL}/community-guidelines-deprecated`,
+}
