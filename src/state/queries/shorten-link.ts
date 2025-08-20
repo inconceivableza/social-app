@@ -4,7 +4,7 @@ export function useShortenLink() {
   return async (inputUrl: string): Promise<{url: string}> => {
     const url = new URL(inputUrl)
     const res = await fetch(
-      `https://${process.env.LINK_HOST || 'go.bsky.app'}/link`,
+      `https://${process.env.EXPO_PUBLIC_LINK_HOST || 'go.bsky.app'}/link`,
       {
         method: 'POST',
         body: JSON.stringify({
