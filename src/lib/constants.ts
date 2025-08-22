@@ -1,19 +1,20 @@
 import {type Insets, Platform} from 'react-native'
 import {type AppBskyActorDefs} from '@atproto/api'
 
+import {
+  beginResolveEnvConfig,
+  getCurrentEnvConfigSync,
+} from '#/state/env-config'
+
+beginResolveEnvConfig()
+const envConfig = getCurrentEnvConfigSync()
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
 export const STAGING_SERVICE = 'https://staging.bsky.dev'
-export const BSKY_SERVICE =
-  process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.social'
-export const PUBLIC_BSKY_SERVICE =
-  process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_HOST ||
-  'https://public.api.bsky.app'
+export const BSKY_SERVICE = envConfig.BSKY_SERVICE
+export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
-const HELP_DESK_LANG = 'en-us'
-export const HELP_DESK_URL =
-  process.env.EXPO_PUBLIC_SOCIAL_HELP_DESK_URL ||
-  `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
+export const HELP_DESK_URL = envConfig.HELP_DESK_URL
 export const EMBED_SERVICE =
   process.env.EXPO_PUBLIC_SOCIAL_EMBED_SERVICE || 'https://embed.bsky.app'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`

@@ -18,6 +18,11 @@ import {Provider as A11yProvider} from '#/state/a11y'
 import {Provider as AgeAssuranceProvider} from '#/state/ageAssurance'
 import {Provider as MutedThreadsProvider} from '#/state/cache/thread-mutes'
 import {Provider as DialogStateProvider} from '#/state/dialogs'
+import {
+  beginResolveEnvConfig,
+  ensureEnvConfigResolved,
+  Provider as EnvConfigProvider,
+} from '#/state/env-config'
 import {listenSessionDropped} from '#/state/events'
 import {
   beginResolveGeolocation,
@@ -64,6 +69,10 @@ import {Provider as VideoVolumeProvider} from '#/components/Post/Embed/VideoEmbe
 import {BackgroundNotificationPreferencesProvider} from '../modules/expo-background-notification-handler/src/BackgroundNotificationHandlerProvider'
 import {Provider as HideBottomBarBorderProvider} from './lib/hooks/useHideBottomBarBorder'
 
+/**
+ * Begin dynamic configuration ASAP
+ */
+beginResolveEnvConfig()
 /**
  * Begin geolocation ASAP
  */
@@ -172,9 +181,11 @@ function App() {
   const [isReady, setReady] = useState(false)
 
   React.useEffect(() => {
-    Promise.all([initPersistedState(), ensureGeolocationResolved()]).then(() =>
-      setReady(true),
-    )
+    Promise.all([
+      initPersistedState(),
+      ensureEnvConfigResolved(),
+      ensureGeolocationResolved(),
+    ]).then(() => setReady(true))
   }, [])
 
   if (!isReady) {
@@ -186,31 +197,33 @@ function App() {
    * that is set up in the InnerApp component above.
    */
   return (
-    <GeolocationProvider>
-      <A11yProvider>
-        <SessionProvider>
-          <PrefsStateProvider>
-            <I18nProvider>
-              <ShellStateProvider>
-                <InvitesStateProvider>
-                  <ModalStateProvider>
-                    <DialogStateProvider>
-                      <LightboxStateProvider>
-                        <PortalProvider>
-                          <StarterPackProvider>
-                            <InnerApp />
-                          </StarterPackProvider>
-                        </PortalProvider>
-                      </LightboxStateProvider>
-                    </DialogStateProvider>
-                  </ModalStateProvider>
-                </InvitesStateProvider>
-              </ShellStateProvider>
-            </I18nProvider>
-          </PrefsStateProvider>
-        </SessionProvider>
-      </A11yProvider>
-    </GeolocationProvider>
+    <EnvConfigProvider>
+      <GeolocationProvider>
+        <A11yProvider>
+          <SessionProvider>
+            <PrefsStateProvider>
+              <I18nProvider>
+                <ShellStateProvider>
+                  <InvitesStateProvider>
+                    <ModalStateProvider>
+                      <DialogStateProvider>
+                        <LightboxStateProvider>
+                          <PortalProvider>
+                            <StarterPackProvider>
+                              <InnerApp />
+                            </StarterPackProvider>
+                          </PortalProvider>
+                        </LightboxStateProvider>
+                      </DialogStateProvider>
+                    </ModalStateProvider>
+                  </InvitesStateProvider>
+                </ShellStateProvider>
+              </I18nProvider>
+            </PrefsStateProvider>
+          </SessionProvider>
+        </A11yProvider>
+      </GeolocationProvider>
+    </EnvConfigProvider>
   )
 }
 

@@ -1,4 +1,7 @@
 const pkg = require('./package.json')
+const dotenvx = require('@dotenvx/dotenvx')
+const fs = require('node:fs')
+const path = require('node:path')
 
 module.exports = function (_config) {
   /**
@@ -35,6 +38,40 @@ module.exports = function (_config) {
 
   const USE_SENTRY = Boolean(process.env.SENTRY_AUTH_TOKEN)
 
+  const envFilenames = {
+    production: '.env.production',
+    staging: '.env.staging',
+    development: '.env',
+  }
+  const inRepos = path.basename(path.dirname(__dirname)) === 'repos'
+  const defaultEnvPath = __dirname
+  const grandRepoPath = path.dirname(path.dirname(__dirname)) // grandparent dir
+  function ifExists(pathname) {
+    return fs.existsSync(pathname) ? pathname : null
+  }
+  function findExisting(filename) {
+    return ifExists(path.join(defaultEnvPath, filename)) || inRepos
+      ? ifExists(path.join(grandRepoPath, filename))
+      : null
+  }
+  const envConfigs = Object.fromEntries(
+    Object.entries(envFilenames).map(([profileName, envBasename]) => {
+      const envFilename = findExisting(envBasename)
+      console.log(
+        'Loading env-config for',
+        profileName,
+        'from',
+        envBasename,
+        'found in',
+        envFilename,
+      )
+      return [
+        profileName,
+        envFilename ? dotenvx.parse(fs.readFileSync(envFilename)) : {},
+      ]
+    }),
+  )
+  console.log('env-configs being included in app config:', envConfigs)
   return {
     expo: {
       version: VERSION,
@@ -393,6 +430,7 @@ module.exports = function (_config) {
           },
           projectId: '55bd077a-d905-4184-9c7f-94789ba0f302',
         },
+        'env-config': envConfigs,
       },
     },
   }

@@ -334,6 +334,9 @@ func serve(cctx *cli.Context) error {
 	// ipcc
 	e.GET("/ipcc", server.WebIpCC)
 
+	// env-config
+	e.GET("/env-config", server.WebEnvConfig)
+
 	if linkHost != "" {
 		linkUrl, err := url.Parse(linkHost)
 		if err != nil {
@@ -649,5 +652,26 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 		log.Warnf("ipcc bad response %s", err)
 		return c.JSON(500, IPCCResponse{})
 	}
+	return c.JSON(200, outResponse)
+}
+
+type EnvConfigResponse struct {
+	// TODO can this be done with some macro?
+	ATP_PUBLIC_APPVIEW_URL string `json:"ATP_PUBLIC_APPVIEW_URL"`
+	ATP_PDS_URL string `json:"ATP_PDS_URL"`
+	SOCIAL_HELP_DESK_URL string `json:"SOCIAL_HELP_DESK_URL"`
+}
+
+func (srv *Server) WebEnvConfig(c echo.Context) error {
+	if err != nil {
+		log.Warnf("envconfig backend error %s", err)
+		return c.JSON(500, EnvConfigResponse{})
+	}
+	var outResponse EnvConfigResponse
+	outResponse.ATP_PUBLIC_APPVIEW_URL := os.Getenv('EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL')
+	outResponse.ATP_PDS_URL := os.GetEnv('EXPO_PUBLIC_ATP_PDS_URL')
+	outResponse.SOCIAL_HELP_DESK_URL := os.GetEnv('EXPO_PUBLIC_SOCIAL_HELP_DESK_URL')
+	// May be overkill, but useful perhaps for dev?
+	c.Response().Header().set(echo.HeaderCacheControl, 'no-cache, no-store, must-revalidate')
 	return c.JSON(200, outResponse)
 }
