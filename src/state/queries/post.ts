@@ -97,8 +97,12 @@ export function useGetPosts() {
   )
 }
 
+type CommonPostFields = Pick<AppBskyFeedDefs.PostView,
+  "author" | "uri" | "cid" | "likeCount" | "replyCount" | "repostCount" | "viewer">
+
+
 export function usePostLikeMutationQueue(
-  post: Shadow<AppBskyFeedDefs.PostView>,
+  post: Shadow<CommonPostFields>,
   viaRepost: {uri: string; cid: string} | undefined,
   feedDescriptor: string | undefined,
   logContext: LogEvents['post:like']['logContext'] &
@@ -163,7 +167,7 @@ export function usePostLikeMutationQueue(
 function usePostLikeMutation(
   feedDescriptor: string | undefined,
   logContext: LogEvents['post:like']['logContext'],
-  post: Shadow<AppBskyFeedDefs.PostView>,
+  post: Shadow<CommonPostFields>,
 ) {
   const {currentAccount} = useSession()
   const queryClient = useQueryClient()
