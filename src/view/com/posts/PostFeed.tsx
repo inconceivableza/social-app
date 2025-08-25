@@ -67,6 +67,7 @@ import {PostFeedErrorMessage} from './PostFeedErrorMessage'
 import {PostFeedItem} from './PostFeedItem'
 import {ShowLessFollowup} from './ShowLessFollowup'
 import {ViewFullThread} from './ViewFullThread'
+import { RecipeFeedItem } from './RecipeFeedItem'
 
 type FeedRow =
   | {
@@ -754,7 +755,8 @@ let PostFeed = ({
             />
           )
         } else if (item.type === "recipe") {
-          return <div>{item.post.title}!</div>
+
+          return <RecipeFeedItem post={item.post} feedContext={slice.feedContext} reqId={slice.reqId} />
         }
 
       } else if (row.type === 'sliceViewFullThread') {
