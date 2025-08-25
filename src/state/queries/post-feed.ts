@@ -10,7 +10,7 @@ import {
   type ModerationDecision,
   type ModerationPrefs,
 } from '@atproto/api'
-import { type AppFoodiosFeedDefs } from "@atproto/api/client"
+import { AppFoodiosFeedDefs } from "@atproto/api/client"
 import {
   type InfiniteData,
   type QueryClient,
@@ -47,6 +47,7 @@ import {
   embedViewRecordToPostView,
   getEmbeddedPost,
 } from './util'
+import { AnyPostView } from '../cache/types'
 
 type ActorDid = string
 export type AuthorFilter =
@@ -542,7 +543,7 @@ function createApi({
 export function* findAllPostsInQueryData(
   queryClient: QueryClient,
   uri: string,
-): Generator<AppFoodiosFeedDefs.FeedViewPost["post"], undefined> {
+): Generator<AnyPostView, undefined> {
   const atUri = new AtUri(uri)
 
   const queryDatas = queryClient.getQueriesData<
@@ -565,7 +566,7 @@ export function* findAllPostsInQueryData(
           yield embedViewRecordToPostView(quotedPost)
         }
 
-        if (AppBskyFeedDefs.isPostView(item.reply?.parent)) {
+        if (AppBskyFeedDefs.isPostView(item.reply?.parent) || AppFoodiosFeedDefs.isRecipePostView(item.reply?.parent)) {
           if (didOrHandleUriMatches(atUri, item.reply.parent)) {
             yield item.reply.parent
           }
@@ -579,7 +580,7 @@ export function* findAllPostsInQueryData(
           }
         }
 
-        if (AppBskyFeedDefs.isPostView(item.reply?.root)) {
+        if (AppBskyFeedDefs.isPostView(item.reply?.root) || AppFoodiosFeedDefs.isRecipePostView(item.reply?.root)) {
           if (didOrHandleUriMatches(atUri, item.reply.root)) {
             yield item.reply.root
           }
@@ -607,6 +608,7 @@ export function* findAllProfilesInQueryData(
     if (!queryData?.pages) {
       continue
     }
+    // update these
     for (const page of queryData?.pages) {
       for (const item of page.feed) {
         if (item.post.author.did === did) {

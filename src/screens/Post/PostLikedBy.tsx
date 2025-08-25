@@ -17,7 +17,7 @@ export const PostLikedByScreen = ({route}: Props) => {
   const {data: post} = usePostThreadQuery(uri)
 
   let likeCount
-  if (post?.thread.type === 'post') {
+  if (post?.thread.type === 'post' || post?.thread.type === "recipe") {
     likeCount = post.thread.post.likeCount
   }
 
