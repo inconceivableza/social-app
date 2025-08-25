@@ -196,35 +196,34 @@ function App() {
    * NOTE: only nothing here can depend on other data or session state, since
    * that is set up in the InnerApp component above.
    */
-  return (
-    <EnvConfigProvider>
-      <GeolocationProvider>
-        <A11yProvider>
-          <SessionProvider>
-            <PrefsStateProvider>
-              <I18nProvider>
-                <ShellStateProvider>
-                  <InvitesStateProvider>
-                    <ModalStateProvider>
-                      <DialogStateProvider>
-                        <LightboxStateProvider>
-                          <PortalProvider>
-                            <StarterPackProvider>
-                              <InnerApp />
-                            </StarterPackProvider>
-                          </PortalProvider>
-                        </LightboxStateProvider>
-                      </DialogStateProvider>
-                    </ModalStateProvider>
-                  </InvitesStateProvider>
-                </ShellStateProvider>
-              </I18nProvider>
-            </PrefsStateProvider>
-          </SessionProvider>
-        </A11yProvider>
-      </GeolocationProvider>
-    </EnvConfigProvider>
+  const unConfigured = (
+    <GeolocationProvider>
+      <A11yProvider>
+        <SessionProvider>
+          <PrefsStateProvider>
+            <I18nProvider>
+              <ShellStateProvider>
+                <InvitesStateProvider>
+                  <ModalStateProvider>
+                    <DialogStateProvider>
+                      <LightboxStateProvider>
+                        <PortalProvider>
+                          <StarterPackProvider>
+                            <InnerApp />
+                          </StarterPackProvider>
+                        </PortalProvider>
+                      </LightboxStateProvider>
+                    </DialogStateProvider>
+                  </ModalStateProvider>
+                </InvitesStateProvider>
+              </ShellStateProvider>
+            </I18nProvider>
+          </PrefsStateProvider>
+        </SessionProvider>
+      </A11yProvider>
+    </GeolocationProvider>
   )
+  return <EnvConfigProvider>{unConfigured}</EnvConfigProvider>
 }
 
 export default Sentry.wrap(App)

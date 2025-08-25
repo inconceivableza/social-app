@@ -29,6 +29,11 @@ import {Provider as A11yProvider} from '#/state/a11y'
 import {Provider as AgeAssuranceProvider} from '#/state/ageAssurance'
 import {Provider as MutedThreadsProvider} from '#/state/cache/thread-mutes'
 import {Provider as DialogStateProvider} from '#/state/dialogs'
+import {
+  beginResolveEnvConfig,
+  ensureEnvConfigResolved,
+  Provider as EnvConfigProvider,
+} from '#/state/env-config'
 import {listenSessionDropped} from '#/state/events'
 import {
   beginResolveGeolocation,
@@ -85,6 +90,10 @@ if (isAndroid) {
   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
 }
 
+/**
+ * Begin dynamic configuration ASAP
+ */
+beginResolveEnvConfig()
 /**
  * Begin geolocation ASAP
  */
@@ -195,9 +204,11 @@ function App() {
   const [isReady, setReady] = useState(false)
 
   React.useEffect(() => {
-    Promise.all([initPersistedState(), ensureGeolocationResolved()]).then(() =>
-      setReady(true),
-    )
+    Promise.all([
+      initPersistedState(),
+      ensureEnvConfigResolved(),
+      ensureGeolocationResolved(),
+    ]).then(() => setReady(true))
   }, [])
 
   if (!isReady) {
@@ -208,7 +219,7 @@ function App() {
    * NOTE: only nothing here can depend on other data or session state, since
    * that is set up in the InnerApp component above.
    */
-  return (
+  const unConfigured = (
     <GeolocationProvider>
       <A11yProvider>
         <KeyboardControllerProvider>
@@ -242,6 +253,7 @@ function App() {
       </A11yProvider>
     </GeolocationProvider>
   )
+  return <EnvConfigProvider>{unConfigured}</EnvConfigProvider>
 }
 
 export default Sentry.wrap(App)
