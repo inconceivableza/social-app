@@ -656,22 +656,39 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 }
 
 type EnvConfigResponse struct {
-	// TODO can this be done with some macro?
+	ATP_APPVIEW_HOST string `json:"ATP_APPVIEW_HOST"`
+	ATP_PDS_HOST string `json:"ATP_PDS_HOST"`
+	ATP_PUBLIC_APPVIEW_HOST string `json:"ATP_PUBLIC_APPVIEW_HOST"`
 	ATP_PUBLIC_APPVIEW_URL string `json:"ATP_PUBLIC_APPVIEW_URL"`
-	ATP_PDS_URL string `json:"ATP_PDS_URL"`
+	CORS_ALLOWED_ORIGINS string `json:"CORS_ALLOWED_ORIGINS"`
+	LINK_HOST string `json:"LINK_HOST"`
+	OGCARD_HOST string `json:"OGCARD_HOST"`
+	SOCIAL_APP_HOST string `json:"SOCIAL_APP_HOST"`
+	SOCIAL_APP_URL string `json:"SOCIAL_APP_URL"`
+	SOCIAL_EMBED_SERVICE string `json:"SOCIAL_EMBED_SERVICE"`
 	SOCIAL_HELP_DESK_URL string `json:"SOCIAL_HELP_DESK_URL"`
+	SOCIAL_POLICY_BASE_URL string `json:"SOCIAL_POLICY_BASE_URL"`
+	STATUS_PAGE_URL string `json:"STATUS_PAGE_URL"`
 }
 
 func (srv *Server) WebEnvConfig(c echo.Context) error {
-	if err != nil {
-		log.Warnf("envconfig backend error %s", err)
-		return c.JSON(500, EnvConfigResponse{})
-	}
 	var outResponse EnvConfigResponse
-	outResponse.ATP_PUBLIC_APPVIEW_URL := os.Getenv('EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL')
-	outResponse.ATP_PDS_URL := os.GetEnv('EXPO_PUBLIC_ATP_PDS_URL')
-	outResponse.SOCIAL_HELP_DESK_URL := os.GetEnv('EXPO_PUBLIC_SOCIAL_HELP_DESK_URL')
+	outResponse = EnvConfigResponse{
+		ATP_APPVIEW_HOST: os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_HOST"),
+		ATP_PDS_HOST: os.Getenv("EXPO_PUBLIC_ATP_PDS_HOST"),
+		ATP_PUBLIC_APPVIEW_HOST: os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_HOST"),
+		ATP_PUBLIC_APPVIEW_URL: os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
+		CORS_ALLOWED_ORIGINS: os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
+		LINK_HOST: os.Getenv("EXPO_PUBLIC_LINK_HOST"),
+		OGCARD_HOST: os.Getenv("EXPO_PUBLIC_OGCARD_HOST"),
+		SOCIAL_APP_HOST: os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
+		SOCIAL_APP_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
+		SOCIAL_EMBED_SERVICE: os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),
+		SOCIAL_HELP_DESK_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_HELP_DESK_URL"),
+		SOCIAL_POLICY_BASE_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL"),
+		STATUS_PAGE_URL: os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL"),
+	}
 	// May be overkill, but useful perhaps for dev?
-	c.Response().Header().set(echo.HeaderCacheControl, 'no-cache, no-store, must-revalidate')
+	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
 	return c.JSON(200, outResponse)
 }
