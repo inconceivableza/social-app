@@ -57,21 +57,12 @@ module.exports = function (_config) {
   const envConfigs = Object.fromEntries(
     Object.entries(envFilenames).map(([profileName, envBasename]) => {
       const envFilename = findExisting(envBasename)
-      console.log(
-        'Loading env-config for',
-        profileName,
-        'from',
-        envBasename,
-        'found in',
-        envFilename,
-      )
       return [
         profileName,
         envFilename ? dotenvx.parse(fs.readFileSync(envFilename)) : {},
       ]
     }),
   )
-  console.log('env-configs being included in app config:', envConfigs)
   return {
     expo: {
       version: VERSION,
