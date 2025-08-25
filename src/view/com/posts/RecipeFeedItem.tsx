@@ -3,11 +3,12 @@ import { AppFoodiosFeedDefs } from "@atproto/api";
 import { View } from "react-native";
 import { atoms as a, useBreakpoints } from '#/alf'
 import { useOpenComposer } from "#/lib/hooks/useOpenComposer";
-import { PostControlButton, PostControlButtonIcon } from "#/components/PostControls/PostControlButton";
+import { PostControlButton, PostControlButtonIcon, PostControlButtonText } from "#/components/PostControls/PostControlButton";
 import { useRequireAuth } from "#/state/session";
 import { msg, plural } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Bubble_Stroke2_Corner2_Rounded as Bubble } from '#/components/icons/Bubble'
+import { formatCount } from "../util/numeric/format";
 
 
 interface RecipeFeedItemProps {
@@ -69,11 +70,11 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
                 )}
                 big={false}>
                 <PostControlButtonIcon icon={Bubble} />
-                {/* {typeof post.replyCount !== 'undefined' && post.replyCount > 0 && (
+                {typeof post.replyCount !== 'undefined' && post.replyCount > 0 && (
                     <PostControlButtonText>
                         {formatCount(i18n, post.replyCount)}
                     </PostControlButtonText>
-                )} */}
+                )}
             </PostControlButton>
         </View>
     </div>
