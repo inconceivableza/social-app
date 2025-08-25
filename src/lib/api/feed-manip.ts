@@ -55,6 +55,7 @@ export class FeedViewPostsSlice {
   feedPostUri: string
 
   constructor(feedPost: FeedViewPost) {
+    // TODO: clean up predicates for determining if parent/root is a recipe or post
     const {post, reply, reason} = feedPost
 
     this.items = []
@@ -62,7 +63,7 @@ export class FeedViewPostsSlice {
     this.isFallbackMarker = false
     this.isOrphan = false
     this.feedPostUri = post.uri
-    if (AppBskyFeedDefs.isPostView(reply?.root)) {
+    if (AppBskyFeedDefs.isPostView(reply?.root) || AppFoodiosFeedDefs.isRecipePostView(reply?.root)) {
       this.rootUri = reply.root.uri
     } else {
       this.rootUri = post.uri
@@ -95,7 +96,7 @@ export class FeedViewPostsSlice {
     const isParentBlocked = AppBskyFeedDefs.isBlockedPost(parent)
     const isParentNotFound = AppBskyFeedDefs.isNotFoundPost(parent)
     let parentAuthor: AppBskyActorDefs.ProfileViewBasic | undefined
-    if (AppBskyFeedDefs.isPostView(parent)) {
+    if (AppBskyFeedDefs.isPostView(parent) || AppFoodiosFeedDefs.isRecipePostView(parent)) {
       parentAuthor = parent.author
     }
 
@@ -126,15 +127,17 @@ export class FeedViewPostsSlice {
       return
     }
     if (
+      !AppFoodiosFeedDefs.isRecipePostView(parent) && (
       !AppBskyFeedDefs.isPostView(parent) ||
       !AppBskyFeedPost.isRecord(parent.record) ||
-      !bsky.validate(parent.record, AppBskyFeedPost.validateRecord)
+        !bsky.validate(parent.record, AppBskyFeedPost.validateRecord))
     ) {
       this.isOrphan = true
       return
     }
     const root = reply.root
     const rootIsView =
+      AppFoodiosFeedDefs.isRecipePostView(parent) ||
       AppBskyFeedDefs.isPostView(root) ||
       AppBskyFeedDefs.isBlockedPost(root) ||
       AppBskyFeedDefs.isNotFoundPost(root)
@@ -145,7 +148,7 @@ export class FeedViewPostsSlice {
      * it does.
      */
     const grandparent =
-      rootIsView && parent.record.reply?.parent.uri === root.uri
+      rootIsView && parent.record?.reply?.parent.uri === root.uri
         ? root
         : undefined
     const grandparentAuthor = reply.grandparentAuthor
@@ -155,23 +158,35 @@ export class FeedViewPostsSlice {
     const isGrandparentNotFound = Boolean(
       grandparent && AppBskyFeedDefs.isNotFoundPost(grandparent),
     )
-    this.items.unshift({
-      type: "post",
-      post: parent,
-      record: parent.record,
-      parentAuthor: grandparentAuthor,
-      isParentBlocked: isGrandparentBlocked,
-      isParentNotFound: isGrandparentNotFound,
-    })
+    if (AppFoodiosFeedDefs.isRecipePostView(parent)) {
+      this.items.unshift({
+        type: "recipe",
+        post: parent,
+        // parentAuthor: grandparentAuthor,
+        // isParentBlocked: isGrandparentBlocked,
+        // isParentNotFound: isGrandparentNotFound,
+      })
+    } else {
+      this.items.unshift({
+        type: "post",
+        post: parent,
+        record: parent.record,
+        parentAuthor: grandparentAuthor,
+        isParentBlocked: isGrandparentBlocked,
+        isParentNotFound: isGrandparentNotFound,
+      })
+    }
+
     if (isGrandparentBlocked) {
       this.isOrphan = true
       // Keep going, it might still have a root, and we need this for thread
       // de-deduping
     }
     if (
+      !AppFoodiosFeedDefs.isRecipePostView(parent) && (
       !AppBskyFeedDefs.isPostView(root) ||
       !AppBskyFeedPost.isRecord(root.record) ||
-      !bsky.validate(root.record, AppBskyFeedPost.validateRecord)
+        !bsky.validate(root.record, AppBskyFeedPost.validateRecord))
     ) {
       this.isOrphan = true
       return
@@ -179,15 +194,23 @@ export class FeedViewPostsSlice {
     if (root.uri === parent.uri) {
       return
     }
-    this.items.unshift({
-      type: "post",
-      post: root,
-      record: root.record,
-      isParentBlocked: false,
-      isParentNotFound: false,
-      parentAuthor: undefined,
-    })
-    if (parent.record.reply?.parent.uri !== root.uri) {
+    if (AppFoodiosFeedDefs.isRecipePostView(root)) {
+      this.items.unshift({
+        type: "recipe",
+        post: root,
+      })
+    } else if (AppBskyFeedDefs.isPostView(root)) {
+      this.items.unshift({
+        type: "post",
+        post: root,
+        record: root.record,
+        isParentBlocked: false,
+        isParentNotFound: false,
+        parentAuthor: undefined,
+      })
+    }
+
+    if (parent.record?.reply?.parent.uri !== root.uri) {
       this.isIncompleteThread = true
     }
   }
@@ -273,6 +296,7 @@ export class FeedTuner {
       dryRun: false,
     },
   ): FeedViewPostsSlice[] {
+    console.log('feed', feed)
     let slices: FeedViewPostsSlice[] = feed
       .map(item => new FeedViewPostsSlice(item))
       .filter(s => s.items.length > 0 || s.isFallbackMarker)

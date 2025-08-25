@@ -300,10 +300,14 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
 
 async function resolveReply(agent: BskyAgent, replyTo: string) {
   const replyToUrip = new AtUri(replyTo)
-  const parentPost = await agent.getPost({
+  // TODO: use a utility function for checking the uri collection
+  const parentPost = await (replyToUrip.collection === "app.foodios.feed.recipePost" ? agent.getRecipePost({
     repo: replyToUrip.host,
     rkey: replyToUrip.rkey,
-  })
+  }) : agent.getPost({
+    repo: replyToUrip.host,
+    rkey: replyToUrip.rkey,
+  }))
   if (parentPost) {
     const parentRef = {
       uri: parentPost.uri,
