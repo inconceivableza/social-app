@@ -170,6 +170,7 @@ let PostControls = ({
       reqId,
     })
     openComposer({
+      type: "post",
       quote: post,
       onPost: onPostReply,
     })
