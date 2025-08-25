@@ -4,7 +4,8 @@ import {
   AppBskyEmbedRecordWithMedia,
   AppBskyFeedDefs,
   AppBskyFeedPost,
-  AppFoodiosFeedDefs
+  AppFoodiosFeedDefs,
+  $Typed
 } from '@atproto/api'
 
 import * as bsky from '#/types/bsky'
@@ -12,7 +13,11 @@ import {isPostInLanguage} from '../../locale/helpers'
 import {FALLBACK_MARKER_POST} from './feed/home'
 import {type ReasonFeedSource} from './feed/types'
 
-type FeedViewPost = AppFoodiosFeedDefs.FeedViewPost
+type FeedViewPost = Omit<AppFoodiosFeedDefs.FeedViewPost, "post"> & {
+  post:
+  | $Typed<AppBskyFeedDefs.PostView>
+  | $Typed<AppFoodiosFeedDefs.RecipePostView>
+}
 
 function isKnownPostType(post: FeedViewPost["post"]): post is AppBskyFeedDefs.PostView | AppFoodiosFeedDefs.RecipePostView {
   return AppBskyFeedDefs.isPostView(post) || AppFoodiosFeedDefs.isRecipePostView(post)
