@@ -8,6 +8,7 @@ import {
   moderatePost,
   type ModerationDecision,
   type ModerationOpts,
+  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -36,6 +37,7 @@ import {
   embedViewRecordToPostView,
   getEmbeddedPost,
 } from './util'
+import { AnyPostView } from '../cache/types'
 
 const REPLY_TREE_DEPTH = 10
 export const RQKEY_ROOT = 'post-thread'
@@ -64,6 +66,16 @@ export type ThreadPost = {
   ctx: ThreadCtx
 }
 
+export interface ThreadRecipe {
+  type: 'recipe'
+  _reactKey: string
+  uri: string
+  post: AppFoodiosFeedDefs.RecipePostView
+  replies: ThreadNode[] | undefined
+  hasOPLike: boolean | undefined
+  ctx: ThreadCtx
+}
+
 export type ThreadNotFound = {
   type: 'not-found'
   _reactKey: string
@@ -85,6 +97,7 @@ export type ThreadUnknown = {
 
 export type ThreadNode =
   | ThreadPost
+  | ThreadRecipe
   | ThreadNotFound
   | ThreadBlocked
   | ThreadUnknown
@@ -438,7 +451,7 @@ function findPostInQueryData(
 ): ThreadNode | void {
   let partial
   for (let item of findAllPostsInQueryData(queryClient, uri)) {
-    if (item.type === 'post') {
+    if (item.type === 'post' || item.type === "recipe") {
       // Currently, the backend doesn't send full post info in some cases
       // (for example, for quoted posts). We use missing `likeCount`
       // as a way to detect that. In the future, we should fix this on
@@ -470,7 +483,7 @@ export function* findAllPostsInQueryData(
     }
     const {thread} = queryData
     for (const item of traverseThread(thread)) {
-      if (item.type === 'post' && didOrHandleUriMatches(atUri, item.post)) {
+      if ((item.type === 'post' || item.type === "recipe") && didOrHandleUriMatches(atUri, item.post)) {
         const placeholder = threadNodeToPlaceholderThread(item)
         if (placeholder) {
           yield placeholder
@@ -520,7 +533,7 @@ export function* findAllProfilesInQueryData(
     }
     const {thread} = queryData
     for (const item of traverseThread(thread)) {
-      if (item.type === 'post' && item.post.author.did === did) {
+      if ((item.type === 'post' || item.type === "recipe") && item.post.author.did === did) {
         yield item.post.author
       }
       const quotedPost =
@@ -564,9 +577,8 @@ function* traverseThread(node: ThreadNode): Generator<ThreadNode, void> {
 function threadNodeToPlaceholderThread(
   node: ThreadNode,
 ): ThreadNode | undefined {
-  if (node.type !== 'post') {
-    return undefined
-  }
+  if (node.type === 'post') {
+
   return {
     type: node.type,
     _reactKey: node._reactKey,
@@ -584,28 +596,65 @@ function threadNodeToPlaceholderThread(
       isChildLoading: !!node.post.replyCount,
     },
   }
+  } else if (node.type === "recipe") {
+    return {
+      type: node.type,
+      _reactKey: node._reactKey,
+      uri: node.uri,
+      post: node.post,
+      replies: undefined,
+      hasOPLike: undefined,
+      ctx: {
+        depth: 0,
+        isHighlightedPost: true,
+        hasMore: false,
+        isParentLoading: false,// TODO: fix
+        isChildLoading: !!node.post.replyCount,
+      },
+    }
+  }
 }
 
 function postViewToPlaceholderThread(
-  post: AppBskyFeedDefs.PostView,
+  post: AnyPostView,
 ): ThreadNode {
-  return {
-    type: 'post',
-    _reactKey: post.uri,
-    uri: post.uri,
-    post: post,
-    record: post.record as AppBskyFeedPost.Record, // validated in notifs
-    parent: undefined,
-    replies: undefined,
-    hasOPLike: undefined,
-    ctx: {
-      depth: 0,
-      isHighlightedPost: true,
-      hasMore: false,
-      isParentLoading: !!(post.record as AppBskyFeedPost.Record).reply,
-      isChildLoading: true, // assume yes (show the spinner) just in case
-    },
+  if (AppBskyFeedDefs.isPostView(post)) {
+    return {
+      type: 'post',
+      _reactKey: post.uri,
+      uri: post.uri,
+      post: post,
+      record: post.record as AppBskyFeedPost.Record, // validated in notifs
+      parent: undefined,
+      replies: undefined,
+      hasOPLike: undefined,
+      ctx: {
+        depth: 0,
+        isHighlightedPost: true,
+        hasMore: false,
+        isParentLoading: !!(post.record as AppBskyFeedPost.Record).reply,
+        isChildLoading: true, // assume yes (show the spinner) just in case
+      },
+    }
+  } else if (AppFoodiosFeedDefs.isRecipePostView(post)) {
+    return {
+      type: 'recipe',
+      _reactKey: post.uri,
+      uri: post.uri,
+      post: post,
+      replies: undefined,
+      hasOPLike: undefined,
+      ctx: {
+        depth: 0,
+        isHighlightedPost: true,
+        hasMore: false,
+        isParentLoading: false,// TODO: fix
+        isChildLoading: true, // assume yes (show the spinner) just in case
+      },
+    }
   }
+  throw new Error("unexpected post type")
+
 }
 
 function embedViewRecordToPlaceholderThread(
