@@ -335,7 +335,10 @@ func serve(cctx *cli.Context) error {
 	e.GET("/ipcc", server.WebIpCC)
 
 	// env-config
-	e.GET("/env-config", server.WebEnvConfig)
+	e.GET("/env-config", server.WebEnvConfig, middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodOptions},
+	}))
 
 	if linkHost != "" {
 		linkUrl, err := url.Parse(linkHost)
