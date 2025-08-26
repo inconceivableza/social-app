@@ -656,13 +656,13 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 }
 
 type EnvConfigResponse struct {
-	ATP_APPVIEW_HOST string `json:"ATP_APPVIEW_HOST"`
-	ATP_PDS_HOST string `json:"ATP_PDS_HOST"`
+	ATP_APPVIEW_URL string `json:"ATP_APPVIEW_URL"`
+	ATP_PDS_URL string `json:"ATP_PDS_URL"`
 	ATP_PUBLIC_APPVIEW_HOST string `json:"ATP_PUBLIC_APPVIEW_HOST"`
 	ATP_PUBLIC_APPVIEW_URL string `json:"ATP_PUBLIC_APPVIEW_URL"`
 	CORS_ALLOWED_ORIGINS string `json:"CORS_ALLOWED_ORIGINS"`
 	LINK_HOST string `json:"LINK_HOST"`
-	OGCARD_HOST string `json:"OGCARD_HOST"`
+	OGCARD_URL string `json:"OGCARD_URL"`
 	SOCIAL_APP_HOST string `json:"SOCIAL_APP_HOST"`
 	SOCIAL_APP_URL string `json:"SOCIAL_APP_URL"`
 	SOCIAL_EMBED_SERVICE string `json:"SOCIAL_EMBED_SERVICE"`
@@ -674,13 +674,13 @@ type EnvConfigResponse struct {
 func (srv *Server) WebEnvConfig(c echo.Context) error {
 	var outResponse EnvConfigResponse
 	outResponse = EnvConfigResponse{
-		ATP_APPVIEW_HOST: os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_HOST"),
-		ATP_PDS_HOST: os.Getenv("EXPO_PUBLIC_ATP_PDS_HOST"),
+		ATP_APPVIEW_URL: os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
+		ATP_PDS_URL: os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
 		ATP_PUBLIC_APPVIEW_HOST: os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_HOST"),
 		ATP_PUBLIC_APPVIEW_URL: os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
 		CORS_ALLOWED_ORIGINS: os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
 		LINK_HOST: os.Getenv("EXPO_PUBLIC_LINK_HOST"),
-		OGCARD_HOST: os.Getenv("EXPO_PUBLIC_OGCARD_HOST"),
+		OGCARD_URL: os.Getenv("EXPO_PUBLIC_OGCARD_URL"),
 		SOCIAL_APP_HOST: os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
 		SOCIAL_APP_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
 		SOCIAL_EMBED_SERVICE: os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),

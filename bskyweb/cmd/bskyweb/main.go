@@ -38,13 +38,13 @@ func run(args []string) {
 					Usage: "scheme, hostname, and port of PDS instance",
 					Value: "http://localhost:2584",
 					// retain old PDS env var for easy transition
-					EnvVars: []string{"ATP_PUBLIC_APPVIEW_HOST", "ATP_APPVIEW_HOST", "ATP_PDS_HOST"},
+					EnvVars: []string{"ATP_PUBLIC_APPVIEW_URL", "ATP_APPVIEW_URL", "ATP_PDS_URL"},
 				},
 				&cli.StringFlag{
 					Name:     "ogcard-host",
 					Usage:    "scheme, hostname, and port of ogcard service",
 					Required: false,
-					EnvVars:  []string{"OGCARD_HOST"},
+					EnvVars:  []string{"OGCARD_URL"},
 				},
 				&cli.StringFlag{
 					Name:     "http-address",

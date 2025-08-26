@@ -80,9 +80,19 @@ import {networkRetry} from '#/lib/async/retry'
 import {logger} from '#/logger'
 
 type EnvConfig = {
+  APPVIEW_URL: string
   BSKY_SERVICE: string
+  GIF_SERVICE: string
   HELP_DESK_URL: string
+  POLICY_BASE_URL: string
+  PREVIEW_LINK_META_PROXY: string
   PUBLIC_BSKY_SERVICE: string
+  SOCIAL_APP_HOST: string
+  SOCIAL_APP_URL: string
+  SOCIAL_EMBED_SERVICE: string
+  STATUS_PAGE_URL: string
+  VIDEO_SERVICE: string
+  VIDEO_SERVICE_DID: string
 }
 
 type EnvDynamic = {
@@ -98,31 +108,55 @@ type EnvDynamic = {
 const HELP_DESK_LANG = 'en-us'
 
 const EMPTY_CONFIG: EnvConfig = {
+  APPVIEW_URL: '',
   BSKY_SERVICE: '',
+  GIF_SERVICE: '',
   HELP_DESK_URL: '',
+  POLICY_BASE_URL: '',
+  PREVIEW_LINK_META_PROXY: '',
   PUBLIC_BSKY_SERVICE: '',
+  SOCIAL_APP_HOST: '',
+  SOCIAL_APP_URL: '',
+  SOCIAL_EMBED_SERVICE: '',
+  STATUS_PAGE_URL: '',
+  VIDEO_SERVICE: '',
+  VIDEO_SERVICE_DID: '',
 }
 
 const InternalToEnvName: Record<string, string> = {
-  BSKY_SERVICE: 'SOCIAL_APP_URL',
+  APPVIEW_URL: 'ATP_APPVIEW_URL',
+  BSKY_SERVICE: 'ATP_PDS_URL',
+  GIF_SERVICE: 'GIF_SERVICE',
   HELP_DESK_URL: 'SOCIAL_HELP_DESK_URL',
+  POLICY_BASE_URL: 'SOCIAL_POLICY_BASE_URL',
+  PREVIEW_LINK_META_PROXY: 'PREVIEW_LINK_META_PROXY',
   PUBLIC_BSKY_SERVICE: 'ATP_PUBLIC_APPVIEW_URL',
+  SOCIAL_APP_HOST: 'SOCIAL_APP_HOST', // plan to use to detect host match with env
+  SOCIAL_APP_URL: 'SOCIAL_APP_URL',
+  SOCIAL_EMBED_SERVICE: 'SOCIAL_EMBED_SERVICE',
+  STATUS_PAGE_URL: 'STATUS_PAGE_URL',
+  VIDEO_SERVICE: 'VIDEO_SERVICE',
+  VIDEO_SERVICE_DID: 'VIDEO_SERVICE_DID',
 }
 
 const processEnvConfigValues: Record<string, string> = {
-  ATP_APPVIEW_HOST: process.env.EXPO_PUBLIC_ATP_APPVIEW_HOST,
+  ATP_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_APPVIEW_URL,
   ATP_PDS_HOST: process.env.EXPO_PUBLIC_ATP_PDS_HOST,
   ATP_PUBLIC_APPVIEW_HOST: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_HOST,
   ATP_PUBLIC_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL,
   CORS_ALLOWED_ORIGINS: process.env.EXPO_PUBLIC_CORS_ALLOWED_ORIGINS,
+  GIF_SERVICE: process.env.EXPO_PUBLIC_GIF_SERVICE,
   LINK_HOST: process.env.EXPO_PUBLIC_LINK_HOST,
-  OGCARD_HOST: process.env.EXPO_PUBLIC_OGCARD_HOST,
+  PREVIEW_LINK_META_PROXY: process.env.EXPO_PUBLIC_PREVIEW_LINK_META_PROXY,
+  OGCARD_URL: process.env.EXPO_PUBLIC_OGCARD_URL,
   SOCIAL_APP_HOST: process.env.EXPO_PUBLIC_SOCIAL_APP_HOST,
   SOCIAL_APP_URL: process.env.EXPO_PUBLIC_SOCIAL_APP_URL,
   SOCIAL_EMBED_SERVICE: process.env.EXPO_PUBLIC_SOCIAL_EMBED_SERVICE,
   SOCIAL_HELP_DESK_URL: process.env.EXPO_PUBLIC_SOCIAL_HELP_DESK_URL,
   SOCIAL_POLICY_BASE_URL: process.env.EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL,
   STATUS_PAGE_URL: process.env.EXPO_PUBLIC_STATUS_PAGE_URL,
+  VIDEO_SERVICE: process.env.EXPO_PUBLIC_VIDEO_SERVICE,
+  VIDEO_SERVICE_DID: process.env.EXPO_PUBLIC_VIDEO_SERVICE_DID,
 }
 
 function envToConfig(configValues: Record<string, string>): EnvConfig {
@@ -183,12 +217,41 @@ function jsonToEnvConfig(
 }
 
 const systemEnvs = (Constants?.expoConfig?.extra || {})['env-config']
+
 // The defaults as bluesky originally ships them in social-app
-const BLUESKY_CONFIG = {
+const BLUESKY_CONFIG: EnvConfig = {
+  APPVIEW_URL: 'https://api.bsky.app',
   BSKY_SERVICE: 'https://bsky.social',
+  GIF_SERVICE: 'https://gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
+  POLICY_BASE_URL: 'https://bsky.social/about/support',
+  PREVIEW_LINK_META_PROXY: 'https://cardyb.bsky.app/v1/extract?url=',
   PUBLIC_BSKY_SERVICE: 'https://public.api.bsky.app',
+  SOCIAL_APP_HOST: 'bsky.app',
+  SOCIAL_APP_URL: 'https://bsky.app',
+  SOCIAL_EMBED_SERVICE: 'https://embed.bsky.app',
+  STATUS_PAGE_URL: 'https://status.bsky.app/',
+  VIDEO_SERVICE: 'https://video.bsky.app',
+  VIDEO_SERVICE_DID: 'did:web:video.bsky.app',
 }
+
+// The defaults are only different for some items on staging
+const BLUESKY_STAGING_CONFIG: EnvConfig = {
+  APPVIEW_URL: BLUESKY_CONFIG.APPVIEW_URL,
+  BSKY_SERVICE: 'https://staging.bsky.dev',
+  GIF_SERVICE: BLUESKY_CONFIG.GIF_SERVICE,
+  HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
+  POLICY_BASE_URL: 'https://staging.bsky.dev/about/support',
+  PREVIEW_LINK_META_PROXY: 'https://cardyb.staging.bsky.dev/v1/extract?url=',
+  PUBLIC_BSKY_SERVICE: BLUESKY_CONFIG.PUBLIC_BSKY_SERVICE,
+  SOCIAL_APP_HOST: BLUESKY_CONFIG.SOCIAL_APP_HOST,
+  SOCIAL_APP_URL: BLUESKY_CONFIG.SOCIAL_APP_URL,
+  SOCIAL_EMBED_SERVICE: BLUESKY_CONFIG.SOCIAL_EMBED_SERVICE,
+  STATUS_PAGE_URL: BLUESKY_CONFIG.STATUS_PAGE_URL,
+  VIDEO_SERVICE: BLUESKY_CONFIG.VIDEO_SERVICE,
+  VIDEO_SERVICE_DID: BLUESKY_CONFIG.VIDEO_SERVICE_DID,
+}
+
 // what was passed into EXPO_PUBLIC_ variables in dev runtime or at build time
 const PROCESS_ENV_CONFIG = envToConfig(processEnvConfigValues)
 // reading from .env.production in this directory or grandparent
@@ -209,6 +272,7 @@ export const STAGING_DOMAIN = systemEnvs.staging?.SOCIAL_APP_HOST || null
 export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
   // the original bluesky defaults. This is not currently used (?)
   bluesky: BLUESKY_CONFIG,
+  bluesky_staging: BLUESKY_STAGING_CONFIG,
   // the standard environments, baked into builds
   production: PRODUCTION_CONFIG,
   staging: STAGING_CONFIG,
