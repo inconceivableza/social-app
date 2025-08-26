@@ -20,7 +20,6 @@ import {Provider as MutedThreadsProvider} from '#/state/cache/thread-mutes'
 import {Provider as DialogStateProvider} from '#/state/dialogs'
 import {
   beginResolveEnvConfig,
-  ensureEnvConfigResolved,
   Provider as EnvConfigProvider,
 } from '#/state/env-config'
 import {listenSessionDropped} from '#/state/events'
@@ -181,11 +180,9 @@ function App() {
   const [isReady, setReady] = useState(false)
 
   React.useEffect(() => {
-    Promise.all([
-      initPersistedState(),
-      ensureEnvConfigResolved(),
-      ensureGeolocationResolved(),
-    ]).then(() => setReady(true))
+    Promise.all([initPersistedState(), ensureGeolocationResolved()]).then(() =>
+      setReady(true),
+    )
   }, [])
 
   if (!isReady) {

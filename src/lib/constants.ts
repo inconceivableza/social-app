@@ -4,11 +4,11 @@ import {type AppBskyActorDefs} from '@atproto/api'
 import {
   beginResolveEnvConfig,
   DOMAIN_ENVCONFIGS,
-  getCurrentEnvConfigSync,
+  getStoredEnvConfig,
 } from '#/state/env-config'
 
 beginResolveEnvConfig()
-export const envConfig = getCurrentEnvConfigSync()
+export const envConfig = getStoredEnvConfig()
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
 export const STAGING_SERVICE =
