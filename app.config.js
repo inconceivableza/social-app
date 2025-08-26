@@ -59,10 +59,7 @@ module.exports = function (_config) {
       const envValues = envSource
         ? dotenvx.parse(envSource, {processEnv: {}})
         : {}
-      return [
-        profileName,
-        {envFilename: envFilename, envSource: envSource, ...envValues},
-      ]
+      return [profileName, {envFilename, profileName, ...envValues}]
     }),
   )
   return {
