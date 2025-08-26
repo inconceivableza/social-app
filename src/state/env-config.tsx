@@ -479,10 +479,12 @@ export async function ensureEnvConfigResolved() {
 
 type Context = {
   envConfig: EnvConfig
+  setEnvConfig: React.Dispatch<React.SetStateAction<EnvConfig>>
 }
 
 const context = React.createContext<Context>({
   envConfig: DEFAULT_ENVCONFIG,
+  setEnvConfig: () => {},
 })
 
 export function Provider({children}: {children: React.ReactNode}) {
@@ -500,13 +502,13 @@ export function Provider({children}: {children: React.ReactNode}) {
   const ctx = React.useMemo(() => {
     return {
       envConfig,
+      setEnvConfig,
     }
-  }, [envConfig])
+  }, [envConfig, setEnvConfig])
 
   return <context.Provider value={ctx}>{children}</context.Provider>
 }
 
 export function useEnvConfig() {
-  return env_dynamic
-  // return React.useContext(context)
+  return React.useContext(context)
 }

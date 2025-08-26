@@ -19,6 +19,7 @@ import {
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
+import * as EnvConfigLib from '#/state/env-config'
 import * as persisted from '#/state/persisted'
 import {clearStorage} from '#/state/persisted'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
@@ -36,6 +37,7 @@ import {AgeAssuranceDismissibleNotice} from '#/components/ageAssurance/AgeAssura
 import {AvatarStackWithFetch} from '#/components/AvatarStack'
 import {useDialogControl} from '#/components/Dialog'
 import {SwitchAccountDialog} from '#/components/dialogs/SwitchAccount'
+import * as TextField from '#/components/forms/TextField'
 import {Accessibility_Stroke2_Corner2_Rounded as AccessibilityIcon} from '#/components/icons/Accessibility'
 import {Bell_Stroke2_Corner0_Rounded as NotificationIcon} from '#/components/icons/Bell'
 import {BubbleInfo_Stroke2_Corner2_Rounded as BubbleInfoIcon} from '#/components/icons/BubbleInfo'
@@ -43,6 +45,9 @@ import {ChevronTop_Stroke2_Corner0_Rounded as ChevronUpIcon} from '#/components/
 import {CircleQuestion_Stroke2_Corner2_Rounded as CircleQuestionIcon} from '#/components/icons/CircleQuestion'
 import {CodeBrackets_Stroke2_Corner2_Rounded as CodeBracketsIcon} from '#/components/icons/CodeBrackets'
 import {DotGrid_Stroke2_Corner0_Rounded as DotsHorizontal} from '#/components/icons/DotGrid'
+import {Eye_Stroke2_Corner0_Rounded as Eye} from '#/components/icons/Eye'
+import {EyeSlash_Stroke2_Corner0_Rounded as EyeSlash} from '#/components/icons/EyeSlash'
+import {Flag_Stroke2_Corner0_Rounded as FlagIcon} from '#/components/icons/Flag'
 import {Earth_Stroke2_Corner2_Rounded as EarthIcon} from '#/components/icons/Globe'
 import {Lock_Stroke2_Corner2_Rounded as LockIcon} from '#/components/icons/Lock'
 import {PaintRoller_Stroke2_Corner2_Rounded as PaintRollerIcon} from '#/components/icons/PaintRoller'
@@ -53,6 +58,7 @@ import {
   PersonX_Stroke2_Corner0_Rounded as PersonXIcon,
 } from '#/components/icons/Person'
 import {RaisingHand4Finger_Stroke2_Corner2_Rounded as HandIcon} from '#/components/icons/RaisingHand'
+import {Warning_Stroke2_Corner0_Rounded as WarningIcon} from '#/components/icons/Warning'
 import {Window_Stroke2_Corner2_Rounded as WindowIcon} from '#/components/icons/Window'
 import * as Layout from '#/components/Layout'
 import {Loader} from '#/components/Loader'
@@ -83,6 +89,7 @@ export function SettingsScreen({}: Props) {
   const {pendingDid, onPressSwitchAccount} = useAccountSwitcher()
   const [showAccounts, setShowAccounts] = useState(false)
   const [showDevOptions, setShowDevOptions] = useState(false)
+  const [showServerDomains, setShowServerDomains] = useState(false)
 
   return (
     <Layout.Screen>
@@ -271,6 +278,22 @@ export function SettingsScreen({}: Props) {
               {showDevOptions && <DevOptions />}
             </>
           )}
+          <SettingsList.PressableItem
+            onPress={() => {
+              if (!reducedMotion) {
+                LayoutAnimation.configureNext(
+                  LayoutAnimation.Presets.easeInEaseOut,
+                )
+              }
+              setShowServerDomains(d => !d)
+            }}
+            label={_(msg`Switch server domains`)}>
+            <SettingsList.ItemIcon icon={WarningIcon} />
+            <SettingsList.ItemText>
+              <Trans>Switch server domains</Trans>
+            </SettingsList.ItemText>
+          </SettingsList.PressableItem>
+          {showServerDomains && <ServerDomains />}
         </SettingsList.Container>
       </Layout.Content>
 
@@ -452,6 +475,169 @@ function DevOptions() {
           <Trans>Clear all storage data (restart after this)</Trans>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
+    </>
+  )
+}
+
+function ServerDomains() {
+  const {_} = useLingui()
+  const defaultCustomDomain =
+    EnvConfigLib.DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
+  const [showCurrentEnv, setShowCurrentEnv] = useState(false)
+  const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
+  const {envConfig, setEnvConfig} = EnvConfigLib.useEnvConfig()
+  const doSetEnvConfig = async (envName: string) => {
+    const newEnvConfig = EnvConfigLib.DOMAIN_ENVCONFIGS[envName]
+    console.log('Found env config', newEnvConfig)
+    setEnvConfig(newEnvConfig)
+    Toast.show(_(msg`Should switch environment to ${envName}`))
+  }
+  const doFetchEnvConfig = async (serverName: string) => {
+    const customUrl = serverName.includes('://')
+      ? serverName
+      : `https://${serverName}`
+    const newEnvConfig = await EnvConfigLib.fetchEnvConfig(customUrl)
+    if (newEnvConfig !== null) {
+      setEnvConfig(newEnvConfig)
+      Toast.show(
+        _(
+          msg`Should switch environment to config retrieved from ${serverName}`,
+        ),
+      )
+    } else {
+      Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
+    }
+  }
+
+  const hasRequiredConfig = function (
+    candidate: EnvConfigLib.EnvConfig,
+  ): boolean {
+    // returns whether the given environment config has the essential items
+    return Boolean(
+      candidate.SOCIAL_APP_HOST &&
+        candidate.SOCIAL_APP_URL &&
+        candidate.APPVIEW_URL &&
+        candidate.BSKY_SERVICE &&
+        candidate.PUBLIC_BSKY_SERVICE,
+    )
+  }
+  const renderCurrentEnv = function () {
+    const envEntries = Object.entries(envConfig)
+    return (
+      <>
+        {envEntries.map(([key, value], index) => (
+          <View
+            key={key}
+            style={[
+              a.flex_row,
+              a.gap_xs,
+              a.w_full,
+              a.flex_1,
+              {backgroundColor: index % 2 === 0 ? 'transparent' : '#f8f8f8'},
+            ]}>
+            <View
+              style={[
+                a.flex_col,
+                {paddingLeft: 2, paddingRight: 2, width: '45%'},
+              ]}>
+              <Text>{key}</Text>
+            </View>
+            <View style={[a.flex_col]}>
+              <Text>{value}</Text>
+            </View>
+          </View>
+        ))}
+      </>
+    )
+  }
+
+  return (
+    <>
+      <SettingsList.PressableItem
+        onPress={() => {
+          setShowCurrentEnv(!showCurrentEnv)
+        }}
+        label={_(msg`Show Environment Config`)}>
+        <SettingsList.ItemIcon icon={showCurrentEnv ? Eye : EyeSlash} />
+        <SettingsList.ItemText>
+          <Trans>Show Environment Config</Trans>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      {showCurrentEnv && (
+        <SettingsList.Item>
+          <Text>{renderCurrentEnv()}</Text>
+        </SettingsList.Item>
+      )}
+      <SettingsList.PressableItem
+        onPress={() => {
+          doSetEnvConfig('production')
+        }}
+        disabled={!hasRequiredConfig(EnvConfigLib.DOMAIN_ENVCONFIGS.production)}
+        label={_(msg`Use Production Server`)}>
+        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="green" />
+        <SettingsList.ItemText>
+          <Trans>Use Production Server</Trans>
+          <Text style={[a.italic]}>
+            {' '}
+            {EnvConfigLib.DOMAIN_ENVCONFIGS.production.SOCIAL_APP_HOST}
+          </Text>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      <SettingsList.PressableItem
+        onPress={() => {
+          doSetEnvConfig('staging')
+        }}
+        disabled={!hasRequiredConfig(EnvConfigLib.DOMAIN_ENVCONFIGS.staging)}
+        label={_(msg`Use Staging Server`)}>
+        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="yellow" />
+        <SettingsList.ItemText>
+          <Trans>Use Staging Server</Trans>
+          <Text style={[a.italic]}>
+            {' '}
+            {EnvConfigLib.DOMAIN_ENVCONFIGS.staging.SOCIAL_APP_HOST}
+          </Text>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      <SettingsList.PressableItem
+        onPress={() => {
+          doSetEnvConfig('development')
+        }}
+        label={_(msg`Use Development Server`)}>
+        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="orange" />
+        <SettingsList.ItemText>
+          <Trans>Use Development Server</Trans>
+          <Text style={[a.italic]}>
+            {' '}
+            {EnvConfigLib.DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST}
+          </Text>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      <SettingsList.Item>
+        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="grey" />
+        <SettingsList.Container>
+          <TextField.Root>
+            <TextField.Input
+              editable={true}
+              defaultValue={defaultCustomDomain}
+              onChangeText={text => {
+                setCustomDomain(text)
+              }}
+              label={_(msg`Custom Social App Server`)}
+              placeholder={_(
+                msg`e.g. ${defaultCustomDomain} or http://localhost:8100`,
+              )}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </TextField.Root>
+        </SettingsList.Container>
+        <SettingsList.BadgeButton
+          label={_(msg`Use`)}
+          onPress={() => {
+            doFetchEnvConfig(customDomain)
+          }}
+        />
+      </SettingsList.Item>
     </>
   )
 }
