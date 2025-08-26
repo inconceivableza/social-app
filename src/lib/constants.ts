@@ -3,24 +3,24 @@ import {type AppBskyActorDefs} from '@atproto/api'
 
 import {
   beginResolveEnvConfig,
+  DOMAIN_ENVCONFIGS,
   getCurrentEnvConfigSync,
 } from '#/state/env-config'
 
 beginResolveEnvConfig()
-const envConfig = getCurrentEnvConfigSync()
+export const envConfig = getCurrentEnvConfigSync()
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
-export const STAGING_SERVICE = 'https://staging.bsky.dev'
+export const STAGING_SERVICE =
+  DOMAIN_ENVCONFIGS.staging.BSKY_SERVICE ||
+  DOMAIN_ENVCONFIGS.bluesky_staging.BSKY_SERVICE
 export const BSKY_SERVICE = envConfig.BSKY_SERVICE
 export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 export const HELP_DESK_URL = envConfig.HELP_DESK_URL
-export const EMBED_SERVICE =
-  process.env.EXPO_PUBLIC_SOCIAL_EMBED_SERVICE || 'https://embed.bsky.app'
+export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
-export const BSKY_DOWNLOAD_URL = process.env.EXPO_PUBLIC_SOCIAL_APP_URL
-  ? `${process.env.EXPO_PUBLIC_SOCIAL_APP_URL}/download`
-  : 'https://bsky.app/download'
+export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
 export const CHAT_DISABLED = true
 
@@ -108,20 +108,22 @@ export const POST_IMG_MAX = {
 }
 
 export const STAGING_LINK_META_PROXY =
-  'https://cardyb.staging.bsky.dev/v1/extract?url='
+  DOMAIN_ENVCONFIGS.staging.PREVIEW_LINK_META_PROXY
 
-export const PROD_LINK_META_PROXY = 'https://cardyb.foodios.app/v1/extract?url='
+export const PROD_LINK_META_PROXY =
+  DOMAIN_ENVCONFIGS.production.PREVIEW_LINK_META_PROXY
 
 export function LINK_META_PROXY(serviceUrl: string) {
-  if (IS_PROD_SERVICE(serviceUrl)) {
+  if (envConfig.PREVIEW_LINK_META_PROXY) {
+    return envConfig.PREVIEW_LINK_META_PROXY
+  } else if (IS_PROD_SERVICE(serviceUrl)) {
     return PROD_LINK_META_PROXY
   }
 
   return STAGING_LINK_META_PROXY
 }
 
-export const STATUS_PAGE_URL =
-  process.env.EXPO_PUBLIC_STATUS_PAGE_URL || 'https://status.bsky.app/'
+export const STATUS_PAGE_URL = envConfig.STATUS_PAGE_URL
 
 // Hitslop constants
 export const createHitslop = (size: number): Insets => ({
@@ -179,7 +181,7 @@ export const KNOWN_SHUTDOWN_FEEDS = [
   'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm', // for you by skygaze
 ]
 
-export const GIF_SERVICE = 'https://gifs.foodios.app'
+export const GIF_SERVICE = envConfig.GIF_SERVICE
 
 export const GIF_SEARCH = (params: string) =>
   `${GIF_SERVICE}/tenor/v2/search?${params}`
@@ -188,8 +190,8 @@ export const GIF_FEATURED = (params: string) =>
 
 export const MAX_LABELERS = 20
 
-export const VIDEO_SERVICE = 'https://video.foodios.app'
-export const VIDEO_SERVICE_DID = 'did:web:video.foodios.app'
+export const VIDEO_SERVICE = envConfig.VIDEO_SERVICE
+export const VIDEO_SERVICE_DID = envConfig.VIDEO_SERVICE_DID
 
 export const VIDEO_MAX_DURATION_MS = 3 * 60 * 1000 // 3 minutes in milliseconds
 export const VIDEO_MAX_SIZE = 1000 * 1000 * 100 // 100mb
@@ -215,16 +217,13 @@ export const urls = {
 }
 
 // ironically named, as this points to the non-public api host
-export const PUBLIC_APPVIEW =
-  process.env.EXPO_PUBLIC_ATP_APPVIEW_HOST || 'https://api.bsky.app'
+export const PUBLIC_APPVIEW = envConfig.APPVIEW_URL
 export const PUBLIC_APPVIEW_DID = 'did:web:api.foodios.app'
 export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
 
 export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
 
-const POLICY_BASE_URL =
-  process.env.EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL ||
-  'https://bsky.social/about/support'
+const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
 export const webLinks = {
   tos: `${POLICY_BASE_URL}/tos`,
   privacy: `${POLICY_BASE_URL}/privacy-policy`,
