@@ -43,23 +43,25 @@ module.exports = function (_config) {
     staging: '.env.staging',
     development: '.env',
   }
-  const inRepos = path.basename(path.dirname(__dirname)) === 'repos'
   const defaultEnvPath = __dirname
-  const grandRepoPath = path.dirname(path.dirname(__dirname)) // grandparent dir
   function ifExists(pathname) {
     return fs.existsSync(pathname) ? pathname : null
   }
   function findExisting(filename) {
-    return ifExists(path.join(defaultEnvPath, filename)) || inRepos
-      ? ifExists(path.join(grandRepoPath, filename))
-      : null
+    return ifExists(path.join(defaultEnvPath, filename)) ? filename : null
   }
   const envConfigs = Object.fromEntries(
     Object.entries(envFilenames).map(([profileName, envBasename]) => {
       const envFilename = findExisting(envBasename)
+      const envSource = envFilename
+        ? fs.readFileSync(envFilename).toString('utf-8')
+        : ''
+      const envValues = envSource
+        ? dotenvx.parse(envSource, {processEnv: {}})
+        : {}
       return [
         profileName,
-        envFilename ? dotenvx.parse(fs.readFileSync(envFilename)) : {},
+        {envFilename: envFilename, envSource: envSource, ...envValues},
       ]
     }),
   )
