@@ -76,24 +76,10 @@ import React from 'react'
 import Constants from 'expo-constants'
 import EventEmitter from 'eventemitter3'
 
-import {networkRetry} from '#/lib/async/retry'
 import {logger} from '#/logger'
+import {env_config as envConfigStorage, type EnvConfig} from '#/storage'
 
-export type EnvConfig = {
-  APPVIEW_URL: string
-  BSKY_SERVICE: string
-  GIF_SERVICE: string
-  HELP_DESK_URL: string
-  POLICY_BASE_URL: string
-  PREVIEW_LINK_META_PROXY: string
-  PUBLIC_BSKY_SERVICE: string
-  SOCIAL_APP_HOST: string
-  SOCIAL_APP_URL: string
-  SOCIAL_EMBED_SERVICE: string
-  STATUS_PAGE_URL: string
-  VIDEO_SERVICE: string
-  VIDEO_SERVICE_DID: string
-}
+export type {EnvConfig}
 
 type EnvDynamic = {
   config: EnvConfig
@@ -289,20 +275,22 @@ const DEFAULT_ENVCONFIG = __DEV__
 
 export var env_dynamic: EnvDynamic = {config: DEFAULT_ENVCONFIG}
 
-if (__DEV__ && typeof window !== 'undefined') {
-  // @ts-expect-error - dev global
-  window.bsky_env_storage = {
-    env_dynamic,
+export function getStoredEnvConfig(): EnvConfig {
+  const storedEnvConfig: EnvConfig = {...EMPTY_CONFIG}
+  for (const key in EMPTY_CONFIG) {
+    const typedKey = key as keyof EnvConfig
+    storedEnvConfig[typedKey] = envConfigStorage.get([typedKey]) || ''
   }
+  return storedEnvConfig
 }
-
-// TODO: add settings screen to be able to change this in dev mode
 
 const events = new EventEmitter()
 const EVENT = 'envconfig-updated'
+/*
 const emitEnvConfigUpdate = (envConfig: EnvConfig) => {
   events.emit(EVENT, envConfig)
 }
+  */
 const onEnvConfigUpdate = (listener: (env_config: EnvConfig) => void) => {
   events.on(EVENT, listener)
   return () => {
@@ -349,7 +337,8 @@ export async function fetchEnvConfig(server: string) {
   return null
 }
 
-async function getEnvConfig(): Promise<EnvConfig> {
+function determineDomainEnvConfig(): EnvConfig {
+  // determines the envConfig based on the domain name, if present (only on web)
   const location = window.location
   const {protocol, host, hostname} = location
   if (protocol === 'http' || protocol === 'https') {
@@ -361,19 +350,29 @@ async function getEnvConfig(): Promise<EnvConfig> {
       logger.info('Using staging environment config')
       return DOMAIN_ENVCONFIGS.staging
     }
-    const fetchedEnvConfig = await fetchEnvConfig(location.toString())
-    if (fetchedEnvConfig !== null) {
-      return fetchedEnvConfig
-    }
   }
   logger.warn('Falling back to default production environment config')
   return DEFAULT_ENVCONFIG
 }
 
-/**
- * Local promise used within this file only.
- */
-let envConfigResolution: Promise<{success: boolean}> | undefined
+export function setStaticEnvConfig(newEnvConfig: EnvConfig) {
+  Object.keys(EMPTY_CONFIG).forEach(key => {
+    const typedKey = key as keyof EnvConfig
+    envConfigStorage.set([typedKey], newEnvConfig[typedKey])
+  })
+}
+
+// TODO: how to load from the server on startup without bootstrapping issues
+/*
+async function getEnvConfig(): Promise<EnvConfig> {
+  const staticEnvConfig = determineDomainEnvConfig()
+  const fetchedEnvConfig = await fetchEnvConfig(location.toString())
+  if (fetchedEnvConfig !== null) {
+    return fetchedEnvConfig
+  }
+  return staticEnvConfig
+}
+*/
 
 /**
  * Begin the process of resolving envconfig. This should be called once at
@@ -381,100 +380,28 @@ let envConfigResolution: Promise<{success: boolean}> | undefined
  *
  * THIS METHOD SHOULD NEVER THROW.
  *
- * This method is otherwise not used for any purpose. To ensure envconfig is
- * resolved, use {@link ensureEnvConfigResolved}
+ * This method is otherwise not used for any purpose.
+ * envConfig is actually resolved statically here, so it synchronously initializes it
  */
 export function beginResolveEnvConfig() {
   /**
    * In dev, IP server is unavailable, but if running from bluesky-selfhost-env,
    * we want to use the environment
    */
-  if (__DEV__) {
-    logger.info('Dev environment, using local environment variables')
-    envConfigResolution = new Promise(y => y({success: true}))
-    if (!env_dynamic.config) {
-      env_dynamic.config = DOMAIN_ENVCONFIGS.development
-    }
-    logger.info(`Environment Config: ${JSON.stringify(env_dynamic.config)}`)
-    return
-  }
-
-  envConfigResolution = new Promise(async resolve => {
-    let success = true
-
-    try {
-      // Try once, fail fast
-      const envConfig = await getEnvConfig()
-      if (envConfig) {
-        env_dynamic.config = envConfig
-        emitEnvConfigUpdate(envConfig)
-        logger.debug(`envConfig: success`, {envConfig})
-      } else {
-        // endpoint should throw on all failures, this is insurance
-        throw new Error(`envConfig: nothing returned from initial request`)
-      }
-    } catch (e: any) {
-      success = false
-
-      logger.debug(`envConfig: failed initial request`, {
-        safeMessage: e.message,
-      })
-
-      // set to default
-      env_dynamic.config = DEFAULT_ENVCONFIG
-
-      // retry 3 times, but don't await, proceed with default
-      networkRetry(3, getEnvConfig)
-        .then(envConfig => {
-          if (envConfig) {
-            env_dynamic.config = envConfig
-            emitEnvConfigUpdate(envConfig)
-            logger.debug(`envConfig: success`, {envConfig})
-            success = true
-          } else {
-            // endpoint should throw on all failures, this is insurance
-            throw new Error(`envConfig: nothing returned from retries`)
-          }
-        })
-        .catch((e2: any) => {
-          // complete fail closed
-          logger.debug(`envConfig: failed retries`, {safeMessage: e2.message})
-        })
-    } finally {
-      resolve({success})
-    }
-  })
-}
-
-// Later we can figure out how to reload when settings change
-export function getCurrentEnvConfigSync(): EnvConfig {
-  return env_dynamic.config
-}
-
-/**
- * Ensure that envconfig has been resolved, or at the very least attempted
- * once. Subsequent retries will not be captured by this `await`. Those will be
- * reported via {@link events}.
- */
-export async function ensureEnvConfigResolved() {
-  if (!envConfigResolution) {
-    throw new Error(`envConfig: beginResolveEnvConfig not called yet`)
-  }
-
-  const cached = env_dynamic.config
-  if (cached) {
-    logger.debug(`envConfig: using cache`, {cached})
-  } else {
-    logger.debug(`envConfig: no cache`)
-    const {success} = await envConfigResolution
-    if (success) {
-      logger.debug(`envConfig: resolved`, {
-        resolved: env_dynamic.config,
-      })
+  const currentSocialHost = envConfigStorage.get(['SOCIAL_APP_HOST'])
+  if (!currentSocialHost) {
+    if (__DEV__) {
+      logger.info('Loading dev environment, using local environment variables')
+      setStaticEnvConfig(DOMAIN_ENVCONFIGS.development)
     } else {
-      logger.error(`envConfig: failed to resolve`)
+      logger.info('Loading non-dev environment, using built-in values')
+      setStaticEnvConfig(DEFAULT_ENVCONFIG)
     }
+  } else {
+    logger.info(`Environment Config already loaded with ${currentSocialHost}`)
   }
+  logger.info(`Environment Config: ${JSON.stringify(getStoredEnvConfig())}`)
+  return
 }
 
 type Context = {
@@ -489,13 +416,14 @@ const context = React.createContext<Context>({
 
 export function Provider({children}: {children: React.ReactNode}) {
   const [envConfig, setEnvConfig] = React.useState(() => {
-    const initial = env_dynamic.config || DEFAULT_ENVCONFIG
+    const initial = determineDomainEnvConfig()
     return initial
   })
 
   React.useEffect(() => {
     return onEnvConfigUpdate(newEnvConfig => {
       setEnvConfig(newEnvConfig!)
+      setStaticEnvConfig(newEnvConfig)
     })
   }, [])
 

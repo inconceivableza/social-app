@@ -492,9 +492,15 @@ function ServerDomains() {
   const {envConfig, setEnvConfig} = EnvConfigLib.useEnvConfig()
   const doSetEnvConfig = async (envName: string) => {
     const newEnvConfig = EnvConfigLib.DOMAIN_ENVCONFIGS[envName]
-    console.log('Found env config', newEnvConfig)
-    setEnvConfig(newEnvConfig)
-    Toast.show(_(msg`Should switch environment to ${envName}`))
+    if (newEnvConfig != null) {
+      console.log('Found env config', newEnvConfig)
+      setEnvConfig(newEnvConfig)
+      EnvConfigLib.setStaticEnvConfig(newEnvConfig)
+      Toast.show(_(msg`Switched environment to ${envName}`))
+    } else {
+      Toast.show(_(msg`Could not find environment config named ${envName}`))
+    }
+    await clearStorage()
   }
   const doFetchEnvConfig = async (serverName: string) => {
     const customUrl = serverName.includes('://')
@@ -503,11 +509,7 @@ function ServerDomains() {
     const newEnvConfig = await EnvConfigLib.fetchEnvConfig(customUrl)
     if (newEnvConfig !== null) {
       setEnvConfig(newEnvConfig)
-      Toast.show(
-        _(
-          msg`Should switch environment to config retrieved from ${serverName}`,
-        ),
-      )
+      EnvConfigLib.setStaticEnvConfig(newEnvConfig)
     } else {
       Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
     }

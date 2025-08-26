@@ -19,3 +19,19 @@ export type Account = {
   searchTermHistory?: string[]
   searchAccountHistory?: string[]
 }
+
+export type EnvConfig = {
+  APPVIEW_URL: string
+  BSKY_SERVICE: string
+  GIF_SERVICE: string
+  HELP_DESK_URL: string
+  POLICY_BASE_URL: string
+  PREVIEW_LINK_META_PROXY: string
+  PUBLIC_BSKY_SERVICE: string
+  SOCIAL_APP_HOST: string // this is used as a reference
+  SOCIAL_APP_URL: string
+  SOCIAL_EMBED_SERVICE: string
+  STATUS_PAGE_URL: string
+  VIDEO_SERVICE: string
+  VIDEO_SERVICE_DID: string
+}
