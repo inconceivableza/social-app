@@ -79,7 +79,7 @@ import EventEmitter from 'eventemitter3'
 import {networkRetry} from '#/lib/async/retry'
 import {logger} from '#/logger'
 
-type EnvConfig = {
+export type EnvConfig = {
   APPVIEW_URL: string
   BSKY_SERVICE: string
   GIF_SERVICE: string
@@ -206,6 +206,7 @@ function jsonToEnvConfig(
             `Dynamic environment config didn't define ${key}, using default ${defaultValue}`,
           )
           envConfig[typedKey] = defaultValue
+          break
         }
       }
     } else {
@@ -309,23 +310,24 @@ const onEnvConfigUpdate = (listener: (env_config: EnvConfig) => void) => {
   }
 }
 
-async function getEnvConfig(): Promise<EnvConfig> {
-  const location = window.location
-  if (location.protocol === 'http' || location.protocol === 'https') {
-    const {host, hostname} = location
-    logger.info(`Environment config deduction based on ${hostname}:`)
-    if (hostname === PRODUCTION_DOMAIN) {
-      logger.info('Using production environment config')
-      return DOMAIN_ENVCONFIGS.production
-    } else if (STAGING_DOMAIN && hostname === STAGING_DOMAIN) {
-      logger.info('Using staging environment config')
-      return DOMAIN_ENVCONFIGS.staging
-    }
-    logger.info(`Fetching environment config from ${hostname}`)
-    const res = await fetch(`${location.protocol}://${host}/env-config.json`)
+export async function fetchEnvConfig(server: string) {
+  const serverUrl = URL.parse(server)
+  if (
+    !serverUrl ||
+    (serverUrl?.pathname && serverUrl?.pathname !== '/') ||
+    serverUrl?.search
+  ) {
+    logger.warn(
+      `Could not fetch envConfig from non-root URL of server ${server}: ${JSON.stringify(serverUrl)}`,
+    )
+    return null
+  }
+  logger.info(`Fetching environment config from ${serverUrl}`)
+  try {
+    const res = await fetch(`${serverUrl}env-config`)
     if (res.ok) {
       const json = (await res.json()) as Record<string, string>
-      logger.info(`Loaded json for environment config: ${json}`)
+      logger.info(`Loaded json for environment config: ${JSON.stringify(json)}`)
       const envConfig: EnvConfig = jsonToEnvConfig(
         json,
         DOMAIN_ENVCONFIGS.development,
@@ -337,9 +339,31 @@ async function getEnvConfig(): Promise<EnvConfig> {
       )
       return envConfig
     } else if (res.status === 404) {
-      logger.info(`Dynamic environment config not supported by ${hostname}`)
+      logger.info(`Dynamic environment config not supported by ${serverUrl}`)
     } else {
       logger.error(`Dynamic environment config: lookup failed ${res.status}`)
+    }
+  } catch (e) {
+    logger.error(`Failed to fetch ${serverUrl}: ${e}`)
+  }
+  return null
+}
+
+async function getEnvConfig(): Promise<EnvConfig> {
+  const location = window.location
+  const {protocol, host, hostname} = location
+  if (protocol === 'http' || protocol === 'https') {
+    logger.info(`Environment config deduction based on ${protocol}://${host}:`)
+    if (hostname === PRODUCTION_DOMAIN) {
+      logger.info('Using production environment config')
+      return DOMAIN_ENVCONFIGS.production
+    } else if (STAGING_DOMAIN && hostname === STAGING_DOMAIN) {
+      logger.info('Using staging environment config')
+      return DOMAIN_ENVCONFIGS.staging
+    }
+    const fetchedEnvConfig = await fetchEnvConfig(location.toString())
+    if (fetchedEnvConfig !== null) {
+      return fetchedEnvConfig
     }
   }
   logger.warn('Falling back to default production environment config')
