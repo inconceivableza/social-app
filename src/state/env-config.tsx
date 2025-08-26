@@ -81,10 +81,6 @@ import {env_config as envConfigStorage, type EnvConfig} from '#/storage'
 
 export type {EnvConfig}
 
-type EnvDynamic = {
-  config: EnvConfig
-}
-
 /**
  * Default envconfig value.
  * If not overriden with dynamic config, will point to built environment, for production configuration
@@ -273,8 +269,6 @@ const DEFAULT_ENVCONFIG = __DEV__
   ? fallbackConfig(DEVELOPMENT_CONFIG, PRODUCTION_CONFIG, BLUESKY_CONFIG)
   : fallbackConfig(PRODUCTION_CONFIG, BLUESKY_CONFIG)
 
-export var env_dynamic: EnvDynamic = {config: DEFAULT_ENVCONFIG}
-
 export function getStoredEnvConfig(): EnvConfig {
   const storedEnvConfig: EnvConfig = {...EMPTY_CONFIG}
   for (const key in EMPTY_CONFIG) {
@@ -337,7 +331,7 @@ export async function fetchEnvConfig(server: string) {
   return null
 }
 
-function determineDomainEnvConfig(): EnvConfig {
+export function determineDomainEnvConfig(): EnvConfig {
   // determines the envConfig based on the domain name, if present (only on web)
   const location = window.location
   const {protocol, host, hostname} = location
@@ -355,11 +349,18 @@ function determineDomainEnvConfig(): EnvConfig {
   return DEFAULT_ENVCONFIG
 }
 
-export function setStaticEnvConfig(newEnvConfig: EnvConfig) {
+export function setStoredEnvConfig(newEnvConfig: EnvConfig) {
   Object.keys(EMPTY_CONFIG).forEach(key => {
     const typedKey = key as keyof EnvConfig
     envConfigStorage.set([typedKey], newEnvConfig[typedKey])
   })
+}
+
+export function clearStoredEnvConfig() {
+  envConfigStorage.removeMany(
+    [],
+    Object.keys(EMPTY_CONFIG).map(key => key as keyof EnvConfig),
+  )
 }
 
 // TODO: how to load from the server on startup without bootstrapping issues
@@ -392,10 +393,10 @@ export function beginResolveEnvConfig() {
   if (!currentSocialHost) {
     if (__DEV__) {
       logger.info('Loading dev environment, using local environment variables')
-      setStaticEnvConfig(DOMAIN_ENVCONFIGS.development)
+      setStoredEnvConfig(DOMAIN_ENVCONFIGS.development)
     } else {
       logger.info('Loading non-dev environment, using built-in values')
-      setStaticEnvConfig(DEFAULT_ENVCONFIG)
+      setStoredEnvConfig(determineDomainEnvConfig())
     }
   } else {
     logger.info(`Environment Config already loaded with ${currentSocialHost}`)
@@ -415,15 +416,16 @@ const context = React.createContext<Context>({
 })
 
 export function Provider({children}: {children: React.ReactNode}) {
+  beginResolveEnvConfig()
   const [envConfig, setEnvConfig] = React.useState(() => {
-    const initial = determineDomainEnvConfig()
+    const initial = getStoredEnvConfig()
     return initial
   })
 
   React.useEffect(() => {
     return onEnvConfigUpdate(newEnvConfig => {
       setEnvConfig(newEnvConfig!)
-      setStaticEnvConfig(newEnvConfig)
+      setStoredEnvConfig(newEnvConfig)
     })
   }, [])
 

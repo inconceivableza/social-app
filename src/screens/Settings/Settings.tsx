@@ -19,7 +19,16 @@ import {
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
-import * as EnvConfigLib from '#/state/env-config'
+import {
+  beginResolveEnvConfig,
+  clearStoredEnvConfig,
+  DOMAIN_ENVCONFIGS,
+  type EnvConfig,
+  fetchEnvConfig,
+  getStoredEnvConfig,
+  setStoredEnvConfig,
+  useEnvConfig,
+} from '#/state/env-config'
 import {useModalControls} from '#/state/modals'
 import * as persisted from '#/state/persisted'
 import {clearStorage} from '#/state/persisted'
@@ -485,17 +494,23 @@ function DevOptions() {
 
 function ServerDomains() {
   const {_} = useLingui()
-  const defaultCustomDomain =
-    EnvConfigLib.DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
+  const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [showCurrentEnv, setShowCurrentEnv] = useState(false)
   const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
-  const {envConfig, setEnvConfig} = EnvConfigLib.useEnvConfig()
+  const {envConfig, setEnvConfig} = useEnvConfig()
+  const doResetStoredEnvConfig = async () => {
+    clearStoredEnvConfig()
+    beginResolveEnvConfig()
+    setEnvConfig(getStoredEnvConfig())
+    Toast.show(_(msg`Reset environment to default`))
+    await clearStorage()
+  }
   const doSetEnvConfig = async (envName: string) => {
-    const newEnvConfig = EnvConfigLib.DOMAIN_ENVCONFIGS[envName]
+    const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
     if (newEnvConfig != null) {
       console.log('Found env config', newEnvConfig)
-      setEnvConfig(newEnvConfig)
-      EnvConfigLib.setStaticEnvConfig(newEnvConfig)
+      setStoredEnvConfig(newEnvConfig)
+      setEnvConfig(getStoredEnvConfig())
       Toast.show(_(msg`Switched environment to ${envName}`))
     } else {
       Toast.show(_(msg`Could not find environment config named ${envName}`))
@@ -506,18 +521,17 @@ function ServerDomains() {
     const customUrl = serverName.includes('://')
       ? serverName
       : `https://${serverName}`
-    const newEnvConfig = await EnvConfigLib.fetchEnvConfig(customUrl)
+    const newEnvConfig = await fetchEnvConfig(customUrl)
     if (newEnvConfig !== null) {
-      setEnvConfig(newEnvConfig)
-      EnvConfigLib.setStaticEnvConfig(newEnvConfig)
+      setStoredEnvConfig(newEnvConfig)
+      setEnvConfig(getStoredEnvConfig())
     } else {
       Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
     }
+    await clearStorage()
   }
 
-  const hasRequiredConfig = function (
-    candidate: EnvConfigLib.EnvConfig,
-  ): boolean {
+  const hasRequiredConfig = function (candidate: EnvConfig): boolean {
     // returns whether the given environment config has the essential items
     return Boolean(
       candidate.SOCIAL_APP_HOST &&
@@ -576,16 +590,26 @@ function ServerDomains() {
       )}
       <SettingsList.PressableItem
         onPress={() => {
+          doResetStoredEnvConfig()
+        }}
+        label={_(msg`Reset Stored Environment Config`)}>
+        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="white" />
+        <SettingsList.ItemText>
+          <Trans>Reset Stored Environment Config</Trans>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      <SettingsList.PressableItem
+        onPress={() => {
           doSetEnvConfig('production')
         }}
-        disabled={!hasRequiredConfig(EnvConfigLib.DOMAIN_ENVCONFIGS.production)}
+        disabled={!hasRequiredConfig(DOMAIN_ENVCONFIGS.production)}
         label={_(msg`Use Production Server`)}>
         <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="green" />
         <SettingsList.ItemText>
           <Trans>Use Production Server</Trans>
           <Text style={[a.italic]}>
             {' '}
-            {EnvConfigLib.DOMAIN_ENVCONFIGS.production.SOCIAL_APP_HOST}
+            {DOMAIN_ENVCONFIGS.production.SOCIAL_APP_HOST}
           </Text>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
@@ -593,14 +617,14 @@ function ServerDomains() {
         onPress={() => {
           doSetEnvConfig('staging')
         }}
-        disabled={!hasRequiredConfig(EnvConfigLib.DOMAIN_ENVCONFIGS.staging)}
+        disabled={!hasRequiredConfig(DOMAIN_ENVCONFIGS.staging)}
         label={_(msg`Use Staging Server`)}>
         <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="yellow" />
         <SettingsList.ItemText>
           <Trans>Use Staging Server</Trans>
           <Text style={[a.italic]}>
             {' '}
-            {EnvConfigLib.DOMAIN_ENVCONFIGS.staging.SOCIAL_APP_HOST}
+            {DOMAIN_ENVCONFIGS.staging.SOCIAL_APP_HOST}
           </Text>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
@@ -614,7 +638,7 @@ function ServerDomains() {
           <Trans>Use Development Server</Trans>
           <Text style={[a.italic]}>
             {' '}
-            {EnvConfigLib.DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST}
+            {DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST}
           </Text>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
