@@ -1,4 +1,5 @@
 import {
+  AppFoodiosFeedDefs,
   type AppBskyFeedDefs,
   type AppBskyGraphDefs,
   type ComAtprotoRepoStrongRef,
@@ -20,6 +21,7 @@ import {
   isBskyPostUrl,
   isBskyStarterPackUrl,
   isBskyStartUrl,
+  isRecipeUri,
   isShortLink,
 } from '#/lib/strings/url-helpers'
 import {type ComposerImage} from '#/state/gallery'
@@ -64,12 +66,20 @@ type ResolvedStarterPackRecord = {
   view: AppBskyGraphDefs.StarterPackView
 }
 
+interface ResolvedRecipePost {
+  type: 'record'
+  record: ComAtprotoRepoStrongRef.Main
+  kind: 'recipePost'
+  view: AppFoodiosFeedDefs.RecipePostView
+}
+
 export type ResolvedLink =
   | ResolvedExternalLink
   | ResolvedPostRecord
   | ResolvedFeedRecord
   | ResolvedListRecord
   | ResolvedStarterPackRecord
+  | ResolvedRecipePost
 
 export class EmbeddingDisabledError extends Error {
   constructor() {
@@ -86,19 +96,28 @@ export async function resolveLink(
   }
   if (isBskyPostUrl(uri)) {
     uri = convertBskyAppUrlIfNeeded(uri)
-    const [_0, user, _1, rkey] = uri.split('/').filter(Boolean)
-    const recordUri = makeRecordUri(user, 'app.bsky.feed.post', rkey)
-    const post = await getPost({uri: recordUri})
+    const [_0, user, postType, rkey] = uri.split('/').filter(Boolean)
+    let collection = ''
+    if (postType === "recipePost") {
+      collection = 'app.foodios.feed.recipePost'
+    } else if (postType === "post") {
+      collection = 'app.bsky.feed.post'
+    } else {
+      throw new Error('unknown post type ' + uri)
+    }
+    const recordUri = makeRecordUri(user, collection, rkey)
+    const post = await getPost({ uri: recordUri })
     if (post.viewer?.embeddingDisabled) {
       throw new EmbeddingDisabledError()
     }
+    // TODO: fix types
     return {
       type: 'record',
       record: {
         cid: post.cid,
         uri: post.uri,
       },
-      kind: 'post',
+      kind: postType === "recipePost" ? 'recipePost' : 'post',
       view: post,
     }
   }

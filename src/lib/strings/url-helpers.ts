@@ -119,12 +119,17 @@ export function isBskyPostUrl(url: string): boolean {
   if (isBskyAppUrl(url)) {
     try {
       const urlp = new URL(url)
-      return /profile\/(?<name>[^/]+)\/post\/(?<rkey>[^/]+)/i.test(
+      return /profile\/(?<name>[^/]+)\/(post|recipePost)\/(?<rkey>[^/]+)/i.test(
         urlp.pathname,
       )
     } catch {}
   }
   return false
+}
+
+export function isRecipeUri(uri: string) {
+  const atUri = new AtUri(uri)
+  return atUri.collection === "app.foodios.feed.recipePost"
 }
 
 export function isBskyCustomFeedUrl(url: string): boolean {
@@ -232,13 +237,15 @@ export function postUriToRelativePath(
   options?: {handle?: string},
 ): string | undefined {
   try {
-    const {hostname, rkey} = new AtUri(uri)
+    const { hostname, rkey, collection } = new AtUri(uri)
+    const postType = collection.split(".").at(-1)
     const handleOrDid =
       options?.handle && !isInvalidHandle(options.handle)
         ? options.handle
         : hostname
-    return `/profile/${handleOrDid}/post/${rkey}`
-  } catch {
+    return `/profile/${handleOrDid}/${postType}/${rkey}`
+  } catch (e) {
+    console.error(e)
     return undefined
   }
 }

@@ -13,9 +13,10 @@ import { AnimatedLikeIcon } from "#/lib/custom-animations/LikeIcon";
 import { useState } from "react";
 import { CountWheel } from "#/lib/custom-animations/CountWheel";
 import { useHaptics } from "#/lib/haptics";
-import { usePostLikeMutationQueue } from "#/state/queries/post";
+import { usePostLikeMutationQueue, usePostRepostMutationQueue } from "#/state/queries/post";
 import { ProgressGuideAction, useProgressGuideControls } from "#/state/shell/progress-guide";
-import { usePostShadow } from "#/state/cache/post-shadow";
+import { POST_TOMBSTONE, usePostShadow } from "#/state/cache/post-shadow";
+import { RepostButton } from "#/components/PostControls/RepostButton";
 
 
 interface RecipeFeedItemProps {
@@ -55,7 +56,10 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
 
     const playHaptic = useHaptics()
     const { captureAction } = useProgressGuideControls()
-
+    if (shadowedPost === POST_TOMBSTONE) {
+        // TODO: refactor so that this isn't performed before other hooks - use inner component
+        return null
+    }
     const [queueLike, queueUnlike] = usePostLikeMutationQueue(
         shadowedPost,
         undefined, // TODO: fix
@@ -95,20 +99,89 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
         }
     }
 
+    const big = false
+
+
+
+    const [queueRepost, queueUnrepost] = usePostRepostMutationQueue(
+        shadowedPost,
+        undefined, // TODO: fix
+        feedDescriptor,
+        "FeedItem", // TODO:fix
+    )
+
+    const onReply = () => requireAuth(() => onPressReply())
+
+    const onRepost = async () => {
+        // if (isBlocked) {
+        //   Toast.show(
+        //     _(msg`Cannot interact with a blocked user`),
+        //     'exclamation-circle',
+        //   )
+        //   return
+        // }
+
+        try {
+            if (!post.viewer?.repost) {
+                sendInteraction({
+                    item: post.uri,
+                    event: 'app.bsky.feed.defs#interactionRepost',
+                    feedContext,
+                    reqId,
+                })
+                await queueRepost()
+            } else {
+                await queueUnrepost()
+            }
+        } catch (e: any) {
+            if (e?.name !== 'AbortError') {
+                throw e
+            }
+        }
+    }
+
+    const onQuote = () => {
+        // if (isBlocked) {
+        //   Toast.show(
+        //     _(msg`Cannot interact with a blocked user`),
+        //     'exclamation-circle',
+        //   )
+        //   return
+        // }
+
+        sendInteraction({
+            item: post.uri,
+            event: 'app.bsky.feed.defs#interactionQuote',
+            feedContext,
+            reqId,
+        })
+        openComposer({
+            type: "post",
+            quote: post,
+            onPost: onReply,
+        })
+    }
+    // TODO: repost immediate feedback
     return <div>
         <div>{post.author.handle}</div>
         <div>{post.title}</div>
         <div>{post.text}</div>
         <View
             style={[
+                a.flex_row,
+                a.justify_between,
+                a.align_center,
+                !big && a.pt_2xs,
+                //  style,
+            ]}>
+            <View
+                style={[
                 [a.flex_1, a.align_start, { marginLeft: -6 }],
                 //replyDisabled ? { opacity: 0.5 } : undefined,
             ]}>
             <PostControlButton
                 testID="replyBtn"
-                onPress={
-                    () => requireAuth(() => onPressReply())
-                }
+                    onPress={onReply}
                 label={_(
                     msg({
                         message: `Reply (${plural(42, {
@@ -127,6 +200,19 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
                     </PostControlButtonText>
                 )}
             </PostControlButton>
+
+
+            </View>
+            <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
+                <RepostButton
+                    isReposted={!!post.viewer?.repost}
+                    repostCount={(post.repostCount ?? 0) + (post.quoteCount ?? 0)}
+                    onRepost={onRepost}
+                    onQuote={onQuote}
+                    big={big}
+                    embeddingDisabled={Boolean(post.viewer?.embeddingDisabled)}
+                />
+            </View>
             <View style={[a.flex_1, a.align_start]}>
                 <PostControlButton
                     testID="likeBtn"

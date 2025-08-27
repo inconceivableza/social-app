@@ -7,6 +7,7 @@ import {
   AtUri,
   moderatePost,
   RichText as RichTextAPI,
+  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
@@ -247,17 +248,26 @@ export function QuoteEmbed({
   const itemTitle = `Post by ${quote.author.handle}`
 
   const richText = React.useMemo(() => {
-    if (
-      !bsky.dangerousIsType<AppBskyFeedPost.Record>(
+    if (bsky.dangerousIsType<AppBskyFeedPost.Record>(
         quote.record,
         AppBskyFeedPost.isRecord,
       )
-    )
+    ) {
+      const { text, facets } = quote.record
+      return text.trim()
+        ? new RichTextAPI({ text: text, facets: facets })
+        : undefined
+    } else if (bsky.dangerousIsType<AppFoodiosFeedDefs.RecipePostView>(
+      quote.record, AppFoodiosFeedDefs.isRecipePostView)) {
+      const { text, title } = quote.record
+      return text.trim()
+        ? new RichTextAPI({ text: title + "\n" + text })
+        : undefined
+    } else {
       return undefined
-    const {text, facets} = quote.record
-    return text.trim()
-      ? new RichTextAPI({text: text, facets: facets})
-      : undefined
+    }
+
+
   }, [quote.record])
 
   const onBeforePress = React.useCallback(() => {

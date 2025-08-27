@@ -5,14 +5,36 @@ import {createEmbedViewRecordFromPost} from '#/state/queries/postgate/util'
 import {useResolveLinkQuery} from '#/state/queries/resolve-link'
 import {atoms as a, useTheme} from '#/alf'
 import {QuoteEmbed} from '#/components/Post/Embed'
+import { $Typed } from '@atproto/api'
+import { ViewRecord } from '@atproto/api/client/types/app/bsky/embed/record'
 
 export function LazyQuoteEmbed({uri}: {uri: string}) {
   const t = useTheme()
   const {data} = useResolveLinkQuery(uri)
 
-  const view = useMemo(() => {
-    if (!data || data.type !== 'record' || data.kind !== 'post') return
-    return createEmbedViewRecordFromPost(data.view)
+  const view = useMemo<$Typed<ViewRecord> | undefined>(() => {
+    if (!data || data.type !== 'record') return
+    if (data.kind === "post") {
+      return createEmbedViewRecordFromPost(data.view)
+    } else if (data.kind === "recipePost") {
+      const { view } = data
+      // TODO check
+      const viewRec: $Typed<ViewRecord> = {
+        $type: 'app.bsky.embed.record#viewRecord',
+        uri: view.uri,
+        cid: view.cid,
+        author: view.author,
+        value: view as any,
+        labels: view.labels,
+        replyCount: view.replyCount,
+        repostCount: view.repostCount,
+        likeCount: view.likeCount,
+        quoteCount: view.quoteCount,
+        indexedAt: view.indexedAt,
+        embeds: [], // TODO: fix
+      }
+      return viewRec
+    }
   }, [data])
 
   return view ? (
