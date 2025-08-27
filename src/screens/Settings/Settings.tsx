@@ -61,7 +61,10 @@ import {DotGrid_Stroke2_Corner0_Rounded as DotsHorizontal} from '#/components/ic
 import {Eye_Stroke2_Corner0_Rounded as Eye} from '#/components/icons/Eye'
 import {EyeSlash_Stroke2_Corner0_Rounded as EyeSlash} from '#/components/icons/EyeSlash'
 import {Flag_Stroke2_Corner0_Rounded as FlagIcon} from '#/components/icons/Flag'
-import {Earth_Stroke2_Corner2_Rounded as EarthIcon} from '#/components/icons/Globe'
+import {
+  Earth_Stroke2_Corner2_Rounded as EarthIcon,
+  Globe_Stroke2_Corner0_Rounded as GlobeIcon,
+} from '#/components/icons/Globe'
 import {Lock_Stroke2_Corner2_Rounded as LockIcon} from '#/components/icons/Lock'
 import {PaintRoller_Stroke2_Corner2_Rounded as PaintRollerIcon} from '#/components/icons/PaintRoller'
 import {
@@ -72,7 +75,6 @@ import {
 } from '#/components/icons/Person'
 import {RaisingHand4Finger_Stroke2_Corner2_Rounded as HandIcon} from '#/components/icons/RaisingHand'
 import {Ticket_Stroke2_Corner0_Rounded as TicketIcon} from '#/components/icons/Ticket'
-import {Warning_Stroke2_Corner0_Rounded as WarningIcon} from '#/components/icons/Warning'
 import {Window_Stroke2_Corner2_Rounded as WindowIcon} from '#/components/icons/Window'
 import * as Layout from '#/components/Layout'
 import {Loader} from '#/components/Loader'
@@ -304,7 +306,7 @@ export function SettingsScreen({}: Props) {
               setShowServerDomains(d => !d)
             }}
             label={_(msg`Switch server domains`)}>
-            <SettingsList.ItemIcon icon={WarningIcon} />
+            <SettingsList.ItemIcon icon={GlobeIcon} />
             <SettingsList.ItemText>
               <Trans>Switch server domains</Trans>
             </SettingsList.ItemText>
