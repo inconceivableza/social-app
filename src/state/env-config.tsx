@@ -405,6 +405,17 @@ export function beginResolveEnvConfig() {
   return
 }
 
+export const hasRequiredConfig = function (candidate: EnvConfig): boolean {
+  // returns whether the given environment config has the essential items
+  return Boolean(
+    candidate.SOCIAL_APP_HOST &&
+      candidate.SOCIAL_APP_URL &&
+      candidate.APPVIEW_URL &&
+      candidate.BSKY_SERVICE &&
+      candidate.PUBLIC_BSKY_SERVICE,
+  )
+}
+
 type Context = {
   envConfig: EnvConfig
   setEnvConfig: React.Dispatch<React.SetStateAction<EnvConfig>>
