@@ -11,6 +11,7 @@ import {
   fetchEnvConfig,
   getStoredEnvConfig,
   hasRequiredConfig,
+  renderEnvConfig,
   setStoredEnvConfig,
   useEnvConfig,
 } from '#/state/env-config'
@@ -82,11 +83,7 @@ export function EnvConfigIndicator() {
         if (envName === '$input') {
           setShowCustomDomain(true)
         } else if (envName === '$show') {
-          const envConfigText = JSON.stringify(
-            getStoredEnvConfig(),
-            null,
-            1,
-          ).replace('\n ', '\n')
+          const envConfigText = renderEnvConfig(getStoredEnvConfig())
           logger.info(
             `Current Environment Config ${currentEnvName}: ${envConfigText}`,
           )
@@ -100,7 +97,7 @@ export function EnvConfigIndicator() {
       const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
       if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
         logger.info(
-          `Switching environment config to ${envName}: ${JSON.stringify(newEnvConfig)}`,
+          `Switching environment config to ${envName}: ${renderEnvConfig(newEnvConfig)}`,
         )
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
@@ -124,7 +121,7 @@ export function EnvConfigIndicator() {
       const newEnvConfig = await fetchEnvConfig(customUrl)
       if (newEnvConfig !== null) {
         logger.info(
-          `Switching environment config to custom loaded from ${serverName}: ${JSON.stringify(newEnvConfig)}`,
+          `Switching environment config to custom loaded from ${serverName}: ${renderEnvConfig(newEnvConfig)}`,
         )
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
