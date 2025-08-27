@@ -5,13 +5,27 @@ import {useLingui} from '@lingui/react'
 import {
   DOMAIN_ENVCONFIGS,
   getStoredEnvConfig,
+  hasRequiredConfig,
   setStoredEnvConfig,
   useEnvConfig,
 } from '#/state/env-config'
 import {atoms as a, platform, useTheme} from '#/alf'
-import {Flag_Stroke2_Corner0_Rounded as FlagIcon} from '#/components/icons/Flag'
 import * as Select from '#/components/Select'
+import {type ItemTextProps} from '#/components/Select/types'
+import {Text} from '#/components/Typography'
 import {Button} from './Button'
+
+export const builtinConfigNames = ['production', 'staging', 'development']
+export const configLabels: Record<string, string> = {
+  production: '🏠 prod',
+  staging: '🧪 staging',
+  development: '🏗️ dev',
+  custom: '🛠️ cust',
+}
+
+export function DisabledItemText({children}: ItemTextProps) {
+  return <Text style={[{color: '#808080'}]}>{children}</Text>
+}
 
 export function EnvConfigIndicator() {
   const t = useTheme()
@@ -29,17 +43,19 @@ export function EnvConfigIndicator() {
   const [currentEnvName, setCurrentEnvName] =
     React.useState(getCurrentEnvName())
 
-  const builtinConfigNames = ['production', 'staging', 'development']
   const builtinConfigItems = builtinConfigNames.map(l => ({
-    label: `${l} -> ${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
+    label: `${configLabels[l] || l}→${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
     value: l,
+    enabled: hasRequiredConfig(DOMAIN_ENVCONFIGS[l]),
   }))
   const isCustom = !builtinConfigNames.includes(currentEnvName)
+  const c = currentEnvName || 'custom'
   const customConfigItems = isCustom
     ? [
         {
-          label: `${currentEnvName || 'custom'} -> ${envConfig.SOCIAL_APP_HOST}`,
-          value: currentEnvName || 'custom',
+          label: `${configLabels[c] || '🛠️ ' + c}→${envConfig.SOCIAL_APP_HOST}`,
+          value: c,
+          enabled: hasRequiredConfig(envConfig),
         },
       ]
     : []
@@ -49,7 +65,7 @@ export function EnvConfigIndicator() {
     (envName: string) => {
       if (!envName) return
       const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
-      if (newEnvConfig != null) {
+      if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName(envName)
@@ -88,12 +104,17 @@ export function EnvConfigIndicator() {
         )}
       </Select.Trigger>
       <Select.Content
-        renderItem={({label, value}) => (
-          <Select.Item value={value} label={label}>
-            <Select.ItemIndicator icon={FlagIcon} />
-            <Select.ItemText>{label}</Select.ItemText>
-          </Select.Item>
-        )}
+        renderItem={({label, value, enabled}) =>
+          enabled ? (
+            <Select.Item value={value} label={label}>
+              <Select.ItemText>{label}</Select.ItemText>
+            </Select.Item>
+          ) : (
+            <Select.Item value={value} label={label}>
+              <DisabledItemText>{label}</DisabledItemText>
+            </Select.Item>
+          )
+        }
         items={envConfigItems}
       />
     </Select.Root>

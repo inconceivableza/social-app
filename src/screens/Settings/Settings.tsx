@@ -23,9 +23,9 @@ import {
   beginResolveEnvConfig,
   clearStoredEnvConfig,
   DOMAIN_ENVCONFIGS,
-  type EnvConfig,
   fetchEnvConfig,
   getStoredEnvConfig,
+  hasRequiredConfig,
   setStoredEnvConfig,
   useEnvConfig,
 } from '#/state/env-config'
@@ -527,16 +527,6 @@ function ServerDomains() {
     await clearStorage()
   }
 
-  const hasRequiredConfig = function (candidate: EnvConfig): boolean {
-    // returns whether the given environment config has the essential items
-    return Boolean(
-      candidate.SOCIAL_APP_HOST &&
-        candidate.SOCIAL_APP_URL &&
-        candidate.APPVIEW_URL &&
-        candidate.BSKY_SERVICE &&
-        candidate.PUBLIC_BSKY_SERVICE,
-    )
-  }
   const renderCurrentEnv = function () {
     const envEntries = Object.entries(envConfig)
     return (
