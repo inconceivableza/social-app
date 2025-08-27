@@ -510,13 +510,15 @@ function ServerDomains() {
   }
   const doSetEnvConfig = async (envName: string) => {
     const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
-    if (newEnvConfig != null) {
+    if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
       console.log('Found env config', newEnvConfig)
       setStoredEnvConfig(newEnvConfig)
       setEnvConfig(getStoredEnvConfig())
-      Toast.show(_(msg`Switched environment to ${envName}`))
+      Toast.show(_(msg`Switched environment to ${envName}. Please reload app.`))
     } else {
-      Toast.show(_(msg`Could not find environment config named ${envName}`))
+      Toast.show(
+        _(msg`Could not find valid environment config named ${envName}`),
+      )
     }
     await clearStorage()
   }
@@ -528,6 +530,11 @@ function ServerDomains() {
     if (newEnvConfig !== null) {
       setStoredEnvConfig(newEnvConfig)
       setEnvConfig(getStoredEnvConfig())
+      Toast.show(
+        _(
+          msg`Switched environment to custom loaded from ${serverName}. Please reload app.`,
+        ),
+      )
     } else {
       Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
     }
