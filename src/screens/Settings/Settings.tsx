@@ -587,7 +587,7 @@ function ServerDomains() {
           <Trans>Reset Stored Environment Config</Trans>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
-      {['bluesky'].concat(builtinConfigNames).map(configName => {
+      {builtinConfigNames.map(configName => {
         const thisEnvConfig = DOMAIN_ENVCONFIGS[configName]
         if (thisEnvConfig) {
           const socialAppHost = thisEnvConfig.SOCIAL_APP_HOST
