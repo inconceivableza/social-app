@@ -16,6 +16,7 @@ import {
 import {atoms as a, useTheme} from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import * as Layout from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {Text} from '#/components/Typography'
@@ -185,6 +186,7 @@ function Footer() {
       <View style={a.flex_1} />
 
       <AppLanguageDropdown />
+      <EnvConfigIndicator />
     </View>
   )
 }
