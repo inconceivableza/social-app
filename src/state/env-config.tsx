@@ -363,17 +363,22 @@ export function clearStoredEnvConfig() {
   )
 }
 
-// TODO: how to load from the server on startup without bootstrapping issues
-/*
-async function getEnvConfig(): Promise<EnvConfig> {
-  const staticEnvConfig = determineDomainEnvConfig()
-  const fetchedEnvConfig = await fetchEnvConfig(location.toString())
-  if (fetchedEnvConfig !== null) {
-    return fetchedEnvConfig
-  }
-  return staticEnvConfig
+export function renderEnvConfig(
+  envConfig: EnvConfig,
+  indent: number = 0,
+): string {
+  const indentJoin = indent ? '\n' + ' '.repeat(indent) : ', '
+  return (
+    '{' +
+    Object.keys(EMPTY_CONFIG)
+      .map(key => {
+        const typedKey = key as keyof EnvConfig
+        return `${key}: ${envConfig[typedKey]}`
+      })
+      .join(indentJoin) +
+    '}'
+  )
 }
-*/
 
 /**
  * Begin the process of resolving envconfig. This should be called once at
