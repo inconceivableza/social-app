@@ -1,8 +1,9 @@
 import React from 'react'
-import {TextInput, View} from 'react-native'
+import {DevSettings, TextInput, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {timeout} from '#/lib/async/timeout'
 import {logger} from '#/logger'
 import {
   builtinConfigNames,
@@ -15,6 +16,7 @@ import {
   setStoredEnvConfig,
   useEnvConfig,
 } from '#/state/env-config'
+import {clearStorage} from '#/state/persisted'
 import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, platform, useTheme} from '#/alf'
 import * as Select from '#/components/Select'
@@ -44,6 +46,12 @@ export function EnvConfigIndicator() {
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
+  const canAutoReload = Boolean(DevSettings) && Boolean(DevSettings.reload)
+  const canWebReload = Boolean(window.location)
+  const reloadMessage =
+    canAutoReload || canWebReload
+      ? _(msg`Going to reload app...`)
+      : _(msg`Please reload app manually...`)
 
   const builtinConfigItems = builtinConfigNames.map(l => ({
     label: `${configLabels[l] || l}→${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
@@ -76,8 +84,28 @@ export function EnvConfigIndicator() {
     .concat(customConfigItems)
     .concat(controlIndicators)
 
+  const doDelayedReload = React.useCallback(async () => {
+    const reloadDelay = 3
+    await clearStorage()
+    if (canAutoReload) {
+      logger.info(`Reloading app after config change in ${reloadDelay}...`)
+      await timeout(reloadDelay * 1000)
+      DevSettings?.reload('Changed environment config')
+    } else if (canWebReload) {
+      logger.info(
+        `Reloading web app after environment config change in ${reloadDelay}...`,
+      )
+      await timeout(reloadDelay * 1000)
+      window.location.reload()
+    } else {
+      logger.warn(
+        'Could not reload app after environment config change ; user must reload otherwise confusion...',
+      )
+    }
+  }, [canAutoReload, canWebReload])
+
   const onChangeEnvConfig = React.useCallback(
-    (envName: string) => {
+    async (envName: string) => {
       const isControl = envName.startsWith('$')
       if (isControl) {
         if (envName === '$input') {
@@ -102,16 +130,15 @@ export function EnvConfigIndicator() {
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName(envName)
-        Toast.show(
-          _(msg`Switched environment to ${envName}. Please reload app.`),
-        )
+        Toast.show(_(msg`Switched environment to ${envName}. ${reloadMessage}`))
+        await doDelayedReload()
       } else {
         Toast.show(
           _(msg`Could not find valid environment config named ${envName}`),
         )
       }
     },
-    [setEnvConfig, currentEnvName, _],
+    [setEnvConfig, currentEnvName, doDelayedReload, reloadMessage, _],
   )
   const onUseManualConfig = React.useCallback(
     async (serverName: string) => {
@@ -128,15 +155,16 @@ export function EnvConfigIndicator() {
         setCurrentEnvName('custom')
         Toast.show(
           _(
-            msg`Switched environment to custom loaded from ${serverName}. Please reload app.`,
+            msg`Switched environment to custom loaded from ${serverName}. ${reloadMessage}`,
           ),
         )
         setShowCustomDomain(false)
+        await doDelayedReload()
       } else {
         Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
       }
     },
-    [setEnvConfig, _],
+    [setEnvConfig, doDelayedReload, reloadMessage, _],
   )
 
   return (
