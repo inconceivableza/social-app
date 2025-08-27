@@ -3,6 +3,7 @@ import {TextInput, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {logger} from '#/logger'
 import {
   builtinConfigNames,
   configLabels,
@@ -47,7 +48,6 @@ export function EnvConfigIndicator() {
     label: `${configLabels[l] || l}→${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
     value: l,
     enabled: hasRequiredConfig(DOMAIN_ENVCONFIGS[l]),
-    input: false,
   }))
   const isCustom = !builtinConfigNames.includes(currentEnvName)
   const c = currentEnvName || 'custom'
@@ -55,29 +55,53 @@ export function EnvConfigIndicator() {
     label: '⌨️ manual input',
     value: '$input',
     enabled: true,
-    input: true,
   }
+  const showEnvConfigIndicator = {
+    label: '👀 show config',
+    value: '$show',
+    enabled: true,
+  }
+  const controlIndicators = [customInputIndicator, showEnvConfigIndicator]
   const customConfigItems = isCustom
     ? [
         {
           label: `${configLabels[c] || '🛠️ ' + c}→${envConfig.SOCIAL_APP_HOST}`,
           value: c,
           enabled: hasRequiredConfig(envConfig),
-          input: false,
         },
-        customInputIndicator,
       ]
-    : [customInputIndicator]
-  const envConfigItems = builtinConfigItems.concat(customConfigItems)
+    : []
+  const envConfigItems = builtinConfigItems
+    .concat(customConfigItems)
+    .concat(controlIndicators)
 
   const onChangeEnvConfig = React.useCallback(
     (envName: string) => {
-      const isInput = envName === '$input'
-      setShowCustomDomain(isInput)
-      if (isInput) return
+      const isControl = envName.startsWith('$')
+      if (isControl) {
+        if (envName === '$input') {
+          setShowCustomDomain(true)
+        } else if (envName === '$show') {
+          const envConfigText = JSON.stringify(
+            getStoredEnvConfig(),
+            null,
+            1,
+          ).replace('\n ', '\n')
+          logger.info(
+            `Current Environment Config ${currentEnvName}: ${envConfigText}`,
+          )
+          Toast.show(
+            _(msg`Environment Config ${currentEnvName}: ${envConfigText}`),
+          )
+        }
+        return
+      }
       if (!envName) return
       const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
       if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
+        logger.info(
+          `Switching environment config to ${envName}: ${JSON.stringify(newEnvConfig)}`,
+        )
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName(envName)
@@ -90,7 +114,7 @@ export function EnvConfigIndicator() {
         )
       }
     },
-    [setEnvConfig, _],
+    [setEnvConfig, currentEnvName, _],
   )
   const onUseManualConfig = React.useCallback(
     async (serverName: string) => {
@@ -99,6 +123,9 @@ export function EnvConfigIndicator() {
         : `https://${serverName}`
       const newEnvConfig = await fetchEnvConfig(customUrl)
       if (newEnvConfig !== null) {
+        logger.info(
+          `Switching environment config to custom loaded from ${serverName}: ${JSON.stringify(newEnvConfig)}`,
+        )
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName('custom')
@@ -116,9 +143,12 @@ export function EnvConfigIndicator() {
   )
 
   return (
-    <View>
+    <View style={[a.flex_row, a.align_baseline]}>
+      <Text emoji style={[a.p_0, a.align_baseline]}>
+        🌐
+      </Text>
       {showCustomDomain ? (
-        <View style={[a.mt_md, a.flex_row, a.align_baseline]}>
+        <>
           <View style={[a.flex_col, a.px_xs, a.align_baseline]}>
             <Text emoji style={[a.align_baseline]}>
               ⌨️
@@ -130,7 +160,7 @@ export function EnvConfigIndicator() {
               t.atoms.bg_contrast_25,
               a.flex_col,
               a.px_xs,
-              {width: '60%'},
+              {width: '50%'},
             ]}>
             <TextInput
               accessibilityLabel="Text input field"
@@ -164,49 +194,51 @@ export function EnvConfigIndicator() {
               <ButtonText style={[{color: 'black'}]}>↩️</ButtonText>
             </Button>
           </View>
-        </View>
+        </>
       ) : (
-        <Select.Root value={currentEnvName} onValueChange={onChangeEnvConfig}>
-          <Select.Trigger label={_(msg`Change server domain`)}>
-            {({props}) => (
-              <Button
-                {...props}
-                label={props.accessibilityLabel}
-                size={platform({
-                  web: 'tiny',
-                  native: 'small',
-                })}
-                variant="ghost"
-                color="secondary"
-                style={[
-                  a.pr_xs,
-                  a.pl_sm,
-                  platform({
-                    web: [{alignSelf: 'flex-start'}, a.gap_sm],
-                    native: [a.gap_xs],
-                  }),
-                ]}>
-                <Select.ValueText
-                  placeholder={_(msg`Select a server domain`)}
-                  style={[t.atoms.text_contrast_medium]}
-                />
-                <Select.Icon style={[t.atoms.text_contrast_medium]} />
-              </Button>
-            )}
-          </Select.Trigger>
-          <Select.Content
-            renderItem={({label, value, enabled}) => (
-              <Select.Item value={value} label={label}>
-                {enabled ? (
-                  <Select.ItemText>{label}</Select.ItemText>
-                ) : (
-                  <DisabledItemText>{label}</DisabledItemText>
-                )}
-              </Select.Item>
-            )}
-            items={envConfigItems}
-          />
-        </Select.Root>
+        <View style={[a.flex_col, a.align_baseline]}>
+          <Select.Root value={currentEnvName} onValueChange={onChangeEnvConfig}>
+            <Select.Trigger label={_(msg`Change server domain`)}>
+              {({props}) => (
+                <Button
+                  {...props}
+                  label={props.accessibilityLabel}
+                  size={platform({
+                    web: 'tiny',
+                    native: 'small',
+                  })}
+                  variant="ghost"
+                  color="secondary"
+                  style={[
+                    a.pr_xs,
+                    a.pl_sm,
+                    platform({
+                      web: [{alignSelf: 'flex-start'}, a.gap_sm],
+                      native: [a.gap_xs],
+                    }),
+                  ]}>
+                  <Select.ValueText
+                    placeholder={_(msg`Select a server domain`)}
+                    style={[t.atoms.text_contrast_medium]}
+                  />
+                  <Select.Icon style={[t.atoms.text_contrast_medium]} />
+                </Button>
+              )}
+            </Select.Trigger>
+            <Select.Content
+              renderItem={({label, value, enabled}) => (
+                <Select.Item value={value} label={label}>
+                  {enabled ? (
+                    <Select.ItemText>{label}</Select.ItemText>
+                  ) : (
+                    <DisabledItemText>{label}</DisabledItemText>
+                  )}
+                </Select.Item>
+              )}
+              items={envConfigItems}
+            />
+          </Select.Root>
+        </View>
       )}
     </View>
   )
