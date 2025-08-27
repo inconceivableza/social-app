@@ -9,6 +9,7 @@ import {Logo} from '#/view/icons/Logo'
 import {atoms as a} from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import {Link} from '#/components/Link'
 import {Text} from '#/components/Typography'
 
@@ -64,8 +65,9 @@ let NavSignupCard = ({}: {}): React.ReactNode => {
         </Button>
       </View>
 
-      <View style={[a.mt_md, a.w_full, {height: 32}]}>
+      <View style={[a.mt_md, a.w_full, {height: 64}]}>
         <AppLanguageDropdown />
+        <EnvConfigIndicator />
       </View>
     </View>
   )

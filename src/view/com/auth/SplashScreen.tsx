@@ -9,6 +9,7 @@ import {Logotype} from '#/view/icons/Logotype'
 import {atoms as a, useTheme} from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import {Text} from '#/components/Typography'
 import {CenteredView} from '../util/Views'
 
@@ -80,6 +81,7 @@ export const SplashScreen = ({
           ]}>
           <View>
             <AppLanguageDropdown />
+            <EnvConfigIndicator />
           </View>
         </View>
         <View style={{height: insets.bottom}} />

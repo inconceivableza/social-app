@@ -19,6 +19,7 @@ import {
 } from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Divider} from '#/components/Divider'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import {CENTER_COLUMN_OFFSET} from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {ProgressGuideList} from '#/components/ProgressGuide/List'
@@ -136,8 +137,9 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
       )}
 
       {!hasSession && leftNavMinimal && (
-        <View style={[a.w_full, {height: 32}]}>
+        <View style={[a.w_full, {height: 64}]}>
           <AppLanguageDropdown />
+          <EnvConfigIndicator />
         </View>
       )}
     </View>

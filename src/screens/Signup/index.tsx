@@ -23,6 +23,7 @@ import {StepInfo} from '#/screens/Signup/StepInfo'
 import {atoms as a, useBreakpoints, useTheme} from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Divider} from '#/components/Divider'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import {LinearGradientBackground} from '#/components/LinearGradientBackground'
 import {InlineLinkText} from '#/components/Link'
 import {Text} from '#/components/Typography'
@@ -199,6 +200,7 @@ export function Signup({onPressBack}: {onPressBack: () => void}) {
                   style={[!gtMobile && a.text_md]}>
                   <Trans>Contact support</Trans>
                 </InlineLinkText>
+                <EnvConfigIndicator />
               </Text>
             </View>
           </View>
