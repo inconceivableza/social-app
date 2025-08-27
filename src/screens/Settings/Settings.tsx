@@ -21,7 +21,10 @@ import {sanitizeHandle} from '#/lib/strings/handles'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
 import {
   beginResolveEnvConfig,
+  builtinConfigNames,
   clearStoredEnvConfig,
+  configColors,
+  configTitles,
   DOMAIN_ENVCONFIGS,
   fetchEnvConfig,
   getStoredEnvConfig,
@@ -588,52 +591,40 @@ function ServerDomains() {
           <Trans>Reset Stored Environment Config</Trans>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
-      <SettingsList.PressableItem
-        onPress={() => {
-          doSetEnvConfig('production')
-        }}
-        disabled={!hasRequiredConfig(DOMAIN_ENVCONFIGS.production)}
-        label={_(msg`Use Production Server`)}>
-        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="green" />
-        <SettingsList.ItemText>
-          <Trans>Use Production Server</Trans>
-          <Text style={[a.italic]}>
-            {' '}
-            {DOMAIN_ENVCONFIGS.production.SOCIAL_APP_HOST}
-          </Text>
-        </SettingsList.ItemText>
-      </SettingsList.PressableItem>
-      <SettingsList.PressableItem
-        onPress={() => {
-          doSetEnvConfig('staging')
-        }}
-        disabled={!hasRequiredConfig(DOMAIN_ENVCONFIGS.staging)}
-        label={_(msg`Use Staging Server`)}>
-        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="yellow" />
-        <SettingsList.ItemText>
-          <Trans>Use Staging Server</Trans>
-          <Text style={[a.italic]}>
-            {' '}
-            {DOMAIN_ENVCONFIGS.staging.SOCIAL_APP_HOST}
-          </Text>
-        </SettingsList.ItemText>
-      </SettingsList.PressableItem>
-      <SettingsList.PressableItem
-        onPress={() => {
-          doSetEnvConfig('development')
-        }}
-        label={_(msg`Use Development Server`)}>
-        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="orange" />
-        <SettingsList.ItemText>
-          <Trans>Use Development Server</Trans>
-          <Text style={[a.italic]}>
-            {' '}
-            {DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST}
-          </Text>
-        </SettingsList.ItemText>
-      </SettingsList.PressableItem>
+      {['bluesky'].concat(builtinConfigNames).map(configName => {
+        const thisEnvConfig = DOMAIN_ENVCONFIGS[configName]
+        if (thisEnvConfig) {
+          const socialAppHost = thisEnvConfig.SOCIAL_APP_HOST
+          return (
+            <SettingsList.PressableItem
+              onPress={() => {
+                doSetEnvConfig(configName)
+              }}
+              disabled={!hasRequiredConfig(thisEnvConfig)}
+              label={_(msg`Use ${configTitles[configName]} Server`)}
+              key={configName}>
+              <SettingsList.ItemIcon
+                icon={FlagIcon}
+                size="sm"
+                color={configColors[configName]}
+              />
+              <SettingsList.ItemText>
+                <Trans>Use {configTitles[configName]} Server</Trans>
+                <Text style={[a.italic]}>
+                  {socialAppHost ? '→' : ''}
+                  {socialAppHost}
+                </Text>
+              </SettingsList.ItemText>
+            </SettingsList.PressableItem>
+          )
+        }
+      })}
       <SettingsList.Item>
-        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="grey" />
+        <SettingsList.ItemIcon
+          icon={FlagIcon}
+          size="sm"
+          color={configColors.custom}
+        />
         <SettingsList.Container>
           <TextField.Root>
             <TextField.Input

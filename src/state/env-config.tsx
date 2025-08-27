@@ -416,6 +416,30 @@ export const hasRequiredConfig = function (candidate: EnvConfig): boolean {
   )
 }
 
+export const builtinConfigNames = ['production', 'staging', 'development']
+export const configLabels: Record<string, string> = {
+  production: '🏠 prod',
+  staging: '🧪 staging',
+  development: '🏗️ dev',
+  custom: '🛠️ cust',
+}
+export const configTitles: Record<string, string> = {
+  bluesky: 'Bluesky',
+  bluesky_staging: 'Bluesky Staging',
+  production: 'Production',
+  staging: 'Staging',
+  development: 'Development',
+  custom: 'Custom',
+}
+export const configColors: Record<string, string> = {
+  bluesky: 'blue',
+  bluesky_staging: 'skyblue',
+  production: 'green',
+  staging: 'olive',
+  development: 'orange',
+  custom: 'gray',
+}
+
 type Context = {
   envConfig: EnvConfig
   setEnvConfig: React.Dispatch<React.SetStateAction<EnvConfig>>
