@@ -3,6 +3,8 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {
+  builtinConfigNames,
+  configLabels,
   DOMAIN_ENVCONFIGS,
   getStoredEnvConfig,
   hasRequiredConfig,
@@ -14,14 +16,6 @@ import * as Select from '#/components/Select'
 import {type ItemTextProps} from '#/components/Select/types'
 import {Text} from '#/components/Typography'
 import {Button} from './Button'
-
-export const builtinConfigNames = ['production', 'staging', 'development']
-export const configLabels: Record<string, string> = {
-  production: '🏠 prod',
-  staging: '🧪 staging',
-  development: '🏗️ dev',
-  custom: '🛠️ cust',
-}
 
 export function DisabledItemText({children}: ItemTextProps) {
   return <Text style={[{color: '#808080'}]}>{children}</Text>
