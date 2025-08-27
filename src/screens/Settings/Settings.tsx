@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {DevSettings} from 'react-native'
 import {LayoutAnimation, Pressable, View} from 'react-native'
 import {Linking} from 'react-native'
 import {useReducedMotion} from 'react-native-reanimated'
@@ -10,6 +11,7 @@ import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {IS_INTERNAL} from '#/lib/app-info'
+import {timeout} from '#/lib/async/timeout'
 import {HELP_DESK_URL} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
 import {
@@ -18,6 +20,7 @@ import {
 } from '#/lib/routes/types'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
+import {logger} from '#/logger'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
 import {
   beginResolveEnvConfig,
@@ -499,12 +502,39 @@ function ServerDomains() {
   const [showCurrentEnv, setShowCurrentEnv] = useState(false)
   const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
   const {envConfig, setEnvConfig} = useEnvConfig()
+
+  const canAutoReload = Boolean(DevSettings) && Boolean(DevSettings.reload)
+  const canWebReload = Boolean(window.location)
+  const reloadMessage =
+    canAutoReload || canWebReload
+      ? _(msg`Going to reload app...`)
+      : _(msg`Please reload app manually...`)
+
+  const doDelayedReload = useCallback(async () => {
+    const reloadDelay = 3
+    await clearStorage()
+    if (canAutoReload) {
+      logger.info(`Reloading app after config change in ${reloadDelay}...`)
+      await timeout(reloadDelay * 1000)
+      DevSettings?.reload('Changed environment config')
+    } else if (canWebReload) {
+      logger.info(
+        `Reloading web app after environment config change in ${reloadDelay}...`,
+      )
+      await timeout(reloadDelay * 1000)
+      window.location.reload()
+    } else {
+      logger.warn(
+        'Could not reload app after environment config change ; user must reload otherwise confusion...',
+      )
+    }
+  }, [canAutoReload, canWebReload])
   const doResetStoredEnvConfig = async () => {
     clearStoredEnvConfig()
     beginResolveEnvConfig()
     setEnvConfig(getStoredEnvConfig())
     Toast.show(_(msg`Reset environment to default`))
-    await clearStorage()
+    await doDelayedReload()
   }
   const doSetEnvConfig = async (envName: string) => {
     const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
@@ -512,13 +542,13 @@ function ServerDomains() {
       console.log('Found env config', newEnvConfig)
       setStoredEnvConfig(newEnvConfig)
       setEnvConfig(getStoredEnvConfig())
-      Toast.show(_(msg`Switched environment to ${envName}. Please reload app.`))
+      Toast.show(_(msg`Switched environment to ${envName}. ${reloadMessage}`))
+      await doDelayedReload()
     } else {
       Toast.show(
         _(msg`Could not find valid environment config named ${envName}`),
       )
     }
-    await clearStorage()
   }
   const doFetchEnvConfig = async (serverName: string) => {
     const customUrl = serverName.includes('://')
@@ -530,13 +560,13 @@ function ServerDomains() {
       setEnvConfig(getStoredEnvConfig())
       Toast.show(
         _(
-          msg`Switched environment to custom loaded from ${serverName}. Please reload app.`,
+          msg`Switched environment to custom loaded from ${serverName}. ${reloadMessage}`,
         ),
       )
+      await doDelayedReload()
     } else {
       Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
     }
-    await clearStorage()
   }
 
   const renderCurrentEnv = function () {
