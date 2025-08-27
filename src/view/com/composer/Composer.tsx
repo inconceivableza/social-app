@@ -1522,7 +1522,7 @@ async function whenAppViewReady(
     1e3, // 1s delay between tries
     fn,
     () =>
-      agent.app.bsky.feed.getPostThread({
+      agent.app.foodios.feed.getPostThread({
         uri,
         depth: 0,
       }),
