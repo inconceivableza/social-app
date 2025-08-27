@@ -416,12 +416,20 @@ export const hasRequiredConfig = function (candidate: EnvConfig): boolean {
   )
 }
 
-export const builtinConfigNames = ['production', 'staging', 'development']
+// don't include bluesky_staging as it's not actually reachable
+export const builtinConfigNames = [
+  'bluesky',
+  'production',
+  'staging',
+  'development',
+]
 export const configLabels: Record<string, string> = {
+  bluesky: '🦋 bsky',
+  bluesky_staging: '🐛 bsky staging',
   production: '🏠 prod',
   staging: '🧪 staging',
   development: '🏗️ dev',
-  custom: '🛠️ cust',
+  custom: '🛠️ custom',
 }
 export const configTitles: Record<string, string> = {
   bluesky: 'Bluesky',

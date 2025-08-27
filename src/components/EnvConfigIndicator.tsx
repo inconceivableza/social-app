@@ -98,17 +98,15 @@ export function EnvConfigIndicator() {
         )}
       </Select.Trigger>
       <Select.Content
-        renderItem={({label, value, enabled}) =>
-          enabled ? (
-            <Select.Item value={value} label={label}>
+        renderItem={({label, value, enabled}) => (
+          <Select.Item value={value} label={label}>
+            {enabled ? (
               <Select.ItemText>{label}</Select.ItemText>
-            </Select.Item>
-          ) : (
-            <Select.Item value={value} label={label}>
+            ) : (
               <DisabledItemText>{label}</DisabledItemText>
-            </Select.Item>
-          )
-        }
+            )}
+          </Select.Item>
+        )}
         items={envConfigItems}
       />
     </Select.Root>
