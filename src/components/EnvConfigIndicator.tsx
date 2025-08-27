@@ -1,21 +1,24 @@
 import React from 'react'
-import {msg} from '@lingui/macro'
+import {TextInput, View} from 'react-native'
+import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {
   builtinConfigNames,
   configLabels,
   DOMAIN_ENVCONFIGS,
+  fetchEnvConfig,
   getStoredEnvConfig,
   hasRequiredConfig,
   setStoredEnvConfig,
   useEnvConfig,
 } from '#/state/env-config'
+import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, platform, useTheme} from '#/alf'
 import * as Select from '#/components/Select'
 import {type ItemTextProps} from '#/components/Select/types'
 import {Text} from '#/components/Typography'
-import {Button} from './Button'
+import {Button, ButtonText} from './Button'
 
 export function DisabledItemText({children}: ItemTextProps) {
   return <Text style={[{color: '#808080'}]}>{children}</Text>
@@ -36,79 +39,175 @@ export function EnvConfigIndicator() {
   }
   const [currentEnvName, setCurrentEnvName] =
     React.useState(getCurrentEnvName())
+  const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
+  const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
+  const [showCustomDomain, setShowCustomDomain] = React.useState(false)
 
   const builtinConfigItems = builtinConfigNames.map(l => ({
     label: `${configLabels[l] || l}→${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
     value: l,
     enabled: hasRequiredConfig(DOMAIN_ENVCONFIGS[l]),
+    input: false,
   }))
   const isCustom = !builtinConfigNames.includes(currentEnvName)
   const c = currentEnvName || 'custom'
+  const customInputIndicator = {
+    label: '⌨️ manual input',
+    value: '$input',
+    enabled: true,
+    input: true,
+  }
   const customConfigItems = isCustom
     ? [
         {
           label: `${configLabels[c] || '🛠️ ' + c}→${envConfig.SOCIAL_APP_HOST}`,
           value: c,
           enabled: hasRequiredConfig(envConfig),
+          input: false,
         },
+        customInputIndicator,
       ]
-    : []
+    : [customInputIndicator]
   const envConfigItems = builtinConfigItems.concat(customConfigItems)
 
   const onChangeEnvConfig = React.useCallback(
     (envName: string) => {
+      const isInput = envName === '$input'
+      setShowCustomDomain(isInput)
+      if (isInput) return
       if (!envName) return
       const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
       if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName(envName)
+        Toast.show(
+          _(msg`Switched environment to ${envName}. Please reload app.`),
+        )
+      } else {
+        Toast.show(
+          _(msg`Could not find valid environment config named ${envName}`),
+        )
       }
     },
-    [setEnvConfig],
+    [setEnvConfig, _],
+  )
+  const onUseManualConfig = React.useCallback(
+    async (serverName: string) => {
+      const customUrl = serverName.includes('://')
+        ? serverName
+        : `https://${serverName}`
+      const newEnvConfig = await fetchEnvConfig(customUrl)
+      if (newEnvConfig !== null) {
+        setStoredEnvConfig(newEnvConfig)
+        setEnvConfig(getStoredEnvConfig())
+        setCurrentEnvName('custom')
+        Toast.show(
+          _(
+            msg`Switched environment to custom loaded from ${serverName}. Please reload app.`,
+          ),
+        )
+        setShowCustomDomain(false)
+      } else {
+        Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
+      }
+    },
+    [setEnvConfig, _],
   )
 
   return (
-    <Select.Root value={currentEnvName} onValueChange={onChangeEnvConfig}>
-      <Select.Trigger label={_(msg`Change server domain`)}>
-        {({props}) => (
-          <Button
-            {...props}
-            label={props.accessibilityLabel}
-            size={platform({
-              web: 'tiny',
-              native: 'small',
-            })}
-            variant="ghost"
-            color="secondary"
+    <View>
+      {showCustomDomain ? (
+        <View style={[a.mt_md, a.flex_row, a.align_baseline]}>
+          <View style={[a.flex_col, a.px_xs, a.align_baseline]}>
+            <Text emoji style={[a.align_baseline]}>
+              ⌨️
+            </Text>
+          </View>
+          <View
             style={[
-              a.pr_xs,
-              a.pl_sm,
-              platform({
-                web: [{alignSelf: 'flex-start'}, a.gap_sm],
-                native: [a.gap_xs],
-              }),
+              a.inset_0,
+              t.atoms.bg_contrast_25,
+              a.flex_col,
+              a.px_xs,
+              {width: '60%'},
             ]}>
-            <Select.ValueText
-              placeholder={_(msg`Select a server domain`)}
-              style={[t.atoms.text_contrast_medium]}
+            <TextInput
+              accessibilityLabel="Text input field"
+              onChangeText={text => {
+                setCustomDomain(text)
+              }}
+              defaultValue={customDomain}
+              accessibilityHint={_(msg`Custom server domain`)}
             />
-            <Select.Icon style={[t.atoms.text_contrast_medium]} />
-          </Button>
-        )}
-      </Select.Trigger>
-      <Select.Content
-        renderItem={({label, value, enabled}) => (
-          <Select.Item value={value} label={label}>
-            {enabled ? (
-              <Select.ItemText>{label}</Select.ItemText>
-            ) : (
-              <DisabledItemText>{label}</DisabledItemText>
+          </View>
+          <View style={[a.flex_col, a.px_xs]}>
+            <Button
+              label={_(msg`Use`)}
+              accessibilityHint={_(
+                msg`Use custom domain to retrieve server domains`,
+              )}
+              onPress={() => {
+                onUseManualConfig(customDomain)
+              }}>
+              <ButtonText style={[{color: 'black'}]}>
+                <Trans>Use</Trans>
+              </ButtonText>
+            </Button>
+          </View>
+          <View style={[a.flex_col, a.px_xs]}>
+            <Button
+              label="↩️"
+              onPress={() => {
+                setShowCustomDomain(false)
+              }}>
+              <ButtonText style={[{color: 'black'}]}>↩️</ButtonText>
+            </Button>
+          </View>
+        </View>
+      ) : (
+        <Select.Root value={currentEnvName} onValueChange={onChangeEnvConfig}>
+          <Select.Trigger label={_(msg`Change server domain`)}>
+            {({props}) => (
+              <Button
+                {...props}
+                label={props.accessibilityLabel}
+                size={platform({
+                  web: 'tiny',
+                  native: 'small',
+                })}
+                variant="ghost"
+                color="secondary"
+                style={[
+                  a.pr_xs,
+                  a.pl_sm,
+                  platform({
+                    web: [{alignSelf: 'flex-start'}, a.gap_sm],
+                    native: [a.gap_xs],
+                  }),
+                ]}>
+                <Select.ValueText
+                  placeholder={_(msg`Select a server domain`)}
+                  style={[t.atoms.text_contrast_medium]}
+                />
+                <Select.Icon style={[t.atoms.text_contrast_medium]} />
+              </Button>
             )}
-          </Select.Item>
-        )}
-        items={envConfigItems}
-      />
-    </Select.Root>
+          </Select.Trigger>
+          <Select.Content
+            renderItem={({label, value, enabled}) => (
+              <Select.Item value={value} label={label}>
+                {enabled ? (
+                  <Select.ItemText>{label}</Select.ItemText>
+                ) : (
+                  <DisabledItemText>{label}</DisabledItemText>
+                )}
+              </Select.Item>
+            )}
+            items={envConfigItems}
+          />
+        </Select.Root>
+      )}
+    </View>
   )
 }
