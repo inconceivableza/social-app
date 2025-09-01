@@ -1,9 +1,10 @@
 import React from 'react'
-import {DevSettings, TextInput, View} from 'react-native'
+import {TextInput, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {timeout} from '#/lib/async/timeout'
+import {canReload, reload} from '#/lib/reload'
 import {logger} from '#/logger'
 import {
   builtinConfigNames,
@@ -46,12 +47,9 @@ export function EnvConfigIndicator() {
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
-  const canAutoReload = Boolean(DevSettings) && Boolean(DevSettings.reload)
-  const canWebReload = Boolean(window.location)
-  const reloadMessage =
-    canAutoReload || canWebReload
-      ? _(msg`Going to reload app...`)
-      : _(msg`Please reload app manually...`)
+  const reloadMessage = canReload()
+    ? _(msg`Going to reload app...`)
+    : _(msg`Please reload app manually...`)
 
   const builtinConfigItems = builtinConfigNames.map(l => ({
     label: `${configLabels[l] || l}→${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
@@ -87,22 +85,18 @@ export function EnvConfigIndicator() {
   const doDelayedReload = React.useCallback(async () => {
     const reloadDelay = 3
     await clearStorage()
-    if (canAutoReload) {
-      logger.info(`Reloading app after config change in ${reloadDelay}...`)
-      await timeout(reloadDelay * 1000)
-      DevSettings?.reload('Changed environment config')
-    } else if (canWebReload) {
+    if (canReload()) {
       logger.info(
-        `Reloading web app after environment config change in ${reloadDelay}...`,
+        `Reloading app after environment config change in ${reloadDelay}...`,
       )
       await timeout(reloadDelay * 1000)
-      window.location.reload()
+      reload('Changed environment config')
     } else {
       logger.warn(
         'Could not reload app after environment config change ; user must reload otherwise confusion...',
       )
     }
-  }, [canAutoReload, canWebReload])
+  }, [])
 
   const onChangeEnvConfig = React.useCallback(
     async (envName: string) => {
