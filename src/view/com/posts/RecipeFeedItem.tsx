@@ -1,5 +1,5 @@
 import { useFeedFeedbackContext } from "#/state/feed-feedback";
-import { AppFoodiosFeedDefs } from "@atproto/api";
+import { AppFoodiosFeedDefs, AtUri } from "@atproto/api";
 import { View } from "react-native";
 import { atoms as a, useBreakpoints } from '#/alf'
 import { useOpenComposer } from "#/lib/hooks/useOpenComposer";
@@ -10,13 +10,16 @@ import { useLingui } from "@lingui/react";
 import { Bubble_Stroke2_Corner2_Rounded as Bubble } from '#/components/icons/Bubble'
 import { formatCount } from "../util/numeric/format";
 import { AnimatedLikeIcon } from "#/lib/custom-animations/LikeIcon";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CountWheel } from "#/lib/custom-animations/CountWheel";
 import { useHaptics } from "#/lib/haptics";
 import { usePostLikeMutationQueue, usePostRepostMutationQueue } from "#/state/queries/post";
 import { ProgressGuideAction, useProgressGuideControls } from "#/state/shell/progress-guide";
 import { POST_TOMBSTONE, usePostShadow } from "#/state/cache/post-shadow";
 import { RepostButton } from "#/components/PostControls/RepostButton";
+import { makeProfileLink } from "#/lib/routes/links";
+import { Link } from "../util/Link";
+import { SubtleWebHover } from "#/components/SubtleWebHover";
 
 
 interface RecipeFeedItemProps {
@@ -33,7 +36,10 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
     const requireAuth = useRequireAuth()
     const { _, i18n } = useLingui()
     const shadowedPost = usePostShadow(post) // TODO: check if tombstone
-
+    const href = useMemo(() => {
+        const urip = new AtUri(post.uri)
+        return makeProfileLink(post.author, 'recipe', urip.rkey)
+    }, [post.uri, post.author])
     const onPressReply = () => {
         sendInteraction({
             item: post.uri,
@@ -161,11 +167,23 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
             onPost: onReply,
         })
     }
+    const [hover, setHover] = useState(false)
     // TODO: repost immediate feedback
     return <div>
+        <Link href={href} onPointerEnter={() => {
+            setHover(true)
+        }}
+            onPointerLeave={() => {
+                setHover(false)
+            }}>
+            <SubtleWebHover hover={hover} />
+
+            <View>
         <div>{post.author.handle}</div>
         <div>{post.title}</div>
         <div>{post.text}</div>
+            </View>
+        </Link>
         <View
             style={[
                 a.flex_row,
@@ -257,4 +275,5 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
             </View>
         </View>
     </div>
+
 }
