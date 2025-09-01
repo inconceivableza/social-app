@@ -22,7 +22,7 @@ export const router = new Router<AllNavigatableRoutes>({
   ModerationBlockedAccounts: '/moderation/blocked-accounts',
   ModerationInteractionSettings: '/moderation/interaction-settings',
   ModerationVerificationSettings: '/moderation/verification-settings',
-  // profiles, threads, lists
+  // profiles, threads, lists, recipes
   Profile: ['/profile/:name', '/profile/:name/rss'],
   ProfileFollowers: '/profile/:name/followers',
   ProfileFollows: '/profile/:name/follows',
@@ -33,6 +33,7 @@ export const router = new Router<AllNavigatableRoutes>({
   PostLikedBy: '/profile/:name/post/:rkey/liked-by',
   PostRepostedBy: '/profile/:name/post/:rkey/reposted-by',
   PostQuotes: '/profile/:name/post/:rkey/quotes',
+  RecipeThread: '/profile/:name/recipe/:rkey',
   ProfileFeed: '/profile/:name/feed/:rkey',
   ProfileFeedLikedBy: '/profile/:name/feed/:rkey/liked-by',
   ProfileLabelerLikedBy: '/profile/:name/labeler/liked-by',
