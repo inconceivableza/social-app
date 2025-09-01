@@ -225,7 +225,7 @@ async function fetchSubjects(
   const packUriChunks = chunk(Array.from(packUris), 25)
   const postsChunks = await Promise.all(
     postUriChunks.map(uris =>
-      agent.app.bsky.feed.getPosts({uris}).then(res => res.data.posts),
+      agent.app.foodios.feed.getPosts({ uris }).then(res => res.data.posts),
     ),
   )
   const packsChunks = await Promise.all(
