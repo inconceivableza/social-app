@@ -247,6 +247,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,

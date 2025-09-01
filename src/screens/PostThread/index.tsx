@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useRef, useState} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {useWindowDimensions, View} from 'react-native'
 import Animated, {useAnimatedStyle} from 'react-native-reanimated'
 import {Trans} from '@lingui/macro'
@@ -84,6 +84,7 @@ export function PostThread({uri}: {uri: string}) {
     }
     const post = anchor.value.post
     openComposer({
+      type: 'post',
       replyTo: {
         uri: anchor.uri,
         cid: post.cid,

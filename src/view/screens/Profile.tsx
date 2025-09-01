@@ -323,7 +323,10 @@ function ProfileScreenLoaded({
       isInvalidHandle(profile.handle)
         ? undefined
         : profile.handle
-    openComposer({mention})
+    openComposer({
+      type: 'post',
+      mention
+    })
   }
 
   const onPageSelected = (i: number) => {

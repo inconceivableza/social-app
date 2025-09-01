@@ -148,6 +148,7 @@ export function useComposeIntent() {
       if (videoUri) {
         const [uri, width, height] = videoUri.split('|')
         openComposer({
+          type: 'post',
           text: text ?? undefined,
           videoUri: {uri, width: Number(width), height: Number(height)},
         })
@@ -173,6 +174,7 @@ export function useComposeIntent() {
 
       setTimeout(() => {
         openComposer({
+          type: 'post',
           text: text ?? undefined,
           imageUris: isNative ? imageUris : undefined,
         })

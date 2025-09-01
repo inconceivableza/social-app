@@ -291,6 +291,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,

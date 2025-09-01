@@ -747,6 +747,7 @@ function Overlay({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
