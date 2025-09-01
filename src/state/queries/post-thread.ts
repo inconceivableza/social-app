@@ -6,9 +6,13 @@ import {
   AppBskyFeedPost,
   AtUri,
   moderatePost,
+  moderateRecipe,
   type ModerationDecision,
   type ModerationOpts,
   AppFoodiosFeedDefs,
+  AppFoodiosFeedGetPostThread,
+  AppFoodiosFeedRecipePost,
+  AppFoodiosFeedRecipePostRecord,
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -42,7 +46,7 @@ import { AnyPostView } from '../cache/types'
 const REPLY_TREE_DEPTH = 10
 export const RQKEY_ROOT = 'post-thread'
 export const RQKEY = (uri: string) => [RQKEY_ROOT, uri]
-type ThreadViewNode = AppBskyFeedGetPostThread.OutputSchema['thread']
+type ThreadViewNode = AppFoodiosFeedGetPostThread.OutputSchema['thread']
 
 export interface ThreadCtx {
   depth: number
@@ -70,7 +74,8 @@ export interface ThreadRecipe {
   type: 'recipe'
   _reactKey: string
   uri: string
-  post: AppFoodiosFeedDefs.RecipePostView
+  post: AppBskyFeedDefs.PostView
+  record: AppFoodiosFeedRecipePost.Record
   replies: ThreadNode[] | undefined
   hasOPLike: boolean | undefined
   ctx: ThreadCtx
@@ -110,6 +115,7 @@ export type PostThreadQueryData = {
 }
 
 export function usePostThreadQuery(uri: string | undefined) {
+  //
   const queryClient = useQueryClient()
   const agent = useAgent()
   return useQuery<PostThreadQueryData, Error>({
@@ -159,6 +165,13 @@ export function fillThreadModerationCache(
         fillThreadModerationCache(cache, reply, moderationOpts)
       }
     }
+  } else if (node.type === "recipe") {
+    cache.set(node, moderateRecipe(node.post, moderationOpts))
+    if (node.replies) {
+      for (const reply of node.replies) {
+        fillThreadModerationCache(cache, reply, moderationOpts)
+      }
+    }
   }
 }
 
@@ -174,6 +187,7 @@ export function sortThread(
   randomCache: Map<string, number>,
 ): ThreadNode {
   if (node.type !== 'post') {
+    // TODO: handle recipe
     return node
   }
   if (node.replies) {
@@ -349,10 +363,10 @@ function responseToThreadNodes(
   direction: 'up' | 'down' | 'start' = 'start',
 ): ThreadNode {
   if (
-    AppBskyFeedDefs.isThreadViewPost(node) &&
-    bsky.dangerousIsType<AppBskyFeedPost.Record>(
-      node.post.record,
-      AppBskyFeedPost.isRecord,
+    AppFoodiosFeedDefs.isThreadViewPost(node) &&
+    bsky.dangerousIsType<AppBskyFeedDefs.PostView>(
+      node.post,
+      AppBskyFeedDefs.isPostView,
     )
   ) {
     const post = node.post
@@ -362,32 +376,69 @@ function responseToThreadNodes(
     post.replyCount ??= 0
     post.likeCount ??= 0
     post.repostCount ??= 0
-    return {
-      type: 'post',
-      _reactKey: node.post.uri,
-      uri: node.post.uri,
-      post: post,
-      record: node.post.record,
-      parent:
-        node.parent && direction !== 'down'
-          ? responseToThreadNodes(node.parent, depth - 1, 'up')
-          : undefined,
-      replies:
-        node.replies?.length && direction !== 'up'
-          ? node.replies
+    const record = post.record
+    if (bsky.dangerousIsType<AppBskyFeedPost.Record>(
+      record,
+      AppBskyFeedPost.isRecord,
+    )) {
+      return {
+        type: 'post',
+        _reactKey: node.post.uri,
+        uri: node.post.uri,
+        post: post,
+        record: record,
+        parent:
+          node.parent && direction !== 'down'
+            ? responseToThreadNodes(node.parent, depth - 1, 'up')
+            : undefined,
+        replies:
+          node.replies?.length && direction !== 'up'
+            ? node.replies
               .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
               // do not show blocked posts in replies
               .filter(node => node.type !== 'blocked')
-          : undefined,
-      hasOPLike: Boolean(node?.threadContext?.rootAuthorLike),
-      ctx: {
-        depth,
-        isHighlightedPost: depth === 0,
-        hasMore:
-          direction === 'down' && !node.replies?.length && !!post.replyCount,
-        isSelfThread: false, // populated `annotateSelfThread`
-        hasMoreSelfThread: false, // populated in `annotateSelfThread`
-      },
+            : undefined,
+        hasOPLike: Boolean(node?.threadContext?.rootAuthorLike),
+        ctx: {
+          depth,
+          isHighlightedPost: depth === 0,
+          hasMore:
+            direction === 'down' && !node.replies?.length && !!post.replyCount,
+          isSelfThread: false, // populated `annotateSelfThread`
+          hasMoreSelfThread: false, // populated in `annotateSelfThread`
+        },
+      }
+    } else if (
+      bsky.dangerousIsType<AppFoodiosFeedRecipePost.Record>(
+        record,
+        AppFoodiosFeedRecipePost.isRecord,
+      )
+    ) {
+      return {
+        type: 'recipe',
+        _reactKey: node.post.uri,
+        uri: node.post.uri,
+        post: post,
+        record: record,
+        replies:
+          node.replies?.length && direction !== 'up'
+            ? node.replies
+              .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
+              // do not show blocked posts in replies
+              .filter(node => node.type !== 'blocked')
+            : undefined,
+        hasOPLike: Boolean(node?.threadContext?.rootAuthorLike),
+        ctx: {
+          depth,
+          isHighlightedPost: depth === 0,
+          hasMore:
+            direction === 'down' && !node.replies?.length && !!post.replyCount,
+          isSelfThread: false, // populated `annotateSelfThread`
+          hasMoreSelfThread: false, // populated in `annotateSelfThread`
+        },
+      }
+    } else {
+      return { type: 'unknown', uri: '' }
     }
   } else if (AppBskyFeedDefs.isBlockedPost(node)) {
     return {type: 'blocked', _reactKey: node.uri, uri: node.uri, ctx: {depth}}
@@ -602,6 +653,7 @@ function threadNodeToPlaceholderThread(
       _reactKey: node._reactKey,
       uri: node.uri,
       post: node.post,
+      record: node.record,
       replies: undefined,
       hasOPLike: undefined,
       ctx: {
@@ -636,23 +688,7 @@ function postViewToPlaceholderThread(
         isChildLoading: true, // assume yes (show the spinner) just in case
       },
     }
-  } else if (AppFoodiosFeedDefs.isRecipePostView(post)) {
-    return {
-      type: 'recipe',
-      _reactKey: post.uri,
-      uri: post.uri,
-      post: post,
-      replies: undefined,
-      hasOPLike: undefined,
-      ctx: {
-        depth: 0,
-        isHighlightedPost: true,
-        hasMore: false,
-        isParentLoading: false,// TODO: fix
-        isChildLoading: true, // assume yes (show the spinner) just in case
-      },
-    }
-  }
+  } 
   throw new Error("unexpected post type")
 
 }

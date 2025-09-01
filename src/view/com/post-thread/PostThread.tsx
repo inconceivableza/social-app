@@ -30,6 +30,7 @@ import {
   type ThreadNotFound,
   type ThreadPost,
   usePostThreadQuery,
+  ThreadRecipe,
 } from '#/state/queries/post-thread'
 import {useSetThreadViewPreferencesMutation} from '#/state/queries/preferences'
 import {usePreferencesQuery} from '#/state/queries/preferences'
@@ -49,6 +50,7 @@ import {PostThreadComposePrompt} from './PostThreadComposePrompt'
 import {PostThreadItem} from './PostThreadItem'
 import {PostThreadLoadMore} from './PostThreadLoadMore'
 import {PostThreadShowHiddenReplies} from './PostThreadShowHiddenReplies'
+import { isRecipePostView } from '@atproto/api/client/types/app/foodios/feed/defs'
 
 // FlatList maintainVisibleContentPosition breaks if too many items
 // are prepended. This seems to be an optimal number based on *shrug*.
@@ -116,7 +118,6 @@ export function PostThread({uri}: {uri: string}) {
     data: {thread, threadgate} = {},
     dataUpdatedAt: fetchedAt,
   } = usePostThreadQuery(uri)
-
   // The original source of truth for these are the server settings.
   const serverPrefs = preferences?.threadViewPrefs
   const serverPrioritizeFollowedUsers =
@@ -158,7 +159,7 @@ export function PostThread({uri}: {uri: string}) {
     [treeViewEnabled, thread],
   )
 
-  const rootPost = thread?.type === 'post' ? thread.post : undefined
+  const rootPost = thread?.type === 'post' || thread?.type === "recipe" ? thread.post : undefined
   const rootPostRecord = thread?.type === 'post' ? thread.record : undefined
   const threadgateRecord = threadgate?.record as
     | AppBskyFeedThreadgate.Record
@@ -194,7 +195,7 @@ export function PostThread({uri}: {uri: string}) {
     rootPost && !isNoPwi
       ? `${sanitizeDisplayName(
           rootPost.author.displayName || `@${rootPost.author.handle}`,
-        )}: "${rootPostRecord!.text}"`
+      )}: "${rootPostRecord ? rootPostRecord!.text : isRecipePostView(rootPost) ? rootPost.title : undefined}"`
       : '',
   )
 
@@ -293,7 +294,7 @@ export function PostThread({uri}: {uri: string}) {
 
     const {parents, highlightedPost, replies} = skeleton
     let arr: RowItem[] = []
-    if (highlightedPost.type === 'post') {
+    if (highlightedPost.type === 'post' || highlightedPost.type === "recipe") {
       // We want to wait for parents to load before rendering.
       // If you add something here, you'll need to update both
       // maintainVisibleContentPosition and onContentSizeChange
@@ -328,6 +329,8 @@ export function PostThread({uri}: {uri: string}) {
     return arr
   }, [skeleton, deferParents, maxParents, maxReplies])
 
+  console.log(skeleton, posts)
+
   // This is only used on the web to keep the post in view when its parents load.
   // On native, we rely on `maintainVisibleContentPosition` instead.
   const didAdjustScrollWeb = useRef<boolean>(false)
@@ -337,7 +340,7 @@ export function PostThread({uri}: {uri: string}) {
       return
     }
     // wait for loading to finish
-    if (thread?.type === 'post' && !!thread.parent) {
+    if ((thread?.type === 'post' || thread?.type === "recipe") && !!thread.parent) {
       // Measure synchronously to avoid a layout jump.
       const postNode = highlightedPostRef.current
       const headerNode = headerRef.current
@@ -413,6 +416,7 @@ export function PostThread({uri}: {uri: string}) {
       })
     }
     openComposer({
+      type: 'post',
       replyTo: {
         uri: thread.post.uri,
         cid: thread.post.cid,
@@ -489,11 +493,11 @@ export function PostThread({uri}: {uri: string}) {
           </Text>
         </View>
       )
-    } else if (isThreadPost(item)) {
-      const prev = isThreadPost(posts[index - 1])
+    } else if (isThreadPost(item) || isThreadRecipe(item)) {
+      const prev = isThreadPost(posts[index - 1]) || isThreadRecipe(posts[index - 1])
         ? (posts[index - 1] as ThreadPost)
         : undefined
-      const next = isThreadPost(posts[index + 1])
+      const next = isThreadPost(posts[index + 1]) || isThreadRecipe(posts[index - 1])
         ? (posts[index + 1] as ThreadPost)
         : undefined
       const showChildReplyLine = (next?.ctx.depth || 0) > item.ctx.depth
@@ -511,8 +515,7 @@ export function PostThread({uri}: {uri: string}) {
           ref={item.ctx.isHighlightedPost ? highlightedPostRef : undefined}
           onLayout={deferParents ? () => setDeferParents(false) : undefined}>
           <PostThreadItem
-            post={item.post}
-            record={item.record}
+            threadItem={item}
             threadgateRecord={threadgateRecord ?? undefined}
             moderation={threadModerationCache.get(item)}
             treeView={treeView}
@@ -752,6 +755,10 @@ function isThreadPost(v: unknown): v is ThreadPost {
   return !!v && typeof v === 'object' && 'type' in v && v.type === 'post'
 }
 
+function isThreadRecipe(v: unknown): v is ThreadRecipe {
+  return !!v && typeof v === 'object' && 'type' in v && v.type === 'recipe'
+}
+
 function isThreadNotFound(v: unknown): v is ThreadNotFound {
   return !!v && typeof v === 'object' && 'type' in v && v.type === 'not-found'
 }
@@ -819,7 +826,7 @@ function* flattenThreadReplies(
   showHiddenReplies: boolean,
   threadgateRecordHiddenReplies: Set<string>,
 ): Generator<YieldedItem, HiddenReplyType> {
-  if (node.type === 'post') {
+  if (node.type === 'post' || node.type === "recipe") {
     // dont show pwi-opted-out posts to logged out users
     if (!currentDid && hasPwiOptOut(node)) {
       return HiddenReplyType.None
@@ -888,7 +895,7 @@ function* flattenThreadReplies(
   return HiddenReplyType.None
 }
 
-function hasPwiOptOut(node: ThreadPost) {
+function hasPwiOptOut(node: ThreadPost | ThreadRecipe) {
   return !!node.post.author.labels?.find(l => l.val === '!no-unauthenticated')
 }
 
@@ -896,7 +903,7 @@ function hasBranchingReplies(node?: ThreadNode) {
   if (!node) {
     return false
   }
-  if (node.type !== 'post') {
+  if (node.type !== 'post' && node.type !== "recipe") {
     return false
   }
   if (!node.replies) {

@@ -37,7 +37,7 @@ import {
 import {useProfileShadow} from '#/state/cache/profile-shadow'
 import {FeedFeedbackProvider, useFeedFeedback} from '#/state/feed-feedback'
 import {useLanguagePrefs} from '#/state/preferences'
-import {type ThreadPost} from '#/state/queries/post-thread'
+import { ThreadRecipe, type ThreadPost } from '#/state/queries/post-thread'
 import {useSession} from '#/state/session'
 import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
@@ -73,8 +73,7 @@ import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
 
 export function PostThreadItem({
-  post,
-  record,
+  threadItem,
   moderation,
   treeView,
   depth,
@@ -92,8 +91,7 @@ export function PostThreadItem({
   threadgateRecord,
   anchorPostSource,
 }: {
-  post: AppBskyFeedDefs.PostView
-  record: AppBskyFeedPost.Record
+    threadItem: ThreadPost | ThreadRecipe
   moderation: ModerationDecision | undefined
   treeView: boolean
   depth: number
@@ -111,19 +109,41 @@ export function PostThreadItem({
   threadgateRecord?: AppBskyFeedThreadgate.Record
   anchorPostSource?: PostSource
 }) {
-  const postShadowed = usePostShadow(post)
+  const postShadowed = usePostShadow(threadItem.post)
   const richText = useMemo(
-    () =>
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
+    () => 
+      new RichTextAPI(threadItem.type === "recipe" ? {
+        text: threadItem.record.title + "\n" + threadItem.record.title
+      } : {
+        text: threadItem.record.text,
+        facets: threadItem.record.facets,
       }),
-    [record],
+    [threadItem],
   )
   if (postShadowed === POST_TOMBSTONE) {
     return <PostThreadItemDeleted hideTopBorder={hideTopBorder} />
   }
-  if (richText && moderation) {
+
+  if (threadItem.type === "recipe") {
+    return <View>
+      <div>
+        {threadItem.record.title}
+      </div>
+      <div>
+        {threadItem.record.text}
+      </div>
+      <div>
+        <strong>Ingredients</strong>
+        {threadItem.record.ingredients.map((ingredient, i) => {
+          return <div>
+            {ingredient.name}
+          </div>
+        })}
+      </div>
+
+    </View>
+  }
+  if (threadItem.type === "post" && richText && moderation) { // TODO: &&moderation) {
     return (
       <PostThreadItemLoaded
         // Safeguard from clobbering per-post state below:
@@ -131,7 +151,7 @@ export function PostThreadItem({
         post={postShadowed}
         prevPost={prevPost}
         nextPost={nextPost}
-        record={record}
+        record={threadItem.record}
         richText={richText}
         moderation={moderation}
         treeView={treeView}
@@ -296,6 +316,7 @@ let PostThreadItemLoaded = ({
       })
     }
     openComposer({
+      type: "post",
       replyTo: {
         uri: post.uri,
         cid: post.cid,
@@ -346,7 +367,7 @@ let PostThreadItemLoaded = ({
       }
     }
   }, [reason])
-
+  console.log(richText)
   if (!record) {
     return <ErrorMessage message={_(msg`Invalid or unsupported post record`)} />
   }
