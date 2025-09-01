@@ -27,6 +27,8 @@ RUN mkdir /app/data && chown node /app/data
 
 VOLUME /app/data
 EXPOSE 3000
+ARG LINK_VERSION
+ENV LINK_VERSION=${LINK_VERSION}
 ENV LINK_PORT=3000
 ENV NODE_ENV=production
 # potential perf issues w/ io_uring on this version of node
