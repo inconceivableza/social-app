@@ -47,7 +47,7 @@ export function EnvConfigIndicator() {
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
-  const reloadMessage = canReload()
+  const reloadMessage = canReload
     ? _(msg`Going to reload app...`)
     : _(msg`Please reload app manually...`)
 
@@ -85,7 +85,7 @@ export function EnvConfigIndicator() {
   const doDelayedReload = React.useCallback(async () => {
     const reloadDelay = 3
     await clearStorage()
-    if (canReload()) {
+    if (canReload) {
       logger.info(
         `Reloading app after environment config change in ${reloadDelay}...`,
       )
