@@ -43,6 +43,7 @@ import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
+import { ids } from '@atproto/api/client/lexicons'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -205,7 +206,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const threadRootUri = record.reply?.root?.uri || post.uri
   const postHref = useMemo(() => {
     const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
+    return makeProfileLink(post.author, postType, urip.rkey)
   }, [post.uri, post.author])
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
     threadgateRecord,
