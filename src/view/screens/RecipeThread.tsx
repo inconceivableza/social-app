@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback } from "react";
 import * as Layout from '#/components/Layout'
 import { ids } from "@atproto/api/client/lexicons";
-import { PostThread as PostThreadComponent } from '#/view/com/post-thread/PostThread'
+import { PostThread } from "#/screens/PostThread";
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'RecipeThread'>
 export function RecipeThreadScreen({ route }: Props) {
@@ -24,7 +24,7 @@ export function RecipeThreadScreen({ route }: Props) {
     // TODO: consider using V2 thread component
     return (
         <Layout.Screen testID="recipeThreadScreen">
-            <PostThreadComponent uri={uri} />
+            <PostThread uri={uri} />
         </Layout.Screen>
     )
 }

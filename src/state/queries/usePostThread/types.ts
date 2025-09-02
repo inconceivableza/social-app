@@ -1,4 +1,5 @@
 import {
+  AppFoodiosFeedRecipePost,
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
@@ -47,7 +48,7 @@ export type ThreadItem =
       depth: number
       value: Omit<AppBskyUnspeccedDefs.ThreadItemPost, 'post'> & {
         post: Omit<AppBskyFeedDefs.PostView, 'record'> & {
-          record: AppBskyFeedPost.Record
+          record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
         }
       }
       isBlurred: boolean

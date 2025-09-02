@@ -6,6 +6,7 @@ import {
   type AppBskyFeedThreadgate,
   AtUri,
   RichText as RichTextAPI,
+  AppFoodiosFeedRecipePost,
 } from '@atproto/api'
 import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -384,7 +385,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {richText?.text ? (
+            {record.$type === "app.foodios.feed.recipePost" ?
+              <RecipeThreadItem record={record} />
+              : richText?.text ? (
               <RichText
                 enableTags
                 selectable
@@ -393,7 +396,8 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 authorHandle={post.author.handle}
                 shouldProxyLinks={true}
               />
-            ) : undefined}
+              ) : undefined
+            }
             {post.embed && (
               <View style={[a.py_xs]}>
                 <Embed
@@ -500,6 +504,39 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     </>
   )
 })
+
+
+function RecipeThreadItem({ record }: { record: AppFoodiosFeedRecipePost.Record }) {
+  return <View>
+    <div>
+      {record.title}
+    </div>
+    <div>
+      {record.text}
+    </div>
+    <div>
+      <strong>Ingredients</strong>
+      <table>
+        <tbody>
+          {record.ingredients.map((ingredient, i) => {
+            return <tr key={i}>
+              <td>{ingredient.name}</td><td>{ingredient.quantity}</td><td>{ingredient.unit}</td>
+            </tr>
+          })}
+        </tbody>
+      </table>
+      <strong>Steps</strong>
+      <ol>
+        {record.steps.map((step, i) => {
+          return <li key={i}>
+            {step.text}
+          </li>
+        })}
+      </ol>
+    </div>
+
+  </View>
+}
 
 function ExpandedPostDetails({
   post,
