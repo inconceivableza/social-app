@@ -404,7 +404,7 @@ export function PostThread({uri}: {uri: string}) {
 
   const {openComposer} = useOpenComposer()
   const onReplyToAnchor = React.useCallback(() => {
-    if (thread?.type !== 'post') {
+    if (thread?.type !== 'post' && thread?.type !== 'recipe') {
       return
     }
     if (anchorPostSource) {
