@@ -24,7 +24,7 @@ export function LazyQuoteEmbed({uri}: {uri: string}) {
         uri: view.uri,
         cid: view.cid,
         author: view.author,
-        value: view as any,
+        value: view.record,
         labels: view.labels,
         replyCount: view.replyCount,
         repostCount: view.repostCount,
