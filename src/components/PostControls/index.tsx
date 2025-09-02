@@ -1,6 +1,7 @@
 import {memo, useState} from 'react'
 import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {
+  AppFoodiosFeedRecipePost,
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
@@ -54,7 +55,7 @@ let PostControls = ({
 }: {
   big?: boolean
   post: Shadow<AppBskyFeedDefs.PostView>
-  record: AppBskyFeedPost.Record
+    record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
   richText: RichTextAPI
   feedContext?: string | undefined
   reqId?: string | undefined
