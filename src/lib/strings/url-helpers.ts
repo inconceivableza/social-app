@@ -6,6 +6,7 @@ import {BSKY_SERVICE} from '#/lib/constants'
 import {isInvalidHandle} from '#/lib/strings/handles'
 import {startUriToStarterPackUri} from '#/lib/strings/starter-pack'
 import {logger} from '#/logger'
+import { ids } from '@atproto/api/client/lexicons'
 
 export const BSKY_APP_HOST = 'https://bsky.app'
 const BSKY_TRUSTED_HOSTS = [
@@ -129,7 +130,7 @@ export function isBskyPostUrl(url: string): boolean {
 
 export function isRecipeUri(uri: string) {
   const atUri = new AtUri(uri)
-  return atUri.collection === "app.foodios.feed.recipePost"
+  return atUri.collection === ids.AppFoodiosFeedRecipePost
 }
 
 export function isBskyCustomFeedUrl(url: string): boolean {
