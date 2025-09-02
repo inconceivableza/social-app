@@ -28,6 +28,7 @@ import * as Menu from '#/components/Menu'
 import {useDevMode} from '#/storage/hooks/dev-mode'
 import {RecentChats} from './RecentChats'
 import {type ShareMenuItemsProps} from './ShareMenuItems.types'
+import { ids } from '@atproto/api/client/lexicons'
 
 let ShareMenuItems = ({
   post,
@@ -45,9 +46,9 @@ let ShareMenuItems = ({
 
   const href = useMemo(() => {
     const urip = new AtUri(postUri)
-    return makeProfileLink(postAuthor, 'post', urip.rkey)
+    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
+    return makeProfileLink(postAuthor, postType, urip.rkey)
   }, [postUri, postAuthor])
-
   const hideInPWI = useMemo(() => {
     return !!postAuthor.labels?.find(
       label => label.val === '!no-unauthenticated',

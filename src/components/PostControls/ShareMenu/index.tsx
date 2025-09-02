@@ -24,6 +24,7 @@ import {useMenuControl} from '#/components/Menu'
 import * as Menu from '#/components/Menu'
 import {PostControlButton, PostControlButtonIcon} from '../PostControlButton'
 import {ShareMenuItems} from './ShareMenuItems'
+import { ids } from '@atproto/api/client/lexicons'
 
 let ShareMenuButton = ({
   testID,
@@ -75,7 +76,8 @@ let ShareMenuButton = ({
   const onNativeLongPress = () => {
     logger.metric('share:press:nativeShare', {}, {statsig: true})
     const urip = new AtUri(post.uri)
-    const href = makeProfileLink(post.author, 'post', urip.rkey)
+    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
+    const href = makeProfileLink(post.author, postType, urip.rkey)
     const url = toShareUrl(href)
     shareUrl(url)
     onShare()
