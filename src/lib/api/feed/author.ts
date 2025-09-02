@@ -1,5 +1,4 @@
 import {
-  AppFoodiosFeedDefs,
   AppBskyFeedDefs,
   AppBskyFeedGetAuthorFeed as GetAuthorFeed,
   BskyAgent,
@@ -30,7 +29,7 @@ export class AuthorFeedAPI implements FeedAPI {
     return params
   }
 
-  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
     const res = await this.agent.getAuthorFeed({
       ...this.params,
       limit: 1,
@@ -61,7 +60,7 @@ export class AuthorFeedAPI implements FeedAPI {
     }
   }
 
-  _filter(feed: AppFoodiosFeedDefs.FeedViewPost[]) {
+  _filter(feed: AppBskyFeedDefs.FeedViewPost[]) {
     if (this.params.filter === 'posts_and_author_threads') {
       return feed.filter(post => {
         const isReply = post.reply
@@ -79,13 +78,10 @@ export class AuthorFeedAPI implements FeedAPI {
 
 function isAuthorReplyChain(
   actor: string,
-  { post, reply }: AppFoodiosFeedDefs.FeedViewPost,
-  posts: AppFoodiosFeedDefs.FeedViewPost[],
+  { post, reply }: AppBskyFeedDefs.FeedViewPost,
+  posts: AppBskyFeedDefs.FeedViewPost[],
 ): boolean {
-  if (!AppBskyFeedDefs.isPostView(post)) {
-    return false
-  }
-  // current post is by a different user (shouldn't happen)
+
   if (post.author.did !== actor) return false
 
   const replyParent = reply?.parent
@@ -95,7 +91,7 @@ function isAuthorReplyChain(
     if (replyParent.author.did !== actor) return false
 
     // A top-level post that matches the parent of the current post.
-    const parentPost = posts.find(p => AppBskyFeedDefs.isPostView(p.post) && p.post.uri === replyParent.uri)
+    const parentPost = posts.find(p => p.post.uri === replyParent.uri)
 
     /*
      * Either we haven't fetched the parent at the top level, or the only

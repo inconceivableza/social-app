@@ -9,10 +9,7 @@ import {
   moderateRecipe,
   type ModerationDecision,
   type ModerationOpts,
-  AppFoodiosFeedDefs,
-  AppFoodiosFeedGetPostThread,
-  AppFoodiosFeedRecipePost,
-  AppFoodiosFeedRecipePostRecord,
+  AppFoodiosFeedRecipePost
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -46,7 +43,7 @@ import { AnyPostView } from '../cache/types'
 const REPLY_TREE_DEPTH = 10
 export const RQKEY_ROOT = 'post-thread'
 export const RQKEY = (uri: string) => [RQKEY_ROOT, uri]
-type ThreadViewNode = AppFoodiosFeedGetPostThread.OutputSchema['thread']
+type ThreadViewNode = AppBskyFeedGetPostThread.OutputSchema['thread']
 
 export interface ThreadCtx {
   depth: number
@@ -363,7 +360,7 @@ function responseToThreadNodes(
   direction: 'up' | 'down' | 'start' = 'start',
 ): ThreadNode {
   if (
-    AppFoodiosFeedDefs.isThreadViewPost(node) &&
+    AppBskyFeedDefs.isThreadViewPost(node) &&
     bsky.dangerousIsType<AppBskyFeedDefs.PostView>(
       node.post,
       AppBskyFeedDefs.isPostView,
@@ -670,13 +667,19 @@ function threadNodeToPlaceholderThread(
 function postViewToPlaceholderThread(
   post: AnyPostView,
 ): ThreadNode {
-  if (AppBskyFeedDefs.isPostView(post)) {
+  if (!AppBskyFeedDefs.isPostView(post)) {
+    throw new Error("unexpected post type")
+  }
+
+  const { record } = post
+
+  if (AppBskyFeedPost.isRecord(record)) {
     return {
       type: 'post',
       _reactKey: post.uri,
       uri: post.uri,
       post: post,
-      record: post.record as AppBskyFeedPost.Record, // validated in notifs
+      record: record,
       parent: undefined,
       replies: undefined,
       hasOPLike: undefined,
@@ -688,9 +691,28 @@ function postViewToPlaceholderThread(
         isChildLoading: true, // assume yes (show the spinner) just in case
       },
     }
-  } 
-  throw new Error("unexpected post type")
+  }
 
+  if (AppFoodiosFeedRecipePost.isRecord(record)) {
+    return {
+      type: 'recipe',
+      _reactKey: post.uri,
+      uri: post.uri,
+      post: post,
+      record: record,
+      parent: undefined,
+      replies: undefined,
+      hasOPLike: undefined,
+      ctx: {
+        depth: 0,
+        isHighlightedPost: true,
+        hasMore: false,
+        isParentLoading: !!(post.record as AppBskyFeedPost.Record).reply,
+        isChildLoading: true, // assume yes (show the spinner) just in case
+      },
+    }
+  }
+  throw new Error("unexpected post type")
 }
 
 function embedViewRecordToPlaceholderThread(

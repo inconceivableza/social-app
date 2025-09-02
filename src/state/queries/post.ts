@@ -1,5 +1,5 @@
 import {useCallback} from 'react'
-import {type AppBskyActorDefs, type AppBskyFeedDefs, AtUri} from '@atproto/api'
+import { type AppBskyActorDefs, type AppBskyFeedDefs, AtUri, $Typed } from '@atproto/api'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 
 import {useToggleMutationQueue} from '#/lib/hooks/useToggleMutationQueue'
@@ -219,7 +219,7 @@ function usePostUnlikeMutation(
 }
 
 export function usePostRepostMutationQueue(
-  post: Shadow<AppBskyFeedDefs.PostView>,
+  post: Shadow<CommonPostFields>,
   viaRepost: {uri: string; cid: string} | undefined,
   feedDescriptor: string | undefined,
   logContext: LogEvents['post:repost']['logContext'] &

@@ -10,7 +10,6 @@ import {
   type ModerationDecision,
   type ModerationPrefs,
 } from '@atproto/api'
-import { AppFoodiosFeedDefs } from "@atproto/api/client"
 import {
   type InfiniteData,
   type QueryClient,
@@ -28,7 +27,7 @@ import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
-import {aggregateUserInterests} from '#/lib/api/feed/utils'
+import { RecipePostView, aggregateUserInterests } from '#/lib/api/feed/utils'
 import {FeedTuner, type FeedTunerFn} from '#/lib/api/feed-manip'
 import {DISCOVER_FEED_URI} from '#/lib/constants'
 import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
@@ -97,7 +96,7 @@ interface FeedRecipeSliceItem {
   type: "recipe"
   _reactKey: string
   uri: string
-  post: AppFoodiosFeedDefs.RecipePostView
+  post: RecipePostView
 
 }
 
@@ -120,7 +119,7 @@ export interface FeedPostSlice {
 export interface FeedPageUnselected {
   api: FeedAPI
   cursor: string | undefined
-  feed: AppFoodiosFeedDefs.FeedViewPost[]
+  feed: AppBskyFeedDefs.FeedViewPost[]
   fetchedAt: number
 }
 
@@ -199,7 +198,7 @@ export function usePostFeedQuery(
     RQPageParam
   >({
     enabled,
-    staleTime: STALE.INFINITY,
+    // staleTime: STALE.INFINITY,
     queryKey: RQKEY(feedDesc, params),
     async queryFn({pageParam}: {pageParam: RQPageParam}) {
       logger.debug('usePostFeedQuery', {feedDesc, cursor: pageParam?.cursor})
@@ -389,6 +388,7 @@ export function usePostFeedQuery(
                         _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
                         uri: item.post.uri,
                         post: item.post,
+                          record: item.record
                       }
                       return feedPostSliceItem
                     }),
@@ -566,7 +566,7 @@ export function* findAllPostsInQueryData(
           yield embedViewRecordToPostView(quotedPost)
         }
 
-        if (AppBskyFeedDefs.isPostView(item.reply?.parent) || AppFoodiosFeedDefs.isRecipePostView(item.reply?.parent)) {
+        if (AppBskyFeedDefs.isPostView(item.reply?.parent)) {
           if (didOrHandleUriMatches(atUri, item.reply.parent)) {
             yield item.reply.parent
           }
@@ -580,7 +580,7 @@ export function* findAllPostsInQueryData(
           }
         }
 
-        if (AppBskyFeedDefs.isPostView(item.reply?.root) || AppFoodiosFeedDefs.isRecipePostView(item.reply?.root)) {
+        if (AppBskyFeedDefs.isPostView(item.reply?.root)) {
           if (didOrHandleUriMatches(atUri, item.reply.root)) {
             yield item.reply.root
           }
@@ -618,14 +618,12 @@ export function* findAllProfilesInQueryData(
         if (quotedPost?.author.did === did) {
           yield quotedPost.author
         }
-        if (
-          AppBskyFeedDefs.isPostView(item.reply?.parent) &&
-          item.reply?.parent?.author.did === did
+        // TODO: update
+        if (item.reply?.parent?.author.did === did
         ) {
           yield item.reply.parent.author
         }
         if (
-          AppBskyFeedDefs.isPostView(item.reply?.root) &&
           item.reply?.root?.author.did === did
         ) {
           yield item.reply.root.author
@@ -636,7 +634,7 @@ export function* findAllProfilesInQueryData(
 }
 
 function assertSomePostsPassModeration(
-  feed: AppFoodiosFeedDefs.FeedViewPost[],
+  feed: AppBskyFeedDefs.FeedViewPost[],
   moderationPrefs: ModerationPrefs,
 ) {
   // no posts in this feed

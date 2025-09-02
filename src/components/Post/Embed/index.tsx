@@ -6,8 +6,7 @@ import {
   AppBskyFeedPost,
   AtUri,
   moderatePost,
-  RichText as RichTextAPI,
-  AppFoodiosFeedDefs,
+  RichText as RichTextAPI
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
@@ -43,6 +42,7 @@ import {
   QuoteEmbedViewContext,
 } from './types'
 import {VideoEmbed} from './VideoEmbed'
+import { isRecipePostView } from '#/lib/api/feed/utils'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -257,8 +257,7 @@ export function QuoteEmbed({
       return text.trim()
         ? new RichTextAPI({ text: text, facets: facets })
         : undefined
-    } else if (bsky.dangerousIsType<AppFoodiosFeedDefs.RecipePostView>(
-      quote.record, AppFoodiosFeedDefs.isRecipePostView)) {
+    } else if (isRecipePostView(quote)) {
       const { text, title } = quote.record
       return text.trim()
         ? new RichTextAPI({ text: title + "\n" + text })

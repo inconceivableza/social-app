@@ -1,4 +1,4 @@
-import {AtUri} from '@atproto/api'
+import { AppBskyFeedDefs, AppFoodiosFeedRecipePost, AtUri } from '@atproto/api'
 
 import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
@@ -25,4 +25,10 @@ export function aggregateUserInterests(
 export function isBlueskyOwnedFeed(feedUri: string) {
   const uri = new AtUri(feedUri)
   return BSKY_FEED_OWNER_DIDS.includes(uri.host)
+}
+
+export type RecipePostView = AppBskyFeedDefs.PostView & { record: AppFoodiosFeedRecipePost.Record }
+
+export function isRecipePostView(v: unknown): v is RecipePostView {
+  return AppBskyFeedDefs.isPostView(v) && AppFoodiosFeedRecipePost.isRecord(v.record)
 }

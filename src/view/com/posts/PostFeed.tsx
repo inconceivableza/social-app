@@ -14,7 +14,6 @@ import {
   type AppBskyActorDefs,
   AppBskyEmbedVideo,
   AppBskyFeedDefs,
-  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'

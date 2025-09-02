@@ -44,6 +44,8 @@ import { createGIFDescription } from '../gif-alt-text'
 import { uploadBlob } from './upload-blob'
 import { RecipePostDraft } from '#/view/com/composer/state/composerRecipe'
 import { BskyAppAgent } from '#/state/session/agent'
+import { isRecipeUri } from '../strings/url-helpers'
+import { ids } from '@atproto/api/client/lexicons'
 
 export { uploadBlob }
 
@@ -221,7 +223,7 @@ export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
     value: recipeRecord,
     rkey,
   })
-  const uri = `at://${did}/app.foodios.feed.recipePost/${rkey}`
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
 
   if (post.postToFeed) {
     const cid = await computeCid(recipeRecord)
@@ -301,7 +303,7 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
 async function resolveReply(agent: BskyAgent, replyTo: string) {
   const replyToUrip = new AtUri(replyTo)
   // TODO: use a utility function for checking the uri collection
-  const parentPost = await (replyToUrip.collection === "app.foodios.feed.recipePost" ? agent.getRecipePost({
+  const parentPost = await (isRecipeUri(replyTo) ? agent.getRecipePost({
     repo: replyToUrip.host,
     rkey: replyToUrip.rkey,
   }) : agent.getPost({
@@ -334,6 +336,7 @@ async function resolveEmbed(
   | undefined
 > {
   if (draft.embed.quote) {
+    //
     const [resolvedMedia, resolvedQuote] = await Promise.all([
       resolveMedia(agent, queryClient, draft.embed, onStateChange),
       resolveRecord(agent, queryClient, draft.embed.quote.uri),

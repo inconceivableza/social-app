@@ -1,7 +1,7 @@
 import {
   AppBskyFeedDefs,
   AppBskyFeedGetActorLikes as GetActorLikes,
-  BskyAgent, AppFoodiosFeedDefs
+  BskyAgent
 } from '@atproto/api'
 
 import { FeedAPI, FeedAPIResponse } from './types'
@@ -21,7 +21,7 @@ export class LikesFeedAPI implements FeedAPI {
     this.params = feedParams
   }
 
-  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
     const res = await this.agent.getActorLikes({
       ...this.params,
       limit: 1,

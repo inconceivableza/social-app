@@ -1,5 +1,5 @@
 import { useFeedFeedbackContext } from "#/state/feed-feedback";
-import { AppFoodiosFeedDefs, AtUri } from "@atproto/api";
+import { AtUri } from "@atproto/api";
 import { View } from "react-native";
 import { atoms as a, useBreakpoints } from '#/alf'
 import { useOpenComposer } from "#/lib/hooks/useOpenComposer";
@@ -20,17 +20,18 @@ import { RepostButton } from "#/components/PostControls/RepostButton";
 import { makeProfileLink } from "#/lib/routes/links";
 import { Link } from "../util/Link";
 import { SubtleWebHover } from "#/components/SubtleWebHover";
+import { RecipePostView } from "#/lib/api/feed/utils";
 
 
 interface RecipeFeedItemProps {
-    post: AppFoodiosFeedDefs.RecipePostView
+    post: RecipePostView
     feedContext: string | undefined,
     reqId: string | undefined
 }
 
 export function RecipeFeedItem(props: RecipeFeedItemProps) {
     const { post, feedContext, reqId } = props
-
+    const { record } = post
     const { sendInteraction, feedDescriptor } = useFeedFeedbackContext()
     const { openComposer } = useOpenComposer()
     const requireAuth = useRequireAuth()
@@ -52,7 +53,7 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
             replyTo: {
                 uri: post.uri,
                 cid: post.cid,
-                text: post.text || '',
+                text: record.text || '',
                 author: post.author,
             },
         })
@@ -180,8 +181,8 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
 
             <View>
         <div>{post.author.handle}</div>
-        <div>{post.title}</div>
-        <div>{post.text}</div>
+                <div>{record.title}</div>
+                <div>{record.text}</div>
             </View>
         </Link>
         <View

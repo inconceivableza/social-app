@@ -4,24 +4,16 @@ import {
   AppBskyEmbedRecordWithMedia,
   AppBskyFeedDefs,
   AppBskyFeedPost,
-  AppFoodiosFeedDefs,
-  $Typed
+  AppFoodiosFeedRecipePost
 } from '@atproto/api'
 
 import * as bsky from '#/types/bsky'
 import {isPostInLanguage} from '../../locale/helpers'
 import {FALLBACK_MARKER_POST} from './feed/home'
 import {type ReasonFeedSource} from './feed/types'
+import { isRecipePostView } from './feed/utils'
 
-type FeedViewPost = Omit<AppFoodiosFeedDefs.FeedViewPost, "post"> & {
-  post:
-  | $Typed<AppBskyFeedDefs.PostView>
-  | $Typed<AppFoodiosFeedDefs.RecipePostView>
-}
-
-function isKnownPostType(post: FeedViewPost["post"]): post is AppBskyFeedDefs.PostView | AppFoodiosFeedDefs.RecipePostView {
-  return AppBskyFeedDefs.isPostView(post) || AppFoodiosFeedDefs.isRecipePostView(post)
-}
+type FeedViewPost = AppBskyFeedDefs.FeedViewPost
 
 export type FeedTunerFn = (
   tuner: FeedTuner,
@@ -38,7 +30,8 @@ type FeedSliceItem = {
   isParentNotFound: boolean
 } | {
   type: "recipe"
-  post: AppFoodiosFeedDefs.RecipePostView
+  post: AppBskyFeedDefs.PostView
+  record: AppFoodiosFeedRecipePost.Record
 }
 //
 
@@ -68,7 +61,7 @@ export class FeedViewPostsSlice {
     this.isFallbackMarker = false
     this.isOrphan = false
     this.feedPostUri = post.uri
-    if (AppBskyFeedDefs.isPostView(reply?.root) || AppFoodiosFeedDefs.isRecipePostView(reply?.root)) {
+    if (AppBskyFeedDefs.isPostView(reply?.root)) {
       this.rootUri = reply.root.uri
     } else {
       this.rootUri = post.uri
@@ -79,9 +72,6 @@ export class FeedViewPostsSlice {
         ? feedPost.reason.indexedAt
         : post.indexedAt
     }`
-    if (!isKnownPostType(post)) {
-      return
-    }
 
     if (feedPost.post.uri === FALLBACK_MARKER_POST.post.uri) {
       this.isFallbackMarker = true
@@ -90,10 +80,11 @@ export class FeedViewPostsSlice {
 
     // TODO use a nicer union type in business logic that excludes {type:string}
 
-    if (AppFoodiosFeedDefs.isRecipePostView(post)) {
+    if (isRecipePostView(post)) {
       this.items.push({
         type: "recipe",
         post,
+        record: post.record
       })
       return
     }
@@ -101,7 +92,7 @@ export class FeedViewPostsSlice {
     const isParentBlocked = AppBskyFeedDefs.isBlockedPost(parent)
     const isParentNotFound = AppBskyFeedDefs.isNotFoundPost(parent)
     let parentAuthor: AppBskyActorDefs.ProfileViewBasic | undefined
-    if (AppBskyFeedDefs.isPostView(parent) || AppFoodiosFeedDefs.isRecipePostView(parent)) {
+    if (AppBskyFeedDefs.isPostView(parent)) {
       parentAuthor = parent.author
     }
 
@@ -132,7 +123,7 @@ export class FeedViewPostsSlice {
       return
     }
     if (
-      !AppFoodiosFeedDefs.isRecipePostView(parent) && (
+      !isRecipePostView(parent) && (
       !AppBskyFeedDefs.isPostView(parent) ||
       !AppBskyFeedPost.isRecord(parent.record) ||
         !bsky.validate(parent.record, AppBskyFeedPost.validateRecord))
@@ -141,9 +132,7 @@ export class FeedViewPostsSlice {
       return
     }
     const root = reply.root
-    const rootIsView =
-      AppFoodiosFeedDefs.isRecipePostView(parent) ||
-      AppBskyFeedDefs.isPostView(root) ||
+    const rootIsView = AppBskyFeedDefs.isPostView(root) ||
       AppBskyFeedDefs.isBlockedPost(root) ||
       AppBskyFeedDefs.isNotFoundPost(root)
     /*
@@ -163,13 +152,11 @@ export class FeedViewPostsSlice {
     const isGrandparentNotFound = Boolean(
       grandparent && AppBskyFeedDefs.isNotFoundPost(grandparent),
     )
-    if (AppFoodiosFeedDefs.isRecipePostView(parent)) {
+    if (isRecipePostView(parent)) {
       this.items.unshift({
         type: "recipe",
         post: parent,
-        // parentAuthor: grandparentAuthor,
-        // isParentBlocked: isGrandparentBlocked,
-        // isParentNotFound: isGrandparentNotFound,
+        record: parent.record
       })
     } else {
       this.items.unshift({
@@ -188,7 +175,7 @@ export class FeedViewPostsSlice {
       // de-deduping
     }
     if (
-      !AppFoodiosFeedDefs.isRecipePostView(parent) && (
+      !isRecipePostView(parent) && (
       !AppBskyFeedDefs.isPostView(root) ||
       !AppBskyFeedPost.isRecord(root.record) ||
         !bsky.validate(root.record, AppBskyFeedPost.validateRecord))
@@ -199,10 +186,11 @@ export class FeedViewPostsSlice {
     if (root.uri === parent.uri) {
       return
     }
-    if (AppFoodiosFeedDefs.isRecipePostView(root)) {
+    if (isRecipePostView(root)) {
       this.items.unshift({
         type: "recipe",
         post: root,
+        record: root.record
       })
     } else if (AppBskyFeedDefs.isPostView(root)) {
       this.items.unshift({

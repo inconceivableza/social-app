@@ -1,4 +1,4 @@
-import { AppBskyFeedDefs, AppFoodiosFeedGetTimeline, BskyAgent, AppFoodiosFeedDefs } from '@atproto/api'
+import { AppBskyFeedDefs, AppFoodiosFeedGetTimeline, BskyAgent } from '@atproto/api'
 import shuffle from 'lodash.shuffle'
 
 import {bundleAsync} from '#/lib/async/bundle'
@@ -72,7 +72,7 @@ export class MergeFeedAPI implements FeedAPI {
     }
   }
 
-  async peekLatest(): Promise<AppFoodiosFeedDefs.FeedViewPost> {
+  async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
     const res = await this.agent.getTimeline({
       limit: 1,
     })
@@ -119,7 +119,7 @@ export class MergeFeedAPI implements FeedAPI {
     await Promise.all(promises)
 
     // assemble a response by sampling from feeds with content
-    const posts: AppFoodiosFeedDefs.FeedViewPost[] = []
+    const posts: AppBskyFeedDefs.FeedViewPost[] = []
     while (posts.length < limit) {
       let slice = this.sampleItem()
       if (slice[0]) {
@@ -171,7 +171,7 @@ class MergeFeedSource {
   feedTuners: FeedTunerFn[]
   sourceInfo: ReasonFeedSource | undefined
   cursor: string | undefined = undefined
-  queue: AppFoodiosFeedDefs.FeedViewPost[] = []
+  queue: AppBskyFeedDefs.FeedViewPost[] = []
   hasMore = true
 
   constructor({
@@ -193,7 +193,7 @@ class MergeFeedSource {
     return this.hasMore && this.queue.length === 0
   }
 
-  take(n: number): AppFoodiosFeedDefs.FeedViewPost[] {
+  take(n: number): AppBskyFeedDefs.FeedViewPost[] {
     return this.queue.splice(0, n)
   }
 
@@ -283,7 +283,7 @@ class MergeFeedSource_Custom extends MergeFeedSource {
     try {
       const contentLangs = getContentLanguages().join(',')
       const isBlueskyOwned = isBlueskyOwnedFeed(this.feedUri)
-      const res = await this.agent.app.foodios.feed.getFeed(
+      const res = await this.agent.app.bsky.feed.getFeed(
         {
           cursor,
           limit,

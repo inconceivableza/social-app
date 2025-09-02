@@ -1,5 +1,4 @@
 import {
-  AppFoodiosFeedDefs,
   type AppBskyFeedDefs,
   type AppBskyGraphDefs,
   type ComAtprotoRepoStrongRef,
@@ -29,6 +28,8 @@ import {createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {createGIFDescription} from '../gif-alt-text'
 import {convertBskyAppUrlIfNeeded, makeRecordUri} from '../strings/url-helpers'
+import { RecipePostView, isRecipePostView } from './feed/utils'
+import { ids } from '@atproto/api/client/lexicons'
 
 type ResolvedExternalLink = {
   type: 'external'
@@ -70,7 +71,7 @@ interface ResolvedRecipePost {
   type: 'record'
   record: ComAtprotoRepoStrongRef.Main
   kind: 'recipePost'
-  view: AppFoodiosFeedDefs.RecipePostView
+  view: RecipePostView
 }
 
 export type ResolvedLink =
@@ -99,9 +100,9 @@ export async function resolveLink(
     const [_0, user, postType, rkey] = uri.split('/').filter(Boolean)
     let collection = ''
     if (postType === "recipePost") {
-      collection = 'app.foodios.feed.recipePost'
+      collection = ids.AppFoodiosFeedRecipePost
     } else if (postType === "post") {
-      collection = 'app.bsky.feed.post'
+      collection = ids.AppBskyFeedPost
     } else {
       throw new Error('unknown post type ' + uri)
     }
@@ -110,16 +111,27 @@ export async function resolveLink(
     if (post.viewer?.embeddingDisabled) {
       throw new EmbeddingDisabledError()
     }
-    // TODO: fix types
+    if (isRecipePostView(post)) {
+      return {
+        type: 'record',
+        record: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+        kind: 'recipePost',
+        view: post,
+      }
+    }
     return {
       type: 'record',
       record: {
         cid: post.cid,
         uri: post.uri,
       },
-      kind: postType === "recipePost" ? 'recipePost' : 'post',
+      kind: 'post',
       view: post,
     }
+
   }
   if (isBskyCustomFeedUrl(uri)) {
     uri = convertBskyAppUrlIfNeeded(uri)

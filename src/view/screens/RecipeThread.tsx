@@ -7,7 +7,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useEffect, useState } from "react";
 import * as Layout from '#/components/Layout'
 import { useAgent } from "#/state/session";
-import { AppFoodiosFeedDefs, AppFoodiosFeedGetPostThread } from "@atproto/api";
 import { ids } from "@atproto/api/client/lexicons";
 import { PostThread as PostThreadComponent } from '#/view/com/post-thread/PostThread'
 
