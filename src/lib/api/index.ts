@@ -36,6 +36,7 @@ import {
   threadgateAllowUISettingToAllowRecordValue,
 } from '#/state/queries/threadgate'
 import {
+  EmbedState,
   type EmbedDraft,
   type PostDraft,
   type ThreadDraft,
@@ -201,18 +202,19 @@ export async function post(
 interface RecipePostOpts {
   post: RecipePostDraft
 }
-export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
+export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: RecipePostOpts) {
   const now = new Date()
   const did = agent.assertDid
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
-
+  const embed = await resolveEmbed(agent, qc, post, () => { })
   const recipeRecord: AppFoodiosFeedRecipePost.Record = {
     $type: "app.foodios.feed.recipePost",
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
     steps: post.steps,
     text: post.text,
-    title: post.title
+    title: post.title,
+    embed
   }
   const tid = TID.next()
   const rkey = tid.toString()
@@ -225,30 +227,30 @@ export async function postRecipe(agent: AtpAgent, { post }: RecipePostOpts) {
   })
   const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
 
-  if (post.postToFeed) {
-    const cid = await computeCid(recipeRecord)
-    const embed: $Typed<AppBskyEmbedRecord.Main> = {
-      $type: "app.bsky.embed.record",
-      record: {
-        $type: "com.atproto.repo.strongRef",
-        uri, cid
-      },
-    }
-    const feedRecord: AppBskyFeedPost.Record = {
-      // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
-      // present and will produce the wrong CID if you omit it.
-      $type: 'app.bsky.feed.post',
-      createdAt: now.toISOString(),
-      text: "",
-      embed
-    }
-    writes.push({
-      $type: 'com.atproto.repo.applyWrites#create',
-      collection: 'app.bsky.feed.post',
-      rkey: TID.next(tid).toString(),
-      value: feedRecord,
-    })
-  }
+  // if (post.postToFeed) {
+  //   const cid = await computeCid(recipeRecord)
+  //   const embed: $Typed<AppBskyEmbedRecord.Main> = {
+  //     $type: "app.bsky.embed.record",
+  //     record: {
+  //       $type: "com.atproto.repo.strongRef",
+  //       uri, cid
+  //     },
+  //   }
+  //   const feedRecord: AppBskyFeedPost.Record = {
+  //     // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
+  //     // present and will produce the wrong CID if you omit it.
+  //     $type: 'app.bsky.feed.post',
+  //     createdAt: now.toISOString(),
+  //     text: "",
+  //     embed
+  //   }
+  //   writes.push({
+  //     $type: 'com.atproto.repo.applyWrites#create',
+  //     collection: 'app.bsky.feed.post',
+  //     rkey: TID.next(tid).toString(),
+  //     value: feedRecord,
+  //   })
+  // }
 
   // TODO add post record
   // const ref = {
@@ -325,7 +327,7 @@ async function resolveReply(agent: BskyAgent, replyTo: string) {
 async function resolveEmbed(
   agent: BskyAgent,
   queryClient: QueryClient,
-  draft: PostDraft,
+  draft: EmbedState,
   onStateChange: ((state: string) => void) | undefined,
 ): Promise<
   | $Typed<AppBskyEmbedImages.Main>

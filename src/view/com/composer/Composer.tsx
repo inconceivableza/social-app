@@ -141,6 +141,7 @@ import {
   type PostAction,
   type PostDraft,
   type ThreadDraft,
+  EmbedAction,
 } from './state/composer'
 import {
   NO_VIDEO,
@@ -189,7 +190,7 @@ export const ComposePost = ({
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishingStage, setPublishingStage] = useState('')
   const [error, setError] = useState('')
-
+  //
   const [composerState, composerDispatch] = useReducer(
     composerReducer,
     {
@@ -501,6 +502,7 @@ export const ComposePost = ({
     if (initQuote) {
       // We want to wait for the quote count to update before we call `onPost`, which will refetch data
       whenAppViewReady(agent, initQuote.uri, res => {
+        // TODO: fix
         const quotedThread = res.data.thread
         if (
           AppBskyFeedDefs.isThreadViewPost(quotedThread) &&
@@ -1063,7 +1065,7 @@ function AltTextReminder({error}: {error: string}) {
   )
 }
 
-function ComposerEmbeds({
+export function ComposerEmbeds({
   embed,
   dispatch,
   clearVideo,
@@ -1071,7 +1073,7 @@ function ComposerEmbeds({
   isActivePost,
 }: {
   embed: EmbedDraft
-  dispatch: (action: PostAction) => void
+    dispatch: (action: EmbedAction) => void
   clearVideo: () => void
   canRemoveQuote: boolean
   isActivePost: boolean
@@ -1517,12 +1519,13 @@ async function whenAppViewReady(
   uri: string,
   fn: (res: AppBskyFeedGetPostThread.Response) => boolean,
 ) {
+  //
   await until(
     5, // 5 tries
     1e3, // 1s delay between tries
     fn,
     () =>
-      agent.app.foodios.feed.getPostThread({
+      agent.app.bsky.feed.getPostThread({
         uri,
         depth: 0,
       }),
@@ -1685,7 +1688,7 @@ function ErrorBanner({
   )
 }
 
-function ToolbarWrapper({
+export function ToolbarWrapper({
   style,
   children,
 }: {
@@ -1703,7 +1706,7 @@ function ToolbarWrapper({
   )
 }
 
-function VideoUploadToolbar({state}: {state: VideoState}) {
+export function VideoUploadToolbar({ state }: { state: VideoState }) {
   const t = useTheme()
   const {_} = useLingui()
   const progress = state.progress

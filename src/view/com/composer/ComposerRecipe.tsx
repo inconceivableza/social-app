@@ -1,16 +1,31 @@
 import { KeyboardAvoidingView } from "react-native";
 import { View } from "react-native";
-import { atoms as a } from '#/alf'
+import { atoms as a, useTheme } from '#/alf'
 import { isIOS } from '#/platform/detection'
-import { useKeyboardVerticalOffset } from "./Composer";
-
-import { useRecipePostReducer } from "./state/composerRecipe";
+import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset } from "./Composer";
+import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
+import { RecipePostDraft, useRecipePostReducer } from "./state/composerRecipe";
 import * as apilib from '#/lib/api/index'
 import { useAgent } from "#/state/session";
 import { Button, ButtonText, ButtonIcon } from '#/components/Button'
 import { msg } from "@lingui/macro";
 import { Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
+import { useComposerControls } from "#/state/shell/composer";
+import { SelectGifBtn } from "./photos/SelectGifBtn";
+import { OpenCameraBtn } from "./photos/OpenCameraBtn";
+import { SelectVideoBtn } from "./videos/SelectVideoBtn";
+import { LayoutAnimationConfig } from "react-native-reanimated";
+import { useCallback } from "react";
+import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
+import { ImagePickerAsset } from "expo-image-picker";
+import { EmbedAction, MAX_IMAGES } from "./state/composer";
+import { ComposerImage } from "#/state/gallery";
+import { Gif } from "#/state/queries/tenor";
+import { EmojiArc_Stroke2_Corner0_Rounded as EmojiSmile } from '#/components/icons/Emoji'
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { SelectLangBtn } from "./select-language/SelectLangBtn";
+import { useQueryClient } from "@tanstack/react-query";
 
 const msgs = {
     button_add_ingredient: msg({
@@ -32,15 +47,19 @@ const msgs = {
 
 export function ComposerRecipe() {
     const keyboardVerticalOffset = useKeyboardVerticalOffset()
+    const { closeComposer } = useComposerControls()
+
     const [state, dispatch] = useRecipePostReducer()
     const agent = useAgent()
+    const queryClient = useQueryClient()
+
     const { _ } = useLingui()
     async function onPressPublish() {
         // TODO: validation
-        const postUri = await apilib.postRecipe(agent, {
+        const postUri = await apilib.postRecipe(agent, queryClient, {
             post: state
         })
-        alert(postUri)
+        closeComposer()
     }
 
     return <View>
@@ -105,18 +124,28 @@ export function ComposerRecipe() {
                     <ButtonText><Trans context="action">Add step</Trans></ButtonText>
                 </Button>
             </fieldset>
-            <label>
-                <Trans context="recipe">Post to feed</Trans>
-                <input onChange={() => dispatch({ type: "toggle_post_to_feed" })} type="checkbox" />
-            </label>
-
+            <View>
+                <ComposerEmbeds
+                    canRemoveQuote={true} // TODO: check this
+                    embed={state.embed}
+                    dispatch={dispatch}
+                    clearVideo={() => { }}
+                    isActivePost={true}
+                />
+            </View>
             <Button onPress={onPressPublish} label={_(msgs.button_post_recipe)}>
                 <ButtonText>
                     <Trans context="action">Post</Trans>
                 </ButtonText>
 
             </Button>
-
+            <ComposerFooter
+                post={state}
+                dispatch={dispatch}
+                onEmojiButtonPress={() => { }}
+                onError={() => { }}
+                onSelectVideo={() => { }}
+            />
 
             {/* <TextInput
 
@@ -151,4 +180,101 @@ export function ComposerRecipe() {
             /> */}
         </KeyboardAvoidingView>
     </View>
+}
+
+
+function ComposerFooter({
+    post,
+    dispatch,
+    onEmojiButtonPress,
+    onError,
+    onSelectVideo,
+}: {
+    post: RecipePostDraft,
+    dispatch: (action: EmbedAction) => void
+    onEmojiButtonPress: () => void
+    onError: (error: string) => void
+    onSelectVideo: (postId: string, asset: ImagePickerAsset) => void
+}) {
+
+    const t = useTheme()
+    const { _ } = useLingui()
+    const { isMobile } = useWebMediaQueries()
+
+    const media = post.embed?.media
+    const images = media?.type === 'images' ? media.images : []
+    const video = media?.type === 'video' ? media.video : null
+    const isMaxImages = images.length >= MAX_IMAGES
+
+    const onImageAdd = useCallback(
+        (next: ComposerImage[]) => {
+            dispatch({
+                type: 'embed_add_images',
+                images: next,
+            })
+        },
+        [dispatch],
+    )
+
+    const onSelectGif = useCallback(
+        (gif: Gif) => {
+            dispatch({ type: 'embed_add_gif', gif })
+        },
+        [dispatch],
+    )
+
+    return (
+        <View
+            style={[
+                a.flex_row,
+                a.py_xs,
+                { paddingLeft: 7, paddingRight: 16 },
+                a.align_center,
+                a.border_t,
+                t.atoms.bg,
+                t.atoms.border_contrast_medium,
+                a.justify_between,
+            ]}>
+            <View style={[a.flex_row, a.align_center]}>
+                <LayoutAnimationConfig skipEntering skipExiting>
+                    {video && video.status !== 'done' ? (
+                        <VideoUploadToolbar state={video} />
+                    ) : (
+                        <ToolbarWrapper style={[a.flex_row, a.align_center, a.gap_xs]}>
+                            <SelectPhotoBtn
+                                size={images.length}
+                                disabled={media?.type === 'images' ? isMaxImages : !!media}
+                                onAdd={onImageAdd}
+                            />
+                            <SelectVideoBtn
+                                onSelectVideo={asset => onSelectVideo(post.id, asset)}
+                                disabled={!!media}
+                                setError={onError}
+                            />
+                            <OpenCameraBtn
+                                disabled={media?.type === 'images' ? isMaxImages : !!media}
+                                onAdd={onImageAdd}
+                            />
+                            <SelectGifBtn onSelectGif={onSelectGif} disabled={!!media} />
+                            {!isMobile ? (
+                                <Button
+                                    onPress={onEmojiButtonPress}
+                                    style={a.p_sm}
+                                    label={_(msg`Open emoji picker`)}
+                                    accessibilityHint={_(msg`Opens emoji picker`)}
+                                    variant="ghost"
+                                    shape="round"
+                                    color="primary">
+                                    <EmojiSmile size="lg" />
+                                </Button>
+                            ) : null}
+                        </ToolbarWrapper>
+                    )}
+                </LayoutAnimationConfig>
+            </View>
+            <View style={[a.flex_row, a.align_center, a.justify_between]}>
+                <SelectLangBtn />
+            </View>
+        </View>
+    )
 }

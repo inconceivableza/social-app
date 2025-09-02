@@ -1,7 +1,8 @@
 import { useReducer } from 'react'
 
 import { type SelfLabel } from '#/lib/moderation'
-import { type EmbedDraft } from './composer'
+import { EmbedAction, embedReducer, type EmbedDraft } from './composer'
+import { nanoid } from 'nanoid/non-secure'
 
 type TaggedUnion<Tag extends string, O extends object> = {
     [K in keyof O]: Record<Tag, K> & O[K]
@@ -23,14 +24,14 @@ interface StepDraft {
 }
 
 export interface RecipePostDraft {
+    id: string,
     title: TextType
     text: TextType
     ingredients: IngredientDraft[]
     steps: StepDraft[]
-    embed?: EmbedDraft
-    labels?: SelfLabel
+    embed: EmbedDraft
+    labels: SelfLabel[]
     tags?: string[]
-    postToFeed: boolean
 }
 
 type Action = TaggedUnion<
@@ -42,9 +43,8 @@ type Action = TaggedUnion<
         edit_step_text: { value: TextType, index: number }
         add_ingredient: {}
         edit_ingredient: { value: TextType, prop: keyof IngredientDraft, index: number }
-        toggle_post_to_feed: {}
     }
->
+    > | EmbedAction
 
 function checkIndex(arr: unknown[], idx: number) {
     if (idx > arr.length - 1 || idx < 0) {
@@ -77,16 +77,28 @@ function recipePostReducer(
             ingredients[action.index] = { ...ingredients[action.index], [action.prop]: action.value }
             return { ...state, ingredients }
         }
-        case 'toggle_post_to_feed': return { ...state, postToFeed: !state.postToFeed }
+        default: {
+            const embedState = embedReducer(state, action)
+            return {
+                ...state,
+                ...embedState
+            }
+        }
     }
 }
 
 export function useRecipePostReducer() {
     return useReducer(recipePostReducer, {
+        id: nanoid(),
         title: '',
         text: '',
         ingredients: [],
         steps: [],
-        postToFeed: false
+        labels: [],
+        embed: {
+            quote: undefined,
+            media: undefined,
+            link: undefined,
+        },
     })
 }

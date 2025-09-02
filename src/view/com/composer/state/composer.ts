@@ -71,10 +71,8 @@ export type PostDraft = {
   shortenedGraphemeLength: number
 }
 
-export type PostAction =
-  | { type: 'update_richtext'; richtext: RichText }
-  | { type: 'update_labels'; labels: SelfLabel[] }
-  | { type: 'embed_add_images'; images: ComposerImage[] }
+export type EmbedAction =
+  { type: 'embed_add_images'; images: ComposerImage[] }
   | { type: 'embed_update_image'; image: ComposerImage }
   | { type: 'embed_remove_image'; image: ComposerImage }
   | {
@@ -90,6 +88,12 @@ export type PostAction =
   | { type: 'embed_add_gif'; gif: Gif }
   | { type: 'embed_update_gif'; alt: string }
   | { type: 'embed_remove_gif' }
+
+export type PostAction =
+  | { type: 'update_richtext'; richtext: RichText }
+  | { type: 'update_labels'; labels: SelfLabel[] }
+  | EmbedAction
+
 
 export type ThreadDraft = {
   posts: PostDraft[]
@@ -232,21 +236,11 @@ export function composerReducer(
   }
 }
 
-function postReducer(state: PostDraft, action: PostAction): PostDraft {
+
+export type EmbedState = Pick<PostDraft, "embed" | "labels">
+export function embedReducer(state: EmbedState, action: EmbedAction): EmbedState {
+  console.log(state, action)
   switch (action.type) {
-    case 'update_richtext': {
-      return {
-        ...state,
-        richtext: action.richtext,
-        shortenedGraphemeLength: getShortenedLength(action.richtext),
-      }
-    }
-    case 'update_labels': {
-      return {
-        ...state,
-        labels: action.labels,
-      }
-    }
     case 'embed_add_images': {
       if (action.images.length === 0) {
         return state
@@ -477,6 +471,32 @@ function postReducer(state: PostDraft, action: PostAction): PostDraft {
           ...state.embed,
           media: nextMedia,
         },
+      }
+    }
+  }
+
+}
+
+function postReducer(state: PostDraft, action: PostAction): PostDraft {
+  switch (action.type) {
+    case 'update_richtext': {
+      return {
+        ...state,
+        richtext: action.richtext,
+        shortenedGraphemeLength: getShortenedLength(action.richtext),
+      }
+    }
+    case 'update_labels': {
+      return {
+        ...state,
+        labels: action.labels,
+      }
+    }
+    default: {
+      const embedState = embedReducer(state, action)
+      return {
+        ...state,
+        ...embedState
       }
     }
   }
