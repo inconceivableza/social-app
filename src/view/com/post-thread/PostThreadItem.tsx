@@ -134,11 +134,21 @@ export function PostThreadItem({
       </div>
       <div>
         <strong>Ingredients</strong>
+        <table>
         {threadItem.record.ingredients.map((ingredient, i) => {
-          return <div>
-            {ingredient.name}
-          </div>
+          return <tr>
+            <td>{ingredient.name}</td><td>{ingredient.quantity}</td><td>{ingredient.unit}</td>
+          </tr>
         })}
+        </table>
+        <strong>Steps</strong>
+        <ol>
+          {threadItem.record.steps.map((step, i) => {
+            return <li>
+              {step.text}
+            </li>
+          })}
+        </ol>
       </div>
 
     </View>
