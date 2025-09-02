@@ -4,6 +4,8 @@ export function reload(reason?: string) {
   DevSettings?.reload(reason)
 }
 
-export function canReload(): Boolean {
+export function checkCanReload(): Boolean {
   return Boolean(DevSettings) && Boolean(DevSettings.reload)
 }
+
+export const canReload = checkCanReload()

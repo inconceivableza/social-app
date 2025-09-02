@@ -3,6 +3,8 @@ export function reload(reason?: string) {
   window.location.reload()
 }
 
-export function canReload(): Boolean {
+export function checkCanReload(): Boolean {
   return Boolean(window.location)
 }
+
+export const canReload = checkCanReload()
