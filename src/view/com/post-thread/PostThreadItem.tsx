@@ -1,4 +1,4 @@
-import {memo, useCallback, useMemo, useState} from 'react'
+import { PropsWithChildren, memo, useCallback, useMemo, useState } from 'react'
 import {
   type GestureResponderEvent,
   StyleSheet,
@@ -12,6 +12,7 @@ import {
   AtUri,
   type ModerationDecision,
   RichText as RichTextAPI,
+  AppFoodiosFeedRecipePost,
 } from '@atproto/api'
 import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -124,36 +125,10 @@ export function PostThreadItem({
     return <PostThreadItemDeleted hideTopBorder={hideTopBorder} />
   }
 
-  if (threadItem.type === "recipe") {
-    return <View>
-      <div>
-        {threadItem.record.title}
-      </div>
-      <div>
-        {threadItem.record.text}
-      </div>
-      <div>
-        <strong>Ingredients</strong>
-        <table>
-        {threadItem.record.ingredients.map((ingredient, i) => {
-          return <tr>
-            <td>{ingredient.name}</td><td>{ingredient.quantity}</td><td>{ingredient.unit}</td>
-          </tr>
-        })}
-        </table>
-        <strong>Steps</strong>
-        <ol>
-          {threadItem.record.steps.map((step, i) => {
-            return <li>
-              {step.text}
-            </li>
-          })}
-        </ol>
-      </div>
+  // if (threadItem.type === "recipe") {
 
-    </View>
-  }
-  if (threadItem.type === "post" && richText && moderation) { // TODO: &&moderation) {
+  // }
+  if (richText && moderation) {
     return (
       <PostThreadItemLoaded
         // Safeguard from clobbering per-post state below:
@@ -177,10 +152,51 @@ export function PostThreadItem({
         hideTopBorder={hideTopBorder}
         threadgateRecord={threadgateRecord}
         anchorPostSource={anchorPostSource}
-      />
+      >{threadItem.type === "recipe" ?
+        <RecipeThreadItem record={threadItem.record} />
+        : richText?.text ? (
+          <RichText
+            enableTags
+            selectable
+            value={richText}
+            style={[a.flex_1, a.text_xl]}
+            authorHandle={postShadowed.author.handle}
+            shouldProxyLinks={true}
+            />
+          ) : undefined}</PostThreadItemLoaded>
     )
   }
   return null
+}
+
+function RecipeThreadItem({ record }: { record: AppFoodiosFeedRecipePost.Record }) {
+  return <View>
+    <div>
+      {record.title}
+    </div>
+    <div>
+      {record.text}
+    </div>
+    <div>
+      <strong>Ingredients</strong>
+      <table>
+        {record.ingredients.map((ingredient, i) => {
+          return <tr>
+            <td>{ingredient.name}</td><td>{ingredient.quantity}</td><td>{ingredient.unit}</td>
+          </tr>
+        })}
+      </table>
+      <strong>Steps</strong>
+      <ol>
+        {record.steps.map((step, i) => {
+          return <li>
+            {step.text}
+          </li>
+        })}
+      </ol>
+    </div>
+
+  </View>
 }
 
 function PostThreadItemDeleted({hideTopBorder}: {hideTopBorder?: boolean}) {
@@ -224,9 +240,10 @@ let PostThreadItemLoaded = ({
   hideTopBorder,
   threadgateRecord,
   anchorPostSource,
-}: {
+  children
+}: PropsWithChildren<{
   post: Shadow<AppBskyFeedDefs.PostView>
-  record: AppBskyFeedPost.Record
+  record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
   richText: RichTextAPI
   moderation: ModerationDecision
   treeView: boolean
@@ -244,7 +261,8 @@ let PostThreadItemLoaded = ({
   hideTopBorder?: boolean
   threadgateRecord?: AppBskyFeedThreadgate.Record
   anchorPostSource?: PostSource
-}): React.ReactNode => {
+
+}>): React.ReactNode => {
   const {currentAccount, hasSession} = useSession()
   const feedFeedback = useFeedFeedback(anchorPostSource?.feed, hasSession)
 
@@ -377,7 +395,7 @@ let PostThreadItemLoaded = ({
       }
     }
   }, [reason])
-  console.log(richText)
+
   if (!record) {
     return <ErrorMessage message={_(msg`Invalid or unsupported post record`)} />
   }
@@ -485,16 +503,7 @@ let PostThreadItemLoaded = ({
                 style={[a.pb_sm]}
                 additionalCauses={additionalPostAlerts}
               />
-              {richText?.text ? (
-                <RichText
-                  enableTags
-                  selectable
-                  value={richText}
-                  style={[a.flex_1, a.text_xl]}
-                  authorHandle={post.author.handle}
-                  shouldProxyLinks={true}
-                />
-              ) : undefined}
+              {children}
               {post.embed && (
                 <View style={[a.py_xs]}>
                   <Embed
