@@ -1,5 +1,4 @@
-import {useState} from 'react'
-import {DevSettings} from 'react-native'
+import {useCallback, useState} from 'react'
 import {LayoutAnimation, Pressable, View} from 'react-native'
 import {Linking} from 'react-native'
 import {useReducedMotion} from 'react-native-reanimated'
@@ -14,6 +13,7 @@ import {IS_INTERNAL} from '#/lib/app-info'
 import {timeout} from '#/lib/async/timeout'
 import {HELP_DESK_URL} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
+import {canReload, reload} from '#/lib/reload'
 import {
   type CommonNavigatorParams,
   type NavigationProp,
@@ -506,33 +506,23 @@ function ServerDomains() {
   const [showCurrentEnv, setShowCurrentEnv] = useState(false)
   const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
   const {envConfig, setEnvConfig} = useEnvConfig()
-
-  const canAutoReload = Boolean(DevSettings) && Boolean(DevSettings.reload)
-  const canWebReload = Boolean(window.location)
-  const reloadMessage =
-    canAutoReload || canWebReload
-      ? _(msg`Going to reload app...`)
-      : _(msg`Please reload app manually...`)
+  const reloadMessage = canReload
+    ? _(msg`Going to reload app...`)
+    : _(msg`Please reload app manually...`)
 
   const doDelayedReload = useCallback(async () => {
     const reloadDelay = 3
     await clearStorage()
-    if (canAutoReload) {
+    if (canReload) {
       logger.info(`Reloading app after config change in ${reloadDelay}...`)
       await timeout(reloadDelay * 1000)
-      DevSettings?.reload('Changed environment config')
-    } else if (canWebReload) {
-      logger.info(
-        `Reloading web app after environment config change in ${reloadDelay}...`,
-      )
-      await timeout(reloadDelay * 1000)
-      window.location.reload()
+      reload('Changed environment config')
     } else {
       logger.warn(
         'Could not reload app after environment config change ; user must reload otherwise confusion...',
       )
     }
-  }, [canAutoReload, canWebReload])
+  }, [])
   const doResetStoredEnvConfig = async () => {
     clearStoredEnvConfig()
     beginResolveEnvConfig()
