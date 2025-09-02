@@ -1,12 +1,10 @@
 import { CommonNavigatorParams } from "#/lib/routes/types";
-import { useGate } from "#/lib/statsig/statsig";
 import { makeRecordUri } from "#/lib/strings/url-helpers";
 import { useSetMinimalShellMode } from "#/state/shell";
 import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import * as Layout from '#/components/Layout'
-import { useAgent } from "#/state/session";
 import { ids } from "@atproto/api/client/lexicons";
 import { PostThread as PostThreadComponent } from '#/view/com/post-thread/PostThread'
 
