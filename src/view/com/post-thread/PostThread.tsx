@@ -797,8 +797,8 @@ function* flattenThreadParents(
   node: ThreadNode,
   hasSession: boolean,
 ): Generator<YieldedItem, void> {
-  if (node.type === 'post') {
-    if (node.parent) {
+  if (node.type === 'post' || node.type === "recipe") {
+    if (node.type === 'post' && node.parent) {
       yield* flattenThreadParents(node.parent, hasSession)
     }
     if (!node.ctx.isHighlightedPost) {
