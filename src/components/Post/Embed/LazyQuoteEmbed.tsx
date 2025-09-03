@@ -18,7 +18,6 @@ export function LazyQuoteEmbed({uri}: {uri: string}) {
       return createEmbedViewRecordFromPost(data.view)
     } else if (data.kind === "recipePost") {
       const { view } = data
-      // TODO check
       const viewRec: $Typed<ViewRecord> = {
         $type: 'app.bsky.embed.record#viewRecord',
         uri: view.uri,
@@ -31,7 +30,7 @@ export function LazyQuoteEmbed({uri}: {uri: string}) {
         likeCount: view.likeCount,
         quoteCount: view.quoteCount,
         indexedAt: view.indexedAt,
-        embeds: [], // TODO: fix
+        embeds: view.embed ? [view.embed] : []
       }
       return viewRec
     }
