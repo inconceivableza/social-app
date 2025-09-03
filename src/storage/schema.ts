@@ -25,6 +25,7 @@ export type EnvConfig = {
   BSKY_SERVICE: string
   GIF_SERVICE: string
   HELP_DESK_URL: string
+  OGCARD_URL: string
   POLICY_BASE_URL: string
   PREVIEW_LINK_META_PROXY: string
   PUBLIC_BSKY_SERVICE: string

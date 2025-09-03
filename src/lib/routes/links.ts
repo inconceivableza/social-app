@@ -1,5 +1,6 @@
 import {type AppBskyGraphDefs, AtUri} from '@atproto/api'
 
+import {envConfig} from '#/lib/constants'
 import {isInvalidHandle} from '#/lib/strings/handles'
 
 export function makeProfileLink(
@@ -50,9 +51,9 @@ export function makeStarterPackLink(
   rkey?: string,
 ) {
   if (typeof starterPackOrName === 'string') {
-    return `${process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'}/start/${starterPackOrName}/${rkey}`
+    return `${envConfig.SOCIAL_APP_URL}/start/${starterPackOrName}/${rkey}`
   } else {
     const uriRkey = new AtUri(starterPackOrName.uri).rkey
-    return `${process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'}/start/${starterPackOrName.creator.handle}/${uriRkey}`
+    return `${envConfig.SOCIAL_APP_URL}/start/${starterPackOrName.creator.handle}/${uriRkey}`
   }
 }
