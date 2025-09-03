@@ -21,6 +21,7 @@ import { makeProfileLink } from "#/lib/routes/links";
 import { Link } from "../util/Link";
 import { SubtleWebHover } from "#/components/SubtleWebHover";
 import { RecipePostView } from "#/lib/api/feed/utils";
+import { Embed } from "#/components/Post/Embed";
 
 
 interface RecipeFeedItemProps {
@@ -184,6 +185,7 @@ export function RecipeFeedItem(props: RecipeFeedItemProps) {
                 <div>{record.title}</div>
                 <div>{record.text}</div>
             </View>
+            <Embed embed={post.embed} />
         </Link>
         <View
             style={[
