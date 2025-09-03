@@ -14,6 +14,7 @@ import {
   type AppBskyActorDefs,
   AppBskyEmbedVideo,
   AppBskyFeedDefs,
+  ModerationDecision,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -67,6 +68,7 @@ import {PostFeedItem} from './PostFeedItem'
 import {ShowLessFollowup} from './ShowLessFollowup'
 import {ViewFullThread} from './ViewFullThread'
 import { RecipeFeedItem } from './RecipeFeedItem'
+import { PostViewContextProvider } from './PostContext'
 
 type FeedRow =
   | {
@@ -731,6 +733,7 @@ let PostFeed = ({
 
         if (item.type === "post") {
           return (
+            <PostViewContextProvider post={item.post}>
             <PostFeedItem
               post={item.post}
               record={item.record}
@@ -752,10 +755,32 @@ let PostFeed = ({
               rootPost={slice.items[0].post}
               onShowLess={onPressShowLess}
             />
+            </PostViewContextProvider>
           )
         } else if (item.type === "recipe") {
 
-          return <RecipeFeedItem post={item.post} feedContext={slice.feedContext} reqId={slice.reqId} />
+          return <PostViewContextProvider post={item.post}><PostFeedItem
+            post={item.post}
+            record={item.post.record}
+            reason={indexInSlice === 0 ? slice.reason : undefined}
+            feedContext={slice.feedContext}
+            reqId={slice.reqId}
+            moderation={new ModerationDecision()}
+            parentAuthor={item.parentAuthor}
+            showReplyTo={row.showReplyTo}
+            isThreadParent={isThreadParentAt(slice.items, indexInSlice)}
+            isThreadChild={isThreadChildAt(slice.items, indexInSlice)}
+            isThreadLastChild={
+              isThreadChildAt(slice.items, indexInSlice) &&
+              slice.items.length === indexInSlice + 1
+            }
+            isParentBlocked={item.isParentBlocked}
+            isParentNotFound={item.isParentNotFound}
+            hideTopBorder={rowIndex === 0 && indexInSlice === 0}
+            rootPost={slice.items[0].post}
+            onShowLess={onPressShowLess}
+          /></PostViewContextProvider>
+          // <RecipeFeedItem post={item.post} feedContext={slice.feedContext} reqId={slice.reqId} />
         }
 
       } else if (row.type === 'sliceViewFullThread') {
@@ -864,7 +889,7 @@ let PostFeed = ({
     },
     [feedFeedback, feed, liveNowConfig],
   )
-  console.log(feedItems)
+
   return (
     <View testID={testID} style={style}>
       <List

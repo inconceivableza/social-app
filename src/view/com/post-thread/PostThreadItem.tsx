@@ -72,6 +72,7 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
+import { PostViewContextProvider } from '../posts/PostContext'
 
 export function PostThreadItem({
   threadItem,
@@ -130,6 +131,7 @@ export function PostThreadItem({
   // }
   if (richText && moderation) {
     return (
+      <PostViewContextProvider post={threadItem.post}>
       <PostThreadItemLoaded
         // Safeguard from clobbering per-post state below:
         key={postShadowed.uri}
@@ -163,7 +165,7 @@ export function PostThreadItem({
             authorHandle={postShadowed.author.handle}
             shouldProxyLinks={true}
             />
-          ) : undefined}</PostThreadItemLoaded>
+            ) : undefined}</PostThreadItemLoaded></PostViewContextProvider>
     )
   }
   return null
@@ -180,16 +182,18 @@ function RecipeThreadItem({ record }: { record: AppFoodiosFeedRecipePost.Record 
     <div>
       <strong>Ingredients</strong>
       <table>
+        <tbody>
         {record.ingredients.map((ingredient, i) => {
-          return <tr>
+          return <tr key={i}>
             <td>{ingredient.name}</td><td>{ingredient.quantity}</td><td>{ingredient.unit}</td>
           </tr>
         })}
+        </tbody>
       </table>
       <strong>Steps</strong>
       <ol>
         {record.steps.map((step, i) => {
-          return <li>
+          return <li key={i}>
             {step.text}
           </li>
         })}

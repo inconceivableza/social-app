@@ -8,6 +8,7 @@ import {
   AtUri,
   type ModerationDecision,
   RichText as RichTextAPI,
+  AppFoodiosFeedRecipePost,
 } from '@atproto/api'
 import {
   FontAwesomeIcon,
@@ -61,9 +62,12 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
+import { ids } from '@atproto/api/client/lexicons'
+import { isRecipeUri } from '#/lib/strings/url-helpers'
+import { isRecipePostView, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 interface FeedItemProps {
-  record: AppBskyFeedPost.Record
+  record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
   reason:
     | AppBskyFeedDefs.ReasonRepost
     | AppBskyFeedDefs.ReasonPin
@@ -107,7 +111,10 @@ export function PostFeedItem({
 }): React.ReactNode {
   const postShadowed = usePostShadow(post)
   const richText = useMemo(
-    () =>
+    () => isRecipePostView(post) ? new RichTextAPI({
+      text: recipePostSummaryRichText(post.record),
+      facets: []
+    }) :
       new RichTextAPI({
         text: record.text,
         facets: record.facets,
@@ -178,7 +185,8 @@ let FeedItemInner = ({
 
   const href = useMemo(() => {
     const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
+    return makeProfileLink(post.author, postType, urip.rkey)
   }, [post.uri, post.author])
   const {sendInteraction, feedDescriptor} = useFeedFeedbackContext()
 
@@ -189,12 +197,14 @@ let FeedItemInner = ({
       feedContext,
       reqId,
     })
+    const text = isRecipePostView(post) ?
+      recipePostSummaryRichText(post.record) : record.text || ''
     openComposer({
       type: "post",
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        text: record.text || '',
+        text,
         author: post.author,
         embed: post.embed,
         moderation,
@@ -388,14 +398,17 @@ let FeedItemInner = ({
                               moderation.ui('displayName'),
                             )}
                           </Text>
+
                         }
                         href={makeProfileLink(reason.by)}
                         onBeforePress={onOpenReposter}
                       />
                     </ProfileHoverCard>
+
                   </Trans>
                 )}
               </Text>
+
             </Link>
           ) : AppBskyFeedDefs.isReasonPin(reason) ? (
             <View style={styles.includeReason}>
@@ -447,6 +460,8 @@ let FeedItemInner = ({
             postHref={href}
             onOpenAuthor={onOpenAuthor}
           />
+          {isRecipeUri(post.uri) ? <Text emoji>🍴</Text> : null}
+
           {showReplyTo &&
             (parentAuthor || isParentBlocked || isParentNotFound) && (
               <ReplyToLabel
@@ -456,6 +471,7 @@ let FeedItemInner = ({
               />
             )}
           <LabelsOnMyPost post={post} />
+          {/* {TODO: maybe pass in recipe content here} */}
           <PostContent
             moderation={moderation}
             richText={richText}

@@ -32,3 +32,7 @@ export type RecipePostView = AppBskyFeedDefs.PostView & { record: AppFoodiosFeed
 export function isRecipePostView(v: unknown): v is RecipePostView {
   return AppBskyFeedDefs.isPostView(v) && AppFoodiosFeedRecipePost.isRecord(v.record)
 }
+
+export function recipePostSummaryRichText(record: AppFoodiosFeedRecipePost.Record) {
+  return `${record.title}\n${record.text}`
+}

@@ -6,7 +6,8 @@ import {
   AppBskyFeedPost,
   AtUri,
   moderatePost,
-  RichText as RichTextAPI
+  RichText as RichTextAPI,
+  AppFoodiosFeedRecipePost
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
@@ -41,8 +42,11 @@ import {
   PostEmbedViewContext,
   QuoteEmbedViewContext,
 } from './types'
-import {VideoEmbed} from './VideoEmbed'
-import { isRecipePostView } from '#/lib/api/feed/utils'
+import { VideoEmbed } from './VideoEmbed'
+import { ids } from '@atproto/api/client/lexicons'
+import { Text } from '#/view/com/util/text/Text'
+import { isRecipeUri } from '#/lib/strings/url-helpers'
+import { recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -244,9 +248,9 @@ export function QuoteEmbed({
   const queryClient = useQueryClient()
   const pal = usePalette('default')
   const itemUrip = new AtUri(quote.uri)
-  const itemHref = makeProfileLink(quote.author, 'post', itemUrip.rkey)
+  const postType = itemUrip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
+  const itemHref = makeProfileLink(quote.author, postType, itemUrip.rkey)
   const itemTitle = `Post by ${quote.author.handle}`
-
   const richText = React.useMemo(() => {
     if (bsky.dangerousIsType<AppBskyFeedPost.Record>(
         quote.record,
@@ -257,10 +261,14 @@ export function QuoteEmbed({
       return text.trim()
         ? new RichTextAPI({ text: text, facets: facets })
         : undefined
-    } else if (isRecipePostView(quote)) {
+    } else if ((bsky.dangerousIsType<AppFoodiosFeedRecipePost.Record>(
+      quote.record,
+      AppFoodiosFeedRecipePost.isRecord,
+    )
+    )) {
       const { text, title } = quote.record
-      return text.trim()
-        ? new RichTextAPI({ text: title + "\n" + text })
+      return text.trim() || title.trim()
+        ? new RichTextAPI({ text: recipePostSummaryRichText(quote.record) }) 
         : undefined
     } else {
       return undefined
@@ -273,7 +281,6 @@ export function QuoteEmbed({
     unstableCacheProfileView(queryClient, quote.author)
     onOpen?.()
   }, [queryClient, quote.author, onOpen])
-
   const [hover, setHover] = React.useState(false)
   return (
     <View
@@ -302,6 +309,8 @@ export function QuoteEmbed({
                   postHref={itemHref}
                   timestamp={quote.indexedAt}
                 />
+                {isRecipeUri(quote.uri) ? <Text emoji>🍴</Text> : null}
+
               </View>
               {moderation ? (
                 <PostAlerts

@@ -44,6 +44,7 @@ import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
 import { ids } from '@atproto/api/client/lexicons'
+import { isRecipePostView, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -193,7 +194,9 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const record = item.value.post.record
   const moderation = item.moderation
   const richText = useMemo(
-    () =>
+    () => isRecipePostView(post) ? new RichTextAPI({
+      text: recipePostSummaryRichText(post.record)
+    }) :
       new RichTextAPI({
         text: record.text,
         facets: record.facets,
