@@ -6,7 +6,7 @@ import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVertical
 import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
 import { RecipePostDraft, useRecipePostReducer } from "./state/composerRecipe";
 import * as apilib from '#/lib/api/index'
-import { useAgent } from "#/state/session";
+import { useAgent, useSession } from "#/state/session";
 import { Button, ButtonText, ButtonIcon } from '#/components/Button'
 import { msg } from "@lingui/macro";
 import { Trans } from "@lingui/macro";
@@ -16,7 +16,7 @@ import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
 import { SelectVideoBtn } from "./videos/SelectVideoBtn";
 import { LayoutAnimationConfig } from "react-native-reanimated";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
@@ -26,6 +26,7 @@ import { EmojiArc_Stroke2_Corner0_Rounded as EmojiSmile } from '#/components/ico
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { SelectLangBtn } from "./select-language/SelectLangBtn";
 import { useQueryClient } from "@tanstack/react-query";
+import { uploadVideoDirect } from "./state/video";
 
 const msgs = {
     button_add_ingredient: msg({
@@ -61,6 +62,36 @@ export function ComposerRecipe() {
         })
         closeComposer()
     }
+    const { currentAccount } = useSession()
+    const currentDid = currentAccount!.did
+
+    const selectVideo = React.useCallback(
+        (postId: string, asset: ImagePickerAsset) => {
+            const abortController = new AbortController()
+            dispatch({
+
+                type: 'embed_add_video',
+                asset,
+                abortController,
+
+            })
+            uploadVideoDirect(asset,
+                videoAction => {
+                    dispatch({
+
+                        type: 'embed_update_video',
+                        videoAction,
+
+                    })
+                },
+                agent,
+                currentDid,
+                abortController.signal,
+                _,
+            )
+        },
+        [_, agent, currentDid, dispatch],
+    )
 
     return <View>
         <KeyboardAvoidingView
@@ -142,9 +173,10 @@ export function ComposerRecipe() {
             <ComposerFooter
                 post={state}
                 dispatch={dispatch}
+                // TODO: the rest of these
                 onEmojiButtonPress={() => { }}
                 onError={() => { }}
-                onSelectVideo={() => { }}
+                onSelectVideo={selectVideo}
             />
 
             {/* <TextInput

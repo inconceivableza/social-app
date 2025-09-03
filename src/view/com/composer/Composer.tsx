@@ -146,8 +146,8 @@ import {
 import {
   NO_VIDEO,
   type NoVideoState,
-  processVideo,
   type VideoState,
+  uploadVideoDirect,
 } from './state/video'
 import {getVideoMetadata} from './videos/pickVideo'
 import {clearThumbnailCache} from './videos/VideoTranscodeBackdrop'
@@ -190,7 +190,7 @@ export const ComposePost = ({
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishingStage, setPublishingStage] = useState('')
   const [error, setError] = useState('')
-  //
+
   const [composerState, composerDispatch] = useReducer(
     composerReducer,
     {
@@ -230,8 +230,7 @@ export const ComposePost = ({
           abortController,
         },
       })
-      processVideo(
-        asset,
+      uploadVideoDirect(asset, 
         videoAction => {
           composerDispatch({
             type: 'update_post',
