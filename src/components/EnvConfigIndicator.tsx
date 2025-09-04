@@ -1,5 +1,5 @@
 import React from 'react'
-import {TextInput, View} from 'react-native'
+import {type StyleProp, TextInput, View, type ViewStyle} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -166,7 +166,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
     [setEnvConfig, doDelayedReload, reloadMessage, _],
   )
 
-  return (
+  return __DEV__ ? (
     <View style={[a.flex_row, a.align_baseline, flatten(style)]}>
       <Text emoji style={[a.p_0, a.align_baseline]}>
         🌐
@@ -265,5 +265,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
         </View>
       )}
     </View>
-  )
+  ) : (
+    <></>
+  ) // only show env-config indicator on __DEV__ builds
 }
