@@ -19,6 +19,7 @@ import {
 } from '#/state/env-config'
 import {clearStorage} from '#/state/persisted'
 import * as Toast from '#/view/com/util/Toast'
+import {flatten} from '#/alf'
 import {atoms as a, platform, useTheme} from '#/alf'
 import * as Select from '#/components/Select'
 import {type ItemTextProps} from '#/components/Select/types'
@@ -29,7 +30,11 @@ export function DisabledItemText({children}: ItemTextProps) {
   return <Text style={[{color: '#808080'}]}>{children}</Text>
 }
 
-export function EnvConfigIndicator() {
+export type IndicatorProps = {
+  style?: StyleProp<ViewStyle>
+}
+
+export function EnvConfigIndicator({style}: IndicatorProps) {
   const t = useTheme()
   const {_} = useLingui()
 
@@ -162,7 +167,7 @@ export function EnvConfigIndicator() {
   )
 
   return (
-    <View style={[a.flex_row, a.align_baseline]}>
+    <View style={[a.flex_row, a.align_baseline, flatten(style)]}>
       <Text emoji style={[a.p_0, a.align_baseline]}>
         🌐
       </Text>
