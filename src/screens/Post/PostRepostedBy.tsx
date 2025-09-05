@@ -8,11 +8,13 @@ import {usePostThreadQuery} from '#/state/queries/post-thread'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostRepostedBy as PostRepostedByComponent} from '#/view/com/post-thread/PostRepostedBy'
 import * as Layout from '#/components/Layout'
+import { ids } from '@atproto/api/client/lexicons'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostRepostedBy'>
 export const PostRepostedByScreen = ({route}: Props) => {
-  const {name, rkey} = route.params
-  const uri = makeRecordUri(name, 'app.bsky.feed.post', rkey)
+  const { name, rkey, postType } = route.params
+  const collection = postType === "recipePost" ? ids.AppFoodiosFeedRecipePost : ids.AppBskyFeedPost
+  const uri = makeRecordUri(name, collection, rkey)
   const setMinimalShellMode = useSetMinimalShellMode()
   const {data: post} = usePostThreadQuery(uri)
 
