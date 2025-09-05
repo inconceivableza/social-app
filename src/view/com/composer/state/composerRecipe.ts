@@ -3,23 +3,21 @@ import { useReducer } from 'react'
 import { type SelfLabel } from '#/lib/moderation'
 import { EmbedAction, embedReducer, type EmbedDraft } from './composer'
 import { nanoid } from 'nanoid/non-secure'
+import { RichText } from '@atproto/api'
 
 type TaggedUnion<Tag extends string, O extends object> = {
     [K in keyof O]: Record<Tag, K> & O[K]
 }[keyof O]
-//type ReplaceProps
-// todo is there a commit hook to run prettier?
-// todo consider whether individual steps, ingredients could potentially be their own records
-type TextType = string // RichText
+type TextType = RichText
 
 interface IngredientDraft {
-    name: TextType
+    name: string
     quantity: string
     unit: string
 }
 
 interface StepDraft {
-    text: TextType
+    text: string
     embed?: EmbedDraft
 }
 
@@ -40,9 +38,9 @@ type Action = TaggedUnion<
         update_title: { value: TextType }
         update_main_text: { value: TextType, }
         add_step: {}
-        edit_step_text: { value: TextType, index: number }
+        edit_step_text: { value: string, index: number }
         add_ingredient: {}
-        edit_ingredient: { value: TextType, prop: keyof IngredientDraft, index: number }
+        edit_ingredient: { value: string, prop: keyof IngredientDraft, index: number }
     }
     > | EmbedAction
 
@@ -62,7 +60,11 @@ function recipePostReducer(
         case 'update_main_text':
             return { ...state, text: action.value }
         case 'add_step':
-            return { ...state, steps: state.steps.concat({ text: "" }) }
+            return {
+                ...state, steps: state.steps.concat({
+                    text: ''
+                })
+            }
         case 'edit_step_text': {
             checkIndex(state.steps, action.index)
             // TODO: consider Immer to prevent unwanted nested mutations
@@ -70,7 +72,11 @@ function recipePostReducer(
             steps[action.index] = { text: action.value }
             return { ...state, steps }
         }
-        case 'add_ingredient': return { ...state, ingredients: state.ingredients.concat({ name: "", quantity: "0", unit: "" }) }
+        case 'add_ingredient': return {
+            ...state, ingredients: state.ingredients.concat({
+                name: '', quantity: "0", unit: ""
+            })
+        }
         case 'edit_ingredient': {
             checkIndex(state.ingredients, action.index)
             const ingredients = [...state.ingredients]
@@ -87,18 +93,24 @@ function recipePostReducer(
     }
 }
 
+const initState = (): RecipePostDraft => ({
+    id: nanoid(),
+    title: new RichText({
+        text: ''
+    }),
+    text: new RichText({
+        text: ''
+    }),
+    ingredients: [],
+    steps: [],
+    labels: [],
+    embed: {
+        quote: undefined,
+        media: undefined,
+        link: undefined,
+    },
+})
+
 export function useRecipePostReducer() {
-    return useReducer(recipePostReducer, {
-        id: nanoid(),
-        title: '',
-        text: '',
-        ingredients: [],
-        steps: [],
-        labels: [],
-        embed: {
-            quote: undefined,
-            media: undefined,
-            link: undefined,
-        },
-    })
+    return useReducer(recipePostReducer, initState())
 }

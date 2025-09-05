@@ -1,7 +1,7 @@
 import { KeyboardAvoidingView } from "react-native";
 import { View } from "react-native";
 import { atoms as a, useTheme } from '#/alf'
-import { isIOS } from '#/platform/detection'
+import { isIOS, isWeb } from '#/platform/detection'
 import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset } from "./Composer";
 import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
 import { RecipePostDraft, useRecipePostReducer } from "./state/composerRecipe";
@@ -16,7 +16,7 @@ import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
 import { SelectVideoBtn } from "./videos/SelectVideoBtn";
 import { LayoutAnimationConfig } from "react-native-reanimated";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
@@ -27,7 +27,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { SelectLangBtn } from "./select-language/SelectLangBtn";
 import { useQueryClient } from "@tanstack/react-query";
 import { uploadVideoDirect } from "./state/video";
-
+import {
+    EmojiPicker,
+    type EmojiPickerPosition,
+    type EmojiPickerState,
+} from '#/view/com/composer/text-input/web/EmojiPicker'
+import { DismissableLayer, FocusGuards, FocusScope } from "radix-ui/internal";
+import { TextInputRef, TextInput } from "./text-input/TextInput";
 const msgs = {
     button_add_ingredient: msg({
         message: 'Add ingredient',
@@ -46,6 +52,8 @@ const msgs = {
     })
 }
 
+// TODO: NB fix description being focused first
+
 export function ComposerRecipe() {
     const keyboardVerticalOffset = useKeyboardVerticalOffset()
     const { closeComposer } = useComposerControls()
@@ -53,7 +61,10 @@ export function ComposerRecipe() {
     const [state, dispatch] = useRecipePostReducer()
     const agent = useAgent()
     const queryClient = useQueryClient()
-
+    const [pickerState, setPickerState] = React.useState<EmojiPickerState>({
+        isOpen: false,
+        pos: { top: 0, left: 0, right: 0, bottom: 0, nextFocusRef: null },
+    })
     const { _ } = useLingui()
     async function onPressPublish() {
         // TODO: validation
@@ -93,39 +104,149 @@ export function ComposerRecipe() {
         [_, agent, currentDid, dispatch],
     )
 
+    FocusGuards.useFocusGuards()
+    const titleInputRef = useRef<TextInputRef>(null)
+    const descriptionInputRef = useRef<TextInputRef>(null)
+    const currentRef = useRef<TextInputRef>()
+    const [focused, setFocused] = useState<"title" | "description" | undefined>("title")
+    const onOpenPicker = React.useCallback(
+        (pos: EmojiPickerPosition | undefined) => {
+            if (!pos) return
+            setPickerState({
+                isOpen: true,
+                pos,
+            })
+        },
+        [],
+    )
+
+    const onClosePicker = React.useCallback(() => {
+        setPickerState(prev => ({
+            ...prev,
+            isOpen: false,
+        }))
+    }, [])
+
+    const onEmojiButtonPress = useCallback(() => {
+        const rect = currentRef.current?.getCursorPosition()
+        if (rect) {
+            onOpenPicker({
+                ...rect,
+                nextFocusRef:
+                    currentRef as unknown as React.MutableRefObject<HTMLElement>,
+            })
+        }
+    }, [onOpenPicker, focused])
+
+    const isTextOnly = !state.embed.link && !state.embed.quote && !state.embed.media
+    const forceMinHeight = isWeb && isTextOnly
+
     return <View>
         <KeyboardAvoidingView
             testID="composePostView"
             behavior={isIOS ? 'padding' : 'height'}
             keyboardVerticalOffset={keyboardVerticalOffset}
             style={a.flex_1}>
-            <label>Title
-                <input onChange={ev => {
-                    dispatch({ type: "update_title", value: ev.target.value })
-                }} value={state.title} />
-            </label>
-            <label>
-                Description
-                <input onChange={ev => {
-                    dispatch({ type: "update_main_text", value: ev.target.value })
-                }} value={state.text} />
-            </label>
+            <FocusScope.FocusScope loop trapped asChild>
+
+                <DismissableLayer.DismissableLayer>
+                    <View>
+                        <fieldset>
+                            <legend>
+                                {/* todo: localize */}
+                                Title
+                            </legend>
+                            <TextInput
+                                ref={titleInputRef}
+                                style={[a.pt_xs]}
+                                richtext={state.title}
+                                placeholder={''}
+                                autoFocus
+                                webForceMinHeight={false}
+                                isActive={focused === "title"} // TODO: fix
+                                setRichText={rt => {
+                                    dispatch({ type: 'update_title', value: rt })
+                                }}
+                                onFocus={() => {
+
+                                    setFocused("title")
+                                    currentRef.current = titleInputRef.current ?? undefined
+                                }}
+
+
+
+                                onPhotoPasted={() => { }}
+                                onNewLink={() => { }}
+                                onError={() => { }}
+                                onPressPublish={() => { }}
+                                accessible={true}
+                                accessibilityLabel={_(msg`Write post`)}
+                                hasRightPadding={false}
+                            // accessibilityHint={_(
+                            //     msg`Compose posts up to ${plural(MAX_GRAPHEME_LENGTH || 0, {
+                            //         other: '# characters',
+                            //     })} in length`,
+                            // )}
+                            />
+
+                        </fieldset>
+                        <fieldset>
+                            <legend>Description</legend>
+                            <TextInput
+
+                                ref={descriptionInputRef}
+                                style={[a.pt_xs, { height: 2 }]}
+                                richtext={state.text}
+                                placeholder={''} // TODO: localize
+                                autoFocus={false}
+                                webForceMinHeight={forceMinHeight}
+                                isActive={focused === "description"} // TODO: fix
+                                setRichText={rt => {
+                                    dispatch({ type: 'update_main_text', value: rt })
+                                }}
+
+                                onFocus={() => {
+
+                                    setFocused("description")
+                                    currentRef.current = descriptionInputRef.current ?? undefined
+                                }}
+
+                                onPhotoPasted={() => { }}
+                                onNewLink={() => { }}
+                                onError={() => { }}
+                                onPressPublish={() => { }}
+                                accessible={true}
+                                accessibilityLabel={_(msg`Write post`)}
+                                hasRightPadding={false}
+                            // accessibilityHint={_(
+                            //     msg`Compose posts up to ${plural(MAX_GRAPHEME_LENGTH || 0, {
+                            //         other: '# characters',
+                            //     })} in length`,
+                            // )}
+                            />
+                        </fieldset>
             <fieldset>
                 <legend><Trans context="recipe">Ingredients</Trans></legend>
                 <ul>
                     {state.ingredients.map(({ name, quantity, unit }, i) => <div key={i}>
                         <label><Trans context="recipe">Item</Trans>
-                            <input value={name} onChange={ev => {
+                            <input onFocus={() => {
+                                setFocused(undefined)
+                            }} value={name} onChange={ev => {
                                 dispatch({ type: "edit_ingredient", prop: "name", value: ev.target.value, index: i })
                             }} />
                         </label>
                         <label><Trans context="recipe">Quantity</Trans>
-                            <input value={quantity} onChange={ev => {
+                            <input onFocus={() => {
+                                setFocused(undefined)
+                            }} value={quantity} onChange={ev => {
                                 dispatch({ type: "edit_ingredient", prop: "quantity", value: ev.target.value, index: i })
                             }} />
                         </label>
                         <label><Trans context="recipe">Unit</Trans>
-                            <input value={unit} onChange={ev => {
+                            <input onFocus={() => {
+                                setFocused(undefined)
+                            }} value={unit} onChange={ev => {
                                 dispatch({ type: "edit_ingredient", prop: "unit", value: ev.target.value, index: i })
                             }} />
                         </label>
@@ -144,7 +265,9 @@ export function ComposerRecipe() {
                 <ol>
                     {state.steps.map((step, i) => <div key={i}>
                         <label><Trans context="recipe">Step</Trans>
-                            <input value={step.text}
+                            <input onFocus={() => {
+                                setFocused(undefined)
+                            }} value={step.text}
                                 onChange={ev => dispatch({ type: "edit_step_text", index: i, value: ev.target.value })} />
                         </label>
                     </div>)}
@@ -171,13 +294,18 @@ export function ComposerRecipe() {
 
             </Button>
             <ComposerFooter
+                            emojiEnabled={focused === "description" || focused === "title"}
                 post={state}
                 dispatch={dispatch}
                 // TODO: the rest of these
-                onEmojiButtonPress={() => { }}
+                            onEmojiButtonPress={onEmojiButtonPress}
                 onError={() => { }}
                 onSelectVideo={selectVideo}
             />
+                        <EmojiPicker state={pickerState} close={onClosePicker} />
+                    </View>
+                </DismissableLayer.DismissableLayer>
+            </FocusScope.FocusScope>  
 
             {/* <TextInput
 
@@ -210,6 +338,7 @@ export function ComposerRecipe() {
                     })} in length`,
                 )}
             /> */}
+
         </KeyboardAvoidingView>
     </View>
 }
@@ -221,11 +350,13 @@ function ComposerFooter({
     onEmojiButtonPress,
     onError,
     onSelectVideo,
+    emojiEnabled
 }: {
     post: RecipePostDraft,
     dispatch: (action: EmbedAction) => void
     onEmojiButtonPress: () => void
     onError: (error: string) => void
+        emojiEnabled: boolean
     onSelectVideo: (postId: string, asset: ImagePickerAsset) => void
 }) {
 
@@ -292,6 +423,7 @@ function ComposerFooter({
                                 <Button
                                     onPress={onEmojiButtonPress}
                                     style={a.p_sm}
+                                        disabled={!emojiEnabled}
                                     label={_(msg`Open emoji picker`)}
                                     accessibilityHint={_(msg`Opens emoji picker`)}
                                     variant="ghost"
