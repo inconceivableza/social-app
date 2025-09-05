@@ -10,7 +10,7 @@ import {atoms as a} from '#/alf'
 import {MediaInsetBorder} from '#/components/MediaInsetBorder'
 import * as BandwidthEstimate from './bandwidth-estimate'
 import {Controls} from './web-controls/VideoControls'
-import { PostViewContext } from '#/view/com/posts/PostContext'
+import { PostAuthorDidContext } from '#/view/com/posts/PostContext'
 import { useAgent } from '#/state/session'
 
 export function VideoEmbedInnerWeb({
@@ -53,13 +53,13 @@ export function VideoEmbedInnerWeb({
       videoRef.current.currentTime = lastKnownTime.current
     }
   }, [lastKnownTime])
-  const postCtx = useContext(PostViewContext)
-  if (!postCtx) {
+  const authorDid = useContext(PostAuthorDidContext)
+  if (!authorDid) {
     throw new Error('post not found')
   }
   // TODO: pass this url down as a prop
   const agent = useAgent()
-  const url = `${agent.pdsUrl}xrpc/com.atproto.sync.getBlob?did=${postCtx.post.author.did}&cid=${embed.cid}`
+  const url = `${agent.pdsUrl}xrpc/com.atproto.sync.getBlob?did=${authorDid}&cid=${embed.cid}`
   return (
     <View
       style={[a.flex_1, a.rounded_md, a.overflow_hidden]}

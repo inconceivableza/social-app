@@ -38,7 +38,7 @@ import {
 import {atoms as a, native, platform, useBreakpoints, web} from '#/alf'
 import * as Layout from '#/components/Layout'
 import {ListFooter} from '#/components/Lists'
-import { PostViewContextProvider } from '#/view/com/posts/PostContext'
+import { PostAuthorDidProvider } from '#/view/com/posts/PostContext'
 
 const PARENT_CHUNK_SIZE = 5
 const CHILDREN_CHUNK_SIZE = 50
@@ -401,19 +401,19 @@ export function PostThread({uri}: {uri: string}) {
                 ref={anchorRef}
                 onLayout={() => setDeferParents(false)}
               />
-              <PostViewContextProvider post={item.value.post}>
+              <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemAnchor
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
                 onPostSuccess={optimisticOnPostReply}
                 postSource={anchorPostSource}
-                /></PostViewContextProvider>
+                /></PostAuthorDidProvider>
             </View>
           )
         } else {
           if (thread.state.view === 'tree') {
             return (
-              <PostViewContextProvider post={item.value.post}>
+              <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemTreePost
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
@@ -421,11 +421,11 @@ export function PostThread({uri}: {uri: string}) {
                   moderation: thread.state.otherItemsVisible && item.depth > 0,
                 }}
                 onPostSuccess={optimisticOnPostReply}
-                /></PostViewContextProvider>
+                /></PostAuthorDidProvider>
             )
           } else {
             return (
-              <PostViewContextProvider post={item.value.post}>
+              <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemPost
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
@@ -433,7 +433,7 @@ export function PostThread({uri}: {uri: string}) {
                   moderation: thread.state.otherItemsVisible && item.depth > 0,
                 }}
                 onPostSuccess={optimisticOnPostReply}
-                /></PostViewContextProvider>
+                /></PostAuthorDidProvider>
             )
           }
         }

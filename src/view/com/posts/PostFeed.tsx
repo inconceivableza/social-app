@@ -67,8 +67,7 @@ import {PostFeedErrorMessage} from './PostFeedErrorMessage'
 import {PostFeedItem} from './PostFeedItem'
 import {ShowLessFollowup} from './ShowLessFollowup'
 import {ViewFullThread} from './ViewFullThread'
-import { RecipeFeedItem } from './RecipeFeedItem'
-import { PostViewContextProvider } from './PostContext'
+import { PostAuthorDidProvider } from './PostContext'
 
 type FeedRow =
   | {
@@ -733,7 +732,7 @@ let PostFeed = ({
 
         if (item.type === "post") {
           return (
-            <PostViewContextProvider post={item.post}>
+            <PostAuthorDidProvider did={item.post.author.did}>
             <PostFeedItem
               post={item.post}
               record={item.record}
@@ -755,11 +754,11 @@ let PostFeed = ({
               rootPost={slice.items[0].post}
               onShowLess={onPressShowLess}
             />
-            </PostViewContextProvider>
+            </PostAuthorDidProvider>
           )
         } else if (item.type === "recipe") {
 
-          return <PostViewContextProvider post={item.post}><PostFeedItem
+          return <PostAuthorDidProvider did={item.post.author.did}><PostFeedItem
             post={item.post}
             record={item.post.record}
             reason={indexInSlice === 0 ? slice.reason : undefined}
@@ -779,7 +778,7 @@ let PostFeed = ({
             hideTopBorder={rowIndex === 0 && indexInSlice === 0}
             rootPost={slice.items[0].post}
             onShowLess={onPressShowLess}
-          /></PostViewContextProvider>
+          /></PostAuthorDidProvider>
           // <RecipeFeedItem post={item.post} feedContext={slice.feedContext} reqId={slice.reqId} />
         }
 

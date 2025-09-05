@@ -46,6 +46,7 @@ import { ids } from '@atproto/api/client/lexicons'
 import { Text } from '#/view/com/util/text/Text'
 import { isRecipeUri } from '#/lib/strings/url-helpers'
 import { postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
+import { PostAuthorDidProvider } from '#/view/com/posts/PostContext'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -325,6 +326,7 @@ export function QuoteEmbed({
                 />
               ) : null}
               {quote.embed && (
+                <PostAuthorDidProvider did={quote.author.did}>
                 <Embed
                   embed={quote.embed}
                   moderation={moderation}
@@ -334,6 +336,7 @@ export function QuoteEmbed({
                     parentIsWithinQuote ? false : parentAllowNestedQuotes
                   }
                 />
+                </PostAuthorDidProvider>
               )}
             </Link>
           </>

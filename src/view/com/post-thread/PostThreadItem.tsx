@@ -72,7 +72,7 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { PostViewContextProvider } from '../posts/PostContext'
+import { PostAuthorDidProvider } from '../posts/PostContext'
 import { postHref } from '#/lib/api/feed/utils'
 
 export function PostThreadItem({
@@ -132,7 +132,7 @@ export function PostThreadItem({
   // }
   if (richText && moderation) {
     return (
-      <PostViewContextProvider post={threadItem.post}>
+      <PostAuthorDidProvider did={threadItem.post.author.did}>
       <PostThreadItemLoaded
         // Safeguard from clobbering per-post state below:
         key={postShadowed.uri}
@@ -166,7 +166,7 @@ export function PostThreadItem({
             authorHandle={postShadowed.author.handle}
             shouldProxyLinks={true}
             />
-            ) : undefined}</PostThreadItemLoaded></PostViewContextProvider>
+            ) : undefined}</PostThreadItemLoaded></PostAuthorDidProvider>
     )
   }
   return null

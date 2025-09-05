@@ -1,16 +1,16 @@
-import { AppBskyFeedDefs } from "@atproto/api";
 import { PropsWithChildren, createContext } from "react";
 
-type PostViewContext = {
-    post: AppBskyFeedDefs.PostView
-} | null
+type PostAuthorDidContext = string | null
 
-export const PostViewContext = createContext<PostViewContext>(null)
+export const PostAuthorDidContext = createContext<PostAuthorDidContext>(null)
 
-export function PostViewContextProvider({ post, children }: PropsWithChildren<{
-    post: AppBskyFeedDefs.PostView
+export function PostAuthorDidProvider({ did, children }: PropsWithChildren<{
+    did: string
 }>) {
-    return <PostViewContext.Provider value={{ post }}>
+    if (!did) {
+        console.log('did', did)
+    }
+    return <PostAuthorDidContext.Provider value={did}>
         {children}
-    </PostViewContext.Provider>
+    </PostAuthorDidContext.Provider>
 }
