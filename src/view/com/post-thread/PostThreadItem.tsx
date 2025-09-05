@@ -73,6 +73,7 @@ import {VerificationCheckButton} from '#/components/verification/VerificationChe
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
 import { PostViewContextProvider } from '../posts/PostContext'
+import { postHref } from '#/lib/api/feed/utils'
 
 export function PostThreadItem({
   threadItem,
@@ -280,22 +281,20 @@ let PostThreadItemLoaded = ({
   )
   const shadowedPostAuthor = useProfileShadow(post.author)
   const rootUri = record.reply?.root?.uri || post.uri
-  const postHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+  const href = useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const itemTitle = _(msg`Post by ${post.author.handle}`)
   const authorHref = makeProfileLink(post.author)
   const authorTitle = post.author.handle
   const isThreadAuthor = getThreadAuthor(post, record) === currentAccount?.did
   const likesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'liked-by')
+    return postHref(post.author, post.uri, 'liked-by')
   }, [post.uri, post.author])
   const likesTitle = _(msg`Likes on this post`)
   const repostsHref = useMemo(() => {
     const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'reposted-by')
+    return postHref(post.author, post.uri, 'reposted-by')
   }, [post.uri, post.author])
   const repostsTitle = _(msg`Reposts of this post`)
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
@@ -316,7 +315,7 @@ let PostThreadItemLoaded = ({
   }, [post, currentAccount?.did, threadgateHiddenReplies, rootUri])
   const quotesHref = useMemo(() => {
     const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'quotes')
+    return postHref(post.author, post.uri, 'quotes')
   }, [post.uri, post.author])
   const quotesTitle = _(msg`Quotes of this post`)
   const onlyFollowersCanReply = !!threadgateRecord?.allow?.find(
@@ -632,7 +631,7 @@ let PostThreadItemLoaded = ({
         hideTopBorder={hideTopBorder}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
-          href={postHref}
+          href={href}
           disabled={overrideBlur}
           modui={moderation.ui('contentList')}
           iconSize={isThreadedChild ? 24 : 42}
@@ -709,7 +708,7 @@ let PostThreadItemLoaded = ({
                 author={post.author}
                 moderation={moderation}
                 timestamp={post.indexedAt}
-                postHref={postHref}
+                postHref={href}
                 showAvatar={isThreadedChild}
                 avatarSize={24}
                 style={[a.pb_xs]}
@@ -767,7 +766,7 @@ let PostThreadItemLoaded = ({
                   paddingBottom: treeView ? 4 : 12,
                 },
               ]}
-              href={postHref}
+              href={href}
               title={itemTitle}
               noFeedback>
               <Text

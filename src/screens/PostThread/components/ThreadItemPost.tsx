@@ -10,8 +10,7 @@ import {Trans} from '@lingui/macro'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {MAX_POST_LINES} from '#/lib/constants'
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {makeProfileLink} from '#/lib/routes/links'
+import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
@@ -43,8 +42,7 @@ import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
-import { ids } from '@atproto/api/client/lexicons'
-import { isRecipePostView, recipePostSummaryRichText } from '#/lib/api/feed/utils'
+import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -207,10 +205,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
   const threadRootUri = record.reply?.root?.uri || post.uri
-  const postHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
-    return makeProfileLink(post.author, postType, urip.rkey)
+  const href = useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
     threadgateRecord,
@@ -256,7 +252,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
-          href={postHref}
+          href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
           iconSize={LINEAR_AVI_WIDTH}
@@ -296,7 +292,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 author={post.author}
                 moderation={moderation}
                 timestamp={post.indexedAt}
-                postHref={postHref}
+                postHref={href}
                 style={[a.pb_xs]}
               />
               <LabelsOnMyPost post={post} style={[a.pb_xs]} />

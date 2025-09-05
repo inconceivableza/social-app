@@ -11,7 +11,6 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native'
 
-import {makeProfileLink} from '#/lib/routes/links'
 import {CommonNavigatorParams, NavigationProp} from '#/lib/routes/types'
 import {
   convertBskyAppUrlIfNeeded,
@@ -31,6 +30,7 @@ import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {RichText} from '#/components/RichText'
 import {Text} from '#/components/Typography'
 import * as bsky from '#/types/bsky'
+import { postHref } from '#/lib/api/feed/utils'
 
 export function useMessageEmbed() {
   const route =
@@ -154,8 +154,7 @@ export function MessageInputEmbed({
       )
       break
     case 'success':
-      const itemUrip = new AtUri(post.uri)
-      const itemHref = makeProfileLink(post.author, 'post', itemUrip.rkey)
+      const itemHref = postHref(post.author, post.uri)
 
       if (!post || !moderation || !rt || !record) {
         return null

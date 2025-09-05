@@ -62,9 +62,8 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
-import { ids } from '@atproto/api/client/lexicons'
 import { isRecipeUri } from '#/lib/strings/url-helpers'
-import { isRecipePostView, recipePostSummaryRichText } from '#/lib/api/feed/utils'
+import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 interface FeedItemProps {
   record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
@@ -184,9 +183,7 @@ let FeedItemInner = ({
   const [hover, setHover] = useState(false)
 
   const href = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
-    return makeProfileLink(post.author, postType, urip.rkey)
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const {sendInteraction, feedDescriptor} = useFeedFeedbackContext()
 

@@ -84,7 +84,7 @@ import {
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
 import * as bsky from '#/types/bsky'
-import { ids } from '@atproto/api/client/lexicons'
+import { postHref } from '#/lib/api/feed/utils'
 
 let PostMenuItems = ({
   post,
@@ -169,9 +169,7 @@ let PostMenuItems = ({
   })
 
   const href = useMemo(() => {
-    const urip = new AtUri(postUri)
-    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
-    return makeProfileLink(postAuthor, postType, urip.rkey)
+    return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
   const translatorUrl = getTranslatorLink(
     record.text,
@@ -192,7 +190,7 @@ let PostMenuItems = ({
             (params.name === currentAccount.handle ||
               params.name === currentAccount.did)
           ) {
-            const currentHref = makeProfileLink(postAuthor, 'post', params.rkey)
+            const currentHref = postHref(postAuthor, postUri)
             if (currentHref === href && navigation.canGoBack()) {
               navigation.goBack()
             }

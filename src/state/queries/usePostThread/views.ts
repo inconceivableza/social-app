@@ -15,6 +15,7 @@ import {
   type ThreadItem,
   type TraversalMetadata,
 } from '#/state/queries/usePostThread/types'
+import { postHref } from '#/lib/api/feed/utils'
 
 export function threadPostNoUnauthenticated({
   uri,
@@ -108,14 +109,11 @@ export function readMore({
   postData,
 }: TraversalMetadata): Extract<ThreadItem, {type: 'readMore'}> {
   const urip = new AtUri(postData.uri)
-  const href = makeProfileLink(
-    {
-      did: urip.host,
-      handle: postData.authorHandle,
-    },
-    'post',
-    urip.rkey,
-  )
+  const href = postHref({
+    did: urip.host,
+    handle: postData.authorHandle,
+  }, postData.uri)
+
   return {
     type: 'readMore' as const,
     key: `readMore:${postData.uri}`,
@@ -130,13 +128,12 @@ export function readMoreUp({
   postData,
 }: TraversalMetadata): Extract<ThreadItem, {type: 'readMoreUp'}> {
   const urip = new AtUri(postData.uri)
-  const href = makeProfileLink(
+  const href = postHref(
     {
       did: urip.host,
       handle: postData.authorHandle,
     },
-    'post',
-    urip.rkey,
+    postData.uri
   )
   return {
     type: 'readMoreUp' as const,

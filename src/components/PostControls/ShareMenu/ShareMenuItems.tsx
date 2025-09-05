@@ -5,8 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
-import {CHAT_DISABLED} from '#/lib/constants'
-import {makeProfileLink} from '#/lib/routes/links'
+import { CHAT_DISABLED } from '#/lib/constants'
 import {type NavigationProp} from '#/lib/routes/types'
 import {shareText, shareUrl} from '#/lib/sharing'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -28,7 +27,7 @@ import * as Menu from '#/components/Menu'
 import {useDevMode} from '#/storage/hooks/dev-mode'
 import {RecentChats} from './RecentChats'
 import {type ShareMenuItemsProps} from './ShareMenuItems.types'
-import { ids } from '@atproto/api/client/lexicons'
+import { postHref } from '#/lib/api/feed/utils'
 
 let ShareMenuItems = ({
   post,
@@ -45,9 +44,7 @@ let ShareMenuItems = ({
   const postAuthor = useProfileShadow(post.author)
 
   const href = useMemo(() => {
-    const urip = new AtUri(postUri)
-    const postType = urip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
-    return makeProfileLink(postAuthor, postType, urip.rkey)
+    return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
   const hideInPWI = useMemo(() => {
     return !!postAuthor.labels?.find(

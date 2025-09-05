@@ -61,6 +61,7 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
+import { postHref } from '#/lib/api/feed/utils'
 
 export function ThreadItemAnchor({
   item,
@@ -200,16 +201,13 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const isThreadAuthor = getThreadAuthor(post, record) === currentAccount?.did
 
   const likesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'liked-by')
+    return postHref(post.author, post.uri, 'liked-by')
   }, [post.uri, post.author])
   const repostsHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'reposted-by')
+    return postHref(post.author, post.uri, 'reposted-by')
   }, [post.uri, post.author])
   const quotesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'quotes')
+    return postHref(post.author, post.uri, 'quotes')
   }, [post.uri, post.author])
 
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({

@@ -12,8 +12,7 @@ import {
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
-import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
+import { usePalette } from '#/lib/hooks/usePalette'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
@@ -46,7 +45,7 @@ import { VideoEmbed } from './VideoEmbed'
 import { ids } from '@atproto/api/client/lexicons'
 import { Text } from '#/view/com/util/text/Text'
 import { isRecipeUri } from '#/lib/strings/url-helpers'
-import { recipePostSummaryRichText } from '#/lib/api/feed/utils'
+import { postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -230,6 +229,7 @@ export function QuoteEmbed({
   embed: EmbedType<'post'>
   viewContext?: QuoteEmbedViewContext
 }) {
+  // TODO pass author down to video
   const moderationOpts = useModerationOpts()
   const quote = React.useMemo<$Typed<AppBskyFeedDefs.PostView>>(
     () => ({
@@ -247,9 +247,7 @@ export function QuoteEmbed({
   const t = useTheme()
   const queryClient = useQueryClient()
   const pal = usePalette('default')
-  const itemUrip = new AtUri(quote.uri)
-  const postType = itemUrip.collection === ids.AppFoodiosFeedRecipePost ? 'recipe' : 'post'
-  const itemHref = makeProfileLink(quote.author, postType, itemUrip.rkey)
+  const itemHref = postHref(quote.author, quote.uri)
   const itemTitle = `Post by ${quote.author.handle}`
   const richText = React.useMemo(() => {
     if (bsky.dangerousIsType<AppBskyFeedPost.Record>(
