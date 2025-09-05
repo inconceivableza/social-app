@@ -17,8 +17,35 @@ module.exports = function (_config) {
   const PLATFORM = process.env.EAS_BUILD_PLATFORM
 
   const IS_TESTFLIGHT = process.env.EXPO_PUBLIC_ENV === 'testflight'
+  const IS_PREVIEW = process.env.EXPO_PUBLIC_ENV === 'preview'
   const IS_PRODUCTION = process.env.EXPO_PUBLIC_ENV === 'production'
-  const IS_DEV = !IS_TESTFLIGHT || !IS_PRODUCTION
+  const IS_DEV = !(IS_TESTFLIGHT || IS_PREVIEW || IS_PRODUCTION)
+
+  const getVariantPackageName = packageName => {
+    if (IS_DEV) {
+      return packageName + '.dev'
+    }
+    if (IS_TESTFLIGHT) {
+      return packageName + '.testflight'
+    }
+    if (IS_PREVIEW) {
+      return packageName + '.preview'
+    }
+    return packageName
+  }
+
+  const getVariantAppName = name => {
+    if (IS_DEV) {
+      return name + ' (Dev)'
+    }
+    if (IS_TESTFLIGHT) {
+      return name + ' (Testflight)'
+    }
+    if (IS_PREVIEW) {
+      return name + ' (Preview)'
+    }
+    return name
+  }
 
   const ASSOCIATED_DOMAINS = [
     'applinks:bsky.app',
@@ -65,7 +92,7 @@ module.exports = function (_config) {
   return {
     expo: {
       version: VERSION,
-      name: 'Bluesky',
+      name: getVariantAppName('Bluesky'),
       slug: 'bluesky',
       scheme: 'bluesky',
       owner: 'blueskysocial',
@@ -77,7 +104,7 @@ module.exports = function (_config) {
       primaryColor: '#1083fe',
       ios: {
         supportsTablet: false,
-        bundleIdentifier: 'xyz.blueskyweb.app',
+        bundleIdentifier: getVariantPackageName('xyz.blueskyweb.app'),
         config: {
           usesNonExemptEncryption: false,
         },
@@ -181,7 +208,7 @@ module.exports = function (_config) {
           backgroundColor: '#1185FE',
         },
         googleServicesFile: './google-services.json',
-        package: 'xyz.blueskyweb.app',
+        package: getVariantPackageName('xyz.blueskyweb.app'),
         intentFilters: [
           {
             action: 'VIEW',

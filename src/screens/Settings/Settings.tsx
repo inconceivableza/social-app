@@ -33,6 +33,7 @@ import {
   getStoredEnvConfig,
   hasRequiredConfig,
   setStoredEnvConfig,
+  SWITCHING_ENABLED,
   useEnvConfig,
 } from '#/state/env-config'
 import * as persisted from '#/state/persisted'
@@ -295,22 +296,24 @@ export function SettingsScreen({}: Props) {
               {showDevOptions && <DevOptions />}
             </>
           )}
-          <SettingsList.PressableItem
-            onPress={() => {
-              if (!reducedMotion) {
-                LayoutAnimation.configureNext(
-                  LayoutAnimation.Presets.easeInEaseOut,
-                )
-              }
-              setShowServerDomains(d => !d)
-            }}
-            label={_(msg`Switch server domains`)}>
-            <SettingsList.ItemIcon icon={GlobeIcon} />
-            <SettingsList.ItemText>
-              <Trans>Switch server domains</Trans>
-            </SettingsList.ItemText>
-          </SettingsList.PressableItem>
-          {showServerDomains && <ServerDomains />}
+          {SWITCHING_ENABLED && (
+            <SettingsList.PressableItem
+              onPress={() => {
+                if (!reducedMotion) {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  )
+                }
+                setShowServerDomains(d => !d)
+              }}
+              label={_(msg`Switch server domains`)}>
+              <SettingsList.ItemIcon icon={GlobeIcon} />
+              <SettingsList.ItemText>
+                <Trans>Switch server domains</Trans>
+              </SettingsList.ItemText>
+            </SettingsList.PressableItem>
+          )}
+          {SWITCHING_ENABLED && showServerDomains && <ServerDomains />}
         </SettingsList.Container>
       </Layout.Content>
 

@@ -268,10 +268,32 @@ export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
   process: PROCESS_ENV_CONFIG,
 }
 
+const location = window.location
+const {protocol, host, hostname} = location || {
+  protocol: undefined,
+  host: undefined,
+  hostname: undefined,
+}
+const isWeb = protocol === 'http' || protocol === 'https'
+const isProductionWeb = isWeb && hostname == PRODUCTION_DOMAIN
+const isStagingWeb = isWeb && hostname == STAGING_DOMAIN
+export const buildProfileName = process.env.EXPO_PUBLIC_ENV || 'development'
+const isProductionEnv =
+  isProductionWeb || (!isWeb && buildProfileName === 'production')
+const isStagingEnv = isStagingWeb || (!isWeb && buildProfileName === 'test')
+
 // NB there's a difference between a staging build and the staging domains
 const DEFAULT_ENVCONFIG = __DEV__
   ? fallbackConfig(DEVELOPMENT_CONFIG, PRODUCTION_CONFIG, BLUESKY_CONFIG)
-  : fallbackConfig(PRODUCTION_CONFIG, BLUESKY_CONFIG)
+  : // both production and staging social-app should default to their equivalent servers
+    isProductionEnv
+    ? fallbackConfig(PRODUCTION_CONFIG, BLUESKY_CONFIG)
+    : isStagingEnv
+      ? fallbackConfig(STAGING_CONFIG, PRODUCTION_CONFIG, BLUESKY_CONFIG)
+      : // but any development or other mode should default to the local development first
+        fallbackConfig(DEVELOPMENT_CONFIG, PRODUCTION_CONFIG, BLUESKY_CONFIG)
+
+export const SWITCHING_ENABLED = !isProductionEnv
 
 export function getStoredEnvConfig(): EnvConfig {
   const storedEnvConfig: EnvConfig = {...EMPTY_CONFIG}
@@ -337,8 +359,6 @@ export async function fetchEnvConfig(server: string) {
 
 export function determineDomainEnvConfig(): EnvConfig {
   // determines the envConfig based on the domain name, if present (only on web)
-  const location = window.location
-  const {protocol, host, hostname} = location
   if (protocol === 'http' || protocol === 'https') {
     logger.info(`Environment config deduction based on ${protocol}://${host}:`)
     if (hostname === PRODUCTION_DOMAIN) {
@@ -349,7 +369,9 @@ export function determineDomainEnvConfig(): EnvConfig {
       return DOMAIN_ENVCONFIGS.staging
     }
   }
-  logger.warn('Falling back to default production environment config')
+  logger.warn(
+    `Falling back to default environment config based on expo env ${buildProfileName}`,
+  )
   return DEFAULT_ENVCONFIG
 }
 

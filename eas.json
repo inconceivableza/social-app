@@ -18,7 +18,7 @@
         "resourceClass": "large"
       },
       "env": {
-        "EXPO_PUBLIC_ENV": "production"
+        "EXPO_PUBLIC_ENV": "development"
       }
     },
     "preview": {
@@ -29,7 +29,7 @@
         "resourceClass": "large"
       },
       "env": {
-        "EXPO_PUBLIC_ENV": "production"
+        "EXPO_PUBLIC_ENV": "preview"
       }
     },
     "production": {

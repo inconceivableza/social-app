@@ -15,6 +15,7 @@ import {
   hasRequiredConfig,
   renderEnvConfig,
   setStoredEnvConfig,
+  SWITCHING_ENABLED,
   useEnvConfig,
 } from '#/state/env-config'
 import {clearStorage} from '#/state/persisted'
@@ -166,7 +167,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
     [setEnvConfig, doDelayedReload, reloadMessage, _],
   )
 
-  return __DEV__ ? (
+  return SWITCHING_ENABLED ? (
     <View style={[a.flex_row, a.align_baseline, flatten(style)]}>
       <Text emoji style={[a.p_0, a.align_baseline]}>
         🌐
@@ -267,5 +268,5 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
     </View>
   ) : (
     <></>
-  ) // only show env-config indicator on __DEV__ builds
+  ) // only show env-config indicator when switching is enabled
 }
