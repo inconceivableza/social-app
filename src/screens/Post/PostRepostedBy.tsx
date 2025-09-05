@@ -19,8 +19,9 @@ export const PostRepostedByScreen = ({route}: Props) => {
   const {data: post} = usePostThreadQuery(uri)
 
   let quoteCount
-  if (post?.thread.type === 'post') {
-    quoteCount = post.thread.post.repostCount
+  const threadType = post?.thread.type
+  if (threadType === "post" || threadType === "recipe") {
+    quoteCount = post?.thread.post.repostCount
   }
 
   useFocusEffect(
