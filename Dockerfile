@@ -56,6 +56,29 @@ ARG EXPO_PUBLIC_STATSIG_CLIENT_KEY=$EXPO_PUBLIC_STATSIG_CLIENT_KEY
 ARG EXPO_PUBLIC_STATSIG_API_URL
 ARG EXPO_PUBLIC_STATSIG_API_URL=$EXPO_PUBLIC_STATSIG_API_URL
 
+RUN mkdir --parents $NVM_DIR && \
+  wget \
+    --output-document=/tmp/nvm-install.sh \
+    https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh && \
+  bash /tmp/nvm-install.sh
+
+RUN \. "$NVM_DIR/nvm.sh" && \
+  nvm install $NODE_VERSION 
+
+RUN \. "$NVM_DIR/nvm.sh" && \
+  nvm use $NODE_VERSION && \
+  echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
+  echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER" >> .env && \
+  echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env && \
+  npm install --global yarn
+
+COPY ./package.json ./package.json
+COPY ./yarn.lock ./yarn.lock
+COPY ./lingui.config.js ./lingui.config.js 
+
+RUN \. "$NVM_DIR/nvm.sh" && \
+  nvm use $NODE_VERSION && \
+  yarn
 #
 # Copy everything into the container
 #
@@ -64,20 +87,12 @@ COPY . .
 #
 # Generate the JavaScript webpack.
 #
-RUN mkdir --parents $NVM_DIR && \
-  wget \
-    --output-document=/tmp/nvm-install.sh \
-    https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh && \
-  bash /tmp/nvm-install.sh
 
 RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm install $NODE_VERSION && \
   nvm use $NODE_VERSION && \
   echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
   echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER" >> .env && \
   echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env && \
-  npm install --global yarn && \
-  yarn && \
   yarn intl:build 2>&1 | tee i18n.log && \
   if grep -q "invalid syntax" "i18n.log"; then echo "\n\nFound compilation errors!\n\n" && exit 1; else echo "\n\nNo compile errors!\n\n"; fi && \
   EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER EXPO_PUBLIC_BUNDLE_DATE=$() SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$SENTRY_RELEASE SENTRY_DIST=$SENTRY_DIST EXPO_PUBLIC_SENTRY_DSN=$EXPO_PUBLIC_SENTRY_DSN yarn build-web
