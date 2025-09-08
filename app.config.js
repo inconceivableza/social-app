@@ -79,7 +79,7 @@ module.exports = function (_config) {
 
   const envFilenames = {
     production: '.env.production',
-    staging: '.env.staging',
+    staging: '.env.test',
     development: '.env',
   }
   const defaultEnvPath = __dirname
