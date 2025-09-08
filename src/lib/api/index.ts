@@ -212,8 +212,8 @@ export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: Rec
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
     steps: post.steps,
-    text: post.text,
-    title: post.title,
+    text: post.text.text,
+    title: post.title.text,
     embed
   }
   const tid = TID.next()
