@@ -1,8 +1,8 @@
-import { KeyboardAvoidingView } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { View } from "react-native";
-import { atoms as a, useTheme } from '#/alf'
-import { isIOS, isWeb } from '#/platform/detection'
-import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset } from "./Composer";
+import { atoms as a, native, useTheme, web } from '#/alf'
+import { isAndroid, isIOS, isWeb } from '#/platform/detection'
+import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset, useScrollTracker } from "./Composer";
 import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
 import { RecipePostDraft, useRecipePostReducer } from "./state/composerRecipe";
 import * as apilib from '#/lib/api/index'
@@ -15,15 +15,14 @@ import { useComposerControls } from "#/state/shell/composer";
 import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
 import { SelectVideoBtn } from "./videos/SelectVideoBtn";
-import { LayoutAnimationConfig } from "react-native-reanimated";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import Animated, { LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
 import { ComposerImage } from "#/state/gallery";
 import { Gif } from "#/state/queries/tenor";
 import { EmojiArc_Stroke2_Corner0_Rounded as EmojiSmile } from '#/components/icons/Emoji'
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { SelectLangBtn } from "./select-language/SelectLangBtn";
 import { useQueryClient } from "@tanstack/react-query";
 import { uploadVideoDirect } from "./state/video";
@@ -34,6 +33,13 @@ import {
 } from '#/view/com/composer/text-input/web/EmojiPicker'
 import { DismissableLayer, FocusGuards, FocusScope } from "radix-ui/internal";
 import { TextInputRef, TextInput } from "./text-input/TextInput";
+import { usePalette } from "#/lib/hooks/usePalette";
+import { colors } from "#/lib/styles";
+import { Text } from '#/view/com/util/text/Text'
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useIsKeyboardVisible } from "#/lib/hooks/useIsKeyboardVisible";
+import { clearThumbnailCache } from "./videos/VideoTranscodeBackdrop";
+
 const msgs = {
     button_add_ingredient: msg({
         message: 'Add ingredient',
@@ -66,11 +72,15 @@ export function ComposerRecipe() {
         pos: { top: 0, left: 0, right: 0, bottom: 0, nextFocusRef: null },
     })
     const { _ } = useLingui()
+    const [isPublishing, setIsPublishing] = useState(false)
     async function onPressPublish() {
         // TODO: validation
+        setIsPublishing(true)
         const postUri = await apilib.postRecipe(agent, queryClient, {
             post: state
         })
+        // TODO: catch errors
+        setIsPublishing(false)
         closeComposer()
     }
     const { currentAccount } = useSession()
@@ -127,6 +137,20 @@ export function ComposerRecipe() {
         }))
     }, [])
 
+    const scrollViewRef = useAnimatedRef<Animated.ScrollView>()
+
+
+    const {
+        scrollHandler,
+        onScrollViewContentSizeChange,
+        onScrollViewLayout,
+        topBarAnimatedStyle,
+        bottomBarAnimatedStyle,
+    } = useScrollTracker({
+        scrollViewRef,
+        stickyBottom: false, // TODO: check
+    })
+
     const onEmojiButtonPress = useCallback(() => {
         const rect = currentRef.current?.getCursorPosition()
         if (rect) {
@@ -140,6 +164,41 @@ export function ComposerRecipe() {
 
     const isTextOnly = !state.embed.link && !state.embed.quote && !state.embed.media
     const forceMinHeight = isWeb && isTextOnly
+    const insets = useSafeAreaInsets()
+    const [isKeyboardVisible] = useIsKeyboardVisible({ iosUseWillEvents: true })
+
+    const viewStyles = useMemo(
+        () => ({
+            paddingTop: isAndroid ? insets.top : 0,
+            paddingBottom:
+                // iOS - when keyboard is closed, keep the bottom bar in the safe area
+                (isIOS && !isKeyboardVisible) ||
+                    // Android - Android >=35 KeyboardAvoidingView adds double padding when
+                    // keyboard is closed, so we subtract that in the offset and add it back
+                    // here when the keyboard is open
+                    (isAndroid && isKeyboardVisible)
+                    ? insets.bottom
+                    : 0,
+        }),
+        [insets, isKeyboardVisible],
+    )
+
+    const onPressCancel = useCallback(() => {
+        // if (
+        //   thread.posts.some(
+        //     post =>
+        //       post.shortenedGraphemeLength > 0 ||
+        //       post.embed.media ||
+        //       post.embed.link,
+        //   )
+        // ) {
+        //   closeAllDialogs()
+        //   Keyboard.dismiss()
+        //   discardPromptControl.open()
+        // } else {
+        closeComposer()
+
+    }, [closeComposer])// [thread, closeAllDialogs, discardPromptControl, onClose])
 
     return <View>
         <KeyboardAvoidingView
@@ -147,9 +206,17 @@ export function ComposerRecipe() {
             behavior={isIOS ? 'padding' : 'height'}
             keyboardVerticalOffset={keyboardVerticalOffset}
             style={a.flex_1}>
+            <View
+                style={[a.flex_1, viewStyles]}
+                aria-modal
+                accessibilityViewIsModal></View>
+            <ComposerTopBar onCancel={onPressCancel} onPublish={onPressPublish}
+                canPost isPublishing={isPublishing} topBarAnimatedStyle={topBarAnimatedStyle}
+            />
             <FocusScope.FocusScope loop trapped asChild>
 
                 <DismissableLayer.DismissableLayer>
+                    {/*  <Animated.ScrollView */}
                     <View>
                         <fieldset>
                             <legend>
@@ -306,41 +373,140 @@ export function ComposerRecipe() {
                     </View>
                 </DismissableLayer.DismissableLayer>
             </FocusScope.FocusScope>  
-
-            {/* <TextInput
-
-                style={[a.pt_xs]}
-                richtext={richtext}
-                placeholder={"Title"}
-                autoFocus
-                webForceMinHeight={forceMinHeight}
-                // To avoid overlap with the close button:
-                hasRightPadding={isPartOfThread}
-                isActive={isActive}
-                setRichText={rt => {
-                    dispatchPost({ type: 'update_richtext', richtext: rt })
-                }}
-                onFocus={() => {
-                    dispatch({
-                        type: 'focus_post',
-                        postId: post.id,
-                    })
-                }}
-                onPhotoPasted={onPhotoPasted}
-                onNewLink={onNewLink}
-                onError={onError}
-                onPressPublish={onPublish}
-                accessible={true}
-                accessibilityLabel={_(msg`Write post`)}
-                accessibilityHint={_(
-                    msg`Compose posts up to ${plural(MAX_GRAPHEME_LENGTH || 0, {
-                        other: '# characters',
-                    })} in length`,
-                )}
-            /> */}
-
         </KeyboardAvoidingView>
     </View>
+}
+
+// TODO: remove unused
+const styles = StyleSheet.create({
+    topbarInner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+        height: 54,
+        gap: 4,
+    },
+    postBtn: {
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 6,
+        marginLeft: 12,
+    },
+    stickyFooterWeb: web({
+        position: 'sticky',
+        bottom: 0,
+    }),
+    errorLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: colors.red1,
+        borderRadius: 6,
+        marginHorizontal: 16,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        marginBottom: 8,
+    },
+    reminderLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 6,
+        marginHorizontal: 16,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        marginBottom: 8,
+    },
+    errorIcon: {
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: colors.red4,
+        color: colors.red4,
+        borderRadius: 30,
+        width: 16,
+        height: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 5,
+    },
+    inactivePost: {
+        opacity: 0.5,
+    },
+    addExtLinkBtn: {
+        borderWidth: 1,
+        borderRadius: 24,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        marginHorizontal: 10,
+        marginBottom: 4,
+    },
+})
+
+// TODO: add error child
+function ComposerTopBar({
+    topBarAnimatedStyle,
+    onCancel,
+    isPublishing,
+    onPublish,
+    canPost
+}: {
+    topBarAnimatedStyle: StyleProp<ViewStyle>
+    onCancel: () => void
+    isPublishing: boolean
+    onPublish: () => void
+    canPost: boolean
+}) {
+    const { _ } = useLingui()
+    return (
+        <Animated.View
+            style={topBarAnimatedStyle}
+            layout={native(LinearTransition)}>
+            <View style={styles.topbarInner}>
+                <Button
+                    label={_(msg`Cancel`)}
+                    variant="ghost"
+                    color="primary"
+                    shape="default"
+                    size="small"
+                    style={[a.rounded_full, a.py_sm, { paddingLeft: 7, paddingRight: 7 }]}
+                    onPress={onCancel}
+                    accessibilityHint={_(
+                        msg`Closes post composer and discards post draft`,
+                    )}>
+                    <ButtonText style={[a.text_md]}>
+                        <Trans>Cancel</Trans>
+                    </ButtonText>
+                </Button>
+                <View style={a.flex_1} />
+                {isPublishing ? (
+
+                    <View style={styles.postBtn}>
+                        <ActivityIndicator />
+                    </View>
+
+                ) : (
+                    <Button
+                        testID="composerPublishBtn"
+                        label={_(
+                            msg({
+                                message: 'Publish recipe',
+                                comment:
+                                    'Accessibility label for button to publish a recipe',
+                            }),
+                        )
+                        }
+                        variant="solid"
+                        color="primary"
+                        shape="default"
+                        size="small"
+                        style={[a.rounded_full, a.py_sm]}
+                        onPress={onPublish}
+                        disabled={!canPost}>
+                        <ButtonText style={[a.text_md]}>
+                            <Trans context="action">Post</Trans>
+                        </ButtonText>
+                    </Button>
+                )}
+            </View>
+        </Animated.View>
+    )
 }
 
 

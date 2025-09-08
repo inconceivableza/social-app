@@ -1368,7 +1368,7 @@ export function useComposerCancelRef() {
   return useRef<CancelRef>(null)
 }
 
-function useScrollTracker({
+export function useScrollTracker({
   scrollViewRef,
   stickyBottom,
 }: {
