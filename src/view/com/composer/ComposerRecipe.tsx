@@ -353,13 +353,7 @@ export function ComposerRecipe() {
                     clearVideo={() => { }}
                     isActivePost={true}
                 />
-            </View>
-            <Button onPress={onPressPublish} label={_(msgs.button_post_recipe)}>
-                <ButtonText>
-                    <Trans context="action">Post</Trans>
-                </ButtonText>
-
-            </Button>
+                        </View>
             <ComposerFooter
                             emojiEnabled={focused === "description" || focused === "title"}
                 post={state}
