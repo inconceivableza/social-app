@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- This only applies to dev builds, and adds the user certificate store, so manually installed certificates can be used for self-signed dev hosts -->
-    <debug-overrides>
+    <domain-config>
+        <domain includeSubdomains="true">inclan</domain>
+        <domain includeSubdomains="true">vabl.dev</domain>
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
         </trust-anchors>
-    </debug-overrides>
+    </domain-config>
 </network-security-config>
 
