@@ -24,11 +24,9 @@ module.exports = function (_config) {
   const getVariantPackageName = packageName => {
     if (IS_DEV) {
       return packageName + '.dev'
-    }
-    if (IS_TESTFLIGHT) {
+    } else if (IS_TESTFLIGHT) {
       return packageName + '.testflight'
-    }
-    if (IS_PREVIEW) {
+    } else if (IS_PREVIEW) {
       return packageName + '.preview'
     }
     return packageName
@@ -37,11 +35,9 @@ module.exports = function (_config) {
   const getVariantAppName = name => {
     if (IS_DEV) {
       return name + ' (Dev)'
-    }
-    if (IS_TESTFLIGHT) {
+    } else if (IS_TESTFLIGHT) {
       return name + ' (Testflight)'
-    }
-    if (IS_PREVIEW) {
+    } else if (IS_PREVIEW) {
       return name + ' (Preview)'
     }
     return name
