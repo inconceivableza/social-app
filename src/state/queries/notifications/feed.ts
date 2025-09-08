@@ -199,6 +199,8 @@ export function useNotificationFeedQuery(opts: {
                        * a `$type` field on the `subject`. But if the nested
                        * `record` is a post, we know it's a post view.
                        */
+
+                      // TODO: add recipe moderation here
                       if (AppBskyFeedPost.isRecord(item.subject?.record)) {
                         const mod = moderatePost(item.subject, moderationOpts!)
                         if (mod.ui('contentList').filter) {

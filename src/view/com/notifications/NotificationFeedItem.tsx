@@ -71,6 +71,8 @@ import {Text} from '#/components/Typography'
 import {useSimpleVerificationState} from '#/components/verification'
 import {VerificationCheck} from '#/components/verification/VerificationCheck'
 import * as bsky from '#/types/bsky'
+import { postHref } from '#/lib/api/feed/utils'
+import { isRecipeUri } from '#/lib/strings/url-helpers'
 
 const MAX_AUTHORS = 5
 
@@ -99,14 +101,16 @@ let NotificationFeedItem = ({
   const {_, i18n} = useLingui()
   const [isAuthorsExpanded, setAuthorsExpanded] = useState<boolean>(false)
   const itemHref = useMemo(() => {
+    // 
     switch (item.type) {
       case 'post-like':
       case 'repost':
       case 'like-via-repost':
       case 'repost-via-repost': {
-        if (item.subjectUri) {
-          const urip = new AtUri(item.subjectUri)
-          return `/profile/${urip.host}/post/${urip.rkey}`
+        if (item.subjectUri && item.subject?.author) {
+
+
+          return postHref(item.subject.author, item.subjectUri)
         }
         break
       }
@@ -258,14 +262,16 @@ let NotificationFeedItem = ({
   )
 
   if (item.type === 'post-like') {
+    // TODO: check if this will get translated
+    const postType = isRecipeUri(item.subjectUri ?? "") ? "recipe" : 'post'
     a11yLabel = hasMultipleAuthors
       ? _(
           msg`${firstAuthorName} and ${plural(additionalAuthorsCount, {
             one: `${formattedAuthorsCount} other`,
             other: `${formattedAuthorsCount} others`,
-          })} liked your post`,
+          })} liked your ${postType}`,
         )
-      : _(msg`${firstAuthorName} liked your post`)
+      : _(msg`${firstAuthorName} liked your ${postType}`)
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
@@ -276,20 +282,22 @@ let NotificationFeedItem = ({
             other={`${formattedAuthorsCount} others`}
           />
         </Text>{' '}
-        liked your post
+        liked your {postType}
       </Trans>
     ) : (
-      <Trans>{firstAuthorLink} liked your post</Trans>
+        <Trans>{firstAuthorLink} liked your {postType}</Trans>
     )
   } else if (item.type === 'repost') {
+    // TODO: check if this will get translated
+    const postType = isRecipeUri(item.subjectUri ?? "") ? "recipe" : 'post'
     a11yLabel = hasMultipleAuthors
       ? _(
           msg`${firstAuthorName} and ${plural(additionalAuthorsCount, {
             one: `${formattedAuthorsCount} other`,
             other: `${formattedAuthorsCount} others`,
-          })} reposted your post`,
+          })} reposted your ${postType}`,
         )
-      : _(msg`${firstAuthorName} reposted your post`)
+      : _(msg`${firstAuthorName} reposted your ${postType}`)
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
@@ -300,10 +308,10 @@ let NotificationFeedItem = ({
             other={`${formattedAuthorsCount} others`}
           />
         </Text>{' '}
-        reposted your post
+        reposted your {postType}
       </Trans>
     ) : (
-      <Trans>{firstAuthorLink} reposted your post</Trans>
+        <Trans>{firstAuthorLink} reposted your {postType}</Trans>
     )
     icon = <RepostIcon size="xl" style={{color: t.palette.positive_600}} />
   } else if (item.type === 'follow') {
