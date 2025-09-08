@@ -43,6 +43,21 @@ module.exports = function (_config) {
     return name
   }
 
+  const getVariantGoogleServicesFilename = name => {
+    // bluesky-selfhost-env's generate-social-env.py can auto-generate examples of these
+    // it relies on the same naming as in getVariantPackageName above
+    if (IS_DEV) {
+      return name.replace('.json', '.development.json')
+    } else if (IS_TESTFLIGHT) {
+      return name.replace('.json', '.testflight.json')
+    } else if (IS_PREVIEW) {
+      return name.replace('.json', '.preview.json')
+    } else if (IS_PRODUCTION) {
+      return name.replace('.json', '.production.json')
+    }
+    return name
+  }
+
   const ASSOCIATED_DOMAINS = [
     'applinks:bsky.app',
     'applinks:staging.bsky.app',
@@ -203,7 +218,9 @@ module.exports = function (_config) {
           backgroundImage: './assets/icon-android-background.png',
           backgroundColor: '#1185FE',
         },
-        googleServicesFile: './google-services.json',
+        googleServicesFile: getVariantGoogleServicesFilename(
+          './google-services.json',
+        ),
         package: getVariantPackageName('xyz.blueskyweb.app'),
         intentFilters: [
           {
