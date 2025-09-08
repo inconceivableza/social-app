@@ -266,7 +266,6 @@ module.exports = function (_config) {
         'expo-web-browser',
         [
           'react-native-edge-to-edge',
-          USE_LOCAL_CERTS && ['./plugins/withAndroidUserInstalledCerts.js'],
           {android: {enforceNavigationBarContrast: false}},
         ],
         USE_SENTRY && [
@@ -314,6 +313,7 @@ module.exports = function (_config) {
         './plugins/withAndroidStylesAccentColorPlugin.js',
         './plugins/withAndroidDayNightThemePlugin.js',
         './plugins/withAndroidNoJitpackPlugin.js',
+        USE_LOCAL_CERTS && ['./plugins/withAndroidUserInstalledCerts.js'],
         './plugins/shareExtension/withShareExtensions.js',
         './plugins/notificationsExtension/withNotificationsExtension.js',
         [
