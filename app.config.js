@@ -20,6 +20,7 @@ module.exports = function (_config) {
   const IS_PREVIEW = process.env.EXPO_PUBLIC_ENV === 'preview'
   const IS_PRODUCTION = process.env.EXPO_PUBLIC_ENV === 'production'
   const IS_DEV = !(IS_TESTFLIGHT || IS_PREVIEW || IS_PRODUCTION)
+  const USE_LOCAL_CERTS = !IS_PRODUCTION
 
   const getVariantPackageName = packageName => {
     if (IS_DEV) {
@@ -265,6 +266,7 @@ module.exports = function (_config) {
         'expo-web-browser',
         [
           'react-native-edge-to-edge',
+          USE_LOCAL_CERTS && ['./plugins/withAndroidUserInstalledCerts.js'],
           {android: {enforceNavigationBarContrast: false}},
         ],
         USE_SENTRY && [
