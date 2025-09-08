@@ -95,7 +95,10 @@ web-build/
 /ios/
 
 # environment variables
-.env.*
+# INCLUDED: .env.${profile} are loaded in #/state/env-config
+# this is intended for local builds
+# .env.*
+.env*.local
 
 # Firebase (Android) Google services
 # INCLUDED: google-services.json
