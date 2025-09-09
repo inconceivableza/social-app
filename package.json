@@ -35,7 +35,7 @@
     "build-android": "yarn use-build-number-with-bump eas build -p android",
     "build": "yarn use-build-number-with-bump eas build",
     "build-embed": "cd bskyembed && yarn build && yarn build-snippet && cd .. && node ./scripts/post-embed-build.js",
-    "start": "expo start --dev-client",
+    "start": "expo start --dev-client --tunnel",
     "start:prod": "expo start --dev-client --no-dev --minify",
     "test": "NODE_ENV=test jest --forceExit --testTimeout=20000 --bail",
     "test-watch": "NODE_ENV=test jest --watchAll",
