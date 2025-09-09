@@ -507,7 +507,7 @@ function ServerDomains() {
   const {envConfig, setEnvConfig} = useEnvConfig()
   const reloadMessage = canReload
     ? _(msg`Going to reload app...`)
-    : _(msg`Please reload app manually...`)
+    : _(msg`Please exit and reload app manually...`)
 
   const doDelayedReload = useCallback(async () => {
     const reloadDelay = 3
@@ -518,7 +518,7 @@ function ServerDomains() {
       reload('Changed environment config')
     } else {
       logger.warn(
-        'Could not reload app after environment config change ; user must reload otherwise confusion...',
+        'User must exit and reload app after environment config change to prevent errors',
       )
     }
   }, [])

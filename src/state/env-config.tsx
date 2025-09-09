@@ -319,7 +319,7 @@ const onEnvConfigUpdate = (listener: (env_config: EnvConfig) => void) => {
 }
 
 export async function fetchEnvConfig(server: string) {
-  const serverUrl = URL.parse(server)
+  const serverUrl = new URL(server)
   if (
     !serverUrl ||
     (serverUrl?.pathname && serverUrl?.pathname !== '/') ||
@@ -330,9 +330,10 @@ export async function fetchEnvConfig(server: string) {
     )
     return null
   }
-  logger.info(`Fetching environment config from ${serverUrl}`)
+  const configUrl = `${serverUrl}env-config`
+  logger.info(`Fetching environment config from ${configUrl}`)
   try {
-    const res = await fetch(`${serverUrl}env-config`)
+    const res = await fetch(configUrl)
     if (res.ok) {
       const json = (await res.json()) as Record<string, string>
       logger.info(`Loaded json for environment config: ${JSON.stringify(json)}`)
@@ -352,7 +353,7 @@ export async function fetchEnvConfig(server: string) {
       logger.error(`Dynamic environment config: lookup failed ${res.status}`)
     }
   } catch (e) {
-    logger.error(`Failed to fetch ${serverUrl}: ${e}`)
+    logger.error(`Failed to fetch ${configUrl}: ${e}`)
   }
   return null
 }

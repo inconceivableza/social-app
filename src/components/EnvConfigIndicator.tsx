@@ -55,7 +55,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
   const reloadMessage = canReload
     ? _(msg`Going to reload app...`)
-    : _(msg`Please reload app manually...`)
+    : _(msg`Please exit and reload app manually...`)
 
   const builtinConfigItems = builtinConfigNames.map(l => ({
     label: `${configLabels[l] || l}→${DOMAIN_ENVCONFIGS[l].SOCIAL_APP_HOST}`,
@@ -99,7 +99,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
       reload('Changed environment config')
     } else {
       logger.warn(
-        'Could not reload app after environment config change ; user must reload otherwise confusion...',
+        'User must exit and reload app after environment config change to prevent errors',
       )
     }
   }, [])
