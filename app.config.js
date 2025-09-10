@@ -3,6 +3,51 @@ const dotenvx = require('@dotenvx/dotenvx')
 const fs = require('node:fs')
 const path = require('node:path')
 
+const blueskyBranding = {
+  code: {
+    app_slug_scheme: 'bluesky',
+    apple_groups: 'group.app.bsky',
+    apple_team_id: 'B3LX46C5HS',
+    chat_api_did: 'did:web:api.bsky.chat#bsky_chat',
+    // these ios_${plugin}_name variables are not to set the target name (which is the source directory) but the suffix to the web_package_id used for the bundleId
+    ios_clip_name: 'BlueskyClip', // This is currently not used - it's called AppClip
+    ios_nse_name: 'BlueskyNSE',
+    ios_share_with_name: 'Share-with-Bluesky',
+    expo_project_owner: 'blueskysocial',
+    expo_project_id: '87ab4766-b66c-489c-98ca-65e740fa205b',
+    google_service_project_name: 'blueskyweb',
+    sentry_project_organization: 'blueskyweb',
+    updates_url: 'https://updates.bsky.app/manifest',
+    web_bundle_name: 'bskyweb',
+    web_package_id: 'xyz.blueskyweb.app',
+    web_package_path: 'xyz/blueskyweb',
+  },
+  atproto_accounts: {
+    follow_default: {
+      did: 'did:plc:z72i7hdynmk6r22z27h6tvur',
+      varname: 'BSKY_APP_ACCOUNT_DID',
+    },
+  },
+  naming: {
+    app_name: 'Bluesky',
+    spoken_name: 'Blue Sky',
+  },
+  styling: {
+    additional_color_defs: [],
+    android_splash_background_color_dark: '#0c2a49',
+    android_splash_background_color_light: '#0c7cff',
+    background_color: '#1185FE',
+    ios_splash_background_color_dark: '#001429',
+    map_color_names: [],
+  },
+  verbage: {
+    app_description: 'the social internet',
+    app_emoji: '🦋',
+    profile_description_placeholder: 'e.g. Artist, dog-lover, and avid reader.',
+    post_prompt: "What's up?",
+  },
+}
+
 module.exports = function (_config) {
   /**
    * App version number. Should be incremented as part of a release cycle.
@@ -29,6 +74,11 @@ module.exports = function (_config) {
   function findExisting(filename) {
     return ifExists(path.join(defaultEnvPath, filename)) ? filename : null
   }
+
+  const brandingPath = findExisting('branding.json')
+  const branding = brandingPath
+    ? fs.readFileSync(brandingPath).toString('utf-8')
+    : blueskyBranding
 
   const envFilenames = {
     production: '.env.production',
@@ -121,10 +171,10 @@ module.exports = function (_config) {
   return {
     expo: {
       version: VERSION,
-      name: getVariantAppName('Bluesky'),
-      slug: 'bluesky',
-      scheme: 'bluesky',
-      owner: 'blueskysocial',
+      name: getVariantAppName(branding.naming.app_name),
+      slug: branding.code.app_slug_scheme,
+      scheme: branding.code.app_slug_scheme,
+      owner: branding.code.expo_project_owner,
       runtimeVersion: {
         policy: 'appVersion',
       },
@@ -133,7 +183,7 @@ module.exports = function (_config) {
       primaryColor: '#1083fe',
       ios: {
         supportsTablet: false,
-        bundleIdentifier: getVariantPackageName('xyz.blueskyweb.app'),
+        bundleIdentifier: getVariantPackageName(branding.code.web_package_id),
         config: {
           usesNonExemptEncryption: false,
         },
@@ -147,7 +197,7 @@ module.exports = function (_config) {
             'Used to save images to your library.',
           NSPhotoLibraryUsageDescription:
             'Used for profile pictures, posts, and other kinds of content',
-          CFBundleSpokenName: 'Blue Sky',
+          CFBundleSpokenName: branding.naming.spoken_name,
           CFBundleLocalizations: [
             'en',
             'an',
@@ -195,7 +245,7 @@ module.exports = function (_config) {
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': 'group.app.bsky',
+          'com.apple.security.application-groups': branding.code.apple_groups,
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -234,12 +284,12 @@ module.exports = function (_config) {
           foregroundImage: './assets/icon-android-foreground.png',
           monochromeImage: './assets/icon-android-foreground.png',
           backgroundImage: './assets/icon-android-background.png',
-          backgroundColor: '#1185FE',
+          backgroundColor: branding.styling.background_color,
         },
         googleServicesFile: getVariantGoogleServicesFilename(
           './google-services.json',
         ),
-        package: getVariantPackageName('xyz.blueskyweb.app'),
+        package: getVariantPackageName(branding.code.web_package_id),
         intentFilters: [
           {
             action: 'VIEW',
@@ -247,7 +297,7 @@ module.exports = function (_config) {
             data: [
               {
                 scheme: 'https',
-                host: 'bsky.app',
+                host: ASSOCIATED_SOCIAL_APP_HOST,
               },
               IS_DEV && {
                 scheme: 'http',
@@ -262,8 +312,8 @@ module.exports = function (_config) {
         favicon: './assets/favicon.png',
       },
       updates: {
-        url: 'https://updates.bsky.app/manifest',
-        enabled: UPDATES_ENABLED,
+        url: branding.code.updates_url,
+        enabled: branding.code.updates_url && UPDATES_ENABLED,
         fallbackToCacheTimeout: 30000,
         codeSigningCertificate: UPDATES_ENABLED
           ? './code-signing/certificate.pem'
@@ -288,7 +338,7 @@ module.exports = function (_config) {
         USE_SENTRY && [
           '@sentry/react-native/expo',
           {
-            organization: 'blueskyweb',
+            organization: branding.code.sentry_project_organization,
             project: 'app',
             url: 'https://sentry.io',
           },
@@ -359,17 +409,20 @@ module.exports = function (_config) {
               resizeMode: 'cover',
               dark: {
                 enableFullScreenImage_legacy: true,
-                backgroundColor: '#001429',
+                backgroundColor:
+                  branding.styling.ios_splash_background_color_dark,
                 image: './assets/splash-dark.png',
                 resizeMode: 'cover',
               },
             },
             android: {
-              backgroundColor: '#0c7cff',
+              backgroundColor:
+                branding.styling.android_splash_background_color_light,
               image: './assets/splash-android-icon.png',
               imageWidth: 150,
               dark: {
-                backgroundColor: '#0c2a49',
+                backgroundColor:
+                  branding.styling.android_splash_background_color_dark,
                 image: './assets/splash-android-icon-dark.png',
                 imageWidth: 150,
               },
@@ -453,32 +506,33 @@ module.exports = function (_config) {
                 appExtensions: [
                   {
                     targetName: 'Share-with-Bluesky',
-                    bundleIdentifier: 'xyz.blueskyweb.app.Share-with-Bluesky',
+                    bundleIdentifier: `${branding.code.web_package_id}.${branding.code.ios_share_with_name}`,
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        branding.code.apple_groups,
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyNSE',
-                    bundleIdentifier: 'xyz.blueskyweb.app.BlueskyNSE',
+                    bundleIdentifier: `${branding.code.web_package_id}.${branding.code.ios_nse_name}`,
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        branding.code.apple_groups,
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyClip',
-                    bundleIdentifier: 'xyz.blueskyweb.app.AppClip',
+                    bundleIdentifier: `${branding.code.web_package_id}.AppClip`,
                   },
                 ],
               },
             },
           },
-          projectId: '55bd077a-d905-4184-9c7f-94789ba0f302',
+          projectId: branding.code.expo_project_id,
         },
+        branding: branding,
         'env-config': envConfigs,
       },
     },
