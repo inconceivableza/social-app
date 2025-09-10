@@ -1,4 +1,4 @@
-module github.com/bluesky-social/social-app/foodiosweb
+module github.com/bluesky-social/social-app/bskyweb
 
 go 1.23
 

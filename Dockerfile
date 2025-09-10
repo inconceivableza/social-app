@@ -69,22 +69,22 @@ RUN \. "$NVM_DIR/nvm.sh" && \
   EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER EXPO_PUBLIC_BUNDLE_DATE=$() SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$SENTRY_RELEASE SENTRY_DIST=$SENTRY_DIST SENTRY_DSN=$SENTRY_DSN yarn build-web
 
 # DEBUG
-RUN find ./foodiosweb/static && find ./web-build/static
+RUN find ./bskyweb/static && find ./web-build/static
 
 #
-# Generate the foodiosweb Go binary.
+# Generate the bskyweb Go binary.
 #
-RUN cd foodiosweb/ && \
+RUN cd bskyweb/ && \
   go mod download && \
   go mod verify
 
-RUN cd foodiosweb/ && \
+RUN cd bskyweb/ && \
   go build \
     -v  \
     -trimpath \
     -tags timetzdata \
-    -o /foodiosweb \
-    ./cmd/foodiosweb
+    -o /bskyweb \
+    ./cmd/bskyweb
 
 FROM debian:bullseye-slim
 
@@ -98,10 +98,10 @@ RUN apt-get update && apt-get install --yes \
 
 ENTRYPOINT ["dumb-init", "--"]
 
-WORKDIR /foodiosweb
-COPY --from=build-env /foodiosweb /usr/bin/foodiosweb
+WORKDIR /bskyweb
+COPY --from=build-env /bskyweb /usr/bin/bskyweb
 
-CMD ["/usr/bin/foodiosweb"]
+CMD ["/usr/bin/bskyweb"]
 
 LABEL org.opencontainers.image.source=https://github.com/bluesky-social/social-app
 LABEL org.opencontainers.image.description="bsky.app Web App"

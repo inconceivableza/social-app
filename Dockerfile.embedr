@@ -36,21 +36,21 @@ RUN \. "$NVM_DIR/nvm.sh" && \
   yarn build-embed
 
 # DEBUG
-RUN find ./foodiosweb/embedr-static && find ./foodiosweb/embedr-templates && find ./bskyembed/dist
+RUN find ./bskyweb/embedr-static && find ./bskyweb/embedr-templates && find ./bskyembed/dist
 
 # hack around issue with empty directory and go:embed
-RUN touch foodiosweb/static/js/empty.txt
-RUN touch foodiosweb/static/css/empty.txt
-RUN touch foodiosweb/static/media/empty.txt
+RUN touch bskyweb/static/js/empty.txt
+RUN touch bskyweb/static/css/empty.txt
+RUN touch bskyweb/static/media/empty.txt
 
 #
 # Generate the embedr Go binary.
 #
-RUN cd foodiosweb/ && \
+RUN cd bskyweb/ && \
   go mod download && \
   go mod verify
 
-RUN cd foodiosweb/ && \
+RUN cd bskyweb/ && \
   go build \
     -v  \
     -trimpath \

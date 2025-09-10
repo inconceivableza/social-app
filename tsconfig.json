@@ -12,5 +12,5 @@
       "multiformats/hashes/hasher": ["node_modules/multiformats/types/src/hashes/hasher.d.ts"]
     }
   },
-  "exclude": ["foodiosweb", "bskyembed", "web-build"]
+  "exclude": ["bskyweb", "bskyembed", "web-build"]
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var log = logging.Logger("foodiosweb")
+var log = logging.Logger("bskyweb")
 
 func init() {
 	logging.SetAllLoggers(logging.LevelDebug)
@@ -23,7 +23,7 @@ func main() {
 func run(args []string) {
 
 	app := cli.App{
-		Name:  "foodiosweb",
+		Name:  "bskyweb",
 		Usage: "web server for web.dallan.inclan web app (SPA)",
 	}
 

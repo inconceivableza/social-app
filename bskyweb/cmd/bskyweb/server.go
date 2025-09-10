@@ -23,7 +23,7 @@ import (
 	"github.com/bluesky-social/indigo/atproto/syntax"
 	"github.com/bluesky-social/indigo/util/cliutil"
 	"github.com/bluesky-social/indigo/xrpc"
-	"github.com/bluesky-social/social-app/foodiosweb"
+	"github.com/bluesky-social/social-app/bskyweb"
 
 	"github.com/flosch/pongo2/v6"
 	"github.com/klauspost/compress/gzhttp"
@@ -128,7 +128,7 @@ func serve(cctx *cli.Context) error {
 	}
 
 	e.HideBanner = true
-	e.Renderer = NewRenderer("templates/", &foodiosweb.TemplateFS, debug)
+	e.Renderer = NewRenderer("templates/", &bskyweb.TemplateFS, debug)
 	e.HTTPErrorHandler = server.errorHandler
 
 	e.IPExtractor = echo.ExtractIPFromXFFHeader()
@@ -199,7 +199,7 @@ func serve(cctx *cli.Context) error {
 			log.Debugf("serving static file from the local file system")
 			return http.FS(os.DirFS("static"))
 		}
-		fsys, err := fs.Sub(foodiosweb.StaticFS, "static")
+		fsys, err := fs.Sub(bskyweb.StaticFS, "static")
 		if err != nil {
 			log.Fatal(err)
 		}

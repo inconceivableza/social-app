@@ -106,7 +106,7 @@ module.exports = {
     '.husky',
     'patches',
     '*.html',
-    'foodiosweb',
+    'bskyweb',
     'bskyembed',
     'src/locale/locales/_build/',
     'src/locale/locales/**/*.js',

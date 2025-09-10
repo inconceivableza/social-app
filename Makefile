@@ -9,12 +9,12 @@ help: ## Print info about all commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "    \033[01;32m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: build-web
-build-web: ## Compile web bundle, copy to foodiosweb directory
+build-web: ## Compile web bundle, copy to bskyweb directory
 	yarn intl:build
 	yarn build-web
 
 .PHONY: build-web-embed
-build-web-embed: ## Compile web embed bundle, copy to foodiosweb/embedr* directories
+build-web-embed: ## Compile web embed bundle, copy to bskyweb/embedr* directories
 	yarn intl:build
 	yarn build-embed
 

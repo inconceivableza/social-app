@@ -1,4 +1,4 @@
-package foodiosweb
+package bskyweb
 
 import "embed"
 

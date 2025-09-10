@@ -15,6 +15,6 @@ android
 ios
 src/locale/locales
 lib/react-compiler-runtime
-foodiosweb/static
+bskyweb/static
 coverage
 web-build

@@ -1,9 +1,9 @@
-name: build-and-push-foodiosweb-ghcr
+name: build-and-push-bskyweb-ghcr
 on:
   push:
     branches:
       - main
-      - jake/foodiosweb-additions
+      - jake/bskyweb-additions
 env:
   REGISTRY: ghcr.io
   USERNAME: ${{ github.actor }}
@@ -13,7 +13,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  foodiosweb-container-ghcr:
+  bskyweb-container-ghcr:
     if: github.repository == 'bluesky-social/social-app'
     runs-on: ubuntu-latest
     permissions:
@@ -42,7 +42,7 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=sha,enable=true,priority=100,prefix=foodiosweb:,suffix=,format=long
+            type=sha,enable=true,priority=100,prefix=bskyweb:,suffix=,format=long
 
       - name: Build and push Docker image
         id: build-and-push

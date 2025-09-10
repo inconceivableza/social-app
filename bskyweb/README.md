@@ -26,13 +26,13 @@ Then build and copy over the big 'ol `bundle.web.js` file:
 
 Install golang. We generally develop against the current stable release of the language, as declared in `go.mod`.
 
-In this directory (`foodiosweb/`):
+In this directory (`bskyweb/`):
 
     # re-build and run daemon
-    go run ./cmd/foodiosweb serve
+    go run ./cmd/bskyweb serve
 
     # build and output a binary
-    go build -o foodiosweb ./cmd/foodiosweb/
+    go build -o bskyweb ./cmd/bskyweb/
 
 The easiest way to configure the daemon is to copy `example.env` to `.env` and
 fill in auth values there.

@@ -21,13 +21,13 @@ jobs:
         with:
           go-version: '1.23'
       - name: Dummy Static Files
-        run: touch foodiosweb/static/js/blah.js && touch foodiosweb/static/css/blah.txt && touch foodiosweb/static/media/blah.txt
+        run: touch bskyweb/static/js/blah.js && touch bskyweb/static/css/blah.txt && touch bskyweb/static/media/blah.txt
       - name: Check
-        run: cd foodiosweb/ && make check
+        run: cd bskyweb/ && make check
       - name: Build (binary)
-        run: cd foodiosweb/ && make build
+        run: cd bskyweb/ && make build
       - name: Test
-        run: cd foodiosweb/ && make test
+        run: cd bskyweb/ && make test
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +38,6 @@ jobs:
         with:
           go-version: '1.23'
       - name: Dummy Static Files
-        run: touch foodiosweb/static/js/blah.js && touch foodiosweb/static/css/blah.txt && touch foodiosweb/static/media/blah.txt
+        run: touch bskyweb/static/js/blah.js && touch bskyweb/static/css/blah.txt && touch bskyweb/static/media/blah.txt
       - name: Lint
-        run: cd foodiosweb/ &&  make lint
+        run: cd bskyweb/ &&  make lint
