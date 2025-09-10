@@ -22,6 +22,32 @@ module.exports = function (_config) {
   const IS_DEV = !(IS_TESTFLIGHT || IS_PREVIEW || IS_PRODUCTION)
   const USE_LOCAL_CERTS = !IS_PRODUCTION
 
+  const defaultEnvPath = __dirname
+  function ifExists(pathname) {
+    return fs.existsSync(pathname) ? pathname : null
+  }
+  function findExisting(filename) {
+    return ifExists(path.join(defaultEnvPath, filename)) ? filename : null
+  }
+
+  const envFilenames = {
+    production: '.env.production',
+    staging: '.env.test',
+    development: '.env',
+  }
+  const envConfigs = Object.fromEntries(
+    Object.entries(envFilenames).map(([profileName, envBasename]) => {
+      const envFilename = findExisting(envBasename)
+      const envSource = envFilename
+        ? fs.readFileSync(envFilename).toString('utf-8')
+        : ''
+      const envValues = envSource
+        ? dotenvx.parse(envSource, {processEnv: {}})
+        : {}
+      return [profileName, {envFilename, profileName, ...envValues}]
+    }),
+  )
+
   const getVariantPackageName = packageName => {
     if (IS_DEV) {
       return packageName + '.dev'
@@ -77,30 +103,6 @@ module.exports = function (_config) {
 
   const USE_SENTRY = Boolean(process.env.SENTRY_AUTH_TOKEN)
 
-  const envFilenames = {
-    production: '.env.production',
-    staging: '.env.test',
-    development: '.env',
-  }
-  const defaultEnvPath = __dirname
-  function ifExists(pathname) {
-    return fs.existsSync(pathname) ? pathname : null
-  }
-  function findExisting(filename) {
-    return ifExists(path.join(defaultEnvPath, filename)) ? filename : null
-  }
-  const envConfigs = Object.fromEntries(
-    Object.entries(envFilenames).map(([profileName, envBasename]) => {
-      const envFilename = findExisting(envBasename)
-      const envSource = envFilename
-        ? fs.readFileSync(envFilename).toString('utf-8')
-        : ''
-      const envValues = envSource
-        ? dotenvx.parse(envSource, {processEnv: {}})
-        : {}
-      return [profileName, {envFilename, profileName, ...envValues}]
-    }),
-  )
   return {
     expo: {
       version: VERSION,
