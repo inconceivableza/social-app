@@ -85,11 +85,26 @@ module.exports = function (_config) {
     return name
   }
 
+  const getAssociatedDomainConfig = function (envVarName, defaultValue) {
+    const expoName = 'EXPO_PUBLIC_' + envVarName
+    if (IS_PRODUCTION) return envConfigs.production[expoName] || defaultValue
+    else if (IS_PREVIEW || IS_TESTFLIGHT)
+      return envConfigs.staging[expoName] || defaultValue
+    else return envConfigs.development[expoName] || defaultValue
+  }
+  // for side-by-side installs, this associates the app with the default target URLs
+  const ASSOCIATED_SOCIAL_APP_HOST = getAssociatedDomainConfig(
+    'SOCIAL_APP_HOST',
+    'bsky.app',
+  )
+  const ASSOCIATED_LINK_HOST = getAssociatedDomainConfig(
+    'LINK_HOST',
+    'go.bsky.app',
+  )
   const ASSOCIATED_DOMAINS = [
-    'applinks:bsky.app',
-    'applinks:staging.bsky.app',
-    'appclips:bsky.app',
-    'appclips:go.bsky.app', // Allows App Clip to work when scanning QR codes
+    'applinks:' + ASSOCIATED_SOCIAL_APP_HOST,
+    'appclips:' + ASSOCIATED_SOCIAL_APP_HOST,
+    'appclips:' + ASSOCIATED_LINK_HOST, // Allows App Clip to work when scanning QR codes
     // When testing local services, enter an ngrok (et al) domain here. It must use a standard HTTP/HTTPS port.
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
