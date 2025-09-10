@@ -1,5 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 
+import {PUBLIC_APPVIEW} from '#/lib/constants'
+
 interface ServiceConfig {
   checkEmailConfirmed: boolean
 }
@@ -9,7 +11,7 @@ export function useServiceConfigQuery() {
     queryKey: ['service-config'],
     queryFn: async () => {
       const res = await fetch(
-        'https://api.bsky.app/xrpc/app.bsky.unspecced.getConfig',
+        `${PUBLIC_APPVIEW}/xrpc/app.bsky.unspecced.getConfig`,
       )
       if (!res.ok) {
         return {
