@@ -2,7 +2,7 @@
 test-coverage.out
 
 # Don't check in the binary.
-/bskyweb
+/foodiosweb
 /embedr
 
 # Don't accidentally commit JS-generated code
