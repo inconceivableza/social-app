@@ -1,5 +1,7 @@
 import {h} from 'preact'
 
+import {getSocialAppUrl} from '../env-config'
+
 export function Link({
   href,
   className,
@@ -21,7 +23,7 @@ export function Link({
 
   return (
     <a
-      href={`${href.startsWith('http') ? href : `${import.meta.env.VITE_SOCIAL_APP_URL}${href}`}${
+      href={`${href.startsWith('http') ? href : `${getSocialAppUrl()}${href}`}${
         disableTracking ? '' : `?${newSearchParam.toString()}`
       }`}
       target="_blank"

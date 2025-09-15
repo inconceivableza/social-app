@@ -44,8 +44,47 @@ func (srv *Server) getBlueskyPost(ctx context.Context, did syntax.DID, rkey synt
 	return postView, nil
 }
 
+func (srv *Server) getServerSideData() map[string]interface{} {
+	data := map[string]interface{}{
+		"appviewUrl":    srv.cfg.appviewUrl,
+		"embedUrl":      srv.cfg.embedUrl,
+		"socialappHost": srv.cfg.socialappHost,
+		"socialappName": srv.cfg.socialappName,
+		"socialappUrl":  srv.cfg.socialappUrl,
+		"securityEmail": srv.cfg.securityEmail,
+		"supportEmail":  srv.cfg.supportEmail,
+	}
+	return data
+}
+
+func (srv *Server) getClientSideData() map[string]interface{} {
+	data := map[string]interface{}{
+		"VITE_CARD_URL":           srv.cfg.cardUrl,
+		"VITE_EMBED_URL":          srv.cfg.embedUrl,
+		"VITE_LINK_URL":           srv.cfg.linkUrl,
+		"VITE_PUBLIC_APPVIEW_URL": srv.cfg.appviewUrl,
+		"VITE_SOCIAL_APP_ABOUT":   srv.cfg.socialappAbout,
+		"VITE_SOCIAL_APP_HOST":    srv.cfg.socialappHost,
+		"VITE_SOCIAL_APP_NAME":    srv.cfg.socialappName,
+		"VITE_SOCIAL_APP_URL":     srv.cfg.socialappUrl,
+	}
+	return data
+}
+
 func (srv *Server) WebHome(c echo.Context) error {
-	return c.Render(http.StatusOK, "home.html", nil)
+	data := srv.getServerSideData()
+	return c.Render(http.StatusOK, "home.html", data)
+}
+
+func (srv *Server) WebEnvConfig(c echo.Context) error {
+	data := srv.getClientSideData()
+	return c.JSON(http.StatusOK, data)
+}
+
+func (srv *Server) WebEmbedJs(c echo.Context) error {
+	data := srv.getClientSideData()
+	c.Response().Header().Set("Content-Type", "application/javascript; charset=utf-8")
+	return c.Render(http.StatusOK, "embed.js", data)
 }
 
 type OEmbedResponse struct {
@@ -78,12 +117,12 @@ func (srv *Server) parseBlueskyURL(ctx context.Context, raw string) (*syntax.ATU
 	if err != nil {
 		return nil, err
 	}
-	if u.Hostname() != "bsky.app" {
-		return nil, fmt.Errorf("only bsky.app URLs currently supported")
+	if u.Hostname() != srv.cfg.socialappHost {
+		return nil, fmt.Errorf("only %s URLs currently supported", srv.cfg.socialappHost)
 	}
 	pathParts := strings.Split(u.Path, "/") // NOTE: pathParts[0] will be empty string
 	if len(pathParts) != 5 || pathParts[1] != "profile" || pathParts[3] != "post" {
-		return nil, fmt.Errorf("only bsky.app post URLs currently supported")
+		return nil, fmt.Errorf("only %s post URLs currently supported", srv.cfg.socialappHost)
 	}
 	atid, err := syntax.ParseAtIdentifier(pathParts[2])
 	if err != nil {
@@ -142,7 +181,7 @@ func (srv *Server) WebOEmbed(c echo.Context) error {
 
 	aturi, err := srv.parseBlueskyURL(c.Request().Context(), c.QueryParam("url"))
 	if err != nil {
-		return c.String(http.StatusBadRequest, fmt.Sprintf("Expected 'url' to be bsky.app URL or AT-URI: %v", err))
+		return c.String(http.StatusBadRequest, fmt.Sprintf("Expected 'url' to be %s URL or AT-URI: %v", srv.cfg.socialappHost, err))
 	}
 	if aturi.Collection() != syntax.NSID("app.bsky.feed.post") {
 		return c.String(http.StatusNotImplemented, "Only posts (app.bsky.feed.post records) can be embedded currently")
@@ -169,9 +208,9 @@ func (srv *Server) WebOEmbed(c echo.Context) error {
 		Type:         "rich",
 		Version:      "1.0",
 		AuthorName:   "@" + post.Author.Handle,
-		AuthorURL:    fmt.Sprintf("https://bsky.app/profile/%s", post.Author.Handle),
-		ProviderName: "Bluesky Social",
-		ProviderURL:  "https://bsky.app",
+		AuthorURL:    fmt.Sprintf("%s/profile/%s", srv.cfg.socialappUrl, post.Author.Handle),
+		ProviderName: srv.cfg.socialappName,
+		ProviderURL:  srv.cfg.socialappUrl,
 		CacheAge:     86400,
 		Width:        &width,
 		Height:       nil,
@@ -211,5 +250,5 @@ func (srv *Server) WebPostEmbed(c echo.Context) error {
 		}
 	*/
 
-	return c.Render(http.StatusOK, "postEmbed.html", nil)
+	return c.Render(http.StatusOK, "postEmbed.html", srv.getServerSideData())
 }

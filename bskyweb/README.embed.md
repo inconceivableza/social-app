@@ -1,3 +1,6 @@
+Note: the URLs in this document can be overridden using VITE_ environment variables
+This takes places when running in dev mode from the bskyembed environment directly
+There is also a mechanism to render them into the content generated from the embedr go application
 
 ## oEmbed
 
@@ -42,7 +45,7 @@ Only `json` is supported; `xml` is a 501.
 ## iframe URL
 
 `https://embed.bsky.app/embed/<did>/app.bsky.feed.post/<rkey>`
-`https://embed.bsky.app/static/embed.js`
+`https://embed.bsky.app/embed.js`
 
 ```
 <blockquote class="bluesky-post" data-lang="en" data-align="center">

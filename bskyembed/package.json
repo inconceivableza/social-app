@@ -6,6 +6,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build-snippet": "tsc --project tsconfig.snippet.json",
+    "go-build": "tsc && vite build --mode go-templates --outDir dist-go",
+    "go-build-snippet": "tsc --project tsconfig.snippet.json --outDir dist-go",
     "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx src"
   },
   "dependencies": {
