@@ -121,6 +121,13 @@ func run(args []string) {
 					Value:   "security@bsky.app",
 					EnvVars: []string{"SOCIAL_APP_SECURITY_EMAIL"},
 				},
+				&cli.StringFlag{
+					Name:     "branding",
+					Usage:    "path to branding JSON file",
+					Required: false,
+					Value:    "branding.json",
+					EnvVars:  []string{"BRANDING_FILE"},
+				},
 			},
 		},
 	}

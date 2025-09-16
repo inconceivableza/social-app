@@ -42,6 +42,17 @@ type Server struct {
 	ipccClient http.Client
 }
 
+type Branding struct {
+	Code            map[string]interface{} `json:"code"`
+	AtprotoAccounts struct {
+		FollowDefault map[string]interface{} `json:"follow_default"`
+	} `json:"atproto_accounts"`
+	Naming  map[string]interface{} `json:"naming"`
+	Styling struct {
+	} `json:"styling"`
+	Verbage map[string]interface{} `json:"verbage"`
+}
+
 type Config struct {
 	debug              bool
 	httpAddress        string
@@ -59,6 +70,7 @@ type Config struct {
 	socialappName      string
 	socialappUrl       string
 	statuspageUrl      string
+	branding           Branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -87,6 +99,17 @@ func serve(cctx *cli.Context) error {
 	securityEmail := cctx.String("security-email")
 	canonicalInstance := cctx.Bool("bsky-canonical-instance")
 	robotsDisallowAll := cctx.Bool("robots-disallow-all")
+
+	// Load branding configuration
+	brandingFile := cctx.String("branding")
+	var branding Branding
+	if brandingData, err := os.ReadFile(brandingFile); err == nil {
+		if err := json.Unmarshal(brandingData, &branding); err != nil {
+			log.Warnf("Failed to parse branding file %s: %v", brandingFile, err)
+		}
+	} else {
+		log.Debugf("Branding file %s not found, using defaults", brandingFile)
+	}
 
 	// Echo
 	e := echo.New()
@@ -139,6 +162,7 @@ func serve(cctx *cli.Context) error {
 			socialappName:      socialappName,
 			socialappUrl:       socialappUrl,
 			statuspageUrl:      statuspageUrl,
+			branding:           branding,
 		},
 		ipccClient: http.Client{
 			Transport: &http.Transport{
@@ -255,6 +279,15 @@ func serve(cctx *cli.Context) error {
 	}
 
 	e.GET("/iframe/youtube.html", echo.WrapHandler(staticHandler))
+	e.GET("/.well-known/apple-app-site-association", func(c echo.Context) error {
+		return server.WebWellKnown(c, "apple-app-site-association")
+	})
+	e.GET("/.well-known/assetlinks.json", func(c echo.Context) error {
+		return server.WebWellKnown(c, "assetlinks.json")
+	})
+	e.GET("/.well-known/security.txt", func(c echo.Context) error {
+		return server.WebWellKnown(c, "security.txt")
+	})
 	e.GET("/static/*", echo.WrapHandler(http.StripPrefix("/static/", staticHandler)), func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Response().Before(func() {
@@ -429,6 +462,7 @@ func (srv *Server) NewTemplateContext() pongo2.Context {
 	return pongo2.Context{
 		"staticCDNHost":      srv.cfg.staticCDNHost,
 		"preconnectDomains":  srv.cfg.preconnectDomains,
+		"securityEmail":      srv.cfg.securityEmail,
 		"socialappAbout":     srv.cfg.socialappAbout,
 		"socialappAboutHost": srv.cfg.socialappAboutHost,
 		"socialappHost":      srv.cfg.socialappHost,
@@ -448,6 +482,13 @@ func (srv *Server) errorHandler(err error, c echo.Context) {
 	data := srv.NewTemplateContext()
 	data["statusCode"] = code
 	c.Render(code, "error.html", data)
+}
+
+func (srv *Server) WebWellKnown(c echo.Context, filename string) error {
+	data := srv.NewTemplateContext()
+	data["branding"] = srv.cfg.branding
+	c.Response().Header().Set("Content-Type", "text/plain; charset=utf-8")
+	return c.Render(http.StatusOK, ".well-known/"+filename, data)
 }
 
 // Handler for redirecting to the download page.
@@ -577,6 +618,7 @@ func (srv *Server) WebStarterPack(c echo.Context) error {
 	req := c.Request()
 	ctx := req.Context()
 	data := srv.NewTemplateContext()
+	data["branding"] = srv.cfg.branding
 	data["requestURI"] = fmt.Sprintf("https://%s%s", req.Host, req.URL.Path)
 	// sanity check arguments. don't 4xx, just let app handle if not expected format
 	rkeyParam := c.Param("rkey")
