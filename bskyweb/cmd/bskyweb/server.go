@@ -73,6 +73,39 @@ type Config struct {
 	branding           Branding
 }
 
+// loadBrandingWithFallback loads branding configuration with fallback chain:
+// 1. External file from --branding flag (if exists)
+// 2. Embedded branding.json
+func loadBrandingWithFallback(brandingFile string) Branding {
+	var branding Branding
+
+	// external file
+	_, err := os.Stat(brandingFile)
+	if err == nil {
+		if brandingData, err := os.ReadFile(brandingFile); err == nil {
+			if err := json.Unmarshal(brandingData, &branding); err == nil {
+				log.Infof("Using branding file %s", brandingFile)
+				return branding
+			} else {
+				log.Warnf("Failed to parse external branding file %s: %v", brandingFile, err)
+			}
+		}
+	}
+
+	// Try embedded branding.json
+	if brandingData, err := bskyweb.BrandingFS.ReadFile("branding.json"); err == nil {
+		if err := json.Unmarshal(brandingData, &branding); err == nil {
+			log.Info("Using embedded branding")
+			return branding
+		} else {
+			log.Warnf("Failed to parse embedded branding.json: %v", err)
+		}
+	}
+
+	log.Warnf("No branding configuration found, using empty defaults")
+	return branding
+}
+
 func serve(cctx *cli.Context) error {
 	debug := cctx.Bool("debug")
 	httpAddress := cctx.String("http-address")
@@ -100,16 +133,7 @@ func serve(cctx *cli.Context) error {
 	canonicalInstance := cctx.Bool("bsky-canonical-instance")
 	robotsDisallowAll := cctx.Bool("robots-disallow-all")
 
-	// Load branding configuration
-	brandingFile := cctx.String("branding")
-	var branding Branding
-	if brandingData, err := os.ReadFile(brandingFile); err == nil {
-		if err := json.Unmarshal(brandingData, &branding); err != nil {
-			log.Warnf("Failed to parse branding file %s: %v", brandingFile, err)
-		}
-	} else {
-		log.Debugf("Branding file %s not found, using defaults", brandingFile)
-	}
+	branding := loadBrandingWithFallback(cctx.String("branding"))
 
 	// Echo
 	e := echo.New()
