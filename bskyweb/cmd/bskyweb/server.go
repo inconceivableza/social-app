@@ -43,14 +43,22 @@ type Server struct {
 }
 
 type Config struct {
-	debug         bool
-	httpAddress   string
-	appviewHost   string
-	ogcardHost    string
-	linkHost      string
-	ipccHost      string
-	staticCDNHost string
-	securityEmail string
+	debug              bool
+	httpAddress        string
+	appviewHost        string
+	ogcardHost         string
+	linkHost           string
+	ipccHost           string
+	staticCDNHost      string
+	preconnectDomains  []string
+	embedUrl           string
+	securityEmail      string
+	socialappAbout     string
+	socialappAboutHost string
+	socialappHost      string
+	socialappName      string
+	socialappUrl       string
+	statuspageUrl      string
 }
 
 func serve(cctx *cli.Context) error {
@@ -64,6 +72,18 @@ func serve(cctx *cli.Context) error {
 	corsOrigins := cctx.StringSlice("cors-allowed-origins")
 	staticCDNHost := cctx.String("static-cdn-host")
 	staticCDNHost = strings.TrimSuffix(staticCDNHost, "/")
+	preconnectDomains := cctx.StringSlice("preconnect-domains")
+	socialappAbout := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_ABOUT")
+	socialappAboutParsedUrl, err := url.Parse(socialappAbout)
+	if err != nil {
+		log.Fatalf("Error parsing socialapp-url: %v", err)
+	}
+	socialappAboutHost := socialappAboutParsedUrl.Host
+	socialappHost := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST")
+	socialappName := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_NAME")
+	socialappUrl := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL")
+	embedUrl := os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE")
+	statuspageUrl := os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL")
 	securityEmail := cctx.String("security-email")
 	canonicalInstance := cctx.Bool("bsky-canonical-instance")
 	robotsDisallowAll := cctx.Bool("robots-disallow-all")
@@ -103,14 +123,22 @@ func serve(cctx *cli.Context) error {
 		echo:  e,
 		xrpcc: xrpcc,
 		cfg: &Config{
-			debug:         debug,
-			httpAddress:   httpAddress,
-			appviewHost:   appviewHost,
-			ogcardHost:    ogcardHost,
-			linkHost:      linkHost,
-			ipccHost:      ipccHost,
-			staticCDNHost: staticCDNHost,
-			securityEmail: securityEmail,
+			debug:              debug,
+			httpAddress:        httpAddress,
+			appviewHost:        appviewHost,
+			ogcardHost:         ogcardHost,
+			linkHost:           linkHost,
+			ipccHost:           ipccHost,
+			staticCDNHost:      staticCDNHost,
+			preconnectDomains:  preconnectDomains,
+			embedUrl:           embedUrl,
+			securityEmail:      securityEmail,
+			socialappAbout:     socialappAbout,
+			socialappAboutHost: socialappAboutHost,
+			socialappHost:      socialappHost,
+			socialappName:      socialappName,
+			socialappUrl:       socialappUrl,
+			statuspageUrl:      statuspageUrl,
 		},
 		ipccClient: http.Client{
 			Transport: &http.Transport{
@@ -399,7 +427,15 @@ func (srv *Server) Shutdown() error {
 // NewTemplateContext returns a new pongo2 context with some default values.
 func (srv *Server) NewTemplateContext() pongo2.Context {
 	return pongo2.Context{
-		"staticCDNHost": srv.cfg.staticCDNHost,
+		"staticCDNHost":      srv.cfg.staticCDNHost,
+		"preconnectDomains":  srv.cfg.preconnectDomains,
+		"socialappAbout":     srv.cfg.socialappAbout,
+		"socialappAboutHost": srv.cfg.socialappAboutHost,
+		"socialappHost":      srv.cfg.socialappHost,
+		"socialappName":      srv.cfg.socialappName,
+		"socialappUrl":       srv.cfg.socialappUrl,
+		"embedUrl":           srv.cfg.embedUrl,
+		"statuspageUrl":      srv.cfg.statuspageUrl,
 	}
 }
 
@@ -662,43 +698,47 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 }
 
 type EnvConfigResponse struct {
-	ATP_APPVIEW_URL string `json:"ATP_APPVIEW_URL"`
-	ATP_PDS_URL string `json:"ATP_PDS_URL"`
-	ATP_PUBLIC_APPVIEW_URL string `json:"ATP_PUBLIC_APPVIEW_URL"`
-	CORS_ALLOWED_ORIGINS string `json:"CORS_ALLOWED_ORIGINS"`
-	GIF_SERVICE string `json:"GIF_SERVICE"`
-	LINK_HOST string `json:"LINK_HOST"`
-	OGCARD_URL string `json:"OGCARD_URL"`
+	ATP_APPVIEW_URL         string `json:"ATP_APPVIEW_URL"`
+	ATP_PDS_URL             string `json:"ATP_PDS_URL"`
+	ATP_PUBLIC_APPVIEW_URL  string `json:"ATP_PUBLIC_APPVIEW_URL"`
+	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
+	GIF_SERVICE             string `json:"GIF_SERVICE"`
+	LINK_HOST               string `json:"LINK_HOST"`
+	OGCARD_URL              string `json:"OGCARD_URL"`
 	PREVIEW_LINK_META_PROXY string `json:"PREVIEW_LINK_META_PROXY"`
-	SOCIAL_APP_HOST string `json:"SOCIAL_APP_HOST"`
-	SOCIAL_APP_URL string `json:"SOCIAL_APP_URL"`
-	SOCIAL_EMBED_SERVICE string `json:"SOCIAL_EMBED_SERVICE"`
-	SOCIAL_HELP_DESK_URL string `json:"SOCIAL_HELP_DESK_URL"`
-	SOCIAL_POLICY_BASE_URL string `json:"SOCIAL_POLICY_BASE_URL"`
-	STATUS_PAGE_URL string `json:"STATUS_PAGE_URL"`
-	VIDEO_SERVICE string `json:"VIDEO_SERVICE"`
-	VIDEO_SERVICE_DID string `json:"VIDEO_SERVICE_DID"`
+	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"`
+	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
+	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"`
+	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
+	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
+	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
+	SOCIAL_POLICY_BASE_URL  string `json:"SOCIAL_POLICY_BASE_URL"`
+	STATUS_PAGE_URL         string `json:"STATUS_PAGE_URL"`
+	VIDEO_SERVICE           string `json:"VIDEO_SERVICE"`
+	VIDEO_SERVICE_DID       string `json:"VIDEO_SERVICE_DID"`
 }
 
 func (srv *Server) WebEnvConfig(c echo.Context) error {
 	var outResponse EnvConfigResponse
 	outResponse = EnvConfigResponse{
-		ATP_APPVIEW_URL: os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
-		ATP_PDS_URL: os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
-		ATP_PUBLIC_APPVIEW_URL: os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
-		CORS_ALLOWED_ORIGINS: os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
-		GIF_SERVICE: os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
-		LINK_HOST: os.Getenv("EXPO_PUBLIC_LINK_HOST"),
-		OGCARD_URL: os.Getenv("EXPO_PUBLIC_OGCARD_URL"),
+		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
+		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
+		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
+		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
+		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
+		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),
+		OGCARD_URL:              os.Getenv("EXPO_PUBLIC_OGCARD_URL"),
 		PREVIEW_LINK_META_PROXY: os.Getenv("EXPO_PUBLIC_PREVIEW_LINK_META_PROXY"),
-		SOCIAL_APP_HOST: os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
-		SOCIAL_APP_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
-		SOCIAL_EMBED_SERVICE: os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),
-		SOCIAL_HELP_DESK_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_HELP_DESK_URL"),
-		SOCIAL_POLICY_BASE_URL: os.Getenv("EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL"),
-		STATUS_PAGE_URL: os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL"),
-		VIDEO_SERVICE: os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
-		VIDEO_SERVICE_DID: os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),
+		SOCIAL_APP_ABOUT:        os.Getenv("EXPO_PUBLIC_SOCIAL_APP_ABOUT"),
+		SOCIAL_APP_HOST:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
+		SOCIAL_APP_NAME:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_NAME"),
+		SOCIAL_APP_URL:          os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
+		SOCIAL_EMBED_SERVICE:    os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),
+		SOCIAL_HELP_DESK_URL:    os.Getenv("EXPO_PUBLIC_SOCIAL_HELP_DESK_URL"),
+		SOCIAL_POLICY_BASE_URL:  os.Getenv("EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL"),
+		STATUS_PAGE_URL:         os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL"),
+		VIDEO_SERVICE:           os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
+		VIDEO_SERVICE_DID:       os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),
 	}
 	// May be overkill, but useful perhaps for dev?
 	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
