@@ -5,7 +5,7 @@ const projectRoot = path.join(__dirname, '..')
 
 // copy embed assets to embedr
 
-const embedAssetSource = path.join(projectRoot, 'bskyembed', 'dist', 'static')
+const embedAssetSource = path.join(projectRoot, 'bskyembed', 'dist-go', 'static')
 
 const embedAssetDest = path.join(projectRoot, 'bskyweb', 'embedr-static')
 
@@ -14,14 +14,14 @@ fs.cpSync(embedAssetSource, embedAssetDest, {recursive: true})
 const embedEmbedJSSource = path.join(
   projectRoot,
   'bskyembed',
-  'dist',
+  'dist-go',
   'embed.js',
 )
 
 const embedEmbedJSDest = path.join(
   projectRoot,
   'bskyweb',
-  'embedr-static',
+  'embedr-templates',
   'embed.js',
 )
 
@@ -33,7 +33,7 @@ fs.cpSync(embedEmbedJSSource, embedEmbedJSDest)
 const embedHomeHtmlSource = path.join(
   projectRoot,
   'bskyembed',
-  'dist',
+  'dist-go',
   'index.html',
 )
 
@@ -49,7 +49,7 @@ fs.copyFileSync(embedHomeHtmlSource, embedHomeHtmlDest)
 const embedPostHtmlSource = path.join(
   projectRoot,
   'bskyembed',
-  'dist',
+  'dist-go',
   'post.html',
 )
 
