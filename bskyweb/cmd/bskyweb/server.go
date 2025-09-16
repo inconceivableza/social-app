@@ -50,6 +50,7 @@ type Config struct {
 	linkHost      string
 	ipccHost      string
 	staticCDNHost string
+	securityEmail string
 }
 
 func serve(cctx *cli.Context) error {
@@ -63,6 +64,7 @@ func serve(cctx *cli.Context) error {
 	corsOrigins := cctx.StringSlice("cors-allowed-origins")
 	staticCDNHost := cctx.String("static-cdn-host")
 	staticCDNHost = strings.TrimSuffix(staticCDNHost, "/")
+	securityEmail := cctx.String("security-email")
 	canonicalInstance := cctx.Bool("bsky-canonical-instance")
 	robotsDisallowAll := cctx.Bool("robots-disallow-all")
 
@@ -108,6 +110,7 @@ func serve(cctx *cli.Context) error {
 			linkHost:      linkHost,
 			ipccHost:      ipccHost,
 			staticCDNHost: staticCDNHost,
+			securityEmail: securityEmail,
 		},
 		ipccClient: http.Client{
 			Transport: &http.Transport{
@@ -162,7 +165,7 @@ func serve(cctx *cli.Context) error {
 			return id, nil
 		},
 		DenyHandler: func(c echo.Context, identifier string, err error) error {
-			return c.String(http.StatusTooManyRequests, "Your request has been rate limited. Please try again later. Contact security@bsky.app if you believe this was a mistake.\n")
+			return c.String(http.StatusTooManyRequests, fmt.Sprintf("Your request has been rate limited. Please try again later. Contact %s if you believe this was a mistake.\n", server.cfg.securityEmail))
 		},
 	}))
 

@@ -108,6 +108,12 @@ func run(args []string) {
 					Required: false,
 					EnvVars:  []string{"ROBOTS_DISALLOW_ALL"},
 				},
+				&cli.StringFlag{
+					Name:    "security-email",
+					Usage:   "email address for security",
+					Value:   "security@bsky.app",
+					EnvVars: []string{"SOCIAL_APP_SECURITY_EMAIL"},
+				},
 			},
 		},
 	}
