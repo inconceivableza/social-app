@@ -1,20 +1,18 @@
+import {envConfig} from '#/lib/constants'
 import {logger} from '#/logger'
 
 export function useShortenLink() {
   return async (inputUrl: string): Promise<{url: string}> => {
     const url = new URL(inputUrl)
-    const res = await fetch(
-      `https://${process.env.EXPO_PUBLIC_LINK_HOST || 'go.bsky.app'}/link`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          path: url.pathname,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const res = await fetch(`https://${envConfig.LINK_HOST}/link`, {
+      method: 'POST',
+      body: JSON.stringify({
+        path: url.pathname,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+    })
 
     if (!res.ok) {
       logger.error('Failed to shorten link', {safeMessage: res.status})
