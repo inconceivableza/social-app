@@ -1,5 +1,8 @@
 FROM node:20.11-alpine3.18 as build
 
+ARG SOCIAL_APP_NAME
+ENV SOCIAL_APP_NAME=${SOCIAL_APP_NAME}
+
 # Move files into the image and install
 WORKDIR /app
 

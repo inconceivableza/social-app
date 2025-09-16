@@ -1,6 +1,5 @@
 /* eslint-disable bsky-internal/avoid-unwrapped-text */
-import React from 'react'
-import {AppBskyGraphDefs, AppBskyGraphStarterpack} from '@atproto/api'
+import {type AppBskyGraphDefs, AppBskyGraphStarterpack} from '@atproto/api'
 
 import {Butterfly} from './Butterfly.js'
 import {Img} from './Img.js'
@@ -16,8 +15,9 @@ const IMAGE_STROKE = '#359CFF'
 export function StarterPack(props: {
   starterPack: AppBskyGraphDefs.StarterPackView
   images: Map<string, Buffer>
+  socialappName: string
 }) {
-  const {starterPack, images} = props
+  const {starterPack, images, socialappName} = props
   const record = AppBskyGraphStarterpack.isRecord(starterPack.record)
     ? starterPack.record
     : null
@@ -144,7 +144,8 @@ export function StarterPack(props: {
             justifyContent: 'center',
             padding: '30px 30px 10px',
           }}>
-          on <Butterfly width="65" style={{margin: '-7px 10px 0'}} /> Bluesky
+          on <Butterfly width="65" style={{margin: '-7px 10px 0'}} />{' '}
+          {socialappName}
         </div>
       </div>
     </div>

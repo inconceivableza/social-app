@@ -9,6 +9,7 @@ export type ServiceConfig = {
   version?: string
   appviewUrl: string
   originVerify?: string
+  socialappName?: string
 }
 
 export type Environment = {
@@ -16,6 +17,7 @@ export type Environment = {
   version?: string
   appviewUrl?: string
   originVerify?: string
+  socialappName?: string
 }
 
 export const readEnv = (): Environment => {
@@ -24,6 +26,7 @@ export const readEnv = (): Environment => {
     version: envStr('CARD_VERSION'),
     appviewUrl: envStr('CARD_APPVIEW_URL'),
     originVerify: envStr('CARD_ORIGIN_VERIFY'),
+    socialappName: envStr('SOCIAL_APP_NAME'),
   }
 }
 
@@ -33,6 +36,7 @@ export const envToCfg = (env: Environment): Config => {
     version: env.version,
     appviewUrl: env.appviewUrl ?? 'https://api.bsky.app',
     originVerify: env.originVerify,
+    socialappName: env.socialappName ?? 'Bluesky',
   }
   return {
     service: serviceCfg,
