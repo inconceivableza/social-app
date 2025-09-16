@@ -77,7 +77,7 @@ module.exports = function (_config) {
 
   const brandingPath = findExisting('branding.json')
   const branding = brandingPath
-    ? fs.readFileSync(brandingPath).toString('utf-8')
+    ? JSON.parse(fs.readFileSync(brandingPath).toString('utf-8'))
     : blueskyBranding
 
   const envFilenames = {
