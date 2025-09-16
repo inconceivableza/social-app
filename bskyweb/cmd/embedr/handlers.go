@@ -87,6 +87,12 @@ func (srv *Server) WebEmbedJs(c echo.Context) error {
 	return c.Render(http.StatusOK, "embed.js", data)
 }
 
+func (srv *Server) WebSecurityTxt(c echo.Context) error {
+	data := srv.getServerSideData()
+	c.Response().Header().Set("Content-Type", "text/plain; charset=utf-8")
+	return c.Render(http.StatusOK, "security.txt", data)
+}
+
 type OEmbedResponse struct {
 	Type         string `json:"type"`
 	Version      string `json:"version"`

@@ -119,7 +119,7 @@ func serve(cctx *cli.Context) error {
 
 	tmpl := &Template{
 		htmlTemplates: template.Must(template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.html")),
-		textTemplates: text_template.Must(text_template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.js")),
+		textTemplates: text_template.Must(text_template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.js", "embedr-templates/*.txt")),
 	}
 	e.Renderer = tmpl
 	e.HTTPErrorHandler = server.errorHandler
@@ -184,7 +184,7 @@ func serve(cctx *cli.Context) error {
 	e.GET("/robots.txt", echo.WrapHandler(staticHandler))
 	e.GET("/ips-v4", echo.WrapHandler(staticHandler))
 	e.GET("/ips-v6", echo.WrapHandler(staticHandler))
-	e.GET("/.well-known/*", echo.WrapHandler(staticHandler))
+	e.GET("/.well-known/security.txt", server.WebSecurityTxt)
 	e.GET("/embed.js", server.WebEmbedJs)
 	e.GET("/security.txt", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/.well-known/security.txt")

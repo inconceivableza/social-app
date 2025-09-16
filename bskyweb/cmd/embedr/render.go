@@ -15,7 +15,7 @@ type Template struct {
 }
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	if strings.HasSuffix(name, ".js") {
+	if strings.HasSuffix(name, ".js") || strings.HasSuffix(name, ".txt") {
 		return t.textTemplates.ExecuteTemplate(w, name, data)
 	}
 	return t.htmlTemplates.ExecuteTemplate(w, name, data)
