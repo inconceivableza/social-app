@@ -1,6 +1,6 @@
 import {AtUri} from '@atproto/api'
 
-import {envConfig} from '#/lib/constants'
+import {branding, envConfig} from '#/lib/constants'
 import type * as bsky from '#/types/bsky'
 
 export function createStarterPackLinkFromAndroidReferrer(
@@ -67,7 +67,7 @@ export function createStarterPackGooglePlayUri(
   rkey: string,
 ): string | null {
   if (!name || !rkey) return null
-  return `https://play.google.com/store/apps/details?id=xyz.blueskyweb.app&referrer=utm_source%3Dbluesky%26utm_medium%3Dstarterpack%26utm_content%3Dstarterpack_${name}_${rkey}`
+  return `https://play.google.com/store/apps/details?id=${branding.code.web_package_id}&referrer=utm_source%3D${branding.code.app_slug_scheme}%26utm_medium%3Dstarterpack%26utm_content%3Dstarterpack_${name}_${rkey}`
 }
 
 export function httpStarterPackUriToAtUri(httpUri?: string): string | null {

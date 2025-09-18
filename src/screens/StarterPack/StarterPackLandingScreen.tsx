@@ -12,7 +12,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {isAndroidWeb} from '#/lib/browser'
-import {JOINED_THIS_WEEK} from '#/lib/constants'
+import {branding, JOINED_THIS_WEEK} from '#/lib/constants'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {logEvent} from '#/lib/statsig/statsig'
 import {createStarterPackGooglePlayUri} from '#/lib/strings/starter-pack'
@@ -353,7 +353,7 @@ function LandingScreenLoaded({
       {isWeb && (
         <meta
           name="apple-itunes-app"
-          content="app-id=xyz.blueskyweb.app, app-clip-bundle-id=xyz.blueskyweb.app.AppClip, app-clip-display=card"
+          content={`app-id=${branding.code.web_package_id}, app-clip-bundle-id=${branding.code.web_package_id}.${branding.code.ios_clip_name}, app-clip-display=card`}
         />
       )}
     </View>
