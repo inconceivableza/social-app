@@ -785,8 +785,7 @@ type EnvConfigResponse struct {
 }
 
 func (srv *Server) WebEnvConfig(c echo.Context) error {
-	var outResponse EnvConfigResponse
-	outResponse = EnvConfigResponse{
+	var outResponse = EnvConfigResponse{
 		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
 		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
 		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
