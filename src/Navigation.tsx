@@ -18,7 +18,7 @@ import {
 } from '@react-navigation/native'
 
 import {timeout} from '#/lib/async/timeout'
-import {envConfig} from '#/lib/constants'
+import {branding, envConfig} from '#/lib/constants'
 import {useColorSchemeStyle} from '#/lib/hooks/useColorSchemeStyle'
 import {
   getNotificationPayload,
@@ -778,7 +778,7 @@ const FlatNavigator = () => {
 const LINKING = {
   // TODO figure out what we are going to use
   // note: `bluesky://` is what is used in app.config.js
-  prefixes: [ 'bsky://', 'bluesky://', envConfig.SOCIAL_APP_URL],
+  prefixes: [`${branding.code.app_slug_scheme}://`, envConfig.SOCIAL_APP_URL],
 
   getPathFromState(state: State) {
     // find the current node in the navigation tree
