@@ -5,7 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 
-import {envConfig} from '#/lib/constants'
+import {branding, envConfig} from '#/lib/constants'
 import {getLabelingServiceTitle} from '#/lib/moderation'
 import {
   type CommonNavigatorParams,
@@ -405,7 +405,7 @@ export function ModerationScreenInner({
                         <Trans>
                           Adult content can only be enabled via the Web at{' '}
                           <InlineLinkText
-                            label={_(msg`The Bluesky web application`)}
+                            label={_(msg`The ${branding.naming.app_name} web application`)}
                             to=""
                             onPress={evt => {
                               evt.preventDefault()

@@ -4,6 +4,7 @@ import {$Typed, ComAtprotoLabelDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {
   useProfileQuery,
   useProfileUpdateMutation,
@@ -97,7 +98,7 @@ export function PwiOptOut() {
 
       <Text style={[a.leading_snug, t.atoms.text_contrast_high]}>
         <Trans>
-          Bluesky will not show your profile and posts to logged-out users.
+          {branding.naming.app_name} will not show your profile and posts to logged-out users.
           Other apps may not honor this request. This does not make your account
           private.
         </Trans>

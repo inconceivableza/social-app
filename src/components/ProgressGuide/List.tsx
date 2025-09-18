@@ -10,6 +10,7 @@ import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon} from '#/components/Button'
 import {TimesLarge_Stroke2_Corner0_Rounded as Times} from '#/components/icons/Times'
 import {Text} from '#/components/Typography'
+import {branding} from '#/lib/constants'
 import {FollowDialog} from './FollowDialog'
 import {ProgressGuideTask} from './Task'
 
@@ -50,7 +51,7 @@ export function ProgressGuideList({style}: {style?: StyleProp<ViewStyle>}) {
               current={guide.numFollows + 1}
               total={10 + 1}
               title={_(msg`Follow 10 accounts`)}
-              subtitle={_(msg`Bluesky is better with friends!`)}
+              subtitle={_(msg`${branding.naming.app_name} is better with friends!`)}
             />
             <FollowDialog guide={guide} />
           </>
@@ -67,7 +68,7 @@ export function ProgressGuideList({style}: {style?: StyleProp<ViewStyle>}) {
               current={guide.numFollows + 1}
               total={7 + 1}
               title={_(msg`Follow 7 accounts`)}
-              subtitle={_(msg`Bluesky is better with friends!`)}
+              subtitle={_(msg`${branding.naming.app_name} is better with friends!`)}
             />
           </>
         )}

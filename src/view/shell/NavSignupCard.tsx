@@ -7,6 +7,7 @@ import {useLoggedOutViewControls} from '#/state/shell/logged-out'
 import {useCloseAllActiveElements} from '#/state/util'
 import {Logo} from '#/view/icons/Logo'
 import {atoms as a} from '#/alf'
+import {branding} from '#/lib/constants'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
 import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
@@ -31,7 +32,7 @@ let NavSignupCard = ({}: {}): React.ReactNode => {
 
   return (
     <View style={[{maxWidth: 200}]}>
-      <Link to="/" label="Bluesky - Home">
+      <Link to="/" label={`${branding.naming.app_name} - Home`}>
         <Logo width={32} />
       </Link>
 

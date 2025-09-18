@@ -5,7 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {differenceInSeconds} from 'date-fns'
 
-import {HITSLOP_10} from '#/lib/constants'
+import {branding, HITSLOP_10} from '#/lib/constants'
 import {useGetTimeAgo} from '#/lib/hooks/useTimeAgo'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {isNative} from '#/platform/detection'
@@ -109,12 +109,12 @@ export function NewskieDialog({
             <Text style={[a.text_md, a.text_center, a.leading_snug]}>
               {profile.joinedViaStarterPack ? (
                 <Trans>
-                  {profileName} joined Bluesky using a starter pack{' '}
+                  {profileName} joined {branding.naming.app_name} using a starter pack{' '}
                   {timeAgo(createdAt, now, {format: 'long'})} ago
                 </Trans>
               ) : (
                 <Trans>
-                  {profileName} joined Bluesky{' '}
+                  {profileName} joined {branding.naming.app_name}{' '}
                   {timeAgo(createdAt, now, {format: 'long'})} ago
                 </Trans>
               )}

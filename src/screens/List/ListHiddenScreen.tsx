@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {branding} from '#/lib/constants'
 import {useGoBack} from '#/lib/hooks/useGoBack'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {logger} from '#/logger'
@@ -145,7 +146,7 @@ export function ListHiddenScreen({
             ) : isOwner ? (
               <Trans>
                 This list – created by you – contains possible violations of
-                Bluesky's community guidelines in its name or description.
+                {branding.naming.app_name}'s community guidelines in its name or description.
               </Trans>
             ) : (
               <Trans>
@@ -153,7 +154,7 @@ export function ListHiddenScreen({
                 <Text style={[a.font_bold]}>
                   {sanitizeHandle(list.creator.handle, '@')}
                 </Text>{' '}
-                – contains possible violations of Bluesky's community guidelines
+                – contains possible violations of {branding.naming.app_name}'s community guidelines
                 in its name or description.
               </Trans>
             )}

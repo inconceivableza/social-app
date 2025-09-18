@@ -5,6 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {msg, plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {logger} from '#/logger'
 import {isIOS, isWeb} from '#/platform/detection'
 import {isSignupQueued, useAgent, useSessionApi} from '#/state/session'
@@ -128,7 +129,7 @@ export function SignupQueued() {
             </Text>
             <P style={[t.atoms.text_contrast_medium]}>
               <Trans>
-                There's been a rush of new users to Bluesky! We'll activate your
+                There's been a rush of new users to {branding.naming.app_name}! We'll activate your
                 account as soon as we can.
               </Trans>
             </P>

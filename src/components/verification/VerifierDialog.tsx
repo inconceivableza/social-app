@@ -3,7 +3,7 @@ import {Image} from 'expo-image'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {urls} from '#/lib/constants'
+import {branding, urls} from '#/lib/constants'
 import {getUserDisplayName} from '#/lib/getUserDisplayName'
 import {logger} from '#/logger'
 import {useSession} from '#/state/session'
@@ -83,7 +83,7 @@ function Inner({
               },
             ]}
             alt={_(
-              msg`An illustration showing that Bluesky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts.`,
+              msg`An illustration showing that ${branding.naming.app_name} selects trusted verifiers, and trusted verifiers in turn verify individual user accounts.`,
             )}
           />
         </View>
@@ -99,7 +99,7 @@ function Inner({
                 <VerifierCheck width={14} />
               </RNText>{' '}
               can verify others. These trusted verifiers are selected by
-              Bluesky.
+              {branding.naming.app_name}.
             </Trans>
           </Text>
         </View>
@@ -114,7 +114,7 @@ function Inner({
           <Link
             overridePresentation
             to={urls.website.blog.initialVerificationAnnouncement}
-            label={_(msg`Learn more about verification on Bluesky`)}
+            label={_(msg`Learn more about verification on ${branding.naming.app_name}`)}
             size="small"
             variant="solid"
             color="primary"

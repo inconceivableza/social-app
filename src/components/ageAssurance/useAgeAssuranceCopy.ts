@@ -2,13 +2,15 @@ import {useMemo} from 'react'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
+
 export function useAgeAssuranceCopy() {
   const {_} = useLingui()
 
   return useMemo(() => {
     return {
       notice: _(
-        msg`The laws in your location require you to verify you're an adult before accessing certain features on Bluesky, like adult content and direct messaging.`,
+        msg`The laws in your location require you to verify you're an adult before accessing certain features on ${branding.naming.app_name}, like adult content and direct messaging.`,
       ),
       banner: _(
         msg`The laws in your location require you to verify you're an adult to access certain features. Tap to learn more.`,

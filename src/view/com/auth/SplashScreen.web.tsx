@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
 import {ErrorBoundary} from '#/view/com/util/ErrorBoundary'
@@ -97,7 +98,7 @@ export const SplashScreen = ({
 
               <Text
                 style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
-                <Trans>What's up?</Trans>
+                <Trans>{branding.verbage.post_prompt}</Trans>
               </Text>
             </View>
 
@@ -109,7 +110,7 @@ export const SplashScreen = ({
                 onPress={onPressCreateAccount}
                 label={_(msg`Create new account`)}
                 accessibilityHint={_(
-                  msg`Opens flow to create a new Bluesky account`,
+                  msg`Opens flow to create a new ${branding.naming.app_name} account`,
                 )}
                 size="large"
                 variant="solid"
@@ -123,7 +124,7 @@ export const SplashScreen = ({
                 onPress={onPressSignin}
                 label={_(msg`Sign in`)}
                 accessibilityHint={_(
-                  msg`Opens flow to sign in to your existing Bluesky account`,
+                  msg`Opens flow to sign in to your existing ${branding.naming.app_name} account`,
                 )}
                 size="large"
                 variant="solid"
@@ -166,19 +167,19 @@ function Footer() {
         t.atoms.border_contrast_medium,
       ]}>
       <InlineLinkText
-        label={_(msg`Learn more about Bluesky`)}
+        label={_(msg`Learn more about ${branding.naming.app_name}`)}
         to="https://bsky.social">
         <Trans>Business</Trans>
       </InlineLinkText>
       <InlineLinkText
-        label={_(msg`Read the Bluesky blog`)}
+        label={_(msg`Read the ${branding.naming.app_name} blog`)}
         to="https://bsky.social/about/blog">
         <Trans>Blog</Trans>
       </InlineLinkText>
       <InlineLinkText
-        label={_(msg`See jobs at Bluesky`)}
+        label={_(msg`See jobs at ${branding.naming.app_name}`)}
         to="https://bsky.social/about/join">
-        <Trans comment="Link to a page with job openings at Bluesky">
+        <Trans comment={`Link to a page with job openings at ${branding.naming.app_name}`}>
           Jobs
         </Trans>
       </InlineLinkText>

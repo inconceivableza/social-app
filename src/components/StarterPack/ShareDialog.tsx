@@ -4,6 +4,7 @@ import {type AppBskyGraphDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {useSaveImageToMediaLibrary} from '#/lib/media/save-image'
 import {shareUrl} from '#/lib/sharing'
@@ -79,7 +80,7 @@ function ShareDialogInner({
               <Text style={[a.text_md, t.atoms.text_contrast_medium]}>
                 <Trans>
                   Share this starter pack and help people join your community on
-                  Bluesky.
+                  {branding.naming.app_name}.
                 </Trans>
               </Text>
             </View>

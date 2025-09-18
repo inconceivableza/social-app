@@ -2,7 +2,7 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {urls} from '#/lib/constants'
+import {branding, urls} from '#/lib/constants'
 import {logger} from '#/logger'
 import {
   usePreferencesQuery,
@@ -39,7 +39,7 @@ export function Screen() {
           <SettingsList.Item>
             <Admonition type="tip" style={[a.flex_1]}>
               <Trans>
-                Verifications on Bluesky work differently than on other
+                Verifications on {branding.naming.app_name} work differently than on other
                 platforms.{' '}
                 <InlineLinkText
                   overridePresentation

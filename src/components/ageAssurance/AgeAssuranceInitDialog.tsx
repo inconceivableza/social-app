@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {validate as validateEmail} from 'email-validator'
 
+import {branding} from '#/lib/constants'
 import {useCleanError} from '#/lib/hooks/useCleanError'
 import {
   SupportCode,
@@ -208,7 +209,7 @@ function Inner() {
                   this email address for other games/services powered by KWS
                   technology. If not, KWS will email you instructions for
                   verifying your age. When you’re done, you'll be brought back
-                  to continue using Bluesky.
+                  to continue using {branding.naming.app_name}.
                 </Trans>
               </Text>
               <Text style={[a.text_sm, a.leading_snug]}>
@@ -278,7 +279,7 @@ function Inner() {
                   <Admonition type="tip" style={[a.mt_sm]}>
                     <Trans>
                       Use your account email address, or another real email
-                      address you control, in case KWS or Bluesky needs to
+                      address you control, in case KWS or {branding.naming.app_name} needs to
                       contact you.
                     </Trans>
                   </Admonition>
