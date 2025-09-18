@@ -227,8 +227,10 @@ export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
 
 const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
 export const webLinks = {
+  main: POLICY_BASE_URL, // main support page
   tos: `${POLICY_BASE_URL}/tos`,
   privacy: `${POLICY_BASE_URL}/privacy-policy`,
   community: `${POLICY_BASE_URL}/community-guidelines`,
   communityDeprecated: `${POLICY_BASE_URL}/community-guidelines-deprecated`,
+  copyright: `${POLICY_BASE_URL}/copyright`,
 }
