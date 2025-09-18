@@ -2,18 +2,17 @@ import {AtUri} from '@atproto/api'
 import psl from 'psl'
 import TLDs from 'tlds'
 
-import {BSKY_SERVICE} from '#/lib/constants'
+import {BSKY_SERVICE, envConfig} from '#/lib/constants'
 import {isInvalidHandle} from '#/lib/strings/handles'
 import {startUriToStarterPackUri} from '#/lib/strings/starter-pack'
 import {logger} from '#/logger'
 
-export const BSKY_APP_HOST =
-  process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'
+export const BSKY_APP_HOST = envConfig.SOCIAL_APP_URL
 const BSKY_TRUSTED_HOSTS = [
-  'bsky\\.app',
-  'bsky\\.social',
+  envConfig.SOCIAL_APP_HOST.replace('.', '\\.'),
+  envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '').replace('.', '\\.'),
   'blueskyweb\\.xyz',
-  'blueskyweb\\.zendesk\\.com',
+  envConfig.HELP_DESK_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace('.', '\\.'),
   ...(__DEV__ ? ['localhost:19006', 'localhost:8100'] : []),
 ]
 
@@ -338,12 +337,12 @@ export function createProxiedUrl(url: string): string {
     return url
   }
 
-  return `https://${process.env.EXPO_PUBLIC_LINK_HOST || 'go.bsky.app'}/redirect?u=${encodeURIComponent(url)}`
+  return `https://${envConfig.LINK_HOST}/redirect?u=${encodeURIComponent(url)}`
 }
 
 export function isShortLink(url: string): boolean {
   return url.startsWith(
-    `https://${process.env.EXPO_PUBLIC_LINK_HOST || 'go.bsky.app'}/`,
+    `https://${envConfig.LINK_HOST}/`,
   )
 }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import EventEmitter from 'eventemitter3'
 
 import {networkRetry} from '#/lib/async/retry'
+import {envConfig} from '#/lib/constants'
 import {logger} from '#/logger'
 import {type Device, device} from '#/storage'
 
@@ -29,7 +30,7 @@ export const DEFAULT_GEOLOCATION: Device['geolocation'] = {
 }
 
 async function getGeolocation(): Promise<Device['geolocation']> {
-  const res = await fetch(`https://bsky.app/ipcc`)
+  const res = await fetch(`${envConfig.SOCIAL_APP_URL}/ipcc`)
 
   if (!res.ok) {
     throw new Error(`geolocation: lookup failed ${res.status}`)

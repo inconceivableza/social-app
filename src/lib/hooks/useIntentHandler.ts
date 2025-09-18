@@ -1,6 +1,7 @@
 import React from 'react'
 import * as Linking from 'expo-linking'
 
+import {envConfig} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {logEvent} from '#/lib/statsig/statsig'
 import {isNative} from '#/platform/detection'
@@ -31,7 +32,7 @@ export function useIntentHandler() {
   React.useEffect(() => {
     const handleIncomingURL = (url: string) => {
       const referrerInfo = Referrer.getReferrerInfo()
-      if (referrerInfo && referrerInfo.hostname !== 'bsky.app') {
+      if (referrerInfo && referrerInfo.hostname !== envConfig.SOCIAL_APP_HOST) {
         logEvent('deepLink:referrerReceived', {
           to: url,
           referrer: referrerInfo?.referrer,

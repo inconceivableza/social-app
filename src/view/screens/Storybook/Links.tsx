@@ -4,6 +4,7 @@ import {atoms as a, useTheme} from '#/alf'
 import {ButtonText} from '#/components/Button'
 import {InlineLinkText, Link} from '#/components/Link'
 import {H1, Text} from '#/components/Typography'
+import {envConfig} from '#/lib/constants'
 
 export function Links() {
   const t = useTheme()
@@ -20,15 +21,15 @@ export function Links() {
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to="https://bsky.social"
+          to={envConfig.BSKY_SERVICE}
           style={[a.text_md, t.atoms.text_contrast_low]}>
-          Internal (bsky.social)
+          Internal ({envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '')})
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to="https://bsky.app/profile/bsky.app"
+          to={`${envConfig.SOCIAL_APP_URL}/profile/bsky.app`}
           style={[a.text_md]}>
-          Internal (bsky.app)
+          Internal ({envConfig.SOCIAL_APP_HOST})
         </InlineLinkText>
 
         <Link
@@ -36,13 +37,13 @@ export function Links() {
           color="primary"
           size="large"
           label="View @bsky.app's profile"
-          to="https://bsky.app/profile/bsky.app">
+          to={`${envConfig.SOCIAL_APP_HOST}/profile/bsky.app`}>
           <ButtonText>Link as a button</ButtonText>
         </Link>
 
         <Link
           label="View @bsky.app's profile"
-          to="https://bsky.app/profile/bsky.app">
+          to={`${envConfig.SOCIAL_APP_HOST}/profile/bsky.app`}>
           <View
             style={[
               a.flex_row,

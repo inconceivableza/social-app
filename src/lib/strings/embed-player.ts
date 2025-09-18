@@ -1,6 +1,7 @@
 import {Dimensions} from 'react-native'
 
 import {isSafari} from '#/lib/browser'
+import {envConfig} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window')
@@ -9,10 +10,10 @@ const IFRAME_HOST = isWeb
   ? // @ts-ignore only for web
     window.location.host === 'localhost:8100'
     ? 'http://localhost:8100'
-    : process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'
+    : envConfig.SOCIAL_APP_URL
   : __DEV__ && !process.env.EXPO_PUBLIC_JEST_WORKER_ID
     ? 'http://localhost:8100'
-    : process.env.EXPO_PUBLIC_SOCIAL_APP_URL || 'https://bsky.app'
+    : envConfig.SOCIAL_APP_URL
 
 export const embedPlayerSources = [
   'youtube',

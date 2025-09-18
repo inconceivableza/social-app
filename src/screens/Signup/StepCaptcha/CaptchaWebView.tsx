@@ -3,13 +3,18 @@ import {StyleSheet} from 'react-native'
 import {WebView, WebViewNavigation} from 'react-native-webview'
 import {ShouldStartLoadRequest} from 'react-native-webview/lib/WebViewTypes'
 
+import {envConfig} from '#/lib/constants'
 import {SignupState} from '#/screens/Signup/state'
+import {DOMAIN_ENVCONFIGS} from '#/state/env-config'
 
 const ALLOWED_HOSTS = [
-  'bsky.social',
-  'bsky.app',
-  'staging.bsky.app',
-  'staging.bsky.dev',
+  // allow production or staging or the current configured hosts
+  DOMAIN_ENVCONFIGS.production.BSKY_SERVICE.replace(/^https?:\/\//, ''),
+  DOMAIN_ENVCONFIGS.production.SOCIAL_APP_HOST,
+  DOMAIN_ENVCONFIGS.staging.BSKY_SERVICE.replace(/^https?:\/\//, ''),
+  DOMAIN_ENVCONFIGS.staging.SOCIAL_APP_HOST,
+  envConfig.BSKY_SERVICE.replace(/^https?:\/\//, ''),
+  envConfig.SOCIAL_APP_HOST,
   'js.hcaptcha.com',
   'newassets.hcaptcha.com',
   'api2.hcaptcha.com',
@@ -29,12 +34,12 @@ export function CaptchaWebView({
   onError: (error: unknown) => void
 }) {
   const redirectHost = React.useMemo(() => {
-    if (!state?.serviceUrl) return 'bsky.app'
+    if (!state?.serviceUrl) return envConfig.SOCIAL_APP_HOST
 
     return state?.serviceUrl &&
-      new URL(state?.serviceUrl).host === 'staging.bsky.dev'
-      ? 'staging.bsky.app'
-      : 'bsky.app'
+      new URL(state?.serviceUrl).host === DOMAIN_ENVCONFIGS.staging.BSKY_SERVICE
+      ? DOMAIN_ENVCONFIGS.staging.SOCIAL_APP_HOST
+      : envConfig.SOCIAL_APP_HOST
   }, [state?.serviceUrl])
 
   const wasSuccessful = React.useRef(false)

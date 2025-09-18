@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 
+import {envConfig} from '#/lib/constants'
 import {getLabelingServiceTitle} from '#/lib/moderation'
 import {
   type CommonNavigatorParams,
@@ -408,10 +409,10 @@ export function ModerationScreenInner({
                             to=""
                             onPress={evt => {
                               evt.preventDefault()
-                              Linking.openURL('https://bsky.app/')
+                              Linking.openURL(envConfig.SOCIAL_APP_URL)
                               return false
                             }}>
-                            bsky.app
+                            {envConfig.SOCIAL_APP_HOST}
                           </InlineLinkText>
                           .
                         </Trans>
