@@ -9,7 +9,7 @@ import {useLingui} from '@lingui/react'
 import {useMutation} from '@tanstack/react-query'
 import Graphemer from 'graphemer'
 
-import {MAX_REPORT_REASON_GRAPHEME_LENGTH} from '#/lib/constants'
+import {MAX_REPORT_REASON_GRAPHEME_LENGTH, webLinks} from '#/lib/constants'
 import {useEnableKeyboardController} from '#/lib/hooks/useEnableKeyboardController'
 import {cleanError} from '#/lib/strings/errors'
 import {isIOS, isWeb} from '#/platform/detection'
@@ -215,7 +215,7 @@ export function Takendown() {
                   Your account was found to be in violation of the{' '}
                   <InlineLinkText
                     label={_(msg`Bluesky Social Terms of Service`)}
-                    to="https://bsky.social/about/support/tos"
+                    to={webLinks.tos}
                     style={[a.text_md, a.leading_normal]}
                     overridePresentation>
                     Bluesky Social Terms of Service

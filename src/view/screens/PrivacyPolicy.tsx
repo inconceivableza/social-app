@@ -4,8 +4,12 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 
+import {webLinks} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {CommonNavigatorParams, NativeStackScreenProps} from '#/lib/routes/types'
+import {
+  type CommonNavigatorParams,
+  type NativeStackScreenProps,
+} from '#/lib/routes/types'
 import {s} from '#/lib/styles'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {TextLink} from '#/view/com/util/Link'
@@ -36,8 +40,8 @@ export const PrivacyPolicyScreen = (_props: Props) => {
               The Privacy Policy has been moved to{' '}
               <TextLink
                 style={pal.link}
-                href="https://bsky.social/about/support/privacy-policy"
-                text="bsky.social/about/support/privacy-policy"
+                href={webLinks.privacy}
+                text={webLinks.privacy.replace(/^https?:\/\//, '')}
               />
             </Trans>
           </Text>

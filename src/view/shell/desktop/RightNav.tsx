@@ -4,7 +4,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/core'
 
-import {FEEDBACK_FORM_URL, HELP_DESK_URL} from '#/lib/constants'
+import {FEEDBACK_FORM_URL, HELP_DESK_URL, webLinks} from '#/lib/constants'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
 import {useSession} from '#/state/session'
 import {DesktopFeeds} from '#/view/shell/desktop/Feeds'
@@ -106,15 +106,11 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
             {' • '}
           </>
         )}
-        <InlineLinkText
-          to="https://bsky.social/about/support/privacy-policy"
-          label={_(msg`Privacy`)}>
+        <InlineLinkText to={webLinks.privacy} label={_(msg`Privacy`)}>
           {_(msg`Privacy`)}
         </InlineLinkText>
         {' • '}
-        <InlineLinkText
-          to="https://bsky.social/about/support/tos"
-          label={_(msg`Terms`)}>
+        <InlineLinkText to={webLinks.tos} label={_(msg`Terms`)}>
           {_(msg`Terms`)}
         </InlineLinkText>
         {' • '}

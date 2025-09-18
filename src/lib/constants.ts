@@ -1,4 +1,5 @@
 import {type Insets, Platform} from 'react-native'
+import Constants from 'expo-constants'
 import {type AppBskyActorDefs} from '@atproto/api'
 
 import {
@@ -23,6 +24,8 @@ export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
 export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
 export const CHAT_DISABLED = true
+
+export const branding = (Constants?.expoConfig?.extra || {}).branding
 
 // HACK
 // Yes, this is exactly what it looks like. It's a hard-coded constant

@@ -4,8 +4,12 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 
+import {webLinks} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {CommonNavigatorParams, NativeStackScreenProps} from '#/lib/routes/types'
+import {
+  type CommonNavigatorParams,
+  type NativeStackScreenProps,
+} from '#/lib/routes/types'
 import {s} from '#/lib/styles'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {TextLink} from '#/view/com/util/Link'
@@ -39,8 +43,8 @@ export const CommunityGuidelinesScreen = (_props: Props) => {
               The Community Guidelines have been moved to{' '}
               <TextLink
                 style={pal.link}
-                href="https://bsky.social/about/support/community-guidelines"
-                text="bsky.social/about/support/community-guidelines"
+                href={webLinks.community}
+                text={webLinks.community.replace(/^https?:\/\//, '')}
               />
             </Trans>
           </Text>
