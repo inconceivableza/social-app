@@ -10,10 +10,10 @@ const IFRAME_HOST = isWeb
   ? // @ts-ignore only for web
     window.location.host === 'localhost:8100'
     ? 'http://localhost:8100'
-    : envConfig.SOCIAL_APP_URL
+    : null
   : __DEV__ && !process.env.EXPO_PUBLIC_JEST_WORKER_ID
     ? 'http://localhost:8100'
-    : envConfig.SOCIAL_APP_URL
+    : null
 
 export const embedPlayerSources = [
   'youtube',
@@ -96,7 +96,7 @@ export function parseEmbedPlayerFromUrl(
       return {
         type: 'youtube_video',
         source: 'youtube',
-        playerUri: `${IFRAME_HOST}/iframe/youtube.html?videoId=${videoId}&start=${seek}`,
+        playerUri: `${IFRAME_HOST || envConfig.SOCIAL_APP_URL}/iframe/youtube.html?videoId=${videoId}&start=${seek}`,
       }
     }
   }
@@ -122,7 +122,7 @@ export function parseEmbedPlayerFromUrl(
         type: isShorts ? 'youtube_short' : 'youtube_video',
         source: isShorts ? 'youtubeShorts' : 'youtube',
         hideDetails: isShorts ? true : undefined,
-        playerUri: `${IFRAME_HOST}/iframe/youtube.html?videoId=${videoId}&start=${seek}`,
+        playerUri: `${IFRAME_HOST || envConfig.SOCIAL_APP_URL}/iframe/youtube.html?videoId=${videoId}&start=${seek}`,
       }
     }
   }

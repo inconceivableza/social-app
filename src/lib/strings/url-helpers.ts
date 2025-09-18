@@ -7,24 +7,22 @@ import {isInvalidHandle} from '#/lib/strings/handles'
 import {startUriToStarterPackUri} from '#/lib/strings/starter-pack'
 import {logger} from '#/logger'
 
-export const BSKY_APP_HOST = envConfig.SOCIAL_APP_URL
-const BSKY_TRUSTED_HOSTS = [
-  envConfig.SOCIAL_APP_HOST.replace('.', '\\.'),
-  envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '').replace('.', '\\.'),
-  'blueskyweb\\.xyz',
-  envConfig.HELP_DESK_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace('.', '\\.'),
-  ...(__DEV__ ? ['localhost:19006', 'localhost:8100'] : []),
-]
+function getTrustedHosts() {
+  return [
+    envConfig.SOCIAL_APP_HOST.replace('.', '\\.'),
+    envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '').replace('.', '\\.'),
+    'blueskyweb\\.xyz',
+    envConfig.HELP_DESK_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace('.', '\\.'),
+    ...(__DEV__ ? ['localhost:19006', 'localhost:8100'] : []),
+  ]
+}
 
 /*
  * This will allow any BSKY_TRUSTED_HOSTS value by itself or with a subdomain.
  * It will also allow relative paths like /profile as well as #.
  */
-const TRUSTED_REGEX = new RegExp(
-  `^(http(s)?://(([\\w-]+\\.)?${BSKY_TRUSTED_HOSTS.join(
-    '|([\\w-]+\\.)?',
-  )})|/|#)`,
-)
+
+let TRUSTED_REGEX: RegExp | undefined
 
 export function isValidDomain(str: string): boolean {
   return !!TLDs.find(tld => {
@@ -79,7 +77,7 @@ export function toShortUrl(url: string): string {
 
 export function toShareUrl(url: string): string {
   if (!url.startsWith('https')) {
-    const urlp = new URL(BSKY_APP_HOST)
+    const urlp = new URL(envConfig.SOCIAL_APP_URL)
     urlp.pathname = url
     url = urlp.toString()
   }
@@ -87,11 +85,11 @@ export function toShareUrl(url: string): string {
 }
 
 export function toBskyAppUrl(url: string): string {
-  return new URL(url, BSKY_APP_HOST).toString()
+  return new URL(url, envConfig.SOCIAL_APP_URL).toString()
 }
 
 export function isBskyAppUrl(url: string): boolean {
-  return url.startsWith(BSKY_APP_HOST + '/')
+  return url.startsWith(envConfig.SOCIAL_APP_URL + '/')
 }
 
 export function isRelativeUrl(url: string): boolean {
@@ -100,7 +98,7 @@ export function isRelativeUrl(url: string): boolean {
 
 export function isBskyRSSUrl(url: string): boolean {
   return (
-    (url.startsWith(BSKY_APP_HOST + '/') || isRelativeUrl(url)) &&
+    (url.startsWith(envConfig.SOCIAL_APP_URL + '/') || isRelativeUrl(url)) &&
     /\/rss\/?$/.test(url)
   )
 }
@@ -112,6 +110,14 @@ export function isExternalUrl(url: string): boolean {
 }
 
 export function isTrustedUrl(url: string): boolean {
+  if (TRUSTED_REGEX === undefined) {
+    const BSKY_TRUSTED_HOSTS = getTrustedHosts()
+    TRUSTED_REGEX = new RegExp(
+      `^(http(s)?://(([\\w-]+\\.)?${BSKY_TRUSTED_HOSTS}.join(
+        '|([\\w-]+\\.)?',
+      )})|/|#)`,
+    )
+  }
   return TRUSTED_REGEX.test(url)
 }
 
@@ -321,8 +327,8 @@ export function splitApexDomain(hostname: string): [string, string] {
 }
 
 export function createBskyAppAbsoluteUrl(path: string): string {
-  const sanitizedPath = path.replace(BSKY_APP_HOST, '').replace(/^\/+/, '')
-  return `${BSKY_APP_HOST.replace(/\/$/, '')}/${sanitizedPath}`
+  const sanitizedPath = path.replace(envConfig.SOCIAL_APP_URL, '').replace(/^\/+/, '')
+  return `${envConfig.SOCIAL_APP_URL.replace(/\/$/, '')}/${sanitizedPath}`
 }
 
 export function createProxiedUrl(url: string): string {
