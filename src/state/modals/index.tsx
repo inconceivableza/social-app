@@ -43,6 +43,11 @@ export interface ChangePasswordModal {
   name: 'change-password'
 }
 
+export interface RecipeRevisionViewModal {
+  name: 'recipe-revision-view',
+  uri: string
+}
+
 export type Modal =
   // Account
   | DeleteAccountModal
@@ -59,6 +64,9 @@ export type Modal =
   // Bluesky access
   | WaitlistModal
   | InviteCodesModal
+
+  // Recipes
+  | RecipeRevisionViewModal
 
 const ModalContext = React.createContext<{
   isModalActive: boolean

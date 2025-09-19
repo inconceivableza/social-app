@@ -13,6 +13,7 @@ import * as InviteCodesModal from './InviteCodes'
 import * as ContentLanguagesSettingsModal from './lang-settings/ContentLanguagesSettings'
 import * as PostLanguagesSettingsModal from './lang-settings/PostLanguagesSettings'
 import * as UserAddRemoveLists from './UserAddRemoveLists'
+import * as RecipeRevisionViewModal from './RecipeRevisionView'
 
 export function ModalsContainer() {
   const {isModalActive, activeModals} = useModals()
@@ -64,6 +65,8 @@ function Modal({modal}: {modal: ModalIface}) {
     element = <PostLanguagesSettingsModal.Component />
   } else if (modal.name === 'change-password') {
     element = <ChangePasswordModal.Component />
+  } else if (modal.name === "recipe-revision-view") {
+    element = <RecipeRevisionViewModal.Component uri={modal.uri} />
   } else {
     return null
   }
