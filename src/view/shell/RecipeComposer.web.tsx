@@ -68,7 +68,7 @@ function Inner({ state }: { state: RecipeComposerOpts }) {
                             { animationFillMode: 'backwards' },
                         ],
                     ]}>
-                    <ComposerRecipe />
+                    <ComposerRecipe edit={state.edit} />
                 </View>
             </DismissableLayer.DismissableLayer>
         </FocusScope.FocusScope>

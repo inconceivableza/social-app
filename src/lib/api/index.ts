@@ -14,6 +14,7 @@ import AtpAgent, {
   type ComAtprotoRepoStrongRef,
   RichText,
   AppFoodiosFeedRecipePost,
+  AppFoodiosFeedRecipeRevision,
 } from '@atproto/api'
 import { TID } from '@atproto/common-web'
 import * as dcbor from '@ipld/dag-cbor'
@@ -205,10 +206,22 @@ interface RecipePostOpts {
 export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: RecipePostOpts) {
   const now = new Date()
   const did = agent.assertDid
-  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
-  const embed = await resolveEmbed(agent, qc, post, () => { })
+  const tid = TID.next()
+  const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
   const recipeRecord: AppFoodiosFeedRecipePost.Record = {
     $type: "app.foodios.feed.recipePost",
+    createdAt: now.toISOString(),
+  }
+  const cid = await computeCid(recipeRecord)
+
+  const embed = await resolveEmbed(agent, qc, post, () => { })
+  const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
+    $type: "app.foodios.feed.recipeRevision",
+    recipePostRef: {
+      uri,
+      cid
+    },
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
     steps: post.steps,
@@ -216,55 +229,23 @@ export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: Rec
     title: post.title.text,
     embed
   }
-  const tid = TID.next()
-  const rkey = tid.toString()
+
   // TODO: add recipe label
-  writes.push({
-    $type: "com.atproto.repo.applyWrites#create",
-    collection: "app.foodios.feed.recipePost",
-    value: recipeRecord,
-    rkey,
-  })
-  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
-
-  // if (post.postToFeed) {
-  //   const cid = await computeCid(recipeRecord)
-  //   const embed: $Typed<AppBskyEmbedRecord.Main> = {
-  //     $type: "app.bsky.embed.record",
-  //     record: {
-  //       $type: "com.atproto.repo.strongRef",
-  //       uri, cid
-  //     },
-  //   }
-  //   const feedRecord: AppBskyFeedPost.Record = {
-  //     // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
-  //     // present and will produce the wrong CID if you omit it.
-  //     $type: 'app.bsky.feed.post',
-  //     createdAt: now.toISOString(),
-  //     text: "",
-  //     embed
-  //   }
-  //   writes.push({
-  //     $type: 'com.atproto.repo.applyWrites#create',
-  //     collection: 'app.bsky.feed.post',
-  //     rkey: TID.next(tid).toString(),
-  //     value: feedRecord,
-  //   })
-  // }
-
-  // TODO add post record
-  // const ref = {
-  //   cid: await computeCid(recipeRecord),
-  //   uri,
-  // }
-
-  // const postRecord: AppBskyFeedPost.Record = {
-  //   $type: 'app.bsky.feed.post',
-  //   createdAt: now.toISOString(),
-  //   embed: { record: {
-  //     record: {}
-  //   }}
-  // }
+  // TODO: consider whether we need a new rkey for revision
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
+    {
+      $type: "com.atproto.repo.applyWrites#create",
+      collection: "app.foodios.feed.recipePost",
+      value: recipeRecord,
+      rkey,
+    },
+    {
+      $type: "com.atproto.repo.applyWrites#create",
+      collection: "app.foodios.feed.recipeRevision",
+      value: revisionRecord,
+      rkey,
+    }
+  ]
 
   try {
     await agent.com.atproto.repo.applyWrites({
@@ -286,6 +267,56 @@ export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: Rec
   }
 
   return uri
+}
+interface RecipeRevisionOpts {
+  parentRevision: AppFoodiosFeedRecipeRevision.Record
+  post: RecipePostDraft
+}
+export async function postRecipeRevision(agent: AtpAgent, qc: QueryClient, { post, parentRevision }: RecipeRevisionOpts) {
+  const now = new Date()
+  const tid = TID.next()
+  const rkey = tid.toString()
+
+  const embed = await resolveEmbed(agent, qc, post, () => { })
+  const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
+    $type: "app.foodios.feed.recipeRevision",
+    recipePostRef: parentRevision.recipePostRef,
+    //parentRevisionRef: {uri: parentRevision.} // TODO
+    createdAt: now.toISOString(),
+    ingredients: post.ingredients,
+    steps: post.steps,
+    text: post.text.text,
+    title: post.title.text,
+    embed
+  }
+
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
+    {
+      $type: "com.atproto.repo.applyWrites#create",
+      collection: "app.foodios.feed.recipeRevision",
+      value: revisionRecord,
+      rkey,
+    }
+  ]
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create recipe post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
 }
 
 async function resolveRT(agent: BskyAgent, richtext: RichText) {
@@ -314,7 +345,7 @@ async function resolveReply(agent: BskyAgent, replyTo: string) {
   }))
   if (parentPost) {
     const parentRef = {
-      uri: parentPost.uri,
+      uri: replyTo,
       cid: parentPost.cid,
     }
     return {

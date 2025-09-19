@@ -3,7 +3,9 @@ import { useReducer } from 'react'
 import { type SelfLabel } from '#/lib/moderation'
 import { EmbedAction, embedReducer, type EmbedDraft } from './composer'
 import { nanoid } from 'nanoid/non-secure'
-import { RichText } from '@atproto/api'
+import { AppBskyEmbedImages, AppFoodiosFeedRecipeRevision, AppFoodiosFeedRecipeRevisionRecord, RichText } from '@atproto/api'
+import { RecipePostView } from '#/lib/api/feed/utils'
+import _ from 'lodash'
 
 type TaggedUnion<Tag extends string, O extends object> = {
     [K in keyof O]: Record<Tag, K> & O[K]
@@ -93,24 +95,69 @@ function recipePostReducer(
     }
 }
 
-const initState = (): RecipePostDraft => ({
-    id: nanoid(),
-    title: new RichText({
-        text: ''
-    }),
-    text: new RichText({
-        text: ''
-    }),
-    ingredients: [],
-    steps: [],
-    labels: [],
-    embed: {
+function embedToDraft(embed: AppFoodiosFeedRecipeRevision.Record["embed"]): EmbedDraft {
+    if (!embed) return {
         quote: undefined,
         media: undefined,
         link: undefined,
-    },
-})
+    }
 
-export function useRecipePostReducer() {
-    return useReducer(recipePostReducer, initState())
+    // if (AppBskyEmbedImages.isMain(embed)) {
+    //     return {
+    //         quote: undefined,
+    //         media: {
+    //             type: 'images',
+    //             images: embed.images.map(({ alt, image, aspectRatio }) => ({
+    //                 source: {
+    //                     height: aspectRatio!.height,
+    //                     width: aspectRatio!.width,
+    //                     path: image.ref,
+    //                     id: nanoid(),
+    //                     mime: extToMimeType(fullsize)
+    //                 },
+    //                 alt
+    //             }))
+    //         },
+    //         link: undefined,
+    //     }
+    // }
+
+}
+
+const initState = (init?: RecipePostView): RecipePostDraft => {
+    if (!init) return {
+        id: nanoid(),
+        title: new RichText({
+            text: ''
+        }),
+        text: new RichText({
+            text: ''
+        }),
+        ingredients: [],
+        steps: [],
+        labels: [],
+        embed: {
+            quote: undefined,
+            media: undefined,
+            link: undefined,
+        },
+    }
+
+    return {
+        id: nanoid(), // TODO: think
+        title: new RichText({
+            text: init.record.title
+        }),
+        text: new RichText({
+            text: init.record.text
+        }),
+        ingredients: _.cloneDeep(init.record.ingredients),
+        steps: _.cloneDeep(init.record.steps),
+        labels: _.cloneDeep(init.record.labels?.values ?? []),
+        embed: embedToDraft(init.record.embed),
+    }
+}
+
+export function useRecipePostReducer({ edit }: { edit?: RecipePostView }) {
+    return useReducer(recipePostReducer, initState(edit))
 }

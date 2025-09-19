@@ -39,6 +39,7 @@ import { Text } from '#/view/com/util/text/Text'
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsKeyboardVisible } from "#/lib/hooks/useIsKeyboardVisible";
 import { clearThumbnailCache } from "./videos/VideoTranscodeBackdrop";
+import { RecipePostView } from "#/lib/api/feed/utils";
 
 const msgs = {
     button_add_ingredient: msg({
@@ -60,11 +61,11 @@ const msgs = {
 
 // TODO: NB fix description being focused first
 
-export function ComposerRecipe() {
+export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     const keyboardVerticalOffset = useKeyboardVerticalOffset()
     const { closeComposer } = useComposerControls()
 
-    const [state, dispatch] = useRecipePostReducer()
+    const [state, dispatch] = useRecipePostReducer({ edit })
     const agent = useAgent()
     const queryClient = useQueryClient()
     const [pickerState, setPickerState] = React.useState<EmojiPickerState>({
@@ -76,9 +77,17 @@ export function ComposerRecipe() {
     async function onPressPublish() {
         // TODO: validation
         setIsPublishing(true)
-        const postUri = await apilib.postRecipe(agent, queryClient, {
-            post: state
-        })
+        if (edit) {
+            await apilib.postRecipeRevision(agent, queryClient, {
+                post: state,
+                parentRevision: edit.record
+            })
+        } else {
+            const postUri = await apilib.postRecipe(agent, queryClient, {
+                post: state
+            })
+        }
+
         // TODO: catch errors
         setIsPublishing(false)
         closeComposer()

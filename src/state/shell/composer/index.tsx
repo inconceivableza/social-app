@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  AppBskyFeedDefs,
   type AppBskyActorDefs,
   type AppBskyFeedDefs,
   type AppBskyUnspeccedGetPostThreadV2,
@@ -15,6 +16,7 @@ import { purgeTemporaryImageFiles } from '#/state/gallery'
 import { precacheResolveLinkQuery } from '#/state/queries/resolve-link'
 import { type EmojiPickerPosition } from '#/view/com/composer/text-input/web/EmojiPicker'
 import * as Toast from '#/view/com/util/Toast'
+import { RecipePostView } from '#/lib/api/feed/utils'
 
 export interface ComposerOptsPostRef {
   uri: string
@@ -47,6 +49,7 @@ export interface PostComposerOpts {
 
 export interface RecipeComposerOpts {
   type: 'recipe'
+  edit?: RecipePostView
 }
 
 export type ComposerOpts = PostComposerOpts | RecipeComposerOpts
