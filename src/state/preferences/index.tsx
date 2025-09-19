@@ -41,7 +41,7 @@ export function Provider({children}: React.PropsWithChildren<{}>) {
                     <UsedStarterPacksProvider>
                       <SubtitlesProvider>
                         <TrendingSettingsProvider>
-                          <KawaiiProvider>{children}</KawaiiProvider>
+                          {children}
                         </TrendingSettingsProvider>
                       </SubtitlesProvider>
                     </UsedStarterPacksProvider>
