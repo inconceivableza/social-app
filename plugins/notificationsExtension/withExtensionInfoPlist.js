@@ -22,7 +22,7 @@ const withExtensionInfoPlist = (config, {extensionName}) => {
 
     extPlist.MainAppScheme = config.scheme
     extPlist.CFBundleName = '$(PRODUCT_NAME)'
-    extPlist.CFBundleDisplayName = `${config.branding.naming.app_name} Notifications`
+    extPlist.CFBundleDisplayName = `${config.extra.branding.naming.app_name} Notifications`
     extPlist.CFBundleIdentifier = '$(PRODUCT_BUNDLE_IDENTIFIER)'
     extPlist.CFBundleVersion = '$(CURRENT_PROJECT_VERSION)'
     extPlist.CFBundleExecutable = '$(EXECUTABLE_NAME)'
