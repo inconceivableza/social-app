@@ -18,7 +18,7 @@ enum class AttachmentType {
   VIDEO,
 }
 
-const val scheme = MobileBuildConfig.branding.code.app_slug_scheme
+val scheme = MobileBuildConfig.branding.code.app_slug_scheme
 
 class ExpoReceiveAndroidIntentsModule : Module() {
   override fun definition() =
