@@ -1,4 +1,4 @@
-import { AppBskyFeedDefs, AppFoodiosFeedRecipePost, AtUri } from '@atproto/api'
+import { AppBskyFeedDefs, AppFoodiosFeedRecipeRevision, AtUri } from '@atproto/api'
 
 import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
@@ -28,13 +28,13 @@ export function isBlueskyOwnedFeed(feedUri: string) {
   return BSKY_FEED_OWNER_DIDS.includes(uri.host)
 }
 
-export type RecipePostView = AppBskyFeedDefs.PostView & { record: AppFoodiosFeedRecipePost.Record }
+export type RecipePostView = AppBskyFeedDefs.PostView & { record: AppFoodiosFeedRecipeRevision.Record }
 
 export function isRecipePostView(v: unknown): v is RecipePostView {
-  return AppBskyFeedDefs.isPostView(v) && AppFoodiosFeedRecipePost.isRecord(v.record)
+  return AppBskyFeedDefs.isPostView(v) && AppFoodiosFeedRecipeRevision.isRecord(v.record)
 }
 
-export function recipePostSummaryRichText(record: AppFoodiosFeedRecipePost.Record) {
+export function recipePostSummaryRichText(record: AppFoodiosFeedRecipeRevision.Record) {
   return `${record.title}\n${record.text}`
 }
 

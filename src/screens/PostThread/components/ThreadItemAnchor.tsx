@@ -6,7 +6,7 @@ import {
   type AppBskyFeedThreadgate,
   AtUri,
   RichText as RichTextAPI,
-  AppFoodiosFeedRecipePost,
+  AppFoodiosFeedRecipeRevision,
 } from '@atproto/api'
 import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -61,7 +61,7 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { postHref } from '#/lib/api/feed/utils'
+import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export function ThreadItemAnchor({
   item,
@@ -176,6 +176,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
 }) {
+  // TODO: display that the post was edited
   const t = useTheme()
   const {_, i18n} = useLingui()
   const {openComposer} = useOpenComposer()
@@ -188,7 +189,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const authorShadow = useProfileShadow(post.author)
   const {isActive: live} = useActorStatus(post.author)
   const richText = useMemo(
-    () =>
+    () => isRecipePostView(post) ? new RichTextAPI({
+      text: recipePostSummaryRichText(post.record)
+    }) :
       new RichTextAPI({
         text: record.text,
         facets: record.facets,
@@ -383,7 +386,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {record.$type === "app.foodios.feed.recipePost" ?
+            {record.$type === "app.foodios.feed.recipeRevision" ?
               <RecipeThreadItem record={record} />
               : richText?.text ? (
               <RichText
@@ -504,7 +507,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
 })
 
 
-function RecipeThreadItem({ record }: { record: AppFoodiosFeedRecipePost.Record }) {
+function RecipeThreadItem({ record }: { record: AppFoodiosFeedRecipeRevision.Record }) {
   return <View>
     <div>
       {record.title}

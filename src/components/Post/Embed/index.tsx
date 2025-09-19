@@ -7,7 +7,7 @@ import {
   AtUri,
   moderatePost,
   RichText as RichTextAPI,
-  AppFoodiosFeedRecipePost
+  AppFoodiosFeedRecipeRevision
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
@@ -260,9 +260,9 @@ export function QuoteEmbed({
       return text.trim()
         ? new RichTextAPI({ text: text, facets: facets })
         : undefined
-    } else if ((bsky.dangerousIsType<AppFoodiosFeedRecipePost.Record>(
+    } else if ((bsky.dangerousIsType<AppFoodiosFeedRecipeRevision.Record>(
       quote.record,
-      AppFoodiosFeedRecipePost.isRecord,
+      AppFoodiosFeedRecipeRevision.isRecord,
     )
     )) {
       const { text, title } = quote.record

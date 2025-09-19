@@ -4,7 +4,7 @@ import {
   AppBskyEmbedRecordWithMedia,
   AppBskyFeedDefs,
   AppBskyFeedPost,
-  AppFoodiosFeedRecipePost
+  AppFoodiosFeedRecipeRevision
 } from '@atproto/api'
 
 import * as bsky from '#/types/bsky'
@@ -31,7 +31,7 @@ type FeedSliceItem = {
 } | {
   type: "recipe"
   post: AppBskyFeedDefs.PostView
-  record: AppFoodiosFeedRecipePost.Record
+  record: AppFoodiosFeedRecipeRevision.Record
 }
 //
 
@@ -53,7 +53,6 @@ export class FeedViewPostsSlice {
   feedPostUri: string
 
   constructor(feedPost: FeedViewPost) {
-    // TODO: clean up predicates for determining if parent/root is a recipe or post
     const {post, reply, reason} = feedPost
 
     this.items = []
@@ -78,8 +77,7 @@ export class FeedViewPostsSlice {
       return
     }
 
-    // TODO use a nicer union type in business logic that excludes {type:string}
-
+    // TODO: when posts_with_replies filter is set, don't show user's posted replies
     if (isRecipePostView(post)) {
       this.items.push({
         type: "recipe",

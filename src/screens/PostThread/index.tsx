@@ -88,7 +88,7 @@ export function PostThread({uri}: {uri: string}) {
     openComposer({
       type: 'post',
       replyTo: {
-        uri: anchor.uri,
+        uri: anchor.value.post.uri,
         cid: post.cid,
         text: post.record.text,
         author: post.author,
@@ -371,6 +371,7 @@ export function PostThread({uri}: {uri: string}) {
         if (item.depth < 0) {
           return (
             <ThreadItemPost
+              anchorUri={anchor?.value.post.uri}
               item={item}
               threadgateRecord={thread.data.threadgate?.record ?? undefined}
               overrides={{
@@ -427,6 +428,7 @@ export function PostThread({uri}: {uri: string}) {
             return (
               <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemPost
+                  anchorUri={anchor?.value.post.uri}
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
                 overrides={{

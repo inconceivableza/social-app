@@ -9,7 +9,7 @@ import {
   moderateRecipe,
   type ModerationDecision,
   type ModerationOpts,
-  AppFoodiosFeedRecipePost
+  AppFoodiosFeedRecipeRevision
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -72,7 +72,7 @@ export interface ThreadRecipe {
   _reactKey: string
   uri: string
   post: AppBskyFeedDefs.PostView
-  record: AppFoodiosFeedRecipePost.Record
+  record: AppFoodiosFeedRecipeRevision.Record
   replies: ThreadNode[] | undefined
   hasOPLike: boolean | undefined
   ctx: ThreadCtx
@@ -119,6 +119,7 @@ export function usePostThreadQuery(uri: string | undefined) {
     gcTime: 0,
     queryKey: RQKEY(uri || ''),
     async queryFn() {
+      //
       const res = await agent.getPostThread({
         uri: uri!,
         depth: REPLY_TREE_DEPTH,
@@ -406,9 +407,9 @@ function responseToThreadNodes(
         },
       }
     } else if (
-      bsky.dangerousIsType<AppFoodiosFeedRecipePost.Record>(
+      bsky.dangerousIsType<AppFoodiosFeedRecipeRevision.Record>(
         record,
-        AppFoodiosFeedRecipePost.isRecord,
+        AppFoodiosFeedRecipeRevision.isRecord,
       )
     ) {
       return {
@@ -693,7 +694,7 @@ function postViewToPlaceholderThread(
     }
   }
 
-  if (AppFoodiosFeedRecipePost.isRecord(record)) {
+  if (AppFoodiosFeedRecipeRevision.isRecord(record)) {
     return {
       type: 'recipe',
       _reactKey: post.uri,

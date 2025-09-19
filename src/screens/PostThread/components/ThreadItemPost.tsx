@@ -43,6 +43,8 @@ import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
 import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
+import { stripSearchParams } from "@atproto/api"
+import { useModalControls } from '#/state/modals'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -52,6 +54,7 @@ export type ThreadItemPostProps = {
   }
   onPostSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
+  anchorUri?: string
 }
 
 export function ThreadItemPost({
@@ -59,12 +62,14 @@ export function ThreadItemPost({
   overrides,
   onPostSuccess,
   threadgateRecord,
+  anchorUri
 }: ThreadItemPostProps) {
   const postShadow = usePostShadow(item.value.post)
 
   if (postShadow === POST_TOMBSTONE) {
     return <ThreadItemPostDeleted item={item} overrides={overrides} />
   }
+
 
   return (
     <ThreadItemPostInner
@@ -73,6 +78,7 @@ export function ThreadItemPost({
       threadgateRecord={threadgateRecord}
       overrides={overrides}
       onPostSuccess={onPostSuccess}
+      anchorUri={anchorUri}
     />
   )
 }
@@ -181,9 +187,11 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   overrides,
   onPostSuccess,
   threadgateRecord,
+  anchorUri
 }: ThreadItemPostProps & {
   postShadow: Shadow<AppBskyFeedDefs.PostView>
 }) {
+
   const t = useTheme()
   const {openComposer} = useOpenComposer()
   const {currentAccount} = useSession()
@@ -204,7 +212,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const [limitLines, setLimitLines] = useState(
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
-  const threadRootUri = record.reply?.root?.uri || post.uri
+  const threadRootUri = stripSearchParams(record.reply?.root?.uri) || post.uri
   const href = useMemo(() => {
     return postHref(post.author, post.uri)
   }, [post.uri, post.author])
@@ -246,9 +254,14 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   }, [setLimitLines])
 
   const {isActive: live} = useActorStatus(post.author)
-
+  const { openModal } = useModalControls()
+  const replyUri = item.value.post.record.reply?.parent.uri // TODO: decide when to use root
+  const revisionMisMatch = anchorUri && replyUri && revisionFromUri(anchorUri) !== revisionFromUri(replyUri)
   return (
     <SubtleHover>
+      {revisionMisMatch && <button onClick={() => {
+        openModal({ name: 'recipe-revision-view', uri: replyUri })
+      }}>🚨</button>}
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
@@ -301,6 +314,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 style={[a.pb_2xs]}
                 additionalCauses={additionalPostAlerts}
               />
+
+
               {richText?.text ? (
                 <>
                   <RichText
@@ -400,4 +415,9 @@ export function ThreadItemPostSkeleton({index}: {index: number}) {
       </Skele.Row>
     </View>
   )
+}
+
+function revisionFromUri(uri: string) {
+  const atUri = new AtUri(uri)
+  return atUri.searchParams.get("revision")
 }
