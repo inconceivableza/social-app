@@ -1,8 +1,9 @@
 import Foundation
 import ExpoModulesCore
+import MobileBuildConfig
 
 public class ExpoBlueskySharedPrefsModule: Module {
-  let defaults = UserDefaults(suiteName: "group.app.bsky")
+  let defaults = UserDefaults(suiteName: MobileBuildConfig.branding.code.apple_groups)
 
   func getDefaults(_ info: String = "(no info)") -> UserDefaults? {
     guard let defaults = self.defaults else {

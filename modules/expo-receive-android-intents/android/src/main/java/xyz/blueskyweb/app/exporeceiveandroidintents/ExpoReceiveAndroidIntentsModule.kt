@@ -18,6 +18,8 @@ enum class AttachmentType {
   VIDEO,
 }
 
+const val scheme = MobileBuildConfig.branding.code.app_slug_scheme
+
 class ExpoReceiveAndroidIntentsModule : Module() {
   override fun definition() =
     ModuleDefinition {
@@ -56,7 +58,7 @@ class ExpoReceiveAndroidIntentsModule : Module() {
   private fun handleTextIntent(intent: Intent) {
     intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
       val encoded = URLEncoder.encode(it, "UTF-8")
-      "bluesky://intent/compose?text=$encoded".toUri().let { uri ->
+      "$scheme://intent/compose?text=$encoded".toUri().let { uri ->
         val newIntent = Intent(Intent.ACTION_VIEW, uri)
         appContext.currentActivity?.startActivity(newIntent)
       }
@@ -122,7 +124,7 @@ class ExpoReceiveAndroidIntentsModule : Module() {
 
     val encoded = URLEncoder.encode(allParams, "UTF-8")
 
-    "bluesky://intent/compose?imageUris=$encoded".toUri().let {
+    "$scheme://intent/compose?imageUris=$encoded".toUri().let {
       val newIntent = Intent(Intent.ACTION_VIEW, it)
       appContext.currentActivity?.startActivity(newIntent)
     }
@@ -147,7 +149,7 @@ class ExpoReceiveAndroidIntentsModule : Module() {
 
     val info = getVideoInfo(uri) ?: return
 
-    "bluesky://intent/compose?videoUri=${URLEncoder.encode(file.path, "UTF-8")}|${info["width"]}|${info["height"]}".toUri().let {
+    "$scheme://intent/compose?videoUri=${URLEncoder.encode(file.path, "UTF-8")}|${info["width"]}|${info["height"]}".toUri().let {
       val newIntent = Intent(Intent.ACTION_VIEW, it)
       appContext.currentActivity?.startActivity(newIntent)
     }

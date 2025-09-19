@@ -381,6 +381,7 @@ module.exports = function (_config) {
         './plugins/withAndroidDayNightThemePlugin.js',
         './plugins/withAndroidNoJitpackPlugin.js',
         USE_LOCAL_CERTS && ['./plugins/withAndroidUserInstalledCerts.js'],
+        './plugins/withMobileBuildConfig.js',
         './plugins/shareExtension/withShareExtensions.js',
         './plugins/notificationsExtension/withNotificationsExtension.js',
         [

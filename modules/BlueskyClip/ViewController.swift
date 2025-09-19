@@ -1,9 +1,10 @@
 import UIKit
 import WebKit
 import StoreKit
+import MobileBuildConfig
 
 class ViewController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate {
-  let defaults = UserDefaults(suiteName: "group.app.bsky")
+  let defaults = UserDefaults(suiteName: MobileBuildConfig.branding.code.apple_groups)
 
   var window: UIWindow
   var webView: WKWebView?
@@ -34,7 +35,7 @@ class ViewController: UIViewController, WKScriptMessageHandler, WKNavigationDele
     webView.navigationDelegate = self
     self.view.addSubview(webView)
     self.webView = webView
-    self.webView?.load(URLRequest(url: URL(string: "https://bsky.app/?splash=true&clip=true")!))
+    self.webView?.load(URLRequest(url: URL(string: "\(MobileBuildConfig.envConfig.SOCIAL_APP_URL)/?splash=true&clip=true")!))
   }
 
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -86,13 +87,13 @@ class ViewController: UIViewController, WKScriptMessageHandler, WKNavigationDele
     }
     
     switch host {
-    case "bsky.app":
+    case MobileBuildConfig.envConfig.SOCIAL_APP_HOST:
       if url.pathComponents.count == 4,
          (url.pathComponents[1] == "start" || url.pathComponents[1] == "starter-pack") {
         return true
       }
       return false
-    case "go.bsky.app":
+    case MobileBuildConfig.envConfig.LINK_HOST:
       if url.pathComponents.count == 2 {
         return true
       }
@@ -109,7 +110,7 @@ class ViewController: UIViewController, WKScriptMessageHandler, WKNavigationDele
         self.webView?.load(URLRequest(url: url))
       }
     } else {
-      self.webView?.load(URLRequest(url: URL(string: "https://bsky.app/?splash=true&clip=true")!))
+      self.webView?.load(URLRequest(url: URL(string: "\(MobileBuildConfig.envConfig.SOCIAL_APP_URL)/?splash=true&clip=true")!))
     }
   }
 
