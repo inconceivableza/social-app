@@ -167,6 +167,7 @@ module.exports = function (_config) {
   const UPDATES_ENABLED = !!UPDATES_CHANNEL
 
   const USE_SENTRY = Boolean(process.env.SENTRY_AUTH_TOKEN)
+  const basePackageName = getVariantPackageName(branding.code.web_package_id)
 
   return {
     expo: {
@@ -183,7 +184,7 @@ module.exports = function (_config) {
       primaryColor: '#1083fe',
       ios: {
         supportsTablet: false,
-        bundleIdentifier: getVariantPackageName(branding.code.web_package_id),
+        bundleIdentifier: basePackageName,
         config: {
           usesNonExemptEncryption: false,
         },
@@ -289,7 +290,7 @@ module.exports = function (_config) {
         googleServicesFile: getVariantGoogleServicesFilename(
           './google-services.json',
         ),
-        package: getVariantPackageName(branding.code.web_package_id),
+        package: basePackageName,
         intentFilters: [
           {
             action: 'VIEW',
@@ -507,7 +508,7 @@ module.exports = function (_config) {
                 appExtensions: [
                   {
                     targetName: 'Share-with-Bluesky',
-                    bundleIdentifier: `${branding.code.web_package_id}.${branding.code.ios_share_with_name}`,
+                    bundleIdentifier: `${basePackageName}.${branding.code.ios_share_with_name}`,
                     entitlements: {
                       'com.apple.security.application-groups': [
                         branding.code.apple_groups,
@@ -516,7 +517,7 @@ module.exports = function (_config) {
                   },
                   {
                     targetName: 'BlueskyNSE',
-                    bundleIdentifier: `${branding.code.web_package_id}.${branding.code.ios_nse_name}`,
+                    bundleIdentifier: `${basePackageName}.${branding.code.ios_nse_name}`,
                     entitlements: {
                       'com.apple.security.application-groups': [
                         branding.code.apple_groups,
@@ -525,7 +526,7 @@ module.exports = function (_config) {
                   },
                   {
                     targetName: 'BlueskyClip',
-                    bundleIdentifier: `${branding.code.web_package_id}.AppClip`,
+                    bundleIdentifier: `${basePackageName}.${branding.code.ios_clip_name}`,
                   },
                 ],
               },
