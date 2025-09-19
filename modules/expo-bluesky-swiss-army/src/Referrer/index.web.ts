@@ -1,10 +1,24 @@
 import {Platform} from 'react-native'
+import Constants from 'expo-constants'
 
 import {NotImplementedError} from '../NotImplemented'
-import {GooglePlayReferrerInfo, ReferrerInfo} from './types'
+import {type GooglePlayReferrerInfo, type ReferrerInfo} from './types'
 
 export function getGooglePlayReferrerInfoAsync(): Promise<GooglePlayReferrerInfo> {
   throw new NotImplementedError()
+}
+
+let SOCIAL_APP_HOST: string | undefined
+
+function getSocialAppHost(): string {
+  if (SOCIAL_APP_HOST === undefined) {
+    const envConfigMap = Constants.expoConfig?.extra?.['env-config']
+    const currentEnv = process.env.EXPO_PUBLIC_ENV || 'production'
+    const envConfig = envConfigMap?.[currentEnv] || {}
+    SOCIAL_APP_HOST =
+      (envConfig.EXPO_PUBLIC_SOCIAL_APP_HOST as string) || 'bsky.app'
+  }
+  return SOCIAL_APP_HOST
 }
 
 export function getReferrerInfo(): ReferrerInfo | null {
@@ -17,7 +31,8 @@ export function getReferrerInfo(): ReferrerInfo | null {
   ) {
     try {
       const url = new URL(document.referrer)
-      if (url.hostname !== 'bsky.app') {
+      const socialAppHost = getSocialAppHost()
+      if (url.hostname !== socialAppHost) {
         return {
           referrer: url.href,
           hostname: url.hostname,
