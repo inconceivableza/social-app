@@ -19,6 +19,8 @@ const withClipInfoPlist = (config, {targetName}) => {
       },
       UILaunchScreen: {},
       CFBundleName: '$(PRODUCT_NAME)',
+      CFBundleDisplayName:
+        config.extra?.branding?.code?.ios_clip_name || 'BlueskyClip',
       CFBundleIdentifier: '$(PRODUCT_BUNDLE_IDENTIFIER)',
       CFBundleVersion: '$(CURRENT_PROJECT_VERSION)',
       CFBundleExecutable: '$(EXECUTABLE_NAME)',
