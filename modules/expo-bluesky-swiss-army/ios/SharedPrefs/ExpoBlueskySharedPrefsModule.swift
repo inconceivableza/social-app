@@ -1,6 +1,5 @@
 import Foundation
 import ExpoModulesCore
-import MobileBuildConfig
 
 public class ExpoBlueskySharedPrefsModule: Module {
   let defaults = UserDefaults(suiteName: MobileBuildConfig.branding.code.apple_groups)

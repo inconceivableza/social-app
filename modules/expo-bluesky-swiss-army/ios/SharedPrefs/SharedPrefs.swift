@@ -1,10 +1,9 @@
 import Foundation
-import MobileBuildConfig
 
 public class SharedPrefs {
   public static let shared = SharedPrefs()
 
-  private let defaults = UserDefaults(suiteName: MobileBuildConfig.apple_groups)
+  private let defaults = UserDefaults(suiteName: MobileBuildConfig.branding.code.apple_groups)
 
   init() {
     if defaults == nil {

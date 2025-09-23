@@ -60,7 +60,7 @@ buck-out/
 /vendor/bundle/
 
 # auto-generated mobile build config
-modules/*/MobileBuildConfig.swift
+modules/**/MobileBuildConfig.swift
 modules/**/MobileBuildConfig.kt
 
 # Testing

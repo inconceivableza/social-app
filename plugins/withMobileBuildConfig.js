@@ -239,11 +239,16 @@ ${generateSwiftStruct('envConfig', configData.envConfig)}
 }
 `
 
-  // Write to iOS modules
+  // Write to iOS modules and ios directories
   const iosConfigPaths = [
     'modules/BlueskyClip/MobileBuildConfig.swift',
     'modules/BlueskyNSE/MobileBuildConfig.swift',
     'modules/Share-with-Bluesky/MobileBuildConfig.swift',
+    'modules/expo-bluesky-swiss-army/ios/SharedPrefs/MobileBuildConfig.swift',
+    'modules/expo-background-notification-handler/ios/MobileBuildConfig.swift',
+    'ios/BlueskyClip/MobileBuildConfig.swift',
+    'ios/BlueskyNSE/MobileBuildConfig.swift',
+    'ios/Share-with-Bluesky/MobileBuildConfig.swift',
   ]
 
   for (const relativePath of iosConfigPaths) {

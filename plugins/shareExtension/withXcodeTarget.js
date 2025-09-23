@@ -24,6 +24,11 @@ const withXcodeTarget = (config, {extensionName, controllerName}) => {
       {target: target.uuid},
       pbxGroupKey,
     )
+    pbxProject.addSourceFile(
+      `${extensionName}/MobileBuildConfig.swift`,
+      {target: target.uuid},
+      pbxGroupKey,
+    )
     const appleTeamId =
       config.extra?.branding?.code?.apple_team_id || 'B3LX46C5HS'
 

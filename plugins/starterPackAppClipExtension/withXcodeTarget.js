@@ -1,6 +1,10 @@
 const {withXcodeProject} = require('@expo/config-plugins')
 
-const BUILD_PHASE_FILES = ['AppDelegate.swift', 'ViewController.swift']
+const BUILD_PHASE_FILES = [
+  'AppDelegate.swift',
+  'ViewController.swift',
+  'MobileBuildConfig.swift',
+]
 
 const withXcodeTarget = (config, {targetName}) => {
   // eslint-disable-next-line no-shadow
@@ -29,6 +33,7 @@ const withXcodeTarget = (config, {targetName}) => {
     const pbxGroup = pbxProject.addPbxGroup([
       'AppDelegate.swift',
       'ViewController.swift',
+      'MobileBuildConfig.swift',
       'Images.xcassets',
       `${targetName}.entitlements`,
       'Info.plist',

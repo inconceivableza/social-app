@@ -27,6 +27,11 @@ const withXcodeTarget = (
       {target: target.uuid},
       pbxGroupKey,
     )
+    pbxProject.addSourceFile(
+      `${extensionName}/MobileBuildConfig.swift`,
+      {target: target.uuid},
+      pbxGroupKey,
+    )
 
     for (const file of soundFiles) {
       pbxProject.addSourceFile(

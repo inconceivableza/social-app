@@ -1,6 +1,5 @@
 import UIKit
 import AVKit
-import MobileBuildConfig
 
 let IMAGE_EXTENSIONS: [String] = ["png", "jpg", "jpeg", "gif", "heic"]
 let MOVIE_EXTENSIONS: [String] = ["mov", "mp4", "m4v"]

@@ -1,7 +1,6 @@
 import UIKit
 import WebKit
 import StoreKit
-import MobileBuildConfig
 
 class ViewController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate {
   let defaults = UserDefaults(suiteName: MobileBuildConfig.branding.code.apple_groups)

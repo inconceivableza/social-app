@@ -1,5 +1,4 @@
 import ExpoModulesCore
-import MobileBuildConfig
 
 let APP_GROUP = MobileBuildConfig.branding.code.apple_groups
 

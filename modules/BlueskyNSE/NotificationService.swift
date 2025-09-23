@@ -1,6 +1,5 @@
 import UserNotifications
 import UIKit
-import MobileBuildConfig
 
 let APP_GROUP = MobileBuildConfig.branding.code.apple_groups
 typealias ContentHandler = (UNNotificationContent) -> Void
