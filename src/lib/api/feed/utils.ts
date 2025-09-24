@@ -1,4 +1,4 @@
-import { AppBskyFeedDefs, AppFoodiosFeedRecipeRevision, AtUri } from '@atproto/api'
+import { AppBskyFeedDefs, AppFoodiosFeedDefs, AppFoodiosFeedRecipeRevision, AtUri } from '@atproto/api'
 
 import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
@@ -28,13 +28,17 @@ export function isBlueskyOwnedFeed(feedUri: string) {
   return BSKY_FEED_OWNER_DIDS.includes(uri.host)
 }
 
-export type RecipePostView = AppBskyFeedDefs.PostView & { record: AppFoodiosFeedRecipeRevision.Record }
+export type RecipePostView = Omit<AppBskyFeedDefs.PostView, "record"> & { record: AppFoodiosFeedDefs.RecipeRevisionView }
 
 export function isRecipePostView(v: unknown): v is RecipePostView {
-  return AppBskyFeedDefs.isPostView(v) && AppFoodiosFeedRecipeRevision.isRecord(v.record)
+  return AppBskyFeedDefs.isPostView(v) && AppFoodiosFeedDefs.isRecipeRevisionView(v.record)
 }
 
-export function recipePostSummaryRichText(record: AppFoodiosFeedRecipeRevision.Record) {
+export function recordText(post: AppBskyFeedDefs.PostView): string {
+  return isRecipePostView(post) ? recipePostSummaryRichText(post.record.revisionContent) : (post.record?.text ?? "")
+}
+
+export function recipePostSummaryRichText(record: AppFoodiosFeedRecipeRevision.Record): string {
   return `${record.title}\n${record.text}`
 }
 
@@ -42,4 +46,8 @@ export function postHref(author: { did: string, handle: string }, uri: string, .
   const urip = new AtUri(uri)
   const postType = urip.collection.split(".").at(-1) ?? ""
   return makeProfileLink(author, postType, urip.rkey, ...pathSegments)
+}
+
+export function isPostEdited(post: AppBskyFeedDefs.PostView) {
+  return isRecipePostView(post) && post.record.selectedRevisionUri !== post.record.revisionRefs.at(0)?.uri
 }
