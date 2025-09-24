@@ -471,8 +471,14 @@ function ComposeRecipeBtn() {
 
   const { _ } = useLingui()
 
+  const { leftNavMinimal } = useLayoutBreakpoints()
+
   const onPressCompose = async () =>
     openComposer({ type: "recipe" })
+
+  if (leftNavMinimal) {
+    return null
+  }
 
   if (!currentAccount) {
     return null
