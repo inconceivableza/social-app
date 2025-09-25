@@ -9,6 +9,24 @@ function withMobileBuildConfig(config) {
     async config => {
       const projectRoot = config.modRequest.projectRoot
       await generateiOSConfig(projectRoot, config)
+
+      // Copy missing assets for notification sounds into the main app bundle
+      // This should not be needed but this plugin seems to have have affected Expo's automatic asset copying
+      const platformProjectRoot = config.modRequest.platformProjectRoot
+      const mainAppDir = path.join(platformProjectRoot, 'FoodiosDev')
+
+      const aiffPath = path.join(mainAppDir, 'dm.aiff')
+      if (!fs.existsSync(aiffPath)) {
+        const soundFiles = ['dm.aiff', 'dm.mp3']
+        for (const soundFile of soundFiles) {
+          const sourcePath = path.join(projectRoot, 'assets', soundFile)
+          const targetPath = path.join(mainAppDir, soundFile)
+          if (fs.existsSync(sourcePath)) {
+            fs.copyFileSync(sourcePath, targetPath)
+            console.log(`Fixed missing notification sound: ${soundFile}`)
+          }
+        }
+      }
       return config
     },
   ])
