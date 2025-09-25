@@ -33,6 +33,8 @@ export type EnvConfig = {
   SOCIAL_APP_HOST: string // this is used as a reference
   SOCIAL_APP_URL: string
   SOCIAL_EMBED_SERVICE: string
+  STATSIG_CLIENT_KEY: string
+  STATSIG_API_URL: string
   STATUS_PAGE_URL: string
   VIDEO_SERVICE: string
   VIDEO_SERVICE_DID: string

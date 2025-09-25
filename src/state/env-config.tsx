@@ -76,7 +76,12 @@ import React from 'react'
 import Constants from 'expo-constants'
 import EventEmitter from 'eventemitter3'
 
-import {logger} from '#/logger'
+// import {logger} from '#/logger'
+const logger = {
+  info: console.log,
+  warn: console.warn,
+  error: console.error,
+}
 import {env_config as envConfigStorage, type EnvConfig} from '#/storage'
 
 export type {EnvConfig}
@@ -102,6 +107,8 @@ const EMPTY_CONFIG: EnvConfig = {
   SOCIAL_APP_HOST: '',
   SOCIAL_APP_URL: '',
   SOCIAL_EMBED_SERVICE: '',
+  STATSIG_CLIENT_KEY: '',
+  STATSIG_API_URL: '',
   STATUS_PAGE_URL: '',
   VIDEO_SERVICE: '',
   VIDEO_SERVICE_DID: '',
@@ -120,6 +127,8 @@ const InternalToEnvName: Record<string, string> = {
   SOCIAL_APP_HOST: 'EXPO_PUBLIC_SOCIAL_APP_HOST', // plan to use to detect host match with env
   SOCIAL_APP_URL: 'EXPO_PUBLIC_SOCIAL_APP_URL',
   SOCIAL_EMBED_SERVICE: 'EXPO_PUBLIC_SOCIAL_EMBED_SERVICE',
+  STATSIG_CLIENT_KEY: 'EXPO_PUBLIC_STATSIG_CLIENT_KEY',
+  STATSIG_API_URL: 'EXPO_PUBLIC_STATSIG_API_URL',
   STATUS_PAGE_URL: 'EXPO_PUBLIC_STATUS_PAGE_URL',
   VIDEO_SERVICE: 'EXPO_PUBLIC_VIDEO_SERVICE',
   VIDEO_SERVICE_DID: 'EXPO_PUBLIC_VIDEO_SERVICE_DID',
@@ -139,6 +148,8 @@ const processEnvConfigValues: Record<string, string> = {
   SOCIAL_EMBED_SERVICE: process.env.EXPO_PUBLIC_SOCIAL_EMBED_SERVICE,
   SOCIAL_HELP_DESK_URL: process.env.EXPO_PUBLIC_SOCIAL_HELP_DESK_URL,
   SOCIAL_POLICY_BASE_URL: process.env.EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL,
+  STATSIG_CLIENT_KEY: process.env.EXPO_PUBLIC_STATSIG_CLIENT_KEY,
+  STATSIG_API_URL: process.env.EXPO_PUBLIC_STATSIG_API_URL,
   STATUS_PAGE_URL: process.env.EXPO_PUBLIC_STATUS_PAGE_URL,
   VIDEO_SERVICE: process.env.EXPO_PUBLIC_VIDEO_SERVICE,
   VIDEO_SERVICE_DID: process.env.EXPO_PUBLIC_VIDEO_SERVICE_DID,
@@ -218,6 +229,8 @@ const BLUESKY_CONFIG: EnvConfig = {
   SOCIAL_APP_HOST: 'bsky.app',
   SOCIAL_APP_URL: 'https://bsky.app',
   SOCIAL_EMBED_SERVICE: 'https://embed.bsky.app',
+  STATSIG_CLIENT_KEY: 'client-SXJakO39w9vIhl3D44u8UupyzFl4oZ2qPIkjwcvuPsV',
+  STATSIG_API_URL: 'https://events.bsky.app/v2',
   STATUS_PAGE_URL: 'https://status.bsky.app/',
   VIDEO_SERVICE: 'https://video.bsky.app',
   VIDEO_SERVICE_DID: 'did:web:video.bsky.app',
@@ -237,6 +250,8 @@ const BLUESKY_STAGING_CONFIG: EnvConfig = {
   SOCIAL_APP_HOST: BLUESKY_CONFIG.SOCIAL_APP_HOST,
   SOCIAL_APP_URL: BLUESKY_CONFIG.SOCIAL_APP_URL,
   SOCIAL_EMBED_SERVICE: BLUESKY_CONFIG.SOCIAL_EMBED_SERVICE,
+  STATSIG_CLIENT_KEY: BLUESKY_CONFIG.STATSIG_CLIENT_KEY,
+  STATSIG_API_URL: BLUESKY_CONFIG.STATSIG_API_URL,
   STATUS_PAGE_URL: BLUESKY_CONFIG.STATUS_PAGE_URL,
   VIDEO_SERVICE: BLUESKY_CONFIG.VIDEO_SERVICE,
   VIDEO_SERVICE_DID: BLUESKY_CONFIG.VIDEO_SERVICE_DID,
@@ -299,11 +314,27 @@ const DEFAULT_ENVCONFIG = __DEV__
 
 export const SWITCHING_ENABLED = !isProductionEnv
 
+function getFallbackEnvConfig(): EnvConfig {
+  // the default env-config to use when one can't be loaded from stored settings
+  return __DEV__ ? DOMAIN_ENVCONFIGS.development : determineDomainEnvConfig()
+}
+
 export function getStoredEnvConfig(): EnvConfig {
   const storedEnvConfig: EnvConfig = {...EMPTY_CONFIG}
-  for (const key in EMPTY_CONFIG) {
-    const typedKey = key as keyof EnvConfig
-    storedEnvConfig[typedKey] = envConfigStorage.get([typedKey]) || ''
+  try {
+    if (envConfigStorage) {
+      for (const key in EMPTY_CONFIG) {
+        const typedKey = key as keyof EnvConfig
+        storedEnvConfig[typedKey] = envConfigStorage.get([typedKey]) || ''
+      }
+    }
+  } catch (e) {
+    logger.warn('Storage not available, env-config being calculated')
+    return getFallbackEnvConfig()
+  }
+  if (!storedEnvConfig.SOCIAL_APP_HOST) {
+    logger.info('No stored env-config, calculating based on environment')
+    return getFallbackEnvConfig()
   }
   return storedEnvConfig
 }
@@ -425,19 +456,38 @@ export function beginResolveEnvConfig() {
    * In dev, IP server is unavailable, but if running from bluesky-selfhost-env,
    * we want to use the environment
    */
-  const currentSocialHost = envConfigStorage.get(['SOCIAL_APP_HOST'])
+  let currentSocialHost: string | undefined
+  try {
+    currentSocialHost = envConfigStorage?.get(['SOCIAL_APP_HOST'])
+  } catch (e) {
+    // Storage not available yet, will calculate config without storing
+    currentSocialHost = undefined
+  }
+
   if (!currentSocialHost) {
+    const configToUse = getFallbackEnvConfig()
+
     if (__DEV__) {
-      logger.info('Loading dev environment, using local environment variables')
-      setStoredEnvConfig(DOMAIN_ENVCONFIGS.development)
+      logger.info('Loading dev env-config, using local environment variables')
     } else {
-      logger.info('Loading non-dev environment, using built-in values')
-      setStoredEnvConfig(determineDomainEnvConfig())
+      logger.info('Loading non-dev env-config, using built-in values')
+    }
+
+    // Only store if storage is available
+    try {
+      if (envConfigStorage) {
+        setStoredEnvConfig(configToUse)
+      }
+    } catch (e) {
+      // Storage not available, config will be calculated each time
+      logger.info(
+        'Storage not available, env-config calculated without persistence',
+      )
     }
   } else {
-    logger.info(`Environment Config already loaded with ${currentSocialHost}`)
+    logger.info(`Env-Config already loaded with ${currentSocialHost}`)
   }
-  logger.info(`Environment Config: ${JSON.stringify(getStoredEnvConfig())}`)
+  logger.info(`Env-Config: ${JSON.stringify(getStoredEnvConfig())}`)
   return
 }
 
