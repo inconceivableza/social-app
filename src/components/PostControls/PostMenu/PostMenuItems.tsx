@@ -84,7 +84,7 @@ import {
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
 import * as bsky from '#/types/bsky'
-import { isRecipePostView, postHref } from '#/lib/api/feed/utils'
+import { isRecipePostView, postHref, recordText } from '#/lib/api/feed/utils'
 import { EditBig_Stroke2_Corner0_Rounded as EditBig } from '#/components/icons/EditBig'
 import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 
@@ -174,7 +174,7 @@ let PostMenuItems = ({
     return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
   const translatorUrl = getTranslatorLink(
-    record.text,
+    recordText(post),
     langPrefs.primaryLanguage,
   )
 
