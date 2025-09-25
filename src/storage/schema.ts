@@ -23,7 +23,7 @@ export type Account = {
 export type EnvConfig = {
   APPVIEW_URL: string
   BSKY_SERVICE: string
-  GIF_SERVICE: string
+  GIF_HOST: string
   HELP_DESK_URL: string
   LINK_HOST: string
   OGCARD_URL: string

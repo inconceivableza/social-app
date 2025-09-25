@@ -2,7 +2,7 @@ import {Platform} from 'react-native'
 import {getLocales} from 'expo-localization'
 import {keepPreviousData, useInfiniteQuery} from '@tanstack/react-query'
 
-import {GIF_FEATURED, GIF_SEARCH} from '#/lib/constants'
+import {envConfig, GIF_FEATURED, GIF_SEARCH} from '#/lib/constants'
 import {logger} from '#/logger'
 
 export const RQKEY_ROOT = 'gif-service'
@@ -95,7 +95,7 @@ export function tenorUrlToBskyGifUrl(tenorUrl: string) {
     logger.debug('invalid url passed to tenorUrlToBskyGifUrl()')
     return ''
   }
-  url.hostname = 't.gifs.bsky.app'
+  url.hostname = envConfig.GIF_HOST
   return url.href
 }
 

@@ -92,7 +92,7 @@ const HELP_DESK_LANG = 'en-us'
 const EMPTY_CONFIG: EnvConfig = {
   APPVIEW_URL: '',
   BSKY_SERVICE: '',
-  GIF_SERVICE: '',
+  GIF_HOST: '',
   HELP_DESK_URL: '',
   LINK_HOST: '',
   OGCARD_URL: '',
@@ -110,7 +110,7 @@ const EMPTY_CONFIG: EnvConfig = {
 const InternalToEnvName: Record<string, string> = {
   APPVIEW_URL: 'EXPO_PUBLIC_ATP_APPVIEW_URL',
   BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PDS_URL',
-  GIF_SERVICE: 'EXPO_PUBLIC_GIF_SERVICE',
+  GIF_HOST: 'EXPO_PUBLIC_GIF_HOST',
   HELP_DESK_URL: 'EXPO_PUBLIC_SOCIAL_HELP_DESK_URL',
   LINK_HOST: 'EXPO_PUBLIC_LINK_HOST',
   OGCARD_URL: 'EXPO_PUBLIC_OGCARD_URL',
@@ -130,7 +130,7 @@ const processEnvConfigValues: Record<string, string> = {
   ATP_PDS_HOST: process.env.EXPO_PUBLIC_ATP_PDS_HOST,
   ATP_PUBLIC_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL,
   CORS_ALLOWED_ORIGINS: process.env.EXPO_PUBLIC_CORS_ALLOWED_ORIGINS,
-  GIF_SERVICE: process.env.EXPO_PUBLIC_GIF_SERVICE,
+  GIF_HOST: process.env.EXPO_PUBLIC_GIF_HOST,
   LINK_HOST: process.env.EXPO_PUBLIC_LINK_HOST,
   OGCARD_URL: process.env.EXPO_PUBLIC_OGCARD_URL,
   PREVIEW_LINK_META_PROXY: process.env.EXPO_PUBLIC_PREVIEW_LINK_META_PROXY,
@@ -208,7 +208,7 @@ const systemEnvs = (Constants?.expoConfig?.extra || {})['env-config']
 const BLUESKY_CONFIG: EnvConfig = {
   APPVIEW_URL: 'https://api.bsky.app',
   BSKY_SERVICE: 'https://bsky.social',
-  GIF_SERVICE: 'https://gifs.bsky.app',
+  GIF_HOST: 't.gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
   LINK_HOST: 'https://go.bsky.app',
   OGCARD_URL: `https://ogcard.cdn.bsky.app`,
@@ -227,7 +227,7 @@ const BLUESKY_CONFIG: EnvConfig = {
 const BLUESKY_STAGING_CONFIG: EnvConfig = {
   APPVIEW_URL: BLUESKY_CONFIG.APPVIEW_URL,
   BSKY_SERVICE: 'https://staging.bsky.dev',
-  GIF_SERVICE: BLUESKY_CONFIG.GIF_SERVICE,
+  GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
   LINK_HOST: BLUESKY_CONFIG.LINK_HOST,
   OGCARD_URL: BLUESKY_CONFIG.OGCARD_URL,
