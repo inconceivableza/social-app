@@ -82,19 +82,14 @@ const logger = {
   warn: console.warn,
   error: console.error,
 }
-import {env_config as envConfigStorage, type EnvConfig} from '#/storage'
+import {
+  env_config as envConfigStorage,
+  env_content as envContentStorage,
+  type EnvConfig,
+  type EnvContent,
+} from '#/storage'
 
-export type {EnvConfig}
-
-export type EnvContent = {
-  atproto_accounts: {
-    follow: {
-      [key: string]: {
-        did: string
-      }
-    }
-  }
-}
+export type {EnvConfig, EnvContent}
 
 /**
  * Default envconfig value.
@@ -514,6 +509,41 @@ export function clearStoredEnvConfig() {
   )
 }
 
+function getFallbackEnvContent(): EnvContent {
+  // the default env-content to use when one can't be loaded from stored settings
+  return BLUESKY_CONTENT
+}
+
+export function getStoredEnvContent(): EnvContent {
+  try {
+    if (envContentStorage) {
+      const storedContentString = envContentStorage.get(['content'])
+      if (storedContentString) {
+        return JSON.parse(storedContentString) as EnvContent
+      }
+    }
+  } catch (e) {
+    logger.warn(
+      'Storage not available or invalid, env-content being calculated',
+    )
+    return getFallbackEnvContent()
+  }
+  logger.info('No stored env-content, calculating based on environment')
+  return getFallbackEnvContent()
+}
+
+export function setStoredEnvContent(newEnvContent: EnvContent) {
+  try {
+    envContentStorage.set(['content'], JSON.stringify(newEnvContent))
+  } catch (e) {
+    logger.warn('Failed to store env-content:', e)
+  }
+}
+
+export function clearStoredEnvContent() {
+  envContentStorage.remove(['content'])
+}
+
 export function renderEnvConfig(
   envConfig: EnvConfig,
   indent: number = 0,
@@ -626,17 +656,26 @@ export const configColors: Record<string, string> = {
 type Context = {
   envConfig: EnvConfig
   setEnvConfig: React.Dispatch<React.SetStateAction<EnvConfig>>
+  envContent: EnvContent
+  setEnvContent: React.Dispatch<React.SetStateAction<EnvContent>>
 }
 
 const context = React.createContext<Context>({
   envConfig: DEFAULT_ENVCONFIG,
   setEnvConfig: () => {},
+  envContent: BLUESKY_CONTENT,
+  setEnvContent: () => {},
 })
 
 export function Provider({children}: {children: React.ReactNode}) {
   beginResolveEnvConfig()
   const [envConfig, setEnvConfig] = React.useState(() => {
     const initial = getStoredEnvConfig()
+    return initial
+  })
+
+  const [envContent, setEnvContent] = React.useState(() => {
+    const initial = getStoredEnvContent()
     return initial
   })
 
@@ -651,12 +690,18 @@ export function Provider({children}: {children: React.ReactNode}) {
     return {
       envConfig,
       setEnvConfig,
+      envContent,
+      setEnvContent,
     }
-  }, [envConfig, setEnvConfig])
+  }, [envConfig, setEnvConfig, envContent, setEnvContent])
 
   return <context.Provider value={ctx}>{children}</context.Provider>
 }
 
 export function useEnvConfig() {
+  return React.useContext(context)
+}
+
+export function useEnvContent() {
   return React.useContext(context)
 }
