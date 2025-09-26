@@ -817,14 +817,24 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 }
 
 func (srv *Server) WebEnvContent(c echo.Context) error {
-	// Read from env-content*.json file based on environment
+	// Read from env-content file specified by SOCIAL_APP_ENV_CONTENT_FILE or fallback to standard files
 	var outResponse map[string]interface{}
 
-	// Try files in order: production -> test -> development -> default empty
-	filenames := []string{
-		"env-content.production.json",
-		"env-content.test.json",
-		"env-content.json",
+	// Check for custom file first
+	customFile := os.Getenv("SOCIAL_APP_ENV_CONTENT_FILE")
+	var filenames []string
+
+	if customFile != "" {
+		filenames = []string{customFile}
+		log.Infof("Using custom env-content file from SOCIAL_APP_ENV_CONTENT_FILE: %s", customFile)
+	} else {
+		// Fall back to standard files in order: production -> test -> development
+		filenames = []string{
+			"env-content.production.json",
+			"env-content.test.json",
+			"env-content.json",
+		}
+		log.Info("SOCIAL_APP_ENV_CONTENT_FILE not set, trying standard env-content files")
 	}
 
 	contentLoaded := false
