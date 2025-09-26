@@ -817,22 +817,37 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 }
 
 func (srv *Server) WebEnvContent(c echo.Context) error {
-	// Build nested structure for env-content - read from environment variable or default to empty
-	contentJson := os.Getenv("EXPO_PUBLIC_ENV_CONTENT")
+	// Read from env-content*.json file based on environment
 	var outResponse map[string]interface{}
 
-	if contentJson != "" {
-		if err := json.Unmarshal([]byte(contentJson), &outResponse); err != nil {
-			log.Warnf("Failed to parse EXPO_PUBLIC_ENV_CONTENT: %v", err)
-			outResponse = map[string]interface{}{}
+	// Try files in order: production -> test -> development -> default empty
+	filenames := []string{
+		"env-content.production.json",
+		"env-content.test.json",
+		"env-content.json",
+	}
+
+	contentLoaded := false
+	for _, filename := range filenames {
+		if data, err := os.ReadFile(filename); err == nil {
+			if err := json.Unmarshal(data, &outResponse); err != nil {
+				log.Warnf("Failed to parse env-content file %s: %v", filename, err)
+				continue
+			}
+			log.Infof("Loaded env-content from %s", filename)
+			contentLoaded = true
+			break
 		}
-	} else {
+	}
+
+	if !contentLoaded {
 		// Default empty structure matching EnvContent type
 		outResponse = map[string]interface{}{
 			"atproto_accounts": map[string]interface{}{
 				"follow": map[string]interface{}{},
 			},
 		}
+		log.Info("No env-content files found, using default empty structure")
 	}
 
 	// May be overkill, but useful perhaps for dev?

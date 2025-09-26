@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -82,12 +84,39 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 }
 
 func (srv *Server) WebEnvContent(c echo.Context) error {
-	// For embedr, we use a minimal content structure
-	contentData := map[string]interface{}{
-		"atproto_accounts": map[string]interface{}{
-			"follow": map[string]interface{}{},
-		},
+	// Read from env-content*.json file based on environment
+	var contentData map[string]interface{}
+
+	// Try files in order: production -> test -> development -> default empty
+	filenames := []string{
+		"env-content.production.json",
+		"env-content.test.json",
+		"env-content.json",
 	}
+
+	contentLoaded := false
+	for _, filename := range filenames {
+		if data, err := os.ReadFile(filename); err == nil {
+			if err := json.Unmarshal(data, &contentData); err != nil {
+				log.Warnf("Failed to parse env-content file %s: %v", filename, err)
+				continue
+			}
+			log.Infof("Loaded env-content from %s", filename)
+			contentLoaded = true
+			break
+		}
+	}
+
+	if !contentLoaded {
+		// Default empty structure matching EnvContent type
+		contentData = map[string]interface{}{
+			"atproto_accounts": map[string]interface{}{
+				"follow": map[string]interface{}{},
+			},
+		}
+		log.Info("No env-content files found, using default empty structure")
+	}
+
 	return c.JSON(http.StatusOK, contentData)
 }
 
