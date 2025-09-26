@@ -39,3 +39,13 @@ export type EnvConfig = {
   VIDEO_SERVICE: string
   VIDEO_SERVICE_DID: string
 }
+
+export type EnvContent = {
+  atproto_accounts: {
+    follow: {
+      [key: string]: {
+        did: string
+      }
+    }
+  }
+}

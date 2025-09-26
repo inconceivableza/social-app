@@ -142,11 +142,19 @@ export const account = new Storage<[string], Account>({id: 'bsky_account'})
  */
 export const env_config = new Storage<[], EnvConfig>({id: 'bsky_env_config'})
 
+/**
+ * env-content switching (only used in non-production) - stores as single JSON string
+ */
+export const env_content = new Storage<[], {content: string}>({
+  id: 'bsky_env_content',
+})
+
 if (__DEV__ && typeof window !== 'undefined') {
   // @ts-expect-error - dev global
   window.bsky_storage = {
     device,
     account,
     env_config,
+    env_content,
   }
 }
