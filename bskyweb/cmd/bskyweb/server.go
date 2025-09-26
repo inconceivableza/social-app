@@ -428,6 +428,12 @@ func serve(cctx *cli.Context) error {
 		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodOptions},
 	}))
 
+	// env-content
+	e.GET("/env-content", server.WebEnvContent, middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodOptions},
+	}))
+
 	if linkHost != "" {
 		linkUrl, err := url.Parse(linkHost)
 		if err != nil {
@@ -805,6 +811,30 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 		VIDEO_SERVICE:           os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
 		VIDEO_SERVICE_DID:       os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),
 	}
+	// May be overkill, but useful perhaps for dev?
+	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
+	return c.JSON(200, outResponse)
+}
+
+func (srv *Server) WebEnvContent(c echo.Context) error {
+	// Build nested structure for env-content - read from environment variable or default to empty
+	contentJson := os.Getenv("EXPO_PUBLIC_ENV_CONTENT")
+	var outResponse map[string]interface{}
+
+	if contentJson != "" {
+		if err := json.Unmarshal([]byte(contentJson), &outResponse); err != nil {
+			log.Warnf("Failed to parse EXPO_PUBLIC_ENV_CONTENT: %v", err)
+			outResponse = map[string]interface{}{}
+		}
+	} else {
+		// Default empty structure matching EnvContent type
+		outResponse = map[string]interface{}{
+			"atproto_accounts": map[string]interface{}{
+				"follow": map[string]interface{}{},
+			},
+		}
+	}
+
 	// May be overkill, but useful perhaps for dev?
 	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
 	return c.JSON(200, outResponse)
