@@ -81,6 +81,16 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 	return c.JSON(http.StatusOK, data)
 }
 
+func (srv *Server) WebEnvContent(c echo.Context) error {
+	// For embedr, we use a minimal content structure
+	contentData := map[string]interface{}{
+		"atproto_accounts": map[string]interface{}{
+			"follow": map[string]interface{}{},
+		},
+	}
+	return c.JSON(http.StatusOK, contentData)
+}
+
 func (srv *Server) WebEmbedJs(c echo.Context) error {
 	data := srv.getClientSideData()
 	c.Response().Header().Set("Content-Type", "application/javascript; charset=utf-8")

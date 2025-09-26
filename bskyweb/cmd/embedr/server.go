@@ -210,6 +210,7 @@ func serve(cctx *cli.Context) error {
 	e.GET("/iframe-resize.js", echo.WrapHandler(staticHandler))
 	e.GET("/oembed", server.WebOEmbed)
 	e.GET("/env-config.json", server.WebEnvConfig)
+	e.GET("/env-content.json", server.WebEnvContent)
 	e.GET("/embed/:did/app.bsky.feed.post/:rkey", server.WebPostEmbed)
 
 	// Start the server.
