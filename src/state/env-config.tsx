@@ -409,6 +409,14 @@ const onEnvConfigUpdate = (listener: (env_config: EnvConfig) => void) => {
   }
 }
 
+const CONTENT_EVENT = 'envcontent-updated'
+const onEnvContentUpdate = (listener: (env_content: EnvContent) => void) => {
+  events.on(CONTENT_EVENT, listener)
+  return () => {
+    events.off(CONTENT_EVENT, listener)
+  }
+}
+
 export async function fetchEnvConfig(server: string) {
   const serverUrl = new URL(server)
   if (
@@ -483,6 +491,29 @@ function jsonToEnvContent(json: Record<string, any>): EnvContent {
   }
 
   return mergeNestedContent(json, BLUESKY_CONTENT)
+}
+
+export async function fetchEnvConfigAndContent(server: string): Promise<{
+  config?: EnvConfig
+  content?: EnvContent
+}> {
+  // Fetch both env-config and env-content in parallel
+  const [configResult, contentResult] = await Promise.allSettled([
+    fetchEnvConfig(server),
+    fetchEnvContent(server),
+  ])
+
+  const result: {config?: EnvConfig; content?: EnvContent} = {}
+
+  if (configResult.status === 'fulfilled' && configResult.value) {
+    result.config = configResult.value
+  }
+
+  if (contentResult.status === 'fulfilled' && contentResult.value) {
+    result.content = contentResult.value
+  }
+
+  return result
 }
 
 export async function fetchEnvContent(server: string) {
@@ -677,6 +708,44 @@ export function beginResolveEnvConfig() {
     logger.info(`Env-Config already loaded with ${currentSocialHost}`)
   }
   logger.info(`Env-Config: ${JSON.stringify(getStoredEnvConfig())}`)
+
+  // Initialize env-content similarly
+  let currentStoredContent: EnvContent | undefined
+  try {
+    currentStoredContent = getStoredEnvContent()
+    // Check if we have meaningful content (not just default empty structure)
+    if (
+      !currentStoredContent ||
+      Object.keys(currentStoredContent.atproto_accounts.follow).length === 0
+    ) {
+      currentStoredContent = undefined
+    }
+  } catch (e) {
+    currentStoredContent = undefined
+  }
+
+  if (!currentStoredContent) {
+    const contentToUse = getFallbackEnvContent()
+
+    if (__DEV__) {
+      logger.info('Loading dev env-content, using local environment data')
+    } else {
+      logger.info('Loading non-dev env-content, using built-in values')
+    }
+
+    try {
+      if (envContentStorage) {
+        setStoredEnvContent(contentToUse)
+      }
+    } catch (e) {
+      logger.info(
+        'Storage not available, env-content calculated without persistence',
+      )
+    }
+  } else {
+    logger.info('Env-Content already loaded')
+  }
+  logger.info(`Env-Content: ${JSON.stringify(getStoredEnvContent())}`)
   return
 }
 
@@ -753,6 +822,13 @@ export function Provider({children}: {children: React.ReactNode}) {
     return onEnvConfigUpdate(newEnvConfig => {
       setEnvConfig(newEnvConfig!)
       setStoredEnvConfig(newEnvConfig)
+    })
+  }, [])
+
+  React.useEffect(() => {
+    return onEnvContentUpdate(newEnvContent => {
+      setEnvContent(newEnvContent!)
+      setStoredEnvContent(newEnvContent)
     })
   }, [])
 
