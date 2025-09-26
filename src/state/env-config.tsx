@@ -309,13 +309,46 @@ function buildSystemToEnvContent(contentObj: any): EnvContent {
 
 function fallbackContent(...contents: EnvContent[]): EnvContent {
   // Merge multiple content objects with later ones taking precedence
+  function mergeContentObjects<T>(target: T, source: any): T {
+    if (
+      source === undefined ||
+      source === null ||
+      typeof target !== 'object' ||
+      target === null ||
+      Array.isArray(target)
+    ) {
+      return target
+    }
+
+    const result = {...target} as T
+
+    if (
+      typeof source === 'object' &&
+      source !== null &&
+      !Array.isArray(source)
+    ) {
+      for (const key in target) {
+        if (source[key] !== undefined) {
+          if (
+            typeof target[key] === 'object' &&
+            target[key] !== null &&
+            !Array.isArray(target[key])
+          ) {
+            result[key] = mergeContentObjects(target[key], source[key])
+          } else {
+            result[key] = source[key]
+          }
+        }
+      }
+    }
+
+    return result
+  }
+
   let result = {...BLUESKY_CONTENT}
   for (const content of contents) {
-    if (content?.atproto_accounts?.follow) {
-      result.atproto_accounts.follow = {
-        ...result.atproto_accounts.follow,
-        ...content.atproto_accounts.follow,
-      }
+    if (content) {
+      result = mergeContentObjects(result, content)
     }
   }
   return result
