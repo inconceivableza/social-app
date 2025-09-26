@@ -10,7 +10,7 @@ const blueskyBranding = {
     apple_team_id: 'B3LX46C5HS',
     chat_api_did: 'did:web:api.bsky.chat#bsky_chat',
     // these ios_${plugin}_name variables are not to set the target name (which is the source directory) but the suffix to the web_package_id used for the bundleId
-    ios_clip_name: 'BlueskyClip', // This is currently not used - it's called AppClip
+    ios_clip_name: 'BlueskyClip',
     ios_nse_name: 'BlueskyNSE',
     ios_share_with_name: 'Share-with-Bluesky',
     expo_project_owner: 'blueskysocial',
@@ -96,6 +96,33 @@ module.exports = function (_config) {
         : {}
       return [profileName, {envFilename, profileName, ...envValues}]
     }),
+  )
+
+  const envContentFilenames = {
+    production: 'env-content.production.json',
+    staging: 'env-content.test.json',
+    development: 'env-content.json',
+  }
+  const envContentConfigs = Object.fromEntries(
+    Object.entries(envContentFilenames).map(
+      ([profileName, contentBasename]) => {
+        const contentFilename = findExisting(contentBasename)
+        const contentSource = contentFilename
+          ? fs.readFileSync(contentFilename).toString('utf-8')
+          : '{}'
+        let contentValues = {}
+        try {
+          contentValues = JSON.parse(contentSource)
+        } catch (e) {
+          console.warn(
+            `Failed to parse env-content file ${contentBasename}:`,
+            e,
+          )
+          contentValues = {}
+        }
+        return [profileName, {contentFilename, profileName, ...contentValues}]
+      },
+    ),
   )
 
   const getVariantPackageName = packageName => {
@@ -536,6 +563,7 @@ module.exports = function (_config) {
         },
         branding: branding,
         'env-config': envConfigs,
+        'env-content': envContentConfigs,
       },
     },
   }

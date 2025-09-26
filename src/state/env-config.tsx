@@ -219,6 +219,7 @@ function jsonToEnvConfig(
 }
 
 const systemEnvs = (Constants?.expoConfig?.extra || {})['env-config']
+const systemEnvContents = (Constants?.expoConfig?.extra || {})['env-content']
 
 // The defaults as bluesky originally ships them in social-app
 const BLUESKY_CONFIG: EnvConfig = {
@@ -296,6 +297,50 @@ export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
   development: DEVELOPMENT_CONFIG,
   empty: EMPTY_CONFIG,
   process: PROCESS_ENV_CONFIG,
+}
+
+function buildSystemToEnvContent(contentObj: any): EnvContent {
+  // Convert build system content object to typed EnvContent
+  if (!contentObj || typeof contentObj !== 'object') {
+    return BLUESKY_CONTENT
+  }
+  return jsonToEnvContent(contentObj)
+}
+
+function fallbackContent(...contents: EnvContent[]): EnvContent {
+  // Merge multiple content objects with later ones taking precedence
+  let result = {...BLUESKY_CONTENT}
+  for (const content of contents) {
+    if (content?.atproto_accounts?.follow) {
+      result.atproto_accounts.follow = {
+        ...result.atproto_accounts.follow,
+        ...content.atproto_accounts.follow,
+      }
+    }
+  }
+  return result
+}
+
+// Build-time content configurations from build system
+const PRODUCTION_CONTENT = buildSystemToEnvContent(
+  systemEnvContents?.production,
+)
+const STAGING_CONTENT = buildSystemToEnvContent(systemEnvContents?.staging)
+const DEVELOPMENT_CONTENT = fallbackContent(
+  buildSystemToEnvContent(systemEnvContents?.development),
+  PRODUCTION_CONTENT,
+)
+
+export const DOMAIN_ENVCONTENTS: Record<string, EnvContent> = {
+  // the original bluesky defaults
+  bluesky: BLUESKY_CONTENT,
+  bluesky_staging: BLUESKY_CONTENT,
+  // the standard environments, baked into builds
+  production: PRODUCTION_CONTENT,
+  staging: STAGING_CONTENT,
+  // build-time content if present, otherwise fallback to production
+  development: DEVELOPMENT_CONTENT,
+  empty: BLUESKY_CONTENT,
 }
 
 const location = window.location
@@ -511,7 +556,32 @@ export function clearStoredEnvConfig() {
 
 function getFallbackEnvContent(): EnvContent {
   // the default env-content to use when one can't be loaded from stored settings
-  return BLUESKY_CONTENT
+  return __DEV__ ? DOMAIN_ENVCONTENTS.development : determineDomainEnvContent()
+}
+
+export function determineDomainEnvContent(): EnvContent {
+  // determines the envContent based on the domain name, if present (only on web)
+  if (protocol === 'http' || protocol === 'https') {
+    logger.info(`Environment content deduction based on ${protocol}://${host}:`)
+    if (hostname === PRODUCTION_DOMAIN) {
+      logger.info('Using production environment content')
+      return DOMAIN_ENVCONTENTS.production
+    } else if (STAGING_DOMAIN && hostname === STAGING_DOMAIN) {
+      logger.info('Using staging environment content')
+      return DOMAIN_ENVCONTENTS.staging
+    }
+  }
+  logger.warn(
+    `Falling back to default environment content based on expo env ${buildProfileName}`,
+  )
+  const isProductionEnv =
+    isProductionWeb || (!isWeb && buildProfileName === 'production')
+  const isStagingEnv = isStagingWeb || (!isWeb && buildProfileName === 'test')
+  return isProductionEnv
+    ? DOMAIN_ENVCONTENTS.production
+    : isStagingEnv
+      ? DOMAIN_ENVCONTENTS.staging
+      : DOMAIN_ENVCONTENTS.development
 }
 
 export function getStoredEnvContent(): EnvContent {
