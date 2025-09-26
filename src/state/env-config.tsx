@@ -86,6 +86,16 @@ import {env_config as envConfigStorage, type EnvConfig} from '#/storage'
 
 export type {EnvConfig}
 
+export type EnvContent = {
+  atproto_accounts: {
+    follow: {
+      [key: string]: {
+        did: string
+      }
+    }
+  }
+}
+
 /**
  * Default envconfig value.
  * If not overriden with dynamic config, will point to built environment, for production configuration
@@ -234,6 +244,12 @@ const BLUESKY_CONFIG: EnvConfig = {
   STATUS_PAGE_URL: 'https://status.bsky.app/',
   VIDEO_SERVICE: 'https://video.bsky.app',
   VIDEO_SERVICE_DID: 'did:web:video.bsky.app',
+}
+
+const BLUESKY_CONTENT: EnvContent = {
+  atproto_accounts: {
+    follow: {},
+  },
 }
 
 // The defaults are only different for some items on staging
@@ -389,6 +405,79 @@ export async function fetchEnvConfig(server: string) {
     }
   } catch (e) {
     logger.error(`Failed to fetch ${configUrl}: ${e}`)
+  }
+  return null
+}
+
+function jsonToEnvContent(json: Record<string, any>): EnvContent {
+  function mergeNestedContent<T>(
+    jsonValue: any,
+    defaultValue: T,
+    path: string = '',
+  ): T {
+    // If jsonValue exists and matches the expected structure, use it
+    if (jsonValue !== undefined && jsonValue !== null) {
+      if (
+        typeof defaultValue === 'object' &&
+        defaultValue !== null &&
+        !Array.isArray(defaultValue)
+      ) {
+        // Handle nested objects recursively
+        const result = {} as T
+        for (const key in defaultValue) {
+          const currentPath = path ? `${path}.${key}` : key
+          const nestedJsonValue = jsonValue[key]
+          result[key] = mergeNestedContent(
+            defaultValue[key],
+            nestedJsonValue,
+            currentPath,
+          )
+        }
+        return result
+      } else {
+        // For primitive values, use jsonValue if it exists
+        return jsonValue as T
+      }
+    }
+    return defaultValue
+  }
+
+  return mergeNestedContent(json, BLUESKY_CONTENT)
+}
+
+export async function fetchEnvContent(server: string) {
+  const serverUrl = new URL(server)
+  if (
+    !serverUrl ||
+    (serverUrl?.pathname && serverUrl?.pathname !== '/') ||
+    serverUrl?.search
+  ) {
+    logger.warn(
+      `Could not fetch envContent from non-root URL of server ${server}: ${JSON.stringify(serverUrl)}`,
+    )
+    return null
+  }
+  const contentUrl = `${serverUrl}env-content`
+  logger.info(`Fetching environment content from ${contentUrl}`)
+  try {
+    const res = await fetch(contentUrl)
+    if (res.ok) {
+      const json = (await res.json()) as Record<string, string>
+      logger.info(
+        `Loaded json for environment content: ${JSON.stringify(json)}`,
+      )
+      const envContent: EnvContent = jsonToEnvContent(json)
+      logger.info(
+        `Loaded environment content from json with fallback: ${envContent}`,
+      )
+      return envContent
+    } else if (res.status === 404) {
+      logger.info(`Dynamic environment content not supported by ${serverUrl}`)
+    } else {
+      logger.error(`Dynamic environment content: lookup failed ${res.status}`)
+    }
+  } catch (e) {
+    logger.error(`Failed to fetch ${contentUrl}: ${e}`)
   }
   return null
 }
