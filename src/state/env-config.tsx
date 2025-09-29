@@ -530,20 +530,21 @@ export async function fetchEnvConfigAndContent(server: string): Promise<{
   config?: EnvConfig
   content?: EnvContent
 }> {
-  // Fetch both env-config and env-content in parallel
-  const [configResult, contentResult] = await Promise.allSettled([
-    fetchEnvConfig(server),
-    fetchEnvContent(server),
-  ])
-
+  // First fetch env-config
+  const config = await fetchEnvConfig(server)
   const result: {config?: EnvConfig; content?: EnvContent} = {}
 
-  if (configResult.status === 'fulfilled' && configResult.value) {
-    result.config = configResult.value
-  }
+  if (config) {
+    result.config = config
 
-  if (contentResult.status === 'fulfilled' && contentResult.value) {
-    result.content = contentResult.value
+    // Now fetch env-content from the appview URL from the config
+    const appviewUrl = config.APPVIEW_URL
+    if (appviewUrl) {
+      const content = await fetchEnvContent(appviewUrl)
+      if (content) {
+        result.content = content
+      }
+    }
   }
 
   return result
@@ -561,7 +562,7 @@ export async function fetchEnvContent(server: string) {
     )
     return null
   }
-  const contentUrl = `${serverUrl}env-content`
+  const contentUrl = `${serverUrl}.well-known/atproto-appview-env-content`
   logger.info(`Fetching environment content from ${contentUrl}`)
   try {
     const res = await fetch(contentUrl)
