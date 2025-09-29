@@ -1,10 +1,10 @@
 import {View} from 'react-native'
 
+import {envConfig, SAMPLE_PROFILE_NAME} from '#/lib/constants'
 import {atoms as a, useTheme} from '#/alf'
 import {ButtonText} from '#/components/Button'
 import {InlineLinkText, Link} from '#/components/Link'
 import {H1, Text} from '#/components/Typography'
-import {envConfig} from '#/lib/constants'
 
 export function Links() {
   const t = useTheme()
@@ -27,7 +27,7 @@ export function Links() {
         </InlineLinkText>
         <InlineLinkText
           label="foo"
-          to={`${envConfig.SOCIAL_APP_URL}/profile/bsky.app`}
+          to={`${envConfig.SOCIAL_APP_URL}/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}`}
           style={[a.text_md]}>
           Internal ({envConfig.SOCIAL_APP_HOST})
         </InlineLinkText>
@@ -36,14 +36,14 @@ export function Links() {
           variant="solid"
           color="primary"
           size="large"
-          label="View @bsky.app's profile"
-          to={`${envConfig.SOCIAL_APP_HOST}/profile/bsky.app`}>
+          label={`View @${SAMPLE_PROFILE_NAME || 'bsky.app'}'s profile`}
+          to={`${envConfig.SOCIAL_APP_HOST}/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}`}>
           <ButtonText>Link as a button</ButtonText>
         </Link>
 
         <Link
-          label="View @bsky.app's profile"
-          to={`${envConfig.SOCIAL_APP_HOST}/profile/bsky.app`}>
+          label={`View @${SAMPLE_PROFILE_NAME || 'bsky.app'}'s profile`}
+          to={`${envConfig.SOCIAL_APP_HOST}/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}`}>
           <View
             style={[
               a.flex_row,
@@ -60,7 +60,7 @@ export function Links() {
                 t.atoms.bg_contrast_200,
               ]}
             />
-            <Text>View @bsky.app's profile</Text>
+            <Text>View @{SAMPLE_PROFILE_NAME || 'bsky.app'}'s profile</Text>
           </View>
         </Link>
       </View>

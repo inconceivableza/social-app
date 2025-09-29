@@ -288,6 +288,32 @@ const BLUESKY_CONTENT: EnvContent = {
     known_shutdown_feeds: [
       'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm',
     ],
+    feedback_proxy_did: 'did:web:discover.bsky.app',
+    authed_only: [
+      'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/with-friends',
+      'at://did:plc:tenurhgjptubkk5zf5qhi3og/app.bsky.feed.generator/mutuals',
+      'at://did:plc:tenurhgjptubkk5zf5qhi3og/app.bsky.feed.generator/only-posts',
+      'at://did:plc:wzsilnxf24ehtmmc3gssy5bu/app.bsky.feed.generator/mentions',
+      'at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/bangers',
+      'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/mutuals',
+      'at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/my-followers',
+    ],
+    fallback_to: 'discover',
+  },
+  links: {
+    about: 'https://bsky.social',
+    blog: 'https://bsky.social/about/blog',
+    jobs: 'https://bsky.social/about/join',
+  },
+  sample_content: {
+    profile: {
+      name: 'bsky.app',
+    },
+    images: {
+      default_avatar: 'https://bsky.social/about/images/favicon-32x32.png',
+      default_banner:
+        'https://bsky.social/about/images/social-card-default-gradient.png',
+    },
   },
   debug: {
     discover_debug_dids: [
@@ -307,6 +333,7 @@ const BLUESKY_STAGING_CONTENT: EnvContent = {
   ...BLUESKY_CONTENT,
   feeds: {
     ...BLUESKY_CONTENT.feeds,
+    feedback_proxy_did: 'did:web:algo.pop2.bsky.app',
     named: {
       ...BLUESKY_CONTENT.feeds.named,
       discover: {

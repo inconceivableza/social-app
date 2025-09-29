@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {branding} from '#/lib/constants'
+import {branding, LINKS} from '#/lib/constants'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
 import {ErrorBoundary} from '#/view/com/util/ErrorBoundary'
@@ -150,6 +150,8 @@ function Footer() {
   const t = useTheme()
   const {_} = useLingui()
 
+  // Links are now loaded from env-content: links: {about, blog, jobs}
+  // and are only rendered if present
   return (
     <View
       style={[
@@ -166,23 +168,30 @@ function Footer() {
         a.flex_1,
         t.atoms.border_contrast_medium,
       ]}>
-      <InlineLinkText
-        label={_(msg`Learn more about ${branding.naming.app_name}`)}
-        to="https://bsky.social">
-        <Trans>Business</Trans>
-      </InlineLinkText>
-      <InlineLinkText
-        label={_(msg`Read the ${branding.naming.app_name} blog`)}
-        to="https://bsky.social/about/blog">
-        <Trans>Blog</Trans>
-      </InlineLinkText>
-      <InlineLinkText
-        label={_(msg`See jobs at ${branding.naming.app_name}`)}
-        to="https://bsky.social/about/join">
-        <Trans comment={`Link to a page with job openings at ${branding.naming.app_name}`}>
-          Jobs
-        </Trans>
-      </InlineLinkText>
+      {LINKS.about && (
+        <InlineLinkText
+          label={_(msg`Learn more about ${branding.naming.app_name}`)}
+          to={LINKS.about}>
+          <Trans>Business</Trans>
+        </InlineLinkText>
+      )}
+      {LINKS.blog && (
+        <InlineLinkText
+          label={_(msg`Read the ${branding.naming.app_name} blog`)}
+          to={LINKS.blog}>
+          <Trans>Blog</Trans>
+        </InlineLinkText>
+      )}
+      {LINKS.jobs && (
+        <InlineLinkText
+          label={_(msg`See jobs at ${branding.naming.app_name}`)}
+          to={LINKS.jobs}>
+          <Trans
+            comment={`Link to a page with job openings at ${branding.naming.app_name}`}>
+            Jobs
+          </Trans>
+        </InlineLinkText>
+      )}
 
       <View style={a.flex_1} />
 

@@ -66,6 +66,23 @@ export type EnvContent = {
     log_for_owner_dids: string[]
     extra_headers_for_owner_dids: string[]
     known_shutdown_feeds: string[]
+    feedback_proxy_did: string
+    authed_only: string[]
+    fallback_to: string
+  }
+  links: {
+    about?: string
+    blog?: string
+    jobs?: string
+  }
+  sample_content: {
+    profile: {
+      name: string
+    }
+    images: {
+      default_avatar: string
+      default_banner: string
+    }
   }
   debug: {
     discover_debug_dids: string[]

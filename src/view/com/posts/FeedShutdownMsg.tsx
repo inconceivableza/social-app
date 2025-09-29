@@ -3,7 +3,12 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {PROD_DEFAULT_FEED} from '#/lib/constants'
+import {
+  FEED_FALLBACK_FEED,
+  FEED_FALLBACK_FEEDNAME,
+  PROD_DEFAULT_FEED,
+  SAMPLE_PROFILE_NAME,
+} from '#/lib/constants'
 import {logger} from '#/logger'
 import {
   usePreferencesQuery,
@@ -99,10 +104,10 @@ export function FeedShutdownMsg({feedUri}: {feedUri: string}) {
         <Trans>
           This feed is no longer online. We are showing{' '}
           <InlineLinkText
-            label={_(msg`The Discover feed`)}
-            to="/profile/bsky.app/feed/whats-hot"
+            label={_(msg`The ${FEED_FALLBACK_FEED?.title || 'Discover'} feed`)}
+            to={`/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}/feed/${FEED_FALLBACK_FEEDNAME}`}
             style={[a.text_md]}>
-            Discover
+            {FEED_FALLBACK_FEED?.title || 'Discover'}
           </InlineLinkText>{' '}
           instead.
         </Trans>

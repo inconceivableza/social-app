@@ -244,6 +244,36 @@ export const KNOWN_SHUTDOWN_FEEDS = envContent.feeds?.known_shutdown_feeds || []
 export const STAGING_VIDEO_FEED_URI =
   'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids'
 
+// Feed proxy DID from env-content: feeds.feedback_proxy_did
+export const FEED_PROXY_DID =
+  envContent.feeds?.feedback_proxy_did || 'did:web:discover.bsky.app'
+
+// Authenticated-only feeds from env-content: feeds.authed_only
+export const KNOWN_AUTHED_ONLY_FEEDS = envContent.feeds?.authed_only || []
+
+// Feed fallback from env-content: feeds.fallback_to
+export const FEED_FALLBACK_NAME = envContent.feeds?.fallback_to || 'discover'
+export const FEED_FALLBACK_FEED = envContent.feeds?.named?.[FEED_FALLBACK_NAME]
+export const FEED_FALLBACK_FEEDNAME =
+  FEED_FALLBACK_FEED?.uri?.split('/').pop() || 'whats-hot'
+
+// Links from env-content: links
+export const LINKS = {
+  about: envContent.links?.about,
+  blog: envContent.links?.blog,
+  jobs: envContent.links?.jobs,
+}
+
+// Sample content from env-content: sample_content
+export const SAMPLE_PROFILE_NAME =
+  envContent.sample_content?.profile?.name || 'bsky.app'
+export const DEFAULT_AVATAR =
+  envContent.sample_content?.images?.default_avatar ||
+  'https://bsky.social/about/images/favicon-32x32.png'
+export const DEFAULT_BANNER =
+  envContent.sample_content?.images?.default_banner ||
+  'https://bsky.social/about/images/social-card-default-gradient.png'
+
 export const GIF_SERVICE = `https://${envConfig.GIF_HOST}`
 
 export const GIF_SEARCH = (params: string) =>

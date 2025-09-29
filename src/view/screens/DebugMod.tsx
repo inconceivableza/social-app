@@ -19,6 +19,7 @@ import {
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {DEFAULT_AVATAR, DEFAULT_BANNER} from '#/lib/constants'
 import {useGlobalLabelStrings} from '#/lib/moderation/useGlobalLabelStrings'
 import {
   type CommonNavigatorParams,
@@ -135,9 +136,12 @@ export const DebugModScreen = ({}: NativeStackScreenProps<
       }),
     })
     mockedProfile.did = did
-    mockedProfile.avatar = 'https://bsky.social/about/images/favicon-32x32.png'
+    // Load avatar and banner from env-content: sample_content.images with fallbacks
+    mockedProfile.avatar =
+      DEFAULT_AVATAR || 'https://bsky.social/about/images/favicon-32x32.png'
     // @ts-expect-error ProfileViewBasic is close enough -esb
     mockedProfile.banner =
+      DEFAULT_BANNER ||
       'https://bsky.social/about/images/social-card-default-gradient.png'
     return mockedProfile
   }, [scenario, target, label, isSelfLabel, did, isFollowing, currentAccount])
@@ -180,9 +184,12 @@ export const DebugModScreen = ({}: NativeStackScreenProps<
               $type: 'app.bsky.embed.images#view',
               images: [
                 {
+                  // Use banner from env-content: sample_content.images.default_banner with fallback
                   thumb:
+                    DEFAULT_BANNER ||
                     'https://bsky.social/about/images/social-card-default-gradient.png',
                   fullsize:
+                    DEFAULT_BANNER ||
                     'https://bsky.social/about/images/social-card-default-gradient.png',
                   alt: '',
                 },

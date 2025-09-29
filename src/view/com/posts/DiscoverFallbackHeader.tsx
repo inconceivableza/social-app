@@ -1,6 +1,11 @@
 import {View} from 'react-native'
 import {Trans} from '@lingui/macro'
 
+import {
+  FEED_FALLBACK_FEED,
+  FEED_FALLBACK_FEEDNAME,
+  SAMPLE_PROFILE_NAME,
+} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {InfoCircleIcon} from '#/lib/icons'
 import {TextLink} from '../util/Link'
@@ -30,8 +35,8 @@ export function DiscoverFallbackHeader() {
             We ran out of posts from your follows. Here's the latest from{' '}
             <TextLink
               type="md-medium"
-              href="/profile/bsky.app/feed/whats-hot"
-              text="Discover"
+              href={`/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}/feed/${FEED_FALLBACK_FEEDNAME}`}
+              text={FEED_FALLBACK_FEED?.title || 'Discover'}
               style={pal.link}
             />
             .
