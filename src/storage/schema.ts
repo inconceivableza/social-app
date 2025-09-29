@@ -53,23 +53,19 @@ export type EnvContent = {
   }
   feeds: {
     named: {
-      [key: string]: string
-    }
-    recommended: {
-      [name: string]: {
+      [key: string]: {
+        title: string
+        uri: string
         type: string
-        value: string
         pinned: boolean
+        default?: boolean
+        video?: boolean
+        feedback?: boolean
       }
     }
     log_for_owner_dids: string[]
     extra_headers_for_owner_dids: string[]
     known_shutdown_feeds: string[]
-    video: string[]
-    feedback_feeds: string[]
-    default_feeds: {
-      [name: string]: string
-    }
   }
   debug: {
     discover_debug_dids: string[]

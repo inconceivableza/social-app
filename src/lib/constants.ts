@@ -87,33 +87,34 @@ export function IS_PROD_SERVICE(url?: string) {
   return url && url !== STAGING_SERVICE && !url.startsWith(LOCAL_DEV_SERVICE)
 }
 
-// Default feeds from env-content: feeds.default_feeds
-export const DEFAULT_FEED_GENERATOR = (rkey: string) =>
-  envContent.feeds?.default_feeds?.[rkey] ||
-  `at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/${rkey}`
+// Default feeds from env-content: feeds.named filtered by default: true
+export const DEFAULT_FEED_GENERATOR = (rkey: string) => {
+  const defaultFeeds = Object.values(envContent.feeds?.named || {}).filter(
+    feed => feed?.default,
+  )
+  const feed = defaultFeeds.find(f => f?.uri?.includes(rkey))
+  return (
+    feed?.uri ||
+    `at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/${rkey}`
+  )
+}
 
 // Legacy feed generators - these are replaced by env-content
-export const PROD_DEFAULT_FEED = (rkey: string) =>
-  envContent.feeds?.default_feeds?.[rkey] ||
-  `at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/${rkey}`
-
+export const PROD_DEFAULT_FEED = (rkey: string) => DEFAULT_FEED_GENERATOR(rkey)
 export const STAGING_DEFAULT_FEED = (rkey: string) =>
-  envContent.feeds?.default_feeds?.[rkey] ||
-  `at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/${rkey}`
+  DEFAULT_FEED_GENERATOR(rkey)
 
 // Legacy constants for backward compatibility - these should be removed over time
-export const PROD_FEEDS = [
-  `feedgen|${envContent.feeds?.default_feeds?.['whats-hot'] || 'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot'}`,
-  `feedgen|${envContent.feeds?.default_feeds?.thevids || 'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids'}`,
-]
+export const PROD_FEEDS = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.default && feed?.feedback)
+  .map(feed => `feedgen|${feed.uri}`)
 
-export const STAGING_FEEDS = [
-  `feedgen|${envContent.feeds?.default_feeds?.['whats-hot'] || 'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/whats-hot'}`,
-  `feedgen|${envContent.feeds?.default_feeds?.thevids || 'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids'}`,
-]
+export const STAGING_FEEDS = PROD_FEEDS // Same as production now since we use the same structure
 
-// Feeds that support feedback from env-content: feeds.feedback_feeds
-export const FEEDBACK_FEEDS = envContent.feeds?.feedback_feeds || []
+// Feeds that support feedback from env-content: feeds.named filtered by feedback: true
+export const FEEDBACK_FEEDS = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.feedback)
+  .map(feed => `feedgen|${feed.uri}`)
 
 export const POST_IMG_MAX = {
   width: 2000,
@@ -176,41 +177,65 @@ export const FEED_EXTRA_HEADER_DIDS =
 
 // Feed URIs from env-content: feeds.named
 export const DISCOVER_FEED_URI =
-  envContent.feeds?.named?.discover ||
+  envContent.feeds?.named?.discover?.uri ||
   'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot'
 
 export const VIDEO_FEED_URI =
-  envContent.feeds?.named?.video ||
+  envContent.feeds?.named?.video?.uri ||
   'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids'
 
-// Video feed URIs from env-content: feeds.video
-export const VIDEO_FEED_URIS = envContent.feeds?.video || []
+// Video feed URIs from env-content: feeds.named filtered by video: true
+export const VIDEO_FEED_URIS = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.video)
+  .map(feed => feed.uri)
 
-// Recommended feeds from env-content: feeds.recommended
-export const DISCOVER_SAVED_FEED = envContent.feeds?.recommended?.discover || {
-  type: 'feed',
-  value: DISCOVER_FEED_URI,
-  pinned: true,
-}
+// Recommended feeds from env-content: feeds.named filtered by pinned: true
+export const DISCOVER_SAVED_FEED = envContent.feeds?.named?.discover
+  ? {
+      type: envContent.feeds.named.discover.type,
+      value: envContent.feeds.named.discover.uri,
+      pinned: envContent.feeds.named.discover.pinned,
+    }
+  : {
+      type: 'feed',
+      value: DISCOVER_FEED_URI,
+      pinned: true,
+    }
 
-export const TIMELINE_SAVED_FEED = envContent.feeds?.recommended?.timeline || {
-  type: 'timeline',
-  value: 'following',
-  pinned: true,
-}
+export const TIMELINE_SAVED_FEED = envContent.feeds?.named?.timeline
+  ? {
+      type: envContent.feeds.named.timeline.type,
+      value: envContent.feeds.named.timeline.uri,
+      pinned: envContent.feeds.named.timeline.pinned,
+    }
+  : {
+      type: 'timeline',
+      value: 'following',
+      pinned: true,
+    }
 
-export const VIDEO_SAVED_FEED = envContent.feeds?.recommended?.video || {
-  type: 'feed',
-  value: VIDEO_FEED_URI,
-  pinned: true,
-}
+export const VIDEO_SAVED_FEED = envContent.feeds?.named?.video
+  ? {
+      type: envContent.feeds.named.video.type,
+      value: envContent.feeds.named.video.uri,
+      pinned: envContent.feeds.named.video.pinned,
+    }
+  : {
+      type: 'feed',
+      value: VIDEO_FEED_URI,
+      pinned: true,
+    }
 
 export const RECOMMENDED_SAVED_FEEDS: Pick<
   AppBskyActorDefs.SavedFeed,
   'type' | 'value' | 'pinned'
->[] = Object.values(envContent.feeds?.recommended || {}).filter(
-  feed => feed?.pinned,
-)
+>[] = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.pinned)
+  .map(feed => ({
+    type: feed.type,
+    value: feed.uri,
+    pinned: feed.pinned,
+  }))
 
 // Known shutdown feeds from env-content: feeds.known_shutdown_feeds
 export const KNOWN_SHUTDOWN_FEEDS = envContent.feeds?.known_shutdown_feeds || []

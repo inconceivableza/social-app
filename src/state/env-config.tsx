@@ -251,24 +251,28 @@ const BLUESKY_CONTENT: EnvContent = {
   },
   feeds: {
     named: {
-      discover:
-        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
-      video:
-        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
-    },
-    recommended: {
       discover: {
+        title: 'Discover',
+        uri: 'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
         type: 'feed',
-        value:
-          'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
+        pinned: true,
+        default: true,
+        feedback: true,
+      },
+      timeline: {
+        title: 'Following',
+        uri: 'following',
+        type: 'timeline',
         pinned: true,
       },
-      timeline: {type: 'timeline', value: 'following', pinned: true},
       video: {
+        title: 'Videos',
+        uri: 'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
         type: 'feed',
-        value:
-          'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
         pinned: true,
+        default: true,
+        video: true,
+        feedback: true,
       },
     },
     log_for_owner_dids: [
@@ -284,22 +288,6 @@ const BLUESKY_CONTENT: EnvContent = {
     known_shutdown_feeds: [
       'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm',
     ],
-    video: [
-      'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
-      'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
-    ],
-    feedback_feeds: [
-      'feedgen|at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
-      'feedgen|at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
-      'feedgen|at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/whats-hot',
-      'feedgen|at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
-    ],
-    default_feeds: {
-      'whats-hot':
-        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
-      thevids:
-        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
-    },
   },
   debug: {
     discover_debug_dids: [
@@ -321,26 +309,23 @@ const BLUESKY_STAGING_CONTENT: EnvContent = {
     ...BLUESKY_CONTENT.feeds,
     named: {
       ...BLUESKY_CONTENT.feeds.named,
-      video:
-        'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
-    },
-    recommended: {
-      ...BLUESKY_CONTENT.feeds.recommended,
-      video: {
+      discover: {
+        title: 'Discover',
+        uri: 'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/whats-hot',
         type: 'feed',
-        value:
-          'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
         pinned: true,
+        default: true,
+        feedback: true,
       },
-    },
-    video: [
-      'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
-    ],
-    default_feeds: {
-      'whats-hot':
-        'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/whats-hot',
-      thevids:
-        'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+      video: {
+        title: 'Videos',
+        uri: 'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+        type: 'feed',
+        pinned: true,
+        default: true,
+        video: true,
+        feedback: true,
+      },
     },
   },
 }
