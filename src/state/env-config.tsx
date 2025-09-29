@@ -246,6 +246,103 @@ const BLUESKY_CONTENT: EnvContent = {
   atproto_accounts: {
     follow: {},
   },
+  onboarding: {
+    auto_follow_accounts: ['did:plc:z72i7hdynmk6r22z27h6tvur'],
+  },
+  feeds: {
+    named: {
+      discover:
+        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
+      video:
+        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
+    },
+    recommended: {
+      discover: {
+        type: 'feed',
+        value:
+          'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
+        pinned: true,
+      },
+      timeline: {type: 'timeline', value: 'following', pinned: true},
+      video: {
+        type: 'feed',
+        value:
+          'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
+        pinned: true,
+      },
+    },
+    log_for_owner_dids: [
+      'did:plc:z72i7hdynmk6r22z27h6tvur',
+      'did:plc:vpkhqolt662uhesyj6nxm7ys',
+      'did:plc:q6gjnaw2blty4crticxkmujt',
+    ],
+    extra_headers_for_owner_dids: [
+      'did:plc:z72i7hdynmk6r22z27h6tvur',
+      'did:plc:vpkhqolt662uhesyj6nxm7ys',
+      'did:plc:q6gjnaw2blty4crticxkmujt',
+    ],
+    known_shutdown_feeds: [
+      'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm',
+    ],
+    video: [
+      'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
+      'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+    ],
+    feedback_feeds: [
+      'feedgen|at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
+      'feedgen|at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
+      'feedgen|at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/whats-hot',
+      'feedgen|at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+    ],
+    default_feeds: {
+      'whats-hot':
+        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot',
+      thevids:
+        'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids',
+    },
+  },
+  debug: {
+    discover_debug_dids: [
+      'did:plc:oisofpd7lj26yvgiivf3lxsi', // hailey.at
+      'did:plc:p2cp5gopk7mgjegy6wadk3ep', // samuel.bsky.team
+      'did:plc:ragtjsm2j2vknwkz3zp4oxrd', // pfrazee.com
+      'did:plc:vpkhqolt662uhesyj6nxm7ys', // why.bsky.team
+      'did:plc:3jpt2mvvsumj2r7eqk4gzzjz', // esb.lol
+      'did:plc:vjug55kidv6sye7ykr5faxxn', // emilyliu.me
+      'did:plc:tgqseeot47ymot4zro244fj3', // iwsmith.bsky.social
+      'did:plc:2dzyut5lxna5ljiaasgeuffz', // mrnuma.bsky.social
+    ],
+  },
+}
+
+const BLUESKY_STAGING_CONTENT: EnvContent = {
+  ...BLUESKY_CONTENT,
+  feeds: {
+    ...BLUESKY_CONTENT.feeds,
+    named: {
+      ...BLUESKY_CONTENT.feeds.named,
+      video:
+        'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+    },
+    recommended: {
+      ...BLUESKY_CONTENT.feeds.recommended,
+      video: {
+        type: 'feed',
+        value:
+          'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+        pinned: true,
+      },
+    },
+    video: [
+      'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+    ],
+    default_feeds: {
+      'whats-hot':
+        'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/whats-hot',
+      thevids:
+        'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids',
+    },
+  },
 }
 
 // The defaults are only different for some items on staging
@@ -367,7 +464,7 @@ const DEVELOPMENT_CONTENT = fallbackContent(
 export const DOMAIN_ENVCONTENTS: Record<string, EnvContent> = {
   // the original bluesky defaults
   bluesky: BLUESKY_CONTENT,
-  bluesky_staging: BLUESKY_CONTENT,
+  bluesky_staging: BLUESKY_STAGING_CONTENT,
   // the standard environments, baked into builds
   production: PRODUCTION_CONTENT,
   staging: STAGING_CONTENT,
@@ -383,8 +480,8 @@ const {protocol, host, hostname} = location || {
   hostname: undefined,
 }
 const isWeb = protocol === 'http' || protocol === 'https'
-const isProductionWeb = isWeb && hostname == PRODUCTION_DOMAIN
-const isStagingWeb = isWeb && hostname == STAGING_DOMAIN
+const isProductionWeb = isWeb && hostname === PRODUCTION_DOMAIN
+const isStagingWeb = isWeb && hostname === STAGING_DOMAIN
 export const buildProfileName = process.env.EXPO_PUBLIC_ENV || 'development'
 const isProductionEnv =
   isProductionWeb || (!isWeb && buildProfileName === 'production')
@@ -639,9 +736,6 @@ export function determineDomainEnvContent(): EnvContent {
   logger.warn(
     `Falling back to default environment content based on expo env ${buildProfileName}`,
   )
-  const isProductionEnv =
-    isProductionWeb || (!isWeb && buildProfileName === 'production')
-  const isStagingEnv = isStagingWeb || (!isWeb && buildProfileName === 'test')
   return isProductionEnv
     ? DOMAIN_ENVCONTENTS.production
     : isStagingEnv

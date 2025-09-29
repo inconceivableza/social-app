@@ -48,4 +48,30 @@ export type EnvContent = {
       }
     }
   }
+  onboarding: {
+    auto_follow_accounts: string[]
+  }
+  feeds: {
+    named: {
+      [key: string]: string
+    }
+    recommended: {
+      [name: string]: {
+        type: string
+        value: string
+        pinned: boolean
+      }
+    }
+    log_for_owner_dids: string[]
+    extra_headers_for_owner_dids: string[]
+    known_shutdown_feeds: string[]
+    video: string[]
+    feedback_feeds: string[]
+    default_feeds: {
+      [name: string]: string
+    }
+  }
+  debug: {
+    discover_debug_dids: string[]
+  }
 }
