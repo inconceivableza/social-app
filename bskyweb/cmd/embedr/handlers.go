@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 
@@ -81,53 +79,6 @@ func (srv *Server) WebHome(c echo.Context) error {
 func (srv *Server) WebEnvConfig(c echo.Context) error {
 	data := srv.getClientSideData()
 	return c.JSON(http.StatusOK, data)
-}
-
-func (srv *Server) WebEnvContent(c echo.Context) error {
-	// Read from env-content file specified by SOCIAL_APP_ENV_CONTENT_FILE or fallback to standard files
-	var contentData map[string]interface{}
-
-	// Check for custom file first
-	customFile := os.Getenv("SOCIAL_APP_ENV_CONTENT_FILE")
-	var filenames []string
-
-	if customFile != "" {
-		filenames = []string{customFile}
-		log.Infof("Using custom env-content file from SOCIAL_APP_ENV_CONTENT_FILE: %s", customFile)
-	} else {
-		// Fall back to standard files in order: production -> test -> development
-		filenames = []string{
-			"env-content.production.json",
-			"env-content.test.json",
-			"env-content.json",
-		}
-		log.Info("SOCIAL_APP_ENV_CONTENT_FILE not set, trying standard env-content files")
-	}
-
-	contentLoaded := false
-	for _, filename := range filenames {
-		if data, err := os.ReadFile(filename); err == nil {
-			if err := json.Unmarshal(data, &contentData); err != nil {
-				log.Warnf("Failed to parse env-content file %s: %v", filename, err)
-				continue
-			}
-			log.Infof("Loaded env-content from %s", filename)
-			contentLoaded = true
-			break
-		}
-	}
-
-	if !contentLoaded {
-		// Default empty structure matching EnvContent type
-		contentData = map[string]interface{}{
-			"atproto_accounts": map[string]interface{}{
-				"follow": map[string]interface{}{},
-			},
-		}
-		log.Info("No env-content files found, using default empty structure")
-	}
-
-	return c.JSON(http.StatusOK, contentData)
 }
 
 func (srv *Server) WebEmbedJs(c echo.Context) error {

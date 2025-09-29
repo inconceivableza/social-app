@@ -428,12 +428,6 @@ func serve(cctx *cli.Context) error {
 		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodOptions},
 	}))
 
-	// env-content
-	e.GET("/env-content", server.WebEnvContent, middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodOptions},
-	}))
-
 	if linkHost != "" {
 		linkUrl, err := url.Parse(linkHost)
 		if err != nil {
@@ -811,55 +805,6 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 		VIDEO_SERVICE:           os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
 		VIDEO_SERVICE_DID:       os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),
 	}
-	// May be overkill, but useful perhaps for dev?
-	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
-	return c.JSON(200, outResponse)
-}
-
-func (srv *Server) WebEnvContent(c echo.Context) error {
-	// Read from env-content file specified by SOCIAL_APP_ENV_CONTENT_FILE or fallback to standard files
-	var outResponse map[string]interface{}
-
-	// Check for custom file first
-	customFile := os.Getenv("SOCIAL_APP_ENV_CONTENT_FILE")
-	var filenames []string
-
-	if customFile != "" {
-		filenames = []string{customFile}
-		log.Infof("Using custom env-content file from SOCIAL_APP_ENV_CONTENT_FILE: %s", customFile)
-	} else {
-		// Fall back to standard files in order: production -> test -> development
-		filenames = []string{
-			"env-content.production.json",
-			"env-content.test.json",
-			"env-content.json",
-		}
-		log.Info("SOCIAL_APP_ENV_CONTENT_FILE not set, trying standard env-content files")
-	}
-
-	contentLoaded := false
-	for _, filename := range filenames {
-		if data, err := os.ReadFile(filename); err == nil {
-			if err := json.Unmarshal(data, &outResponse); err != nil {
-				log.Warnf("Failed to parse env-content file %s: %v", filename, err)
-				continue
-			}
-			log.Infof("Loaded env-content from %s", filename)
-			contentLoaded = true
-			break
-		}
-	}
-
-	if !contentLoaded {
-		// Default empty structure matching EnvContent type
-		outResponse = map[string]interface{}{
-			"atproto_accounts": map[string]interface{}{
-				"follow": map[string]interface{}{},
-			},
-		}
-		log.Info("No env-content files found, using default empty structure")
-	}
-
 	// May be overkill, but useful perhaps for dev?
 	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
 	return c.JSON(200, outResponse)
