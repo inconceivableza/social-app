@@ -117,6 +117,7 @@ const EMPTY_CONFIG: EnvConfig = {
   STATUS_PAGE_URL: '',
   VIDEO_SERVICE: '',
   VIDEO_SERVICE_DID: '',
+  DM_SERVICE_DID: '',
 }
 
 const InternalToEnvName: Record<string, string> = {
@@ -225,6 +226,7 @@ const systemEnvContents = (Constants?.expoConfig?.extra || {})['env-content']
 const BLUESKY_CONFIG: EnvConfig = {
   APPVIEW_URL: 'https://api.bsky.app',
   BSKY_SERVICE: 'https://bsky.social',
+  DM_SERVICE_DID: 'did:web:api.bsky.chat',
   GIF_HOST: 't.gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
   LINK_HOST: 'https://go.bsky.app',
@@ -367,6 +369,7 @@ const BLUESKY_STAGING_CONTENT: EnvContent = {
 // The defaults are only different for some items on staging
 const BLUESKY_STAGING_CONFIG: EnvConfig = {
   APPVIEW_URL: BLUESKY_CONFIG.APPVIEW_URL,
+  DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
   BSKY_SERVICE: 'https://staging.bsky.dev',
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
