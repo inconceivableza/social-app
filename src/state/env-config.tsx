@@ -315,6 +315,13 @@ const BLUESKY_CONTENT: EnvContent = {
         'https://bsky.social/about/images/social-card-default-gradient.png',
     },
   },
+  embed: {
+    default_post: {
+      profile_name: 'emilyliu.me',
+      did: 'did:plc:vjug55kidv6sye7ykr5faxxn',
+      post_id: '3jzn6g7ixgq2y',
+    },
+  },
   debug: {
     discover_debug_dids: [
       'did:plc:oisofpd7lj26yvgiivf3lxsi', // hailey.at

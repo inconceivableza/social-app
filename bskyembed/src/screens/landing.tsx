@@ -15,6 +15,8 @@ import {Container} from '../components/container'
 import {Link} from '../components/link'
 import {Post} from '../components/post'
 import {
+  getDefaultPost,
+  getDefaultPostUri,
   getEmbedUrl,
   getPublicAppviewUrl,
   getSocialAppAbout,
@@ -24,8 +26,12 @@ import {
 } from '../env-config'
 import {niceDate} from '../utils'
 
-const DEFAULT_POST = `${import.meta.env.VITE_SOCIAL_APP_URL}/profile/emilyliu.me/post/3jzn6g7ixgq2y`
+// Default post URL and URI loaded from env-content: embed.default_post
+const DEFAULT_POST =
+  getDefaultPost() ||
+  `${getSocialAppUrl()}/profile/bsky.social/post/3jzn6g7ixgq2y`
 const DEFAULT_URI =
+  getDefaultPostUri() ||
   'at://did:plc:vjug55kidv6sye7ykr5faxxn/app.bsky.feed.post/3jzn6g7ixgq2y'
 
 export const EMBED_SERVICE = getEmbedUrl()

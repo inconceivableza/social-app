@@ -84,6 +84,13 @@ export type EnvContent = {
       default_banner: string
     }
   }
+  embed: {
+    default_post: {
+      profile_name: string
+      did: string
+      post_id: string
+    }
+  }
   debug: {
     discover_debug_dids: string[]
   }

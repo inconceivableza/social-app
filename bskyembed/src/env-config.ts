@@ -1,9 +1,21 @@
 import type {ImportMetaEnv} from './vite-env.d'
 
+// Minimal EnvContent type for bskyembed (only what we need)
+type EnvContent = {
+  embed: {
+    default_post: {
+      profile_name: string
+      did: string
+      post_id: string
+    }
+  }
+}
+
 const isDevelopment = Object.hasOwn(import.meta, 'env')
   ? import.meta.env.DEV
   : false
 const blueskyEnvConfig = {
+  VITE_APPVIEW_URL: 'https://api.bsky.app',
   VITE_CARD_URL: 'https://ogcard.cdn.bsky.app',
   VITE_EMBED_URL: 'https://embed.bsky.app',
   VITE_LINK_URL: 'https://go.bsky.app',
@@ -13,6 +25,16 @@ const blueskyEnvConfig = {
   VITE_SOCIAL_APP_NAME: 'Bluesky',
   VITE_SOCIAL_APP_URL: 'https://bsky.app',
 }
+
+const blueskyEnvContent: EnvContent = {
+  embed: {
+    default_post: {
+      profile_name: 'emilyliu.me',
+      did: 'did:plc:vjug55kidv6sye7ykr5faxxn',
+      post_id: '3jzn6g7ixgq2y',
+    },
+  },
+}
 function fallbackConfig(
   potentialValue: unknown,
   fallbackValue: string,
@@ -21,6 +43,10 @@ function fallbackConfig(
   return potentialValue
 }
 const devEnvConfig = {
+  VITE_APPVIEW_URL: fallbackConfig(
+    import.meta.env.VITE_APPVIEW_URL,
+    blueskyEnvConfig.VITE_APPVIEW_URL,
+  ),
   VITE_CARD_URL: fallbackConfig(
     import.meta.env.VITE_CARD_URL,
     blueskyEnvConfig.VITE_CARD_URL,
@@ -56,6 +82,7 @@ const devEnvConfig = {
 }
 
 let configCache: ImportMetaEnv | null = null
+let contentCache: EnvContent | null = null
 
 function loadEnvConfig(): ImportMetaEnv {
   if (configCache) {
@@ -87,7 +114,39 @@ function loadEnvConfig(): ImportMetaEnv {
   }
 }
 
+function loadEnvContent(): EnvContent {
+  if (contentCache) {
+    return contentCache
+  }
+  if (isDevelopment) {
+    contentCache = blueskyEnvContent
+  } else {
+    try {
+      // Get the AppView URL from the already loaded config
+      const config = configCache || loadEnvConfig()
+      const appviewUrl = config.VITE_APPVIEW_URL
+      const request = new XMLHttpRequest()
+      request.open('GET', `${appviewUrl}/.well-known/env-content`, false)
+      request.send()
+      if (request.status === 200) {
+        contentCache = JSON.parse(request.responseText) as EnvContent
+      } else {
+        throw new Error('No env-content available from AppView or local')
+      }
+    } catch (error) {
+      console.error('Failed to load env-content:', error)
+      contentCache = blueskyEnvContent
+    }
+  }
+  if (contentCache !== null) {
+    return contentCache
+  } else {
+    throw Error('Could not load env-content')
+  }
+}
+
 export const envConfig = loadEnvConfig()
+export const envContent = loadEnvContent()
 
 export function getEnvConfig(): ImportMetaEnv {
   const cfg = envConfig
@@ -129,4 +188,24 @@ export function getSocialAppName(): string {
 
 export function getSocialAppUrl(): string {
   return getEnvConfigSync().VITE_SOCIAL_APP_URL
+}
+
+export function getAppviewUrl(): string {
+  return getEnvConfigSync().VITE_APPVIEW_URL
+}
+
+export function getDefaultPost(): string {
+  if (!contentCache) {
+    throw new Error('Content not loaded yet')
+  }
+  const post = contentCache.embed.default_post
+  return `${getSocialAppUrl()}/profile/${post.profile_name}/post/${post.post_id}`
+}
+
+export function getDefaultPostUri(): string {
+  if (!contentCache) {
+    throw new Error('Content not loaded yet')
+  }
+  const post = contentCache.embed.default_post
+  return `at://${post.did}/app.bsky.feed.post/${post.post_id}`
 }

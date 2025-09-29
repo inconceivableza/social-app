@@ -59,6 +59,7 @@ func (srv *Server) getServerSideData() map[string]interface{} {
 
 func (srv *Server) getClientSideData() map[string]interface{} {
 	data := map[string]interface{}{
+		"VITE_APPVIEW_URL":        srv.cfg.appviewUrl,
 		"VITE_CARD_URL":           srv.cfg.cardUrl,
 		"VITE_EMBED_URL":          srv.cfg.embedUrl,
 		"VITE_LINK_URL":           srv.cfg.linkUrl,
