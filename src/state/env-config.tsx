@@ -102,6 +102,7 @@ const HELP_DESK_LANG = 'en-us'
 const EMPTY_CONFIG: EnvConfig = {
   APPVIEW_URL: '',
   BSKY_SERVICE: '',
+  DM_SERVICE_DID: '',
   GIF_HOST: '',
   HELP_DESK_URL: '',
   LINK_HOST: '',
@@ -117,12 +118,12 @@ const EMPTY_CONFIG: EnvConfig = {
   STATUS_PAGE_URL: '',
   VIDEO_SERVICE: '',
   VIDEO_SERVICE_DID: '',
-  DM_SERVICE_DID: '',
 }
 
 const InternalToEnvName: Record<string, string> = {
   APPVIEW_URL: 'EXPO_PUBLIC_ATP_APPVIEW_URL',
   BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PDS_URL',
+  DM_SERVICE_DID: 'EXPO_PUBLIC_DM_SERVICE_DID',
   GIF_HOST: 'EXPO_PUBLIC_GIF_HOST',
   HELP_DESK_URL: 'EXPO_PUBLIC_SOCIAL_HELP_DESK_URL',
   LINK_HOST: 'EXPO_PUBLIC_LINK_HOST',
@@ -145,6 +146,7 @@ const processEnvConfigValues: Record<string, string> = {
   ATP_PDS_HOST: process.env.EXPO_PUBLIC_ATP_PDS_HOST,
   ATP_PUBLIC_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL,
   CORS_ALLOWED_ORIGINS: process.env.EXPO_PUBLIC_CORS_ALLOWED_ORIGINS,
+  DM_SERVICE_DID: process.env.EXPO_PUBLIC_DM_SERVICE_DID,
   GIF_HOST: process.env.EXPO_PUBLIC_GIF_HOST,
   LINK_HOST: process.env.EXPO_PUBLIC_LINK_HOST,
   OGCARD_URL: process.env.EXPO_PUBLIC_OGCARD_URL,
@@ -363,11 +365,47 @@ const BLUESKY_STAGING_CONTENT: EnvContent = {
   },
 }
 
+// This won't work well, but it's there
+const EMPTY_CONTENT: EnvContent = {
+  onboarding: {
+    auto_follow_accounts: [],
+  },
+  feeds: {
+    named: {},
+    log_for_owner_dids: [],
+    extra_headers_for_owner_dids: [],
+    known_shutdown_feeds: [],
+    feedback_proxy_did: '',
+    authed_only: [],
+    fallback_to: '',
+  },
+  links: {},
+  sample_content: {
+    profile: {
+      name: '',
+    },
+    images: {
+      default_avatar: '',
+      default_banner: '',
+    },
+  },
+  embed: {
+    default_post: {
+      profile_name: '',
+      did: '',
+      post_id: '',
+    },
+  },
+  debug: {
+    discover_debug_dids: [],
+  },
+}
+
 // The defaults are only different for some items on staging
 const BLUESKY_STAGING_CONFIG: EnvConfig = {
   APPVIEW_URL: BLUESKY_CONFIG.APPVIEW_URL,
-  DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
   BSKY_SERVICE: 'https://staging.bsky.dev',
+  DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
   LINK_HOST: BLUESKY_CONFIG.LINK_HOST,
@@ -418,56 +456,9 @@ export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
 function buildSystemToEnvContent(contentObj: any): EnvContent {
   // Convert build system content object to typed EnvContent
   if (!contentObj || typeof contentObj !== 'object') {
-    return BLUESKY_CONTENT
+    return EMPTY_CONTENT
   }
   return jsonToEnvContent(contentObj)
-}
-
-function fallbackContent(...contents: EnvContent[]): EnvContent {
-  // Merge multiple content objects with later ones taking precedence
-  function mergeContentObjects<T>(target: T, source: any): T {
-    if (
-      source === undefined ||
-      source === null ||
-      typeof target !== 'object' ||
-      target === null ||
-      Array.isArray(target)
-    ) {
-      return target
-    }
-
-    const result = {...target} as T
-
-    if (
-      typeof source === 'object' &&
-      source !== null &&
-      !Array.isArray(source)
-    ) {
-      for (const key in target) {
-        if (source[key] !== undefined) {
-          if (
-            typeof target[key] === 'object' &&
-            target[key] !== null &&
-            !Array.isArray(target[key])
-          ) {
-            result[key] = mergeContentObjects(target[key], source[key])
-          } else {
-            result[key] = source[key]
-          }
-        }
-      }
-    }
-
-    return result
-  }
-
-  let result = {...BLUESKY_CONTENT}
-  for (const content of contents) {
-    if (content) {
-      result = mergeContentObjects(result, content)
-    }
-  }
-  return result
 }
 
 // Build-time content configurations from build system
@@ -475,9 +466,8 @@ const PRODUCTION_CONTENT = buildSystemToEnvContent(
   systemEnvContents?.production,
 )
 const STAGING_CONTENT = buildSystemToEnvContent(systemEnvContents?.staging)
-const DEVELOPMENT_CONTENT = fallbackContent(
-  buildSystemToEnvContent(systemEnvContents?.development),
-  PRODUCTION_CONTENT,
+const DEVELOPMENT_CONTENT = buildSystemToEnvContent(
+  systemEnvContents?.development,
 )
 
 export const DOMAIN_ENVCONTENTS: Record<string, EnvContent> = {
@@ -489,7 +479,7 @@ export const DOMAIN_ENVCONTENTS: Record<string, EnvContent> = {
   staging: STAGING_CONTENT,
   // build-time content if present, otherwise fallback to production
   development: DEVELOPMENT_CONTENT,
-  empty: BLUESKY_CONTENT,
+  empty: EMPTY_CONTENT,
 }
 
 const location = window.location
@@ -633,13 +623,27 @@ function jsonToEnvContent(json: Record<string, any>): EnvContent {
         return result
       } else {
         // For primitive values, use jsonValue if it exists
+        if (
+          Array.isArray(defaultValue) &&
+          typeof jsonValue === 'object' &&
+          !Array.isArray(jsonValue)
+        ) {
+          if (jsonValue.length) {
+            console.warn(
+              `Got unexpected object when array expected at ${path}, using values as array: ${jsonValue}`,
+            )
+            return Object.values(jsonValue) as typeof defaultValue
+          } else {
+            return [] as typeof defaultValue
+          }
+        }
         return jsonValue as T
       }
     }
     return defaultValue
   }
 
-  return mergeNestedContent(json, BLUESKY_CONTENT)
+  return mergeNestedContent(json, EMPTY_CONTENT)
 }
 
 export async function fetchEnvConfigAndContent(server: string): Promise<{
@@ -762,6 +766,29 @@ export function determineDomainEnvContent(): EnvContent {
       : DOMAIN_ENVCONTENTS.development
 }
 
+export function hasNonemptyStoredEnvContent(): boolean {
+  try {
+    if (envContentStorage) {
+      const stored = envContentStorage.get(['content'])
+      // search for non-empty string values or list elements
+      if (
+        stored &&
+        (stored.search(/:\s*"[^"]/) !== -1 ||
+          stored.search(/\[\s*"[^"]/) !== -1)
+      ) {
+        return true
+      } else {
+        console.log('Found empty stored env-content', stored)
+      }
+    }
+    return false
+  } catch (e) {
+    logger.warn(
+      'Error reading stored env-content, proceeding as if not present',
+    )
+    return false
+  }
+}
 export function getStoredEnvContent(): EnvContent {
   try {
     if (envContentStorage) {
@@ -802,11 +829,19 @@ export function renderEnvConfig(
     Object.keys(EMPTY_CONFIG)
       .map(key => {
         const typedKey = key as keyof EnvConfig
-        return `${key}: ${envConfig[typedKey]}`
+        const value = envConfig[typedKey]
+        return `${key}: ${value || ''}`
       })
       .join(indentJoin) +
     '}'
   )
+}
+
+export function renderEnvContent(
+  envContent: EnvContent,
+  indent: number = 0,
+): string {
+  return JSON.stringify(envContent, null, indent)
 }
 
 /**
@@ -859,15 +894,13 @@ export function beginResolveEnvConfig() {
   // Initialize env-content similarly
   let currentStoredContent: EnvContent | undefined
   try {
-    currentStoredContent = getStoredEnvContent()
-    // Check if we have meaningful content (not just default empty structure)
-    if (
-      !currentStoredContent ||
-      Object.keys(currentStoredContent.feeds?.named).length === 0
-    ) {
+    if (hasNonemptyStoredEnvContent()) {
+      currentStoredContent = getStoredEnvContent()
+    } else {
       currentStoredContent = undefined
     }
   } catch (e) {
+    console.log('Error checking for stored env-content', e)
     currentStoredContent = undefined
   }
 

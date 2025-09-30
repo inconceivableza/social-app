@@ -10,13 +10,18 @@ import {
   builtinConfigNames,
   configLabels,
   DOMAIN_ENVCONFIGS,
-  fetchEnvConfig,
+  DOMAIN_ENVCONTENTS,
+  fetchEnvConfigAndContent,
   getStoredEnvConfig,
+  getStoredEnvContent,
   hasRequiredConfig,
   renderEnvConfig,
+  renderEnvContent,
   setStoredEnvConfig,
+  setStoredEnvContent,
   SWITCHING_ENABLED,
   useEnvConfig,
+  useEnvContent,
 } from '#/state/env-config'
 import {clearStorage} from '#/state/persisted'
 import * as Toast from '#/view/com/util/Toast'
@@ -40,6 +45,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
   const {_} = useLingui()
 
   const {envConfig, setEnvConfig} = useEnvConfig()
+  const {setEnvContent} = useEnvContent()
   function getCurrentEnvName() {
     for (const [key, value] of Object.entries(DOMAIN_ENVCONFIGS)) {
       if (JSON.stringify(envConfig) === JSON.stringify(value)) {
@@ -130,6 +136,14 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName(envName)
+        const newEnvContent = DOMAIN_ENVCONTENTS[envName]
+        if (newEnvContent != null) {
+          logger.info(
+            `Switching environment content to ${envName}: ${renderEnvContent(newEnvContent)}`,
+          )
+          setStoredEnvContent(newEnvContent)
+          setEnvContent(getStoredEnvContent())
+        }
         Toast.show(_(msg`Switched environment to ${envName}. ${reloadMessage}`))
         await doDelayedReload()
       } else {
@@ -138,21 +152,37 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
         )
       }
     },
-    [setEnvConfig, currentEnvName, doDelayedReload, reloadMessage, _],
+    [
+      setEnvConfig,
+      setEnvContent,
+      currentEnvName,
+      doDelayedReload,
+      reloadMessage,
+      _,
+    ],
   )
   const onUseManualConfig = React.useCallback(
     async (serverName: string) => {
       const customUrl = serverName.includes('://')
         ? serverName
         : `https://${serverName}`
-      const newEnvConfig = await fetchEnvConfig(customUrl)
-      if (newEnvConfig !== null) {
+      const {config: newEnvConfig, content: newEnvContent} =
+        await fetchEnvConfigAndContent(customUrl)
+      if (newEnvConfig !== null && newEnvConfig !== undefined) {
         logger.info(
           `Switching environment config to custom loaded from ${serverName}: ${renderEnvConfig(newEnvConfig)}`,
         )
         setStoredEnvConfig(newEnvConfig)
         setEnvConfig(getStoredEnvConfig())
         setCurrentEnvName('custom')
+        if (newEnvContent !== null && newEnvContent !== undefined) {
+          logger.info(
+            `Also switching environment content to custom loaded from ${newEnvConfig.SOCIAL_APP_HOST}, updating stored content`,
+          )
+          logger.info(`New env-content: ${JSON.stringify(newEnvContent)}`)
+          setStoredEnvContent(newEnvContent)
+          setEnvContent(getStoredEnvContent())
+        }
         Toast.show(
           _(
             msg`Switched environment to custom loaded from ${serverName}. ${reloadMessage}`,
@@ -164,7 +194,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
         Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
       }
     },
-    [setEnvConfig, doDelayedReload, reloadMessage, _],
+    [setEnvConfig, setEnvContent, doDelayedReload, reloadMessage, _],
   )
 
   return SWITCHING_ENABLED ? (
