@@ -3,12 +3,14 @@ import '#/logger/bitdrift/setup'
 import '#/view/icons'
 
 import React, {useEffect, useState} from 'react'
+import {Platform} from 'react-native'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import {RootSiblingParent} from 'react-native-root-siblings'
 import {
   initialWindowMetrics,
   SafeAreaProvider,
 } from 'react-native-safe-area-context'
+import {registerDevMenuItems} from 'expo-dev-menu'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import * as SplashScreen from 'expo-splash-screen'
 import * as SystemUI from 'expo-system-ui'
@@ -31,7 +33,9 @@ import {Provider as MutedThreadsProvider} from '#/state/cache/thread-mutes'
 import {Provider as DialogStateProvider} from '#/state/dialogs'
 import {
   beginResolveEnvConfig,
+  DOMAIN_ENVCONFIGS,
   Provider as EnvConfigProvider,
+  switchToBuiltinEnvironment,
 } from '#/state/env-config'
 import {listenSessionDropped} from '#/state/events'
 import {
@@ -79,6 +83,7 @@ import {Provider as VideoVolumeProvider} from '#/components/Post/Embed/VideoEmbe
 import {Splash} from '#/Splash'
 import {BottomSheetProvider} from '../modules/bottom-sheet'
 import {BackgroundNotificationPreferencesProvider} from '../modules/expo-background-notification-handler/src/BackgroundNotificationHandlerProvider'
+import {reload} from './lib/reload'
 
 SplashScreen.preventAutoHideAsync()
 if (isIOS) {
@@ -97,6 +102,38 @@ beginResolveEnvConfig()
  * Begin geolocation ASAP
  */
 beginResolveGeolocation()
+
+if (__DEV__ && Platform.OS !== 'web') {
+  console.log('Registering dev menu items')
+  registerDevMenuItems([
+    ...Object.entries(DOMAIN_ENVCONFIGS)
+      .filter(
+        ([name, config]) =>
+          name !== 'empty' && config.SOCIAL_APP_HOST !== undefined,
+      )
+      .map(([name, config]) => ({
+        name: `Switch servers to ${name} (${config.SOCIAL_APP_HOST})`,
+        callback: async () => {
+          try {
+            await switchToBuiltinEnvironment(name)
+            logger.info(
+              `Switched to ${name}; this config will be used when loading the app: reloading now`,
+            )
+            reload('Switched environment config via dev menu')
+          } catch (e) {
+            logger.error(`Failed to switch env config`, {message: e})
+          }
+        },
+        shouldCollapse: true,
+      })),
+  ])
+    .then(() => {
+      logger.info('Registered dev menu env config items')
+    })
+    .catch(e => {
+      logger.error('Failed to register dev menu env config items', {message: e})
+    })
+}
 
 function InnerApp() {
   const [isReady, setIsReady] = React.useState(false)

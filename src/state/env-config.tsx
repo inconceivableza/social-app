@@ -975,8 +975,8 @@ export const configColors: Record<string, string> = {
 // Common environment configuration management methods
 export async function switchToBuiltinEnvironment(
   envName: string,
-  setEnvConfig: (config: EnvConfig) => void,
-  setEnvContent: (content: EnvContent) => void,
+  setEnvConfig?: (config: EnvConfig) => void,
+  setEnvContent?: (content: EnvContent) => void,
 ): Promise<{success: boolean; message: string}> {
   const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
   if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
@@ -984,7 +984,7 @@ export async function switchToBuiltinEnvironment(
       `Switching environment config to ${envName}: ${renderEnvConfig(newEnvConfig)}`,
     )
     setStoredEnvConfig(newEnvConfig)
-    setEnvConfig(getStoredEnvConfig())
+    if (setEnvConfig) setEnvConfig(getStoredEnvConfig())
 
     const newEnvContent = DOMAIN_ENVCONTENTS[envName]
     if (newEnvContent != null) {
@@ -992,7 +992,7 @@ export async function switchToBuiltinEnvironment(
         `Switching environment content to ${envName}: ${renderEnvContent(newEnvContent)}`,
       )
       setStoredEnvContent(newEnvContent)
-      setEnvContent(getStoredEnvContent())
+      if (setEnvContent) setEnvContent(getStoredEnvContent())
     }
 
     return {
