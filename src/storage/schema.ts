@@ -42,13 +42,6 @@ export type EnvConfig = {
 }
 
 export type EnvContent = {
-  atproto_accounts: {
-    follow: {
-      [key: string]: {
-        did: string
-      }
-    }
-  }
   onboarding: {
     auto_follow_accounts: string[]
   }

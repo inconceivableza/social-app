@@ -22,12 +22,6 @@ const blueskyBranding = {
     web_package_id: 'xyz.blueskyweb.app',
     web_package_path: 'xyz/blueskyweb',
   },
-  atproto_accounts: {
-    follow_default: {
-      did: 'did:plc:z72i7hdynmk6r22z27h6tvur',
-      varname: 'BSKY_APP_ACCOUNT_DID',
-    },
-  },
   naming: {
     app_name: 'Bluesky',
     spoken_name: 'Blue Sky',

@@ -43,10 +43,7 @@ type Server struct {
 }
 
 type Branding struct {
-	Code            map[string]interface{} `json:"code"`
-	AtprotoAccounts struct {
-		FollowDefault map[string]interface{} `json:"follow_default"`
-	} `json:"atproto_accounts"`
+	Code    map[string]interface{} `json:"code"`
 	Naming  map[string]interface{} `json:"naming"`
 	Styling struct {
 	} `json:"styling"`

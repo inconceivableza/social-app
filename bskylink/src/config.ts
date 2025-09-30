@@ -23,7 +23,6 @@ interface Branding {
     ios_clip_name?: string
     [key: string]: any
   }
-  atproto_accounts: object | null
   naming: object | null
   styling: object | null
   verbage: object | null
@@ -33,7 +32,7 @@ function readBranding(): Branding {
   const brandingPath = findExisting('branding.json')
   return brandingPath
     ? JSON.parse(fs.readFileSync(brandingPath).toString('utf-8'))
-    : {code: {}, atproto_accounts: {}, naming: {}, styling: {}, verbage: {}}
+    : {code: {}, naming: {}, styling: {}, verbage: {}}
 }
 
 export type Config = {

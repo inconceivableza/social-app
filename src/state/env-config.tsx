@@ -245,9 +245,6 @@ const BLUESKY_CONFIG: EnvConfig = {
 }
 
 const BLUESKY_CONTENT: EnvContent = {
-  atproto_accounts: {
-    follow: {},
-  },
   onboarding: {
     auto_follow_accounts: ['did:plc:z72i7hdynmk6r22z27h6tvur'],
   },
@@ -866,7 +863,7 @@ export function beginResolveEnvConfig() {
     // Check if we have meaningful content (not just default empty structure)
     if (
       !currentStoredContent ||
-      Object.keys(currentStoredContent.atproto_accounts.follow).length === 0
+      Object.keys(currentStoredContent.feeds?.named).length === 0
     ) {
       currentStoredContent = undefined
     }
