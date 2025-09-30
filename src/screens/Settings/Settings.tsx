@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import {useState} from 'react'
 import {LayoutAnimation, Pressable, View} from 'react-native'
 import {Linking} from 'react-native'
 import {useReducedMotion} from 'react-native-reanimated'
@@ -10,31 +10,29 @@ import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {IS_INTERNAL} from '#/lib/app-info'
-import {timeout} from '#/lib/async/timeout'
 import {HELP_DESK_URL} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
-import {canReload, reload} from '#/lib/reload'
+import {canReload, doDelayedReload} from '#/lib/reload'
 import {
   type CommonNavigatorParams,
   type NavigationProp,
 } from '#/lib/routes/types'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
-import {logger} from '#/logger'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
 import {
-  beginResolveEnvConfig,
   builtinConfigNames,
-  clearStoredEnvConfig,
   configColors,
   configTitles,
   DOMAIN_ENVCONFIGS,
-  fetchEnvConfig,
-  getStoredEnvConfig,
   hasRequiredConfig,
-  setStoredEnvConfig,
+  renderEnvContent,
+  resetStoredEnvironment,
   SWITCHING_ENABLED,
+  switchToBuiltinEnvironment,
+  switchToCustomEnvironment,
   useEnvConfig,
+  useEnvContent,
 } from '#/state/env-config'
 import * as persisted from '#/state/persisted'
 import {clearStorage} from '#/state/persisted'
@@ -505,65 +503,58 @@ function ServerDomains() {
   const [showCurrentEnv, setShowCurrentEnv] = useState(false)
   const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
   const {envConfig, setEnvConfig} = useEnvConfig()
+  const {envContent, setEnvContent} = useEnvContent()
   const reloadMessage = canReload
     ? _(msg`Going to reload app...`)
     : _(msg`Please exit and reload app manually...`)
 
-  const doDelayedReload = useCallback(async () => {
-    const reloadDelay = 3
-    await clearStorage()
-    if (canReload) {
-      logger.info(`Reloading app after config change in ${reloadDelay}...`)
-      await timeout(reloadDelay * 1000)
-      reload('Changed environment config')
-    } else {
-      logger.warn(
-        'User must exit and reload app after environment config change to prevent errors',
-      )
-    }
-  }, [])
   const doResetStoredEnvConfig = async () => {
-    clearStoredEnvConfig()
-    beginResolveEnvConfig()
-    setEnvConfig(getStoredEnvConfig())
-    Toast.show(_(msg`Reset environment to default`))
-    await doDelayedReload()
+    const result = await resetStoredEnvironment(setEnvConfig)
+    Toast.show(_(msg`${result.message}`))
+    await doDelayedReload(
+      'Reset environment config',
+      'Reloading app after config change',
+      'User must exit and reload app after environment config change to prevent errors',
+    )
   }
   const doSetEnvConfig = async (envName: string) => {
-    const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
-    if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
-      console.log('Found env config', newEnvConfig)
-      setStoredEnvConfig(newEnvConfig)
-      setEnvConfig(getStoredEnvConfig())
-      Toast.show(_(msg`Switched environment to ${envName}. ${reloadMessage}`))
-      await doDelayedReload()
-    } else {
-      Toast.show(
-        _(msg`Could not find valid environment config named ${envName}`),
+    const result = await switchToBuiltinEnvironment(
+      envName,
+      setEnvConfig,
+      setEnvContent,
+    )
+    if (result.success) {
+      Toast.show(_(msg`${result.message}. ${reloadMessage}`))
+      await doDelayedReload(
+        'Changed environment config',
+        'Reloading app after config change',
+        'User must exit and reload app after environment config change to prevent errors',
       )
+    } else {
+      Toast.show(_(msg`${result.message}`))
     }
   }
   const doFetchEnvConfig = async (serverName: string) => {
-    const customUrl = serverName.includes('://')
-      ? serverName
-      : `https://${serverName}`
-    const newEnvConfig = await fetchEnvConfig(customUrl)
-    if (newEnvConfig !== null) {
-      setStoredEnvConfig(newEnvConfig)
-      setEnvConfig(getStoredEnvConfig())
-      Toast.show(
-        _(
-          msg`Switched environment to custom loaded from ${serverName}. ${reloadMessage}`,
-        ),
+    const result = await switchToCustomEnvironment(
+      serverName,
+      setEnvConfig,
+      setEnvContent,
+    )
+    if (result.success) {
+      Toast.show(_(msg`${result.message}. ${reloadMessage}`))
+      await doDelayedReload(
+        'Changed environment config',
+        'Reloading app after config change',
+        'User must exit and reload app after environment config change to prevent errors',
       )
-      await doDelayedReload()
     } else {
-      Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
+      Toast.show(_(msg`${result.message}`))
     }
   }
 
   const renderCurrentEnv = function () {
     const envEntries = Object.entries(envConfig)
+    const envContentText = renderEnvContent(envContent, 2)
     return (
       <>
         {envEntries.map(([key, value], index) => (
@@ -588,6 +579,15 @@ function ServerDomains() {
             </View>
           </View>
         ))}
+
+        <View style={[a.flex_col, a.gap_sm, a.pt_md]}>
+          <Text style={[a.font_bold, a.text_md]}>Environment Content</Text>
+          <View style={[{paddingLeft: 16}]}>
+            <Text style={[{fontFamily: 'monospace', fontSize: 12}]}>
+              {envContentText}
+            </Text>
+          </View>
+        </View>
       </>
     )
   }

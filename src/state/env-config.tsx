@@ -972,6 +972,148 @@ export const configColors: Record<string, string> = {
   custom: 'gray',
 }
 
+// Common environment configuration management methods
+export async function switchToBuiltinEnvironment(
+  envName: string,
+  setEnvConfig: (config: EnvConfig) => void,
+  setEnvContent: (content: EnvContent) => void,
+): Promise<{success: boolean; message: string}> {
+  const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
+  if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
+    logger.info(
+      `Switching environment config to ${envName}: ${renderEnvConfig(newEnvConfig)}`,
+    )
+    setStoredEnvConfig(newEnvConfig)
+    setEnvConfig(getStoredEnvConfig())
+
+    const newEnvContent = DOMAIN_ENVCONTENTS[envName]
+    if (newEnvContent != null) {
+      logger.info(
+        `Switching environment content to ${envName}: ${renderEnvContent(newEnvContent)}`,
+      )
+      setStoredEnvContent(newEnvContent)
+      setEnvContent(getStoredEnvContent())
+    }
+
+    return {
+      success: true,
+      message: `Switched environment to ${envName}`,
+    }
+  } else {
+    return {
+      success: false,
+      message: `Could not find valid environment config named ${envName}`,
+    }
+  }
+}
+
+export async function switchToCustomEnvironment(
+  serverName: string,
+  setEnvConfig: (config: EnvConfig) => void,
+  setEnvContent: (content: EnvContent) => void,
+): Promise<{success: boolean; message: string}> {
+  const customUrl = serverName.includes('://')
+    ? serverName
+    : `https://${serverName}`
+  const {config: newEnvConfig, content: newEnvContent} =
+    await fetchEnvConfigAndContent(customUrl)
+  if (newEnvConfig !== null && newEnvConfig !== undefined) {
+    logger.info(
+      `Switching environment config to custom loaded from ${serverName}: ${renderEnvConfig(newEnvConfig)}`,
+    )
+    setStoredEnvConfig(newEnvConfig)
+    setEnvConfig(getStoredEnvConfig())
+
+    if (newEnvContent !== null && newEnvContent !== undefined) {
+      logger.info(
+        `Also switching environment content to custom loaded from ${newEnvConfig.SOCIAL_APP_HOST}, updating stored content`,
+      )
+      logger.info(`New env-content: ${JSON.stringify(newEnvContent)}`)
+      setStoredEnvContent(newEnvContent)
+      setEnvContent(getStoredEnvContent())
+    }
+
+    return {
+      success: true,
+      message: `Switched environment to custom loaded from ${serverName}`,
+    }
+  } else {
+    return {
+      success: false,
+      message: `Could not retrieve new config from ${serverName}`,
+    }
+  }
+}
+
+export async function resetStoredEnvironment(
+  setEnvConfig: (config: EnvConfig) => void,
+): Promise<{success: boolean; message: string}> {
+  clearStoredEnvConfig()
+  beginResolveEnvConfig()
+  setEnvConfig(getStoredEnvConfig())
+  return {
+    success: true,
+    message: 'Reset environment to default',
+  }
+}
+
+export function getCurrentEnvName(
+  envConfig: EnvConfig,
+  debug: boolean = false,
+): string {
+  let possibleMatches = []
+  for (const [key, value] of Object.entries(DOMAIN_ENVCONFIGS)) {
+    if (JSON.stringify(envConfig) === JSON.stringify(value)) {
+      return key
+    }
+    if (envConfig.SOCIAL_APP_HOST === value.SOCIAL_APP_HOST) {
+      possibleMatches.push(key)
+    }
+  }
+
+  if (debug && possibleMatches.length > 0) {
+    logger.info(
+      `Current envConfig does not match any built-in config: - possible matches: ${possibleMatches}`,
+    )
+    const strConfig = renderEnvConfig(envConfig)
+    const jsonConfig = JSON.stringify(envConfig)
+    const findFirstDiff = (str1: string, str2: string) => {
+      const mismatchIndex = [...str1].findIndex(
+        (el, index) => el !== str2[index],
+      )
+      if (mismatchIndex === -1) return {message: 'no mismatch found'}
+      return {index: mismatchIndex, char: str2[mismatchIndex]}
+    }
+    logger.info(`Current config: ${strConfig}`)
+    for (const possibleMatch of possibleMatches) {
+      const strPossible = renderEnvConfig(DOMAIN_ENVCONFIGS[possibleMatch])
+      logger.info(`Possible match: ${possibleMatch}: ${strPossible}`)
+      if (strConfig === strPossible) {
+        const jsonPossible = JSON.stringify(DOMAIN_ENVCONFIGS[possibleMatch])
+        logger.info(`Exact match. JSON: ${jsonPossible}`)
+        logger.info(`Expected JSON: ${jsonConfig}`)
+        const diff = findFirstDiff(jsonConfig, jsonPossible)
+        logger.info(`Differs at: ${JSON.stringify(diff)}`)
+        if (diff.index) {
+          logger.info(
+            `${jsonConfig.slice(diff.index, diff.index + 16)} != ${jsonPossible.slice(diff.index, diff.index + 16)}`,
+          )
+        }
+      } else {
+        const diff = findFirstDiff(strConfig, strPossible)
+        logger.info(`Mismatch. Differs at: ${JSON.stringify(diff)}`)
+        if (diff.index) {
+          logger.info(
+            `${strConfig.slice(diff.index, diff.index + 16)} != ${strPossible.slice(diff.index, diff.index + 16)}`,
+          )
+        }
+      }
+    }
+  }
+
+  return 'custom'
+}
+
 type Context = {
   envConfig: EnvConfig
   setEnvConfig: React.Dispatch<React.SetStateAction<EnvConfig>>

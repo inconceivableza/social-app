@@ -1,5 +1,9 @@
 import {DevSettings} from 'react-native'
 
+import {timeout} from '#/lib/async/timeout'
+import {logger} from '#/logger'
+import {clearStorage} from '#/state/persisted'
+
 export function reload(reason?: string) {
   DevSettings?.reload(reason)
 }
@@ -11,3 +15,19 @@ export function checkCanReload(): Boolean {
 }
 
 export const canReload = checkCanReload()
+
+export async function doDelayedReload(
+  reason: string,
+  infoMessage: string,
+  warnMessage: string,
+): Promise<void> {
+  const reloadDelay = 3
+  await clearStorage()
+  if (canReload) {
+    logger.info(`${infoMessage} in ${reloadDelay}...`)
+    await timeout(reloadDelay * 1000)
+    reload(reason)
+  } else {
+    logger.warn(warnMessage)
+  }
+}

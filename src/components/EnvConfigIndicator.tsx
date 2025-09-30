@@ -3,27 +3,22 @@ import {type StyleProp, TextInput, View, type ViewStyle} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {timeout} from '#/lib/async/timeout'
-import {canReload, reload} from '#/lib/reload'
+import {canReload, doDelayedReload} from '#/lib/reload'
 import {logger} from '#/logger'
 import {
   builtinConfigNames,
   configLabels,
   DOMAIN_ENVCONFIGS,
-  DOMAIN_ENVCONTENTS,
-  fetchEnvConfigAndContent,
+  getCurrentEnvName,
   getStoredEnvConfig,
-  getStoredEnvContent,
   hasRequiredConfig,
   renderEnvConfig,
-  renderEnvContent,
-  setStoredEnvConfig,
-  setStoredEnvContent,
   SWITCHING_ENABLED,
+  switchToBuiltinEnvironment,
+  switchToCustomEnvironment,
   useEnvConfig,
   useEnvContent,
 } from '#/state/env-config'
-import {clearStorage} from '#/state/persisted'
 import * as Toast from '#/view/com/util/Toast'
 import {flatten} from '#/alf'
 import {atoms as a, platform, useTheme} from '#/alf'
@@ -46,16 +41,9 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
 
   const {envConfig, setEnvConfig} = useEnvConfig()
   const {setEnvContent} = useEnvContent()
-  function getCurrentEnvName() {
-    for (const [key, value] of Object.entries(DOMAIN_ENVCONFIGS)) {
-      if (JSON.stringify(envConfig) === JSON.stringify(value)) {
-        return key
-      }
-    }
-    return 'custom'
-  }
-  const [currentEnvName, setCurrentEnvName] =
-    React.useState(getCurrentEnvName())
+  const [currentEnvName, setCurrentEnvName] = React.useState(() =>
+    getCurrentEnvName(envConfig, true),
+  )
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
@@ -94,22 +82,6 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
     .concat(customConfigItems)
     .concat(controlIndicators)
 
-  const doDelayedReload = React.useCallback(async () => {
-    const reloadDelay = 3
-    await clearStorage()
-    if (canReload) {
-      logger.info(
-        `Reloading app after environment config change in ${reloadDelay}...`,
-      )
-      await timeout(reloadDelay * 1000)
-      reload('Changed environment config')
-    } else {
-      logger.warn(
-        'User must exit and reload app after environment config change to prevent errors',
-      )
-    }
-  }, [])
-
   const onChangeEnvConfig = React.useCallback(
     async (envName: string) => {
       const isControl = envName.startsWith('$')
@@ -128,73 +100,46 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
         return
       }
       if (!envName) return
-      const newEnvConfig = DOMAIN_ENVCONFIGS[envName]
-      if (newEnvConfig != null && hasRequiredConfig(newEnvConfig)) {
-        logger.info(
-          `Switching environment config to ${envName}: ${renderEnvConfig(newEnvConfig)}`,
-        )
-        setStoredEnvConfig(newEnvConfig)
-        setEnvConfig(getStoredEnvConfig())
+      const result = await switchToBuiltinEnvironment(
+        envName,
+        setEnvConfig,
+        setEnvContent,
+      )
+      if (result.success) {
         setCurrentEnvName(envName)
-        const newEnvContent = DOMAIN_ENVCONTENTS[envName]
-        if (newEnvContent != null) {
-          logger.info(
-            `Switching environment content to ${envName}: ${renderEnvContent(newEnvContent)}`,
-          )
-          setStoredEnvContent(newEnvContent)
-          setEnvContent(getStoredEnvContent())
-        }
-        Toast.show(_(msg`Switched environment to ${envName}. ${reloadMessage}`))
-        await doDelayedReload()
-      } else {
-        Toast.show(
-          _(msg`Could not find valid environment config named ${envName}`),
+        Toast.show(_(msg`${result.message}. ${reloadMessage}`))
+        await doDelayedReload(
+          'Changed environment config',
+          'Reloading app after environment config change',
+          'User must exit and reload app after environment config change to prevent errors',
         )
+      } else {
+        Toast.show(_(msg`${result.message}`))
       }
     },
-    [
-      setEnvConfig,
-      setEnvContent,
-      currentEnvName,
-      doDelayedReload,
-      reloadMessage,
-      _,
-    ],
+    [setEnvConfig, setEnvContent, currentEnvName, reloadMessage, _],
   )
   const onUseManualConfig = React.useCallback(
     async (serverName: string) => {
-      const customUrl = serverName.includes('://')
-        ? serverName
-        : `https://${serverName}`
-      const {config: newEnvConfig, content: newEnvContent} =
-        await fetchEnvConfigAndContent(customUrl)
-      if (newEnvConfig !== null && newEnvConfig !== undefined) {
-        logger.info(
-          `Switching environment config to custom loaded from ${serverName}: ${renderEnvConfig(newEnvConfig)}`,
-        )
-        setStoredEnvConfig(newEnvConfig)
-        setEnvConfig(getStoredEnvConfig())
+      const result = await switchToCustomEnvironment(
+        serverName,
+        setEnvConfig,
+        setEnvContent,
+      )
+      if (result.success) {
         setCurrentEnvName('custom')
-        if (newEnvContent !== null && newEnvContent !== undefined) {
-          logger.info(
-            `Also switching environment content to custom loaded from ${newEnvConfig.SOCIAL_APP_HOST}, updating stored content`,
-          )
-          logger.info(`New env-content: ${JSON.stringify(newEnvContent)}`)
-          setStoredEnvContent(newEnvContent)
-          setEnvContent(getStoredEnvContent())
-        }
-        Toast.show(
-          _(
-            msg`Switched environment to custom loaded from ${serverName}. ${reloadMessage}`,
-          ),
-        )
+        Toast.show(_(msg`${result.message}. ${reloadMessage}`))
         setShowCustomDomain(false)
-        await doDelayedReload()
+        await doDelayedReload(
+          'Changed environment config',
+          'Reloading app after environment config change',
+          'User must exit and reload app after environment config change to prevent errors',
+        )
       } else {
-        Toast.show(_(msg`Could not retrieve new config from ${serverName}`))
+        Toast.show(_(msg`${result.message}`))
       }
     },
-    [setEnvConfig, setEnvContent, doDelayedReload, reloadMessage, _],
+    [setEnvConfig, setEnvContent, reloadMessage, _],
   )
 
   return SWITCHING_ENABLED ? (
