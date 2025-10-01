@@ -4,7 +4,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/core'
 
-import {FEEDBACK_FORM_URL, HELP_DESK_URL, webLinks} from '#/lib/constants'
+import {HELP_DESK_URL, webLinks} from '#/lib/constants'
 import {useModalControls} from '#/state/modals'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
 import {useInviteCodesQuery} from '#/state/queries/invites'
@@ -48,7 +48,8 @@ function useWebQueryParams() {
 export function DesktopRightNav({routeName}: {routeName: string}) {
   const t = useTheme()
   const {_} = useLingui()
-  const {hasSession, currentAccount} = useSession()
+  const {hasSession} = useSession()
+  const {openModal} = useModalControls()
   const kawaii = useKawaiiMode()
   const gutters = useGutters(['base', 0, 'base', 'wide'])
   const isSearchScreen = routeName === 'Search'
@@ -64,6 +65,9 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
 
   const width = centerColumnOffset ? 250 : 300
 
+  const onPressFeedback = () => {
+    openModal({name: 'user-feedback'})
+  }
   return (
     <View
       style={[
@@ -98,15 +102,20 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
       <Text style={[a.leading_snug, t.atoms.text_contrast_low]}>
         {hasSession && (
           <>
-            <InlineLinkText
-              to={FEEDBACK_FORM_URL({
-                email: currentAccount?.email,
-                handle: currentAccount?.handle,
-              })}
-              label={_(msg`Feedback`)}>
-              {_(msg`Feedback`)}
-            </InlineLinkText>
-            {' • '}
+            <TouchableOpacity
+              onPress={onPressFeedback}
+              accessibilityRole="button"
+              accessibilityLabel={_(msg`Feedback`)}
+              accessibilityHint={_(msg`Opens Feedback Form`)}>
+              <Text
+                style={[
+                  t.atoms.text_contrast_high,
+                  {color: t.palette.primary_500},
+                ]}>
+                {_(msg`Feedback`)}
+              </Text>
+            </TouchableOpacity>
+            <Text style={t.atoms.text_contrast_low}>{' • '}</Text>
           </>
         )}
         <InlineLinkText to={webLinks.privacy} label={_(msg`Privacy`)}>
