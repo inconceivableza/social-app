@@ -1,11 +1,13 @@
 import {useEffect, useState} from 'react'
-import {View} from 'react-native'
+import {TouchableOpacity, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/core'
 
 import {FEEDBACK_FORM_URL, HELP_DESK_URL, webLinks} from '#/lib/constants'
+import {useModalControls} from '#/state/modals'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
+import {useInviteCodesQuery} from '#/state/queries/invites'
 import {useSession} from '#/state/session'
 import {DesktopFeeds} from '#/view/shell/desktop/Feeds'
 import {DesktopSearch} from '#/view/shell/desktop/Search'
@@ -20,6 +22,7 @@ import {
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Divider} from '#/components/Divider'
 import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
+import {Ticket_Stroke2_Corner0_Rounded as TicketIcon} from '#/components/icons/Ticket'
 import {CENTER_COLUMN_OFFSET} from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {ProgressGuideList} from '#/components/ProgressGuide/List'
@@ -119,6 +122,8 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
         </InlineLinkText>
       </Text>
 
+      {hasSession && <InviteCodes />}
+
       {kawaii && (
         <Text style={[t.atoms.text_contrast_medium, {marginTop: 12}]}>
           <Trans>
@@ -139,5 +144,70 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
         </View>
       )}
     </View>
+  )
+}
+
+function InviteCodes() {
+  const t = useTheme()
+  const {data: invites} = useInviteCodesQuery()
+  const invitesAvailable = invites?.available?.length ?? 0
+  const {openModal} = useModalControls()
+  const {_} = useLingui()
+
+  const onPress = () => {
+    openModal({name: 'invite-codes'})
+  }
+
+  return (
+    <TouchableOpacity
+      testID="menuItemInviteCodes"
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={_(msg`Invite codes: ${invitesAvailable} available`)}
+      accessibilityHint={_(msg`Opens list of invite codes`)}
+      disabled={invites?.disabled}>
+      <View style={[a.align_start, a.gap_xl]}>
+        <View
+          style={[
+            a.pl_sm,
+            a.pr_md,
+            a.py_sm,
+            a.rounded_full,
+            a.flex_row,
+            a.align_center,
+            a.gap_xs,
+            {
+              backgroundColor: t.palette.primary_25,
+            },
+          ]}>
+          <TicketIcon
+            style={[
+              invitesAvailable > 0
+                ? t.atoms.text
+                : t.atoms.text_contrast_medium,
+            ]}
+            size="md"
+          />
+          <Text
+            style={[
+              a.text_md,
+              invitesAvailable > 0
+                ? t.atoms.text
+                : t.atoms.text_contrast_medium,
+            ]}>
+            {invites?.disabled ? (
+              <Trans>
+                Your invite codes are hidden when logged in using an App
+                Password
+              </Trans>
+            ) : invitesAvailable === 1 ? (
+              <Trans>{invitesAvailable} invite code available</Trans>
+            ) : (
+              <Trans>{invitesAvailable} invite codes available</Trans>
+            )}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   )
 }
