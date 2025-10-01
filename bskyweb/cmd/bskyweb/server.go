@@ -516,11 +516,11 @@ func (srv *Server) WebWellKnown(c echo.Context, filename string) error {
 func (srv *Server) Download(c echo.Context) error {
 	ua := c.Request().UserAgent()
 	if strings.Contains(ua, "Android") {
-		return c.Redirect(http.StatusFound, "https://play.google.com/store/apps/details?id=xyz.blueskyweb.app")
+		return c.Redirect(http.StatusFound, "https://play.google.com/store/apps/details?id=${srv.cfg.branding.code.web_package_id}")
 	}
 
 	if strings.Contains(ua, "iPhone") || strings.Contains(ua, "iPad") || strings.Contains(ua, "iPod") {
-		return c.Redirect(http.StatusFound, "https://apps.apple.com/tr/app/bluesky-social/id6444370199")
+		return c.Redirect(http.StatusFound, "https://apps.apple.com/tr/app/${srv.cfg.branding.code.apple_appstore_path}")
 	}
 
 	return c.Redirect(http.StatusFound, "/")
