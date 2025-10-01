@@ -263,6 +263,7 @@ function ProvidedHandlePage({
               </ButtonText>
             )}
           </Button>
+          {/*
           <Text style={[a.leading_snug]}>
             <Trans>
               If you have your own domain, you can use that as your handle. This
@@ -287,6 +288,7 @@ function ProvidedHandlePage({
             </ButtonText>
             <ButtonIcon icon={ArrowRightIcon} position="right" />
           </Button>
+          */}
         </Animated.View>
       </View>
     </LayoutAnimationConfig>
