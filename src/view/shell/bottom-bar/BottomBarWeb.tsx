@@ -5,6 +5,7 @@ import {msg, plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigationState} from '@react-navigation/native'
 
+import {CHAT_DISABLED} from '#/lib/constants'
 import {useHideBottomBarBorder} from '#/lib/hooks/useHideBottomBarBorder'
 import {useMinimalShellFooterTransform} from '#/lib/hooks/useMinimalShellTransform'
 import {getCurrentRoute, isTab} from '#/lib/routes/helpers'
@@ -55,7 +56,8 @@ export function BottomBarWeb() {
   const hideBorder = useHideBottomBarBorder()
   const iconWidth = 26
 
-  const unreadMessageCount = useUnreadMessageCount()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const unreadMessageCount = !CHAT_DISABLED ? useUnreadMessageCount() : 0
   const notificationCountStr = useUnreadNotifications()
   const hasHomeBadge = useHomeBadge()
   const gate = useGate()
@@ -116,26 +118,28 @@ export function BottomBarWeb() {
 
           {hasSession && (
             <>
-              <NavItem
-                routeName="Messages"
-                href="/messages"
-                notificationCount={unreadMessageCount.numUnread}
-                hasNew={unreadMessageCount.hasNew}>
-                {({isActive}) => {
-                  const Icon = isActive ? MessageFilled : Message
-                  return (
-                    <Icon
-                      aria-hidden={true}
-                      width={iconWidth - 1}
-                      style={[
-                        styles.ctrlIcon,
-                        t.atoms.text,
-                        styles.messagesIcon,
-                      ]}
-                    />
-                  )
-                }}
-              </NavItem>
+              {!CHAT_DISABLED && (
+                <NavItem
+                  routeName="Messages"
+                  href="/messages"
+                  notificationCount={unreadMessageCount.numUnread}
+                  hasNew={unreadMessageCount.hasNew}>
+                  {({isActive}) => {
+                    const Icon = isActive ? MessageFilled : Message
+                    return (
+                      <Icon
+                        aria-hidden={true}
+                        width={iconWidth - 1}
+                        style={[
+                          styles.ctrlIcon,
+                          t.atoms.text,
+                          styles.messagesIcon,
+                        ]}
+                      />
+                    )
+                  }}
+                </NavItem>
+              )}
               <NavItem
                 routeName="Notifications"
                 href="/notifications"
