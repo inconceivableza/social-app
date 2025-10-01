@@ -52,7 +52,7 @@ export const PostRepostedByScreen = ({route}: Props) => {
         </Layout.Header.Content>
         <Layout.Header.Slot />
       </Layout.Header.Outer>
-      <PostRepostedByComponent uri={uri} />
+      <PostRepostedByComponent uri={uri} revisionUri={post?.thread.type === "recipe" ? post.thread.record.selectedRevisionUri : undefined} />
     </Layout.Screen>
   )
 }

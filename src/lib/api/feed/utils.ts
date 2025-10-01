@@ -27,7 +27,6 @@ export function isBlueskyOwnedFeed(feedUri: string) {
   const uri = new AtUri(feedUri)
   return BSKY_FEED_OWNER_DIDS.includes(uri.host)
 }
-
 export type RecipePostView = Omit<AppBskyFeedDefs.PostView, "record"> & { record: AppFoodiosFeedDefs.RecipeRevisionView }
 
 export function isRecipePostView(v: unknown): v is RecipePostView {
@@ -48,6 +47,14 @@ export function postHref(author: { did: string, handle: string }, uri: string, .
   return makeProfileLink(author, postType, urip.rkey, ...pathSegments)
 }
 
-export function isPostEdited(post: AppBskyFeedDefs.PostView) {
-  return isRecipePostView(post) && post.record.selectedRevisionUri !== post.record.revisionRefs.at(0)?.uri
+export type RevisionState = "unedited" | "outdated" | "edited"
+
+export function postRevisionState(post: AppBskyFeedDefs.PostView): RevisionState {
+  if (!isRecipePostView(post) || post.record.revisionRefs.length === 1) {
+    return "unedited"
+  }
+  if (post.record.selectedRevisionUri === post.record.revisionRefs.at(-1)?.uri) {
+    return "edited"
+  }
+  return "outdated"
 }

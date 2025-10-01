@@ -48,7 +48,7 @@ export const PostLikedByScreen = ({route}: Props) => {
         </Layout.Header.Content>
         <Layout.Header.Slot />
       </Layout.Header.Outer>
-      <PostLikedByComponent uri={uri} />
+      <PostLikedByComponent uri={uri} revisionUri={post?.thread.type === "recipe" ? post.thread.record.selectedRevisionUri : undefined} />
     </Layout.Screen>
   )
 }

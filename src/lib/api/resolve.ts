@@ -117,6 +117,7 @@ export async function resolveLink(
         record: {
           cid: post.cid,
           uri: post.uri,
+          revisionUri: post.record.selectedRevisionUri
         },
         kind: 'recipePost',
         view: post,

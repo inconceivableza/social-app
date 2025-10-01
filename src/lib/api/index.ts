@@ -53,7 +53,7 @@ export { uploadBlob }
 
 interface PostOpts {
   thread: ThreadDraft
-  replyTo?: string
+  replyTo?: ComAtprotoRepoStrongRef.Main
   onStateChange?: (state: string) => void
   langs?: string[]
 }
@@ -333,10 +333,10 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
   return rt
 }
 
-async function resolveReply(agent: BskyAgent, replyTo: string) {
-  const replyToUrip = new AtUri(replyTo)
+async function resolveReply(agent: BskyAgent, replyTo: ComAtprotoRepoStrongRef.Main) {
+  const replyToUrip = new AtUri(replyTo.uri)
   // TODO: use a utility function for checking the uri collection
-  const parentPost = await (isRecipeUri(replyTo) ? agent.getRecipePost({
+  const parentPost = await (isRecipeUri(replyTo.uri) ? agent.getRecipePost({
     repo: replyToUrip.host,
     rkey: replyToUrip.rkey,
   }) : agent.getPost({
@@ -344,9 +344,10 @@ async function resolveReply(agent: BskyAgent, replyTo: string) {
     rkey: replyToUrip.rkey,
   }))
   if (parentPost) {
-    const parentRef = {
-      uri: replyTo,
+    const parentRef: ComAtprotoRepoStrongRef.Main = {
+      uri: parentPost.uri,
       cid: parentPost.cid,
+      revisionUri: replyTo.revisionUri
     }
     return {
       root: parentPost.value.reply?.root || parentRef,

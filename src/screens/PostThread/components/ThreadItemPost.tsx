@@ -6,7 +6,7 @@ import {
   AtUri,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {Trans} from '@lingui/macro'
+import { Trans, msg } from '@lingui/macro'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {MAX_POST_LINES} from '#/lib/constants'
@@ -43,8 +43,10 @@ import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
 import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
-import { stripSearchParams } from "@atproto/api"
 import { useModalControls } from '#/state/modals'
+import { Button, ButtonIcon } from '#/components/Button'
+import { OutdatedIcon } from '#/components/icons/Outdated'
+import { useLingui } from '@lingui/react'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -54,7 +56,7 @@ export type ThreadItemPostProps = {
   }
   onPostSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
-  anchorUri?: string
+  anchor?: Extract<ThreadItem, { type: 'threadPost' }>
 }
 
 export function ThreadItemPost({
@@ -62,7 +64,7 @@ export function ThreadItemPost({
   overrides,
   onPostSuccess,
   threadgateRecord,
-  anchorUri
+  anchor
 }: ThreadItemPostProps) {
   const postShadow = usePostShadow(item.value.post)
 
@@ -78,7 +80,7 @@ export function ThreadItemPost({
       threadgateRecord={threadgateRecord}
       overrides={overrides}
       onPostSuccess={onPostSuccess}
-      anchorUri={anchorUri}
+      anchor={anchor}
     />
   )
 }
@@ -187,7 +189,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   overrides,
   onPostSuccess,
   threadgateRecord,
-  anchorUri
+  anchor
 }: ThreadItemPostProps & {
   postShadow: Shadow<AppBskyFeedDefs.PostView>
 }) {
@@ -201,7 +203,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const moderation = item.moderation
   const richText = useMemo(
     () => isRecipePostView(post) ? new RichTextAPI({
-      text: recipePostSummaryRichText(post.record)
+      text: recipePostSummaryRichText(post.record.revisionContent)
     }) :
       new RichTextAPI({
         text: record.text,
@@ -212,7 +214,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const [limitLines, setLimitLines] = useState(
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
-  const threadRootUri = stripSearchParams(record.reply?.root?.uri) || post.uri
+
+  const threadRootUri = record.reply?.root?.uri || post.uri
   const href = useMemo(() => {
     return postHref(post.author, post.uri)
   }, [post.uri, post.author])
@@ -255,13 +258,13 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
 
   const {isActive: live} = useActorStatus(post.author)
   const { openModal } = useModalControls()
-  const replyUri = item.value.post.record.reply?.parent.uri // TODO: decide when to use root
-  const revisionMisMatch = anchorUri && replyUri && revisionFromUri(anchorUri) !== revisionFromUri(replyUri)
+  const replyRef = item.value.post.record.reply
+  const anchorRevision = anchor?.value.post.record.selectedRevisionUri
+  const revisionMismatch = anchorRevision && replyRef.root.revisionUri && anchorRevision !== replyRef.root.revisionUri
+  const { _ } = useLingui()
   return (
     <SubtleHover>
-      {revisionMisMatch && <button onClick={() => {
-        openModal({ name: 'recipe-revision-view', uri: replyUri })
-      }}>🚨</button>}
+
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
@@ -307,7 +310,12 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 timestamp={post.indexedAt}
                 postHref={href}
                 style={[a.pb_xs]}
-              />
+              >
+                {revisionMismatch && <Button style={[a.pr_sm]} label={_(msg`Show original version`)} onPress={() => {
+                  // TODO: add api method for retrieving revision and remove all query param logic from getPosts
+                  openModal({ name: 'recipe-revision-view', uri: `${anchor.uri}?revision=${new AtUri(replyRef.root.revisionUri).rkey}` })
+                }}><ButtonIcon size='sm' icon={OutdatedIcon} /></Button>}
+              </PostMeta>
               <LabelsOnMyPost post={post} style={[a.pb_xs]} />
               <PostAlerts
                 modui={moderation.ui('contentList')}
@@ -415,9 +423,4 @@ export function ThreadItemPostSkeleton({index}: {index: number}) {
       </Skele.Row>
     </View>
   )
-}
-
-function revisionFromUri(uri: string) {
-  const atUri = new AtUri(uri)
-  return atUri.searchParams.get("revision")
 }

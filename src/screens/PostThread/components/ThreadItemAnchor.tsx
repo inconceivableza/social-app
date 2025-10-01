@@ -6,7 +6,7 @@ import {
   type AppBskyFeedThreadgate,
   AtUri,
   RichText as RichTextAPI,
-  AppFoodiosFeedRecipeRevision,
+  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -61,7 +61,8 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
+import { isRecipePostView, postHref, postRevisionState, recipePostSummaryRichText, recordText } from '#/lib/api/feed/utils'
+import { RevisionState } from '#/view/com/posts/RevisionState'
 
 export function ThreadItemAnchor({
   item,
@@ -190,7 +191,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const {isActive: live} = useActorStatus(post.author)
   const richText = useMemo(
     () => isRecipePostView(post) ? new RichTextAPI({
-      text: recipePostSummaryRichText(post.record)
+      text: recipePostSummaryRichText(post.record.revisionContent)
     }) :
       new RichTextAPI({
         text: record.text,
@@ -248,12 +249,14 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   }, [postSource])
 
   const onPressReply = useCallback(() => {
+    const text = isRecipePostView(post) ? recipePostSummaryRichText(post.record.revisionContent) : record.text
     openComposer({
       type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        text: record.text,
+        revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined,
+        text,
         author: post.author,
         embed: post.embed,
         moderation,
@@ -386,8 +389,8 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {record.$type === "app.foodios.feed.recipeRevision" ?
-              <RecipeThreadItem record={record} />
+            {record.$type === "app.foodios.feed.defs#recipeRevisionView" ?
+              <RecipeThreadItem revision={record} />
               : richText?.text ? (
               <RichText
                 enableTags
@@ -507,7 +510,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
 })
 
 
-function RecipeThreadItem({ record }: { record: AppFoodiosFeedRecipeRevision.Record }) {
+function RecipeThreadItem({ revision }: { revision: AppFoodiosFeedDefs.RecipeRevisionView }) {
+  const record = revision.revisionContent
+
   return <View>
     <div>
       {record.title}
@@ -553,7 +558,7 @@ function ExpandedPostDetails({
   const langPrefs = useLanguagePrefs()
 
   const translatorUrl = getTranslatorLink(
-    post.record?.text || '',
+    recordText(post),
     langPrefs.primaryLanguage,
   )
   const needsTranslation = useMemo(
@@ -569,7 +574,6 @@ function ExpandedPostDetails({
     (e: GestureResponderEvent) => {
       e.preventDefault()
       openLink(translatorUrl, true)
-
       if (
         bsky.dangerousIsType<AppBskyFeedPost.Record>(
           post.record,
@@ -582,11 +586,15 @@ function ExpandedPostDetails({
           textLength: post.record.text.length,
         })
       }
+      // TODO add metric for recipe
 
       return false
     },
     [openLink, translatorUrl, langPrefs, post],
   )
+
+  const revisionState = postRevisionState(post)
+
 
   return (
     <View style={[a.gap_md, a.pt_md, a.align_start]}>
@@ -613,6 +621,7 @@ function ExpandedPostDetails({
             </InlineLinkText>
           </>
         )}
+        <RevisionState state={revisionState} />
       </View>
     </View>
   )
