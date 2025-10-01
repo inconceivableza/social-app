@@ -199,6 +199,7 @@ export function ModerationScreenInner({
   )
 
   const disabledOnIOS = isIOS && !adultContentEnabled
+  const hideAdultContentOptions = true
 
   return (
     <View style={[a.pt_2xl, a.px_lg, gtMobile && a.px_2xl]}>
@@ -305,7 +306,7 @@ export function ModerationScreenInner({
         </Link>
       </View>
 
-      {declaredAge === undefined && (
+      {!hideAdultContentOptions && declaredAge === undefined && (
         <>
           <Text
             style={[
@@ -339,7 +340,7 @@ export function ModerationScreenInner({
         </>
       )}
 
-      {!isDeclaredUnderage && (
+      {!hideAdultContentOptions && !isDeclaredUnderage && (
         <>
           <Text
             style={[
