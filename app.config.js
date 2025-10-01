@@ -66,7 +66,9 @@ module.exports = function (_config) {
     return fs.existsSync(pathname) ? pathname : null
   }
   function findExisting(filename) {
-    return ifExists(path.join(defaultEnvPath, filename)) ? filename : null
+    return ifExists(path.join(defaultEnvPath, filename))
+      ? path.join(defaultEnvPath, filename)
+      : null
   }
 
   const brandingPath = findExisting('branding.json')
