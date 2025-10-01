@@ -80,11 +80,11 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         if (edit) {
             await apilib.postRecipeRevision(agent, queryClient, {
                 post: state,
-                parentRevision: edit.record.revisionContent
+                parentRevisionPost: edit
             })
         } else {
             const postUri = await apilib.postRecipe(agent, queryClient, {
-                post: state
+                post: state,
             })
         }
 

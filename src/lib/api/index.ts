@@ -48,6 +48,7 @@ import { RecipePostDraft } from '#/view/com/composer/state/composerRecipe'
 import { BskyAppAgent } from '#/state/session/agent'
 import { isRecipeUri } from '../strings/url-helpers'
 import { ids } from '@atproto/api/client/lexicons'
+import { RecipePostView } from './feed/utils'
 
 export { uploadBlob }
 
@@ -201,7 +202,7 @@ export async function post(
 }
 
 interface RecipePostOpts {
-  post: RecipePostDraft
+  post: RecipePostDraft,
 }
 export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: RecipePostOpts) {
   const now = new Date()
@@ -269,10 +270,10 @@ export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: Rec
   return uri
 }
 interface RecipeRevisionOpts {
-  parentRevision: AppFoodiosFeedRecipeRevision.Record
+  parentRevisionPost: RecipePostView
   post: RecipePostDraft
 }
-export async function postRecipeRevision(agent: AtpAgent, qc: QueryClient, { post, parentRevision }: RecipeRevisionOpts) {
+export async function postRecipeRevision(agent: AtpAgent, qc: QueryClient, { post, parentRevisionPost }: RecipeRevisionOpts) {
   const now = new Date()
   const tid = TID.next()
   const rkey = tid.toString()
@@ -280,14 +281,17 @@ export async function postRecipeRevision(agent: AtpAgent, qc: QueryClient, { pos
   const embed = await resolveEmbed(agent, qc, post, () => { })
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
     $type: "app.foodios.feed.recipeRevision",
-    recipePostRef: parentRevision.recipePostRef,
-    //parentRevisionRef: {uri: parentRevision.} // TODO
+    recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
+    parentRevisionRef: {
+      uri: parentRevisionPost.record.selectedRevisionUri,
+      cid: parentRevisionPost.cid // TODO: This field is currently populated with the selected revision's cid (not the the recipe post's) this may be confusing
+    },
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
     steps: post.steps,
     text: post.text.text,
     title: post.title.text,
-    embed
+    embed,
   }
 
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
