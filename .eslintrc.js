@@ -36,6 +36,7 @@ module.exports = {
           'Admonition.Admonition',
           'AgeAssuranceAdmonition',
           'Span',
+          'TSpan',
         ],
         impliedTextProps: [],
         suggestedTextWrappers: {
