@@ -14,14 +14,28 @@ import {
 import {Container} from '../components/container'
 import {Link} from '../components/link'
 import {Post} from '../components/post'
+import {
+  getDefaultPost,
+  getDefaultPostUri,
+  getEmbedUrl,
+  getPublicAppviewUrl,
+  getSocialAppAbout,
+  getSocialAppHost,
+  getSocialAppName,
+  getSocialAppUrl,
+} from '../env-config'
 import {niceDate} from '../utils'
 
-const DEFAULT_POST = 'https://bsky.app/profile/emilyliu.me/post/3jzn6g7ixgq2y'
+// Default post URL and URI loaded from env-content: embed.default_post
+const DEFAULT_POST =
+  getDefaultPost() ||
+  `${getSocialAppUrl()}/profile/bsky.social/post/3jzn6g7ixgq2y`
 const DEFAULT_URI =
+  getDefaultPostUri() ||
   'at://did:plc:vjug55kidv6sye7ykr5faxxn/app.bsky.feed.post/3jzn6g7ixgq2y'
 
-export const EMBED_SERVICE = 'https://embed.bsky.app'
-export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
+export const EMBED_SERVICE = getEmbedUrl()
+export const EMBED_SCRIPT = `${EMBED_SERVICE}/embed.js`
 
 const root = document.getElementById('app')
 if (!root) throw new Error('No root element')
@@ -29,7 +43,7 @@ if (!root) throw new Error('No root element')
 initSystemColorMode()
 
 const agent = new AtpAgent({
-  service: 'https://public.api.bsky.app',
+  service: getPublicAppviewUrl(),
 })
 
 render(<LandingPage />, root)
@@ -57,7 +71,7 @@ function LandingPage() {
           } else {
             try {
               const urlp = new URL(uri)
-              if (!urlp.hostname.endsWith('bsky.app')) {
+              if (!urlp.hostname.endsWith(getSocialAppHost())) {
                 throw new Error('Invalid hostname')
               }
               const split = urlp.pathname.slice(1).split('/')
@@ -83,7 +97,7 @@ function LandingPage() {
               atUri = `at://${did}/app.bsky.feed.post/${rkey}`
             } catch (err) {
               console.log(err)
-              throw new Error('Invalid Bluesky URL')
+              throw new Error(`Invalid ${getSocialAppName()} URL`)
             }
           }
         }
@@ -108,7 +122,11 @@ function LandingPage() {
         setThread(data.thread)
       } catch (err) {
         console.error(err)
-        setError(err instanceof Error ? err.message : 'Invalid Bluesky URL')
+        setError(
+          err instanceof Error
+            ? err.message
+            : `Invalid ${getSocialAppName()} URL`,
+        )
       } finally {
         setLoading(false)
       }
@@ -118,12 +136,14 @@ function LandingPage() {
   return (
     <main className="w-full min-h-screen flex flex-col items-center gap-8 py-14 px-4 md:pt-32 dark:bg-dimmedBgDarken dark:text-slate-200">
       <Link
-        href="https://bsky.social/about"
+        href={getSocialAppAbout()}
         className="transition-transform hover:scale-110">
         <img src={logo} className="h-10" />
       </Link>
 
-      <h1 className="text-4xl font-bold text-center">Embed a Bluesky Post</h1>
+      <h1 className="text-4xl font-bold text-center">
+        Embed a {getSocialAppName()} Post
+      </h1>
 
       <div className="flex flex-col w-full max-w-[600px] gap-6">
         <input
@@ -286,7 +306,7 @@ function Snippet({
 }
 
 function toShareUrl(path: string) {
-  return `https://bsky.app${path}?ref_src=embed`
+  return `${getSocialAppUrl()}${path}?ref_src=embed`
 }
 
 /**

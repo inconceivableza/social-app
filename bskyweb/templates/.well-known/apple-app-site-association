@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appID": "{{ branding.Code.apple_team_id }}.{{ branding.Code.web_package_id }}",
+        "paths": [
+          "*"
+        ]
+      }
+    ]
+  },
+  "appclips": {
+    "apps": ["{{ branding.Code.apple_team_id }}.{{ branding.Code.web_package_id }}.{{ branding.Code.ios_clip_name }}"]
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import * as Linking from 'expo-linking'
 
+import {branding, envConfig} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {logEvent} from '#/lib/statsig/statsig'
 import {isNative} from '#/platform/detection'
@@ -16,6 +17,7 @@ import {Referrer} from '../../../modules/expo-bluesky-swiss-army'
 type IntentType = 'compose' | 'verify-email' | 'age-assurance'
 
 const VALID_IMAGE_REGEX = /^[\w.:\-_/]+\|\d+(\.\d+)?\|\d+(\.\d+)?$/
+const intentScheme = branding.code.app_slug_scheme
 
 // This needs to stay outside of react to persist between account switches
 let previousIntentUrl = ''
@@ -31,7 +33,7 @@ export function useIntentHandler() {
   React.useEffect(() => {
     const handleIncomingURL = (url: string) => {
       const referrerInfo = Referrer.getReferrerInfo()
-      if (referrerInfo && referrerInfo.hostname !== 'bsky.app') {
+      if (referrerInfo && referrerInfo.hostname !== envConfig.SOCIAL_APP_HOST) {
         logEvent('deepLink:referrerReceived', {
           to: url,
           referrer: referrerInfo?.referrer,
@@ -43,8 +45,11 @@ export function useIntentHandler() {
       // slashes, like bluesky:///intent/follow. However, supporting just two slashes causes us to have to take care
       // of two cases when parsing the url. If we ensure there is a third slash, we can always ensure the first
       // path parameter is in pathname rather than in hostname.
-      if (url.startsWith('bluesky://') && !url.startsWith('bluesky:///')) {
-        url = url.replace('bluesky://', 'bluesky:///')
+      if (
+        url.startsWith(`${intentScheme}://`) &&
+        !url.startsWith(`${intentScheme}:///`)
+      ) {
+        url = url.replace(`${intentScheme}://`, `${intentScheme}:///`)
       }
 
       const urlp = new URL(url)

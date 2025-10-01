@@ -1,5 +1,5 @@
-import React from 'react'
 import {ScrollView, StyleSheet, View} from 'react-native'
+import type React from 'react'
 
 import {useColorSchemeStyle} from '#/lib/hooks/useColorSchemeStyle'
 import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
@@ -7,6 +7,7 @@ import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {isWeb} from '#/platform/detection'
 import {atoms as a} from '#/alf'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import {Text} from '../text/Text'
 
 export const LoggedOutLayout = ({
@@ -71,6 +72,7 @@ export const LoggedOutLayout = ({
         <Text type="2xl-medium" style={[pal.textLight, styles.descriptionText]}>
           {description}
         </Text>
+        <EnvConfigIndicator style={[{alignSelf: 'flex-end'}, a.pt_lg]} />
       </View>
       {scrollable ? (
         <View style={[styles.scrollableContent, contentBg]}>

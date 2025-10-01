@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useMutation} from '@tanstack/react-query'
 
+import {branding} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useAgent, useSession} from '#/state/session'
 import * as Toast from '#/view/com/util/Toast'
@@ -27,7 +28,7 @@ export function ChatDisabled() {
         <Text style={[a.text_sm, a.leading_snug, t.atoms.text_contrast_medium]}>
           <Trans>
             Our moderators have reviewed reports and decided to disable your
-            access to chats on Bluesky.
+            access to chats on {branding.naming.app_name}.
           </Trans>
         </Text>
         <AppealDialog />
@@ -101,7 +102,7 @@ function DialogInner() {
         <Trans>Appeal this decision</Trans>
       </Text>
       <Text style={[a.text_md, a.leading_snug]}>
-        <Trans>This appeal will be sent to Bluesky's moderation service.</Trans>
+        <Trans>This appeal will be sent to {branding.naming.app_name}'s moderation service.</Trans>
       </Text>
       <View style={[a.my_md]}>
         <Dialog.Input

@@ -10,6 +10,7 @@ import replyIcon from '../../assets/bubble_filled_stroke2_corner2_rounded.svg'
 import likeIcon from '../../assets/heart2_filled_stroke2_corner0_rounded.svg'
 import logo from '../../assets/logo.svg'
 import repostIcon from '../../assets/repost_stroke2_corner2_rounded.svg'
+import {getLinkUrl, getSocialAppName, getSocialAppUrl} from '../env-config'
 import {CONTENT_LABELS} from '../labels'
 import {getRkey, niceDate, prettyNumber} from '../utils'
 import {Container} from './container'
@@ -101,11 +102,12 @@ export function Post({thread}: Props) {
             {post.replyCount
               ? `Read ${prettyNumber(post.replyCount)} ${
                   post.replyCount > 1 ? 'replies' : 'reply'
-                } on Bluesky`
-              : `View on Bluesky`}
+                } on ${getSocialAppName()}`
+              : `View on ${getSocialAppName()}`}
           </p>
           <p className="cursor-pointer text-brand font-bold hover:underline min-[450px]:hidden">
-            <span className="hidden min-[380px]:inline">View on </span>Bluesky
+            <span className="hidden min-[380px]:inline">View on </span>$
+            {getSocialAppName()}
           </p>
         </div>
       </div>
@@ -135,8 +137,8 @@ function PostContent({record}: {record: AppBskyFeedPost.Record | null}) {
           href={segment.link.uri}
           className="text-blue-400 hover:underline"
           disableTracking={
-            !segment.link.uri.startsWith('https://bsky.app') &&
-            !segment.link.uri.startsWith('https://go.bsky.app')
+            !segment.link.uri.startsWith(getSocialAppUrl()) &&
+            !segment.link.uri.startsWith(getLinkUrl())
           }>
           {segment.text}
         </Link>,

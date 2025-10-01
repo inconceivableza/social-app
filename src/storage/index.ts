@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react'
 import {MMKV} from 'react-native-mmkv'
 
-import {type Account, type Device} from '#/storage/schema'
+import {type Account, type Device, type EnvConfig} from '#/storage/schema'
 
 export * from '#/storage/schema'
 
@@ -137,10 +137,24 @@ export const device = new Storage<[], Device>({id: 'bsky_device'})
  */
 export const account = new Storage<[string], Account>({id: 'bsky_account'})
 
+/**
+ * env-config switching (only used in non-production)
+ */
+export const env_config = new Storage<[], EnvConfig>({id: 'bsky_env_config'})
+
+/**
+ * env-content switching (only used in non-production) - stores as single JSON string
+ */
+export const env_content = new Storage<[], {content: string}>({
+  id: 'bsky_env_content',
+})
+
 if (__DEV__ && typeof window !== 'undefined') {
   // @ts-expect-error - dev global
   window.bsky_storage = {
     device,
     account,
+    env_config,
+    env_content,
   }
 }

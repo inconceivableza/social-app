@@ -5,8 +5,10 @@ interface Window {
   }
 }
 
-const EMBED_URL = 'https://embed.bsky.app'
+const EMBED_URL = '{{ .VITE_EMBED_URL }}'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 window.bluesky = window.bluesky || {
   scan,
 }

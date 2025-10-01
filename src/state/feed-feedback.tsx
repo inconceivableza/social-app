@@ -10,7 +10,7 @@ import {AppState, type AppStateStatus} from 'react-native'
 import {type AppBskyFeedDefs} from '@atproto/api'
 import throttle from 'lodash.throttle'
 
-import {FEEDBACK_FEEDS, STAGING_FEEDS} from '#/lib/constants'
+import {FEED_PROXY_DID, FEEDBACK_FEEDS} from '#/lib/constants'
 import {logEvent} from '#/lib/statsig/statsig'
 import {Logger} from '#/logger'
 import {
@@ -64,10 +64,8 @@ export function useFeedFeedback(
     const interactions = Array.from(queue.current).map(toInteraction)
     queue.current.clear()
 
-    let proxyDid = 'did:web:discover.bsky.app'
-    if (STAGING_FEEDS.includes(feed ?? '')) {
-      proxyDid = 'did:web:algo.pop2.bsky.app'
-    }
+    // Feed proxy DID from env-content: feeds.feedback_proxy_did
+    const proxyDid = FEED_PROXY_DID
 
     // Send to the feed
     agent.app.bsky.feed
@@ -92,7 +90,7 @@ export function useFeedFeedback(
     sendOrAggregateInteractionsForStats(aggregatedStats.current, interactions)
     throttledFlushAggregatedStats()
     logger.debug('flushed')
-  }, [agent, throttledFlushAggregatedStats, feed])
+  }, [agent, throttledFlushAggregatedStats])
 
   const sendToFeed = useMemo(
     () =>

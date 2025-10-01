@@ -9,7 +9,7 @@ import {useLingui} from '@lingui/react'
 import {useMutation} from '@tanstack/react-query'
 import Graphemer from 'graphemer'
 
-import {MAX_REPORT_REASON_GRAPHEME_LENGTH} from '#/lib/constants'
+import {branding, MAX_REPORT_REASON_GRAPHEME_LENGTH, webLinks} from '#/lib/constants'
 import {useEnableKeyboardController} from '#/lib/hooks/useEnableKeyboardController'
 import {cleanError} from '#/lib/strings/errors'
 import {isIOS, isWeb} from '#/platform/detection'
@@ -214,11 +214,11 @@ export function Takendown() {
                 <Trans>
                   Your account was found to be in violation of the{' '}
                   <InlineLinkText
-                    label={_(msg`Bluesky Social Terms of Service`)}
-                    to="https://bsky.social/about/support/tos"
+                    label={_(msg`${branding.naming.full_app_name} Terms of Service`)}
+                    to={webLinks.tos}
                     style={[a.text_md, a.leading_normal]}
                     overridePresentation>
-                    Bluesky Social Terms of Service
+                    {branding.naming.full_app_name} Terms of Service
                   </InlineLinkText>
                   . You have been sent an email outlining the specific violation
                   and suspension period, if applicable. You can appeal this

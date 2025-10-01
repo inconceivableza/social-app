@@ -1,1 +1,3 @@
-export const DMCA_LINK = 'https://bsky.social/about/support/copyright'
+import {webLinks} from '#/lib/constants'
+
+export const DMCA_LINK = webLinks.copyright

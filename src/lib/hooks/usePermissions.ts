@@ -2,13 +2,14 @@ import {Linking} from 'react-native'
 import {useCameraPermissions as useExpoCameraPermissions} from 'expo-camera'
 import * as MediaLibrary from 'expo-media-library'
 
+import {branding} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
 import {Alert} from '#/view/com/util/Alert'
 
 const openPermissionAlert = (perm: string) => {
   Alert.alert(
     'Permission needed',
-    `Bluesky does not have permission to access your ${perm}.`,
+    `${branding.naming.app_name} does not have permission to access your ${perm}.`,
     [
       {
         text: 'Cancel',

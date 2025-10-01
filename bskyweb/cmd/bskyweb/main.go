@@ -24,7 +24,7 @@ func run(args []string) {
 
 	app := cli.App{
 		Name:  "bskyweb",
-		Usage: "web server for bsky.app web app (SPA)",
+		Usage: "web server for web.dallan.inclan web app (SPA)",
 	}
 
 	app.Commands = []*cli.Command{
@@ -38,13 +38,13 @@ func run(args []string) {
 					Usage: "scheme, hostname, and port of PDS instance",
 					Value: "http://localhost:2584",
 					// retain old PDS env var for easy transition
-					EnvVars: []string{"ATP_APPVIEW_HOST", "ATP_PDS_HOST"},
+					EnvVars: []string{"ATP_PUBLIC_APPVIEW_URL", "ATP_APPVIEW_URL", "ATP_PDS_URL"},
 				},
 				&cli.StringFlag{
 					Name:     "ogcard-host",
 					Usage:    "scheme, hostname, and port of ogcard service",
 					Required: false,
-					EnvVars:  []string{"OGCARD_HOST"},
+					EnvVars:  []string{"OGCARD_URL"},
 				},
 				&cli.StringFlag{
 					Name:     "http-address",
@@ -87,6 +87,13 @@ func run(args []string) {
 					Value:    cli.NewStringSlice("https://bsky.app", "https://main.bsky.dev", "https://app.staging.bsky.dev"),
 					EnvVars:  []string{"CORS_ALLOWED_ORIGINS"},
 				},
+				&cli.StringSliceFlag{
+					Name:     "preconnect-domains",
+					Usage:    "list of domains to preconnect to",
+					Required: false,
+					Value:    cli.NewStringSlice("https://bsky.social"),
+					EnvVars:  []string{"PRECONNECT_DOMAINS"},
+				},
 				&cli.StringFlag{
 					Name:     "static-cdn-host",
 					Usage:    "scheme, hostname, and port of static content CDN, don't end with a slash",
@@ -107,6 +114,19 @@ func run(args []string) {
 					Value:    false,
 					Required: false,
 					EnvVars:  []string{"ROBOTS_DISALLOW_ALL"},
+				},
+				&cli.StringFlag{
+					Name:    "security-email",
+					Usage:   "email address for security",
+					Value:   "security@bsky.app",
+					EnvVars: []string{"SOCIAL_APP_SECURITY_EMAIL"},
+				},
+				&cli.StringFlag{
+					Name:     "branding",
+					Usage:    "path to branding JSON file",
+					Required: false,
+					Value:    "branding.json",
+					EnvVars:  []string{"BRANDING_FILE"},
 				},
 			},
 		},

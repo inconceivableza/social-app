@@ -16,6 +16,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
+import {branding} from '#/lib/constants'
 import {useGenerateStarterPackMutation} from '#/lib/generate-starterpack'
 import {useBottomBarOffset} from '#/lib/hooks/useBottomBarOffset'
 import {useRequireEmailVerification} from '#/lib/hooks/useRequireEmailVerification'
@@ -308,7 +309,7 @@ function Empty() {
         </Prompt.TitleText>
         <Prompt.DescriptionText>
           <Trans>
-            Bluesky will choose a set of recommended accounts from people in
+            {branding.naming.app_name} will choose a set of recommended accounts from people in
             your network.
           </Trans>
         </Prompt.DescriptionText>

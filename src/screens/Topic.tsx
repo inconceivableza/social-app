@@ -6,7 +6,7 @@ import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 
-import {HITSLOP_10} from '#/lib/constants'
+import {envConfig, HITSLOP_10} from '#/lib/constants'
 import {useInitialNumToRender} from '#/lib/hooks/useInitialNumToRender'
 import {type CommonNavigatorParams} from '#/lib/routes/types'
 import {shareUrl} from '#/lib/sharing'
@@ -43,7 +43,7 @@ export default function TopicScreen({
   }, [topic])
 
   const onShare = React.useCallback(() => {
-    const url = new URL('https://bsky.app')
+    const url = new URL(envConfig.SOCIAL_APP_URL)
     url.pathname = `/topic/${topic}`
     shareUrl(url.toString())
   }, [topic])

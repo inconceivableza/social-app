@@ -3,7 +3,7 @@ import {type AppBskyActorDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {urls} from '#/lib/constants'
+import {branding, urls} from '#/lib/constants'
 import {getUserDisplayName} from '#/lib/getUserDisplayName'
 import {logger} from '#/logger'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
@@ -147,7 +147,7 @@ function Inner({
         <Link
           overridePresentation
           to={urls.website.blog.initialVerificationAnnouncement}
-          label={_(msg`Learn more about verification on Bluesky`)}
+          label={_(msg`Learn more about verification on ${branding.naming.app_name}`)}
           size="small"
           variant="solid"
           color="secondary"

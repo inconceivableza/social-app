@@ -9,7 +9,9 @@ import {Logotype} from '#/view/icons/Logotype'
 import {atoms as a, useTheme} from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
+import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
 import {Text} from '#/components/Typography'
+import {branding} from '#/lib/constants'
 import {CenteredView} from '../util/Views'
 
 export const SplashScreen = ({
@@ -35,7 +37,7 @@ export const SplashScreen = ({
           </View>
 
           <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
-            <Trans>What's up?</Trans>
+            <Trans>{branding.verbage.post_prompt}</Trans>
           </Text>
         </View>
         <View
@@ -46,7 +48,7 @@ export const SplashScreen = ({
             onPress={onPressCreateAccount}
             label={_(msg`Create new account`)}
             accessibilityHint={_(
-              msg`Opens flow to create a new Bluesky account`,
+              msg`Opens flow to create a new ${branding.naming.app_name} account`,
             )}
             size="large"
             variant="solid"
@@ -60,7 +62,7 @@ export const SplashScreen = ({
             onPress={onPressSignin}
             label={_(msg`Sign in`)}
             accessibilityHint={_(
-              msg`Opens flow to sign in to your existing Bluesky account`,
+              msg`Opens flow to sign in to your existing ${branding.naming.app_name} account`,
             )}
             size="large"
             variant="solid"
@@ -80,6 +82,7 @@ export const SplashScreen = ({
           ]}>
           <View>
             <AppLanguageDropdown />
+            <EnvConfigIndicator />
           </View>
         </View>
         <View style={{height: insets.bottom}} />

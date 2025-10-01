@@ -3,6 +3,7 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useAgent, useSessionApi} from '#/state/session'
 import {atoms as a, useBreakpoints, useTheme} from '#/alf'
@@ -74,7 +75,7 @@ function DeactivateAccountDialogInner({
       <Prompt.DescriptionText>
         <Trans>
           Your profile, posts, feeds, and lists will no longer be visible to
-          other Bluesky users. You can reactivate your account at any time by
+          other {branding.naming.app_name} users. You can reactivate your account at any time by
           logging in.
         </Trans>
       </Prompt.DescriptionText>

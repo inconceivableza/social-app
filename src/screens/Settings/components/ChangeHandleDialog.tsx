@@ -15,7 +15,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
-import {HITSLOP_10, urls} from '#/lib/constants'
+import {envConfig, HITSLOP_10, urls} from '#/lib/constants'
 import {cleanError} from '#/lib/strings/errors'
 import {createFullHandle, validateServiceHandle} from '#/lib/strings/handles'
 import {sanitizeHandle} from '#/lib/strings/handles'
@@ -508,7 +508,7 @@ function OwnHandlePage({goToServiceHandle}: {goToServiceHandle: () => void}) {
         </Animated.View>
       )}
       <Animated.View layout={native(LinearTransition)}>
-        {currentAccount?.handle?.endsWith('.bsky.social') && (
+        {currentAccount?.handle?.endsWith(`.${envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '')}`) && (
           <Admonition type="info" style={[a.mb_md]}>
             <Trans>
               Your current handle{' '}

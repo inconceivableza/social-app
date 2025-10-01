@@ -1,6 +1,10 @@
 const {withXcodeProject} = require('@expo/config-plugins')
 
-const BUILD_PHASE_FILES = ['AppDelegate.swift', 'ViewController.swift']
+const BUILD_PHASE_FILES = [
+  'AppDelegate.swift',
+  'ViewController.swift',
+  'MobileBuildConfig.swift',
+]
 
 const withXcodeTarget = (config, {targetName}) => {
   // eslint-disable-next-line no-shadow
@@ -29,10 +33,13 @@ const withXcodeTarget = (config, {targetName}) => {
     const pbxGroup = pbxProject.addPbxGroup([
       'AppDelegate.swift',
       'ViewController.swift',
+      'MobileBuildConfig.swift',
       'Images.xcassets',
       `${targetName}.entitlements`,
       'Info.plist',
     ])
+    const appleTeamId =
+      config.extra?.branding?.code?.apple_team_id || 'B3LX46C5HS'
 
     pbxProject.addFile(`${targetName}/Info.plist`, pbxGroup.uuid)
     const configurations = pbxProject.pbxXCBuildConfigurationSection()
@@ -56,14 +63,14 @@ const withXcodeTarget = (config, {targetName}) => {
           buildSettingsObj.SWIFT_EMIT_LOC_STRINGS = 'YES'
           buildSettingsObj.SWIFT_VERSION = '5.0'
           buildSettingsObj.TARGETED_DEVICE_FAMILY = `"1"`
-          buildSettingsObj.DEVELOPMENT_TEAM = 'B3LX46C5HS'
+          buildSettingsObj.DEVELOPMENT_TEAM = appleTeamId
           buildSettingsObj.IPHONEOS_DEPLOYMENT_TARGET = '15.1'
           buildSettingsObj.ASSETCATALOG_COMPILER_APPICON_NAME = 'AppIcon'
         }
       }
     }
 
-    pbxProject.addTargetAttribute('DevelopmentTeam', 'B3LX46C5HS', targetName)
+    pbxProject.addTargetAttribute('DevelopmentTeam', appleTeamId, targetName)
 
     if (!pbxProject.hash.project.objects.PBXTargetDependency) {
       pbxProject.hash.project.objects.PBXTargetDependency = {}

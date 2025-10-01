@@ -14,7 +14,8 @@ import {useQueryClient} from '@tanstack/react-query'
 
 import {uploadBlob} from '#/lib/api'
 import {
-  BSKY_APP_ACCOUNT_DID,
+  AUTO_FOLLOW_ACCOUNT_DIDS,
+  branding,
   DISCOVER_SAVED_FEED,
   TIMELINE_SAVED_FEED,
   VIDEO_SAVED_FEED,
@@ -99,8 +100,9 @@ export function StepFinished() {
       const {selectedInterests} = interestsStepResults
 
       await Promise.all([
+        // Auto-follow accounts from env-content: onboarding.auto_follow_accounts
         bulkWriteFollows(agent, [
-          BSKY_APP_ACCOUNT_DID,
+          ...AUTO_FOLLOW_ACCOUNT_DIDS,
           ...(listItems?.map(i => i.subject.did) ?? []),
         ]),
         (async () => {
@@ -108,6 +110,7 @@ export function StepFinished() {
           await agent.setInterestsPref({tags: selectedInterests})
 
           // Default feeds that every user should have pinned when landing in the app
+          // Read from env-content: feeds.recommended, filtered to pinned
           const feedsToSave: SavedFeed[] = [
             {
               ...DISCOVER_SAVED_FEED,
@@ -253,7 +256,10 @@ export function StepFinished() {
         <Trans>You're ready to go!</Trans>
       </TitleText>
       <DescriptionText>
-        <Trans>We hope you have a wonderful time. Remember, Bluesky is:</Trans>
+        <Trans>
+          We hope you have a wonderful time. Remember,{' '}
+          {branding.naming.app_name} is:
+        </Trans>
       </DescriptionText>
 
       <View style={[a.pt_5xl, a.gap_3xl]}>

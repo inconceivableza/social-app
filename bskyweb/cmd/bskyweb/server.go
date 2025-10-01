@@ -42,14 +42,65 @@ type Server struct {
 	ipccClient http.Client
 }
 
+type Branding struct {
+	Code    map[string]interface{} `json:"code"`
+	Naming  map[string]interface{} `json:"naming"`
+	Styling struct {
+	} `json:"styling"`
+	Verbage map[string]interface{} `json:"verbage"`
+}
+
 type Config struct {
-	debug         bool
-	httpAddress   string
-	appviewHost   string
-	ogcardHost    string
-	linkHost      string
-	ipccHost      string
-	staticCDNHost string
+	debug              bool
+	httpAddress        string
+	appviewHost        string
+	ogcardHost         string
+	linkHost           string
+	ipccHost           string
+	staticCDNHost      string
+	preconnectDomains  []string
+	embedUrl           string
+	securityEmail      string
+	socialappAbout     string
+	socialappAboutHost string
+	socialappHost      string
+	socialappName      string
+	socialappUrl       string
+	statuspageUrl      string
+	branding           Branding
+}
+
+// loadBrandingWithFallback loads branding configuration with fallback chain:
+// 1. External file from --branding flag (if exists)
+// 2. Embedded branding.json
+func loadBrandingWithFallback(brandingFile string) Branding {
+	var branding Branding
+
+	// external file
+	_, err := os.Stat(brandingFile)
+	if err == nil {
+		if brandingData, err := os.ReadFile(brandingFile); err == nil {
+			if err := json.Unmarshal(brandingData, &branding); err == nil {
+				log.Infof("Using branding file %s", brandingFile)
+				return branding
+			} else {
+				log.Warnf("Failed to parse external branding file %s: %v", brandingFile, err)
+			}
+		}
+	}
+
+	// Try embedded branding.json
+	if brandingData, err := bskyweb.BrandingFS.ReadFile("branding.json"); err == nil {
+		if err := json.Unmarshal(brandingData, &branding); err == nil {
+			log.Info("Using embedded branding")
+			return branding
+		} else {
+			log.Warnf("Failed to parse embedded branding.json: %v", err)
+		}
+	}
+
+	log.Warnf("No branding configuration found, using empty defaults")
+	return branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -63,8 +114,23 @@ func serve(cctx *cli.Context) error {
 	corsOrigins := cctx.StringSlice("cors-allowed-origins")
 	staticCDNHost := cctx.String("static-cdn-host")
 	staticCDNHost = strings.TrimSuffix(staticCDNHost, "/")
+	preconnectDomains := cctx.StringSlice("preconnect-domains")
+	socialappAbout := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_ABOUT")
+	socialappAboutParsedUrl, err := url.Parse(socialappAbout)
+	if err != nil {
+		log.Fatalf("Error parsing socialapp-url: %v", err)
+	}
+	socialappAboutHost := socialappAboutParsedUrl.Host
+	socialappHost := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST")
+	socialappName := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_NAME")
+	socialappUrl := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL")
+	embedUrl := os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE")
+	statuspageUrl := os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL")
+	securityEmail := cctx.String("security-email")
 	canonicalInstance := cctx.Bool("bsky-canonical-instance")
 	robotsDisallowAll := cctx.Bool("robots-disallow-all")
+
+	branding := loadBrandingWithFallback(cctx.String("branding"))
 
 	// Echo
 	e := echo.New()
@@ -101,13 +167,23 @@ func serve(cctx *cli.Context) error {
 		echo:  e,
 		xrpcc: xrpcc,
 		cfg: &Config{
-			debug:         debug,
-			httpAddress:   httpAddress,
-			appviewHost:   appviewHost,
-			ogcardHost:    ogcardHost,
-			linkHost:      linkHost,
-			ipccHost:      ipccHost,
-			staticCDNHost: staticCDNHost,
+			debug:              debug,
+			httpAddress:        httpAddress,
+			appviewHost:        appviewHost,
+			ogcardHost:         ogcardHost,
+			linkHost:           linkHost,
+			ipccHost:           ipccHost,
+			staticCDNHost:      staticCDNHost,
+			preconnectDomains:  preconnectDomains,
+			embedUrl:           embedUrl,
+			securityEmail:      securityEmail,
+			socialappAbout:     socialappAbout,
+			socialappAboutHost: socialappAboutHost,
+			socialappHost:      socialappHost,
+			socialappName:      socialappName,
+			socialappUrl:       socialappUrl,
+			statuspageUrl:      statuspageUrl,
+			branding:           branding,
 		},
 		ipccClient: http.Client{
 			Transport: &http.Transport{
@@ -162,7 +238,7 @@ func serve(cctx *cli.Context) error {
 			return id, nil
 		},
 		DenyHandler: func(c echo.Context, identifier string, err error) error {
-			return c.String(http.StatusTooManyRequests, "Your request has been rate limited. Please try again later. Contact security@bsky.app if you believe this was a mistake.\n")
+			return c.String(http.StatusTooManyRequests, fmt.Sprintf("Your request has been rate limited. Please try again later. Contact %s if you believe this was a mistake.\n", server.cfg.securityEmail))
 		},
 	}))
 
@@ -224,6 +300,15 @@ func serve(cctx *cli.Context) error {
 	}
 
 	e.GET("/iframe/youtube.html", echo.WrapHandler(staticHandler))
+	e.GET("/.well-known/apple-app-site-association", func(c echo.Context) error {
+		return server.WebWellKnown(c, "apple-app-site-association")
+	})
+	e.GET("/.well-known/assetlinks.json", func(c echo.Context) error {
+		return server.WebWellKnown(c, "assetlinks.json")
+	})
+	e.GET("/.well-known/security.txt", func(c echo.Context) error {
+		return server.WebWellKnown(c, "security.txt")
+	})
 	e.GET("/static/*", echo.WrapHandler(http.StripPrefix("/static/", staticHandler)), func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Response().Before(func() {
@@ -334,6 +419,12 @@ func serve(cctx *cli.Context) error {
 	// ipcc
 	e.GET("/ipcc", server.WebIpCC)
 
+	// env-config
+	e.GET("/env-config", server.WebEnvConfig, middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodOptions},
+	}))
+
 	if linkHost != "" {
 		linkUrl, err := url.Parse(linkHost)
 		if err != nil {
@@ -390,7 +481,16 @@ func (srv *Server) Shutdown() error {
 // NewTemplateContext returns a new pongo2 context with some default values.
 func (srv *Server) NewTemplateContext() pongo2.Context {
 	return pongo2.Context{
-		"staticCDNHost": srv.cfg.staticCDNHost,
+		"staticCDNHost":      srv.cfg.staticCDNHost,
+		"preconnectDomains":  srv.cfg.preconnectDomains,
+		"securityEmail":      srv.cfg.securityEmail,
+		"socialappAbout":     srv.cfg.socialappAbout,
+		"socialappAboutHost": srv.cfg.socialappAboutHost,
+		"socialappHost":      srv.cfg.socialappHost,
+		"socialappName":      srv.cfg.socialappName,
+		"socialappUrl":       srv.cfg.socialappUrl,
+		"embedUrl":           srv.cfg.embedUrl,
+		"statuspageUrl":      srv.cfg.statuspageUrl,
 	}
 }
 
@@ -405,15 +505,22 @@ func (srv *Server) errorHandler(err error, c echo.Context) {
 	c.Render(code, "error.html", data)
 }
 
+func (srv *Server) WebWellKnown(c echo.Context, filename string) error {
+	data := srv.NewTemplateContext()
+	data["branding"] = srv.cfg.branding
+	c.Response().Header().Set("Content-Type", "text/plain; charset=utf-8")
+	return c.Render(http.StatusOK, ".well-known/"+filename, data)
+}
+
 // Handler for redirecting to the download page.
 func (srv *Server) Download(c echo.Context) error {
 	ua := c.Request().UserAgent()
 	if strings.Contains(ua, "Android") {
-		return c.Redirect(http.StatusFound, "https://play.google.com/store/apps/details?id=xyz.blueskyweb.app")
+		return c.Redirect(http.StatusFound, "https://play.google.com/store/apps/details?id=${srv.cfg.branding.code.web_package_id}")
 	}
 
 	if strings.Contains(ua, "iPhone") || strings.Contains(ua, "iPad") || strings.Contains(ua, "iPod") {
-		return c.Redirect(http.StatusFound, "https://apps.apple.com/tr/app/bluesky-social/id6444370199")
+		return c.Redirect(http.StatusFound, "https://apps.apple.com/tr/app/${srv.cfg.branding.code.apple_appstore_path}")
 	}
 
 	return c.Redirect(http.StatusFound, "/")
@@ -532,6 +639,7 @@ func (srv *Server) WebStarterPack(c echo.Context) error {
 	req := c.Request()
 	ctx := req.Context()
 	data := srv.NewTemplateContext()
+	data["branding"] = srv.cfg.branding
 	data["requestURI"] = fmt.Sprintf("https://%s%s", req.Host, req.URL.Path)
 	// sanity check arguments. don't 4xx, just let app handle if not expected format
 	rkeyParam := c.Param("rkey")
@@ -649,5 +757,52 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 		log.Warnf("ipcc bad response %s", err)
 		return c.JSON(500, IPCCResponse{})
 	}
+	return c.JSON(200, outResponse)
+}
+
+type EnvConfigResponse struct {
+	ATP_APPVIEW_URL         string `json:"ATP_APPVIEW_URL"`
+	ATP_PDS_URL             string `json:"ATP_PDS_URL"`
+	ATP_PUBLIC_APPVIEW_URL  string `json:"ATP_PUBLIC_APPVIEW_URL"`
+	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
+	GIF_SERVICE             string `json:"GIF_SERVICE"`
+	LINK_HOST               string `json:"LINK_HOST"`
+	OGCARD_URL              string `json:"OGCARD_URL"`
+	PREVIEW_LINK_META_PROXY string `json:"PREVIEW_LINK_META_PROXY"`
+	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"`
+	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
+	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"`
+	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
+	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
+	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
+	SOCIAL_POLICY_BASE_URL  string `json:"SOCIAL_POLICY_BASE_URL"`
+	STATUS_PAGE_URL         string `json:"STATUS_PAGE_URL"`
+	VIDEO_SERVICE           string `json:"VIDEO_SERVICE"`
+	VIDEO_SERVICE_DID       string `json:"VIDEO_SERVICE_DID"`
+}
+
+func (srv *Server) WebEnvConfig(c echo.Context) error {
+	var outResponse = EnvConfigResponse{
+		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
+		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
+		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
+		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
+		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
+		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),
+		OGCARD_URL:              os.Getenv("EXPO_PUBLIC_OGCARD_URL"),
+		PREVIEW_LINK_META_PROXY: os.Getenv("EXPO_PUBLIC_PREVIEW_LINK_META_PROXY"),
+		SOCIAL_APP_ABOUT:        os.Getenv("EXPO_PUBLIC_SOCIAL_APP_ABOUT"),
+		SOCIAL_APP_HOST:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
+		SOCIAL_APP_NAME:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_NAME"),
+		SOCIAL_APP_URL:          os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
+		SOCIAL_EMBED_SERVICE:    os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),
+		SOCIAL_HELP_DESK_URL:    os.Getenv("EXPO_PUBLIC_SOCIAL_HELP_DESK_URL"),
+		SOCIAL_POLICY_BASE_URL:  os.Getenv("EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL"),
+		STATUS_PAGE_URL:         os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL"),
+		VIDEO_SERVICE:           os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
+		VIDEO_SERVICE_DID:       os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),
+	}
+	// May be overkill, but useful perhaps for dev?
+	c.Response().Header().Set(echo.HeaderCacheControl, "no-cache, no-store, must-revalidate")
 	return c.JSON(200, outResponse)
 }

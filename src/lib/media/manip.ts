@@ -16,7 +16,7 @@ import * as MediaLibrary from 'expo-media-library'
 import * as Sharing from 'expo-sharing'
 import {Buffer} from 'buffer'
 
-import {POST_IMG_MAX} from '#/lib/constants'
+import {branding, POST_IMG_MAX} from '#/lib/constants'
 import {logger} from '#/logger'
 import {isAndroid, isIOS} from '#/platform/detection'
 import {type PickerImage} from './picker.shared'
@@ -95,7 +95,7 @@ export async function shareImageModal({uri}: {uri: string}) {
   })
 }
 
-const ALBUM_NAME = 'Bluesky'
+const ALBUM_NAME = branding.naming.app_name
 
 export async function saveImageToMediaLibrary({uri}: {uri: string}) {
   // download the file to cache

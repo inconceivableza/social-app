@@ -6,6 +6,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 
+import {branding} from '#/lib/constants'
 import {useAppState} from '#/lib/hooks/useAppState'
 import {
   type AllNavigatorParams,
@@ -70,7 +71,7 @@ export function NotificationSettingsScreen({}: Props) {
             [
               {
                 key: 'android.provider.extra.APP_PACKAGE',
-                value: 'xyz.blueskyweb.app',
+                value: branding.code.web_package_id,
               },
             ],
           )

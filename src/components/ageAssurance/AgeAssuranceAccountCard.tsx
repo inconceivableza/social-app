@@ -2,6 +2,7 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {dateDiff, useGetTimeAgo} from '#/lib/hooks/useTimeAgo'
 import {useAgeAssurance} from '#/state/ageAssurance/useAgeAssurance'
 import {logger} from '#/state/ageAssurance/util'
@@ -78,7 +79,7 @@ function Inner({style}: ViewStyleProp & {}) {
           {isBlocked ? (
             <Admonition type="warning">
               <Trans>
-                You are currently unable to access Bluesky's Age Assurance flow.
+                You are currently unable to access {branding.naming.app_name}'s Age Assurance flow.
                 Please{' '}
                 <InlineLinkText
                   label={_(msg`Contact our moderation team`)}

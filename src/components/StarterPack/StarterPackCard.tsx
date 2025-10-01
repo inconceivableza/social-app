@@ -6,6 +6,7 @@ import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {branding} from '#/lib/constants'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {getStarterPackOgCard} from '#/lib/strings/starter-pack'
 import {precacheResolvedUri} from '#/state/queries/resolve-uri'
@@ -98,7 +99,7 @@ export function Card({
       ) : null}
       {!!joinedAllTimeCount && joinedAllTimeCount >= 50 && (
         <Text style={[a.font_bold, t.atoms.text_contrast_medium]}>
-          <Trans comment="Number of users (always at least 50) who have joined Bluesky using a specific starter pack">
+          <Trans comment={`Number of users (always at least 50) who have joined ${branding.naming.app_name} using a specific starter pack`}>
             <Plural value={joinedAllTimeCount} other="# users have" /> joined!
           </Trans>
         </Text>

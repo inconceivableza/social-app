@@ -12,6 +12,7 @@ import {useActorStatus} from '#/lib/actor-status'
 import {IS_INTERNAL} from '#/lib/app-info'
 import {HELP_DESK_URL} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
+import {canReload, doDelayedReload} from '#/lib/reload'
 import {
   type CommonNavigatorParams,
   type NavigationProp,
@@ -19,6 +20,20 @@ import {
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
+import {
+  builtinConfigNames,
+  configColors,
+  configTitles,
+  DOMAIN_ENVCONFIGS,
+  hasRequiredConfig,
+  renderEnvContent,
+  resetStoredEnvironment,
+  SWITCHING_ENABLED,
+  switchToBuiltinEnvironment,
+  switchToCustomEnvironment,
+  useEnvConfig,
+  useEnvContent,
+} from '#/state/env-config'
 import * as persisted from '#/state/persisted'
 import {clearStorage} from '#/state/persisted'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
@@ -36,6 +51,7 @@ import {AgeAssuranceDismissibleNotice} from '#/components/ageAssurance/AgeAssura
 import {AvatarStackWithFetch} from '#/components/AvatarStack'
 import {useDialogControl} from '#/components/Dialog'
 import {SwitchAccountDialog} from '#/components/dialogs/SwitchAccount'
+import * as TextField from '#/components/forms/TextField'
 import {Accessibility_Stroke2_Corner2_Rounded as AccessibilityIcon} from '#/components/icons/Accessibility'
 import {Bell_Stroke2_Corner0_Rounded as NotificationIcon} from '#/components/icons/Bell'
 import {BubbleInfo_Stroke2_Corner2_Rounded as BubbleInfoIcon} from '#/components/icons/BubbleInfo'
@@ -43,7 +59,13 @@ import {ChevronTop_Stroke2_Corner0_Rounded as ChevronUpIcon} from '#/components/
 import {CircleQuestion_Stroke2_Corner2_Rounded as CircleQuestionIcon} from '#/components/icons/CircleQuestion'
 import {CodeBrackets_Stroke2_Corner2_Rounded as CodeBracketsIcon} from '#/components/icons/CodeBrackets'
 import {DotGrid_Stroke2_Corner0_Rounded as DotsHorizontal} from '#/components/icons/DotGrid'
-import {Earth_Stroke2_Corner2_Rounded as EarthIcon} from '#/components/icons/Globe'
+import {Eye_Stroke2_Corner0_Rounded as Eye} from '#/components/icons/Eye'
+import {EyeSlash_Stroke2_Corner0_Rounded as EyeSlash} from '#/components/icons/EyeSlash'
+import {Flag_Stroke2_Corner0_Rounded as FlagIcon} from '#/components/icons/Flag'
+import {
+  Earth_Stroke2_Corner2_Rounded as EarthIcon,
+  Globe_Stroke2_Corner0_Rounded as GlobeIcon,
+} from '#/components/icons/Globe'
 import {Lock_Stroke2_Corner2_Rounded as LockIcon} from '#/components/icons/Lock'
 import {PaintRoller_Stroke2_Corner2_Rounded as PaintRollerIcon} from '#/components/icons/PaintRoller'
 import {
@@ -83,6 +105,7 @@ export function SettingsScreen({}: Props) {
   const {pendingDid, onPressSwitchAccount} = useAccountSwitcher()
   const [showAccounts, setShowAccounts] = useState(false)
   const [showDevOptions, setShowDevOptions] = useState(false)
+  const [showServerDomains, setShowServerDomains] = useState(false)
 
   return (
     <Layout.Screen>
@@ -271,6 +294,24 @@ export function SettingsScreen({}: Props) {
               {showDevOptions && <DevOptions />}
             </>
           )}
+          {SWITCHING_ENABLED && (
+            <SettingsList.PressableItem
+              onPress={() => {
+                if (!reducedMotion) {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  )
+                }
+                setShowServerDomains(d => !d)
+              }}
+              label={_(msg`Switch server domains`)}>
+              <SettingsList.ItemIcon icon={GlobeIcon} />
+              <SettingsList.ItemText>
+                <Trans>Switch server domains</Trans>
+              </SettingsList.ItemText>
+            </SettingsList.PressableItem>
+          )}
+          {SWITCHING_ENABLED && showServerDomains && <ServerDomains />}
         </SettingsList.Container>
       </Layout.Content>
 
@@ -452,6 +493,190 @@ function DevOptions() {
           <Trans>Clear all storage data (restart after this)</Trans>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
+    </>
+  )
+}
+
+function ServerDomains() {
+  const {_} = useLingui()
+  const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
+  const [showCurrentEnv, setShowCurrentEnv] = useState(false)
+  const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
+  const {envConfig, setEnvConfig} = useEnvConfig()
+  const {envContent, setEnvContent} = useEnvContent()
+  const reloadMessage = canReload
+    ? _(msg`Going to reload app...`)
+    : _(msg`Please exit and reload app manually...`)
+
+  const doResetStoredEnvConfig = async () => {
+    const result = await resetStoredEnvironment(setEnvConfig)
+    Toast.show(_(msg`${result.message}`))
+    await doDelayedReload(
+      'Reset environment config',
+      'Reloading app after config change',
+      'User must exit and reload app after environment config change to prevent errors',
+    )
+  }
+  const doSetEnvConfig = async (envName: string) => {
+    const result = await switchToBuiltinEnvironment(
+      envName,
+      setEnvConfig,
+      setEnvContent,
+    )
+    if (result.success) {
+      Toast.show(_(msg`${result.message}. ${reloadMessage}`))
+      await doDelayedReload(
+        'Changed environment config',
+        'Reloading app after config change',
+        'User must exit and reload app after environment config change to prevent errors',
+      )
+    } else {
+      Toast.show(_(msg`${result.message}`))
+    }
+  }
+  const doFetchEnvConfig = async (serverName: string) => {
+    const result = await switchToCustomEnvironment(
+      serverName,
+      setEnvConfig,
+      setEnvContent,
+    )
+    if (result.success) {
+      Toast.show(_(msg`${result.message}. ${reloadMessage}`))
+      await doDelayedReload(
+        'Changed environment config',
+        'Reloading app after config change',
+        'User must exit and reload app after environment config change to prevent errors',
+      )
+    } else {
+      Toast.show(_(msg`${result.message}`))
+    }
+  }
+
+  const renderCurrentEnv = function () {
+    const envEntries = Object.entries(envConfig)
+    const envContentText = renderEnvContent(envContent, 2)
+    return (
+      <>
+        {envEntries.map(([key, value], index) => (
+          <View
+            key={key}
+            style={[
+              a.flex_row,
+              a.gap_xs,
+              a.w_full,
+              a.flex_1,
+              {backgroundColor: index % 2 === 0 ? 'transparent' : '#f8f8f8'},
+            ]}>
+            <View
+              style={[
+                a.flex_col,
+                {paddingLeft: 2, paddingRight: 2, width: '45%'},
+              ]}>
+              <Text>{key}</Text>
+            </View>
+            <View style={[a.flex_col]}>
+              <Text>{value}</Text>
+            </View>
+          </View>
+        ))}
+
+        <View style={[a.flex_col, a.gap_sm, a.pt_md]}>
+          <Text style={[a.font_bold, a.text_md]}>Environment Content</Text>
+          <View style={[{paddingLeft: 16}]}>
+            <Text style={[{fontFamily: 'monospace', fontSize: 12}]}>
+              {envContentText}
+            </Text>
+          </View>
+        </View>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <SettingsList.PressableItem
+        onPress={() => {
+          setShowCurrentEnv(!showCurrentEnv)
+        }}
+        label={_(msg`Show Environment Config`)}>
+        <SettingsList.ItemIcon icon={showCurrentEnv ? Eye : EyeSlash} />
+        <SettingsList.ItemText>
+          <Trans>Show Environment Config</Trans>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      {showCurrentEnv && (
+        <SettingsList.Item>
+          <Text>{renderCurrentEnv()}</Text>
+        </SettingsList.Item>
+      )}
+      <SettingsList.PressableItem
+        onPress={() => {
+          doResetStoredEnvConfig()
+        }}
+        label={_(msg`Reset Stored Environment Config`)}>
+        <SettingsList.ItemIcon icon={FlagIcon} size="sm" color="white" />
+        <SettingsList.ItemText>
+          <Trans>Reset Stored Environment Config</Trans>
+        </SettingsList.ItemText>
+      </SettingsList.PressableItem>
+      {builtinConfigNames.map(configName => {
+        const thisEnvConfig = DOMAIN_ENVCONFIGS[configName]
+        if (thisEnvConfig) {
+          const socialAppHost = thisEnvConfig.SOCIAL_APP_HOST
+          return (
+            <SettingsList.PressableItem
+              onPress={() => {
+                doSetEnvConfig(configName)
+              }}
+              disabled={!hasRequiredConfig(thisEnvConfig)}
+              label={_(msg`Use ${configTitles[configName]} Server`)}
+              key={configName}>
+              <SettingsList.ItemIcon
+                icon={FlagIcon}
+                size="sm"
+                color={configColors[configName]}
+              />
+              <SettingsList.ItemText>
+                <Trans>Use {configTitles[configName]} Server</Trans>
+                <Text style={[a.italic]}>
+                  {socialAppHost ? '→' : ''}
+                  {socialAppHost}
+                </Text>
+              </SettingsList.ItemText>
+            </SettingsList.PressableItem>
+          )
+        }
+      })}
+      <SettingsList.Item>
+        <SettingsList.ItemIcon
+          icon={FlagIcon}
+          size="sm"
+          color={configColors.custom}
+        />
+        <SettingsList.Container>
+          <TextField.Root>
+            <TextField.Input
+              editable={true}
+              defaultValue={defaultCustomDomain}
+              onChangeText={text => {
+                setCustomDomain(text)
+              }}
+              label={_(msg`Custom Social App Server`)}
+              placeholder={_(
+                msg`e.g. ${defaultCustomDomain} or http://localhost:8100`,
+              )}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </TextField.Root>
+        </SettingsList.Container>
+        <SettingsList.BadgeButton
+          label={_(msg`Use`)}
+          onPress={() => {
+            doFetchEnvConfig(customDomain)
+          }}
+        />
+      </SettingsList.Item>
     </>
   )
 }

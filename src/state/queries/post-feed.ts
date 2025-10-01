@@ -29,8 +29,7 @@ import {PostListFeedAPI} from '#/lib/api/feed/posts'
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
 import {aggregateUserInterests} from '#/lib/api/feed/utils'
 import {FeedTuner, type FeedTunerFn} from '#/lib/api/feed-manip'
-import {DISCOVER_FEED_URI} from '#/lib/constants'
-import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
+import {branding, BSKY_FEED_OWNER_DIDS, DISCOVER_FEED_URI} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useAgeAssuranceContext} from '#/state/ageAssurance'
 import {STALE} from '#/state/queries'
@@ -239,7 +238,7 @@ export function usePostFeedQuery(
           feedDescParts[0] === 'feedgen' &&
           BSKY_FEED_OWNER_DIDS.includes(feedOwnerDid)
         ) {
-          logger.error(`Bluesky feed may be offline: ${feedOwnerDid}`, {
+          logger.error(`${branding.naming.app_name} feed may be offline: ${feedOwnerDid}`, {
             feedDesc,
             jsError: e,
           })

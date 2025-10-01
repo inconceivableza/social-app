@@ -1,5 +1,8 @@
 FROM node:20.11-alpine3.18 as build
 
+ARG SOCIAL_APP_NAME
+ENV SOCIAL_APP_NAME=${SOCIAL_APP_NAME}
+
 # Move files into the image and install
 WORKDIR /app
 
@@ -27,6 +30,8 @@ RUN mkdir /app/data && chown node /app/data
 
 VOLUME /app/data
 EXPOSE 3000
+ARG CARD_VERSION
+ENV CARD_VERSION=${CARD_VERSION}
 ENV CARD_PORT=3000
 ENV NODE_ENV=production
 # potential perf issues w/ io_uring on this version of node

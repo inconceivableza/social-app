@@ -7,13 +7,12 @@ import {BUNDLE_DATE, BUNDLE_IDENTIFIER, IS_TESTFLIGHT} from '#/lib/app-info'
 import {logger} from '#/logger'
 import {type MetricEvents} from '#/logger/metrics'
 import {isWeb} from '#/platform/detection'
+import {getStoredEnvConfig, useEnvConfig} from '#/state/env-config'
 import * as persisted from '#/state/persisted'
 import {useSession} from '../../state/session'
 import {timeout} from '../async/timeout'
 import {useNonReactiveCallback} from '../hooks/useNonReactiveCallback'
 import {type Gate} from './gates'
-
-const SDK_KEY = 'client-SXJakO39w9vIhl3D44u8UupyzFl4oZ2qPIkjwcvuPsV'
 
 export const initPromise = initialize()
 
@@ -45,6 +44,7 @@ if (isWeb && typeof window !== 'undefined') {
 export type {MetricEvents as LogEvents}
 
 function createStatsigOptions(prefetchUsers: StatsigUser[]) {
+  const envConfig = getStoredEnvConfig()
   return {
     environment: {
       tier:
@@ -60,7 +60,7 @@ function createStatsigOptions(prefetchUsers: StatsigUser[]) {
     initTimeoutMs: 1,
     // Get fresh flags for other accounts as well, if any.
     prefetchUsers,
-    api: 'https://events.bsky.app/v2',
+    api: envConfig.STATSIG_API_URL,
   }
 }
 
@@ -159,6 +159,7 @@ export function useGate(): (gateName: Gate, options?: GateOptions) => boolean {
   }
   const gate = React.useCallback(
     (gateName: Gate, options: GateOptions = {}): boolean => {
+      // If no StatsigProvider, return false (gates are disabled)
       const cachedValue = cache.get(gateName)
       if (cachedValue !== undefined) {
         return cachedValue
@@ -263,7 +264,20 @@ export async function tryFetchGates(
 }
 
 export function initialize() {
-  return Statsig.initialize(SDK_KEY, null, createStatsigOptions([]))
+  return new Promise(resolve => {
+    const envConfig = getStoredEnvConfig()
+    if (envConfig.STATSIG_API_URL) {
+      resolve(
+        Statsig.initialize(
+          envConfig.STATSIG_CLIENT_KEY,
+          null,
+          createStatsigOptions([]),
+        ),
+      )
+    } else {
+      logger.warn('STATSIG_API_URL not configured, will not use Statsig')
+    }
+  })
 }
 
 export function Provider({children}: {children: React.ReactNode}) {
@@ -307,11 +321,16 @@ export function Provider({children}: {children: React.ReactNode}) {
     return () => clearInterval(id)
   }, [handleIntervalTick])
 
+  const envConfig = useEnvConfig().envConfig
+  if (envConfig && !envConfig.STATSIG_API_URL) {
+    return <GateCache.Provider value={gateCache}>{children}</GateCache.Provider>
+  }
+
   return (
     <GateCache.Provider value={gateCache}>
       <StatsigProvider
         key={did}
-        sdkKey={SDK_KEY}
+        sdkKey={envConfig.STATSIG_CLIENT_KEY}
         mountKey={currentStatsigUser.userID}
         user={currentStatsigUser}
         // This isn't really blocking due to short initTimeoutMs above.

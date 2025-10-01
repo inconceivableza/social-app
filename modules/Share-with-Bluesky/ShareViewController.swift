@@ -13,7 +13,7 @@ enum URLType: String, CaseIterable {
 class ShareViewController: UIViewController {
   // This allows other forks to use this extension while also changing their
   // scheme.
-  let appScheme = Bundle.main.object(forInfoDictionaryKey: "MainAppScheme") as? String ?? "bluesky"
+  let appScheme = Bundle.main.object(forInfoDictionaryKey: "MainAppScheme") as? String ?? MobileBuildConfig.branding.code.app_slug_scheme
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
@@ -172,7 +172,7 @@ class ShareViewController: UIViewController {
   }
 
   private func getTempUrl(ext: String) -> URL? {
-    if let dir = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.app.bsky") {
+    if let dir = FileManager().containerURL(forSecurityApplicationGroupIdentifier: MobileBuildConfig.branding.code.apple_groups) {
       return URL(string: "\(dir.absoluteString)\(ProcessInfo.processInfo.globallyUniqueString).\(ext)")!
     }
     return nil

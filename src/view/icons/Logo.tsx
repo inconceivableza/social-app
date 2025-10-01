@@ -10,6 +10,7 @@ import Svg, {
 } from 'react-native-svg'
 import {Image} from 'expo-image'
 
+import {branding} from '#/lib/constants'
 import {colors} from '#/lib/styles'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
 
@@ -38,7 +39,7 @@ export const Logo = React.forwardRef(function LogoImpl(props: Props, ref) {
             ? require('../../../assets/kawaii.png')
             : require('../../../assets/kawaii_smol.png')
         }
-        accessibilityLabel="Bluesky"
+        accessibilityLabel={branding.naming.app_name}
         accessibilityHint=""
         accessibilityIgnoresInvertColors
         style={[{height: size, aspectRatio: 1.4}]}

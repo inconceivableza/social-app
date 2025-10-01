@@ -4,6 +4,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
 import {useOnboardingDispatch} from '#/state/shell'
 import {Context} from '#/screens/Onboarding/state'
@@ -53,7 +54,7 @@ export function Layout({children}: React.PropsWithChildren<{}>) {
       aria-role="dialog"
       aria-label={dialogLabel}
       accessibilityLabel={dialogLabel}
-      accessibilityHint={_(msg`Customizes your Bluesky experience`)}
+      accessibilityHint={_(msg`Customizes your ${branding.naming.app_name} experience`)}
       style={[
         // @ts-ignore web only -prf
         isWeb ? a.fixed : a.absolute,

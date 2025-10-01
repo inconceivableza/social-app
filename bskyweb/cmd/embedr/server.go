@@ -7,10 +7,12 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+	text_template "text/template"
 	"time"
 
 	"github.com/bluesky-social/indigo/atproto/identity"
@@ -30,12 +32,30 @@ type Server struct {
 	httpd *http.Server
 	xrpcc *xrpc.Client
 	dir   identity.Directory
+	cfg   *Config
+}
+
+type Config struct {
+	appviewUrl     string
+	cardUrl        string
+	embedUrl       string
+	linkUrl        string
+	securityEmail  string
+	socialappAbout string
+	socialappHost  string
+	socialappName  string
+	socialappUrl   string
+	supportEmail   string
 }
 
 func serve(cctx *cli.Context) error {
 	debug := cctx.Bool("debug")
 	httpAddress := cctx.String("http-address")
 	appviewHost := cctx.String("appview-host")
+	socialappParsedUrl, err := url.Parse(cctx.String("socialapp-url"))
+	if err != nil {
+		log.Fatalf("Error parsing socialapp-url: %v", err)
+	}
 
 	// Echo
 	e := echo.New()
@@ -72,6 +92,18 @@ func serve(cctx *cli.Context) error {
 		echo:  e,
 		xrpcc: xrpcc,
 		dir:   identity.DefaultDirectory(),
+		cfg: &Config{
+			appviewUrl:     appviewHost,
+			cardUrl:        cctx.String("card-url"),
+			embedUrl:       cctx.String("embed-url"),
+			linkUrl:        cctx.String("link-url"),
+			securityEmail:  cctx.String("security-email"),
+			socialappAbout: cctx.String("socialapp-about"),
+			socialappHost:  socialappParsedUrl.Host,
+			socialappName:  cctx.String("socialapp-name"),
+			socialappUrl:   cctx.String("socialapp-url"),
+			supportEmail:   cctx.String("support-email"),
+		},
 	}
 
 	// Create the HTTP server.
@@ -86,7 +118,8 @@ func serve(cctx *cli.Context) error {
 	e.HideBanner = true
 
 	tmpl := &Template{
-		templates: template.Must(template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.html")),
+		htmlTemplates: template.Must(template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.html")),
+		textTemplates: text_template.Must(text_template.ParseFS(bskyweb.EmbedrTemplateFS, "embedr-templates/*.js", "embedr-templates/*.txt")),
 	}
 	e.Renderer = tmpl
 	e.HTTPErrorHandler = server.errorHandler
@@ -122,7 +155,7 @@ func serve(cctx *cli.Context) error {
 			return id, nil
 		},
 		DenyHandler: func(c echo.Context, identifier string, err error) error {
-			return c.String(http.StatusTooManyRequests, "Your request has been rate limited. Please try again later. Contact support@bsky.app if you believe this was a mistake.\n")
+			return c.String(http.StatusTooManyRequests, fmt.Sprint("Your request has been rate limited. Please try again later. Contact %s if you believe this was a mistake.\n", server.cfg.supportEmail))
 		},
 	}))
 
@@ -151,7 +184,8 @@ func serve(cctx *cli.Context) error {
 	e.GET("/robots.txt", echo.WrapHandler(staticHandler))
 	e.GET("/ips-v4", echo.WrapHandler(staticHandler))
 	e.GET("/ips-v6", echo.WrapHandler(staticHandler))
-	e.GET("/.well-known/*", echo.WrapHandler(staticHandler))
+	e.GET("/.well-known/security.txt", server.WebSecurityTxt)
+	e.GET("/embed.js", server.WebEmbedJs)
 	e.GET("/security.txt", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/.well-known/security.txt")
 	})
@@ -174,8 +208,8 @@ func serve(cctx *cli.Context) error {
 	// actual routes
 	e.GET("/", server.WebHome)
 	e.GET("/iframe-resize.js", echo.WrapHandler(staticHandler))
-	e.GET("/embed.js", echo.WrapHandler(staticHandler))
 	e.GET("/oembed", server.WebOEmbed)
+	e.GET("/env-config.json", server.WebEnvConfig)
 	e.GET("/embed/:did/app.bsky.feed.post/:rkey", server.WebPostEmbed)
 
 	// Start the server.

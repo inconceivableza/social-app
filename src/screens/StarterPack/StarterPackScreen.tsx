@@ -16,7 +16,7 @@ import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {batchedUpdates} from '#/lib/batchedUpdates'
-import {HITSLOP_20} from '#/lib/constants'
+import {branding, HITSLOP_20} from '#/lib/constants'
 import {isBlockedOrBlocking, isMuted} from '#/lib/moderation/blocked-and-muted'
 import {makeProfileLink, makeStarterPackLink} from '#/lib/routes/links'
 import {
@@ -463,7 +463,7 @@ function Header({
           ) : null}
           {!hasSession ? (
             <Button
-              label={_(msg`Join Bluesky`)}
+              label={_(msg`Join ${branding.naming.app_name}`)}
               onPress={() => {
                 setActiveStarterPack({
                   uri: starterPack.uri,
@@ -474,7 +474,7 @@ function Header({
               color="primary"
               size="large">
               <ButtonText style={[a.text_lg]}>
-                <Trans>Join Bluesky</Trans>
+                <Trans>Join {branding.naming.app_name}</Trans>
               </ButtonText>
             </Button>
           ) : null}
@@ -487,7 +487,7 @@ function Header({
               />
               <Text
                 style={[a.font_bold, a.text_sm, t.atoms.text_contrast_medium]}>
-                <Trans comment="Number of users (always at least 25) who have joined Bluesky using a specific starter pack">
+                <Trans comment={`Number of users (always at least 25) who have joined ${branding.naming.app_name} using a specific starter pack`}>
                   <Plural
                     value={starterPack.joinedAllTimeCount || 0}
                     other="# people have"

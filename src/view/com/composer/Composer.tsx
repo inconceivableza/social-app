@@ -59,6 +59,7 @@ import {EmbeddingDisabledError} from '#/lib/api/resolve'
 import {retry} from '#/lib/async/retry'
 import {until} from '#/lib/async/until'
 import {
+  branding,
   MAX_GRAPHEME_LENGTH,
   SUPPORTED_MIME_TYPES,
   type SupportedMimeTypes,
@@ -774,7 +775,7 @@ let ComposerPost = React.memo(function ComposerPost({
     ? isFirstPost
       ? _(msg`Write your reply`)
       : _(msg`Add another post`)
-    : _(msg`What's up?`)
+    : _(msg`${branding.verbage.post_prompt}`)
   const discardPromptControl = Prompt.usePromptControl()
 
   const dispatchPost = useCallback(

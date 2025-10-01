@@ -1,4 +1,46 @@
 const pkg = require('./package.json')
+const dotenvx = require('@dotenvx/dotenvx')
+const fs = require('node:fs')
+const path = require('node:path')
+
+const blueskyBranding = {
+  code: {
+    app_slug_scheme: 'bluesky',
+    apple_groups: 'group.app.bsky',
+    apple_team_id: 'B3LX46C5HS',
+    chat_api_did: 'did:web:api.bsky.chat#bsky_chat',
+    // these ios_${plugin}_name variables are not to set the target name (which is the source directory) but the suffix to the web_package_id used for the bundleId
+    ios_clip_name: 'BlueskyClip',
+    ios_nse_name: 'BlueskyNSE',
+    ios_share_with_name: 'Share-with-Bluesky',
+    expo_project_owner: 'blueskysocial',
+    expo_project_id: '87ab4766-b66c-489c-98ca-65e740fa205b',
+    google_service_project_name: 'blueskyweb',
+    sentry_project_organization: 'blueskyweb',
+    updates_url: 'https://updates.bsky.app/manifest',
+    web_bundle_name: 'bskyweb',
+    web_package_id: 'xyz.blueskyweb.app',
+    web_package_path: 'xyz/blueskyweb',
+  },
+  naming: {
+    app_name: 'Bluesky',
+    spoken_name: 'Blue Sky',
+  },
+  styling: {
+    additional_color_defs: [],
+    android_splash_background_color_dark: '#0c2a49',
+    android_splash_background_color_light: '#0c7cff',
+    background_color: '#1185FE',
+    ios_splash_background_color_dark: '#001429',
+    map_color_names: [],
+  },
+  verbage: {
+    app_description: 'the social internet',
+    app_emoji: '🦋',
+    profile_description_placeholder: 'e.g. Artist, dog-lover, and avid reader.',
+    post_prompt: "What's up?",
+  },
+}
 
 module.exports = function (_config) {
   /**
@@ -14,14 +56,128 @@ module.exports = function (_config) {
   const PLATFORM = process.env.EAS_BUILD_PLATFORM
 
   const IS_TESTFLIGHT = process.env.EXPO_PUBLIC_ENV === 'testflight'
+  const IS_PREVIEW = process.env.EXPO_PUBLIC_ENV === 'preview'
   const IS_PRODUCTION = process.env.EXPO_PUBLIC_ENV === 'production'
-  const IS_DEV = !IS_TESTFLIGHT || !IS_PRODUCTION
+  const IS_DEV = !(IS_TESTFLIGHT || IS_PREVIEW || IS_PRODUCTION)
+  const USE_LOCAL_CERTS = !IS_PRODUCTION
 
+  const defaultEnvPath = __dirname
+  function ifExists(pathname) {
+    return fs.existsSync(pathname) ? pathname : null
+  }
+  function findExisting(filename) {
+    return ifExists(path.join(defaultEnvPath, filename))
+      ? path.join(defaultEnvPath, filename)
+      : null
+  }
+
+  const brandingPath = findExisting('branding.json')
+  const branding = brandingPath
+    ? JSON.parse(fs.readFileSync(brandingPath).toString('utf-8'))
+    : blueskyBranding
+
+  const envFilenames = {
+    production: '.env.production',
+    staging: '.env.test',
+    development: '.env',
+  }
+  const envConfigs = Object.fromEntries(
+    Object.entries(envFilenames).map(([profileName, envBasename]) => {
+      const envFilename = findExisting(envBasename)
+      const envSource = envFilename
+        ? fs.readFileSync(envFilename).toString('utf-8')
+        : ''
+      const envValues = envSource
+        ? dotenvx.parse(envSource, {processEnv: {}})
+        : {}
+      return [profileName, {envFilename, profileName, ...envValues}]
+    }),
+  )
+
+  const envContentFilenames = {
+    production: 'env-content.production.json',
+    staging: 'env-content.test.json',
+    development: 'env-content.json',
+  }
+  const envContentConfigs = Object.fromEntries(
+    Object.entries(envContentFilenames).map(
+      ([profileName, contentBasename]) => {
+        const contentFilename = findExisting(contentBasename)
+        const contentSource = contentFilename
+          ? fs.readFileSync(contentFilename).toString('utf-8')
+          : '{}'
+        let contentValues = {}
+        try {
+          contentValues = JSON.parse(contentSource)
+        } catch (e) {
+          console.warn(
+            `Failed to parse env-content file ${contentBasename}:`,
+            e,
+          )
+          contentValues = {}
+        }
+        return [profileName, {contentFilename, profileName, ...contentValues}]
+      },
+    ),
+  )
+
+  const getVariantPackageName = packageName => {
+    if (IS_DEV) {
+      return packageName + '.dev'
+    } else if (IS_TESTFLIGHT) {
+      return packageName + '.testflight'
+    } else if (IS_PREVIEW) {
+      return packageName + '.preview'
+    }
+    return packageName
+  }
+
+  const getVariantAppName = name => {
+    if (IS_DEV) {
+      return name + ' (Dev)'
+    } else if (IS_TESTFLIGHT) {
+      return name + ' (Testflight)'
+    } else if (IS_PREVIEW) {
+      return name + ' (Preview)'
+    }
+    return name
+  }
+
+  const getVariantGoogleServicesFilename = name => {
+    // bluesky-selfhost-env's generate-social-env.py can auto-generate examples of these
+    // it relies on the same naming as in getVariantPackageName above
+    if (IS_DEV) {
+      return name.replace('.json', '.development.json')
+    } else if (IS_TESTFLIGHT) {
+      return name.replace('.json', '.testflight.json')
+    } else if (IS_PREVIEW) {
+      return name.replace('.json', '.preview.json')
+    } else if (IS_PRODUCTION) {
+      return name.replace('.json', '.production.json')
+    }
+    return name
+  }
+
+  const getAssociatedDomainConfig = function (envVarName, defaultValue) {
+    const expoName = 'EXPO_PUBLIC_' + envVarName
+    if (IS_PRODUCTION) return envConfigs.production[expoName] || defaultValue
+    else if (IS_PREVIEW || IS_TESTFLIGHT)
+      return envConfigs.staging[expoName] || defaultValue
+    else return envConfigs.development[expoName] || defaultValue
+  }
+  // for side-by-side installs, this associates the app with the default target URLs
+  const ASSOCIATED_SOCIAL_APP_HOST = getAssociatedDomainConfig(
+    'SOCIAL_APP_HOST',
+    'bsky.app',
+  )
+  const ASSOCIATED_LINK_HOST = getAssociatedDomainConfig(
+    'LINK_HOST',
+    'go.bsky.app',
+  )
   const ASSOCIATED_DOMAINS = [
-    'applinks:bsky.app',
-    'applinks:staging.bsky.app',
-    'appclips:bsky.app',
-    'appclips:go.bsky.app', // Allows App Clip to work when scanning QR codes
+    'applinks:' + ASSOCIATED_SOCIAL_APP_HOST,
+    'appclips:' + ASSOCIATED_SOCIAL_APP_HOST,
+    'appclips:' + ASSOCIATED_LINK_HOST, // Allows App Clip to work when scanning QR codes
     // When testing local services, enter an ngrok (et al) domain here. It must use a standard HTTP/HTTPS port.
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
@@ -34,14 +190,15 @@ module.exports = function (_config) {
   const UPDATES_ENABLED = !!UPDATES_CHANNEL
 
   const USE_SENTRY = Boolean(process.env.SENTRY_AUTH_TOKEN)
+  const basePackageName = getVariantPackageName(branding.code.web_package_id)
 
   return {
     expo: {
       version: VERSION,
-      name: 'Bluesky',
-      slug: 'bluesky',
-      scheme: 'bluesky',
-      owner: 'blueskysocial',
+      name: getVariantAppName(branding.naming.app_name),
+      slug: branding.code.app_slug_scheme,
+      scheme: branding.code.app_slug_scheme,
+      owner: branding.code.expo_project_owner,
       runtimeVersion: {
         policy: 'appVersion',
       },
@@ -50,7 +207,7 @@ module.exports = function (_config) {
       primaryColor: '#1083fe',
       ios: {
         supportsTablet: false,
-        bundleIdentifier: 'xyz.blueskyweb.app',
+        bundleIdentifier: basePackageName,
         config: {
           usesNonExemptEncryption: false,
         },
@@ -64,7 +221,7 @@ module.exports = function (_config) {
             'Used to save images to your library.',
           NSPhotoLibraryUsageDescription:
             'Used for profile pictures, posts, and other kinds of content',
-          CFBundleSpokenName: 'Blue Sky',
+          CFBundleSpokenName: branding.naming.spoken_name,
           CFBundleLocalizations: [
             'en',
             'an',
@@ -112,7 +269,7 @@ module.exports = function (_config) {
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': 'group.app.bsky',
+          'com.apple.security.application-groups': branding.code.apple_groups,
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -151,10 +308,12 @@ module.exports = function (_config) {
           foregroundImage: './assets/icon-android-foreground.png',
           monochromeImage: './assets/icon-android-foreground.png',
           backgroundImage: './assets/icon-android-background.png',
-          backgroundColor: '#1185FE',
+          backgroundColor: branding.styling.background_color,
         },
-        googleServicesFile: './google-services.json',
-        package: 'xyz.blueskyweb.app',
+        googleServicesFile: getVariantGoogleServicesFilename(
+          './google-services.json',
+        ),
+        package: basePackageName,
         intentFilters: [
           {
             action: 'VIEW',
@@ -162,7 +321,7 @@ module.exports = function (_config) {
             data: [
               {
                 scheme: 'https',
-                host: 'bsky.app',
+                host: ASSOCIATED_SOCIAL_APP_HOST,
               },
               IS_DEV && {
                 scheme: 'http',
@@ -177,8 +336,8 @@ module.exports = function (_config) {
         favicon: './assets/favicon.png',
       },
       updates: {
-        url: 'https://updates.bsky.app/manifest',
-        enabled: UPDATES_ENABLED,
+        url: branding.code.updates_url,
+        enabled: branding.code.updates_url && UPDATES_ENABLED,
         fallbackToCacheTimeout: 30000,
         codeSigningCertificate: UPDATES_ENABLED
           ? './code-signing/certificate.pem'
@@ -203,7 +362,7 @@ module.exports = function (_config) {
         USE_SENTRY && [
           '@sentry/react-native/expo',
           {
-            organization: 'blueskyweb',
+            organization: branding.code.sentry_project_organization,
             project: 'app',
             url: 'https://sentry.io',
           },
@@ -245,8 +404,10 @@ module.exports = function (_config) {
         './plugins/withAndroidStylesAccentColorPlugin.js',
         './plugins/withAndroidDayNightThemePlugin.js',
         './plugins/withAndroidNoJitpackPlugin.js',
+        USE_LOCAL_CERTS && ['./plugins/withAndroidUserInstalledCerts.js'],
         './plugins/shareExtension/withShareExtensions.js',
         './plugins/notificationsExtension/withNotificationsExtension.js',
+        './plugins/withMobileBuildConfig.js',
         [
           'expo-font',
           {
@@ -273,17 +434,20 @@ module.exports = function (_config) {
               resizeMode: 'cover',
               dark: {
                 enableFullScreenImage_legacy: true,
-                backgroundColor: '#001429',
+                backgroundColor:
+                  branding.styling.ios_splash_background_color_dark,
                 image: './assets/splash-dark.png',
                 resizeMode: 'cover',
               },
             },
             android: {
-              backgroundColor: '#0c7cff',
+              backgroundColor:
+                branding.styling.android_splash_background_color_light,
               image: './assets/splash-android-icon.png',
               imageWidth: 150,
               dark: {
-                backgroundColor: '#0c2a49',
+                backgroundColor:
+                  branding.styling.android_splash_background_color_dark,
                 image: './assets/splash-android-icon-dark.png',
                 imageWidth: 150,
               },
@@ -367,32 +531,35 @@ module.exports = function (_config) {
                 appExtensions: [
                   {
                     targetName: 'Share-with-Bluesky',
-                    bundleIdentifier: 'xyz.blueskyweb.app.Share-with-Bluesky',
+                    bundleIdentifier: `${basePackageName}.${branding.code.ios_share_with_name}`,
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        branding.code.apple_groups,
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyNSE',
-                    bundleIdentifier: 'xyz.blueskyweb.app.BlueskyNSE',
+                    bundleIdentifier: `${basePackageName}.${branding.code.ios_nse_name}`,
                     entitlements: {
                       'com.apple.security.application-groups': [
-                        'group.app.bsky',
+                        branding.code.apple_groups,
                       ],
                     },
                   },
                   {
                     targetName: 'BlueskyClip',
-                    bundleIdentifier: 'xyz.blueskyweb.app.AppClip',
+                    bundleIdentifier: `${basePackageName}.${branding.code.ios_clip_name}`,
                   },
                 ],
               },
             },
           },
-          projectId: '55bd077a-d905-4184-9c7f-94789ba0f302',
+          projectId: branding.code.expo_project_id,
         },
+        branding: branding,
+        'env-config': envConfigs,
+        'env-content': envContentConfigs,
       },
     },
   }

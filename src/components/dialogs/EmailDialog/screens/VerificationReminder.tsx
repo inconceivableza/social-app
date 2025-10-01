@@ -13,6 +13,7 @@ import {Divider} from '#/components/Divider'
 import {GradientFill} from '#/components/GradientFill'
 import {ShieldCheck_Stroke2_Corner0_Rounded as ShieldIcon} from '#/components/icons/Shield'
 import {Text} from '#/components/Typography'
+import {branding} from '#/lib/constants'
 
 export function VerificationReminder({
   showScreen,
@@ -64,7 +65,7 @@ export function VerificationReminder({
         <Text style={[a.text_sm, a.leading_snug, t.atoms.text_contrast_medium]}>
           <Trans>
             Your email has not yet been verified. Please verify your email in
-            order to enjoy all the features of Bluesky.
+            order to enjoy all the features of {branding.naming.app_name}.
           </Trans>
         </Text>
       </View>

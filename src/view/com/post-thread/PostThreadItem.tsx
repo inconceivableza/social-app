@@ -17,7 +17,7 @@ import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
-import {MAX_POST_LINES} from '#/lib/constants'
+import {branding, MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
 import {usePalette} from '#/lib/hooks/usePalette'
@@ -966,7 +966,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
           <Trans>
             This post claims to have been created on{' '}
             <RNText style={[a.font_bold]}>{niceDate(i18n, createdAt)}</RNText>,
-            but was first seen by Bluesky on{' '}
+            but was first seen by {branding.naming.app_name} on{' '}
             <RNText style={[a.font_bold]}>{niceDate(i18n, indexedAt)}</RNText>.
           </Trans>
         </Prompt.DescriptionText>
@@ -978,7 +978,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
             a.pb_xl,
           ]}>
           <Trans>
-            Bluesky cannot confirm the authenticity of the claimed date.
+            {branding.naming.app_name} cannot confirm the authenticity of the claimed date.
           </Trans>
         </Text>
         <Prompt.Actions>

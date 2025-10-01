@@ -8,13 +8,18 @@ import {applyTheme, initSystemColorMode} from '../color-mode'
 import {Container} from '../components/container'
 import {Link} from '../components/link'
 import {Post} from '../components/post'
+import {
+  getPublicAppviewUrl,
+  getSocialAppName,
+  getSocialAppUrl,
+} from '../env-config'
 import {getRkey} from '../utils'
 
 const root = document.getElementById('app')
 if (!root) throw new Error('No root element')
 
 const agent = new AtpAgent({
-  service: 'https://public.api.bsky.app',
+  service: getPublicAppviewUrl(),
 })
 
 const uri = `at://${window.location.pathname.slice('/embed/'.length)}`
@@ -81,7 +86,7 @@ function PwiOptOut({thread}: {thread: AppBskyFeedDefs.ThreadViewPost}) {
         <Link
           href={href}
           className="max-w-80 rounded-lg bg-brand text-white text-center py-1 px-4 w-full mx-auto">
-          View on Bluesky
+          View on {getSocialAppName()}
         </Link>
       </div>
     </Container>
@@ -90,9 +95,9 @@ function PwiOptOut({thread}: {thread: AppBskyFeedDefs.ThreadViewPost}) {
 
 function ErrorMessage() {
   return (
-    <Container href="https://bsky.app/">
+    <Container href={getSocialAppUrl()}>
       <Link
-        href="https://bsky.app/"
+        href={getSocialAppUrl()}
         className="transition-transform hover:scale-110 absolute top-4 right-4">
         <img src={logo} className="h-6" />
       </Link>

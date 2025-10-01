@@ -14,6 +14,7 @@ import {
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -66,7 +67,7 @@ export function Inner({invites}: {invites: InviteCodesQueryResponse}) {
           <Text type="lg" style={[pal.text, styles.emptyText]}>
             <Trans>
               You don't have any invite codes yet! We'll send you some when
-              you've been on Bluesky for a little longer.
+              you've been on {branding.naming.app_name} for a little longer.
             </Trans>
           </Text>
         </View>

@@ -1,9 +1,8 @@
 import assert from 'node:assert'
 
-import React from 'react'
-import {AppBskyGraphDefs, AtUri} from '@atproto/api'
+import {type AppBskyGraphDefs, AtUri} from '@atproto/api'
 import resvg from '@resvg/resvg-js'
-import {Express} from 'express'
+import {type Express} from 'express'
 import satori from 'satori'
 
 import {
@@ -11,7 +10,7 @@ import {
   STARTERPACK_HEIGHT,
   STARTERPACK_WIDTH,
 } from '../components/StarterPack.js'
-import {AppContext} from '../context.js'
+import {type AppContext} from '../context.js'
 import {httpLogger} from '../logger.js'
 import {loadEmojiAsSvg} from '../util.js'
 import {handler, originVerifyMiddleware} from './util.js'
@@ -61,7 +60,11 @@ export default function (ctx: AppContext, app: Express) {
         imageEntries.filter(([_, image]) => image !== null).slice(0, 7),
       )
       const svg = await satori(
-        <StarterPack starterPack={starterPack} images={images} />,
+        <StarterPack
+          starterPack={starterPack}
+          images={images}
+          socialappName={ctx.cfg.service.socialappName}
+        />,
         {
           fonts: ctx.fonts,
           height: STARTERPACK_HEIGHT,

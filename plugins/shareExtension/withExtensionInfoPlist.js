@@ -22,7 +22,8 @@ const withExtensionInfoPlist = (config, {extensionName}) => {
 
     extPlist.MainAppScheme = config.scheme
     extPlist.CFBundleName = '$(PRODUCT_NAME)'
-    extPlist.CFBundleDisplayName = 'Extension'
+    extPlist.CFBundleDisplayName =
+      config.extra?.branding?.code?.ios_share_with_name || 'Share-with-Bluesky'
     extPlist.CFBundleIdentifier = '$(PRODUCT_BUNDLE_IDENTIFIER)'
     extPlist.CFBundleVersion = '$(CURRENT_PROJECT_VERSION)'
     extPlist.CFBundleExecutable = '$(EXECUTABLE_NAME)'

@@ -8,6 +8,7 @@ import {atoms as a, useTheme} from '#/alf'
 import {CircleInfo_Stroke2_Corner0_Rounded as CircleInfo} from '#/components/icons/CircleInfo'
 import {InlineLinkText} from '#/components/Link'
 import {Text} from '#/components/Typography'
+import {branding} from '#/lib/constants'
 
 export const Policies = ({
   serviceDescription,
@@ -48,14 +49,14 @@ export const Policies = ({
       <Trans>
         By creating an account you agree to the{' '}
         <InlineLinkText
-          label={_(msg`Read the Bluesky Terms of Service`)}
+          label={_(msg`Read the ${branding.naming.app_name} Terms of Service`)}
           key="tos"
           to={tos}>
           Terms of Service
         </InlineLinkText>{' '}
         and{' '}
         <InlineLinkText
-          label={_(msg`Read the Bluesky Privacy Policy`)}
+          label={_(msg`Read the ${branding.naming.app_name} Privacy Policy`)}
           key="pp"
           to={pp}>
           Privacy Policy
@@ -68,7 +69,7 @@ export const Policies = ({
       <Trans>
         By creating an account you agree to the{' '}
         <InlineLinkText
-          label={_(msg`Read the Bluesky Terms of Service`)}
+          label={_(msg`Read the ${branding.naming.app_name} Terms of Service`)}
           key="tos"
           to={tos}>
           Terms of Service
@@ -81,7 +82,7 @@ export const Policies = ({
       <Trans>
         By creating an account you agree to the{' '}
         <InlineLinkText
-          label={_(msg`Read the Bluesky Privacy Policy`)}
+          label={_(msg`Read the ${branding.naming.app_name} Privacy Policy`)}
           key="pp"
           to={pp}>
           Privacy Policy

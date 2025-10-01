@@ -4,7 +4,7 @@ import {Image} from 'expo-image'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {urls} from '#/lib/constants'
+import {branding, urls} from '#/lib/constants'
 import {logger} from '#/logger'
 import {isNative} from '#/platform/detection'
 import {atoms as a, useBreakpoints, useTheme} from '#/alf'
@@ -34,7 +34,7 @@ export function InitialVerificationAnnouncement() {
       <Dialog.Handle />
 
       <Dialog.ScrollableInner
-        label={_(msg`Announcing verification on Bluesky`)}
+        label={_(msg`Announcing verification on ${branding.naming.app_name}`)}
         style={[
           gtMobile ? {width: 'auto', maxWidth: 400, minWidth: 200} : a.w_full,
         ]}>
@@ -81,7 +81,7 @@ export function InitialVerificationAnnouncement() {
                 },
               ]}
               alt={_(
-                msg`An illustration showing that Bluesky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts.`,
+                msg`An illustration showing that ${branding.naming.app_name} selects trusted verifiers, and trusted verifiers in turn verify individual user accounts.`,
               )}
             />
           </View>
@@ -92,7 +92,7 @@ export function InitialVerificationAnnouncement() {
             </Text>
             <Text style={[a.leading_snug, a.text_md]}>
               <Trans>
-                We’re introducing a new layer of verification on Bluesky — an
+                We’re introducing a new layer of verification on {branding.naming.app_name} — an
                 easy-to-see checkmark.
               </Trans>
             </Text>
@@ -115,7 +115,7 @@ export function InitialVerificationAnnouncement() {
                 },
               ]}
               alt={_(
-                msg`An mockup of a iPhone showing the Bluesky app open to the profile of a verified user with a blue checkmark next to their display name.`,
+                msg`An mockup of a iPhone showing the ${branding.naming.app_name} app open to the profile of a verified user with a blue checkmark next to their display name.`,
               )}
             />
           </View>
@@ -130,7 +130,7 @@ export function InitialVerificationAnnouncement() {
             <View style={[a.gap_sm]}>
               <Text style={[a.leading_snug, a.text_md]}>
                 <Trans>
-                  Bluesky will proactively verify notable and authentic
+                  {branding.naming.app_name} will proactively verify notable and authentic
                   accounts.
                 </Trans>
               </Text>

@@ -18,6 +18,7 @@ import {
 } from '@react-navigation/native'
 
 import {timeout} from '#/lib/async/timeout'
+import {branding, envConfig} from '#/lib/constants'
 import {useColorSchemeStyle} from '#/lib/hooks/useColorSchemeStyle'
 import {
   getNotificationPayload,
@@ -777,7 +778,7 @@ const FlatNavigator = () => {
 const LINKING = {
   // TODO figure out what we are going to use
   // note: `bluesky://` is what is used in app.config.js
-  prefixes: ['bsky://', 'bluesky://', 'https://bsky.app'],
+  prefixes: [`${branding.code.app_slug_scheme}://`, envConfig.SOCIAL_APP_URL],
 
   getPathFromState(state: State) {
     // find the current node in the navigation tree
@@ -1067,7 +1068,7 @@ function logModuleInitTime() {
 
   if (isWeb) {
     const referrerInfo = Referrer.getReferrerInfo()
-    if (referrerInfo && referrerInfo.hostname !== 'bsky.app') {
+    if (referrerInfo && referrerInfo.hostname !== envConfig.SOCIAL_APP_HOST) {
       logEvent('deepLink:referrerReceived', {
         to: window.location.href,
         referrer: referrerInfo?.referrer,

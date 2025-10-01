@@ -12,6 +12,7 @@ import {useLingui} from '@lingui/react'
 import {StackActions, useNavigation} from '@react-navigation/native'
 import {useMutation} from '@tanstack/react-query'
 
+import {branding} from '#/lib/constants'
 import {ReportOption} from '#/lib/moderation/useReportOptions'
 import {NavigationProp} from '#/lib/routes/types'
 import {isNative} from '#/platform/detection'
@@ -198,7 +199,7 @@ function SubmitStep({
         <Text style={[a.text_2xl, a.font_bold]}>{copy.title}</Text>
         <Text style={[a.text_md, t.atoms.text_contrast_medium]}>
           <Trans>
-            Your report will be sent to the Bluesky Moderation Service
+            Your report will be sent to the {branding.naming.app_name} Moderation Service
           </Trans>
         </Text>
       </View>

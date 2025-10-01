@@ -1,6 +1,4 @@
-const {withXcodeProject, IOSConfig} = require('@expo/config-plugins')
-const path = require('path')
-const PBXFile = require('xcode/lib/pbxFile')
+const {withXcodeProject} = require('@expo/config-plugins')
 
 const withXcodeTarget = (
   config,
@@ -29,6 +27,11 @@ const withXcodeTarget = (
       {target: target.uuid},
       pbxGroupKey,
     )
+    pbxProject.addSourceFile(
+      `${extensionName}/MobileBuildConfig.swift`,
+      {target: target.uuid},
+      pbxGroupKey,
+    )
 
     for (const file of soundFiles) {
       pbxProject.addSourceFile(
@@ -37,6 +40,9 @@ const withXcodeTarget = (
         pbxGroupKey,
       )
     }
+
+    const appleTeamId =
+      config.extra?.branding?.code?.apple_team_id || 'B3LX46C5HS'
 
     var configurations = pbxProject.pbxXCBuildConfigurationSection()
     for (var key in configurations) {
@@ -57,17 +63,13 @@ const withXcodeTarget = (
           buildSettingsObj.SWIFT_EMIT_LOC_STRINGS = 'YES'
           buildSettingsObj.SWIFT_VERSION = '5.0'
           buildSettingsObj.TARGETED_DEVICE_FAMILY = `"1,2"`
-          buildSettingsObj.DEVELOPMENT_TEAM = 'B3LX46C5HS'
+          buildSettingsObj.DEVELOPMENT_TEAM = appleTeamId
         }
       }
     }
 
-    pbxProject.addTargetAttribute(
-      'DevelopmentTeam',
-      'B3LX46C5HS',
-      extensionName,
-    )
-    pbxProject.addTargetAttribute('DevelopmentTeam', 'B3LX46C5HS')
+    pbxProject.addTargetAttribute('DevelopmentTeam', appleTeamId, extensionName)
+    pbxProject.addTargetAttribute('DevelopmentTeam', appleTeamId)
 
     return config
   })

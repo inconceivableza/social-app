@@ -5,7 +5,11 @@ import {getBadgeCountAsync, setBadgeCountAsync} from 'expo-notifications'
 import {type AppBskyNotificationRegisterPush, type AtpAgent} from '@atproto/api'
 import debounce from 'lodash.debounce'
 
-import {PUBLIC_APPVIEW_DID, PUBLIC_STAGING_APPVIEW_DID} from '#/lib/constants'
+import {
+  branding,
+  PUBLIC_APPVIEW_DID,
+  PUBLIC_STAGING_APPVIEW_DID,
+} from '#/lib/constants'
 import {logger as notyLogger} from '#/lib/notifications/util'
 import {isNative} from '#/platform/detection'
 import {useAgeAssuranceContext} from '#/state/ageAssurance'
@@ -36,7 +40,7 @@ async function _registerPushToken({
         : PUBLIC_APPVIEW_DID,
       platform: Platform.OS,
       token: token.data,
-      appId: 'xyz.blueskyweb.app',
+      appId: branding.code.web_package_id,
       ageRestricted: extra.ageRestricted ?? false,
     }
 

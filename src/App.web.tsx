@@ -18,6 +18,10 @@ import {Provider as A11yProvider} from '#/state/a11y'
 import {Provider as AgeAssuranceProvider} from '#/state/ageAssurance'
 import {Provider as MutedThreadsProvider} from '#/state/cache/thread-mutes'
 import {Provider as DialogStateProvider} from '#/state/dialogs'
+import {
+  beginResolveEnvConfig,
+  Provider as EnvConfigProvider,
+} from '#/state/env-config'
 import {listenSessionDropped} from '#/state/events'
 import {
   beginResolveGeolocation,
@@ -64,6 +68,10 @@ import {Provider as VideoVolumeProvider} from '#/components/Post/Embed/VideoEmbe
 import {BackgroundNotificationPreferencesProvider} from '../modules/expo-background-notification-handler/src/BackgroundNotificationHandlerProvider'
 import {Provider as HideBottomBarBorderProvider} from './lib/hooks/useHideBottomBarBorder'
 
+/**
+ * Begin dynamic configuration ASAP
+ */
+beginResolveEnvConfig()
 /**
  * Begin geolocation ASAP
  */
@@ -185,7 +193,7 @@ function App() {
    * NOTE: only nothing here can depend on other data or session state, since
    * that is set up in the InnerApp component above.
    */
-  return (
+  const unConfigured = (
     <GeolocationProvider>
       <A11yProvider>
         <SessionProvider>
@@ -212,6 +220,7 @@ function App() {
       </A11yProvider>
     </GeolocationProvider>
   )
+  return <EnvConfigProvider>{unConfigured}</EnvConfigProvider>
 }
 
 export default Sentry.wrap(App)

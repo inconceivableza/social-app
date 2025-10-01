@@ -2,6 +2,7 @@ import {useMemo} from 'react'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {type AppIconSet} from '#/screens/Settings/AppIconSettings/types'
 
 export function useAppIconSets() {
@@ -164,7 +165,7 @@ export function useAppIconSets() {
         name: _(
           msg({
             context: 'Name of app icon variant',
-            message: 'Bluesky Classic™',
+            message: `${branding.naming.app_name} Classic™`,
           }),
         ),
         iosImage: () => {

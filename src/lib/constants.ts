@@ -1,18 +1,33 @@
 import {type Insets, Platform} from 'react-native'
+import Constants from 'expo-constants'
 import {type AppBskyActorDefs} from '@atproto/api'
 
+import {
+  beginResolveEnvConfig,
+  DOMAIN_ENVCONFIGS,
+  getStoredEnvConfig,
+  getStoredEnvContent,
+} from '#/state/env-config'
+
+beginResolveEnvConfig()
+export const envConfig = getStoredEnvConfig()
+export const envContent = getStoredEnvContent()
 export const LOCAL_DEV_SERVICE =
   Platform.OS === 'android' ? 'http://10.0.2.2:2583' : 'http://localhost:2583'
-export const STAGING_SERVICE = 'https://staging.bsky.dev'
-export const BSKY_SERVICE = 'https://bsky.social'
-export const PUBLIC_BSKY_SERVICE = 'https://public.api.bsky.app'
+export const STAGING_SERVICE =
+  DOMAIN_ENVCONFIGS.staging.BSKY_SERVICE ||
+  DOMAIN_ENVCONFIGS.bluesky_staging.BSKY_SERVICE
+export const BSKY_SERVICE = envConfig.BSKY_SERVICE
+export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
-const HELP_DESK_LANG = 'en-us'
-export const HELP_DESK_URL = `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
-export const EMBED_SERVICE = 'https://embed.bsky.app'
+export const HELP_DESK_URL = envConfig.HELP_DESK_URL
+export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
-export const BSKY_DOWNLOAD_URL = 'https://bsky.app/download'
+export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
+export const CHAT_DISABLED = true
+
+export const branding = (Constants?.expoConfig?.extra || {}).branding
 
 // HACK
 // Yes, this is exactly what it looks like. It's a hard-coded constant
@@ -23,16 +38,15 @@ export const STARTER_PACK_MAX_SIZE = 150
 // -prf
 export const JOINED_THIS_WEEK = 560000 // estimate as of 12/18/24
 
-export const DISCOVER_DEBUG_DIDS: Record<string, true> = {
-  'did:plc:oisofpd7lj26yvgiivf3lxsi': true, // hailey.at
-  'did:plc:p2cp5gopk7mgjegy6wadk3ep': true, // samuel.bsky.team
-  'did:plc:ragtjsm2j2vknwkz3zp4oxrd': true, // pfrazee.com
-  'did:plc:vpkhqolt662uhesyj6nxm7ys': true, // why.bsky.team
-  'did:plc:3jpt2mvvsumj2r7eqk4gzzjz': true, // esb.lol
-  'did:plc:vjug55kidv6sye7ykr5faxxn': true, // emilyliu.me
-  'did:plc:tgqseeot47ymot4zro244fj3': true, // iwsmith.bsky.social
-  'did:plc:2dzyut5lxna5ljiaasgeuffz': true, // mrnuma.bsky.social
-}
+// Debug DIDs from env-content: debug.discover_debug_dids
+export const DISCOVER_DEBUG_DIDS: Record<string, true> =
+  envContent.debug?.discover_debug_dids?.reduce(
+    (acc, did) => {
+      acc[did] = true
+      return acc
+    },
+    {} as Record<string, true>,
+  ) || {}
 
 const BASE_FEEDBACK_FORM_URL = `${HELP_DESK_URL}/requests/new`
 export function FEEDBACK_FORM_URL({
@@ -73,23 +87,34 @@ export function IS_PROD_SERVICE(url?: string) {
   return url && url !== STAGING_SERVICE && !url.startsWith(LOCAL_DEV_SERVICE)
 }
 
-export const PROD_DEFAULT_FEED = (rkey: string) =>
-  `at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/${rkey}`
+// Default feeds from env-content: feeds.named filtered by default: true
+export const DEFAULT_FEED_GENERATOR = (rkey: string) => {
+  const defaultFeeds = Object.values(envContent.feeds?.named || {}).filter(
+    feed => feed?.default,
+  )
+  const feed = defaultFeeds.find(f => f?.uri?.includes(rkey))
+  return (
+    feed?.uri ||
+    `at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/${rkey}`
+  )
+}
 
+// Legacy feed generators - these are replaced by env-content
+export const PROD_DEFAULT_FEED = (rkey: string) => DEFAULT_FEED_GENERATOR(rkey)
 export const STAGING_DEFAULT_FEED = (rkey: string) =>
-  `at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/${rkey}`
+  DEFAULT_FEED_GENERATOR(rkey)
 
-export const PROD_FEEDS = [
-  `feedgen|${PROD_DEFAULT_FEED('whats-hot')}`,
-  `feedgen|${PROD_DEFAULT_FEED('thevids')}`,
-]
+// Legacy constants for backward compatibility - these should be removed over time
+export const PROD_FEEDS = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.default && feed?.feedback)
+  .map(feed => `feedgen|${feed.uri}`)
 
-export const STAGING_FEEDS = [
-  `feedgen|${STAGING_DEFAULT_FEED('whats-hot')}`,
-  `feedgen|${STAGING_DEFAULT_FEED('thevids')}`,
-]
+export const STAGING_FEEDS = PROD_FEEDS // Same as production now since we use the same structure
 
-export const FEEDBACK_FEEDS = [...PROD_FEEDS, ...STAGING_FEEDS]
+// Feeds that support feedback from env-content: feeds.named filtered by feedback: true
+export const FEEDBACK_FEEDS = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.feedback)
+  .map(feed => `feedgen|${feed.uri}`)
 
 export const POST_IMG_MAX = {
   width: 2000,
@@ -98,19 +123,22 @@ export const POST_IMG_MAX = {
 }
 
 export const STAGING_LINK_META_PROXY =
-  'https://cardyb.staging.bsky.dev/v1/extract?url='
+  DOMAIN_ENVCONFIGS.staging.PREVIEW_LINK_META_PROXY
 
-export const PROD_LINK_META_PROXY = 'https://cardyb.bsky.app/v1/extract?url='
+export const PROD_LINK_META_PROXY =
+  DOMAIN_ENVCONFIGS.production.PREVIEW_LINK_META_PROXY
 
 export function LINK_META_PROXY(serviceUrl: string) {
-  if (IS_PROD_SERVICE(serviceUrl)) {
+  if (envConfig.PREVIEW_LINK_META_PROXY) {
+    return envConfig.PREVIEW_LINK_META_PROXY
+  } else if (IS_PROD_SERVICE(serviceUrl)) {
     return PROD_LINK_META_PROXY
   }
 
   return STAGING_LINK_META_PROXY
 }
 
-export const STATUS_PAGE_URL = 'https://status.bsky.app/'
+export const STATUS_PAGE_URL = envConfig.STATUS_PAGE_URL
 
 // Hitslop constants
 export const createHitslop = (size: number): Insets => ({
@@ -127,47 +155,126 @@ export const LANG_DROPDOWN_HITSLOP = {top: 10, bottom: 10, left: 4, right: 4}
 export const BACK_HITSLOP = HITSLOP_30
 export const MAX_POST_LINES = 25
 
-export const BSKY_APP_ACCOUNT_DID = 'did:plc:z72i7hdynmk6r22z27h6tvur'
+// Constants loaded from env-content - these replace hardcoded values
+// These are resolved once from stored env-content and updated when env-content changes
 
-export const BSKY_FEED_OWNER_DIDS = [
-  BSKY_APP_ACCOUNT_DID,
-  'did:plc:vpkhqolt662uhesyj6nxm7ys',
-  'did:plc:q6gjnaw2blty4crticxkmujt',
-]
+// Auto-follow accounts from env-content: onboarding.auto_follow_accounts
+export const AUTO_FOLLOW_ACCOUNT_DIDS =
+  envContent.onboarding?.auto_follow_accounts || []
 
+// Legacy constant for backwards compatibility - use first account from auto_follow_accounts
+export const BSKY_APP_ACCOUNT_DID =
+  (envContent.onboarding?.auto_follow_accounts?.length || 0) > 0
+    ? envContent.onboarding?.auto_follow_accounts?.[0]
+    : 'did:plc:z72i7hdynmk6r22z27h6tvur'
+
+// Feed owner DIDs from env-content: feeds.log_for_owner_dids
+export const BSKY_FEED_OWNER_DIDS = envContent.feeds?.log_for_owner_dids || []
+
+// Extra header DIDs from env-content: feeds.extra_headers_for_owner_dids
+export const FEED_EXTRA_HEADER_DIDS =
+  envContent.feeds?.extra_headers_for_owner_dids || []
+
+// Feed URIs from env-content: feeds.named
 export const DISCOVER_FEED_URI =
+  envContent.feeds?.named?.discover?.uri ||
   'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot'
+
 export const VIDEO_FEED_URI =
+  envContent.feeds?.named?.video?.uri ||
   'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/thevids'
-export const STAGING_VIDEO_FEED_URI =
-  'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids'
-export const VIDEO_FEED_URIS = [VIDEO_FEED_URI, STAGING_VIDEO_FEED_URI]
-export const DISCOVER_SAVED_FEED = {
-  type: 'feed',
-  value: DISCOVER_FEED_URI,
-  pinned: true,
-}
-export const TIMELINE_SAVED_FEED = {
-  type: 'timeline',
-  value: 'following',
-  pinned: true,
-}
-export const VIDEO_SAVED_FEED = {
-  type: 'feed',
-  value: VIDEO_FEED_URI,
-  pinned: true,
-}
+
+// Video feed URIs from env-content: feeds.named filtered by video: true
+export const VIDEO_FEED_URIS = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.video)
+  .map(feed => feed.uri)
+
+// Recommended feeds from env-content: feeds.named filtered by pinned: true
+export const DISCOVER_SAVED_FEED = envContent.feeds?.named?.discover
+  ? {
+      type: envContent.feeds.named.discover.type,
+      value: envContent.feeds.named.discover.uri,
+      pinned: envContent.feeds.named.discover.pinned,
+    }
+  : {
+      type: 'feed',
+      value: DISCOVER_FEED_URI,
+      pinned: true,
+    }
+
+export const TIMELINE_SAVED_FEED = envContent.feeds?.named?.timeline
+  ? {
+      type: envContent.feeds.named.timeline.type,
+      value: envContent.feeds.named.timeline.uri,
+      pinned: envContent.feeds.named.timeline.pinned,
+    }
+  : {
+      type: 'timeline',
+      value: 'following',
+      pinned: true,
+    }
+
+export const VIDEO_SAVED_FEED = envContent.feeds?.named?.video
+  ? {
+      type: envContent.feeds.named.video.type,
+      value: envContent.feeds.named.video.uri,
+      pinned: envContent.feeds.named.video.pinned,
+    }
+  : {
+      type: 'feed',
+      value: VIDEO_FEED_URI,
+      pinned: true,
+    }
 
 export const RECOMMENDED_SAVED_FEEDS: Pick<
   AppBskyActorDefs.SavedFeed,
   'type' | 'value' | 'pinned'
->[] = [DISCOVER_SAVED_FEED, TIMELINE_SAVED_FEED]
+>[] = Object.values(envContent.feeds?.named || {})
+  .filter(feed => feed?.pinned)
+  .map(feed => ({
+    type: feed.type,
+    value: feed.uri,
+    pinned: feed.pinned,
+  }))
 
-export const KNOWN_SHUTDOWN_FEEDS = [
-  'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm', // for you by skygaze
-]
+// Known shutdown feeds from env-content: feeds.known_shutdown_feeds
+export const KNOWN_SHUTDOWN_FEEDS = envContent.feeds?.known_shutdown_feeds || []
 
-export const GIF_SERVICE = 'https://gifs.bsky.app'
+// Legacy constants that are still needed for some functions
+export const STAGING_VIDEO_FEED_URI =
+  'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids'
+
+// Feed proxy DID from env-content: feeds.feedback_proxy_did
+export const FEED_PROXY_DID =
+  envContent.feeds?.feedback_proxy_did || 'did:web:discover.bsky.app'
+
+// Authenticated-only feeds from env-content: feeds.authed_only
+export const KNOWN_AUTHED_ONLY_FEEDS = envContent.feeds?.authed_only || []
+
+// Feed fallback from env-content: feeds.fallback_to
+export const FEED_FALLBACK_NAME = envContent.feeds?.fallback_to || 'discover'
+export const FEED_FALLBACK_FEED = envContent.feeds?.named?.[FEED_FALLBACK_NAME]
+export const FEED_FALLBACK_FEEDNAME =
+  FEED_FALLBACK_FEED?.uri?.split('/').pop() || 'whats-hot'
+
+// Links from env-content: links
+export const LINKS = {
+  about: envContent.links?.about,
+  blog: envContent.links?.blog,
+  jobs: envContent.links?.jobs,
+}
+
+// Sample content from env-content: sample_content
+export const SAMPLE_PROFILE_NAME =
+  envContent.sample_content?.profile?.name || 'bsky.app'
+export const DEFAULT_AVATAR =
+  envContent.sample_content?.images?.default_avatar ||
+  'https://bsky.social/about/images/favicon-32x32.png'
+export const DEFAULT_BANNER =
+  envContent.sample_content?.images?.default_banner ||
+  'https://bsky.social/about/images/social-card-default-gradient.png'
+
+export const GIF_SERVICE = `https://${envConfig.GIF_HOST}`
 
 export const GIF_SEARCH = (params: string) =>
   `${GIF_SERVICE}/tenor/v2/search?${params}`
@@ -176,8 +283,8 @@ export const GIF_FEATURED = (params: string) =>
 
 export const MAX_LABELERS = 20
 
-export const VIDEO_SERVICE = 'https://video.bsky.app'
-export const VIDEO_SERVICE_DID = 'did:web:video.bsky.app'
+export const VIDEO_SERVICE = envConfig.VIDEO_SERVICE
+export const VIDEO_SERVICE_DID = envConfig.VIDEO_SERVICE_DID
 
 export const VIDEO_MAX_DURATION_MS = 3 * 60 * 1000 // 3 minutes in milliseconds
 export const VIDEO_MAX_SIZE = 1000 * 1000 * 100 // 100mb
@@ -197,13 +304,27 @@ export const EMOJI_REACTION_LIMIT = 5
 export const urls = {
   website: {
     blog: {
+      // no need to change this
       initialVerificationAnnouncement: `https://bsky.social/about/blog/04-21-2025-verification`,
     },
   },
 }
 
-export const PUBLIC_APPVIEW = 'https://api.bsky.app'
-export const PUBLIC_APPVIEW_DID = 'did:web:api.bsky.app'
+// ironically named, as this points to the non-public api host
+export const PUBLIC_APPVIEW = envConfig.APPVIEW_URL
+// FIXME: appview_did -> env-config: APPVIEW_DID
+// This should then be loaded with env-config, and not configured separately for production and staging
+export const PUBLIC_APPVIEW_DID = 'did:web:api.web.dallan.inclan'
 export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
 
 export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
+
+const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
+export const webLinks = {
+  main: POLICY_BASE_URL, // main support page
+  tos: `${POLICY_BASE_URL}/tos`,
+  privacy: `${POLICY_BASE_URL}/privacy-policy`,
+  community: `${POLICY_BASE_URL}/community-guidelines`,
+  communityDeprecated: `${POLICY_BASE_URL}/community-guidelines-deprecated`,
+  copyright: `${POLICY_BASE_URL}/copyright`,
+}
