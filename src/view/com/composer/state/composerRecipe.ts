@@ -143,18 +143,20 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         },
     }
 
+    const { title, text, ingredients, steps, labels, embed } = init.record.revisionContent
+
     return {
         id: nanoid(), // TODO: think
         title: new RichText({
-            text: init.record.title
+            text: title
         }),
         text: new RichText({
-            text: init.record.text
+            text
         }),
-        ingredients: _.cloneDeep(init.record.ingredients),
-        steps: _.cloneDeep(init.record.steps),
-        labels: _.cloneDeep(init.record.labels?.values ?? []),
-        embed: embedToDraft(init.record.embed),
+        ingredients: _.cloneDeep(ingredients),
+        steps: _.cloneDeep(steps),
+        labels: _.cloneDeep(labels?.values ?? []),
+        embed: embedToDraft(embed),
     }
 }
 

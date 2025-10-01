@@ -1,5 +1,6 @@
 import {useCallback, useState} from 'react'
 import {
+  AppBskyEmbedRecord,
   AppBskyFeedDefs,
   AppBskyFeedPost,
   moderatePost,
@@ -17,20 +18,8 @@ import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {Post} from '#/view/com/post/Post'
 import {ListFooter, ListMaybePlaceholder} from '#/components/Lists'
 import {List} from '../util/List'
+import { isRecipePostView } from '#/lib/api/feed/utils'
 
-function renderItem({
-  item,
-  index,
-}: {
-  item: {
-    post: AppBskyFeedDefs.PostView
-    moderation: ModerationDecision
-    record: AppBskyFeedPost.Record
-  }
-  index: number
-}) {
-  return <Post post={item.post} hideTopBorder={index === 0} />
-}
 
 function keyExtractor(item: {
   post: AppBskyFeedDefs.PostView
@@ -40,7 +29,7 @@ function keyExtractor(item: {
   return item.post.uri
 }
 
-export function PostQuotes({uri}: {uri: string}) {
+export function PostQuotes({ uri, revisionUri }: { uri: string, revisionUri?: string }) {
   const {_} = useLingui()
   const initialNumToRender = useInitialNumToRender()
   const [isPTRing, setIsPTRing] = useState(false)
@@ -59,6 +48,24 @@ export function PostQuotes({uri}: {uri: string}) {
     error,
     refetch,
   } = usePostQuotesQuery(resolvedUri?.uri)
+
+  const renderItem = useCallback(({
+    item,
+    index,
+  }: {
+    item: {
+      post: AppBskyFeedDefs.PostView
+      moderation: ModerationDecision
+      record: AppBskyFeedPost.Record
+    }
+    index: number
+  }) => {
+    const embeddedRevision = AppBskyEmbedRecord.isMain(item.record.embed) && item.record.embed.record.revisionUri
+    return <div key={item.post.uri}>
+      <Post post={item.post} hideTopBorder={index === 0} />
+      {embeddedRevision !== revisionUri && "outdated"}
+    </div>
+  }, [revisionUri])
 
   const moderationOpts = useModerationOpts()
 

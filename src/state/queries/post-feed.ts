@@ -372,25 +372,27 @@ export function usePostFeedQuery(
                     reason: slice.reason,
                     feedPostUri: slice.feedPostUri,
                     items: slice.items.map((item, i) => {
-
-                      const feedPostSliceItem: FeedPostSliceItem = item.type === "post" ? {
-                        type: 'post',
-                        _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
-                        uri: item.post.uri,
-                        post: item.post,
-                        record: item.record,
-                        moderation: moderations[item.post.uri],
-                        parentAuthor: item.parentAuthor,
-                        isParentBlocked: item.isParentBlocked,
-                        isParentNotFound: item.isParentNotFound,
-                      } : {
+                      if (item.type === "post") {
+                        return {
+                          type: 'post',
+                          _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
+                          uri: item.post.uri,
+                          post: item.post,
+                          record: item.record,
+                          moderation: moderations[item.post.uri],
+                          parentAuthor: item.parentAuthor,
+                          isParentBlocked: item.isParentBlocked,
+                          isParentNotFound: item.isParentNotFound,
+                        }
+                      }
+                      return {
                         type: 'recipe',
                         _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
                         uri: item.post.uri,
                         post: item.post,
-                          record: item.record
+                        record: item.record
                       }
-                      return feedPostSliceItem
+
                     }),
                   }
                   return feedPostSlice
@@ -565,7 +567,7 @@ export function* findAllPostsInQueryData(
         if (quotedPost && didOrHandleUriMatches(atUri, quotedPost)) {
           yield embedViewRecordToPostView(quotedPost)
         }
-
+        // Duplication here?
         if (AppBskyFeedDefs.isPostView(item.reply?.parent)) {
           if (didOrHandleUriMatches(atUri, item.reply.parent)) {
             yield item.reply.parent

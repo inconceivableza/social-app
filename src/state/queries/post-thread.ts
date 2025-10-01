@@ -9,7 +9,7 @@ import {
   moderateRecipe,
   type ModerationDecision,
   type ModerationOpts,
-  AppFoodiosFeedRecipeRevision
+  AppFoodiosFeedDefs
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -72,7 +72,7 @@ export interface ThreadRecipe {
   _reactKey: string
   uri: string
   post: AppBskyFeedDefs.PostView
-  record: AppFoodiosFeedRecipeRevision.Record
+  record: AppFoodiosFeedDefs.RecipeRevisionView
   replies: ThreadNode[] | undefined
   hasOPLike: boolean | undefined
   ctx: ThreadCtx
@@ -407,9 +407,9 @@ function responseToThreadNodes(
         },
       }
     } else if (
-      bsky.dangerousIsType<AppFoodiosFeedRecipeRevision.Record>(
+      bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
         record,
-        AppFoodiosFeedRecipeRevision.isRecord,
+        AppFoodiosFeedDefs.isRecipeRevisionView,
       )
     ) {
       return {
@@ -693,8 +693,8 @@ function postViewToPlaceholderThread(
       },
     }
   }
-
-  if (AppFoodiosFeedRecipeRevision.isRecord(record)) {
+  // TODO replies, reposts not showing on top line? likes not persisting? maybe because of revision uri
+  if (AppFoodiosFeedDefs.isRecipeRevisionView(record)) {
     return {
       type: 'recipe',
       _reactKey: post.uri,

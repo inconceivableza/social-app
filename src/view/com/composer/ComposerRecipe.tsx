@@ -80,7 +80,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         if (edit) {
             await apilib.postRecipeRevision(agent, queryClient, {
                 post: state,
-                parentRevision: edit.record
+                parentRevision: edit.record.revisionContent
             })
         } else {
             const postUri = await apilib.postRecipe(agent, queryClient, {
@@ -193,21 +193,8 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     )
 
     const onPressCancel = useCallback(() => {
-        // if (
-        //   thread.posts.some(
-        //     post =>
-        //       post.shortenedGraphemeLength > 0 ||
-        //       post.embed.media ||
-        //       post.embed.link,
-        //   )
-        // ) {
-        //   closeAllDialogs()
-        //   Keyboard.dismiss()
-        //   discardPromptControl.open()
-        // } else {
         closeComposer()
-
-    }, [closeComposer])// [thread, closeAllDialogs, discardPromptControl, onClose])
+    }, [closeComposer])
 
     return <View>
         <KeyboardAvoidingView
@@ -229,8 +216,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                     <View>
                         <fieldset>
                             <legend>
-                                {/* todo: localize */}
-                                Title
+                                <Trans>Title</Trans>
                             </legend>
                             <TextInput
                                 ref={titleInputRef}
@@ -248,9 +234,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                                     setFocused("title")
                                     currentRef.current = titleInputRef.current ?? undefined
                                 }}
-
-
-
                                 onPhotoPasted={() => { }}
                                 onNewLink={() => { }}
                                 onError={() => { }}

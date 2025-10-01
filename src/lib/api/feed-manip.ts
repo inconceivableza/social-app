@@ -4,14 +4,14 @@ import {
   AppBskyEmbedRecordWithMedia,
   AppBskyFeedDefs,
   AppBskyFeedPost,
-  AppFoodiosFeedRecipeRevision
+  AppFoodiosFeedDefs
 } from '@atproto/api'
 
 import * as bsky from '#/types/bsky'
 import {isPostInLanguage} from '../../locale/helpers'
 import {FALLBACK_MARKER_POST} from './feed/home'
 import {type ReasonFeedSource} from './feed/types'
-import { isRecipePostView } from './feed/utils'
+import { RecipePostView, isRecipePostView } from './feed/utils'
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost
 
@@ -30,8 +30,8 @@ type FeedSliceItem = {
   isParentNotFound: boolean
 } | {
   type: "recipe"
-  post: AppBskyFeedDefs.PostView
-  record: AppFoodiosFeedRecipeRevision.Record
+  post: RecipePostView
+  record: AppFoodiosFeedDefs.RecipeRevisionView
 }
 //
 

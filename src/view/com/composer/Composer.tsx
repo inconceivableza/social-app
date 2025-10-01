@@ -403,7 +403,7 @@ export const ComposePost = ({
       postUri = (
         await apilib.post(agent, queryClient, {
           thread,
-          replyTo: replyTo?.uri,
+          replyTo: replyTo,
           onStateChange: setPublishingStage,
           langs: toPostLanguages(langPrefs.postLanguage),
         })

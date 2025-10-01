@@ -7,7 +7,8 @@ import {
   AtUri,
   moderatePost,
   RichText as RichTextAPI,
-  AppFoodiosFeedRecipeRevision
+  AppFoodiosFeedRecipeRevision,
+  AppFoodiosFeedDefs
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
@@ -260,14 +261,15 @@ export function QuoteEmbed({
       return text.trim()
         ? new RichTextAPI({ text: text, facets: facets })
         : undefined
-    } else if ((bsky.dangerousIsType<AppFoodiosFeedRecipeRevision.Record>(
+
+    } else if ((bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
       quote.record,
-      AppFoodiosFeedRecipeRevision.isRecord,
+      AppFoodiosFeedDefs.isRecipeRevisionView,
     )
     )) {
-      const { text, title } = quote.record
+      const { text, title } = quote.record.revisionContent
       return text.trim() || title.trim()
-        ? new RichTextAPI({ text: recipePostSummaryRichText(quote.record) }) 
+        ? new RichTextAPI({ text: recipePostSummaryRichText(quote.record.revisionContent) }) 
         : undefined
     } else {
       return undefined
@@ -281,6 +283,9 @@ export function QuoteEmbed({
     onOpen?.()
   }, [queryClient, quote.author, onOpen])
   const [hover, setHover] = React.useState(false)
+
+  const isOutdated = bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(quote.record, AppFoodiosFeedDefs.isRecipeRevisionView)
+    && quote.record.selectedRevisionUri !== quote.record.revisionRefs.at(-1)?.uri
   return (
     <View
       style={[a.mt_sm]}
@@ -307,7 +312,7 @@ export function QuoteEmbed({
                   showAvatar
                   postHref={itemHref}
                   timestamp={quote.indexedAt}
-                />
+                >{isOutdated && <Text style={[a.pl_xs, t.atoms.text]}><Trans>Outdated</Trans></Text>}</PostMeta>
                 {isRecipeUri(quote.uri) ? <Text emoji>🍴</Text> : null}
 
               </View>
