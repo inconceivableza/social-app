@@ -94,8 +94,14 @@ func loadBrandingWithFallback(brandingFile string) Branding {
 		if err := json.Unmarshal(brandingData, &branding); err == nil {
 			log.Info("Using embedded branding")
 			return branding
-		} else {
-			log.Warnf("Failed to parse embedded branding.json: %v", err)
+		}
+		log.Warnf("Failed to parse embedded branding.json: %v", err)
+		if brandingData, err := bskyweb.BrandingFS.ReadFile("branding-bluesky.json"); err == nil {
+			if err := json.Unmarshal(brandingData, &branding); err == nil {
+				log.Info("Using embedded bluesky branding")
+				return branding
+			}
+			log.Warnf("Failed to parse embedded branding-bluesky.json: %v", err)
 		}
 	}
 
