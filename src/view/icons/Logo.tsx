@@ -1,12 +1,12 @@
 import React from 'react'
-import {StyleSheet, TextProps} from 'react-native'
+import {StyleSheet, type TextProps} from 'react-native'
 import Svg, {
   Defs,
   LinearGradient,
   Path,
-  PathProps,
+  type PathProps,
   Stop,
-  SvgProps,
+  type SvgProps,
 } from 'react-native-svg'
 import {Image} from 'expo-image'
 
@@ -25,7 +25,7 @@ export const Logo = React.forwardRef(function LogoImpl(props: Props, ref) {
   const {fill, ...rest} = props
   const gradient = fill === 'sky'
   const styles = StyleSheet.flatten(props.style)
-  const _fill = gradient ? 'url(#sky)' : fill || styles?.color || colors.blue3
+  const _fill = gradient ? 'url(#sky)' : fill || styles?.color || colors.orange1
   // @ts-ignore it's fiiiiine
   const size = parseInt(rest.width || 32)
 

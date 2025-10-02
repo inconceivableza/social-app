@@ -28,10 +28,10 @@ const blueskyBranding = {
   },
   styling: {
     additional_color_defs: [],
-    android_splash_background_color_dark: '#0c2a49',
-    android_splash_background_color_light: '#0c7cff',
-    background_color: '#1185FE',
-    ios_splash_background_color_dark: '#001429',
+    android_splash_background_color_dark: '#402911',
+    android_splash_background_color_light: '#e88627',
+    background_color: '#E88627',
+    ios_splash_background_color_dark: '#371f06',
     map_color_names: [],
   },
   verbage: {
