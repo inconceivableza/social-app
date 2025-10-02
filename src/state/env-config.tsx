@@ -1,31 +1,28 @@
-// Allows configuration of domains and URLs within the atproto ecosystem
-// Order of overriding (highest defined variable overrides lower):
 /*
 
+Allows configuration of domains, branding and server-specific contents within the atproto ecosystem
+
+* Configuration of branding is read from branding.json, read by the social-app at build time.
+  - This includes app names, some text content (verbage) and code ids for the package etc
+  - Changes to styles and images (logos etc) are not read from configuration but committed
+
+* Configuration of what server domains are being used is done in .env* files following the dotenv profiles specification
+  - This approach supports different environments for production, testing (staging), and development.
+  - Mobile builds must target one of these environments
+  - Mobile builds and the web server bundle all configured profile's environments
+
+* Configuration of custom content within the app is down in env-content*.json files
+  - Configured profiles have separate env-content.${profile}.json files
+
+* Except for production builds, this supports switching between environments
+  - Configured profiles can be directly selected in the mobile and web UI
+  - The app can also connect to a custom social-app server and retrieve its environment
+  - The bsky "App View" app serves env-content to the social-app when a custom server is selected
+
+* This should all use the Bluesky defaults when no other config is present
+  - In general, defaults elsewhere in the code have been moved here and just reference this config
+
 **Constant Resolution**
-
-The tricky question: How can we have builds that are independent of the domain configuration?
-- production should automatically use the right staging domains without environment variables
-- staging could have a flag that triggers all the right staging domains
-- development should allow configuring this much more dynamically?
-
-On the web, we could detect that we're using the production/staging domain, and follow suit...
-- when running in a container, that shouldn't require anything more for production and staging
-- when running dev in a container, we should supply config from the go server under a dynamic URL
-  * this should use the base URL to work out where to fetch it from
-  * these values are read by the server once on startup, so it will require restarting to change them
-  * they are loaded once by the web browser on page load, and should not be cached
-- when running dev from source, we should use environment variables from process.env.EXPO_PUBLIC_*
-  * it would help to automatically set these up based on the bluesky-selfhost-env environment
-
-For mobile, produce separate builds with production/staging/a-particular-development-setup hardcoded
-- it's not worth trying to load these dynamically and the rights restrictions would break anyway
-- we should include the target server variant in the build name
-- when running mobile from dev, presumably the same environment variables as in web will work
-  * it would be expedient to just set the social-app's env-config URL, and then read the config as in the container version
-  * in this case, the app should read it once from the URL on startup
-
-Notes on expo's environment reading:
 
 * expo follows the dotenv order of precedence, and so does the go server:
   - .env.{development|test|production}.local
@@ -36,41 +33,7 @@ Notes on expo's environment reading:
       - defined by docker-compose.yaml when running in a docker container
       - whatever is in the environment when running from source on the host
 
-* For builds served from go, usually running in docker containers, the aim is to have the same docker image.
-  - If the web app detects production or staging domain, it will use the corresponding config, which is baked in
-  - If it detects a non-standard domain, it will query that domain for the config
-  - This does mean that a proxy domain could be set up that reconfigures which services etc to use
-
-* If builds are produced without defining the environment variables, the config will use the Bluesky defaults
-  - Defaults elsewhere in the code have been moved here and should just reference this config
-
-**Tasks**
-
-* Work out how mobile build filenames are determined and what they should be and where they should go
-  - EAS_LOCAL_BUILD_ARTIFACTS_DIR is relevant
-  - You can't control the output filename. We could use a temporary artifacts dir and then move and rename
-  - Filename:
-    * Production build: ${app_name}-${version}-${date}-${build_number}.${ext}
-    * Other build: ${app_name}-${version}-${date}-${build_number}-${social_app_domain}.${ext}
-* Verify how profiles work in eas, and how these correspond to the dotenv order of precedence, NODE_ENV etc
-  - We should have development (own domain names), staging (set), production (set)
-  - Distinguish between build variants and target servers
-    - In source code, expo provides __DEV__ to indicate development mode or not
-    - The selected expo environment is present in `EXPO_PUBLIC_ENV`
-    - We could support different app ids / names based on build variants, to allow side-by-side installs
-    - Build variants are configured in eas.json; TODO: this needs cleaning up
-    - That's different from builds that target different servers...
-      - We could have development + staging + production servers, orthogonally from build variants
-      - If running locally, you can configure ngrok to tunnel things back to your domain
-  - Development should also support running from source with easy switches
-* Decide whether non-production mobile builds should support dynamically retrieved config variables
-  - This is probably a good idea as it means the web and mobile versions will behave the same
-  - But it might create iOS (or android) permissions issues. Hopefully this won't be an issue for test builds
-* How to handle secret environment variables
-
 */
-
-// This is based on geolocation, but doesn't use Storage as it shouldn't be persisted
 
 import React from 'react'
 import Constants from 'expo-constants'
