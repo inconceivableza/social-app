@@ -7,8 +7,7 @@ import {type NavigationProp, useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {VIDEO_FEED_URIS} from '#/lib/constants'
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {ComposeIcon2} from '#/lib/icons'
+import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 import {getRootNavigation, getTabState, TabState} from '#/lib/routes/helpers'
 import {type AllNavigatorParams} from '#/lib/routes/types'
 import {logEvent} from '#/lib/statsig/statsig'
@@ -24,11 +23,11 @@ import {truncateAndInvalidate} from '#/state/queries/util'
 import {useSession} from '#/state/session'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {useHeaderOffset} from '#/components/hooks/useHeaderOffset'
-import {PostFeed} from '../posts/PostFeed'
-import {FAB} from '../util/fab/FAB'
+import { PostFeed } from '../posts/PostFeed'
 import {type ListMethods} from '../util/List'
 import {LoadLatestBtn} from '../util/load-latest/LoadLatestBtn'
 import {MainScrollProvider} from '../util/MainScrollProvider'
+import { ComposeFAB } from '../composer/ComposeFAB'
 
 const POLL_FREQ = 60e3 // 60sec
 
@@ -158,16 +157,8 @@ export function FeedPage({
           showIndicator={hasNew}
         />
       )}
-
       {hasSession && (
-        <FAB
-          testID="composeFAB"
-          onPress={onPressCompose}
-          icon={<ComposeIcon2 strokeWidth={1.5} size={29} style={s.white} />}
-          accessibilityRole="button"
-          accessibilityLabel={_(msg({message: `New post`, context: 'action'}))}
-          accessibilityHint=""
-        />
+        <ComposeFAB />
       )}
     </View>
   )

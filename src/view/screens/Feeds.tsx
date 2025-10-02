@@ -8,8 +8,7 @@ import debounce from 'lodash.debounce'
 
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
-import {ComposeIcon2} from '#/lib/icons'
+import { useWebMediaQueries } from '#/lib/hooks/useWebMediaQueries'
 import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
@@ -25,8 +24,7 @@ import {
 } from '#/state/queries/feed'
 import {useSession} from '#/state/session'
 import {useSetMinimalShellMode} from '#/state/shell'
-import {ErrorMessage} from '#/view/com/util/error/ErrorMessage'
-import {FAB} from '#/view/com/util/fab/FAB'
+import { ErrorMessage } from '#/view/com/util/error/ErrorMessage'
 import {List, type ListMethods} from '#/view/com/util/List'
 import {FeedFeedLoadingPlaceholder} from '#/view/com/util/LoadingPlaceholder'
 import {Text} from '#/view/com/util/text/Text'
@@ -46,6 +44,7 @@ import {SettingsGear2_Stroke2_Corner0_Rounded as Gear} from '#/components/icons/
 import * as Layout from '#/components/Layout'
 import {Link} from '#/components/Link'
 import * as ListCard from '#/components/ListCard'
+import { ComposeFAB } from '../com/composer/ComposeFAB'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'Feeds'>
 
@@ -544,16 +543,8 @@ export function FeedsScreen(_props: Props) {
           sideBorders={false}
         />
       </Layout.Center>
-
       {hasSession && (
-        <FAB
-          testID="composeFAB"
-          onPress={onPressCompose}
-          icon={<ComposeIcon2 strokeWidth={1.5} size={29} style={s.white} />}
-          accessibilityRole="button"
-          accessibilityLabel={_(msg`New post`)}
-          accessibilityHint=""
-        />
+        <ComposeFAB />
       )}
     </Layout.Screen>
   )
