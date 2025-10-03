@@ -9840,7 +9840,7 @@ msgstr "आप अपने स्टार्टर पैक को क्य�
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:774
-msgid "What's up?"
+msgid "What's going down?"
 msgstr "क्या चल रहा है?"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:146

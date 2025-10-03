@@ -90,8 +90,11 @@ import {usePreferencesQuery} from '#/state/queries/preferences'
 import {useProfileQuery} from '#/state/queries/profile'
 import {type Gif} from '#/state/queries/tenor'
 import {useAgent, useSession} from '#/state/session'
-import {useComposerControls} from '#/state/shell/composer'
-import {type ComposerOpts, type OnPostSuccessData} from '#/state/shell/composer'
+import {
+  type PostComposerOpts,
+  useComposerControls,
+} from '#/state/shell/composer'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {CharProgress} from '#/view/com/composer/char-progress/CharProgress'
 import {ComposerReplyTo} from '#/view/com/composer/ComposerReplyTo'
 import {
@@ -134,6 +137,7 @@ import {
   type ComposerAction,
   composerReducer,
   createComposerState,
+  type EmbedAction,
   type EmbedDraft,
   MAX_IMAGES,
   type PostAction,
@@ -143,7 +147,7 @@ import {
 import {
   NO_VIDEO,
   type NoVideoState,
-  processVideo,
+  uploadVideoDirect,
   type VideoState,
 } from './state/video'
 import {getVideoMetadata} from './videos/pickVideo'
@@ -153,7 +157,7 @@ type CancelRef = {
   onPressCancel: () => void
 }
 
-type Props = ComposerOpts
+type Props = Omit<PostComposerOpts, 'type'>
 export const ComposePost = ({
   replyTo,
   onPost,
@@ -227,7 +231,7 @@ export const ComposePost = ({
           abortController,
         },
       })
-      processVideo(
+      uploadVideoDirect(
         asset,
         videoAction => {
           composerDispatch({
@@ -401,7 +405,7 @@ export const ComposePost = ({
       postUri = (
         await apilib.post(agent, queryClient, {
           thread,
-          replyTo: replyTo?.uri,
+          replyTo: replyTo,
           onStateChange: setPublishingStage,
           langs: toPostLanguages(langPrefs.postLanguage),
         })
@@ -499,6 +503,7 @@ export const ComposePost = ({
     if (initQuote) {
       // We want to wait for the quote count to update before we call `onPost`, which will refetch data
       whenAppViewReady(agent, initQuote.uri, res => {
+        // TODO: fix
         const quotedThread = res.data.thread
         if (
           AppBskyFeedDefs.isThreadViewPost(quotedThread) &&
@@ -1061,7 +1066,7 @@ function AltTextReminder({error}: {error: string}) {
   )
 }
 
-function ComposerEmbeds({
+export function ComposerEmbeds({
   embed,
   dispatch,
   clearVideo,
@@ -1069,7 +1074,7 @@ function ComposerEmbeds({
   isActivePost,
 }: {
   embed: EmbedDraft
-  dispatch: (action: PostAction) => void
+  dispatch: (action: EmbedAction) => void
   clearVideo: () => void
   canRemoveQuote: boolean
   isActivePost: boolean
@@ -1365,7 +1370,7 @@ export function useComposerCancelRef() {
   return useRef<CancelRef>(null)
 }
 
-function useScrollTracker({
+export function useScrollTracker({
   scrollViewRef,
   stickyBottom,
 }: {
@@ -1494,7 +1499,7 @@ function useScrollTracker({
   }
 }
 
-function useKeyboardVerticalOffset() {
+export function useKeyboardVerticalOffset() {
   const {top, bottom} = useSafeAreaInsets()
 
   // Android etc
@@ -1515,6 +1520,7 @@ async function whenAppViewReady(
   uri: string,
   fn: (res: AppBskyFeedGetPostThread.Response) => boolean,
 ) {
+  //
   await until(
     5, // 5 tries
     1e3, // 1s delay between tries
@@ -1683,7 +1689,7 @@ function ErrorBanner({
   )
 }
 
-function ToolbarWrapper({
+export function ToolbarWrapper({
   style,
   children,
 }: {
@@ -1701,7 +1707,7 @@ function ToolbarWrapper({
   )
 }
 
-function VideoUploadToolbar({state}: {state: VideoState}) {
+export function VideoUploadToolbar({state}: {state: VideoState}) {
   const t = useTheme()
   const {_} = useLingui()
   const progress = state.progress

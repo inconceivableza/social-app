@@ -27,9 +27,13 @@ import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
-import {aggregateUserInterests} from '#/lib/api/feed/utils'
+import {aggregateUserInterests, type RecipePostView} from '#/lib/api/feed/utils'
 import {FeedTuner, type FeedTunerFn} from '#/lib/api/feed-manip'
-import {branding, BSKY_FEED_OWNER_DIDS, DISCOVER_FEED_URI} from '#/lib/constants'
+import {
+  branding,
+  BSKY_FEED_OWNER_DIDS,
+  DISCOVER_FEED_URI,
+} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useAgeAssuranceContext} from '#/state/ageAssurance'
 import {STALE} from '#/state/queries'
@@ -37,6 +41,7 @@ import {DEFAULT_LOGGED_OUT_PREFERENCES} from '#/state/queries/preferences/const'
 import {useAgent} from '#/state/session'
 import * as userActionHistory from '#/state/userActionHistory'
 import {KnownError} from '#/view/com/posts/PostFeedErrorMessage'
+import {type AnyPostView} from '../cache/types'
 import {useFeedTuners} from '../preferences/feed-tuners'
 import {useModerationOpts} from '../preferences/moderation-opts'
 import {usePreferencesQuery} from './preferences'
@@ -78,15 +83,25 @@ export function RQKEY(feedDesc: FeedDescriptor, params?: FeedParams) {
   return [RQKEY_ROOT, feedDesc, params || {}]
 }
 
-export interface FeedPostSliceItem {
+export type FeedPostSliceItem =
+  | {
+      type: 'post'
+      _reactKey: string
+      uri: string
+      post: AppBskyFeedDefs.PostView
+      record: AppBskyFeedPost.Record
+      moderation: ModerationDecision
+      parentAuthor?: AppBskyActorDefs.ProfileViewBasic
+      isParentBlocked?: boolean
+      isParentNotFound?: boolean
+    }
+  | FeedRecipeSliceItem
+
+interface FeedRecipeSliceItem {
+  type: 'recipe'
   _reactKey: string
   uri: string
-  post: AppBskyFeedDefs.PostView
-  record: AppBskyFeedPost.Record
-  moderation: ModerationDecision
-  parentAuthor?: AppBskyActorDefs.ProfileViewBasic
-  isParentBlocked?: boolean
-  isParentNotFound?: boolean
+  post: RecipePostView
 }
 
 export interface FeedPostSlice {
@@ -238,10 +253,13 @@ export function usePostFeedQuery(
           feedDescParts[0] === 'feedgen' &&
           BSKY_FEED_OWNER_DIDS.includes(feedOwnerDid)
         ) {
-          logger.error(`${branding.naming.app_name} feed may be offline: ${feedOwnerDid}`, {
-            feedDesc,
-            jsError: e,
-          })
+          logger.error(
+            `${branding.naming.app_name} feed may be offline: ${feedOwnerDid}`,
+            {
+              feedDesc,
+              jsError: e,
+            },
+          )
         }
 
         throw e
@@ -266,7 +284,7 @@ export function usePostFeedQuery(
 
         // Keep track of the last run and whether we can reuse
         // some already selected pages from there.
-        let reusedPages = []
+        let reusedPages: FeedPage[] = []
         if (lastRun.current) {
           const {
             data: lastData,
@@ -297,7 +315,7 @@ export function usePostFeedQuery(
           }
         }
 
-        const result = {
+        const result: InfiniteData<FeedPage> = {
           pageParams: data.pageParams,
           pages: [
             ...reusedPages,
@@ -309,41 +327,54 @@ export function usePostFeedQuery(
               slices: tuner
                 .tune(page.feed)
                 .map(slice => {
-                  const moderations = slice.items.map(item =>
-                    moderatePost(item.post, moderationOpts!),
-                  )
+                  // TODO: double check that it's okay to merge the loops
+                  const moderations: Record<string, ModerationDecision> = {}
 
                   // apply moderation filter
                   for (let i = 0; i < slice.items.length; i++) {
-                    const ignoreFilter =
-                      slice.items[i].post.author.did === ignoreFilterFor
-                    if (ignoreFilter) {
-                      // remove mutes to avoid confused UIs
-                      moderations[i].causes = moderations[i].causes.filter(
-                        cause => cause.type !== 'muted',
+                    const post = slice.items[i].post
+                    // TODO: moderate recipes as well
+                    if (AppBskyFeedDefs.isPostView(post)) {
+                      moderations[post.uri] = moderatePost(
+                        post,
+                        moderationOpts!,
                       )
-                    }
-                    if (
-                      !ignoreFilter &&
-                      moderations[i]?.ui('contentList').filter
-                    ) {
-                      return undefined
+                      const ignoreFilter = post.author.did === ignoreFilterFor
+                      if (ignoreFilter) {
+                        // remove mutes to avoid confused UIs
+                        moderations[post.uri].causes = moderations[
+                          post.uri
+                        ].causes.filter(cause => cause.type !== 'muted')
+                      }
+                      if (
+                        !ignoreFilter &&
+                        moderations[post.uri]?.ui('contentList').filter
+                      ) {
+                        return undefined
+                      }
                     }
                   }
 
                   if (isDiscover) {
+                    // TODO: do this for recipes as well
                     userActionHistory.seen(
-                      slice.items.map(item => ({
-                        feedContext: slice.feedContext,
-                        reqId: slice.reqId,
-                        likeCount: item.post.likeCount ?? 0,
-                        repostCount: item.post.repostCount ?? 0,
-                        replyCount: item.post.replyCount ?? 0,
-                        isFollowedBy: Boolean(
-                          item.post.author.viewer?.followedBy,
-                        ),
-                        uri: item.post.uri,
-                      })),
+                      slice.items.flatMap(item =>
+                        item.type === 'post'
+                          ? [
+                              {
+                                feedContext: slice.feedContext,
+                                reqId: slice.reqId,
+                                likeCount: item.post.likeCount ?? 0,
+                                repostCount: item.post.repostCount ?? 0,
+                                replyCount: item.post.replyCount ?? 0,
+                                isFollowedBy: Boolean(
+                                  item.post.author.viewer?.followedBy,
+                                ),
+                                uri: item.post.uri,
+                              },
+                            ]
+                          : [],
+                      ),
                     )
                   }
 
@@ -357,22 +388,31 @@ export function usePostFeedQuery(
                     reason: slice.reason,
                     feedPostUri: slice.feedPostUri,
                     items: slice.items.map((item, i) => {
-                      const feedPostSliceItem: FeedPostSliceItem = {
+                      if (item.type === 'post') {
+                        return {
+                          type: 'post',
+                          _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
+                          uri: item.post.uri,
+                          post: item.post,
+                          record: item.record,
+                          moderation: moderations[item.post.uri],
+                          parentAuthor: item.parentAuthor,
+                          isParentBlocked: item.isParentBlocked,
+                          isParentNotFound: item.isParentNotFound,
+                        }
+                      }
+                      return {
+                        type: 'recipe',
                         _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
                         uri: item.post.uri,
                         post: item.post,
                         record: item.record,
-                        moderation: moderations[i],
-                        parentAuthor: item.parentAuthor,
-                        isParentBlocked: item.isParentBlocked,
-                        isParentNotFound: item.isParentNotFound,
                       }
-                      return feedPostSliceItem
                     }),
                   }
                   return feedPostSlice
                 })
-                .filter(n => !!n),
+                .filter((v): v is FeedPostSlice => !!v),
             })),
           ],
         }
@@ -520,7 +560,7 @@ function createApi({
 export function* findAllPostsInQueryData(
   queryClient: QueryClient,
   uri: string,
-): Generator<AppBskyFeedDefs.PostView, undefined> {
+): Generator<AnyPostView, undefined> {
   const atUri = new AtUri(uri)
 
   const queryDatas = queryClient.getQueriesData<
@@ -542,7 +582,7 @@ export function* findAllPostsInQueryData(
         if (quotedPost && didOrHandleUriMatches(atUri, quotedPost)) {
           yield embedViewRecordToPostView(quotedPost)
         }
-
+        // Duplication here?
         if (AppBskyFeedDefs.isPostView(item.reply?.parent)) {
           if (didOrHandleUriMatches(atUri, item.reply.parent)) {
             yield item.reply.parent
@@ -585,6 +625,7 @@ export function* findAllProfilesInQueryData(
     if (!queryData?.pages) {
       continue
     }
+    // update these
     for (const page of queryData?.pages) {
       for (const item of page.feed) {
         if (item.post.author.did === did) {
@@ -594,16 +635,11 @@ export function* findAllProfilesInQueryData(
         if (quotedPost?.author.did === did) {
           yield quotedPost.author
         }
-        if (
-          AppBskyFeedDefs.isPostView(item.reply?.parent) &&
-          item.reply?.parent?.author.did === did
-        ) {
+        // TODO: update
+        if (item.reply?.parent?.author.did === did) {
           yield item.reply.parent.author
         }
-        if (
-          AppBskyFeedDefs.isPostView(item.reply?.root) &&
-          item.reply?.root?.author.did === did
-        ) {
+        if (item.reply?.root?.author.did === did) {
           yield item.reply.root.author
         }
       }

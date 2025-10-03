@@ -4,6 +4,7 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   type AppBskyFeedThreadgate,
+  type AppFoodiosFeedDefs,
   AtUri,
   RichText as RichTextAPI,
 } from '@atproto/api'
@@ -11,7 +12,13 @@ import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
-import {branding} from '#/lib/constants'
+import {
+  isRecipePostView,
+  postHref,
+  postRevisionState,
+  recipePostSummaryRichText,
+  recordText,
+} from '#/lib/api/feed/utils'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -34,6 +41,7 @@ import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import {type PostSource} from '#/state/unstable-post-source'
 import {PostThreadFollowBtn} from '#/view/com/post-thread/PostThreadFollowBtn'
+import {RevisionState} from '#/view/com/posts/RevisionState'
 import {formatCount} from '#/view/com/util/numeric/format'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
 import {
@@ -175,6 +183,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
 }) {
+  // TODO: display that the post was edited
   const t = useTheme()
   const {_, i18n} = useLingui()
   const {openComposer} = useOpenComposer()
@@ -188,11 +197,15 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const {isActive: live} = useActorStatus(post.author)
   const richText = useMemo(
     () =>
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
-      }),
-    [record],
+      isRecipePostView(post)
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(post.record.revisionContent),
+          })
+        : new RichTextAPI({
+            text: record.text,
+            facets: record.facets,
+          }),
+    [record, post],
   )
 
   const threadRootUri = record.reply?.root?.uri || post.uri
@@ -200,16 +213,13 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const isThreadAuthor = getThreadAuthor(post, record) === currentAccount?.did
 
   const likesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'liked-by')
+    return postHref(post.author, post.uri, 'liked-by')
   }, [post.uri, post.author])
   const repostsHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'reposted-by')
+    return postHref(post.author, post.uri, 'reposted-by')
   }, [post.uri, post.author])
   const quotesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'quotes')
+    return postHref(post.author, post.uri, 'quotes')
   }, [post.uri, post.author])
 
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
@@ -247,11 +257,18 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   }, [postSource])
 
   const onPressReply = useCallback(() => {
+    const text = isRecipePostView(post)
+      ? recipePostSummaryRichText(post.record.revisionContent)
+      : record.text
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        text: record.text,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
+        text,
         author: post.author,
         embed: post.embed,
         moderation,
@@ -384,7 +401,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {richText?.text ? (
+            {record.$type === 'app.foodios.feed.defs#recipeRevisionView' ? (
+              <RecipeThreadItem revision={record} />
+            ) : richText?.text ? (
               <RichText
                 enableTags
                 selectable
@@ -501,6 +520,47 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   )
 })
 
+function RecipeThreadItem({
+  revision,
+}: {
+  revision: AppFoodiosFeedDefs.RecipeRevisionView
+}) {
+  const record = revision.revisionContent
+
+  return (
+    <View>
+      <div>{record.title}</div>
+      <div>{record.text}</div>
+      <div>
+        <strong>
+          <Text>Ingredients</Text>
+        </strong>
+        <table>
+          <tbody>
+            {record.ingredients.map((ingredient, i) => {
+              return (
+                <tr key={i}>
+                  <td>{ingredient.name}</td>
+                  <td>{ingredient.quantity}</td>
+                  <td>{ingredient.unit}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+        <strong>
+          <Text>Steps</Text>
+        </strong>
+        <ol>
+          {record.steps.map((step, i) => {
+            return <li key={i}>{step.text}</li>
+          })}
+        </ol>
+      </div>
+    </View>
+  )
+}
+
 function ExpandedPostDetails({
   post,
   isThreadAuthor,
@@ -515,7 +575,7 @@ function ExpandedPostDetails({
   const langPrefs = useLanguagePrefs()
 
   const translatorUrl = getTranslatorLink(
-    post.record?.text || '',
+    recordText(post),
     langPrefs.primaryLanguage,
   )
   const needsTranslation = useMemo(
@@ -531,7 +591,6 @@ function ExpandedPostDetails({
     (e: GestureResponderEvent) => {
       e.preventDefault()
       openLink(translatorUrl, true)
-
       if (
         bsky.dangerousIsType<AppBskyFeedPost.Record>(
           post.record,
@@ -544,11 +603,14 @@ function ExpandedPostDetails({
           textLength: post.record.text.length,
         })
       }
+      // TODO add metric for recipe
 
       return false
     },
     [openLink, translatorUrl, langPrefs, post],
   )
+
+  const revisionState = postRevisionState(post)
 
   return (
     <View style={[a.gap_md, a.pt_md, a.align_start]}>
@@ -575,6 +637,7 @@ function ExpandedPostDetails({
             </InlineLinkText>
           </>
         )}
+        <RevisionState state={revisionState} />
       </View>
     </View>
   )
@@ -649,7 +712,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
           <Trans>
             This post claims to have been created on{' '}
             <RNText style={[a.font_bold]}>{niceDate(i18n, createdAt)}</RNText>,
-            but was first seen by {branding.naming.app_name} on{' '}
+            but was first seen by Bluesky on{' '}
             <RNText style={[a.font_bold]}>{niceDate(i18n, indexedAt)}</RNText>.
           </Trans>
         </Prompt.DescriptionText>
@@ -661,7 +724,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
             a.pb_xl,
           ]}>
           <Trans>
-            {branding.naming.app_name} cannot confirm the authenticity of the claimed date.
+            Bluesky cannot confirm the authenticity of the claimed date.
           </Trans>
         </Text>
         <Prompt.Actions>

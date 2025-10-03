@@ -464,6 +464,43 @@ function NavItem({count, hasNew, href, icon, iconFilled, label}: NavItemProps) {
   )
 }
 
+// TODO: look at ComposeBtn - why is fetch handle logic required?
+function ComposeRecipeBtn() {
+  const {currentAccount} = useSession()
+  const {openComposer} = useOpenComposer()
+
+  const {_} = useLingui()
+
+  const {leftNavMinimal} = useLayoutBreakpoints()
+
+  const onPressCompose = async () => openComposer({type: 'recipe'})
+
+  if (leftNavMinimal) {
+    return null
+  }
+
+  if (!currentAccount) {
+    return null
+  }
+
+  return (
+    <View style={[a.flex_row, a.pl_md, a.pt_xl]}>
+      <Button
+        label={_(msg`Compose new recipe`)}
+        onPress={onPressCompose}
+        size="large"
+        variant="solid"
+        color="primary"
+        style={[a.rounded_full]}>
+        <ButtonIcon icon={EditBig} position="left" />
+        <ButtonText>
+          <Trans context="action">New Recipe</Trans>
+        </ButtonText>
+      </Button>
+    </View>
+  )
+}
+
 function ComposeBtn() {
   const {currentAccount} = useSession()
   const {getState} = useNavigation()
@@ -507,7 +544,7 @@ function ComposeBtn() {
   }
 
   const onPressCompose = async () =>
-    openComposer({mention: await getProfileHandle()})
+    openComposer({mention: await getProfileHandle(), type: 'post'})
 
   if (leftNavMinimal) {
     return null
@@ -730,6 +767,7 @@ export function DesktopLeftNav() {
           />
 
           <ComposeBtn />
+          <ComposeRecipeBtn />
         </>
       )}
     </View>

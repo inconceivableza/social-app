@@ -1,12 +1,11 @@
 import {memo, useMemo} from 'react'
-import {AtUri} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 import type React from 'react'
 
+import {postHref} from '#/lib/api/feed/utils'
 import {CHAT_DISABLED} from '#/lib/constants'
-import {makeProfileLink} from '#/lib/routes/links'
 import {type NavigationProp} from '#/lib/routes/types'
 import {shareText, shareUrl} from '#/lib/sharing'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -47,8 +46,7 @@ let ShareMenuItems = ({
   const postAuthor = useProfileShadow(post.author)
 
   const href = useMemo(() => {
-    const urip = new AtUri(postUri)
-    return makeProfileLink(postAuthor, 'post', urip.rkey)
+    return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
 
   const hideInPWI = useMemo(() => {

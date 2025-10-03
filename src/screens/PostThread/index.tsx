@@ -3,6 +3,7 @@ import {useWindowDimensions, View} from 'react-native'
 import Animated, {useAnimatedStyle} from 'react-native-reanimated'
 import {Trans} from '@lingui/macro'
 
+import {isRecipePostView, recipePostSummaryRichText} from '#/lib/api/feed/utils'
 import {useInitialNumToRender} from '#/lib/hooks/useInitialNumToRender'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useFeedFeedback} from '#/state/feed-feedback'
@@ -13,6 +14,7 @@ import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useShellLayout} from '#/state/shell/shell-layout'
 import {useUnstablePostSource} from '#/state/unstable-post-source'
 import {PostThreadComposePrompt} from '#/view/com/post-thread/PostThreadComposePrompt'
+import {PostAuthorDidProvider} from '#/view/com/posts/PostContext'
 import {List, type ListMethods} from '#/view/com/util/List'
 import {HeaderDropdown} from '#/screens/PostThread/components/HeaderDropdown'
 import {ThreadError} from '#/screens/PostThread/components/ThreadError'
@@ -54,6 +56,7 @@ export function PostThread({uri}: {uri: string}) {
    * One query to rule them all
    */
   const thread = usePostThread({anchor: uri})
+  console.log(thread)
   const {anchor, hasParents} = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     let hasParents = false
@@ -83,11 +86,19 @@ export function PostThread({uri}: {uri: string}) {
       return
     }
     const post = anchor.value.post
+    const text = isRecipePostView(post)
+      ? recipePostSummaryRichText(post.record.revisionContent)
+      : post.record.text
+
     openComposer({
+      type: 'post',
       replyTo: {
-        uri: anchor.uri,
+        uri: anchor.value.post.uri,
         cid: post.cid,
-        text: post.record.text,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
+        text,
         author: post.author,
         embed: post.embed,
         moderation: anchor.moderation,
@@ -368,6 +379,7 @@ export function PostThread({uri}: {uri: string}) {
         if (item.depth < 0) {
           return (
             <ThreadItemPost
+              anchor={anchor}
               item={item}
               threadgateRecord={thread.data.threadgate?.record ?? undefined}
               overrides={{
@@ -398,36 +410,45 @@ export function PostThread({uri}: {uri: string}) {
                 ref={anchorRef}
                 onLayout={() => setDeferParents(false)}
               />
-              <ThreadItemAnchor
-                item={item}
-                threadgateRecord={thread.data.threadgate?.record ?? undefined}
-                onPostSuccess={optimisticOnPostReply}
-                postSource={anchorPostSource}
-              />
+              <PostAuthorDidProvider did={item.value.post.author.did}>
+                <ThreadItemAnchor
+                  item={item}
+                  threadgateRecord={thread.data.threadgate?.record ?? undefined}
+                  onPostSuccess={optimisticOnPostReply}
+                  postSource={anchorPostSource}
+                />
+              </PostAuthorDidProvider>
             </View>
           )
         } else {
           if (thread.state.view === 'tree') {
             return (
-              <ThreadItemTreePost
-                item={item}
-                threadgateRecord={thread.data.threadgate?.record ?? undefined}
-                overrides={{
-                  moderation: thread.state.otherItemsVisible && item.depth > 0,
-                }}
-                onPostSuccess={optimisticOnPostReply}
-              />
+              <PostAuthorDidProvider did={item.value.post.author.did}>
+                <ThreadItemTreePost
+                  item={item}
+                  threadgateRecord={thread.data.threadgate?.record ?? undefined}
+                  overrides={{
+                    moderation:
+                      thread.state.otherItemsVisible && item.depth > 0,
+                  }}
+                  onPostSuccess={optimisticOnPostReply}
+                />
+              </PostAuthorDidProvider>
             )
           } else {
             return (
-              <ThreadItemPost
-                item={item}
-                threadgateRecord={thread.data.threadgate?.record ?? undefined}
-                overrides={{
-                  moderation: thread.state.otherItemsVisible && item.depth > 0,
-                }}
-                onPostSuccess={optimisticOnPostReply}
-              />
+              <PostAuthorDidProvider did={item.value.post.author.did}>
+                <ThreadItemPost
+                  anchor={anchor}
+                  item={item}
+                  threadgateRecord={thread.data.threadgate?.record ?? undefined}
+                  overrides={{
+                    moderation:
+                      thread.state.otherItemsVisible && item.depth > 0,
+                  }}
+                  onPostSuccess={optimisticOnPostReply}
+                />
+              </PostAuthorDidProvider>
             )
           }
         }
@@ -481,6 +502,7 @@ export function PostThread({uri}: {uri: string}) {
       onReplyToAnchor,
       gtMobile,
       anchorPostSource,
+      anchor,
     ],
   )
 

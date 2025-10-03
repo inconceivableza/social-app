@@ -1,9 +1,5 @@
 import {useEffect, useMemo, useState} from 'react'
-import {
-  AppBskyEmbedRecord,
-  AppBskyEmbedRecordWithMedia,
-  type AppBskyFeedDefs,
-} from '@atproto/api'
+import {AppBskyEmbedRecord, AppBskyEmbedRecordWithMedia} from '@atproto/api'
 import {type QueryClient} from '@tanstack/react-query'
 import EventEmitter from 'eventemitter3'
 
@@ -15,7 +11,7 @@ import {findAllPostsInQueryData as findAllPostsInQuoteQueryData} from '#/state/q
 import {findAllPostsInQueryData as findAllPostsInThreadQueryData} from '#/state/queries/post-thread'
 import {findAllPostsInQueryData as findAllPostsInSearchQueryData} from '#/state/queries/search-posts'
 import {findAllPostsInQueryData as findAllPostsInThreadV2QueryData} from '#/state/queries/usePostThread/queryCache'
-import {castAsShadow, type Shadow} from './types'
+import {type AnyPostView, castAsShadow, type Shadow} from './types'
 export type {Shadow} from './types'
 
 export interface PostShadow {
@@ -29,14 +25,11 @@ export interface PostShadow {
 export const POST_TOMBSTONE = Symbol('PostTombstone')
 
 const emitter = new EventEmitter()
-const shadows: WeakMap<
-  AppBskyFeedDefs.PostView,
-  Partial<PostShadow>
-> = new WeakMap()
+const shadows: WeakMap<AnyPostView, Partial<PostShadow>> = new WeakMap()
 
 export function usePostShadow(
-  post: AppBskyFeedDefs.PostView,
-): Shadow<AppBskyFeedDefs.PostView> | typeof POST_TOMBSTONE {
+  post: AnyPostView,
+): Shadow<AnyPostView> | typeof POST_TOMBSTONE {
   const [shadow, setShadow] = useState(() => shadows.get(post))
   const [prevPost, setPrevPost] = useState(post)
   if (post !== prevPost) {
@@ -46,6 +39,7 @@ export function usePostShadow(
 
   useEffect(() => {
     function onUpdate() {
+      console.log(shadows.get(post))
       setShadow(shadows.get(post))
     }
     emitter.addListener(post.uri, onUpdate)
@@ -64,14 +58,14 @@ export function usePostShadow(
 }
 
 function mergeShadow(
-  post: AppBskyFeedDefs.PostView,
+  post: AnyPostView,
   shadow: Partial<PostShadow>,
-): Shadow<AppBskyFeedDefs.PostView> | typeof POST_TOMBSTONE {
+): Shadow<AnyPostView> | typeof POST_TOMBSTONE {
   if (shadow.isDeleted) {
     return POST_TOMBSTONE
   }
-
   let likeCount = post.likeCount ?? 0
+
   if ('likeUri' in shadow) {
     const wasLiked = !!post.viewer?.like
     const isLiked = !!shadow.likeUri
@@ -138,7 +132,7 @@ export function updatePostShadow(
 function* findPostsInCache(
   queryClient: QueryClient,
   uri: string,
-): Generator<AppBskyFeedDefs.PostView, void> {
+): Generator<AnyPostView, void> {
   for (let post of findAllPostsInFeedQueryData(queryClient, uri)) {
     yield post
   }
@@ -146,7 +140,7 @@ function* findPostsInCache(
     yield post
   }
   for (let node of findAllPostsInThreadQueryData(queryClient, uri)) {
-    if (node.type === 'post') {
+    if (node.type === 'post' || node.type === 'recipe') {
       yield node.post
     }
   }

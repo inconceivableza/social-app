@@ -26,6 +26,7 @@ import {Outlet as PortalOutlet} from '#/components/Portal'
 import {FlatNavigator, RoutesContainer} from '#/Navigation'
 import {Composer} from './Composer.web'
 import {DrawerContent} from './Drawer'
+import {RecipeComposer} from './RecipeComposer.web'
 
 function ShellInner() {
   const t = useTheme()
@@ -67,6 +68,7 @@ function ShellInner() {
         <FlatNavigator />
       </ErrorBoundary>
       <Composer winHeight={0} />
+      <RecipeComposer winHeight={0} />
       <ModalsContainer />
       <MutedWordsDialog />
       <SigninDialog />

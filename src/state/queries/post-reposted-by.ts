@@ -1,8 +1,11 @@
-import {AppBskyActorDefs, AppBskyFeedGetRepostedBy} from '@atproto/api'
 import {
-  InfiniteData,
-  QueryClient,
-  QueryKey,
+  type AppBskyActorDefs,
+  type AppBskyFeedGetRepostedBy,
+} from '@atproto/api'
+import {
+  type InfiniteData,
+  type QueryClient,
+  type QueryKey,
   useInfiniteQuery,
 } from '@tanstack/react-query'
 
@@ -54,8 +57,8 @@ export function* findAllProfilesInQueryData(
     }
     for (const page of queryData?.pages) {
       for (const repostedBy of page.repostedBy) {
-        if (repostedBy.did === did) {
-          yield repostedBy
+        if (repostedBy.profileView.did === did) {
+          yield repostedBy.profileView
         }
       }
     }

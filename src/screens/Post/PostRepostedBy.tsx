@@ -1,8 +1,12 @@
 import React from 'react'
+import {ids} from '@atproto/api/client/lexicons'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 
-import {CommonNavigatorParams, NativeStackScreenProps} from '#/lib/routes/types'
+import {
+  type CommonNavigatorParams,
+  type NativeStackScreenProps,
+} from '#/lib/routes/types'
 import {makeRecordUri} from '#/lib/strings/url-helpers'
 import {usePostThreadQuery} from '#/state/queries/post-thread'
 import {useSetMinimalShellMode} from '#/state/shell'
@@ -11,14 +15,19 @@ import * as Layout from '#/components/Layout'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostRepostedBy'>
 export const PostRepostedByScreen = ({route}: Props) => {
-  const {name, rkey} = route.params
-  const uri = makeRecordUri(name, 'app.bsky.feed.post', rkey)
+  const {name, rkey, postType} = route.params
+  const collection =
+    postType === 'recipePost'
+      ? ids.AppFoodiosFeedRecipePost
+      : ids.AppBskyFeedPost
+  const uri = makeRecordUri(name, collection, rkey)
   const setMinimalShellMode = useSetMinimalShellMode()
   const {data: post} = usePostThreadQuery(uri)
 
   let quoteCount
-  if (post?.thread.type === 'post') {
-    quoteCount = post.thread.post.repostCount
+  const threadType = post?.thread.type
+  if (threadType === 'post' || threadType === 'recipe') {
+    quoteCount = post?.thread.post.repostCount
   }
 
   useFocusEffect(
@@ -49,7 +58,14 @@ export const PostRepostedByScreen = ({route}: Props) => {
         </Layout.Header.Content>
         <Layout.Header.Slot />
       </Layout.Header.Outer>
-      <PostRepostedByComponent uri={uri} />
+      <PostRepostedByComponent
+        uri={uri}
+        revisionUri={
+          post?.thread.type === 'recipe'
+            ? post.thread.record.selectedRevisionUri
+            : undefined
+        }
+      />
     </Layout.Screen>
   )
 }

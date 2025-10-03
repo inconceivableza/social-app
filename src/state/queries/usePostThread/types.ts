@@ -5,6 +5,7 @@ import {
   type AppBskyUnspeccedDefs,
   type AppBskyUnspeccedGetPostThreadOtherV2,
   type AppBskyUnspeccedGetPostThreadV2,
+  type AppFoodiosFeedDefs,
   type ModerationDecision,
 } from '@atproto/api'
 
@@ -47,7 +48,7 @@ export type ThreadItem =
       depth: number
       value: Omit<AppBskyUnspeccedDefs.ThreadItemPost, 'post'> & {
         post: Omit<AppBskyFeedDefs.PostView, 'record'> & {
-          record: AppBskyFeedPost.Record
+          record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
         }
       }
       isBlurred: boolean

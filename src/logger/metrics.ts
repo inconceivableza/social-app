@@ -221,6 +221,7 @@ export type MetricEvents = {
   'post:unmute': {}
   'post:pin': {}
   'post:unpin': {}
+  'post:edit': {}
   'profile:follow': {
     didBecomeMutual: boolean | undefined
     followeeClout: number | undefined

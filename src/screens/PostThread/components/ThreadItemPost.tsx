@@ -6,18 +6,24 @@ import {
   AtUri,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {Trans} from '@lingui/macro'
+import {msg, Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
+import {
+  isRecipePostView,
+  postHref,
+  recipePostSummaryRichText,
+} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {makeProfileLink} from '#/lib/routes/links'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
   type Shadow,
   usePostShadow,
 } from '#/state/cache/post-shadow'
+import {useModalControls} from '#/state/modals'
 import {type ThreadItem} from '#/state/queries/usePostThread/types'
 import {useSession} from '#/state/session'
 import {type OnPostSuccessData} from '#/state/shell/composer'
@@ -30,7 +36,9 @@ import {
   REPLY_LINE_WIDTH,
 } from '#/screens/PostThread/const'
 import {atoms as a, useTheme} from '#/alf'
+import {Button, ButtonIcon} from '#/components/Button'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
+import {OutdatedIcon} from '#/components/icons/Outdated'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {LabelsOnMyPost} from '#/components/moderation/LabelsOnMe'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
@@ -52,6 +60,7 @@ export type ThreadItemPostProps = {
   }
   onPostSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
+  anchor?: Extract<ThreadItem, {type: 'threadPost'}>
 }
 
 export function ThreadItemPost({
@@ -59,6 +68,7 @@ export function ThreadItemPost({
   overrides,
   onPostSuccess,
   threadgateRecord,
+  anchor,
 }: ThreadItemPostProps) {
   const postShadow = usePostShadow(item.value.post)
 
@@ -73,6 +83,7 @@ export function ThreadItemPost({
       threadgateRecord={threadgateRecord}
       overrides={overrides}
       onPostSuccess={onPostSuccess}
+      anchor={anchor}
     />
   )
 }
@@ -181,6 +192,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   overrides,
   onPostSuccess,
   threadgateRecord,
+  anchor,
 }: ThreadItemPostProps & {
   postShadow: Shadow<AppBskyFeedDefs.PostView>
 }) {
@@ -193,19 +205,23 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const moderation = item.moderation
   const richText = useMemo(
     () =>
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
-      }),
-    [record],
+      isRecipePostView(post)
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(post.record.revisionContent),
+          })
+        : new RichTextAPI({
+            text: record.text,
+            facets: record.facets,
+          }),
+    [record, post],
   )
   const [limitLines, setLimitLines] = useState(
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
+
   const threadRootUri = record.reply?.root?.uri || post.uri
-  const postHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+  const href = useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
     threadgateRecord,
@@ -227,6 +243,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
@@ -244,13 +261,20 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   }, [setLimitLines])
 
   const {isActive: live} = useActorStatus(post.author)
-
+  const {openModal} = useModalControls()
+  const replyRef = item.value.post.record.reply
+  const anchorRevision = anchor?.value.post.record.selectedRevisionUri
+  const revisionMismatch =
+    anchorRevision &&
+    replyRef.root.revisionUri &&
+    anchorRevision !== replyRef.root.revisionUri
+  const {_} = useLingui()
   return (
     <SubtleHover>
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
-          href={postHref}
+          href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
           iconSize={LINEAR_AVI_WIDTH}
@@ -290,15 +314,30 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 author={post.author}
                 moderation={moderation}
                 timestamp={post.indexedAt}
-                postHref={postHref}
-                style={[a.pb_xs]}
-              />
+                postHref={href}
+                style={[a.pb_xs]}>
+                {revisionMismatch && (
+                  <Button
+                    style={[a.pr_sm]}
+                    label={_(msg`Show original version`)}
+                    onPress={() => {
+                      // TODO: add api method for retrieving revision and remove all query param logic from getPosts
+                      openModal({
+                        name: 'recipe-revision-view',
+                        uri: `${anchor.uri}?revision=${new AtUri(replyRef.root.revisionUri).rkey}`,
+                      })
+                    }}>
+                    <ButtonIcon size="sm" icon={OutdatedIcon} />
+                  </Button>
+                )}
+              </PostMeta>
               <LabelsOnMyPost post={post} style={[a.pb_xs]} />
               <PostAlerts
                 modui={moderation.ui('contentList')}
                 style={[a.pb_2xs]}
                 additionalCauses={additionalPostAlerts}
               />
+
               {richText?.text ? (
                 <>
                   <RichText

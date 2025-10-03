@@ -1,9 +1,10 @@
 import React from 'react'
+import {Alert} from 'react-native'
 import * as Linking from 'expo-linking'
 
 import {branding, envConfig} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {logEvent} from '#/lib/statsig/statsig'
+import {logger} from '#/logger'
 import {isNative} from '#/platform/detection'
 import {useSession} from '#/state/session'
 import {useCloseAllActiveElements} from '#/state/util'
@@ -13,8 +14,9 @@ import {
 } from '#/components/ageAssurance/AgeAssuranceRedirectDialog'
 import {useIntentDialogs} from '#/components/intents/IntentDialogs'
 import {Referrer} from '../../../modules/expo-bluesky-swiss-army'
+import {useApplyPullRequestOTAUpdate} from './useOTAUpdates'
 
-type IntentType = 'compose' | 'verify-email' | 'age-assurance'
+type IntentType = 'compose' | 'verify-email' | 'age-assurance' | 'apply-ota'
 
 const VALID_IMAGE_REGEX = /^[\w.:\-_/]+\|\d+(\.\d+)?\|\d+(\.\d+)?$/
 const intentScheme = branding.code.app_slug_scheme
@@ -29,12 +31,13 @@ export function useIntentHandler() {
   const ageAssuranceRedirectDialogControl =
     useAgeAssuranceRedirectDialogControl()
   const {currentAccount} = useSession()
+  const {tryApplyUpdate} = useApplyPullRequestOTAUpdate()
 
   React.useEffect(() => {
     const handleIncomingURL = (url: string) => {
       const referrerInfo = Referrer.getReferrerInfo()
       if (referrerInfo && referrerInfo.hostname !== envConfig.SOCIAL_APP_HOST) {
-        logEvent('deepLink:referrerReceived', {
+        logger.metric('deepLink:referrerReceived', {
           to: url,
           referrer: referrerInfo?.referrer,
           hostname: referrerInfo?.hostname,
@@ -97,6 +100,14 @@ export function useIntentHandler() {
           }
           return
         }
+        case 'apply-ota': {
+          const channel = params.get('channel')
+          if (!channel) {
+            Alert.alert('Error', 'No channel provided to look for.')
+          } else {
+            tryApplyUpdate(channel)
+          }
+        }
         default: {
           return
         }
@@ -116,6 +127,7 @@ export function useIntentHandler() {
     verifyEmailIntent,
     ageAssuranceRedirectDialogControl,
     currentAccount,
+    tryApplyUpdate,
   ])
 }
 
@@ -141,6 +153,7 @@ export function useComposeIntent() {
       if (videoUri) {
         const [uri, width, height] = videoUri.split('|')
         openComposer({
+          type: 'post',
           text: text ?? undefined,
           videoUri: {uri, width: Number(width), height: Number(height)},
         })
@@ -166,6 +179,7 @@ export function useComposeIntent() {
 
       setTimeout(() => {
         openComposer({
+          type: 'post',
           text: text ?? undefined,
           imageUris: isNative ? imageUris : undefined,
         })

@@ -9840,7 +9840,7 @@ msgstr "¿Cómo quieres llamar a tu paquete de inicio?"
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:774
-msgid "What's up?"
+msgid "What's going down?"
 msgstr "¿Qué hay de nuevo?"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:146

@@ -4,20 +4,23 @@ import {
   type $Typed,
   type AppBskyFeedDefs,
   AppBskyFeedPost,
-  AtUri,
+  AppFoodiosFeedDefs,
   moderatePost,
   RichText as RichTextAPI,
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {postHref, recipePostSummaryRichText} from '#/lib/api/feed/utils'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
+import {isRecipeUri} from '#/lib/strings/url-helpers'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
+import {PostAuthorDidProvider} from '#/view/com/posts/PostContext'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
+import {Text} from '#/view/com/util/text/Text'
 import {atoms as a, useTheme} from '#/alf'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
@@ -225,6 +228,7 @@ export function QuoteEmbed({
   embed: EmbedType<'post'>
   viewContext?: QuoteEmbedViewContext
 }) {
+  // TODO pass author down to video
   const moderationOpts = useModerationOpts()
   const quote = React.useMemo<$Typed<AppBskyFeedDefs.PostView>>(
     () => ({
@@ -242,30 +246,48 @@ export function QuoteEmbed({
   const t = useTheme()
   const queryClient = useQueryClient()
   const pal = usePalette('default')
-  const itemUrip = new AtUri(quote.uri)
-  const itemHref = makeProfileLink(quote.author, 'post', itemUrip.rkey)
+  const itemHref = postHref(quote.author, quote.uri)
   const itemTitle = `Post by ${quote.author.handle}`
-
   const richText = React.useMemo(() => {
     if (
-      !bsky.dangerousIsType<AppBskyFeedPost.Record>(
+      bsky.dangerousIsType<AppBskyFeedPost.Record>(
         quote.record,
         AppBskyFeedPost.isRecord,
       )
-    )
+    ) {
+      const {text, facets} = quote.record
+      return text.trim()
+        ? new RichTextAPI({text: text, facets: facets})
+        : undefined
+    } else if (
+      bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
+        quote.record,
+        AppFoodiosFeedDefs.isRecipeRevisionView,
+      )
+    ) {
+      const {text, title} = quote.record.revisionContent
+      return text.trim() || title.trim()
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(quote.record.revisionContent),
+          })
+        : undefined
+    } else {
       return undefined
-    const {text, facets} = quote.record
-    return text.trim()
-      ? new RichTextAPI({text: text, facets: facets})
-      : undefined
+    }
   }, [quote.record])
 
   const onBeforePress = React.useCallback(() => {
     unstableCacheProfileView(queryClient, quote.author)
     onOpen?.()
   }, [queryClient, quote.author, onOpen])
-
   const [hover, setHover] = React.useState(false)
+
+  const isOutdated =
+    bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
+      quote.record,
+      AppFoodiosFeedDefs.isRecipeRevisionView,
+    ) &&
+    quote.record.selectedRevisionUri !== quote.record.revisionRefs.at(-1)?.uri
   return (
     <View
       style={[a.mt_sm]}
@@ -291,8 +313,14 @@ export function QuoteEmbed({
                   moderation={moderation}
                   showAvatar
                   postHref={itemHref}
-                  timestamp={quote.indexedAt}
-                />
+                  timestamp={quote.indexedAt}>
+                  {isOutdated && (
+                    <Text style={[a.pl_xs, t.atoms.text]}>
+                      <Trans>Outdated</Trans>
+                    </Text>
+                  )}
+                </PostMeta>
+                {isRecipeUri(quote.uri) ? <Text emoji>🍴</Text> : null}
               </View>
               {moderation ? (
                 <PostAlerts
@@ -309,15 +337,17 @@ export function QuoteEmbed({
                 />
               ) : null}
               {quote.embed && (
-                <Embed
-                  embed={quote.embed}
-                  moderation={moderation}
-                  isWithinQuote={parentIsWithinQuote ?? true}
-                  // already within quote? override nested
-                  allowNestedQuotes={
-                    parentIsWithinQuote ? false : parentAllowNestedQuotes
-                  }
-                />
+                <PostAuthorDidProvider did={quote.author.did}>
+                  <Embed
+                    embed={quote.embed}
+                    moderation={moderation}
+                    isWithinQuote={parentIsWithinQuote ?? true}
+                    // already within quote? override nested
+                    allowNestedQuotes={
+                      parentIsWithinQuote ? false : parentAllowNestedQuotes
+                    }
+                  />
+                </PostAuthorDidProvider>
               )}
             </Link>
           </>

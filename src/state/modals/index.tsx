@@ -47,6 +47,11 @@ export interface UserFeedbackModal {
   name: 'user-feedback'
 }
 
+export interface RecipeRevisionViewModal {
+  name: 'recipe-revision-view'
+  uri: string
+}
+
 export type Modal =
   // Account
   | DeleteAccountModal
@@ -64,6 +69,9 @@ export type Modal =
   | WaitlistModal
   | InviteCodesModal
   | UserFeedbackModal
+
+  // Recipes
+  | RecipeRevisionViewModal
 
 const ModalContext = React.createContext<{
   isModalActive: boolean

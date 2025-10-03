@@ -3,16 +3,18 @@ import {LayoutAnimation, View} from 'react-native'
 import {
   AppBskyFeedPost,
   AppBskyRichtextFacet,
-  AtUri,
   moderatePost,
   RichText as RichTextAPI,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native'
+import {type RouteProp, useNavigation, useRoute} from '@react-navigation/native'
 
-import {makeProfileLink} from '#/lib/routes/links'
-import {CommonNavigatorParams, NavigationProp} from '#/lib/routes/types'
+import {postHref} from '#/lib/api/feed/utils'
+import {
+  type CommonNavigatorParams,
+  type NavigationProp,
+} from '#/lib/routes/types'
 import {
   convertBskyAppUrlIfNeeded,
   isBskyPostUrl,
@@ -154,8 +156,7 @@ export function MessageInputEmbed({
       )
       break
     case 'success':
-      const itemUrip = new AtUri(post.uri)
-      const itemHref = makeProfileLink(post.author, 'post', itemUrip.rkey)
+      const itemHref = postHref(post.author, post.uri)
 
       if (!post || !moderation || !rt || !record) {
         return null

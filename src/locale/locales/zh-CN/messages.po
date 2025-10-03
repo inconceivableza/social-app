@@ -9840,7 +9840,7 @@ msgstr "你希望如何命名你的新手包？"
 #: src/view/com/auth/SplashScreen.tsx:38
 #: src/view/com/auth/SplashScreen.web.tsx:99
 #: src/view/com/composer/Composer.tsx:774
-msgid "What's up?"
+msgid "What's going down?"
 msgstr "发生了什么新鲜事？"
 
 #: src/components/dialogs/nuxs/InitialVerificationAnnouncement.tsx:146

@@ -1,10 +1,10 @@
 import {
   AppBskyFeedDefs,
-  AppBskyFeedGetAuthorFeed as GetAuthorFeed,
-  BskyAgent,
+  type AppBskyFeedGetAuthorFeed as GetAuthorFeed,
+  type BskyAgent,
 } from '@atproto/api'
 
-import {FeedAPI, FeedAPIResponse} from './types'
+import {type FeedAPI, type FeedAPIResponse} from './types'
 
 export class AuthorFeedAPI implements FeedAPI {
   agent: BskyAgent
@@ -78,13 +78,12 @@ export class AuthorFeedAPI implements FeedAPI {
 
 function isAuthorReplyChain(
   actor: string,
-  post: AppBskyFeedDefs.FeedViewPost,
+  {post, reply}: AppBskyFeedDefs.FeedViewPost,
   posts: AppBskyFeedDefs.FeedViewPost[],
 ): boolean {
-  // current post is by a different user (shouldn't happen)
-  if (post.post.author.did !== actor) return false
+  if (post.author.did !== actor) return false
 
-  const replyParent = post.reply?.parent
+  const replyParent = reply?.parent
 
   if (AppBskyFeedDefs.isPostView(replyParent)) {
     // reply parent is by a different user
