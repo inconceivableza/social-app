@@ -2,7 +2,6 @@ import React from 'react'
 import {
   type AppBskyActorDefs,
   type AppBskyFeedDefs,
-  type AppBskyFeedDefs,
   type AppBskyUnspeccedGetPostThreadV2,
   type ModerationDecision,
 } from '@atproto/api'
