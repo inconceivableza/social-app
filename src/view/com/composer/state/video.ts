@@ -1,6 +1,6 @@
 import {type ImagePickerAsset} from 'expo-image-picker'
 import {type AppBskyVideoDefs, type BlobRef, type BskyAgent} from '@atproto/api'
-import {type JobStatus} from '@atproto/api/dist/client/types/app/bsky/video/defs'
+import {type JobStatus} from '@atproto/api/client/types/app/bsky/video/defs'
 import {type I18n} from '@lingui/core'
 import {msg} from '@lingui/macro'
 

@@ -6,7 +6,7 @@ import {
   AppBskyGraphStarterpack,
   type Un$Typed,
 } from '@atproto/api'
-import {type SavedFeed} from '@atproto/api/dist/client/types/app/bsky/actor/defs'
+import {type SavedFeed} from '@atproto/api/client/types/app/bsky/actor/defs'
 import {TID} from '@atproto/common-web'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
