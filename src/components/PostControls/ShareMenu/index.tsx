@@ -9,6 +9,7 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import type React from 'react'
 
+import {postHref} from '#/lib/api/feed/utils'
 import {shareUrl} from '#/lib/sharing'
 import {useGate} from '#/lib/statsig/statsig'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -22,7 +23,6 @@ import {useMenuControl} from '#/components/Menu'
 import * as Menu from '#/components/Menu'
 import {PostControlButton, PostControlButtonIcon} from '../PostControlButton'
 import {ShareMenuItems} from './ShareMenuItems'
-import { postHref } from '#/lib/api/feed/utils'
 
 let ShareMenuButton = ({
   testID,

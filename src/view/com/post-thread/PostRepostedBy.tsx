@@ -1,5 +1,6 @@
 import {useCallback, useMemo, useState} from 'react'
-import {AppBskyActorDefs as ActorDefs} from '@atproto/api'
+import {type AppBskyActorDefs as ActorDefs} from '@atproto/api'
+import {type RepostInfo} from '@atproto/api/client/types/app/bsky/feed/getRepostedBy'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -11,14 +12,18 @@ import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {ProfileCardWithFollowBtn} from '#/view/com/profile/ProfileCard'
 import {List} from '#/view/com/util/List'
 import {ListFooter, ListMaybePlaceholder} from '#/components/Lists'
-import { RepostInfo } from '@atproto/api/client/types/app/bsky/feed/getRepostedBy'
-
 
 function keyExtractor(item: ActorDefs.ProfileViewBasic) {
   return item.did
 }
 
-export function PostRepostedBy({ uri, revisionUri }: { uri: string, revisionUri?: string }) {
+export function PostRepostedBy({
+  uri,
+  revisionUri,
+}: {
+  uri: string
+  revisionUri?: string
+}) {
   const {_} = useLingui()
   const initialNumToRender = useInitialNumToRender()
 
@@ -39,21 +44,20 @@ export function PostRepostedBy({ uri, revisionUri }: { uri: string, revisionUri?
     refetch,
   } = usePostRepostedByQuery(resolvedUri?.uri)
 
-  const renderItem = useCallback(({
-    item,
-    index,
-  }: {
-    item: RepostInfo
-    index: number
-  }) => {
-    return <div key={item.profileView.did}>
-      <ProfileCardWithFollowBtn
-        profile={item.profileView}
-        noBorder={index === 0}
-      />
-      {item.revisionUri !== revisionUri ? "outdated" : null}
-    </div>
-  }, [revisionUri])
+  const renderItem = useCallback(
+    ({item, index}: {item: RepostInfo; index: number}) => {
+      return (
+        <div key={item.profileView.did}>
+          <ProfileCardWithFollowBtn
+            profile={item.profileView}
+            noBorder={index === 0}
+          />
+          {item.revisionUri !== revisionUri ? 'outdated' : null}
+        </div>
+      )
+    },
+    [revisionUri],
+  )
 
   const isError = Boolean(resolveError || error)
 

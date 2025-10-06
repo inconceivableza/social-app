@@ -1,9 +1,5 @@
 import {useEffect, useMemo, useState} from 'react'
-import {
-  AppBskyEmbedRecord,
-  AppBskyEmbedRecordWithMedia,
-  type AppBskyFeedDefs,
-} from '@atproto/api'
+import {AppBskyEmbedRecord, AppBskyEmbedRecordWithMedia} from '@atproto/api'
 import {type QueryClient} from '@tanstack/react-query'
 import EventEmitter from 'eventemitter3'
 
@@ -15,7 +11,7 @@ import {findAllPostsInQueryData as findAllPostsInQuoteQueryData} from '#/state/q
 import {findAllPostsInQueryData as findAllPostsInThreadQueryData} from '#/state/queries/post-thread'
 import {findAllPostsInQueryData as findAllPostsInSearchQueryData} from '#/state/queries/search-posts'
 import {findAllPostsInQueryData as findAllPostsInThreadV2QueryData} from '#/state/queries/usePostThread/queryCache'
-import { AnyPostView, castAsShadow, type Shadow } from './types'
+import {type AnyPostView, castAsShadow, type Shadow} from './types'
 export type {Shadow} from './types'
 
 export interface PostShadow {
@@ -29,10 +25,7 @@ export interface PostShadow {
 export const POST_TOMBSTONE = Symbol('PostTombstone')
 
 const emitter = new EventEmitter()
-const shadows: WeakMap<
-  AnyPostView,
-  Partial<PostShadow>
-> = new WeakMap()
+const shadows: WeakMap<AnyPostView, Partial<PostShadow>> = new WeakMap()
 
 export function usePostShadow(
   post: AnyPostView,
@@ -147,7 +140,7 @@ function* findPostsInCache(
     yield post
   }
   for (let node of findAllPostsInThreadQueryData(queryClient, uri)) {
-    if (node.type === 'post' || node.type === "recipe") {
+    if (node.type === 'post' || node.type === 'recipe') {
       yield node.post
     }
   }

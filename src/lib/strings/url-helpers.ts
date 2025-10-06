@@ -1,4 +1,5 @@
 import {AtUri} from '@atproto/api'
+import {ids} from '@atproto/api/client/lexicons'
 import psl from 'psl'
 import TLDs from 'tlds'
 
@@ -6,14 +7,15 @@ import {branding, BSKY_SERVICE, envConfig} from '#/lib/constants'
 import {isInvalidHandle} from '#/lib/strings/handles'
 import {startUriToStarterPackUri} from '#/lib/strings/starter-pack'
 import {logger} from '#/logger'
-import { ids } from '@atproto/api/client/lexicons'
 
 function getTrustedHosts() {
   return [
     envConfig.SOCIAL_APP_HOST.replace('.', '\\.'),
     envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '').replace('.', '\\.'),
     'blueskyweb\\.xyz',
-    envConfig.HELP_DESK_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace('.', '\\.'),
+    envConfig.HELP_DESK_URL.replace(/^https?:\/\//, '')
+      .replace(/\/.*$/, '')
+      .replace('.', '\\.'),
     ...(__DEV__ ? ['localhost:19006', 'localhost:8100'] : []),
   ]
 }
@@ -244,8 +246,8 @@ export function postUriToRelativePath(
   options?: {handle?: string},
 ): string | undefined {
   try {
-    const { hostname, rkey, collection } = new AtUri(uri)
-    const postType = collection.split(".").at(-1)
+    const {hostname, rkey, collection} = new AtUri(uri)
+    const postType = collection.split('.').at(-1)
     const handleOrDid =
       options?.handle && !isInvalidHandle(options.handle)
         ? options.handle
@@ -335,7 +337,9 @@ export function splitApexDomain(hostname: string): [string, string] {
 }
 
 export function createBskyAppAbsoluteUrl(path: string): string {
-  const sanitizedPath = path.replace(envConfig.SOCIAL_APP_URL, '').replace(/^\/+/, '')
+  const sanitizedPath = path
+    .replace(envConfig.SOCIAL_APP_URL, '')
+    .replace(/^\/+/, '')
   return `${envConfig.SOCIAL_APP_URL.replace(/\/$/, '')}/${sanitizedPath}`
 }
 
@@ -355,9 +359,7 @@ export function createProxiedUrl(url: string): string {
 }
 
 export function isShortLink(url: string): boolean {
-  return url.startsWith(
-    `https://${envConfig.LINK_HOST}/`,
-  )
+  return url.startsWith(`https://${envConfig.LINK_HOST}/`)
 }
 
 export function shortLinkToHref(url: string): string {

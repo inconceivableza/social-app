@@ -1,10 +1,10 @@
 import {
   type Agent,
   type AppBskyFeedDefs,
-  type AppBskyFeedGetListFeed as GetListFeed
+  type AppBskyFeedGetListFeed as GetListFeed,
 } from '@atproto/api'
 
-import { type FeedAPI, type FeedAPIResponse } from './types'
+import {type FeedAPI, type FeedAPIResponse} from './types'
 
 export class ListFeedAPI implements FeedAPI {
   agent: Agent

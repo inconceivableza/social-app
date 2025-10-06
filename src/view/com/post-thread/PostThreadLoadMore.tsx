@@ -1,14 +1,13 @@
 import * as React from 'react'
 import {View} from 'react-native'
-import {AppBskyFeedDefs, AtUri} from '@atproto/api'
+import {type AppBskyFeedDefs} from '@atproto/api'
 import {Trans} from '@lingui/macro'
 
-import {makeProfileLink} from '#/lib/routes/links'
+import {postHref} from '#/lib/api/feed/utils'
 import {atoms as a, useTheme} from '#/alf'
 import {Text} from '#/components/Typography'
 import {Link} from '../util/Link'
 import {UserAvatar} from '../util/UserAvatar'
-import { postHref } from '#/lib/api/feed/utils'
 
 export function PostThreadLoadMore({post}: {post: AppBskyFeedDefs.PostView}) {
   const t = useTheme()

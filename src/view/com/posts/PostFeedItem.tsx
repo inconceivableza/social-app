@@ -5,10 +5,10 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   AppBskyFeedThreadgate,
+  type AppFoodiosFeedRecipePost,
   AtUri,
   type ModerationDecision,
   RichText as RichTextAPI,
-  AppFoodiosFeedRecipePost,
 } from '@atproto/api'
 import {
   FontAwesomeIcon,
@@ -20,6 +20,12 @@ import {useQueryClient} from '@tanstack/react-query'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {isReasonFeedSource, type ReasonFeedSource} from '#/lib/api/feed/types'
+import {
+  isRecipePostView,
+  postHref,
+  postRevisionState,
+  recipePostSummaryRichText,
+} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
@@ -27,6 +33,7 @@ import {makeProfileLink} from '#/lib/routes/links'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {countLines} from '#/lib/strings/helpers'
+import {isRecipeUri} from '#/lib/strings/url-helpers'
 import {s} from '#/lib/styles'
 import {
   POST_TOMBSTONE,
@@ -34,6 +41,7 @@ import {
   usePostShadow,
 } from '#/state/cache/post-shadow'
 import {useFeedFeedbackContext} from '#/state/feed-feedback'
+import {useModalControls} from '#/state/modals'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
@@ -46,7 +54,9 @@ import {Link, TextLinkOnWebOnly} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
 import {Text} from '#/view/com/util/text/Text'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
-import { atoms as a, useTheme } from '#/alf'
+import {atoms as a} from '#/alf'
+import {Button, ButtonIcon} from '#/components/Button'
+import {OutdatedIcon} from '#/components/icons/Outdated'
 import {Pin_Stroke2_Corner0_Rounded as PinIcon} from '#/components/icons/Pin'
 import {Repost_Stroke2_Corner2_Rounded as RepostIcon} from '#/components/icons/Repost'
 import {ContentHider} from '#/components/moderation/ContentHider'
@@ -62,12 +72,7 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
-import { isRecipeUri } from '#/lib/strings/url-helpers'
-import { postRevisionState, isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
-import { Button, ButtonIcon } from '#/components/Button'
-import { useModalControls } from '#/state/modals'
-import { OutdatedIcon } from '#/components/icons/Outdated'
-import { RevisionState } from './RevisionState'
+import {RevisionState} from './RevisionState'
 
 interface FeedItemProps {
   record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
@@ -114,15 +119,17 @@ export function PostFeedItem({
 }): React.ReactNode {
   const postShadowed = usePostShadow(post)
   const richText = useMemo(
-    () => isRecipePostView(post) ? new RichTextAPI({
-      text: recipePostSummaryRichText(post.record.revisionContent),
-      facets: []
-    }) :
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
-      }),
-    [record],
+    () =>
+      isRecipePostView(post)
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(post.record.revisionContent),
+            facets: [],
+          })
+        : new RichTextAPI({
+            text: record.text,
+            facets: record.facets,
+          }),
+    [record, post],
   )
   if (postShadowed === POST_TOMBSTONE) {
     return null
@@ -183,9 +190,8 @@ let FeedItemInner = ({
   const {openComposer} = useOpenComposer()
   const pal = usePalette('default')
   const {_} = useLingui()
-  const t = useTheme()
   const [hover, setHover] = useState(false)
-  const { openModal } = useModalControls()
+  const {openModal} = useModalControls()
 
   const href = useMemo(() => {
     return postHref(post.author, post.uri)
@@ -195,10 +201,15 @@ let FeedItemInner = ({
   const revisionState = postRevisionState(post)
 
   const revisionMismatch = useMemo(() => {
-    if (!(bsky.dangerousIsType<AppBskyFeedPost.Record>(
-      post.record,
-      AppBskyFeedPost.isRecord,
-    ) && isRecipePostView(rootPost))) return false;
+    if (
+      !(
+        bsky.dangerousIsType<AppBskyFeedPost.Record>(
+          post.record,
+          AppBskyFeedPost.isRecord,
+        ) && isRecipePostView(rootPost)
+      )
+    )
+      return false
 
     const repliedToRevision = post.record.reply?.root.revisionUri
     const currentRootRevision = rootPost.record.selectedRevisionUri
@@ -214,14 +225,17 @@ let FeedItemInner = ({
       reqId,
     })
 
-    const text = isRecipePostView(post) ?
-      recipePostSummaryRichText(post.record.revisionContent) : record.text || ''
+    const text = isRecipePostView(post)
+      ? recipePostSummaryRichText(post.record.revisionContent)
+      : record.text || ''
     openComposer({
-      type: "post",
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
         text: text,
         author: post.author,
         embed: post.embed,
@@ -416,17 +430,14 @@ let FeedItemInner = ({
                               moderation.ui('displayName'),
                             )}
                           </Text>
-
                         }
                         href={makeProfileLink(reason.by)}
                         onBeforePress={onOpenReposter}
                       />
                     </ProfileHoverCard>
-
                   </Trans>
                 )}
               </Text>
-
             </Link>
           ) : AppBskyFeedDefs.isReasonPin(reason) ? (
             <View style={styles.includeReason}>
@@ -444,7 +455,6 @@ let FeedItemInner = ({
               </Text>
             </View>
           ) : null}
-
         </View>
       </View>
 
@@ -470,7 +480,6 @@ let FeedItemInner = ({
               ]}
             />
           )}
-
         </View>
         <View style={styles.layoutContent}>
           <PostMeta
@@ -478,13 +487,22 @@ let FeedItemInner = ({
             moderation={moderation}
             timestamp={post.indexedAt}
             postHref={href}
-            onOpenAuthor={onOpenAuthor}
-          >
+            onOpenAuthor={onOpenAuthor}>
             <RevisionState state={revisionState} />
-            {revisionMismatch && <Button style={[a.pr_sm]} label={_(msg`Show original version`)} onPress={() => {
-              // TODO: add api method for retrieving revision and remove all query param logic from getPosts
-              openModal({ name: 'recipe-revision-view', uri: `${rootPost.uri}?revision=${new AtUri(post.record.reply.root.revisionUri).rkey}` })
-            }}><ButtonIcon size='sm' icon={OutdatedIcon} /></Button>}
+            {revisionMismatch && (
+              <Button
+                style={[a.pr_sm]}
+                label={_(msg`Show original version`)}
+                onPress={() => {
+                  // TODO: add api method for retrieving revision and remove all query param logic from getPosts
+                  openModal({
+                    name: 'recipe-revision-view',
+                    uri: `${rootPost.uri}?revision=${new AtUri(post.record.reply.root.revisionUri).rkey}`,
+                  })
+                }}>
+                <ButtonIcon size="sm" icon={OutdatedIcon} />
+              </Button>
+            )}
           </PostMeta>
 
           {isRecipeUri(post.uri) ? <Text emoji>🍴</Text> : null}

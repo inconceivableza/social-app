@@ -611,10 +611,10 @@ export {PreviewableUserAvatar}
 // manually string-replace to use the smaller ones
 // -prf
 function hackModifyThumbnailPath(uri: string, isEnabled: boolean): string {
-  return uri // disable hackModifyThumbnailPath
+  return isEnabled ? uri : uri // disable hackModifyThumbnailPath
   //return isEnabled
-    //? uri.replace('/img/avatar/plain/', '/img/avatar_thumbnail/plain/')
-    //: uri
+  //? uri.replace('/img/avatar/plain/', '/img/avatar_thumbnail/plain/')
+  //: uri
 }
 
 const styles = StyleSheet.create({

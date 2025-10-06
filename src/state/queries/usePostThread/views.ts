@@ -9,13 +9,12 @@ import {
   type ModerationOpts,
 } from '@atproto/api'
 
-import {makeProfileLink} from '#/lib/routes/links'
+import {postHref} from '#/lib/api/feed/utils'
 import {
   type ApiThreadItem,
   type ThreadItem,
   type TraversalMetadata,
 } from '#/state/queries/usePostThread/types'
-import { postHref } from '#/lib/api/feed/utils'
 
 export function threadPostNoUnauthenticated({
   uri,
@@ -109,10 +108,13 @@ export function readMore({
   postData,
 }: TraversalMetadata): Extract<ThreadItem, {type: 'readMore'}> {
   const urip = new AtUri(postData.uri)
-  const href = postHref({
-    did: urip.host,
-    handle: postData.authorHandle,
-  }, postData.uri)
+  const href = postHref(
+    {
+      did: urip.host,
+      handle: postData.authorHandle,
+    },
+    postData.uri,
+  )
 
   return {
     type: 'readMore' as const,
@@ -133,7 +135,7 @@ export function readMoreUp({
       did: urip.host,
       handle: postData.authorHandle,
     },
-    postData.uri
+    postData.uri,
   )
   return {
     type: 'readMoreUp' as const,

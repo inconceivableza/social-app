@@ -3,15 +3,18 @@ import {LayoutAnimation, View} from 'react-native'
 import {
   AppBskyFeedPost,
   AppBskyRichtextFacet,
-  AtUri,
   moderatePost,
   RichText as RichTextAPI,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native'
+import {type RouteProp, useNavigation, useRoute} from '@react-navigation/native'
 
-import {CommonNavigatorParams, NavigationProp} from '#/lib/routes/types'
+import {postHref} from '#/lib/api/feed/utils'
+import {
+  type CommonNavigatorParams,
+  type NavigationProp,
+} from '#/lib/routes/types'
 import {
   convertBskyAppUrlIfNeeded,
   isBskyPostUrl,
@@ -30,7 +33,6 @@ import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {RichText} from '#/components/RichText'
 import {Text} from '#/components/Typography'
 import * as bsky from '#/types/bsky'
-import { postHref } from '#/lib/api/feed/utils'
 
 export function useMessageEmbed() {
   const route =

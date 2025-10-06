@@ -5,13 +5,12 @@ import {AtUri} from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {postHref} from '#/lib/api/feed/utils'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Link} from '../util/Link'
 import {Text} from '../util/text/Text'
-import { postHref } from '#/lib/api/feed/utils'
 
 export function ViewFullThread({uri}: {uri: string}) {
   const {
@@ -22,7 +21,7 @@ export function ViewFullThread({uri}: {uri: string}) {
   const pal = usePalette('default')
   const itemHref = React.useMemo(() => {
     const urip = new AtUri(uri)
-    return postHref({ did: urip.hostname, handle: '' }, uri, urip.rkey)
+    return postHref({did: urip.hostname, handle: ''}, uri, urip.rkey)
   }, [uri])
   const {_} = useLingui()
 

@@ -1,4 +1,4 @@
-import { type AppBskyFeedDefs, type BskyAgent } from '@atproto/api'
+import {type AppBskyFeedDefs, type BskyAgent} from '@atproto/api'
 
 import {PROD_DEFAULT_FEED} from '#/lib/constants'
 import {CustomFeedAPI} from './custom'
@@ -15,7 +15,7 @@ import {type FeedAPI, type FeedAPIResponse} from './types'
 // -prf
 export const FALLBACK_MARKER_POST: AppBskyFeedDefs.FeedViewPost = {
   post: {
-    "$type": "app.bsky.feed.defs#postView",
+    $type: 'app.bsky.feed.defs#postView',
     uri: 'fallback-marker-post',
     cid: 'fake',
     record: {},

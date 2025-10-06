@@ -27,9 +27,13 @@ import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
-import { RecipePostView, aggregateUserInterests } from '#/lib/api/feed/utils'
+import {aggregateUserInterests, type RecipePostView} from '#/lib/api/feed/utils'
 import {FeedTuner, type FeedTunerFn} from '#/lib/api/feed-manip'
-import {branding, BSKY_FEED_OWNER_DIDS, DISCOVER_FEED_URI} from '#/lib/constants'
+import {
+  branding,
+  BSKY_FEED_OWNER_DIDS,
+  DISCOVER_FEED_URI,
+} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useAgeAssuranceContext} from '#/state/ageAssurance'
 import {STALE} from '#/state/queries'
@@ -37,6 +41,7 @@ import {DEFAULT_LOGGED_OUT_PREFERENCES} from '#/state/queries/preferences/const'
 import {useAgent} from '#/state/session'
 import * as userActionHistory from '#/state/userActionHistory'
 import {KnownError} from '#/view/com/posts/PostFeedErrorMessage'
+import {type AnyPostView} from '../cache/types'
 import {useFeedTuners} from '../preferences/feed-tuners'
 import {useModerationOpts} from '../preferences/moderation-opts'
 import {usePreferencesQuery} from './preferences'
@@ -45,7 +50,6 @@ import {
   embedViewRecordToPostView,
   getEmbeddedPost,
 } from './util'
-import { AnyPostView } from '../cache/types'
 
 type ActorDid = string
 export type AuthorFilter =
@@ -79,24 +83,25 @@ export function RQKEY(feedDesc: FeedDescriptor, params?: FeedParams) {
   return [RQKEY_ROOT, feedDesc, params || {}]
 }
 
-export type FeedPostSliceItem = {
-  type: "post"
-  _reactKey: string
-  uri: string
-  post: AppBskyFeedDefs.PostView
-  record: AppBskyFeedPost.Record
-  moderation: ModerationDecision
-  parentAuthor?: AppBskyActorDefs.ProfileViewBasic
-  isParentBlocked?: boolean
-  isParentNotFound?: boolean
-} | FeedRecipeSliceItem
+export type FeedPostSliceItem =
+  | {
+      type: 'post'
+      _reactKey: string
+      uri: string
+      post: AppBskyFeedDefs.PostView
+      record: AppBskyFeedPost.Record
+      moderation: ModerationDecision
+      parentAuthor?: AppBskyActorDefs.ProfileViewBasic
+      isParentBlocked?: boolean
+      isParentNotFound?: boolean
+    }
+  | FeedRecipeSliceItem
 
 interface FeedRecipeSliceItem {
-  type: "recipe"
+  type: 'recipe'
   _reactKey: string
   uri: string
   post: RecipePostView
-
 }
 
 export interface FeedPostSlice {
@@ -197,7 +202,7 @@ export function usePostFeedQuery(
     RQPageParam
   >({
     enabled,
-    // staleTime: STALE.INFINITY,
+    staleTime: STALE.INFINITY,
     queryKey: RQKEY(feedDesc, params),
     async queryFn({pageParam}: {pageParam: RQPageParam}) {
       logger.debug('usePostFeedQuery', {feedDesc, cursor: pageParam?.cursor})
@@ -248,10 +253,13 @@ export function usePostFeedQuery(
           feedDescParts[0] === 'feedgen' &&
           BSKY_FEED_OWNER_DIDS.includes(feedOwnerDid)
         ) {
-          logger.error(`${branding.naming.app_name} feed may be offline: ${feedOwnerDid}`, {
-            feedDesc,
-            jsError: e,
-          })
+          logger.error(
+            `${branding.naming.app_name} feed may be offline: ${feedOwnerDid}`,
+            {
+              feedDesc,
+              jsError: e,
+            },
+          )
         }
 
         throw e
@@ -327,13 +335,16 @@ export function usePostFeedQuery(
                     const post = slice.items[i].post
                     // TODO: moderate recipes as well
                     if (AppBskyFeedDefs.isPostView(post)) {
-                      moderations[post.uri] = moderatePost(post, moderationOpts!)
+                      moderations[post.uri] = moderatePost(
+                        post,
+                        moderationOpts!,
+                      )
                       const ignoreFilter = post.author.did === ignoreFilterFor
                       if (ignoreFilter) {
-                    // remove mutes to avoid confused UIs
-                        moderations[post.uri].causes = moderations[post.uri].causes.filter(
-                          cause => cause.type !== 'muted',
-                        )
+                        // remove mutes to avoid confused UIs
+                        moderations[post.uri].causes = moderations[
+                          post.uri
+                        ].causes.filter(cause => cause.type !== 'muted')
                       }
                       if (
                         !ignoreFilter &&
@@ -347,17 +358,23 @@ export function usePostFeedQuery(
                   if (isDiscover) {
                     // TODO: do this for recipes as well
                     userActionHistory.seen(
-                      slice.items.flatMap(item => item.type === "post" ? [{
-                        feedContext: slice.feedContext,
-                        reqId: slice.reqId,
-                        likeCount: item.post.likeCount ?? 0,
-                        repostCount: item.post.repostCount ?? 0,
-                        replyCount: item.post.replyCount ?? 0,
-                        isFollowedBy: Boolean(
-                          item.post.author.viewer?.followedBy,
-                        ),
-                        uri: item.post.uri,
-                      }] : []),
+                      slice.items.flatMap(item =>
+                        item.type === 'post'
+                          ? [
+                              {
+                                feedContext: slice.feedContext,
+                                reqId: slice.reqId,
+                                likeCount: item.post.likeCount ?? 0,
+                                repostCount: item.post.repostCount ?? 0,
+                                replyCount: item.post.replyCount ?? 0,
+                                isFollowedBy: Boolean(
+                                  item.post.author.viewer?.followedBy,
+                                ),
+                                uri: item.post.uri,
+                              },
+                            ]
+                          : [],
+                      ),
                     )
                   }
 
@@ -371,7 +388,7 @@ export function usePostFeedQuery(
                     reason: slice.reason,
                     feedPostUri: slice.feedPostUri,
                     items: slice.items.map((item, i) => {
-                      if (item.type === "post") {
+                      if (item.type === 'post') {
                         return {
                           type: 'post',
                           _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
@@ -389,9 +406,8 @@ export function usePostFeedQuery(
                         _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
                         uri: item.post.uri,
                         post: item.post,
-                        record: item.record
+                        record: item.record,
                       }
-
                     }),
                   }
                   return feedPostSlice
@@ -620,13 +636,10 @@ export function* findAllProfilesInQueryData(
           yield quotedPost.author
         }
         // TODO: update
-        if (item.reply?.parent?.author.did === did
-        ) {
+        if (item.reply?.parent?.author.did === did) {
           yield item.reply.parent.author
         }
-        if (
-          item.reply?.root?.author.did === did
-        ) {
+        if (item.reply?.root?.author.did === did) {
           yield item.reply.root.author
         }
       }

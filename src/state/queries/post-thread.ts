@@ -4,12 +4,12 @@ import {
   AppBskyFeedDefs,
   type AppBskyFeedGetPostThread,
   AppBskyFeedPost,
+  AppFoodiosFeedDefs,
   AtUri,
   moderatePost,
   moderateRecipe,
   type ModerationDecision,
   type ModerationOpts,
-  AppFoodiosFeedDefs
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -25,6 +25,7 @@ import {
 } from '#/state/queries/search-posts'
 import {useAgent} from '#/state/session'
 import * as bsky from '#/types/bsky'
+import {type AnyPostView} from '../cache/types'
 import {
   findAllPostsInQueryData as findAllPostsInNotifsQueryData,
   findAllProfilesInQueryData as findAllProfilesInNotifsQueryData,
@@ -38,7 +39,6 @@ import {
   embedViewRecordToPostView,
   getEmbeddedPost,
 } from './util'
-import { AnyPostView } from '../cache/types'
 
 const REPLY_TREE_DEPTH = 10
 export const RQKEY_ROOT = 'post-thread'
@@ -163,7 +163,7 @@ export function fillThreadModerationCache(
         fillThreadModerationCache(cache, reply, moderationOpts)
       }
     }
-  } else if (node.type === "recipe") {
+  } else if (node.type === 'recipe') {
     cache.set(node, moderateRecipe(node.post, moderationOpts))
     if (node.replies) {
       for (const reply of node.replies) {
@@ -375,10 +375,12 @@ function responseToThreadNodes(
     post.likeCount ??= 0
     post.repostCount ??= 0
     const record = post.record
-    if (bsky.dangerousIsType<AppBskyFeedPost.Record>(
-      record,
-      AppBskyFeedPost.isRecord,
-    )) {
+    if (
+      bsky.dangerousIsType<AppBskyFeedPost.Record>(
+        record,
+        AppBskyFeedPost.isRecord,
+      )
+    ) {
       return {
         type: 'post',
         _reactKey: node.post.uri,
@@ -392,9 +394,9 @@ function responseToThreadNodes(
         replies:
           node.replies?.length && direction !== 'up'
             ? node.replies
-              .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
-              // do not show blocked posts in replies
-              .filter(node => node.type !== 'blocked')
+                .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
+                // do not show blocked posts in replies
+                .filter(node => node.type !== 'blocked')
             : undefined,
         hasOPLike: Boolean(node?.threadContext?.rootAuthorLike),
         ctx: {
@@ -421,9 +423,9 @@ function responseToThreadNodes(
         replies:
           node.replies?.length && direction !== 'up'
             ? node.replies
-              .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
-              // do not show blocked posts in replies
-              .filter(node => node.type !== 'blocked')
+                .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
+                // do not show blocked posts in replies
+                .filter(node => node.type !== 'blocked')
             : undefined,
         hasOPLike: Boolean(node?.threadContext?.rootAuthorLike),
         ctx: {
@@ -436,7 +438,7 @@ function responseToThreadNodes(
         },
       }
     } else {
-      return { type: 'unknown', uri: '' }
+      return {type: 'unknown', uri: ''}
     }
   } else if (AppBskyFeedDefs.isBlockedPost(node)) {
     return {type: 'blocked', _reactKey: node.uri, uri: node.uri, ctx: {depth}}
@@ -500,7 +502,7 @@ function findPostInQueryData(
 ): ThreadNode | void {
   let partial
   for (let item of findAllPostsInQueryData(queryClient, uri)) {
-    if (item.type === 'post' || item.type === "recipe") {
+    if (item.type === 'post' || item.type === 'recipe') {
       // Currently, the backend doesn't send full post info in some cases
       // (for example, for quoted posts). We use missing `likeCount`
       // as a way to detect that. In the future, we should fix this on
@@ -532,7 +534,10 @@ export function* findAllPostsInQueryData(
     }
     const {thread} = queryData
     for (const item of traverseThread(thread)) {
-      if ((item.type === 'post' || item.type === "recipe") && didOrHandleUriMatches(atUri, item.post)) {
+      if (
+        (item.type === 'post' || item.type === 'recipe') &&
+        didOrHandleUriMatches(atUri, item.post)
+      ) {
         const placeholder = threadNodeToPlaceholderThread(item)
         if (placeholder) {
           yield placeholder
@@ -582,7 +587,10 @@ export function* findAllProfilesInQueryData(
     }
     const {thread} = queryData
     for (const item of traverseThread(thread)) {
-      if ((item.type === 'post' || item.type === "recipe") && item.post.author.did === did) {
+      if (
+        (item.type === 'post' || item.type === 'recipe') &&
+        item.post.author.did === did
+      ) {
         yield item.post.author
       }
       const quotedPost =
@@ -627,25 +635,24 @@ function threadNodeToPlaceholderThread(
   node: ThreadNode,
 ): ThreadNode | undefined {
   if (node.type === 'post') {
-
-  return {
-    type: node.type,
-    _reactKey: node._reactKey,
-    uri: node.uri,
-    post: node.post,
-    record: node.record,
-    parent: undefined,
-    replies: undefined,
-    hasOPLike: undefined,
-    ctx: {
-      depth: 0,
-      isHighlightedPost: true,
-      hasMore: false,
-      isParentLoading: !!node.record.reply,
-      isChildLoading: !!node.post.replyCount,
-    },
-  }
-  } else if (node.type === "recipe") {
+    return {
+      type: node.type,
+      _reactKey: node._reactKey,
+      uri: node.uri,
+      post: node.post,
+      record: node.record,
+      parent: undefined,
+      replies: undefined,
+      hasOPLike: undefined,
+      ctx: {
+        depth: 0,
+        isHighlightedPost: true,
+        hasMore: false,
+        isParentLoading: !!node.record.reply,
+        isChildLoading: !!node.post.replyCount,
+      },
+    }
+  } else if (node.type === 'recipe') {
     return {
       type: node.type,
       _reactKey: node._reactKey,
@@ -658,21 +665,19 @@ function threadNodeToPlaceholderThread(
         depth: 0,
         isHighlightedPost: true,
         hasMore: false,
-        isParentLoading: false,// TODO: fix
+        isParentLoading: false, // TODO: fix
         isChildLoading: !!node.post.replyCount,
       },
     }
   }
 }
 
-function postViewToPlaceholderThread(
-  post: AnyPostView,
-): ThreadNode {
+function postViewToPlaceholderThread(post: AnyPostView): ThreadNode {
   if (!AppBskyFeedDefs.isPostView(post)) {
-    throw new Error("unexpected post type")
+    throw new Error('unexpected post type')
   }
 
-  const { record } = post
+  const {record} = post
 
   if (AppBskyFeedPost.isRecord(record)) {
     return {
@@ -713,7 +718,7 @@ function postViewToPlaceholderThread(
       },
     }
   }
-  throw new Error("unexpected post type")
+  throw new Error('unexpected post type')
 }
 
 function embedViewRecordToPlaceholderThread(

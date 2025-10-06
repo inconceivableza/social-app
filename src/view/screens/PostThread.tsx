@@ -6,7 +6,7 @@ import {
   type NativeStackScreenProps,
 } from '#/lib/routes/types'
 import {makeRecordUri} from '#/lib/strings/url-helpers'
-import { useSetMinimalShellMode } from '#/state/shell'
+import {useSetMinimalShellMode} from '#/state/shell'
 import {PostThread} from '#/screens/PostThread'
 import * as Layout from '#/components/Layout'
 

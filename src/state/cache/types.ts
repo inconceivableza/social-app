@@ -1,4 +1,4 @@
-import { AppBskyFeedDefs } from "@atproto/api"
+import {type AppBskyFeedDefs} from '@atproto/api'
 
 // This isn't a real property, but it prevents T being compatible with Shadow<T>.
 declare const shadowTag: unique symbol

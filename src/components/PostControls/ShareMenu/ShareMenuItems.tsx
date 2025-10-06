@@ -1,11 +1,11 @@
 import {memo, useMemo} from 'react'
 import * as ExpoClipboard from 'expo-clipboard'
-import {AtUri} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
-import { CHAT_DISABLED } from '#/lib/constants'
+import {postHref} from '#/lib/api/feed/utils'
+import {CHAT_DISABLED} from '#/lib/constants'
 import {type NavigationProp} from '#/lib/routes/types'
 import {shareText, shareUrl} from '#/lib/sharing'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -27,7 +27,6 @@ import * as Menu from '#/components/Menu'
 import {useDevMode} from '#/storage/hooks/dev-mode'
 import {RecentChats} from './RecentChats'
 import {type ShareMenuItemsProps} from './ShareMenuItems.types'
-import { postHref } from '#/lib/api/feed/utils'
 
 let ShareMenuItems = ({
   post,

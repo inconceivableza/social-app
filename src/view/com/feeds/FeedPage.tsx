@@ -7,11 +7,9 @@ import {type NavigationProp, useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {VIDEO_FEED_URIS} from '#/lib/constants'
-import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 import {getRootNavigation, getTabState, TabState} from '#/lib/routes/helpers'
 import {type AllNavigatorParams} from '#/lib/routes/types'
 import {logEvent} from '#/lib/statsig/statsig'
-import {s} from '#/lib/styles'
 import {isNative} from '#/platform/detection'
 import {listenSoftReset} from '#/state/events'
 import {FeedFeedbackProvider, useFeedFeedback} from '#/state/feed-feedback'
@@ -23,11 +21,11 @@ import {truncateAndInvalidate} from '#/state/queries/util'
 import {useSession} from '#/state/session'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {useHeaderOffset} from '#/components/hooks/useHeaderOffset'
-import { PostFeed } from '../posts/PostFeed'
+import {ComposeFAB} from '../composer/ComposeFAB'
+import {PostFeed} from '../posts/PostFeed'
 import {type ListMethods} from '../util/List'
 import {LoadLatestBtn} from '../util/load-latest/LoadLatestBtn'
 import {MainScrollProvider} from '../util/MainScrollProvider'
-import { ComposeFAB } from '../composer/ComposeFAB'
 
 const POLL_FREQ = 60e3 // 60sec
 
@@ -56,7 +54,6 @@ export function FeedPage({
   const {_} = useLingui()
   const navigation = useNavigation<NavigationProp<AllNavigatorParams>>()
   const queryClient = useQueryClient()
-  const {openComposer} = useOpenComposer()
   const [isScrolledDown, setIsScrolledDown] = useState(false)
   const setMinimalShellMode = useSetMinimalShellMode()
   const headerOffset = useHeaderOffset()
@@ -110,11 +107,11 @@ export function FeedPage({
     return listenSoftReset(onSoftReset)
   }, [onSoftReset, isPageFocused])
 
-  const onPressCompose = useCallback(() => {
+  /* const onPressCompose = useCallback(() => {
     openComposer({
       type: 'post'
     })
-  }, [openComposer])
+  }, [openComposer]) */
 
   const onPressLoadLatest = useCallback(() => {
     scrollToTop()
@@ -157,9 +154,7 @@ export function FeedPage({
           showIndicator={hasNew}
         />
       )}
-      {hasSession && (
-        <ComposeFAB />
-      )}
+      {hasSession && <ComposeFAB />}
     </View>
   )
 }

@@ -62,7 +62,7 @@ export function useComposerKeyboardShortcut() {
         return
       if (event.key === 'n' || event.key === 'N') {
         openComposer({
-          type: 'post'
+          type: 'post',
         })
       }
     }

@@ -17,11 +17,12 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
+import {isRecipePostView, postHref, recordText} from '#/lib/api/feed/utils'
 import {IS_INTERNAL} from '#/lib/app-info'
 import {DISCOVER_DEBUG_DIDS} from '#/lib/constants'
+import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
 import {getCurrentRoute} from '#/lib/routes/helpers'
-import {makeProfileLink} from '#/lib/routes/links'
 import {
   type CommonNavigatorParams,
   type NavigationProp,
@@ -60,6 +61,7 @@ import {
 import {Atom_Stroke2_Corner0_Rounded as AtomIcon} from '#/components/icons/Atom'
 import {BubbleQuestion_Stroke2_Corner0_Rounded as Translate} from '#/components/icons/Bubble'
 import {Clipboard_Stroke2_Corner2_Rounded as ClipboardIcon} from '#/components/icons/Clipboard'
+import {EditBig_Stroke2_Corner0_Rounded as EditBig} from '#/components/icons/EditBig'
 import {
   EmojiSad_Stroke2_Corner0_Rounded as EmojiSad,
   EmojiSmile_Stroke2_Corner0_Rounded as EmojiSmile,
@@ -84,9 +86,6 @@ import {
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
 import * as bsky from '#/types/bsky'
-import { isRecipePostView, postHref, recordText } from '#/lib/api/feed/utils'
-import { EditBig_Stroke2_Corner0_Rounded as EditBig } from '#/components/icons/EditBig'
-import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 
 let PostMenuItems = ({
   post,
@@ -407,8 +406,7 @@ let PostMenuItems = ({
     DISCOVER_DEBUG_DIDS[currentAccount?.did || ''] ||
     gate('debug_show_feedcontext')
 
-  const { openComposer } = useOpenComposer()
-
+  const {openComposer} = useOpenComposer()
 
   return (
     <>
@@ -416,24 +414,21 @@ let PostMenuItems = ({
         {isAuthor && (
           <>
             <Menu.Group>
-              {isRecipePostView(post) &&
+              {isRecipePostView(post) && (
                 <Menu.Item
                   testID="editPostBtn"
                   label={_(msg`Edit`)}
                   onPress={() => {
-                    logEvent("post:edit", {})
+                    logEvent('post:edit', {})
                     openComposer({
                       type: 'recipe',
-                      edit: post
+                      edit: post,
                     })
-                  }}
-                >
+                  }}>
                   <Menu.ItemText>{_(msg`Edit`)}</Menu.ItemText>
-                  <Menu.ItemIcon
-                    icon={EditBig}
-                    position="right"
-                  />
-                </Menu.Item>}
+                  <Menu.ItemIcon icon={EditBig} position="right" />
+                </Menu.Item>
+              )}
               <Menu.Item
                 testID="pinPostBtn"
                 label={

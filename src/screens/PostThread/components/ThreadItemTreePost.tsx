@@ -8,8 +8,9 @@ import {
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 
+import {postHref} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
-import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
+import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
@@ -41,7 +42,6 @@ import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
-import { postHref } from '#/lib/api/feed/utils'
 
 /**
  * Mimic the space in PostMeta

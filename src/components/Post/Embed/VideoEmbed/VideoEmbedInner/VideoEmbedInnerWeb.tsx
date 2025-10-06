@@ -1,4 +1,4 @@
-import { useContext, useEffect, useId, useRef, useState } from 'react'
+import {useContext, useEffect, useId, useRef, useState} from 'react'
 import {View} from 'react-native'
 import {type AppBskyEmbedVideo} from '@atproto/api'
 import {msg} from '@lingui/macro'
@@ -6,12 +6,12 @@ import {useLingui} from '@lingui/react'
 import type * as HlsTypes from 'hls.js'
 
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
+import {useAgent} from '#/state/session'
+import {PostAuthorDidContext} from '#/view/com/posts/PostContext'
 import {atoms as a} from '#/alf'
 import {MediaInsetBorder} from '#/components/MediaInsetBorder'
 import * as BandwidthEstimate from './bandwidth-estimate'
 import {Controls} from './web-controls/VideoControls'
-import { PostAuthorDidContext } from '#/view/com/posts/PostContext'
-import { useAgent } from '#/state/session'
 
 export function VideoEmbedInnerWeb({
   embed,

@@ -43,13 +43,13 @@ export interface ChangePasswordModal {
   name: 'change-password'
 }
 
-export interface RecipeRevisionViewModal {
-  name: 'recipe-revision-view',
-  uri: string
-}
-
 export interface UserFeedbackModal {
   name: 'user-feedback'
+}
+
+export interface RecipeRevisionViewModal {
+  name: 'recipe-revision-view'
+  uri: string
 }
 
 export type Modal =

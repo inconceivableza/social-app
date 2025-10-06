@@ -3,19 +3,24 @@ import {type StyleProp, StyleSheet, View, type ViewStyle} from 'react-native'
 import {
   type AppBskyFeedDefs,
   AppBskyFeedPost,
+  type AppFoodiosFeedDefs,
   AtUri,
   moderatePost,
   type ModerationDecision,
   RichText as RichTextAPI,
-  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {
+  isRecipePostView,
+  postHref,
+  recipePostSummaryRichText,
+} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import { usePalette } from '#/lib/hooks/usePalette'
+import {usePalette} from '#/lib/hooks/usePalette'
 import {countLines} from '#/lib/strings/helpers'
 import {colors, s} from '#/lib/styles'
 import {
@@ -42,7 +47,6 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
-import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export function Post({
   post,
@@ -59,35 +63,35 @@ export function Post({
   // handle recipe post
 
   const postShadowed = usePostShadow(post)
-  const postContent = useMemo<{
-    record: AppBskyFeedPost.Record,
-    richText: RichTextAPI
-  } | {
-    record: AppFoodiosFeedDefs.RecipeRevisionView
-    richText: RichTextAPI
-  } | undefined>(
-    () => {
-      if (isRecipePostView(post)) {
-        return {
-          record: post.record,
-          richText: new RichTextAPI({
-            text: recipePostSummaryRichText(post.record.revisionContent),
-            facets: []
-          })
-        }
-      } else if (bsky.validate(post.record, AppBskyFeedPost.validateRecord)) {
-        return {
-          record: post.record,
-          richText: new RichTextAPI({
-            text: post.record.text,
-            facets: post.record.facets,
-          })
-        }
+  const postContent = useMemo<
+    | {
+        record: AppBskyFeedPost.Record
+        richText: RichTextAPI
       }
-
-    },
-    [post],
-  )
+    | {
+        record: AppFoodiosFeedDefs.RecipeRevisionView
+        richText: RichTextAPI
+      }
+    | undefined
+  >(() => {
+    if (isRecipePostView(post)) {
+      return {
+        record: post.record,
+        richText: new RichTextAPI({
+          text: recipePostSummaryRichText(post.record.revisionContent),
+          facets: [],
+        }),
+      }
+    } else if (bsky.validate(post.record, AppBskyFeedPost.validateRecord)) {
+      return {
+        record: post.record,
+        richText: new RichTextAPI({
+          text: post.record.text,
+          facets: post.record.facets,
+        }),
+      }
+    }
+  }, [post])
   const moderation = useMemo(
     () => (moderationOpts ? moderatePost(post, moderationOpts) : undefined),
     [moderationOpts, post],
@@ -121,7 +125,9 @@ function PostInner({
   style,
 }: {
   post: Shadow<AppBskyFeedDefs.PostView>
-    record: AppBskyFeedPost.Record | (AppFoodiosFeedDefs.RecipeRevisionView & { reply?: undefined })
+  record:
+    | AppBskyFeedPost.Record
+    | (AppFoodiosFeedDefs.RecipeRevisionView & {reply?: undefined})
   richText: RichTextAPI
   moderation: ModerationDecision
   showReplyLine?: boolean
@@ -150,7 +156,9 @@ function PostInner({
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
         text: richText.text,
         author: post.author,
         embed: post.embed,

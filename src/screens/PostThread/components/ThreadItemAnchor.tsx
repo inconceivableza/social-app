@@ -4,15 +4,21 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   type AppBskyFeedThreadgate,
+  type AppFoodiosFeedDefs,
   AtUri,
   RichText as RichTextAPI,
-  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
-import {branding} from '#/lib/constants'
+import {
+  isRecipePostView,
+  postHref,
+  postRevisionState,
+  recipePostSummaryRichText,
+  recordText,
+} from '#/lib/api/feed/utils'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -35,6 +41,7 @@ import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import {type PostSource} from '#/state/unstable-post-source'
 import {PostThreadFollowBtn} from '#/view/com/post-thread/PostThreadFollowBtn'
+import {RevisionState} from '#/view/com/posts/RevisionState'
 import {formatCount} from '#/view/com/util/numeric/format'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
 import {
@@ -62,8 +69,6 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { isRecipePostView, postHref, postRevisionState, recipePostSummaryRichText, recordText } from '#/lib/api/feed/utils'
-import { RevisionState } from '#/view/com/posts/RevisionState'
 
 export function ThreadItemAnchor({
   item,
@@ -191,14 +196,16 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const authorShadow = useProfileShadow(post.author)
   const {isActive: live} = useActorStatus(post.author)
   const richText = useMemo(
-    () => isRecipePostView(post) ? new RichTextAPI({
-      text: recipePostSummaryRichText(post.record.revisionContent)
-    }) :
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
-      }),
-    [record],
+    () =>
+      isRecipePostView(post)
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(post.record.revisionContent),
+          })
+        : new RichTextAPI({
+            text: record.text,
+            facets: record.facets,
+          }),
+    [record, post],
   )
 
   const threadRootUri = record.reply?.root?.uri || post.uri
@@ -250,13 +257,17 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   }, [postSource])
 
   const onPressReply = useCallback(() => {
-    const text = isRecipePostView(post) ? recipePostSummaryRichText(post.record.revisionContent) : record.text
+    const text = isRecipePostView(post)
+      ? recipePostSummaryRichText(post.record.revisionContent)
+      : record.text
     openComposer({
       type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
         text,
         author: post.author,
         embed: post.embed,
@@ -390,9 +401,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {record.$type === "app.foodios.feed.defs#recipeRevisionView" ?
+            {record.$type === 'app.foodios.feed.defs#recipeRevisionView' ? (
               <RecipeThreadItem revision={record} />
-              : richText?.text ? (
+            ) : richText?.text ? (
               <RichText
                 enableTags
                 selectable
@@ -401,8 +412,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 authorHandle={post.author.handle}
                 shouldProxyLinks={true}
               />
-              ) : undefined
-            }
+            ) : undefined}
             {post.embed && (
               <View style={[a.py_xs]}>
                 <Embed
@@ -510,39 +520,45 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   )
 })
 
-
-function RecipeThreadItem({ revision }: { revision: AppFoodiosFeedDefs.RecipeRevisionView }) {
+function RecipeThreadItem({
+  revision,
+}: {
+  revision: AppFoodiosFeedDefs.RecipeRevisionView
+}) {
   const record = revision.revisionContent
 
-  return <View>
-    <div>
-      {record.title}
-    </div>
-    <div>
-      {record.text}
-    </div>
-    <div>
-      <strong>Ingredients</strong>
-      <table>
-        <tbody>
-          {record.ingredients.map((ingredient, i) => {
-            return <tr key={i}>
-              <td>{ingredient.name}</td><td>{ingredient.quantity}</td><td>{ingredient.unit}</td>
-            </tr>
+  return (
+    <View>
+      <div>{record.title}</div>
+      <div>{record.text}</div>
+      <div>
+        <strong>
+          <Text>Ingredients</Text>
+        </strong>
+        <table>
+          <tbody>
+            {record.ingredients.map((ingredient, i) => {
+              return (
+                <tr key={i}>
+                  <td>{ingredient.name}</td>
+                  <td>{ingredient.quantity}</td>
+                  <td>{ingredient.unit}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+        <strong>
+          <Text>Steps</Text>
+        </strong>
+        <ol>
+          {record.steps.map((step, i) => {
+            return <li key={i}>{step.text}</li>
           })}
-        </tbody>
-      </table>
-      <strong>Steps</strong>
-      <ol>
-        {record.steps.map((step, i) => {
-          return <li key={i}>
-            {step.text}
-          </li>
-        })}
-      </ol>
-    </div>
-
-  </View>
+        </ol>
+      </div>
+    </View>
+  )
 }
 
 function ExpandedPostDetails({
@@ -595,7 +611,6 @@ function ExpandedPostDetails({
   )
 
   const revisionState = postRevisionState(post)
-
 
   return (
     <View style={[a.gap_md, a.pt_md, a.align_start]}>

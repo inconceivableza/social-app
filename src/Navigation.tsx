@@ -138,7 +138,7 @@ import {useAccountSwitcher} from './lib/hooks/useAccountSwitcher'
 import {useNonReactiveCallback} from './lib/hooks/useNonReactiveCallback'
 import {useLoggedOutViewControls} from './state/shell/logged-out'
 import {useCloseAllActiveElements} from './state/util'
-import { RecipeThreadScreen } from './view/screens/RecipeThread'
+import {RecipeThreadScreen} from './view/screens/RecipeThread'
 
 const navigationRef = createNavigationContainerRef<AllNavigatorParams>()
 
@@ -289,7 +289,7 @@ function commonScreens(Stack: typeof Flat, unreadCountLabel?: string) {
       <Stack.Screen
         name="RecipeThread"
         getComponent={() => RecipeThreadScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           title: title(msg`Recipe by @${route.params.name}`),
         })}
       />

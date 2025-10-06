@@ -1,12 +1,11 @@
 import {
-  AppFoodiosFeedDefs,
-  AppFoodiosFeedRecipeRevision,
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
   type AppBskyUnspeccedDefs,
   type AppBskyUnspeccedGetPostThreadOtherV2,
   type AppBskyUnspeccedGetPostThreadV2,
+  type AppFoodiosFeedDefs,
   type ModerationDecision,
 } from '@atproto/api'
 

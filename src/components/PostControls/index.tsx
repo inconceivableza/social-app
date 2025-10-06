@@ -1,10 +1,10 @@
 import {memo, useState} from 'react'
 import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {
-  AppFoodiosFeedRecipePost,
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
+  type AppFoodiosFeedRecipePost,
   type RichText as RichTextAPI,
 } from '@atproto/api'
 import {msg, plural} from '@lingui/macro'
@@ -55,7 +55,7 @@ let PostControls = ({
 }: {
   big?: boolean
   post: Shadow<AppBskyFeedDefs.PostView>
-    record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
+  record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
   richText: RichTextAPI
   feedContext?: string | undefined
   reqId?: string | undefined
@@ -171,7 +171,7 @@ let PostControls = ({
       reqId,
     })
     openComposer({
-      type: "post",
+      type: 'post',
       quote: post,
       onPost: onPostReply,
     })

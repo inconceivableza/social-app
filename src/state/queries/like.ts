@@ -1,7 +1,7 @@
+import {type ComAtprotoRepoStrongRef} from '@atproto/api'
 import {useMutation} from '@tanstack/react-query'
 
 import {useAgent} from '#/state/session'
-import { ComAtprotoRepoStrongRef } from '@atproto/api'
 
 export function useLikeMutation() {
   const agent = useAgent()

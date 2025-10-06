@@ -1,4 +1,4 @@
-import { type AppBskyFeedGetFeed, AppFoodiosFeedGetFeed } from '@atproto/api'
+import {type AppFoodiosFeedGetFeed} from '@atproto/api'
 import {subDays, subMinutes} from 'date-fns'
 
 const DID = `did:plc:z72i7hdynmk6r22z27h6tvur`
@@ -11,7 +11,7 @@ export const DEMO_FEED = {
   feed: [
     {
       post: {
-        "$type": "app.bsky.feed.defs#postView",
+        $type: 'app.bsky.feed.defs#postView',
         uri: 'at://did:plc:pvooorihapc2lf2pijehgrdf/app.bsky.feed.post/3lniysofyll2d',
         cid: 'bafyreihwh3wxxme732ylbylhhdyz7ex6t4jtu6s3gjxxvnnh4feddhg3ku',
         author: {
@@ -94,7 +94,7 @@ export const DEMO_FEED = {
     },
     {
       post: {
-        "$type": "app.bsky.feed.defs#postView",
+        $type: 'app.bsky.feed.defs#postView',
         uri: 'at://did:plc:fhhqii56ppgyh5qcm2b3mokf/app.bsky.feed.post/3lnizc7fug52c',
         cid: 'bafyreienuabsr55rycirdf4ewue5tjcseg5lzqompcsh2brqzag6hvxllm',
         author: {
@@ -165,7 +165,7 @@ export const DEMO_FEED = {
     },
     {
       post: {
-        "$type": "app.bsky.feed.defs#postView",
+        $type: 'app.bsky.feed.defs#postView',
         uri: 'at://did:plc:h7fwnfejmmifveeea5eyxgkc/app.bsky.feed.post/3lnizna3g4f2t',
         cid: 'bafyreiepn7obmlshliori4j34texpaukrqkyyu7cq6nmpzk4lkis7nqeae',
         author: {

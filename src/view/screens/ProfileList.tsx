@@ -16,10 +16,9 @@ import {useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {useHaptics} from '#/lib/haptics'
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useSetTitle} from '#/lib/hooks/useSetTitle'
-import { useWebMediaQueries } from '#/lib/hooks/useWebMediaQueries'
+import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {makeListLink} from '#/lib/routes/links'
 import {
   type CommonNavigatorParams,
@@ -58,7 +57,7 @@ import {ListMembers} from '#/view/com/lists/ListMembers'
 import {PagerWithHeader} from '#/view/com/pager/PagerWithHeader'
 import {PostFeed} from '#/view/com/posts/PostFeed'
 import {ProfileSubpageHeader} from '#/view/com/profile/ProfileSubpageHeader'
-import { EmptyState } from '#/view/com/util/EmptyState'
+import {EmptyState} from '#/view/com/util/EmptyState'
 import {Button} from '#/view/com/util/forms/Button'
 import {
   type DropdownItem,
@@ -83,7 +82,7 @@ import {
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
-import { ComposeFAB } from '../com/composer/ComposeFAB'
+import {ComposeFAB} from '../com/composer/ComposeFAB'
 
 interface SectionRef {
   scrollToTop: () => void
@@ -154,7 +153,6 @@ function ProfileListScreenLoaded({
 }) {
   const {_} = useLingui()
   const queryClient = useQueryClient()
-  const {openComposer} = useOpenComposer()
   const setMinimalShellMode = useSetMinimalShellMode()
   const {currentAccount} = useSession()
   const {rkey} = route.params

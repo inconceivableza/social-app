@@ -1,41 +1,41 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
-import { msg } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
-import { useNavigation } from '@react-navigation/native'
-import { RemoveScrollBar } from 'react-remove-scroll-bar'
+import {useEffect, useLayoutEffect, useState} from 'react'
+import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native'
+import {msg} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
+import {useNavigation} from '@react-navigation/native'
+import {RemoveScrollBar} from 'react-remove-scroll-bar'
 
-import { useColorSchemeStyle } from '#/lib/hooks/useColorSchemeStyle'
-import { useIntentHandler } from '#/lib/hooks/useIntentHandler'
-import { useWebMediaQueries } from '#/lib/hooks/useWebMediaQueries'
-import { type NavigationProp } from '#/lib/routes/types'
-import { colors } from '#/lib/styles'
-import { useIsDrawerOpen, useSetDrawerOpen } from '#/state/shell'
-import { useComposerKeyboardShortcut } from '#/state/shell/composer/useComposerKeyboardShortcut'
-import { useCloseAllActiveElements } from '#/state/util'
-import { Lightbox } from '#/view/com/lightbox/Lightbox'
-import { ModalsContainer } from '#/view/com/modals/Modal'
-import { ErrorBoundary } from '#/view/com/util/ErrorBoundary'
-import { atoms as a, select, useTheme } from '#/alf'
-import { AgeAssuranceRedirectDialog } from '#/components/ageAssurance/AgeAssuranceRedirectDialog'
-import { EmailDialog } from '#/components/dialogs/EmailDialog'
-import { LinkWarningDialog } from '#/components/dialogs/LinkWarning'
-import { MutedWordsDialog } from '#/components/dialogs/MutedWords'
-import { SigninDialog } from '#/components/dialogs/Signin'
-import { Outlet as PortalOutlet } from '#/components/Portal'
-import { FlatNavigator, RoutesContainer } from '#/Navigation'
-import { Composer } from './Composer.web'
-import { DrawerContent } from './Drawer'
-import { RecipeComposer } from './RecipeComposer.web'
+import {useColorSchemeStyle} from '#/lib/hooks/useColorSchemeStyle'
+import {useIntentHandler} from '#/lib/hooks/useIntentHandler'
+import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
+import {type NavigationProp} from '#/lib/routes/types'
+import {colors} from '#/lib/styles'
+import {useIsDrawerOpen, useSetDrawerOpen} from '#/state/shell'
+import {useComposerKeyboardShortcut} from '#/state/shell/composer/useComposerKeyboardShortcut'
+import {useCloseAllActiveElements} from '#/state/util'
+import {Lightbox} from '#/view/com/lightbox/Lightbox'
+import {ModalsContainer} from '#/view/com/modals/Modal'
+import {ErrorBoundary} from '#/view/com/util/ErrorBoundary'
+import {atoms as a, select, useTheme} from '#/alf'
+import {AgeAssuranceRedirectDialog} from '#/components/ageAssurance/AgeAssuranceRedirectDialog'
+import {EmailDialog} from '#/components/dialogs/EmailDialog'
+import {LinkWarningDialog} from '#/components/dialogs/LinkWarning'
+import {MutedWordsDialog} from '#/components/dialogs/MutedWords'
+import {SigninDialog} from '#/components/dialogs/Signin'
+import {Outlet as PortalOutlet} from '#/components/Portal'
+import {FlatNavigator, RoutesContainer} from '#/Navigation'
+import {Composer} from './Composer.web'
+import {DrawerContent} from './Drawer'
+import {RecipeComposer} from './RecipeComposer.web'
 
 function ShellInner() {
   const t = useTheme()
   const isDrawerOpen = useIsDrawerOpen()
   const setDrawerOpen = useSetDrawerOpen()
-  const { isDesktop } = useWebMediaQueries()
+  const {isDesktop} = useWebMediaQueries()
   const navigator = useNavigation<NavigationProp>()
   const closeAllActiveElements = useCloseAllActiveElements()
-  const { _ } = useLingui()
+  const {_} = useLingui()
   const showDrawer = !isDesktop && isDrawerOpen
   const [showDrawerDelayedExit, setShowDrawerDelayedExit] = useState(showDrawer)
 
@@ -96,10 +96,10 @@ function ShellInner() {
                 {
                   backgroundColor: showDrawer
                     ? select(t.name, {
-                      light: 'rgba(0, 57, 117, 0.1)',
-                      dark: 'rgba(1, 82, 168, 0.1)',
-                      dim: 'rgba(10, 13, 16, 0.8)',
-                    })
+                        light: 'rgba(0, 57, 117, 0.1)',
+                        dark: 'rgba(1, 82, 168, 0.1)',
+                        dim: 'rgba(10, 13, 16, 0.8)',
+                      })
                     : 'transparent',
                 },
                 a.transition_color,

@@ -1,10 +1,10 @@
 import {
   AppBskyFeedDefs,
-  AppBskyFeedGetAuthorFeed as GetAuthorFeed,
-  BskyAgent,
+  type AppBskyFeedGetAuthorFeed as GetAuthorFeed,
+  type BskyAgent,
 } from '@atproto/api'
 
-import { FeedAPI, FeedAPIResponse } from './types'
+import {type FeedAPI, type FeedAPIResponse} from './types'
 
 export class AuthorFeedAPI implements FeedAPI {
   agent: BskyAgent
@@ -22,7 +22,7 @@ export class AuthorFeedAPI implements FeedAPI {
   }
 
   get params() {
-    const params = { ...this._params }
+    const params = {...this._params}
     params.includePins =
       params.filter === 'posts_with_replies' ||
       params.filter === 'posts_and_author_threads'
@@ -78,10 +78,9 @@ export class AuthorFeedAPI implements FeedAPI {
 
 function isAuthorReplyChain(
   actor: string,
-  { post, reply }: AppBskyFeedDefs.FeedViewPost,
+  {post, reply}: AppBskyFeedDefs.FeedViewPost,
   posts: AppBskyFeedDefs.FeedViewPost[],
 ): boolean {
-
   if (post.author.did !== actor) return false
 
   const replyParent = reply?.parent

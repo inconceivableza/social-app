@@ -75,6 +75,9 @@ export const MAX_GRAPHEME_LENGTH = 300
 
 export const MAX_DM_GRAPHEME_LENGTH = 1000
 
+export const MAX_RECIPE_TITLE_GRAPHEME_LENGTH = 500
+export const MAX_RECIPE_DESCRIPTION_GRAPHEME_LENGTH = 5000
+
 // Recommended is 100 per: https://www.w3.org/WAI/GL/WCAG20/tests/test3.html
 // but increasing limit per user feedback
 export const MAX_ALT_TEXT = 2000

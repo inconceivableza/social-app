@@ -31,6 +31,7 @@ export function useIntentHandler() {
   const ageAssuranceRedirectDialogControl =
     useAgeAssuranceRedirectDialogControl()
   const {currentAccount} = useSession()
+  const {tryApplyUpdate} = useApplyPullRequestOTAUpdate()
 
   React.useEffect(() => {
     const handleIncomingURL = (url: string) => {

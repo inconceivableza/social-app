@@ -137,18 +137,18 @@ import {
   type ComposerAction,
   composerReducer,
   createComposerState,
+  type EmbedAction,
   type EmbedDraft,
   MAX_IMAGES,
   type PostAction,
   type PostDraft,
   type ThreadDraft,
-  EmbedAction,
 } from './state/composer'
 import {
   NO_VIDEO,
   type NoVideoState,
-  type VideoState,
   uploadVideoDirect,
+  type VideoState,
 } from './state/video'
 import {getVideoMetadata} from './videos/pickVideo'
 import {clearThumbnailCache} from './videos/VideoTranscodeBackdrop'
@@ -231,7 +231,8 @@ export const ComposePost = ({
           abortController,
         },
       })
-      uploadVideoDirect(asset, 
+      uploadVideoDirect(
+        asset,
         videoAction => {
           composerDispatch({
             type: 'update_post',
@@ -1073,7 +1074,7 @@ export function ComposerEmbeds({
   isActivePost,
 }: {
   embed: EmbedDraft
-    dispatch: (action: EmbedAction) => void
+  dispatch: (action: EmbedAction) => void
   clearVideo: () => void
   canRemoveQuote: boolean
   isActivePost: boolean
@@ -1706,7 +1707,7 @@ export function ToolbarWrapper({
   )
 }
 
-export function VideoUploadToolbar({ state }: { state: VideoState }) {
+export function VideoUploadToolbar({state}: {state: VideoState}) {
   const t = useTheme()
   const {_} = useLingui()
   const progress = state.progress

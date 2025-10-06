@@ -5,6 +5,7 @@ import {
 } from '@atproto/api'
 import {AtUri} from '@atproto/api'
 import {type BskyAgent} from '@atproto/api'
+import {ids} from '@atproto/api/client/lexicons'
 
 import {POST_IMG_MAX} from '#/lib/constants'
 import {getLinkMeta} from '#/lib/link-meta/link-meta'
@@ -20,7 +21,6 @@ import {
   isBskyPostUrl,
   isBskyStarterPackUrl,
   isBskyStartUrl,
-  isRecipeUri,
   isShortLink,
 } from '#/lib/strings/url-helpers'
 import {type ComposerImage} from '#/state/gallery'
@@ -28,8 +28,7 @@ import {createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {createGIFDescription} from '../gif-alt-text'
 import {convertBskyAppUrlIfNeeded, makeRecordUri} from '../strings/url-helpers'
-import { RecipePostView, isRecipePostView } from './feed/utils'
-import { ids } from '@atproto/api/client/lexicons'
+import {isRecipePostView, type RecipePostView} from './feed/utils'
 
 type ResolvedExternalLink = {
   type: 'external'
@@ -99,15 +98,15 @@ export async function resolveLink(
     uri = convertBskyAppUrlIfNeeded(uri)
     const [_0, user, postType, rkey] = uri.split('/').filter(Boolean)
     let collection = ''
-    if (postType === "recipePost") {
+    if (postType === 'recipePost') {
       collection = ids.AppFoodiosFeedRecipePost
-    } else if (postType === "post") {
+    } else if (postType === 'post') {
       collection = ids.AppBskyFeedPost
     } else {
       throw new Error('unknown post type ' + uri)
     }
     const recordUri = makeRecordUri(user, collection, rkey)
-    const post = await getPost({ uri: recordUri })
+    const post = await getPost({uri: recordUri})
     if (post.viewer?.embeddingDisabled) {
       throw new EmbeddingDisabledError()
     }
@@ -117,7 +116,7 @@ export async function resolveLink(
         record: {
           cid: post.cid,
           uri: post.uri,
-          revisionUri: post.record.selectedRevisionUri
+          revisionUri: post.record.selectedRevisionUri,
         },
         kind: 'recipePost',
         view: post,
@@ -132,7 +131,6 @@ export async function resolveLink(
       kind: 'post',
       view: post,
     }
-
   }
   if (isBskyCustomFeedUrl(uri)) {
     uri = convertBskyAppUrlIfNeeded(uri)

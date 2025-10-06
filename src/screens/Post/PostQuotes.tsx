@@ -1,27 +1,33 @@
 import React from 'react'
+import {ids} from '@atproto/api/client/lexicons'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 
-import {CommonNavigatorParams, NativeStackScreenProps} from '#/lib/routes/types'
+import {
+  type CommonNavigatorParams,
+  type NativeStackScreenProps,
+} from '#/lib/routes/types'
 import {makeRecordUri} from '#/lib/strings/url-helpers'
 import {usePostThreadQuery} from '#/state/queries/post-thread'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostQuotes as PostQuotesComponent} from '#/view/com/post-thread/PostQuotes'
 import * as Layout from '#/components/Layout'
-import { ids } from '@atproto/api/client/lexicons'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostQuotes'>
 export const PostQuotesScreen = ({route}: Props) => {
   const setMinimalShellMode = useSetMinimalShellMode()
-  const { name, rkey, postType } = route.params
-  const collection = postType === "recipePost" ? ids.AppFoodiosFeedRecipePost : ids.AppBskyFeedPost
+  const {name, rkey, postType} = route.params
+  const collection =
+    postType === 'recipePost'
+      ? ids.AppFoodiosFeedRecipePost
+      : ids.AppBskyFeedPost
   const uri = makeRecordUri(name, collection, rkey)
 
   const {data: post} = usePostThreadQuery(uri)
 
   let quoteCount
   const threadType = post?.thread.type
-  if (threadType === "post" || threadType === "recipe") {
+  if (threadType === 'post' || threadType === 'recipe') {
     quoteCount = post?.thread.post.repostCount
   }
 
@@ -53,7 +59,14 @@ export const PostQuotesScreen = ({route}: Props) => {
         </Layout.Header.Content>
         <Layout.Header.Slot />
       </Layout.Header.Outer>
-      <PostQuotesComponent uri={uri} revisionUri={post?.thread.type === "recipe" ? post.thread.record.selectedRevisionUri : undefined} />
+      <PostQuotesComponent
+        uri={uri}
+        revisionUri={
+          post?.thread.type === 'recipe'
+            ? post.thread.record.selectedRevisionUri
+            : undefined
+        }
+      />
     </Layout.Screen>
   )
 }

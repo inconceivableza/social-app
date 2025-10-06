@@ -228,7 +228,7 @@ export function videoReducer(
       }
     }
   } else if (action.type === 'to_done') {
-    if (state.status === 'processing' || state.status === "uploading") {
+    if (state.status === 'processing' || state.status === 'uploading') {
       return {
         status: 'done',
         progress: 100,
@@ -257,17 +257,19 @@ function trunc2dp(num: number) {
   return Math.trunc(num * 100) / 100
 }
 
-export async function uploadVideoDirect(asset: ImagePickerAsset,
+export async function uploadVideoDirect(
+  asset: ImagePickerAsset,
   dispatch: (action: VideoAction) => void,
   agent: BskyAgent,
   did: string,
   signal: AbortSignal,
-  _: I18n['_'],) {
+  _: I18n['_'],
+) {
   let video: CompressedVideo | undefined
   try {
     video = await compressVideo(asset, {
       onProgress: num => {
-        dispatch({ type: 'update_progress', progress: trunc2dp(num), signal })
+        dispatch({type: 'update_progress', progress: trunc2dp(num), signal})
       },
       signal,
     })
@@ -289,8 +291,10 @@ export async function uploadVideoDirect(asset: ImagePickerAsset,
   })
 
   try {
-    const { data } = await agent.uploadBlob(new Blob([video!.bytes!], { type: video.mimeType }))
-    dispatch({ type: 'to_done', blobRef: data.blob, signal })
+    const {data} = await agent.uploadBlob(
+      new Blob([video!.bytes!], {type: video.mimeType}),
+    )
+    dispatch({type: 'to_done', blobRef: data.blob, signal})
   } catch (e) {
     const message = getUploadErrorMessage(e, _)
     if (message !== null) {

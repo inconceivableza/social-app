@@ -1,11 +1,11 @@
 import {memo, useMemo} from 'react'
-import {AtUri} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 import type React from 'react'
 
-import { CHAT_DISABLED } from '#/lib/constants'
+import {postHref} from '#/lib/api/feed/utils'
+import {CHAT_DISABLED} from '#/lib/constants'
 import {type NavigationProp} from '#/lib/routes/types'
 import {shareText, shareUrl} from '#/lib/sharing'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -25,7 +25,6 @@ import {PaperPlane_Stroke2_Corner0_Rounded as Send} from '#/components/icons/Pap
 import * as Menu from '#/components/Menu'
 import {useDevMode} from '#/storage/hooks/dev-mode'
 import {type ShareMenuItemsProps} from './ShareMenuItems.types'
-import { postHref } from '#/lib/api/feed/utils'
 
 let ShareMenuItems = ({
   post,

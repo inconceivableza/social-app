@@ -11,10 +11,13 @@ import {
   moderateNotification,
   type ModerationOpts,
 } from '@atproto/api'
+import {ids} from '@atproto/api/client/lexicons'
 import {type QueryClient} from '@tanstack/react-query'
 import chunk from 'lodash.chunk'
 
+import {isRecipePostView, type RecipePostView} from '#/lib/api/feed/utils'
 import {labelIsHideableOffense} from '#/lib/moderation'
+import {isRecipeUri} from '#/lib/strings/url-helpers'
 import * as bsky from '#/types/bsky'
 import {precacheProfile} from '../profile'
 import {
@@ -22,9 +25,6 @@ import {
   type FeedPage,
   type NotificationType,
 } from './types'
-import { isRecipeUri } from '#/lib/strings/url-helpers'
-import { ids } from '@atproto/api/client/lexicons'
-import { RecipePostView, isRecipePostView } from '#/lib/api/feed/utils'
 
 const GROUPABLE_REASONS = [
   'like',
@@ -94,8 +94,7 @@ export async function fetchPage({
           if (notif.subject) {
             precacheProfile(queryClient, notif.subject.author)
           }
-        }
-        else {
+        } else {
           notif.subject = subjects.posts.get(notif.subjectUri)
           if (notif.subject) {
             precacheProfile(queryClient, notif.subject.author)
@@ -223,7 +222,10 @@ async function fetchSubjects(
   const postUris = new Set<string>()
   const packUris = new Set<string>()
   for (const notif of groupedNotifs) {
-    if (notif.subjectUri?.includes(ids.AppBskyFeedPost) || notif.subjectUri?.includes(ids.AppFoodiosFeedRecipePost)) {
+    if (
+      notif.subjectUri?.includes(ids.AppBskyFeedPost) ||
+      notif.subjectUri?.includes(ids.AppFoodiosFeedRecipePost)
+    ) {
       postUris.add(notif.subjectUri)
     } else if (
       notif.notification.reasonSubject?.includes('app.bsky.graph.starterpack')
@@ -236,7 +238,7 @@ async function fetchSubjects(
   // TODO: consider whether recipes should be included in output of getPosts
   const postsChunks = await Promise.all(
     postUriChunks.map(uris =>
-      agent.app.bsky.feed.getPosts({ uris }).then(res => res.data.posts),
+      agent.app.bsky.feed.getPosts({uris}).then(res => res.data.posts),
     ),
   )
   const packsChunks = await Promise.all(
@@ -264,7 +266,7 @@ async function fetchSubjects(
   return {
     posts: postsMap,
     starterPacks: packsMap,
-    recipes: recipesMap
+    recipes: recipesMap,
   }
 }
 

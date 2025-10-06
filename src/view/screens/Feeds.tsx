@@ -6,9 +6,8 @@ import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 import debounce from 'lodash.debounce'
 
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
-import { useWebMediaQueries } from '#/lib/hooks/useWebMediaQueries'
+import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
@@ -24,7 +23,7 @@ import {
 } from '#/state/queries/feed'
 import {useSession} from '#/state/session'
 import {useSetMinimalShellMode} from '#/state/shell'
-import { ErrorMessage } from '#/view/com/util/error/ErrorMessage'
+import {ErrorMessage} from '#/view/com/util/error/ErrorMessage'
 import {List, type ListMethods} from '#/view/com/util/List'
 import {FeedFeedLoadingPlaceholder} from '#/view/com/util/LoadingPlaceholder'
 import {Text} from '#/view/com/util/text/Text'
@@ -44,7 +43,7 @@ import {SettingsGear2_Stroke2_Corner0_Rounded as Gear} from '#/components/icons/
 import * as Layout from '#/components/Layout'
 import {Link} from '#/components/Link'
 import * as ListCard from '#/components/ListCard'
-import { ComposeFAB } from '../com/composer/ComposeFAB'
+import {ComposeFAB} from '../com/composer/ComposeFAB'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'Feeds'>
 
@@ -104,7 +103,6 @@ type FlatlistSlice =
 
 export function FeedsScreen(_props: Props) {
   const pal = usePalette('default')
-  const {openComposer} = useOpenComposer()
   const {isMobile} = useWebMediaQueries()
   const [query, setQuery] = React.useState('')
   const [isPTR, setIsPTR] = React.useState(false)
@@ -143,11 +141,11 @@ export function FeedsScreen(_props: Props) {
     () => debounce(q => search(q), 500), // debounce for 500ms
     [search],
   )
-  const onPressCompose = React.useCallback(() => {
+  /* const onPressCompose = React.useCallback(() => {
     openComposer({
       type: 'post'
     })
-  }, [openComposer])
+  }, [openComposer]) */
   const onChangeQuery = React.useCallback(
     (text: string) => {
       setQuery(text)
@@ -543,9 +541,7 @@ export function FeedsScreen(_props: Props) {
           sideBorders={false}
         />
       </Layout.Center>
-      {hasSession && (
-        <ComposeFAB />
-      )}
+      {hasSession && <ComposeFAB />}
     </Layout.Screen>
   )
 }

@@ -22,10 +22,10 @@ export type CommonNavigatorParams = {
   ProfileSearch: {name: string; q?: string}
   ProfileList: {name: string; rkey: string}
   PostThread: {name: string; rkey: string}
-  PostLikedBy: { name: string; postType: string; rkey: string }
-  PostRepostedBy: { name: string; postType: string; rkey: string }
-  PostQuotes: { name: string; postType: string; rkey: string }
-  RecipeThread: { name: string; rkey: string }
+  PostLikedBy: {name: string; postType: string; rkey: string}
+  PostRepostedBy: {name: string; postType: string; rkey: string}
+  PostQuotes: {name: string; postType: string; rkey: string}
+  RecipeThread: {name: string; rkey: string}
   ProfileFeed: {
     name: string
     rkey: string

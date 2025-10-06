@@ -12,16 +12,14 @@ import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import { useSetTitle } from '#/lib/hooks/useSetTitle'
+import {useSetTitle} from '#/lib/hooks/useSetTitle'
 import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
 } from '#/lib/routes/types'
 import {combinedDisplayName} from '#/lib/strings/display-names'
 import {cleanError} from '#/lib/strings/errors'
-import {isInvalidHandle} from '#/lib/strings/handles'
-import { colors } from '#/lib/styles'
+import {colors} from '#/lib/styles'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
 import {listenSoftReset} from '#/state/events'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
@@ -34,7 +32,7 @@ import {useSetMinimalShellMode} from '#/state/shell'
 import {ProfileFeedgens} from '#/view/com/feeds/ProfileFeedgens'
 import {ProfileLists} from '#/view/com/lists/ProfileLists'
 import {PagerWithHeader} from '#/view/com/pager/PagerWithHeader'
-import { ErrorScreen } from '#/view/com/util/error/ErrorScreen'
+import {ErrorScreen} from '#/view/com/util/error/ErrorScreen'
 import {type ListRef} from '#/view/com/util/List'
 import {ProfileHeader, ProfileHeaderLoading} from '#/screens/Profile/Header'
 import {ProfileFeedSection} from '#/screens/Profile/Sections/Feed'
@@ -45,7 +43,7 @@ import {ScreenHider} from '#/components/moderation/ScreenHider'
 import {ProfileStarterPacks} from '#/components/StarterPack/ProfileStarterPacks'
 import {navigate} from '#/Navigation'
 import {ExpoScrollForwarderView} from '../../../modules/expo-scroll-forwarder'
-import { ComposeFAB } from '../com/composer/ComposeFAB'
+import {ComposeFAB} from '../com/composer/ComposeFAB'
 
 interface SectionRef {
   scrollToTop: () => void
@@ -167,7 +165,6 @@ function ProfileScreenLoaded({
   const profile = useProfileShadow(profileUnshadowed)
   const {hasSession, currentAccount} = useSession()
   const setMinimalShellMode = useSetMinimalShellMode()
-  const {openComposer} = useOpenComposer()
   const {
     data: labelerInfo,
     error: labelerError,
@@ -503,9 +500,7 @@ function ProfileScreenLoaded({
             )
           : null}
       </PagerWithHeader>
-      {hasSession && (
-        <ComposeFAB />
-      )}
+      {hasSession && <ComposeFAB />}
     </ScreenHider>
   )
 }
