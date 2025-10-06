@@ -13,6 +13,8 @@ import {MediaInsetBorder} from '#/components/MediaInsetBorder'
 import * as BandwidthEstimate from './bandwidth-estimate'
 import {Controls} from './web-controls/VideoControls'
 
+const PLAY_BLOBS_DIRECTLY = true
+
 export function VideoEmbedInnerWeb({
   embed,
   active,
@@ -40,13 +42,13 @@ export function VideoEmbedInnerWeb({
     throw error
   }
 
-  // const hlsRef = useHLS({
-  //   playlist: embed.playlist,
-  //   setHasSubtitleTrack,
-  //   setError,
-  //   videoRef,
-  //   setHlsLoading,
-  // })
+  const hlsRef = useHLS({
+    playlist: embed.playlist,
+    setHasSubtitleTrack,
+    setError,
+    videoRef,
+    setHlsLoading,
+  })
 
   useEffect(() => {
     if (lastKnownTime.current && videoRef.current) {
@@ -99,18 +101,21 @@ export function VideoEmbedInnerWeb({
             </figcaption>
           )}
         </figure>
-        {/* <Controls
-          videoRef={videoRef}
-          hlsRef={hlsRef}
-          active={active}
-          setActive={setActive}
-          focused={focused}
-          setFocused={setFocused}
-          hlsLoading={hlsLoading}
-          onScreen={onScreen}
-          fullscreenRef={containerRef}
-          hasSubtitleTrack={hasSubtitleTrack}
-        /> */}
+        {PLAY_BLOBS_DIRECTLY ||
+          (hlsRef && (
+            <Controls
+              videoRef={videoRef}
+              hlsRef={hlsRef}
+              active={active}
+              setActive={setActive}
+              focused={focused}
+              setFocused={setFocused}
+              hlsLoading={hlsLoading}
+              onScreen={onScreen}
+              fullscreenRef={containerRef}
+              hasSubtitleTrack={hasSubtitleTrack}
+            />
+          ))}
       </div>
       <MediaInsetBorder />
     </View>
@@ -156,7 +161,7 @@ function useHLS({
     () => promiseForHls.value,
   )
   useEffect(() => {
-    if (!Hls) {
+    if (!PLAY_BLOBS_DIRECTLY && !Hls) {
       setHlsLoading(true)
       promiseForHls.then(loadedHls => {
         setHls(() => loadedHls)
@@ -176,6 +181,7 @@ function useHLS({
       _event: HlsTypes.Events.FRAG_CHANGED,
       {frag}: HlsTypes.FragChangedData,
     ) => {
+      if (PLAY_BLOBS_DIRECTLY) return
       if (!Hls) return
       if (!hlsRef.current) return
       const hls = hlsRef.current
@@ -205,6 +211,7 @@ function useHLS({
   )
 
   const flushOnLoop = useNonReactiveCallback(() => {
+    if (PLAY_BLOBS_DIRECTLY) return
     if (!Hls) return
     if (!hlsRef.current) return
     const hls = hlsRef.current
@@ -228,6 +235,7 @@ function useHLS({
   })
 
   useEffect(() => {
+    if (PLAY_BLOBS_DIRECTLY) return
     if (!videoRef.current) return
     if (!Hls) return
     if (!Hls.isSupported()) {
