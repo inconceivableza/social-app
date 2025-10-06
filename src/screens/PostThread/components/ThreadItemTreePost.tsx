@@ -9,8 +9,7 @@ import {
 import {Trans} from '@lingui/macro'
 
 import {MAX_POST_LINES} from '#/lib/constants'
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {makeProfileLink} from '#/lib/routes/links'
+import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
@@ -42,6 +41,7 @@ import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import {Text} from '#/components/Typography'
+import { postHref } from '#/lib/api/feed/utils'
 
 /**
  * Mimic the space in PostMeta
@@ -267,9 +267,8 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
   const threadRootUri = record.reply?.root?.uri || post.uri
-  const postHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+  const href = useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
     threadgateRecord,
@@ -291,6 +290,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
@@ -312,7 +312,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
       <SubtleHover>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
-          href={postHref}
+          href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
           iconSize={42}
@@ -325,7 +325,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
                 author={post.author}
                 moderation={moderation}
                 timestamp={post.indexedAt}
-                postHref={postHref}
+                postHref={href}
                 avatarSize={TREE_AVI_WIDTH}
                 style={[a.pb_0]}
                 showAvatar

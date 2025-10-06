@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useRef, useState} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {useWindowDimensions, View} from 'react-native'
 import Animated, {useAnimatedStyle} from 'react-native-reanimated'
 import {Trans} from '@lingui/macro'
@@ -38,6 +38,8 @@ import {
 import {atoms as a, native, platform, useBreakpoints, web} from '#/alf'
 import * as Layout from '#/components/Layout'
 import {ListFooter} from '#/components/Lists'
+import { PostAuthorDidProvider } from '#/view/com/posts/PostContext'
+import { isRecipePostView, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 const PARENT_CHUNK_SIZE = 5
 const CHILDREN_CHUNK_SIZE = 50
@@ -54,6 +56,7 @@ export function PostThread({uri}: {uri: string}) {
    * One query to rule them all
    */
   const thread = usePostThread({anchor: uri})
+  console.log(thread)
   const {anchor, hasParents} = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     let hasParents = false
@@ -83,11 +86,15 @@ export function PostThread({uri}: {uri: string}) {
       return
     }
     const post = anchor.value.post
+    const text = isRecipePostView(post) ? recipePostSummaryRichText(post.record.revisionContent) : post.record.text
+
     openComposer({
+      type: 'post',
       replyTo: {
-        uri: anchor.uri,
+        uri: anchor.value.post.uri,
         cid: post.cid,
-        text: post.record.text,
+        revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined,
+        text,
         author: post.author,
         embed: post.embed,
         moderation: anchor.moderation,
@@ -368,6 +375,7 @@ export function PostThread({uri}: {uri: string}) {
         if (item.depth < 0) {
           return (
             <ThreadItemPost
+              anchor={anchor}
               item={item}
               threadgateRecord={thread.data.threadgate?.record ?? undefined}
               overrides={{
@@ -398,17 +406,19 @@ export function PostThread({uri}: {uri: string}) {
                 ref={anchorRef}
                 onLayout={() => setDeferParents(false)}
               />
+              <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemAnchor
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
                 onPostSuccess={optimisticOnPostReply}
                 postSource={anchorPostSource}
-              />
+                /></PostAuthorDidProvider>
             </View>
           )
         } else {
           if (thread.state.view === 'tree') {
             return (
+              <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemTreePost
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
@@ -416,18 +426,20 @@ export function PostThread({uri}: {uri: string}) {
                   moderation: thread.state.otherItemsVisible && item.depth > 0,
                 }}
                 onPostSuccess={optimisticOnPostReply}
-              />
+                /></PostAuthorDidProvider>
             )
           } else {
             return (
+              <PostAuthorDidProvider did={item.value.post.author.did}>
               <ThreadItemPost
+                  anchor={anchor}
                 item={item}
                 threadgateRecord={thread.data.threadgate?.record ?? undefined}
                 overrides={{
                   moderation: thread.state.otherItemsVisible && item.depth > 0,
                 }}
                 onPostSuccess={optimisticOnPostReply}
-              />
+                /></PostAuthorDidProvider>
             )
           }
         }

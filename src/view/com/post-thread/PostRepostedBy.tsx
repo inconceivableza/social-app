@@ -11,28 +11,14 @@ import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {ProfileCardWithFollowBtn} from '#/view/com/profile/ProfileCard'
 import {List} from '#/view/com/util/List'
 import {ListFooter, ListMaybePlaceholder} from '#/components/Lists'
+import { RepostInfo } from '@atproto/api/client/types/app/bsky/feed/getRepostedBy'
 
-function renderItem({
-  item,
-  index,
-}: {
-  item: ActorDefs.ProfileView
-  index: number
-}) {
-  return (
-    <ProfileCardWithFollowBtn
-      key={item.did}
-      profile={item}
-      noBorder={index === 0}
-    />
-  )
-}
 
 function keyExtractor(item: ActorDefs.ProfileViewBasic) {
   return item.did
 }
 
-export function PostRepostedBy({uri}: {uri: string}) {
+export function PostRepostedBy({ uri, revisionUri }: { uri: string, revisionUri?: string }) {
   const {_} = useLingui()
   const initialNumToRender = useInitialNumToRender()
 
@@ -52,6 +38,22 @@ export function PostRepostedBy({uri}: {uri: string}) {
     error,
     refetch,
   } = usePostRepostedByQuery(resolvedUri?.uri)
+
+  const renderItem = useCallback(({
+    item,
+    index,
+  }: {
+    item: RepostInfo
+    index: number
+  }) => {
+    return <div key={item.profileView.did}>
+      <ProfileCardWithFollowBtn
+        profile={item.profileView}
+        noBorder={index === 0}
+      />
+      {item.revisionUri !== revisionUri ? "outdated" : null}
+    </div>
+  }, [revisionUri])
 
   const isError = Boolean(resolveError || error)
 
@@ -80,7 +82,7 @@ export function PostRepostedBy({uri}: {uri: string}) {
       logger.error('Failed to load more reposts', {message: err})
     }
   }, [isFetchingNextPage, hasNextPage, isError, fetchNextPage])
-
+  // TODO: display outdated
   if (repostedBy.length < 1) {
     return (
       <ListMaybePlaceholder

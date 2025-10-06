@@ -1,4 +1,4 @@
-import {
+import AtpAgent, {
   type $Typed,
   type AppBskyEmbedExternal,
   type AppBskyEmbedImages,
@@ -13,19 +13,21 @@ import {
   type ComAtprotoRepoApplyWrites,
   type ComAtprotoRepoStrongRef,
   RichText,
+  AppFoodiosFeedRecipePost,
+  AppFoodiosFeedRecipeRevision,
 } from '@atproto/api'
-import {TID} from '@atproto/common-web'
+import { TID } from '@atproto/common-web'
 import * as dcbor from '@ipld/dag-cbor'
-import {t} from '@lingui/macro'
-import {type QueryClient} from '@tanstack/react-query'
-import {sha256} from 'js-sha256'
-import {CID} from 'multiformats/cid'
+import { t } from '@lingui/macro'
+import { type QueryClient } from '@tanstack/react-query'
+import { sha256 } from 'js-sha256'
+import { CID } from 'multiformats/cid'
 import * as Hasher from 'multiformats/hashes/hasher'
 
-import {isNetworkError} from '#/lib/strings/errors'
-import {shortenLinks, stripInvalidMentions} from '#/lib/strings/rich-text-manip'
-import {logger} from '#/logger'
-import {compressImage} from '#/state/gallery'
+import { isNetworkError } from '#/lib/strings/errors'
+import { shortenLinks, stripInvalidMentions } from '#/lib/strings/rich-text-manip'
+import { logger } from '#/logger'
+import { compressImage } from '#/state/gallery'
 import {
   fetchResolveGifQuery,
   fetchResolveLinkQuery,
@@ -35,18 +37,24 @@ import {
   threadgateAllowUISettingToAllowRecordValue,
 } from '#/state/queries/threadgate'
 import {
+  EmbedState,
   type EmbedDraft,
   type PostDraft,
   type ThreadDraft,
 } from '#/view/com/composer/state/composer'
-import {createGIFDescription} from '../gif-alt-text'
-import {uploadBlob} from './upload-blob'
+import { createGIFDescription } from '../gif-alt-text'
+import { uploadBlob } from './upload-blob'
+import { RecipePostDraft } from '#/view/com/composer/state/composerRecipe'
+import { BskyAppAgent } from '#/state/session/agent'
+import { isRecipeUri } from '../strings/url-helpers'
+import { ids } from '@atproto/api/client/lexicons'
+import { RecipePostView } from './feed/utils'
 
-export {uploadBlob}
+export { uploadBlob }
 
 interface PostOpts {
   thread: ThreadDraft
-  replyTo?: string
+  replyTo?: ComAtprotoRepoStrongRef.Main
   onStateChange?: (state: string) => void
   langs?: string[]
 }
@@ -96,7 +104,7 @@ export async function post(
     if (draft.labels.length) {
       labels = {
         $type: 'com.atproto.label.defs#selfLabels',
-        values: draft.labels.map(val => ({val})),
+        values: draft.labels.map(val => ({ val })),
       }
     }
 
@@ -190,7 +198,129 @@ export async function post(
     }
   }
 
-  return {uris}
+  return { uris }
+}
+
+interface RecipePostOpts {
+  post: RecipePostDraft,
+}
+export async function postRecipe(agent: AtpAgent, qc: QueryClient, { post }: RecipePostOpts) {
+  const now = new Date()
+  const did = agent.assertDid
+  const tid = TID.next()
+  const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
+  const recipeRecord: AppFoodiosFeedRecipePost.Record = {
+    $type: "app.foodios.feed.recipePost",
+    createdAt: now.toISOString(),
+  }
+  const cid = await computeCid(recipeRecord)
+
+  const embed = await resolveEmbed(agent, qc, post, () => { })
+  const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
+    $type: "app.foodios.feed.recipeRevision",
+    recipePostRef: {
+      uri,
+      cid
+    },
+    createdAt: now.toISOString(),
+    ingredients: post.ingredients,
+    steps: post.steps,
+    text: post.text.text,
+    title: post.title.text,
+    embed
+  }
+
+  // TODO: add recipe label
+  // TODO: consider whether we need a new rkey for revision
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
+    {
+      $type: "com.atproto.repo.applyWrites#create",
+      collection: "app.foodios.feed.recipePost",
+      value: recipeRecord,
+      rkey,
+    },
+    {
+      $type: "com.atproto.repo.applyWrites#create",
+      collection: "app.foodios.feed.recipeRevision",
+      value: revisionRecord,
+      rkey,
+    }
+  ]
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create recipe post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
+
+  return uri
+}
+interface RecipeRevisionOpts {
+  parentRevisionPost: RecipePostView
+  post: RecipePostDraft
+}
+export async function postRecipeRevision(agent: AtpAgent, qc: QueryClient, { post, parentRevisionPost }: RecipeRevisionOpts) {
+  const now = new Date()
+  const tid = TID.next()
+  const rkey = tid.toString()
+
+  const embed = await resolveEmbed(agent, qc, post, () => { })
+  const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
+    $type: "app.foodios.feed.recipeRevision",
+    recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
+    parentRevisionRef: {
+      uri: parentRevisionPost.record.selectedRevisionUri,
+      cid: parentRevisionPost.cid // TODO: This field is currently populated with the selected revision's cid (not the the recipe post's) this may be confusing
+    },
+    createdAt: now.toISOString(),
+    ingredients: post.ingredients,
+    steps: post.steps,
+    text: post.text.text,
+    title: post.title.text,
+    embed,
+  }
+
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
+    {
+      $type: "com.atproto.repo.applyWrites#create",
+      collection: "app.foodios.feed.recipeRevision",
+      value: revisionRecord,
+      rkey,
+    }
+  ]
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create recipe post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
 }
 
 async function resolveRT(agent: BskyAgent, richtext: RichText) {
@@ -199,7 +329,7 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
     .replace(/^(\s*\n)+/, '')
     // Trim any trailing whitespace.
     .trimEnd()
-  let rt = new RichText({text: trimmedText}, {cleanNewlines: true})
+  let rt = new RichText({ text: trimmedText }, { cleanNewlines: true })
   await rt.detectFacets(agent)
 
   rt = shortenLinks(rt)
@@ -207,16 +337,21 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
   return rt
 }
 
-async function resolveReply(agent: BskyAgent, replyTo: string) {
-  const replyToUrip = new AtUri(replyTo)
-  const parentPost = await agent.getPost({
+async function resolveReply(agent: BskyAgent, replyTo: ComAtprotoRepoStrongRef.Main) {
+  const replyToUrip = new AtUri(replyTo.uri)
+  // TODO: use a utility function for checking the uri collection
+  const parentPost = await (isRecipeUri(replyTo.uri) ? agent.getRecipePost({
     repo: replyToUrip.host,
     rkey: replyToUrip.rkey,
-  })
+  }) : agent.getPost({
+    repo: replyToUrip.host,
+    rkey: replyToUrip.rkey,
+  }))
   if (parentPost) {
-    const parentRef = {
+    const parentRef: ComAtprotoRepoStrongRef.Main = {
       uri: parentPost.uri,
       cid: parentPost.cid,
+      revisionUri: replyTo.revisionUri
     }
     return {
       root: parentPost.value.reply?.root || parentRef,
@@ -228,7 +363,7 @@ async function resolveReply(agent: BskyAgent, replyTo: string) {
 async function resolveEmbed(
   agent: BskyAgent,
   queryClient: QueryClient,
-  draft: PostDraft,
+  draft: EmbedState,
   onStateChange: ((state: string) => void) | undefined,
 ): Promise<
   | $Typed<AppBskyEmbedImages.Main>
@@ -239,6 +374,7 @@ async function resolveEmbed(
   | undefined
 > {
   if (draft.embed.quote) {
+    //
     const [resolvedMedia, resolvedQuote] = await Promise.all([
       resolveMedia(agent, queryClient, draft.embed, onStateChange),
       resolveRecord(agent, queryClient, draft.embed.quote.uri),
@@ -303,13 +439,13 @@ async function resolveMedia(
     const images: AppBskyEmbedImages.Image[] = await Promise.all(
       imagesDraft.map(async (image, i) => {
         logger.debug(`Compressing image #${i}`)
-        const {path, width, height, mime} = await compressImage(image)
+        const { path, width, height, mime } = await compressImage(image)
         logger.debug(`Uploading image #${i}`)
         const res = await uploadBlob(agent, path, mime)
         return {
           image: res.data.blob,
           alt: image.alt,
-          aspectRatio: {width, height},
+          aspectRatio: { width, height },
         }
       }),
     )
@@ -327,10 +463,10 @@ async function resolveMedia(
       videoDraft.captions
         .filter(caption => caption.lang !== '')
         .map(async caption => {
-          const {data} = await agent.uploadBlob(caption.file, {
+          const { data } = await agent.uploadBlob(caption.file, {
             encoding: 'text/vtt',
           })
-          return {lang: caption.lang, file: data.blob}
+          return { lang: caption.lang, file: data.blob }
         }),
     )
 
@@ -340,7 +476,7 @@ async function resolveMedia(
 
     // aspect ratio values must be >0 - better to leave as unset otherwise
     // posting will fail if aspect ratio is set to 0
-    const aspectRatio = width > 0 && height > 0 ? {width, height} : undefined
+    const aspectRatio = width > 0 && height > 0 ? { width, height } : undefined
 
     if (!aspectRatio) {
       logger.error(
@@ -366,7 +502,7 @@ async function resolveMedia(
     let blob: BlobRef | undefined
     if (resolvedGif.thumb) {
       onStateChange?.(t`Uploading link thumbnail...`)
-      const {path, mime} = resolvedGif.thumb.source
+      const { path, mime } = resolvedGif.thumb.source
       const response = await uploadBlob(agent, path, mime)
       blob = response.data.blob
     }
@@ -390,7 +526,7 @@ async function resolveMedia(
       let blob: BlobRef | undefined
       if (resolvedLink.thumb) {
         onStateChange?.(t`Uploading link thumbnail...`)
-        const {path, mime} = resolvedLink.thumb.source
+        const { path, mime } = resolvedLink.thumb.source
         const response = await uploadBlob(agent, path, mime)
         blob = response.data.blob
       }
@@ -431,7 +567,7 @@ const mf_sha256 = Hasher.from({
   },
 })
 
-async function computeCid(record: AppBskyFeedPost.Record): Promise<string> {
+async function computeCid(record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record): Promise<string> {
   // IMPORTANT: `prepareObject` prepares the record to be hashed by removing
   // fields with undefined value, and converting BlobRef instances to the
   // right IPLD representation.

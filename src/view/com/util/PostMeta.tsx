@@ -36,7 +36,7 @@ interface PostMetaOpts {
   style?: StyleProp<ViewStyle>
 }
 
-let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
+let PostMeta = (opts: React.PropsWithChildren<PostMetaOpts>): React.ReactNode => {
   const t = useTheme()
   const {i18n, _} = useLingui()
 
@@ -175,6 +175,7 @@ let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
             </WebOnlyInlineLinkText>
           )}
         </TimeElapsed>
+        {opts.children}
       </View>
     </View>
   )

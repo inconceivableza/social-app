@@ -1,20 +1,22 @@
 import React from 'react'
 import {
+  AppBskyFeedDefs,
   type AppBskyActorDefs,
   type AppBskyFeedDefs,
   type AppBskyUnspeccedGetPostThreadV2,
   type ModerationDecision,
 } from '@atproto/api'
-import {msg} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
-import {useQueryClient} from '@tanstack/react-query'
+import { msg } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
+import { useQueryClient } from '@tanstack/react-query'
 
-import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
-import {postUriToRelativePath, toBskyAppUrl} from '#/lib/strings/url-helpers'
-import {purgeTemporaryImageFiles} from '#/state/gallery'
-import {precacheResolveLinkQuery} from '#/state/queries/resolve-link'
-import {type EmojiPickerPosition} from '#/view/com/composer/text-input/web/EmojiPicker'
+import { useNonReactiveCallback } from '#/lib/hooks/useNonReactiveCallback'
+import { postUriToRelativePath, toBskyAppUrl } from '#/lib/strings/url-helpers'
+import { purgeTemporaryImageFiles } from '#/state/gallery'
+import { precacheResolveLinkQuery } from '#/state/queries/resolve-link'
+import { type EmojiPickerPosition } from '#/view/com/composer/text-input/web/EmojiPicker'
 import * as Toast from '#/view/com/util/Toast'
+import { RecipePostView } from '#/lib/api/feed/utils'
 
 export interface ComposerOptsPostRef {
   uri: string
@@ -27,12 +29,13 @@ export interface ComposerOptsPostRef {
 
 export type OnPostSuccessData =
   | {
-      replyToUri?: string
-      posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
-    }
+    replyToUri?: string
+    posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
+  }
   | undefined
 
-export interface ComposerOpts {
+export interface PostComposerOpts {
+  type: 'post'
   replyTo?: ComposerOptsPostRef
   onPost?: (postUri: string | undefined) => void
   onPostSuccess?: (data: OnPostSuccessData) => void
@@ -40,9 +43,16 @@ export interface ComposerOpts {
   mention?: string // handle of user to mention
   openEmojiPicker?: (pos: EmojiPickerPosition | undefined) => void
   text?: string
-  imageUris?: {uri: string; width: number; height: number; altText?: string}[]
-  videoUri?: {uri: string; width: number; height: number}
+  imageUris?: { uri: string; width: number; height: number; altText?: string }[]
+  videoUri?: { uri: string; width: number; height: number }
 }
+
+export interface RecipeComposerOpts {
+  type: 'recipe'
+  edit?: RecipePostView
+}
+
+export type ComposerOpts = PostComposerOpts | RecipeComposerOpts
 
 type StateContext = ComposerOpts | undefined
 type ControlsContext = {
@@ -52,53 +62,57 @@ type ControlsContext = {
 
 const stateContext = React.createContext<StateContext>(undefined)
 const controlsContext = React.createContext<ControlsContext>({
-  openComposer(_opts: ComposerOpts) {},
+  openComposer(_opts: ComposerOpts) { },
   closeComposer() {
     return false
   },
 })
 
-export function Provider({children}: React.PropsWithChildren<{}>) {
-  const {_} = useLingui()
+export function Provider({ children }: React.PropsWithChildren<{}>) {
+  const { _ } = useLingui()
   const [state, setState] = React.useState<StateContext>()
   const queryClient = useQueryClient()
 
   const openComposer = useNonReactiveCallback((opts: ComposerOpts) => {
-    if (opts.quote) {
-      const path = postUriToRelativePath(opts.quote.uri)
-      if (path) {
-        const appUrl = toBskyAppUrl(path)
-        precacheResolveLinkQuery(queryClient, appUrl, {
-          type: 'record',
-          kind: 'post',
-          record: {
-            cid: opts.quote.cid,
-            uri: opts.quote.uri,
-          },
-          view: opts.quote,
+    if (opts.type === 'post') {
+      if (opts.quote) {
+        const path = postUriToRelativePath(opts.quote.uri)
+        if (path) {
+          const appUrl = toBskyAppUrl(path)
+          precacheResolveLinkQuery(queryClient, appUrl, {
+            type: 'record',
+            kind: 'post',
+            record: {
+              cid: opts.quote.cid,
+              uri: opts.quote.uri,
+            },
+            view: opts.quote,
+          })
+        }
+      }
+      const author = opts.replyTo?.author || opts.quote?.author
+      const isBlocked = Boolean(
+        author &&
+          (author.viewer?.blocking ||
+            author.viewer?.blockedBy ||
+            author.viewer?.blockingByList),
+      )
+      if (isBlocked) {
+        Toast.show(
+          _(msg`Cannot interact with a blocked user`),
+          'exclamation-circle',
+        )
+      } else {
+        setState(prevOpts => {
+          if (prevOpts) {
+            // Never replace an already open composer.
+            return prevOpts
+          }
+          return opts
         })
       }
-    }
-    const author = opts.replyTo?.author || opts.quote?.author
-    const isBlocked = Boolean(
-      author &&
-        (author.viewer?.blocking ||
-          author.viewer?.blockedBy ||
-          author.viewer?.blockingByList),
-    )
-    if (isBlocked) {
-      Toast.show(
-        _(msg`Cannot interact with a blocked user`),
-        'exclamation-circle',
-      )
     } else {
-      setState(prevOpts => {
-        if (prevOpts) {
-          // Never replace an already open composer.
-          return prevOpts
-        }
-        return opts
-      })
+      setState(opts)
     }
   })
 
@@ -134,8 +148,8 @@ export function useComposerState() {
 }
 
 export function useComposerControls() {
-  const {closeComposer} = React.useContext(controlsContext)
-  return React.useMemo(() => ({closeComposer}), [closeComposer])
+  const { closeComposer } = React.useContext(controlsContext)
+  return React.useMemo(() => ({ closeComposer }), [closeComposer])
 }
 
 /**
@@ -145,6 +159,6 @@ export function useComposerControls() {
  * @deprecated use `#/lib/hooks/useOpenComposer` instead
  */
 export function useOpenComposer() {
-  const {openComposer} = React.useContext(controlsContext)
-  return React.useMemo(() => ({openComposer}), [openComposer])
+  const { openComposer } = React.useContext(controlsContext)
+  return React.useMemo(() => ({ openComposer }), [openComposer])
 }

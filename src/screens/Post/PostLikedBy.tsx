@@ -8,16 +8,19 @@ import {usePostThreadQuery} from '#/state/queries/post-thread'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostLikedBy as PostLikedByComponent} from '#/view/com/post-thread/PostLikedBy'
 import * as Layout from '#/components/Layout'
+import { ids } from '@atproto/api/client/lexicons'
+import { AppBskyFeedPost } from '@atproto/api'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostLikedBy'>
 export const PostLikedByScreen = ({route}: Props) => {
   const setMinimalShellMode = useSetMinimalShellMode()
-  const {name, rkey} = route.params
-  const uri = makeRecordUri(name, 'app.bsky.feed.post', rkey)
+  const { name, rkey, postType } = route.params
+  const collection = postType === "recipePost" ? ids.AppFoodiosFeedRecipePost : ids.AppBskyFeedPost
+  const uri = makeRecordUri(name, collection, rkey)
   const {data: post} = usePostThreadQuery(uri)
 
   let likeCount
-  if (post?.thread.type === 'post') {
+  if (post?.thread.type === 'post' || post?.thread.type === "recipe") {
     likeCount = post.thread.post.likeCount
   }
 
@@ -45,7 +48,7 @@ export const PostLikedByScreen = ({route}: Props) => {
         </Layout.Header.Content>
         <Layout.Header.Slot />
       </Layout.Header.Outer>
-      <PostLikedByComponent uri={uri} />
+      <PostLikedByComponent uri={uri} revisionUri={post?.thread.type === "recipe" ? post.thread.record.selectedRevisionUri : undefined} />
     </Layout.Screen>
   )
 }

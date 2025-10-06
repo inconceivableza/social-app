@@ -43,6 +43,11 @@ export interface ChangePasswordModal {
   name: 'change-password'
 }
 
+export interface RecipeRevisionViewModal {
+  name: 'recipe-revision-view',
+  uri: string
+}
+
 export interface UserFeedbackModal {
   name: 'user-feedback'
 }
@@ -64,6 +69,9 @@ export type Modal =
   | WaitlistModal
   | InviteCodesModal
   | UserFeedbackModal
+
+  // Recipes
+  | RecipeRevisionViewModal
 
 const ModalContext = React.createContext<{
   isModalActive: boolean

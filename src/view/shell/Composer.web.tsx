@@ -1,24 +1,24 @@
 import React from 'react'
-import {StyleSheet, View} from 'react-native'
-import {DismissableLayer, FocusGuards, FocusScope} from 'radix-ui/internal'
-import {RemoveScrollBar} from 'react-remove-scroll-bar'
+import { StyleSheet, View } from 'react-native'
+import { DismissableLayer, FocusGuards, FocusScope } from 'radix-ui/internal'
+import { RemoveScrollBar } from 'react-remove-scroll-bar'
 
 import {useA11y} from '#/state/a11y'
 import {useModals} from '#/state/modals'
-import {type ComposerOpts, useComposerState} from '#/state/shell/composer'
+import {type PostComposerOpts, useComposerState} from '#/state/shell/composer'
 import {
   EmojiPicker,
   type EmojiPickerPosition,
   type EmojiPickerState,
 } from '#/view/com/composer/text-input/web/EmojiPicker'
-import {atoms as a, flatten, useBreakpoints, useTheme} from '#/alf'
-import {ComposePost, useComposerCancelRef} from '../com/composer/Composer'
+import { atoms as a, flatten, useBreakpoints, useTheme } from '#/alf'
+import { ComposePost, useComposerCancelRef } from '../com/composer/Composer'
 
 const BOTTOM_BAR_HEIGHT = 61
 
-export function Composer({}: {winHeight: number}) {
+export function Composer({ }: { winHeight: number }) {
   const state = useComposerState()
-  const isActive = !!state
+  const isActive = !!(state?.type === 'post')
 
   // rendering
   // =
@@ -35,15 +35,15 @@ export function Composer({}: {winHeight: number}) {
   )
 }
 
-function Inner({state}: {state: ComposerOpts}) {
+function Inner({state}: {state: PostComposerOpts}) {
   const ref = useComposerCancelRef()
-  const {isModalActive} = useModals()
+  const { isModalActive } = useModals()
   const t = useTheme()
-  const {gtMobile} = useBreakpoints()
-  const {reduceMotionEnabled} = useA11y()
+  const { gtMobile } = useBreakpoints()
+  const { reduceMotionEnabled } = useA11y()
   const [pickerState, setPickerState] = React.useState<EmojiPickerState>({
     isOpen: false,
-    pos: {top: 0, left: 0, right: 0, bottom: 0, nextFocusRef: null},
+    pos: { top: 0, left: 0, right: 0, bottom: 0, nextFocusRef: null },
   })
 
   const onOpenPicker = React.useCallback(
@@ -72,9 +72,9 @@ function Inner({state}: {state: ComposerOpts}) {
         role="dialog"
         aria-modal
         style={flatten([
-          {position: 'fixed'},
+          { position: 'fixed' },
           a.inset_0,
-          {backgroundColor: '#000c'},
+          { backgroundColor: '#000c' },
           a.flex,
           a.flex_col,
           a.align_center,
@@ -96,8 +96,8 @@ function Inner({state}: {state: ComposerOpts}) {
             t.atoms.border_contrast_medium,
             !reduceMotionEnabled && [
               a.zoom_fade_in,
-              {animationDelay: 0.1},
-              {animationFillMode: 'backwards'},
+              { animationDelay: 0.1 },
+              { animationFillMode: 'backwards' },
             ],
           ]}>
           <ComposePost

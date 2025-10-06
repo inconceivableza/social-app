@@ -11,8 +11,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import {VIDEO_FEED_URIS} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {useSetTitle} from '#/lib/hooks/useSetTitle'
-import {ComposeIcon2} from '#/lib/icons'
+import { useSetTitle } from '#/lib/hooks/useSetTitle'
 import {type CommonNavigatorParams} from '#/lib/routes/types'
 import {type NavigationProp} from '#/lib/routes/types'
 import {makeRecordUri} from '#/lib/strings/url-helpers'
@@ -34,8 +33,7 @@ import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {truncateAndInvalidate} from '#/state/queries/util'
 import {useSession} from '#/state/session'
 import {PostFeed} from '#/view/com/posts/PostFeed'
-import {EmptyState} from '#/view/com/util/EmptyState'
-import {FAB} from '#/view/com/util/fab/FAB'
+import { EmptyState } from '#/view/com/util/EmptyState'
 import {Button} from '#/view/com/util/forms/Button'
 import {type ListRef} from '#/view/com/util/List'
 import {LoadLatestBtn} from '#/view/com/util/load-latest/LoadLatestBtn'
@@ -46,6 +44,7 @@ import {
   ProfileFeedHeaderSkeleton,
 } from '#/screens/Profile/components/ProfileFeedHeader'
 import * as Layout from '#/components/Layout'
+import { ComposeFAB } from '#/view/com/composer/ComposeFAB'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'ProfileFeed'>
 export function ProfileFeedScreen(props: Props) {
@@ -227,20 +226,7 @@ export function ProfileFeedScreenInner({
       )}
 
       {hasSession && (
-        <FAB
-          testID="composeFAB"
-          onPress={() => openComposer({})}
-          icon={
-            <ComposeIcon2
-              strokeWidth={1.5}
-              size={29}
-              style={{color: 'white'}}
-            />
-          }
-          accessibilityRole="button"
-          accessibilityLabel={_(msg`New post`)}
-          accessibilityHint=""
-        />
+        <ComposeFAB />
       )}
     </>
   )

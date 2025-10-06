@@ -1,4 +1,4 @@
-import {AppBskyFeedDefs, BskyAgent} from '@atproto/api'
+import { AppBskyFeedDefs, BskyAgent } from '@atproto/api'
 
 import {FeedAPI, FeedAPIResponse} from './types'
 

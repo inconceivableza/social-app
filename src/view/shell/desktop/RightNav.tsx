@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {TouchableOpacity, View} from 'react-native'
+import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/core'

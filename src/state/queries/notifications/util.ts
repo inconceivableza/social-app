@@ -22,6 +22,9 @@ import {
   type FeedPage,
   type NotificationType,
 } from './types'
+import { isRecipeUri } from '#/lib/strings/url-helpers'
+import { ids } from '@atproto/api/client/lexicons'
+import { RecipePostView, isRecipePostView } from '#/lib/api/feed/utils'
 
 const GROUPABLE_REASONS = [
   'like',
@@ -86,7 +89,13 @@ export async function fetchPage({
           notif.subject = subjects.starterPacks.get(
             notif.notification.reasonSubject,
           )
-        } else {
+        } else if (isRecipeUri(notif.subjectUri)) {
+          notif.subject = subjects.recipes.get(notif.subjectUri)
+          if (notif.subject) {
+            precacheProfile(queryClient, notif.subject.author)
+          }
+        }
+        else {
           notif.subject = subjects.posts.get(notif.subjectUri)
           if (notif.subject) {
             precacheProfile(queryClient, notif.subject.author)
@@ -209,11 +218,12 @@ async function fetchSubjects(
 ): Promise<{
   posts: Map<string, AppBskyFeedDefs.PostView>
   starterPacks: Map<string, AppBskyGraphDefs.StarterPackViewBasic>
+  recipes: Map<string, RecipePostView>
 }> {
   const postUris = new Set<string>()
   const packUris = new Set<string>()
   for (const notif of groupedNotifs) {
-    if (notif.subjectUri?.includes('app.bsky.feed.post')) {
+    if (notif.subjectUri?.includes(ids.AppBskyFeedPost) || notif.subjectUri?.includes(ids.AppFoodiosFeedRecipePost)) {
       postUris.add(notif.subjectUri)
     } else if (
       notif.notification.reasonSubject?.includes('app.bsky.graph.starterpack')
@@ -223,9 +233,10 @@ async function fetchSubjects(
   }
   const postUriChunks = chunk(Array.from(postUris), 25)
   const packUriChunks = chunk(Array.from(packUris), 25)
+  // TODO: consider whether recipes should be included in output of getPosts
   const postsChunks = await Promise.all(
     postUriChunks.map(uris =>
-      agent.app.bsky.feed.getPosts({uris}).then(res => res.data.posts),
+      agent.app.bsky.feed.getPosts({ uris }).then(res => res.data.posts),
     ),
   )
   const packsChunks = await Promise.all(
@@ -237,9 +248,12 @@ async function fetchSubjects(
   )
   const postsMap = new Map<string, AppBskyFeedDefs.PostView>()
   const packsMap = new Map<string, AppBskyGraphDefs.StarterPackViewBasic>()
+  const recipesMap = new Map<string, RecipePostView>()
   for (const post of postsChunks.flat()) {
     if (AppBskyFeedPost.isRecord(post.record)) {
       postsMap.set(post.uri, post)
+    } else if (isRecipePostView(post)) {
+      recipesMap.set(post.uri, post)
     }
   }
   for (const pack of packsChunks.flat()) {
@@ -250,6 +264,7 @@ async function fetchSubjects(
   return {
     posts: postsMap,
     starterPacks: packsMap,
+    recipes: recipesMap
   }
 }
 

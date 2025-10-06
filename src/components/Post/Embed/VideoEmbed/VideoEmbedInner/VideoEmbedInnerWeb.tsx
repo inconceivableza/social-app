@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef, useState} from 'react'
+import { useContext, useEffect, useId, useRef, useState } from 'react'
 import {View} from 'react-native'
 import {type AppBskyEmbedVideo} from '@atproto/api'
 import {msg} from '@lingui/macro'
@@ -10,6 +10,8 @@ import {atoms as a} from '#/alf'
 import {MediaInsetBorder} from '#/components/MediaInsetBorder'
 import * as BandwidthEstimate from './bandwidth-estimate'
 import {Controls} from './web-controls/VideoControls'
+import { PostAuthorDidContext } from '#/view/com/posts/PostContext'
+import { useAgent } from '#/state/session'
 
 export function VideoEmbedInnerWeb({
   embed,
@@ -38,20 +40,26 @@ export function VideoEmbedInnerWeb({
     throw error
   }
 
-  const hlsRef = useHLS({
-    playlist: embed.playlist,
-    setHasSubtitleTrack,
-    setError,
-    videoRef,
-    setHlsLoading,
-  })
+  // const hlsRef = useHLS({
+  //   playlist: embed.playlist,
+  //   setHasSubtitleTrack,
+  //   setError,
+  //   videoRef,
+  //   setHlsLoading,
+  // })
 
   useEffect(() => {
     if (lastKnownTime.current && videoRef.current) {
       videoRef.current.currentTime = lastKnownTime.current
     }
   }, [lastKnownTime])
-
+  const authorDid = useContext(PostAuthorDidContext)
+  if (!authorDid) {
+    throw new Error('post not found')
+  }
+  // TODO: pass this url down as a prop
+  const agent = useAgent()
+  const url = `${agent.pdsUrl}xrpc/com.atproto.sync.getBlob?did=${authorDid}&cid=${embed.cid}`
   return (
     <View
       style={[a.flex_1, a.rounded_md, a.overflow_hidden]}
@@ -60,11 +68,13 @@ export function VideoEmbedInnerWeb({
       <div ref={containerRef} style={{height: '100%', width: '100%'}}>
         <figure style={{margin: 0, position: 'absolute', inset: 0}}>
           <video
-            ref={videoRef}
-            poster={embed.thumbnail}
+            //ref={videoRef}
+            src={url}
+            // poster={embed.thumbnail}
             style={{width: '100%', height: '100%', objectFit: 'contain'}}
             playsInline
-            preload="none"
+            // preload="none"
+            controls
             muted={!focused}
             aria-labelledby={embed.alt ? figId : undefined}
             onTimeUpdate={e => {
@@ -89,7 +99,7 @@ export function VideoEmbedInnerWeb({
             </figcaption>
           )}
         </figure>
-        <Controls
+        {/* <Controls
           videoRef={videoRef}
           hlsRef={hlsRef}
           active={active}
@@ -100,7 +110,7 @@ export function VideoEmbedInnerWeb({
           onScreen={onScreen}
           fullscreenRef={containerRef}
           hasSubtitleTrack={hasSubtitleTrack}
-        />
+        /> */}
       </div>
       <MediaInsetBorder />
     </View>

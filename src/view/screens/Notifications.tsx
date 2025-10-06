@@ -6,8 +6,7 @@ import {useFocusEffect, useIsFocused} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {ComposeIcon2} from '#/lib/icons'
+import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 import {
   type NativeStackScreenProps,
   type NotificationsTabNavigatorParams,
@@ -26,8 +25,7 @@ import {truncateAndInvalidate} from '#/state/queries/util'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {NotificationFeed} from '#/view/com/notifications/NotificationFeed'
 import {Pager} from '#/view/com/pager/Pager'
-import {TabBar} from '#/view/com/pager/TabBar'
-import {FAB} from '#/view/com/util/fab/FAB'
+import { TabBar } from '#/view/com/pager/TabBar'
 import {type ListMethods} from '#/view/com/util/List'
 import {LoadLatestBtn} from '#/view/com/util/load-latest/LoadLatestBtn'
 import {MainScrollProvider} from '#/view/com/util/MainScrollProvider'
@@ -39,6 +37,7 @@ import {SettingsGear2_Stroke2_Corner0_Rounded as SettingsIcon} from '#/component
 import * as Layout from '#/components/Layout'
 import {InlineLinkText, Link} from '#/components/Link'
 import {Loader} from '#/components/Loader'
+import { ComposeFAB } from '../com/composer/ComposeFAB'
 
 // We don't currently persist this across reloads since
 // you gotta visit All to clear the badge anyway.
@@ -159,14 +158,7 @@ export function NotificationsScreen({}: Props) {
           <View key={i}>{section.component}</View>
         ))}
       </Pager>
-      <FAB
-        testID="composeFAB"
-        onPress={() => openComposer({})}
-        icon={<ComposeIcon2 strokeWidth={1.5} size={29} style={s.white} />}
-        accessibilityRole="button"
-        accessibilityLabel={_(msg`New post`)}
-        accessibilityHint=""
-      />
+      <ComposeFAB />
     </Layout.Screen>
   )
 }

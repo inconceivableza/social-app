@@ -7,6 +7,7 @@ import {
   moderatePost,
   type ModerationDecision,
   RichText as RichTextAPI,
+  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {Trans} from '@lingui/macro'
@@ -14,8 +15,7 @@ import {useQueryClient} from '@tanstack/react-query'
 
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
+import { usePalette } from '#/lib/hooks/usePalette'
 import {countLines} from '#/lib/strings/helpers'
 import {colors, s} from '#/lib/styles'
 import {
@@ -42,6 +42,7 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
+import { isRecipePostView, postHref, recipePostSummaryRichText } from '#/lib/api/feed/utils'
 
 export function Post({
   post,
@@ -55,23 +56,37 @@ export function Post({
   style?: StyleProp<ViewStyle>
 }) {
   const moderationOpts = useModerationOpts()
-  const record = useMemo<AppBskyFeedPost.Record | undefined>(
-    () =>
-      bsky.validate(post.record, AppBskyFeedPost.validateRecord)
-        ? post.record
-        : undefined,
-    [post],
-  )
+  // handle recipe post
+
   const postShadowed = usePostShadow(post)
-  const richText = useMemo(
-    () =>
-      record
-        ? new RichTextAPI({
-            text: record.text,
-            facets: record.facets,
+  const postContent = useMemo<{
+    record: AppBskyFeedPost.Record,
+    richText: RichTextAPI
+  } | {
+    record: AppFoodiosFeedDefs.RecipeRevisionView
+    richText: RichTextAPI
+  } | undefined>(
+    () => {
+      if (isRecipePostView(post)) {
+        return {
+          record: post.record,
+          richText: new RichTextAPI({
+            text: recipePostSummaryRichText(post.record.revisionContent),
+            facets: []
           })
-        : undefined,
-    [record],
+        }
+      } else if (bsky.validate(post.record, AppBskyFeedPost.validateRecord)) {
+        return {
+          record: post.record,
+          richText: new RichTextAPI({
+            text: post.record.text,
+            facets: post.record.facets,
+          })
+        }
+      }
+
+    },
+    [post],
   )
   const moderation = useMemo(
     () => (moderationOpts ? moderatePost(post, moderationOpts) : undefined),
@@ -80,12 +95,12 @@ export function Post({
   if (postShadowed === POST_TOMBSTONE) {
     return null
   }
-  if (record && richText && moderation) {
+  if (postContent && moderation) {
     return (
       <PostInner
         post={postShadowed}
-        record={record}
-        richText={richText}
+        record={postContent.record}
+        richText={postContent.richText}
         moderation={moderation}
         showReplyLine={showReplyLine}
         hideTopBorder={hideTopBorder}
@@ -106,7 +121,7 @@ function PostInner({
   style,
 }: {
   post: Shadow<AppBskyFeedDefs.PostView>
-  record: AppBskyFeedPost.Record
+    record: AppBskyFeedPost.Record | (AppFoodiosFeedDefs.RecipeRevisionView & { reply?: undefined })
   richText: RichTextAPI
   moderation: ModerationDecision
   showReplyLine?: boolean
@@ -116,29 +131,33 @@ function PostInner({
   const queryClient = useQueryClient()
   const pal = usePalette('default')
   const {openComposer} = useOpenComposer()
+
   const [limitLines, setLimitLines] = useState(
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
-  const itemUrip = new AtUri(post.uri)
-  const itemHref = makeProfileLink(post.author, 'post', itemUrip.rkey)
+
+  const itemHref = postHref(post.author, post.uri)
   let replyAuthorDid = ''
   if (record.reply) {
     const urip = new AtUri(record.reply.parent?.uri || record.reply.root.uri)
     replyAuthorDid = urip.hostname
   }
+  // TODO: check where this is used, implement for recipes
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        text: record.text,
+        revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined,
+        text: richText.text,
         author: post.author,
         embed: post.embed,
         moderation,
       },
     })
-  }, [openComposer, post, record, moderation])
+  }, [openComposer, post, richText, moderation])
 
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
@@ -254,7 +273,7 @@ function PostInner({
           </ContentHider>
           <PostControls
             post={post}
-            record={record}
+            record={post.record}
             richText={richText}
             onPressReply={onPressReply}
             logContext="Post"

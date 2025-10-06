@@ -1,12 +1,13 @@
 import {useMutation} from '@tanstack/react-query'
 
 import {useAgent} from '#/state/session'
+import { ComAtprotoRepoStrongRef } from '@atproto/api'
 
 export function useLikeMutation() {
   const agent = useAgent()
   return useMutation({
-    mutationFn: async ({uri, cid}: {uri: string; cid: string}) => {
-      const res = await agent.like(uri, cid)
+    mutationFn: async (subject: ComAtprotoRepoStrongRef.Main) => {
+      const res = await agent.like(subject)
       return {uri: res.uri}
     },
   })

@@ -4,7 +4,7 @@ import {
   BskyAgent,
 } from '@atproto/api'
 
-import {FeedAPI, FeedAPIResponse} from './types'
+import { FeedAPI, FeedAPIResponse } from './types'
 
 export class AuthorFeedAPI implements FeedAPI {
   agent: BskyAgent
@@ -22,7 +22,7 @@ export class AuthorFeedAPI implements FeedAPI {
   }
 
   get params() {
-    const params = {...this._params}
+    const params = { ...this._params }
     params.includePins =
       params.filter === 'posts_with_replies' ||
       params.filter === 'posts_and_author_threads'
@@ -78,13 +78,13 @@ export class AuthorFeedAPI implements FeedAPI {
 
 function isAuthorReplyChain(
   actor: string,
-  post: AppBskyFeedDefs.FeedViewPost,
+  { post, reply }: AppBskyFeedDefs.FeedViewPost,
   posts: AppBskyFeedDefs.FeedViewPost[],
 ): boolean {
-  // current post is by a different user (shouldn't happen)
-  if (post.post.author.did !== actor) return false
 
-  const replyParent = post.reply?.parent
+  if (post.author.did !== actor) return false
+
+  const replyParent = reply?.parent
 
   if (AppBskyFeedDefs.isPostView(replyParent)) {
     // reply parent is by a different user

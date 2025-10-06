@@ -3,14 +3,12 @@ import {
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
-  AtUri,
   type RichText as RichTextAPI,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import type React from 'react'
 
-import {makeProfileLink} from '#/lib/routes/links'
 import {shareUrl} from '#/lib/sharing'
 import {useGate} from '#/lib/statsig/statsig'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -24,6 +22,7 @@ import {useMenuControl} from '#/components/Menu'
 import * as Menu from '#/components/Menu'
 import {PostControlButton, PostControlButtonIcon} from '../PostControlButton'
 import {ShareMenuItems} from './ShareMenuItems'
+import { postHref } from '#/lib/api/feed/utils'
 
 let ShareMenuButton = ({
   testID,
@@ -74,8 +73,7 @@ let ShareMenuButton = ({
 
   const onNativeLongPress = () => {
     logger.metric('share:press:nativeShare', {}, {statsig: true})
-    const urip = new AtUri(post.uri)
-    const href = makeProfileLink(post.author, 'post', urip.rkey)
+    const href = postHref(post.author, post.uri)
     const url = toShareUrl(href)
     shareUrl(url)
     onShare()

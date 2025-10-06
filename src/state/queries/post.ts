@@ -1,5 +1,5 @@
 import {useCallback} from 'react'
-import {type AppBskyActorDefs, type AppBskyFeedDefs, AtUri} from '@atproto/api'
+import { type AppBskyActorDefs, type AppBskyFeedDefs, AtUri, $Typed, ComAtprotoRepoStrongRef } from '@atproto/api'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 
 import {useToggleMutationQueue} from '#/lib/hooks/useToggleMutationQueue'
@@ -11,6 +11,7 @@ import {useAgent, useSession} from '#/state/session'
 import * as userActionHistory from '#/state/userActionHistory'
 import {useIsThreadMuted, useSetThreadMute} from '../cache/thread-mutes'
 import {findProfileQueryData} from './profile'
+import { isRecipePostView } from '#/lib/api/feed/utils'
 
 const RQKEY_ROOT = 'post'
 export const RQKEY = (postUri: string) => [RQKEY_ROOT, postUri]
@@ -116,8 +117,11 @@ export function usePostLikeMutationQueue(
     runMutation: async (prevLikeUri, shouldLike) => {
       if (shouldLike) {
         const {uri: likeUri} = await likeMutation.mutateAsync({
-          uri: postUri,
-          cid: postCid,
+          subject: {
+            uri: postUri,
+            cid: postCid,
+            revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined
+          },
           via: viaRepost,
         })
         userActionHistory.like([postUri])
@@ -172,9 +176,9 @@ function usePostLikeMutation(
   return useMutation<
     {uri: string}, // responds with the uri of the like
     Error,
-    {uri: string; cid: string; via?: {uri: string; cid: string}} // the post's uri and cid, and the repost uri/cid if present
+    { subject: ComAtprotoRepoStrongRef.Main, via?: { uri: string; cid: string } } // the post's uri and cid, and the repost uri/cid if present
   >({
-    mutationFn: ({uri, cid, via}) => {
+    mutationFn: ({ subject, via }) => {
       let ownProfile: AppBskyActorDefs.ProfileViewDetailed | undefined
       if (currentAccount) {
         ownProfile = findProfileQueryData(queryClient, currentAccount.did)
@@ -196,7 +200,7 @@ function usePostLikeMutation(
             : undefined,
         feedDescriptor: feedDescriptor,
       })
-      return agent.like(uri, cid, via)
+      return agent.like(subject, via)
     },
   })
 }
@@ -233,8 +237,7 @@ export function usePostRepostMutationQueue(
     runMutation: async (prevRepostUri, shouldRepost) => {
       if (shouldRepost) {
         const {uri: repostUri} = await repostMutation.mutateAsync({
-          uri: postUri,
-          cid: postCid,
+          subject: { uri: postUri, cid: postCid, revisionUri: isRecipePostView(post) ? post.record.selectedRevisionUri : undefined },
           via: viaRepost,
         })
         return repostUri
@@ -283,11 +286,11 @@ function usePostRepostMutation(
   return useMutation<
     {uri: string}, // responds with the uri of the repost
     Error,
-    {uri: string; cid: string; via?: {uri: string; cid: string}} // the post's uri and cid, and the repost uri/cid if present
+    { subject: ComAtprotoRepoStrongRef.Main; via?: { uri: string; cid: string } } // the post's uri and cid, and the repost uri/cid if present
   >({
-    mutationFn: ({uri, cid, via}) => {
+    mutationFn: ({ subject, via }) => {
       logger.metric('post:repost', {logContext, feedDescriptor})
-      return agent.repost(uri, cid, via)
+      return agent.repost(subject, via)
     },
   })
 }

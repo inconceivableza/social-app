@@ -1,7 +1,7 @@
 import {
   type Agent,
   type AppBskyFeedDefs,
-  type AppBskyFeedGetPosts,
+  type AppBskyFeedGetPosts
 } from '@atproto/api'
 
 import {logger} from '#/logger'
@@ -35,7 +35,7 @@ export class PostListFeedAPI implements FeedAPI {
     throw new Error('Has not fetched yet')
   }
 
-  async fetch({}: {}): Promise<FeedAPIResponse> {
+  async fetch({ }: {}): Promise<FeedAPIResponse> {
     const res = await this.agent.app.bsky.feed.getPosts({
       ...this.params,
     })

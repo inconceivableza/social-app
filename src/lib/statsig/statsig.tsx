@@ -9,6 +9,7 @@ import {type MetricEvents} from '#/logger/metrics'
 import {isWeb} from '#/platform/detection'
 import {getStoredEnvConfig, useEnvConfig} from '#/state/env-config'
 import * as persisted from '#/state/persisted'
+import packageDotJson from '../../../package.json'
 import {useSession} from '../../state/session'
 import {timeout} from '../async/timeout'
 import {useNonReactiveCallback} from '../hooks/useNonReactiveCallback'
@@ -24,6 +25,7 @@ type StatsigUser = {
     // This is the place where we can add our own stuff.
     // Fields here have to be non-optional to be visible in the UI.
     platform: 'ios' | 'android' | 'web'
+    appVersion: string
     bundleIdentifier: string
     bundleDate: number
     refSrc: string
@@ -211,6 +213,7 @@ function toStatsigUser(did: string | undefined): StatsigUser {
       refSrc,
       refUrl,
       platform: Platform.OS as 'ios' | 'android' | 'web',
+      appVersion: packageDotJson.version,
       bundleIdentifier: BUNDLE_IDENTIFIER,
       bundleDate: BUNDLE_DATE,
       appLanguage: languagePrefs.appLanguage,

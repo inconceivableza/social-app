@@ -20,6 +20,7 @@ import {
   isBskyPostUrl,
   isBskyStarterPackUrl,
   isBskyStartUrl,
+  isRecipeUri,
   isShortLink,
 } from '#/lib/strings/url-helpers'
 import {type ComposerImage} from '#/state/gallery'
@@ -27,6 +28,8 @@ import {createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {createGIFDescription} from '../gif-alt-text'
 import {convertBskyAppUrlIfNeeded, makeRecordUri} from '../strings/url-helpers'
+import { RecipePostView, isRecipePostView } from './feed/utils'
+import { ids } from '@atproto/api/client/lexicons'
 
 type ResolvedExternalLink = {
   type: 'external'
@@ -64,12 +67,20 @@ type ResolvedStarterPackRecord = {
   view: AppBskyGraphDefs.StarterPackView
 }
 
+interface ResolvedRecipePost {
+  type: 'record'
+  record: ComAtprotoRepoStrongRef.Main
+  kind: 'recipePost'
+  view: RecipePostView
+}
+
 export type ResolvedLink =
   | ResolvedExternalLink
   | ResolvedPostRecord
   | ResolvedFeedRecord
   | ResolvedListRecord
   | ResolvedStarterPackRecord
+  | ResolvedRecipePost
 
 export class EmbeddingDisabledError extends Error {
   constructor() {
@@ -86,11 +97,31 @@ export async function resolveLink(
   }
   if (isBskyPostUrl(uri)) {
     uri = convertBskyAppUrlIfNeeded(uri)
-    const [_0, user, _1, rkey] = uri.split('/').filter(Boolean)
-    const recordUri = makeRecordUri(user, 'app.bsky.feed.post', rkey)
-    const post = await getPost({uri: recordUri})
+    const [_0, user, postType, rkey] = uri.split('/').filter(Boolean)
+    let collection = ''
+    if (postType === "recipePost") {
+      collection = ids.AppFoodiosFeedRecipePost
+    } else if (postType === "post") {
+      collection = ids.AppBskyFeedPost
+    } else {
+      throw new Error('unknown post type ' + uri)
+    }
+    const recordUri = makeRecordUri(user, collection, rkey)
+    const post = await getPost({ uri: recordUri })
     if (post.viewer?.embeddingDisabled) {
       throw new EmbeddingDisabledError()
+    }
+    if (isRecipePostView(post)) {
+      return {
+        type: 'record',
+        record: {
+          cid: post.cid,
+          uri: post.uri,
+          revisionUri: post.record.selectedRevisionUri
+        },
+        kind: 'recipePost',
+        view: post,
+      }
     }
     return {
       type: 'record',
@@ -101,6 +132,7 @@ export async function resolveLink(
       kind: 'post',
       view: post,
     }
+
   }
   if (isBskyCustomFeedUrl(uri)) {
     uri = convertBskyAppUrlIfNeeded(uri)

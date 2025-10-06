@@ -84,6 +84,9 @@ import {
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
 import * as bsky from '#/types/bsky'
+import { isRecipePostView, postHref, recordText } from '#/lib/api/feed/utils'
+import { EditBig_Stroke2_Corner0_Rounded as EditBig } from '#/components/icons/EditBig'
+import { useOpenComposer } from '#/lib/hooks/useOpenComposer'
 
 let PostMenuItems = ({
   post,
@@ -168,12 +171,10 @@ let PostMenuItems = ({
   })
 
   const href = useMemo(() => {
-    const urip = new AtUri(postUri)
-    return makeProfileLink(postAuthor, 'post', urip.rkey)
+    return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
-
   const translatorUrl = getTranslatorLink(
-    record.text,
+    recordText(post),
     langPrefs.primaryLanguage,
   )
 
@@ -191,7 +192,7 @@ let PostMenuItems = ({
             (params.name === currentAccount.handle ||
               params.name === currentAccount.did)
           ) {
-            const currentHref = makeProfileLink(postAuthor, 'post', params.rkey)
+            const currentHref = postHref(postAuthor, postUri)
             if (currentHref === href && navigation.canGoBack()) {
               navigation.goBack()
             }
@@ -406,12 +407,33 @@ let PostMenuItems = ({
     DISCOVER_DEBUG_DIDS[currentAccount?.did || ''] ||
     gate('debug_show_feedcontext')
 
+  const { openComposer } = useOpenComposer()
+
+
   return (
     <>
       <Menu.Outer>
         {isAuthor && (
           <>
             <Menu.Group>
+              {isRecipePostView(post) &&
+                <Menu.Item
+                  testID="editPostBtn"
+                  label={_(msg`Edit`)}
+                  onPress={() => {
+                    logEvent("post:edit", {})
+                    openComposer({
+                      type: 'recipe',
+                      edit: post
+                    })
+                  }}
+                >
+                  <Menu.ItemText>{_(msg`Edit`)}</Menu.ItemText>
+                  <Menu.ItemIcon
+                    icon={EditBig}
+                    position="right"
+                  />
+                </Menu.Item>}
               <Menu.Item
                 testID="pinPostBtn"
                 label={

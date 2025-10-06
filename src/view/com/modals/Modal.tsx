@@ -14,6 +14,7 @@ import * as InviteCodesModal from './InviteCodes'
 import * as ContentLanguagesSettingsModal from './lang-settings/ContentLanguagesSettings'
 import * as PostLanguagesSettingsModal from './lang-settings/PostLanguagesSettings'
 import * as UserAddRemoveListsModal from './UserAddRemoveLists'
+import * as RecipeRevisionViewModal from './RecipeRevisionView'
 import * as UserFeedbackModal from './UserFeedback'
 
 const DEFAULT_SNAPPOINTS = ['90%']
@@ -68,6 +69,9 @@ export function ModalsContainer() {
   } else if (activeModal?.name === 'change-password') {
     snapPoints = ChangePasswordModal.snapPoints
     element = <ChangePasswordModal.Component />
+  } else if (activeModal?.name === "recipe-revision-view") {
+    snapPoints = RecipeRevisionViewModal.snapPoints
+    element = <RecipeRevisionViewModal.Component uri={activeModal.uri} />
   } else if (activeModal?.name === 'user-feedback') {
     snapPoints = UserFeedbackModal.snapPoints
     element = <UserFeedbackModal.Component />

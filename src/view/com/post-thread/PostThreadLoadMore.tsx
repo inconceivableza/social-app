@@ -8,18 +8,18 @@ import {atoms as a, useTheme} from '#/alf'
 import {Text} from '#/components/Typography'
 import {Link} from '../util/Link'
 import {UserAvatar} from '../util/UserAvatar'
+import { postHref } from '#/lib/api/feed/utils'
 
 export function PostThreadLoadMore({post}: {post: AppBskyFeedDefs.PostView}) {
   const t = useTheme()
 
-  const postHref = React.useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+  const href = React.useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
 
   return (
     <Link
-      href={postHref}
+      href={href}
       style={[a.flex_row, a.align_center, a.py_md, {paddingHorizontal: 14}]}
       hoverStyle={[t.atoms.bg_contrast_25]}>
       <View style={[a.flex_row]}>

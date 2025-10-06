@@ -21,7 +21,7 @@ import {type ComposerImage, cropImage} from '#/state/gallery'
 import {Text} from '#/view/com/util/text/Text'
 import {useTheme} from '#/alf'
 import * as Dialog from '#/components/Dialog'
-import {type PostAction} from '../state/composer'
+import { EmbedAction } from '../state/composer'
 import {EditImageDialog} from './EditImageDialog'
 import {ImageAltTextDialog} from './ImageAltTextDialog'
 
@@ -29,7 +29,7 @@ const IMAGE_GAP = 8
 
 interface GalleryProps {
   images: ComposerImage[]
-  dispatch: (action: PostAction) => void
+  dispatch: (action: EmbedAction) => void
 }
 
 export let Gallery = (props: GalleryProps): React.ReactNode => {

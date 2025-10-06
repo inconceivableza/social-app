@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {LayoutAnimation, Pressable, View} from 'react-native'
+import {Alert, LayoutAnimation, Pressable, View} from 'react-native'
 import {Linking} from 'react-native'
 import {useReducedMotion} from 'react-native-reanimated'
 import {type AppBskyActorDefs, moderateProfile} from '@atproto/api'
@@ -12,6 +12,7 @@ import {useActorStatus} from '#/lib/actor-status'
 import {IS_INTERNAL} from '#/lib/app-info'
 import {HELP_DESK_URL} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
+import {useApplyPullRequestOTAUpdate} from '#/lib/hooks/useOTAUpdates'
 import {canReload, doDelayedReload} from '#/lib/reload'
 import {
   type CommonNavigatorParams,
@@ -19,6 +20,7 @@ import {
 } from '#/lib/routes/types'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
+import {isIOS, isNative} from '#/platform/detection'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
 import {
   builtinConfigNames,
@@ -409,6 +411,12 @@ function DevOptions() {
   const onboardingDispatch = useOnboardingDispatch()
   const navigation = useNavigation<NavigationProp>()
   const {mutate: deleteChatDeclarationRecord} = useDeleteActorDeclaration()
+  const {
+    tryApplyUpdate,
+    revertToEmbedded,
+    isCurrentlyRunningPullRequestDeployment,
+    currentChannel,
+  } = useApplyPullRequestOTAUpdate()
   const [actyNotifNudged, setActyNotifNudged] = useActivitySubscriptionsNudged()
 
   const resetOnboarding = async () => {
@@ -435,6 +443,30 @@ function DevOptions() {
 
   const onPressActySubsUnNudge = () => {
     setActyNotifNudged(false)
+  }
+
+  const onPressApplyOta = () => {
+    Alert.prompt(
+      'Apply OTA',
+      'Enter the channel for the OTA you wish to apply.',
+      [
+        {
+          style: 'cancel',
+          text: 'Cancel',
+        },
+        {
+          style: 'default',
+          text: 'Apply',
+          onPress: channel => {
+            tryApplyUpdate(channel ?? '')
+          },
+        },
+      ],
+      'plain-text',
+      isCurrentlyRunningPullRequestDeployment
+        ? currentChannel
+        : 'pull-request-',
+    )
   }
 
   return (
@@ -497,6 +529,24 @@ function DevOptions() {
           <Trans>Clear all storage data (restart after this)</Trans>
         </SettingsList.ItemText>
       </SettingsList.PressableItem>
+      {isIOS ? (
+        <SettingsList.PressableItem
+          onPress={onPressApplyOta}
+          label={_(msg`Apply Pull Request`)}>
+          <SettingsList.ItemText>
+            <Trans>Apply Pull Request</Trans>
+          </SettingsList.ItemText>
+        </SettingsList.PressableItem>
+      ) : null}
+      {isNative && isCurrentlyRunningPullRequestDeployment ? (
+        <SettingsList.PressableItem
+          onPress={revertToEmbedded}
+          label={_(msg`Unapply Pull Request`)}>
+          <SettingsList.ItemText>
+            <Trans>Unapply Pull Request {currentChannel}</Trans>
+          </SettingsList.ItemText>
+        </SettingsList.PressableItem>
+      ) : null}
     </>
   )
 }
