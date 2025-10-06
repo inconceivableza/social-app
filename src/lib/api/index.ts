@@ -229,9 +229,9 @@ export async function postRecipe(
     },
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
-    steps: post.steps,
+    instructionSections: [{instructions: post.instructions}],
     text: post.text.text,
-    title: post.title.text,
+    name: post.name.text,
     embed,
   }
 
@@ -296,9 +296,9 @@ export async function postRecipeRevision(
     },
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
-    steps: post.steps,
+    instructionSections: post.instructionSections,
     text: post.text.text,
-    title: post.title.text,
+    name: post.name.text,
     embed,
   }
 

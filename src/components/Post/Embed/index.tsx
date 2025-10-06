@@ -265,8 +265,8 @@ export function QuoteEmbed({
         AppFoodiosFeedDefs.isRecipeRevisionView,
       )
     ) {
-      const {text, title} = quote.record.revisionContent
-      return text.trim() || title.trim()
+      const {text, name} = quote.record.revisionContent
+      return text.trim() || name.trim()
         ? new RichTextAPI({
             text: recipePostSummaryRichText(quote.record.revisionContent),
           })

@@ -529,7 +529,7 @@ function RecipeThreadItem({
 
   return (
     <View>
-      <div>{record.title}</div>
+      <div>{record.name}</div>
       <div>{record.text}</div>
       <div>
         <strong>
@@ -548,14 +548,19 @@ function RecipeThreadItem({
             })}
           </tbody>
         </table>
-        <strong>
-          <Text>Steps</Text>
-        </strong>
-        <ol>
-          {record.steps.map((step, i) => {
-            return <li key={i}>{step.text}</li>
-          })}
-        </ol>
+        {record.instructionSections.map((instructionSection, i) => (
+          <div key={i}>
+            {instructionSection.name && <h3>{instructionSection.name}</h3>}
+            <strong>
+              <Text>Steps</Text>
+            </strong>
+            <ol>
+              {instructionSection.instructions.map((instruction, i) => {
+                return <li key={i}>{instruction.text}</li>
+              })}
+            </ol>
+          </div>
+        ))}
       </div>
     </View>
   )
@@ -724,7 +729,8 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
             a.pb_xl,
           ]}>
           <Trans>
-            {branding.naming.app_name} cannot confirm the authenticity of the claimed date.
+            {branding.naming.app_name} cannot confirm the authenticity of the
+            claimed date.
           </Trans>
         </Text>
         <Prompt.Actions>

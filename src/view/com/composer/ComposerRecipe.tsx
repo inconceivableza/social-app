@@ -24,7 +24,7 @@ import {type RecipePostView} from '#/lib/api/feed/utils'
 import * as apilib from '#/lib/api/index'
 import {
   MAX_RECIPE_DESCRIPTION_GRAPHEME_LENGTH,
-  MAX_RECIPE_TITLE_GRAPHEME_LENGTH,
+  MAX_RECIPE_NAME_GRAPHEME_LENGTH,
 } from '#/lib/constants'
 import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
@@ -68,9 +68,9 @@ const msgs = {
     message: 'Add ingredient',
     comment: 'Accessibility label for adding an ingredient to a recipe',
   }),
-  button_add_step: msg({
-    message: 'Add step',
-    comment: 'Accessibility label for adding a step to a recipe',
+  button_add_instruction: msg({
+    message: 'Add instruction',
+    comment: 'Accessibility label for adding an instruction to a recipe',
   }),
   button_post_recipe: msg({
     message: 'Publish post',
@@ -140,11 +140,11 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
   )
 
   FocusGuards.useFocusGuards()
-  const titleInputRef = useRef<TextInputRef>(null)
+  const nameInputRef = useRef<TextInputRef>(null)
   const descriptionInputRef = useRef<TextInputRef>(null)
   const currentRef = useRef<TextInputRef>()
-  const [focused, setFocused] = useState<'title' | 'description' | undefined>(
-    'title',
+  const [focused, setFocused] = useState<'name' | 'description' | undefined>(
+    'name',
   )
   const onOpenPicker = React.useCallback(
     (pos: EmojiPickerPosition | undefined) => {
@@ -234,23 +234,23 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
               <fieldset>
                 <legend>
                   <Text>
-                    <Trans>Title</Trans>
+                    <Trans>Name</Trans>
                   </Text>
                 </legend>
                 <TextInput
-                  ref={titleInputRef}
+                  ref={nameInputRef}
                   style={[a.pt_xs]}
-                  richtext={state.title}
+                  richtext={state.name}
                   placeholder={''}
                   autoFocus
                   webForceMinHeight={false}
-                  isActive={focused === 'title'} // TODO: fix
+                  isActive={focused === 'name'} // TODO: fix
                   setRichText={rt => {
-                    dispatch({type: 'update_title', value: rt})
+                    dispatch({type: 'update_name', value: rt})
                   }}
                   onFocus={() => {
-                    setFocused('title')
-                    currentRef.current = titleInputRef.current ?? undefined
+                    setFocused('name')
+                    currentRef.current = nameInputRef.current ?? undefined
                   }}
                   onPhotoPasted={() => {}}
                   onNewLink={() => {}}
@@ -261,7 +261,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                   hasRightPadding={false}
                   accessibilityHint={_(
                     msg`Compose posts up to ${plural(
-                      MAX_RECIPE_TITLE_GRAPHEME_LENGTH || 0,
+                      MAX_RECIPE_NAME_GRAPHEME_LENGTH || 0,
                       {
                         other: '# characters',
                       },
@@ -389,42 +389,84 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
               <fieldset>
                 <legend>
                   <Text>
-                    <Trans context="recipe">Steps</Trans>
+                    <Trans context="recipe">Instructions</Trans>
                   </Text>
                 </legend>
-                {/* TODO: use different key if steps can be reordered */}
-                <ol>
-                  {state.steps.map((step, i) => (
-                    <div key={i}>
-                      <label>
-                        <Text>
-                          <Trans context="recipe">Step</Trans>
-                        </Text>
-                        <input
-                          onFocus={() => {
-                            setFocused(undefined)
-                          }}
-                          value={step.text}
-                          onChange={ev =>
-                            dispatch({
-                              type: 'edit_step_text',
-                              index: i,
-                              value: ev.target.value,
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
+                {/* TODO: use different key if instructions can be reordered */}
+                <>
+                  {state.instructionSections.map((instructionSection, j) => (
+                    <>
+                      <div key={`instSect-${j}`}>
+                        <label>
+                          <Text>
+                            <Trans context="recipe">Section Name</Trans>
+                          </Text>
+                          <input
+                            onFocus={() => {
+                              setFocused(undefined)
+                            }}
+                            value={instructionSection.name || ''}
+                            onChange={ev => {
+                              dispatch({
+                                type: 'set_instruction_section_name',
+                                index: j,
+                                value: ev.target.value,
+                              })
+                            }}
+                          />
+                        </label>
+                        <ol>
+                          {instructionSection.instructions.map(
+                            (instruction, i) => (
+                              <div key={`inst-${j}-${i}`}>
+                                <label>
+                                  <Text>
+                                    <Trans context="recipe">Instruction</Trans>
+                                  </Text>
+                                  <input
+                                    onFocus={() => {
+                                      setFocused(undefined)
+                                    }}
+                                    value={instruction.text}
+                                    onChange={ev =>
+                                      dispatch({
+                                        type: 'edit_instruction_text',
+                                        sectionIndex: j,
+                                        instructionIndex: i,
+                                        value: ev.target.value,
+                                      })
+                                    }
+                                  />
+                                </label>
+                              </div>
+                            ),
+                          )}
+                        </ol>
+                      </div>
+                      <Button
+                        key={`addInstBtn-${j}`}
+                        onPress={() => {
+                          dispatch({type: 'add_instruction', sectionIndex: j})
+                        }}
+                        label={_(msgs.button_add_instruction)}>
+                        <ButtonText>
+                          <Text>
+                            <Trans context="action">Add instruction</Trans>
+                          </Text>
+                        </ButtonText>
+                      </Button>
+                    </>
                   ))}
-                </ol>
+                </>
                 <Button
+                  key={`addInstSectionBtn`}
                   onPress={() => {
-                    dispatch({type: 'add_step'})
+                    dispatch({type: 'add_instruction_section'})
                   }}
-                  label={_(msgs.button_add_step)}>
+                  label={_(msgs.button_add_instruction_section)}>
                   <ButtonText>
                     <Text>
-                      <Trans context="action">Add step</Trans>
+                      <Trans context="action">Add Instructions Section</Trans>
                     </Text>
                   </ButtonText>
                 </Button>
@@ -439,7 +481,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 />
               </View>
               <ComposerFooter
-                emojiEnabled={focused === 'description' || focused === 'title'}
+                emojiEnabled={focused === 'description' || focused === 'name'}
                 post={state}
                 dispatch={dispatch}
                 // TODO: the rest of these

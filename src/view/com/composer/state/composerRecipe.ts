@@ -18,17 +18,23 @@ interface IngredientDraft {
   unit: string
 }
 
-interface StepDraft {
+interface InstructionDraft {
   text: string
+  embed?: EmbedDraft
+}
+
+interface InstructionSectionDraft {
+  name?: string
+  instructions: InstructionDraft[]
   embed?: EmbedDraft
 }
 
 export interface RecipePostDraft {
   id: string
-  title: TextType
+  name: TextType
   text: TextType
   ingredients: IngredientDraft[]
-  steps: StepDraft[]
+  instructionSections: InstructionSectionDraft[]
   embed: EmbedDraft
   labels: SelfLabel[]
   tags?: string[]
@@ -38,10 +44,16 @@ type Action =
   | TaggedUnion<
       'type',
       {
-        update_title: {value: TextType}
+        update_name: {value: TextType}
         update_main_text: {value: TextType}
-        add_step: {}
-        edit_step_text: {value: string; index: number}
+        set_instruction_section_name: {index: number; value: string}
+        add_instruction_section: {}
+        add_instruction: {sectionIndex: number}
+        edit_instruction_text: {
+          value: string
+          sectionIndex: number
+          instructionIndex: number
+        }
         add_ingredient: {}
         edit_ingredient: {
           value: string
@@ -63,23 +75,64 @@ function recipePostReducer(
   action: Action,
 ): RecipePostDraft {
   switch (action.type) {
-    case 'update_title':
-      return {...state, title: action.value}
+    case 'update_name':
+      return {...state, name: action.value}
     case 'update_main_text':
       return {...state, text: action.value}
-    case 'add_step':
+    case 'set_instruction_section_name':
       return {
         ...state,
-        steps: state.steps.concat({
-          text: '',
+        instructionSections: state.instructionSections.map((section, idx) =>
+          idx === action.index
+            ? {
+                ...section,
+                name: action.value,
+              }
+            : section,
+        ),
+      }
+    case 'add_instruction_section':
+      return {
+        ...state,
+        instructionSections: state.instructionSections.concat({
+          instructions: [],
         }),
       }
-    case 'edit_step_text': {
-      checkIndex(state.steps, action.index)
+    case 'add_instruction':
+      checkIndex(state.instructionSections, action.sectionIndex)
+      return {
+        ...state,
+        instructionSections: state.instructionSections.map((section, idx) =>
+          idx === action.sectionIndex
+            ? {
+                ...section,
+                instructions: section.instructions.concat({text: ''}),
+              }
+            : section,
+        ),
+      }
+    case 'edit_instruction_text': {
+      checkIndex(state.instructionSections, action.sectionIndex)
+      checkIndex(
+        state.instructionSections[action.sectionIndex].instructions,
+        action.instructionIndex,
+      )
       // TODO: consider Immer to prevent unwanted nested mutations
-      const steps = [...state.steps]
-      steps[action.index] = {text: action.value}
-      return {...state, steps}
+      return {
+        ...state,
+        instructionSections: state.instructionSections.map((section, idx) =>
+          idx === action.sectionIndex
+            ? {
+                ...section,
+                instructions: section.instructions.map((inst, i) =>
+                  i === action.instructionIndex
+                    ? {...inst, text: action.value}
+                    : inst,
+                ),
+              }
+            : section,
+        ),
+      }
     }
     case 'add_ingredient':
       return {
@@ -144,14 +197,14 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
   if (!init)
     return {
       id: nanoid(),
-      title: new RichText({
+      name: new RichText({
         text: '',
       }),
       text: new RichText({
         text: '',
       }),
       ingredients: [],
-      steps: [],
+      instructionSections: [],
       labels: [],
       embed: {
         quote: undefined,
@@ -160,19 +213,19 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
       },
     }
 
-  const {title, text, ingredients, steps, labels, embed} =
+  const {name, text, ingredients, instructionSections, labels, embed} =
     init.record.revisionContent
 
   return {
     id: nanoid(), // TODO: think
-    title: new RichText({
-      text: title,
+    name: new RichText({
+      text: name,
     }),
     text: new RichText({
       text,
     }),
     ingredients: _.cloneDeep(ingredients),
-    steps: _.cloneDeep(steps),
+    instructionSections: _.cloneDeep(instructionSections),
     labels: _.cloneDeep(labels?.values ?? []),
     embed: embedToDraft(embed),
   }
