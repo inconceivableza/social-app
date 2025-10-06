@@ -313,7 +313,7 @@ function ProfileScreenLoaded({
   // events
   // =
 
-  const onPressCompose = () => {
+  /* const onPressCompose = () => {
     const mention =
       profile.handle === currentAccount?.handle ||
       isInvalidHandle(profile.handle)
@@ -323,7 +323,7 @@ function ProfileScreenLoaded({
       type: 'post',
       mention
     })
-  }
+  } */
 
   const onPageSelected = (i: number) => {
     setCurrentPage(i)

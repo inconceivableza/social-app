@@ -50,7 +50,6 @@ import * as ProfileCard from '#/components/ProfileCard'
 import {H1, H3, P, Text} from '#/components/Typography'
 import {ScreenHider} from '../../components/moderation/ScreenHider'
 import {NotificationFeedItem} from '../com/notifications/NotificationFeedItem'
-import {PostThreadItem} from '../com/post-thread/PostThreadItem'
 import {PostFeedItem} from '../com/posts/PostFeedItem'
 
 const LABEL_VALUES: (keyof typeof LABELS)[] = Object.keys(
@@ -851,7 +850,8 @@ function MockPostThreadItem({
   moderation: ModerationDecision
   reply?: boolean
 }) {
-  return (
+  // FIXME: adjust this to the new-style thread approach
+  return post && moderation && reply ? null : null /* (
     <PostThreadItem
       // @ts-ignore
       post={post}
@@ -866,7 +866,7 @@ function MockPostThreadItem({
       overrideBlur={false}
       onPostReply={() => {}}
     />
-  )
+  ) */
 }
 
 function MockNotifItem({
