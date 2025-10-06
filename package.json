@@ -71,7 +71,7 @@
     "icons:optimize": "svgo -f ./assets/icons"
   },
   "dependencies": {
-    "@atproto/api": "^0.15.26",
+    "@atproto/api": "link:../atproto/packages/api/dist",
     "@bitdrift/react-native": "^0.6.8",
     "@braintree/sanitize-url": "^6.0.2",
     "@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
@@ -277,6 +277,7 @@
     "webpack-bundle-analyzer": "^4.10.1"
   },
   "resolutions": {
+    "@atproto/syntax": "link:../atproto/packages/syntax/dist",
     "@expo/image-utils": "0.6.3",
     "@react-native/babel-preset": "0.79.3",
     "@react-native/normalize-colors": "0.79.3",
