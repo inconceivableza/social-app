@@ -1,9 +1,5 @@
 FROM golang:1.23-bullseye AS build-env
 
-WORKDIR /usr/src/atproto
-
-COPY --from=atproto / .
-
 WORKDIR /usr/src/social-app
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -82,6 +78,8 @@ COPY ./yarn.lock ./yarn.lock
 COPY ./lingui.config.js ./lingui.config.js
 
 WORKDIR /usr/src/atproto
+
+COPY --from=atproto / .
 
 RUN \. "$NVM_DIR/nvm.sh" && \
   nvm use $NODE_VERSION && \
