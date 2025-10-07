@@ -58,6 +58,7 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+Gemfile.lock
 
 # auto-generated mobile build config
 modules/**/MobileBuildConfig.swift

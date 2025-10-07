@@ -182,12 +182,7 @@ module.exports = function (_config) {
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
 
-  const UPDATES_CHANNEL = IS_TESTFLIGHT
-    ? 'testflight'
-    : IS_PRODUCTION
-      ? 'production'
-      : undefined
-  const UPDATES_ENABLED = !!UPDATES_CHANNEL
+  const UPDATES_ENABLED = IS_TESTFLIGHT || IS_PRODUCTION
 
   const USE_SENTRY = Boolean(process.env.SENTRY_AUTH_TOKEN)
   const basePackageName = getVariantPackageName(branding.code.web_package_id)
@@ -349,7 +344,6 @@ module.exports = function (_config) {
             }
           : undefined,
         checkAutomatically: 'NEVER',
-        channel: UPDATES_CHANNEL,
       },
       plugins: [
         'expo-video',
@@ -399,8 +393,9 @@ module.exports = function (_config) {
         ],
         './plugins/starterPackAppClipExtension/withStarterPackAppClip.js',
         './plugins/withGradleJVMHeapSizeIncrease.js',
-        './plugins/withAndroidManifestPlugin.js',
+        './plugins/withAndroidManifestLargeHeapPlugin.js',
         './plugins/withAndroidManifestFCMIconPlugin.js',
+        './plugins/withAndroidManifestIntentQueriesPlugin.js',
         './plugins/withAndroidStylesAccentColorPlugin.js',
         './plugins/withAndroidDayNightThemePlugin.js',
         './plugins/withAndroidNoJitpackPlugin.js',
@@ -417,10 +412,12 @@ module.exports = function (_config) {
               // Android only
               './assets/fonts/inter/Inter-Regular.otf',
               './assets/fonts/inter/Inter-Italic.otf',
+              './assets/fonts/inter/Inter-Medium.otf',
+              './assets/fonts/inter/Inter-MediumItalic.otf',
               './assets/fonts/inter/Inter-SemiBold.otf',
               './assets/fonts/inter/Inter-SemiBoldItalic.otf',
-              './assets/fonts/inter/Inter-ExtraBold.otf',
-              './assets/fonts/inter/Inter-ExtraBoldItalic.otf',
+              './assets/fonts/inter/Inter-Bold.otf',
+              './assets/fonts/inter/Inter-BoldItalic.otf',
             ],
           },
         ],
@@ -468,6 +465,11 @@ module.exports = function (_config) {
             default_dark: {
               ios: './assets/app-icons/ios_icon_default_dark.png',
               android: './assets/app-icons/android_icon_default_dark.png',
+              prerendered: true,
+            },
+            next: {
+              ios: './assets/app-icons/icon_default_next.png',
+              android: './assets/app-icons/icon_default_next.png',
               prerendered: true,
             },
 
@@ -522,6 +524,7 @@ module.exports = function (_config) {
           },
         ],
         ['expo-screen-orientation', {initialOrientation: 'PORTRAIT_UP'}],
+        ['expo-location'],
       ].filter(Boolean),
       extra: {
         eas: {

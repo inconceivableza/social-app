@@ -98,9 +98,9 @@ You can override this by setting `EXPO_PUBLIC_STATSIG_CLIENT_KEY` and `EXPO_PUBL
 
 ### Adding bitdrift
 
-Adding bitdirft is NOT required. You can keep `BITDRIFT_API_KEY=` in `.env` which will avoid initializing bitdrift during startup.
+Adding bitdrift is NOT required. You can keep `EXPO_PUBLIC_BITDRIFT_API_KEY=` in `.env` which will avoid initializing bitdrift during startup.
 
-However, if you're a part of the Bluesky team and want to enable bitdrift, fill in `BITDRIFT_API_KEY` in your `.env` to enable bitdrift.
+However, if you're a part of the Bluesky team and want to enable bitdrift, fill in `EXPO_PUBLIC_BITDRIFT_API_KEY` in your `.env` to enable bitdrift.
 
 ### Adding and Updating Locales
 
