@@ -65,7 +65,7 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {Text} from '#/components/Typography'
+import {H1, H2, Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
@@ -526,39 +526,50 @@ function RecipeThreadItem({
   revision: AppFoodiosFeedDefs.RecipeRevisionView
 }) {
   const record = revision.revisionContent
+  const t = useTheme()
 
-  return (
-    <View>
-      <div>{record.title}</div>
-      <div>{record.text}</div>
-      <div>
-        <strong>
-          <Text>Ingredients</Text>
-        </strong>
-        <table>
-          <tbody>
-            {record.ingredients.map((ingredient, i) => {
-              return (
-                <tr key={i}>
-                  <td>{ingredient.name}</td>
-                  <td>{ingredient.quantity}</td>
-                  <td>{ingredient.unit}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-        <strong>
-          <Text>Steps</Text>
-        </strong>
-        <ol>
-          {record.steps.map((step, i) => {
-            return <li key={i}>{step.text}</li>
-          })}
-        </ol>
-      </div>
+  return <View style={[a.gap_sm]}>
+    <View style={[a.align_center]}>
+      <H1 style={[a.text_2xl]}>{record.name}</H1>
     </View>
-  )
+    <View>
+      <Text>{record.text}</Text>
+    </View>
+
+    <View >
+      <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
+        <Trans context="recipe">Ingredients</Trans>
+      </H2>
+    </View>
+    <View>
+          {record.ingredients.map((ingredient, i) => {
+            return <View key={i} style={[a.flex_row, a.gap_sm]}>
+              <Text>{ingredient.quantity + " " + ingredient.unit}</Text>
+              <Text>{ingredient.name}</Text>
+
+            </View>
+          })}
+
+    </View>
+    <View >
+      <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
+        <Trans context="recipe">Instructions</Trans>
+      </H2>
+    </View>
+    <View>
+      {record.instructionSections.map(({ name, instructions }, sectionIdx) => {
+        return <View key={sectionIdx}>
+          {name && <Text>{name}</Text>}
+          <View>
+            {instructions.map((instruction, instructionIdx) => <View key={instructionIdx}>
+              <Text>{instructionIdx + 1 + '. ' + instruction.text}</Text>
+            </View>)}
+          </View>
+        </View>
+        })}
+    </View>
+
+  </View>
 }
 
 function ExpandedPostDetails({
