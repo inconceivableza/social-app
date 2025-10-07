@@ -3,6 +3,7 @@ import {
   type AppBskyActorDefs,
   type AppBskyFeedDefs,
   type AppBskyUnspeccedGetPostThreadV2,
+  type ComAtprotoRepoStrongRef,
   type ModerationDecision,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
@@ -16,10 +17,9 @@ import {purgeTemporaryImageFiles} from '#/state/gallery'
 import {precacheResolveLinkQuery} from '#/state/queries/resolve-link'
 import {type EmojiPickerPosition} from '#/view/com/composer/text-input/web/EmojiPicker'
 import * as Toast from '#/view/com/util/Toast'
+import { RecipePostView } from '#/lib/api/feed/utils'
 
-export interface ComposerOptsPostRef {
-  uri: string
-  cid: string
+export type ComposerOptsPostRef = ComAtprotoRepoStrongRef.Main & {
   text: string
   author: AppBskyActorDefs.ProfileViewBasic
   embed?: AppBskyFeedDefs.PostView['embed']
