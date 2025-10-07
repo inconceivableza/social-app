@@ -312,41 +312,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             <View style={[a.align_center]}>
                                 <H2 style={[a.text_lg, a.py_sm]}><Trans context="recipe">Ingredients</Trans></H2>
                             </View>
-                            <View style={[a.gap_sm, a.border, a.p_sm, {
-                                borderColor: t.palette.contrast_100
-                            }]}>
-                                {state.ingredients.map(({ id }) =>
-                                    <View style={{ flexDirection: 'row', gap: 4 }} key={id}>
-                                        {/* TODO rather use labels instead of placeholders for small screens */}
-
-                                        <View style={{ flexGrow: 1, flexBasis: '50%' }}>
-                                            <Input label={_(msg`Item`)} onFocus={() => setFocused(undefined)} onChangeText={value => {
-                                                dispatch({ type: "edit_ingredient", prop: "name", value, id })
-                                            }} />
-                                        </View>
-
-                                        <View style={{ flexBasis: "17%" }}>
-                                            <Input label={_(msg`Quantity`)} keyboardType="numeric" onChangeText={value => {
-                                                dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
-                                            }} /></View>
-                                        <View style={{ flexBasis: "11%" }}>
-                                            <Input label={_(msg`Unit`)} onChangeText={value => {
-                                                dispatch({ type: "edit_ingredient", prop: "unit", value, id })
-                                            }} /></View>
-                                        <View style={{ justifyContent: "center" }}>
-                                            <Button
-                                                label={_(msg`Remove ingredient`)}
-                                                size="small"
-                                                variant="outline"
-                                                color="negative"
-                                                shape="round"
-                                                onPress={() => dispatch({ type: "remove_ingredient", id })}
-                                            >
-                                                <ButtonIcon icon={TrashIcon} />
-                                            </Button>
-                                        </View>
-                                    </View>)}
-                            </View>
+                            <RecipeIngredients state={state} dispatch={dispatch} />
                             <View style={[a.py_sm]}>
                                 <Button
                                     size="small"
@@ -359,7 +325,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
 
                                 </Button>
                             </View>
-
                         </View>
 
                         {/* Instructions */}
@@ -418,11 +383,51 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     </View>
 }
 
-function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
     const { _ } = useLingui()
     const t = useTheme()
 
+    return <View style={[a.gap_sm, a.border, a.p_sm, {
+        borderColor: t.palette.contrast_100
+    }]}>
+        {state.ingredients.map(({ id, name, quantity, unit }) =>
+            <View style={{ flexDirection: 'row', gap: 4 }} key={id}>
+                {/* TODO rather use labels instead of placeholders for small screens */}
 
+                <View style={{ flexGrow: 1, flexBasis: '50%' }}>
+                    <Input label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
+                        dispatch({ type: "edit_ingredient", prop: "name", value, id })
+                    }} />
+                </View>
+
+                <View style={{ flexBasis: "17%" }}>
+                    <Input label={_(msg`Quantity`)} defaultValue={quantity} keyboardType="numeric" onChangeText={value => {
+                        dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
+                    }} /></View>
+                <View style={{ flexBasis: "11%" }}>
+                    <Input label={_(msg`Unit`)} defaultValue={unit} onChangeText={value => {
+                        dispatch({ type: "edit_ingredient", prop: "unit", value, id })
+                    }} /></View>
+                <View style={{ justifyContent: "center" }}>
+                    <Button
+                        label={_(msg`Remove ingredient`)}
+                        size="small"
+                        variant="outline"
+                        color="negative"
+                        shape="round"
+                        onPress={() => dispatch({ type: "remove_ingredient", id })}
+                    >
+                        <ButtonIcon icon={TrashIcon} />
+                    </Button>
+                </View>
+            </View>)}
+    </View>
+
+}
+
+function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+    const { _ } = useLingui()
+    const t = useTheme()
 
     return <View >
         {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, {
@@ -437,7 +442,9 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                                 // TODO: check on small screen
 
                             }]}>
-                                <Input label={_(msg`Section title`)} />
+                                <Input defaultValue={section.name} onChangeText={value => {
+                                    dispatch({ type: "edit_section_name", sectionId: section.id, value })
+                                }} label={_(msg`Section title`)} />
 
                             </View>
                             <Menu.Root>
@@ -476,6 +483,7 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                         <View style={[a.flex_row, a.gap_xs]} key={instruction.id}>
                             <View style={[a.flex_grow]}>
                                 <Input label={_(msg`Instruction`)}
+                                    defaultValue={instruction.text}
                                     onChangeText={value => {
                                         dispatch({
                                             type: "edit_instruction_text",
@@ -520,7 +528,7 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
             </View>
 
         </View>)}
-        <View style={[a.py_sm]}>
+        {state.format === "sections" && <View style={[a.py_sm]}>
             <Button
                 size="small"
                 variant="outline"
@@ -530,7 +538,8 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                 }} label={_(msg`Add section`)}>
                 <ButtonIcon icon={PlusIcon} />
             </Button>
-        </View>
+        </View>}
+
 
     </View>
 }
