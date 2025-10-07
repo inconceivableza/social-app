@@ -65,7 +65,7 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {H1, H2, Text} from '#/components/Typography'
+import {H1, H2, H3, Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
@@ -541,12 +541,11 @@ function RecipeThreadItem({
         <Trans context="recipe">Ingredients</Trans>
       </H2>
     </View>
-    <View>
+    <View style={[a.ml_sm]}>
           {record.ingredients.map((ingredient, i) => {
             return <View key={i} style={[a.flex_row, a.gap_sm]}>
               <Text>{ingredient.quantity + " " + ingredient.unit}</Text>
               <Text>{ingredient.name}</Text>
-
             </View>
           })}
 
@@ -558,9 +557,9 @@ function RecipeThreadItem({
     </View>
     <View>
       {record.instructionSections.map(({ name, instructions }, sectionIdx) => {
-        return <View key={sectionIdx}>
-          {name && <Text>{name}</Text>}
-          <View>
+        return <View key={sectionIdx} style={[a.gap_sm]}>
+          {name && <H3 style={[a.font_bold]}>{name}</H3>}
+          <View style={[a.ml_sm]}>
             {instructions.map((instruction, instructionIdx) => <View key={instructionIdx}>
               <Text>{instructionIdx + 1 + '. ' + instruction.text}</Text>
             </View>)}
