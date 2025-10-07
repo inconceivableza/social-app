@@ -52,7 +52,7 @@ export function recordText(post: AppBskyFeedDefs.PostView): string {
 export function recipePostSummaryRichText(
   record: AppFoodiosFeedRecipeRevision.Record,
 ): string {
-  return `${record.title}\n${record.text}`
+  return `${record.name}\n${record.text}`
 }
 
 export function postHref(
