@@ -265,18 +265,18 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
 
 
                         <Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
-                                style={[a.pt_xs]}
+                            style={[a.pt_xs]}
 
                             inputRef={titleInputRef}
                             onChangeText={value => dispatch({ type: 'update_name', value })}
                             autoFocus
-                                onFocus={() => {
-                                    console.log('!')
-                                    setFocused("title")
-                                    //currentRef.current = titleInputRef.current ?? undefined
-                                }}
+                            onFocus={() => {
+                                console.log('!')
+                                setFocused("title")
+                                //currentRef.current = titleInputRef.current ?? undefined
+                            }}
                             label={_(msg`Title`)}
-                            />
+                        />
                         <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
 
                             {/* TODO fix color, width */}
@@ -297,7 +297,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                                     setFocused("description")
                                     currentRef.current = descriptionInputRef.current ?? undefined
                                 }}
-
                                 onPhotoPasted={() => { }}
                                 onNewLink={() => { }}
                                 onError={() => { }}
@@ -308,27 +307,16 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             />
                         </View>
                         {/* Ingredients */}
-                        <View>
+                        <View style={[a.gap_sm]}>
                             <View style={[a.align_center]}>
-                                <H2 style={[a.text_lg, a.py_sm]}><Trans context="recipe">Ingredients</Trans></H2>
+                                <H2 style={[a.text_lg]}><Trans context="recipe">Ingredients</Trans></H2>
                             </View>
                             <RecipeIngredients state={state} dispatch={dispatch} />
-                            <View style={[a.py_sm]}>
-                                <Button
-                                    size="small"
-                                    variant="outline"
-                                    color="primary"
-                                    shape="round" onPress={() => {
-                                        dispatch({ type: "add_ingredient" })
-                                    }} label={_(msgs.button_add_ingredient)}>
-                                    <ButtonIcon icon={PlusIcon} />
 
-                                </Button>
-                            </View>
                         </View>
 
                         {/* Instructions */}
-                        <View style={[a.gap_md]}>
+                        <View style={[a.gap_sm]}>
                             <View style={[a.align_center]}>
                                 <H2 style={[a.text_lg]}><Trans context="recipe">Instructions</Trans></H2>
                             </View>
@@ -353,32 +341,32 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             <RecipeInstructions state={state} dispatch={dispatch} />
 
                         </View>
-            <View>
-                <ComposerEmbeds
-                    canRemoveQuote={true} // TODO: check this
-                    embed={state.embed}
-                    dispatch={dispatch}
-                    clearVideo={() => { }}
-                    isActivePost={true}
-                />
+                        <View>
+                            <ComposerEmbeds
+                                canRemoveQuote={true} // TODO: check this
+                                embed={state.embed}
+                                dispatch={dispatch}
+                                clearVideo={() => { }}
+                                isActivePost={true}
+                            />
                         </View>
 
 
                     </Animated.ScrollView>
                     <ComposerFooter
-                            emojiEnabled={focused === "description" || focused === "title"}
+                        emojiEnabled={focused === "description" || focused === "title"}
                         post={state}
                         dispatch={dispatch}
 
-                            onEmojiButtonPress={onEmojiButtonPress}
+                        onEmojiButtonPress={onEmojiButtonPress}
                         onError={() => { // TODO: handle
 
                         }}
                         onSelectVideo={selectVideo}
-            />
+                    />
                     <EmojiPicker state={pickerState} close={onClosePicker} />
                 </DismissableLayer.DismissableLayer>
-            </FocusScope.FocusScope>  
+            </FocusScope.FocusScope>
         </KeyboardAvoidingView>
     </View>
 }
@@ -389,38 +377,51 @@ function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispat
 
     return <View style={[a.gap_sm, a.border, a.p_sm, {
         borderColor: t.palette.contrast_100
-    }]}>
-        {state.ingredients.map(({ id, name, quantity, unit }) =>
-            <View style={{ flexDirection: 'row', gap: 4 }} key={id}>
-                {/* TODO rather use labels instead of placeholders for small screens */}
+    }]}><View style={[a.gap_xs]}>
+            {state.ingredients.map(({ id, name, quantity, unit }) =>
+                <View style={[a.flex_row, a.gap_sm]} key={id}>
+                    {/* TODO rather use labels instead of placeholders for small screens */}
 
-                <View style={{ flexGrow: 1, flexBasis: '50%' }}>
-                    <Input label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
-                        dispatch({ type: "edit_ingredient", prop: "name", value, id })
-                    }} />
-                </View>
+                    <View style={{ flexGrow: 1, flexBasis: '50%' }}>
+                        <Input label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
+                            dispatch({ type: "edit_ingredient", prop: "name", value, id })
+                        }} />
+                    </View>
 
-                <View style={{ flexBasis: "17%" }}>
-                    <Input label={_(msg`Quantity`)} defaultValue={quantity} keyboardType="numeric" onChangeText={value => {
-                        dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
-                    }} /></View>
-                <View style={{ flexBasis: "11%" }}>
-                    <Input label={_(msg`Unit`)} defaultValue={unit} onChangeText={value => {
-                        dispatch({ type: "edit_ingredient", prop: "unit", value, id })
-                    }} /></View>
-                <View style={{ justifyContent: "center" }}>
-                    <Button
-                        label={_(msg`Remove ingredient`)}
-                        size="small"
-                        variant="outline"
-                        color="negative"
-                        shape="round"
-                        onPress={() => dispatch({ type: "remove_ingredient", id })}
-                    >
-                        <ButtonIcon icon={TrashIcon} />
-                    </Button>
-                </View>
-            </View>)}
+                    <View style={{ flexBasis: "17%" }}>
+                        <Input label={_(msg`Quantity`)} defaultValue={quantity} keyboardType="numeric" onChangeText={value => {
+                            dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
+                        }} /></View>
+                    <View style={{ flexBasis: "11%" }}>
+                        <Input label={_(msg`Unit`)} defaultValue={unit} onChangeText={value => {
+                            dispatch({ type: "edit_ingredient", prop: "unit", value, id })
+                        }} /></View>
+                    <View style={{ justifyContent: "center" }}>
+                        <Button
+                            label={_(msg`Remove ingredient`)}
+                            size="small"
+                            variant="outline"
+                            color="negative"
+                            shape="round"
+                            onPress={() => dispatch({ type: "remove_ingredient", id })}
+                        >
+                            <ButtonIcon icon={TrashIcon} />
+                        </Button>
+                    </View>
+                </View>)}
+        </View>
+        <View >
+            <Button
+                size="small"
+                variant="outline"
+                color="primary"
+                shape="round" onPress={() => {
+                    dispatch({ type: "add_ingredient" })
+                }} label={_(msgs.button_add_ingredient)}>
+                <ButtonIcon icon={PlusIcon} />
+
+            </Button>
+        </View>
     </View>
 
 }
@@ -434,7 +435,7 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
             borderColor: t.palette.contrast_100
         }]} key={section.id}>
             <View>
-                <View style={[a.gap_xs]}>
+                <View style={[a.gap_sm,]}>
                     {state.format === "sections" &&
                         <View style={[a.flex_row,]}>
                             <View style={[a.align_center, a.mr_auto, {
@@ -476,43 +477,42 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                                 </Menu.Outer>
                             </Menu.Root>
                         </View>}
-
-
-
-                    {section.instructions.map(instruction =>
-                        <View style={[a.flex_row, a.gap_xs]} key={instruction.id}>
-                            <View style={[a.flex_grow]}>
-                                <Input label={_(msg`Instruction`)}
-                                    defaultValue={instruction.text}
-                                    onChangeText={value => {
-                                        dispatch({
-                                            type: "edit_instruction_text",
+                    <View style={[a.gap_xs]}>
+                        {section.instructions.map(instruction =>
+                            <View style={[a.flex_row, a.gap_sm]} key={instruction.id}>
+                                <View style={[a.flex_grow]}>
+                                    <Input label={_(msg`Instruction`)}
+                                        defaultValue={instruction.text}
+                                        onChangeText={value => {
+                                            dispatch({
+                                                type: "edit_instruction_text",
+                                                sectionId: section.id,
+                                                instructionId: instruction.id,
+                                                value
+                                            })
+                                        }}
+                                    />
+                                </View>
+                                <View style={{ justifyContent: "center" }}>
+                                    <Button
+                                        label={_(msg`Remove instruction`)}
+                                        size="small"
+                                        variant="outline"
+                                        color="negative"
+                                        shape="round"
+                                        onPress={() => dispatch({
+                                            type: "remove_instruction",
                                             sectionId: section.id,
-                                            instructionId: instruction.id,
-                                            value
-                                        })
-                                    }}
-                                />
+                                            instructionId: instruction.id
+                                        })}
+                                    >
+                                        <ButtonIcon icon={TrashIcon} />
+                                    </Button>
+                                </View>
                             </View>
-                            <View style={{ justifyContent: "center" }}>
-                                <Button
-                                    label={_(msg`Remove instruction`)}
-                                    size="small"
-                                    variant="outline"
-                                    color="negative"
-                                    shape="round"
-                                    onPress={() => dispatch({
-                                        type: "remove_instruction",
-                                        sectionId: section.id,
-                                        instructionId: instruction.id
-                                    })}
-                                >
-                                    <ButtonIcon icon={TrashIcon} />
-                                </Button>
-                            </View>
-                        </View>
-                    )}
-                    <View style={[a.py_sm]}>
+                        )}
+                    </View>
+                    <View >
                         <Button
                             size="small"
                             variant="outline"
