@@ -306,7 +306,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
-
+  // TODO: update with revision dialog
   return (
     <ThreadItemTreePostOuterWrapper item={item}>
       <SubtleHover>
