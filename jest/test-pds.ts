@@ -294,7 +294,7 @@ class Mocker {
     if (!agent) {
       throw new Error(`Not a user: ${user}`)
     }
-    return await agent.like(uri, cid)
+    return await agent.like({ uri, cid })
   }
 
   async createFeed(user: string, rkey: string, posts: string[]) {

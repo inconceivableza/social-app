@@ -24,7 +24,7 @@ export function Component({uri}: {uri: string}) {
   useEffect(() => {
     let cancelled = false
     getPost({uri}).then(
-      post => !cancelled && isRecipePostView(post) && setPost(post),
+        result => !cancelled && isRecipePostView(result) && setPost(result),
     )
     return () => {
       cancelled = true
@@ -60,6 +60,7 @@ export function Component({uri}: {uri: string}) {
           style={[a.pb_xs]}
         />
 
+        {/* TODO: fix display here */}
         <RichText
           enableTags
           value={recipePostSummaryRichText(post.record.revisionContent)}

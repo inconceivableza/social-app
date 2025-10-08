@@ -320,7 +320,6 @@ export function QuoteEmbed({
                     </Text>
                   )}
                 </PostMeta>
-                {isRecipeUri(quote.uri) ? <Text emoji>🍴</Text> : null}
               </View>
               {moderation ? (
                 <PostAlerts

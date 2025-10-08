@@ -1,7 +1,7 @@
 import type AtpAgent from '@atproto/api'
 import {
+  AppFoodiosFeedRecipeRevision,
   type AppFoodiosFeedRecipePost,
-  type AppFoodiosFeedRecipeRevision,
 } from '@atproto/api'
 import {
   type $Typed,
@@ -13,6 +13,7 @@ import {
   type AppBskyFeedPost,
   AtUri,
   BlobRef,
+  type BskyAgent,
   type ComAtprotoLabelDefs,
   type ComAtprotoRepoApplyWrites,
   type ComAtprotoRepoStrongRef,
@@ -39,6 +40,7 @@ import {
   createThreadgateRecord,
   threadgateAllowUISettingToAllowRecordValue,
 } from '#/state/queries/threadgate'
+import {BskyAppAgent} from '#/state/session/agent'
 import {
   type EmbedDraft,
   type EmbedState,
@@ -202,7 +204,7 @@ export async function post(
 }
 
 interface RecipePostOpts {
-  post: RecipePostDraft
+  post: RecipePostDraft,
 }
 export async function postRecipe(
   agent: AtpAgent,
@@ -218,9 +220,12 @@ export async function postRecipe(
     $type: 'app.foodios.feed.recipePost',
     createdAt: now.toISOString(),
   }
-  const cid = await computeCid(recipeRecord)
+  const [cid, rt, embed] = await Promise.all([
+    computeCid(recipeRecord),
+    resolveRT(agent, post.text),
+    resolveEmbed(agent, qc, post, () => { })
+  ])
 
-  const embed = await resolveEmbed(agent, qc, post, () => {})
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
     $type: 'app.foodios.feed.recipeRevision',
     recipePostRef: {
@@ -229,12 +234,17 @@ export async function postRecipe(
     },
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
-    instructionSections: [{instructions: post.instructions}],
-    text: post.text.text,
-    name: post.name.text,
+    instructionSections: post.instructionSections,
+    text: rt.text,
+    facets: rt.facets,
+    name: post.name,
     embed,
   }
-
+  const validationResult = AppFoodiosFeedRecipeRevision.validateRecord(revisionRecord)
+  if (!validationResult.success) {
+    // TODO catch
+    throw new Error("Invalid revision record: " + validationResult.error.message)
+  }
   // TODO: add recipe label
   // TODO: consider whether we need a new rkey for revision
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
@@ -286,7 +296,10 @@ export async function postRecipeRevision(
   const tid = TID.next()
   const rkey = tid.toString()
 
-  const embed = await resolveEmbed(agent, qc, post, () => {})
+  const [rt, embed] = await Promise.all([
+    resolveRT(agent, post.text),
+    resolveEmbed(agent, qc, post, () => { })
+  ])
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
     $type: 'app.foodios.feed.recipeRevision',
     recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
@@ -297,8 +310,9 @@ export async function postRecipeRevision(
     createdAt: now.toISOString(),
     ingredients: post.ingredients,
     instructionSections: post.instructionSections,
-    text: post.text.text,
-    name: post.name.text,
+    text: rt.text,
+    facets: rt.facets,
+    name: post.name,
     embed,
   }
 
