@@ -85,6 +85,7 @@ function recipePostReducer(
         case 'edit_section_name': {
             const section = findById(state.instructionSections, action.sectionId)
             section.name = action.value
+            return state
         }
         case 'add_instruction': {
             const section = findById(state.instructionSections, action.sectionId)
