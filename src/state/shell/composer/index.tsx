@@ -17,7 +17,6 @@ import {purgeTemporaryImageFiles} from '#/state/gallery'
 import {precacheResolveLinkQuery} from '#/state/queries/resolve-link'
 import {type EmojiPickerPosition} from '#/view/com/composer/text-input/web/EmojiPicker'
 import * as Toast from '#/view/com/util/Toast'
-import { RecipePostView } from '#/lib/api/feed/utils'
 
 export type ComposerOptsPostRef = ComAtprotoRepoStrongRef.Main & {
   text: string
