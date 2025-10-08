@@ -251,7 +251,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
             <FocusScope.FocusScope loop trapped asChild>
 
                 <DismissableLayer.DismissableLayer>
-                    {/* TODO: fix vertical scrolling */}
+                    {/* TODO: fix vertical scrolling - bottom bar gets hidden */}
                     <Animated.ScrollView
                         contentContainerStyle={[a.gap_sm]}
                         horizontal={false}
@@ -260,10 +260,8 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         keyboardShouldPersistTaps="always"
                         showsVerticalScrollIndicator
                         showsHorizontalScrollIndicator={false}
-                        style={{ paddingHorizontal: 8, height: '80%' }}
+                        style={[{ paddingHorizontal: 8, maxHeight: '80%' }]}
                     >
-
-
                         <Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
                             style={[a.pt_xs]}
 
