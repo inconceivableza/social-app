@@ -71,6 +71,7 @@ import {DiscoverDebug} from '#/components/PostControls/DiscoverDebug'
 import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {H1, H2} from '#/components/Typography'
 import * as bsky from '#/types/bsky'
 import {RevisionState} from './RevisionState'
 
@@ -505,8 +506,6 @@ let FeedItemInner = ({
             )}
           </PostMeta>
 
-          {isRecipeUri(post.uri) ? <Text emoji>🍴</Text> : null}
-
           {showReplyTo &&
             (parentAuthor || isParentBlocked || isParentNotFound) && (
               <ReplyToLabel
@@ -516,7 +515,12 @@ let FeedItemInner = ({
               />
             )}
           <LabelsOnMyPost post={post} />
-          <PostContent
+          {isRecipePostView(post) ? <RecipePostContent
+            moderation={moderation}
+            onOpenEmbed={onOpenEmbed}
+            post={post}
+            threadgateRecord={threadgateRecord}
+          /> : <PostContent
             moderation={moderation}
             richText={richText}
             postEmbed={post.embed}
@@ -524,7 +528,8 @@ let FeedItemInner = ({
             onOpenEmbed={onOpenEmbed}
             post={post}
             threadgateRecord={threadgateRecord}
-          />
+          />}
+
           <PostControls
             post={post}
             record={record}
@@ -636,6 +641,93 @@ let PostContent = ({
   )
 }
 PostContent = memo(PostContent)
+
+let RecipePostContent = ({
+  threadgateRecord,
+  post,
+  onOpenEmbed,
+  moderation
+}: {
+  moderation: ModerationDecision
+  onOpenEmbed: () => void
+  post: RecipePostView
+  threadgateRecord?: AppBskyFeedThreadgate.Record
+}): React.ReactNode => {
+  const { currentAccount } = useSession()
+
+  const postAuthor = post.author
+  const postEmbed = post.embed
+
+  const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
+    threadgateRecord,
+  })
+  const additionalPostAlerts: AppModerationCause[] = useMemo(() => {
+    const isPostHiddenByThreadgate = threadgateHiddenReplies.has(post.uri)
+    const rootPostUri = post.uri
+    const isControlledByViewer =
+      rootPostUri && new AtUri(rootPostUri).host === currentAccount?.did
+    return isControlledByViewer && isPostHiddenByThreadgate
+      ? [
+        {
+          type: 'reply-hidden',
+          source: { type: 'user', did: currentAccount?.did },
+          priority: 6,
+        },
+      ]
+      : []
+  }, [post, currentAccount?.did, threadgateHiddenReplies])
+
+  const content = post.record.revisionContent
+  const richText = useMemo(() => {
+    return new RichTextAPI({
+      text: content.text,
+      facets: content.facets
+    })
+  }, [content])
+
+  return <ContentHider
+    testID="contentHider-post"
+    modui={moderation.ui('contentList')}
+    ignoreMute
+    childContainerStyle={styles.contentHiderChild}>
+    <PostAlerts
+      modui={moderation.ui('contentList')}
+      style={[a.py_2xs]}
+      additionalCauses={additionalPostAlerts}
+    />
+    <View>
+      <H1 style={[a.text_xl]}>{content.name}</H1>
+    </View>
+    {richText.text ? (
+      <>
+        <RichText
+          enableTags
+          testID="postText"
+          value={richText}
+          numberOfLines={MAX_POST_LINES}
+          style={[a.flex_1, a.text_md]}
+          authorHandle={postAuthor.handle}
+          shouldProxyLinks={true}
+        />
+
+        <ShowMoreTextButton style={[a.text_md]} onPress={() => { }} />
+
+      </>
+    ) : undefined}
+    {postEmbed ? (
+      <View style={[a.pb_xs]}>
+        <Embed
+          embed={postEmbed}
+          moderation={moderation}
+          onOpen={onOpenEmbed}
+          viewContext={PostEmbedViewContext.Feed}
+        />
+      </View>
+    ) : null}
+  </ContentHider>
+}
+
+RecipePostContent = memo(RecipePostContent) 
 
 function ReplyToLabel({
   profile,
