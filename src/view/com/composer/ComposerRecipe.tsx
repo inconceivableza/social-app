@@ -33,7 +33,6 @@ import {
     type EmojiPickerPosition,
     type EmojiPickerState,
 } from '#/view/com/composer/text-input/web/EmojiPicker'
-import { DismissableLayer, FocusGuards, FocusScope } from "radix-ui/internal";
 import { TextInputRef, TextInput } from "./text-input/TextInput";
 import { usePalette } from "#/lib/hooks/usePalette";
 import { colors } from "#/lib/styles";
@@ -53,6 +52,7 @@ import { PlusSmall_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icon
 import * as Menu from '#/components/Menu'
 import { HITSLOP_20 } from '#/lib/constants'
 import { DotGrid_Stroke2_Corner0_Rounded as Ellipsis } from '#/components/icons/DotGrid'
+import { BottomSheetPortalProvider } from '../../../../modules/bottom-sheet'
 
 const msgs = {
     button_add_ingredient: msg({
@@ -154,7 +154,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         [_, agent, currentDid, dispatch],
     )
 
-    FocusGuards.useFocusGuards()
     const titleInputRef = useRef<NativeTextInput>(null)
     const descriptionInputRef = useRef<TextInputRef>(null)
     const currentRef = useRef<TextInputRef>()
@@ -178,7 +177,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     }, [])
 
     const scrollViewRef = useAnimatedRef<Animated.ScrollView>()
-
 
     const {
         scrollHandler,
@@ -228,12 +226,9 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         closeComposer()
     }, [closeComposer])
 
-    const recipeFormatItems: { name: string, label: string }[] = [
-        { name: 'simple', label: _(msg`Simple`) },
-        { name: 'sections', label: _(msg`Sections`) }
-    ]
 
-    return <View >
+
+    return <BottomSheetPortalProvider>
         <KeyboardAvoidingView
             testID="composePostView"
             behavior={isIOS ? 'padding' : 'height'}
@@ -242,110 +237,114 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
             <View
                 style={[a.flex_1, viewStyles]}
                 aria-modal
-                accessibilityViewIsModal></View>
-            <ComposerTopBar onCancel={onPressCancel} onPublish={onPressPublish}
-                canPost isPublishing={isPublishing} topBarAnimatedStyle={topBarAnimatedStyle}
-            />
-            <FocusScope.FocusScope loop trapped asChild>
+                accessibilityViewIsModal>
+                <ComposerTopBar onCancel={onPressCancel} onPublish={onPressPublish}
+                    canPost isPublishing={isPublishing} topBarAnimatedStyle={topBarAnimatedStyle}
+                />
 
-                <DismissableLayer.DismissableLayer>
-                    {/* TODO: fix vertical scrolling - bottom bar gets hidden */}
-                    <Animated.ScrollView
-                        contentContainerStyle={[a.gap_sm]}
-                        horizontal={false}
-                        scrollEnabled
-                        bounces={false}
-                        keyboardShouldPersistTaps="always"
-                        showsVerticalScrollIndicator
-                        showsHorizontalScrollIndicator={false}
-                        style={[{ paddingHorizontal: 8, maxHeight: '80%' }]}
-                    >
-                        <Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
-                            style={[a.pt_xs]}
+                <Animated.ScrollView
+                    ref={scrollViewRef}
+                    layout={native(LinearTransition)}
+                    onScroll={scrollHandler}
+                    contentContainerStyle={[a.flex_grow, a.gap_sm]}
+                    onContentSizeChange={onScrollViewContentSizeChange}
+                    onLayout={onScrollViewLayout}
+                    bounces={false}
+                    keyboardShouldPersistTaps="always"
+                    style={[a.flex_1, {
+                        paddingHorizontal: 8,
+                    }]}
+                >
+                    <Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
+                        style={[a.pt_xs]}
 
-                            inputRef={titleInputRef}
-                            onChangeText={value => dispatch({ type: 'update_name', value })}
-                            autoFocus
-                            onFocus={() => {
-                                console.log('!')
-                                setFocused("title")
-                                //currentRef.current = titleInputRef.current ?? undefined
-                            }}
-                            label={_(msg`Title`)}
-                        />
-                        <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
-
-                            {/* TODO fix color, width */}
-                            <TextInput
-
-                                ref={descriptionInputRef}
-                                style={[a.pt_xs, a.w_full, { flexBasis: '100%' }]}
-                                richtext={state.text}
-                                placeholder={_(msg`Description`)}
-                                webForceMinHeight={false}
-                                isActive={focused === "description"} // TODO: fix
-                                setRichText={rt => {
-                                    dispatch({ type: 'update_main_text', value: rt })
-                                }}
-
-                                onFocus={() => {
-
-                                    setFocused("description")
-                                    currentRef.current = descriptionInputRef.current ?? undefined
-                                }}
-                                onPhotoPasted={() => { }}
-                                onNewLink={() => { }}
-                                onError={() => { }}
-                                onPressPublish={() => { }}
-                                accessible={true}
-                                accessibilityLabel={_(msg`Write recipe description`)}
-                                hasRightPadding={false}
-                            />
-                        </View>
-                        {/* Ingredients */}
-                        <View style={[a.gap_sm]}>
-                            <View style={[a.align_center]}>
-                                <H2 style={[a.text_lg]}><Trans context="recipe">Ingredients</Trans></H2>
-                            </View>
-                            <RecipeIngredients state={state} dispatch={dispatch} />
-
-                        </View>
-
-                        {/* Instructions */}
-                        <View style={[a.gap_sm]}>
-                            <View style={[a.align_center]}>
-                                <H2 style={[a.text_lg]}><Trans context="recipe">Instructions</Trans></H2>
-                            </View>
-                            <RecipeInstructions state={state} dispatch={dispatch} />
-                        </View>
-                        <View>
-                            <ComposerEmbeds
-                                canRemoveQuote={true} // TODO: check this
-                                embed={state.embed}
-                                dispatch={dispatch}
-                                clearVideo={() => { }}
-                                isActivePost={true}
-                            />
-                        </View>
-
-
-                    </Animated.ScrollView>
-                    <ComposerFooter
-                        emojiEnabled={focused === "description" || focused === "title"}
-                        post={state}
-                        dispatch={dispatch}
-
-                        onEmojiButtonPress={onEmojiButtonPress}
-                        onError={() => { // TODO: handle
-
+                        inputRef={titleInputRef}
+                        onChangeText={value => dispatch({ type: 'update_name', value })}
+                        autoFocus
+                        onFocus={() => {
+                            console.log('!')
+                            setFocused("title")
+                            //currentRef.current = titleInputRef.current ?? undefined
                         }}
-                        onSelectVideo={selectVideo}
+                        label={_(msg`Title`)}
                     />
-                    <EmojiPicker state={pickerState} close={onClosePicker} />
-                </DismissableLayer.DismissableLayer>
-            </FocusScope.FocusScope>
+                    <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
+
+                        {/* TODO fix color, width */}
+                        <TextInput
+
+                            ref={descriptionInputRef}
+                            style={[a.pt_xs, a.w_full, { flexBasis: '100%' }]}
+                            richtext={state.text}
+                            placeholder={_(msg`Description`)}
+                            webForceMinHeight={false}
+                            isActive={focused === "description"} // TODO: fix
+                            setRichText={rt => {
+                                dispatch({ type: 'update_main_text', value: rt })
+                            }}
+
+                            onFocus={() => {
+
+                                setFocused("description")
+                                currentRef.current = descriptionInputRef.current ?? undefined
+                            }}
+                            onPhotoPasted={() => { }}
+                            onNewLink={() => { }}
+                            onError={() => { }}
+                            onPressPublish={() => { }}
+                            accessible={true}
+                            accessibilityLabel={_(msg`Write recipe description`)}
+                            hasRightPadding={false}
+                        />
+                    </View>
+                    {/* Ingredients */}
+                    <View style={[a.gap_sm]}>
+                        <View style={[a.align_center]}>
+                            <H2 style={[a.text_lg]}><Trans context="recipe">Ingredients</Trans></H2>
+                        </View>
+                        <RecipeIngredients state={state} dispatch={dispatch} />
+
+                    </View>
+
+                    {/* Instructions */}
+                    <View style={[a.gap_sm]}>
+                        <View style={[a.align_center]}>
+                            <H2 style={[a.text_lg]}><Trans context="recipe">Instructions</Trans></H2>
+                        </View>
+                        <RecipeInstructions state={state} dispatch={dispatch} />
+                    </View>
+                    <View>
+                        <ComposerEmbeds
+                            canRemoveQuote={true} // TODO: check this
+                            embed={state.embed}
+                            dispatch={dispatch}
+                            clearVideo={() => { }}
+                            isActivePost={true}
+                        />
+                    </View>
+
+
+
+
+                </Animated.ScrollView>
+                <ComposerFooter
+                    emojiEnabled={focused === "description" || focused === "title"}
+                    post={state}
+                    dispatch={dispatch}
+
+                    onEmojiButtonPress={onEmojiButtonPress}
+                    onError={() => { // TODO: handle
+
+                    }}
+                    onSelectVideo={selectVideo}
+                />
+                <EmojiPicker state={pickerState} close={onClosePicker} />
+
+
+            </View>
         </KeyboardAvoidingView>
-    </View>
+    </BottomSheetPortalProvider>
+
 }
 
 function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
@@ -490,15 +489,15 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                     </View>
                     <View style={[a.flex_row]}>
                         <View style={[a.mr_auto]}>
-                        <Button
-                            size="small"
-                            variant="outline"
-                            color="primary"
-                            shape="round" onPress={() => {
-                                dispatch({ type: "add_instruction", sectionId: section.id })
-                            }} label={_(msg`Add instruction`)}>
-                            <ButtonIcon icon={PlusIcon} />
-                        </Button>
+                            <Button
+                                size="small"
+                                variant="outline"
+                                color="primary"
+                                shape="round" onPress={() => {
+                                    dispatch({ type: "add_instruction", sectionId: section.id })
+                                }} label={_(msg`Add instruction`)}>
+                                <ButtonIcon icon={PlusIcon} />
+                            </Button>
                         </View>
                         <View>
                             <Button
