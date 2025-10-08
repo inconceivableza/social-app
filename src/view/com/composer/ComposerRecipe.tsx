@@ -50,11 +50,9 @@ import { Input, LabelText } from "#/components/forms/TextField";
 import { Trash_Stroke2_Corner0_Rounded as TrashIcon } from '#/components/icons/Trash'
 import { H1, H2 } from "#/components/Typography";
 import { PlusSmall_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icons/Plus"
-import * as ToggleButton from '#/components/forms/ToggleButton'
 import * as Menu from '#/components/Menu'
 import { HITSLOP_20 } from '#/lib/constants'
 import { DotGrid_Stroke2_Corner0_Rounded as Ellipsis } from '#/components/icons/DotGrid'
-
 
 const msgs = {
     button_add_ingredient: msg({
@@ -318,26 +316,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             <View style={[a.align_center]}>
                                 <H2 style={[a.text_lg]}><Trans context="recipe">Instructions</Trans></H2>
                             </View>
-                            <View style={{ alignItems: 'center' }}>
-                                <View style={{ width: '50%' }}>
-                                    <ToggleButton.Group label={_(msg`Format`)} values={[state.format]} onChange={(values => {
-                                        const value = values[0] as RecipePostDraft["format"]
-                                        dispatch({ type: 'change_format', value })
-                                    })} >
-
-                                        {recipeFormatItems.map(item => (
-                                            <ToggleButton.Button
-                                                key={item.name}
-                                                label={item.label}
-                                                name={item.name}>
-                                                <ToggleButton.ButtonText>{item.label}</ToggleButton.ButtonText>
-                                            </ToggleButton.Button>
-                                        ))}
-                                    </ToggleButton.Group>
-                                </View>
-                            </View>
                             <RecipeInstructions state={state} dispatch={dispatch} />
-
                         </View>
                         <View>
                             <ComposerEmbeds
@@ -377,7 +356,7 @@ function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispat
         borderColor: t.palette.contrast_100
     }]}><View style={[a.gap_xs]}>
             {state.ingredients.map(({ id, name, quantity, unit }) =>
-                <View style={[a.flex_row, a.gap_sm]} key={id}>
+                <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
                     {/* TODO rather use labels instead of placeholders for small screens */}
 
                     <View style={{ flexGrow: 1, flexBasis: '50%' }}>
@@ -427,16 +406,16 @@ function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispat
 function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
     const { _ } = useLingui()
     const t = useTheme()
-
+    const hasMultiSections = state.instructionSections.length > 1 || state.instructionSections.at(0)?.name
     return <View >
         {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, {
             borderColor: t.palette.contrast_100
         }]} key={section.id}>
             <View>
                 <View style={[a.gap_sm,]}>
-                    {state.format === "sections" &&
+                    {hasMultiSections &&
                         <View style={[a.flex_row,]}>
-                            <View style={[a.align_center, a.mr_auto, {
+                            <View style={[a.align_center, a.mr_auto, a.flex_row, {
                                 width: '30%'
                                 // TODO: check on small screen
 
@@ -444,7 +423,6 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                                 <Input defaultValue={section.name} onChangeText={value => {
                                     dispatch({ type: "edit_section_name", sectionId: section.id, value })
                                 }} label={_(msg`Section title`)} />
-
                             </View>
                             <Menu.Root>
                                 <Menu.Trigger label={_(msg`Instruction section options`)}>
@@ -468,7 +446,7 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                                         label={_(msg`Remove section`)}
                                         onPress={() => dispatch({ type: 'remove_instruction_section', sectionId: section.id })}>
                                         <Menu.ItemText>
-                                            <Trans>Delete</Trans>
+                                            <Trans>Delete Section</Trans>
                                         </Menu.ItemText>
                                     </Menu.Item>
 
@@ -510,7 +488,8 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                             </View>
                         )}
                     </View>
-                    <View >
+                    <View style={[a.flex_row]}>
+                        <View style={[a.mr_auto]}>
                         <Button
                             size="small"
                             variant="outline"
@@ -520,23 +499,25 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                             }} label={_(msg`Add instruction`)}>
                             <ButtonIcon icon={PlusIcon} />
                         </Button>
+                        </View>
+                        <View>
+                            <Button
+                                size="small"
+                                variant="outline"
+                                color="primary"
+                                onPress={() => {
+                                    dispatch({ type: "add_instruction_section", prevSectionId: section.id })
+                                }} label={_(msg`Add section`)}>
+                                <ButtonText><Trans>Add Section</Trans></ButtonText>
+                            </Button>
+                        </View>
                     </View>
                 </View>
 
             </View>
 
         </View>)}
-        {state.format === "sections" && <View style={[a.py_sm]}>
-            <Button
-                size="small"
-                variant="outline"
-                color="primary"
-                shape="round" onPress={() => {
-                    dispatch({ type: "add_instruction_section" })
-                }} label={_(msg`Add section`)}>
-                <ButtonIcon icon={PlusIcon} />
-            </Button>
-        </View>}
+
 
 
     </View>
