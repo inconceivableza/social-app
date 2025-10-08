@@ -60,6 +60,7 @@ export function Component({uri}: {uri: string}) {
           style={[a.pb_xs]}
         />
 
+        {/* TODO: fix display here */}
         <RichText
           enableTags
           value={recipePostSummaryRichText(post.record.revisionContent)}
