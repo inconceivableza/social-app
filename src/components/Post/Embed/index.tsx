@@ -11,9 +11,8 @@ import {
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
-import {postHref, recipePostSummaryRichText} from '#/lib/api/feed/utils'
-import {usePalette} from '#/lib/hooks/usePalette'
-import {isRecipeUri} from '#/lib/strings/url-helpers'
+import { dangerousIsRecipeView, postHref, recipePostSummaryRichText, recordRevisionState } from '#/lib/api/feed/utils'
+import { usePalette } from '#/lib/hooks/usePalette'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
@@ -45,6 +44,7 @@ import {
   QuoteEmbedViewContext,
 } from './types'
 import {VideoEmbed} from './VideoEmbed'
+import { ExpandableRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -281,13 +281,7 @@ export function QuoteEmbed({
     onOpen?.()
   }, [queryClient, quote.author, onOpen])
   const [hover, setHover] = React.useState(false)
-
-  const isOutdated =
-    bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
-      quote.record,
-      AppFoodiosFeedDefs.isRecipeRevisionView,
-    ) &&
-    quote.record.selectedRevisionUri !== quote.record.revisionRefs.at(-1)?.uri
+  const revisionState = recordRevisionState(quote.record)
   return (
     <View
       style={[a.mt_sm]}
@@ -314,11 +308,14 @@ export function QuoteEmbed({
                   showAvatar
                   postHref={itemHref}
                   timestamp={quote.indexedAt}>
-                  {isOutdated && (
+                  {revisionState === "outdated" ? (
                     <Text style={[a.pl_xs, t.atoms.text]}>
                       <Trans>Outdated</Trans>
                     </Text>
-                  )}
+                  ) : revisionState === "edited" ?
+                    <Text style={[a.pl_xs, t.atoms.text]}>
+                      <Trans>Edited</Trans>
+                    </Text> : null}
                 </PostMeta>
               </View>
               {moderation ? (
@@ -327,7 +324,9 @@ export function QuoteEmbed({
                   style={[a.py_xs]}
                 />
               ) : null}
-              {richText ? (
+              {dangerousIsRecipeView(quote.record) ?
+                <ExpandableRecipePost revision={quote.record} />
+                : richText ? (
                 <RichText
                   value={richText}
                   style={a.text_md}

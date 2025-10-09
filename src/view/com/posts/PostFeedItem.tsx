@@ -9,6 +9,7 @@ import {
   AtUri,
   type ModerationDecision,
   RichText as RichTextAPI,
+  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {
   FontAwesomeIcon,
@@ -22,10 +23,12 @@ import {useActorStatus} from '#/lib/actor-status'
 import {isReasonFeedSource, type ReasonFeedSource} from '#/lib/api/feed/types'
 import {
   RecipePostView,
+  dangerousIsPostRecord,
+  dangerousIsRecipeView,
   isRecipePostView,
   postHref,
-  postRevisionState,
   recipePostSummaryRichText,
+  recordRevisionState,
 } from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
@@ -54,7 +57,7 @@ import {Link, TextLinkOnWebOnly} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
 import {Text} from '#/view/com/util/text/Text'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
-import {atoms as a} from '#/alf'
+import { atoms as a, useTheme } from '#/alf'
 import {Button, ButtonIcon} from '#/components/Button'
 import {OutdatedIcon} from '#/components/icons/Outdated'
 import {Pin_Stroke2_Corner0_Rounded as PinIcon} from '#/components/icons/Pin'
@@ -70,13 +73,14 @@ import {PostControls} from '#/components/PostControls'
 import {DiscoverDebug} from '#/components/PostControls/DiscoverDebug'
 import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
-import { H1 } from '#/components/Typography'
+import { SubtleWebHover } from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
 import {RevisionState} from './RevisionState'
+import { ExpandableRecipePost } from './ExpandableRecipePost'
+import { AnyPostView } from '#/state/cache/types'
 
 interface FeedItemProps {
-  record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
+  record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
   reason:
     | AppBskyFeedDefs.ReasonRepost
     | AppBskyFeedDefs.ReasonPin
@@ -114,16 +118,16 @@ export function PostFeedItem({
   rootPost,
   onShowLess,
 }: FeedItemProps & {
-  post: AppBskyFeedDefs.PostView
+    post: AnyPostView
   rootPost: AppBskyFeedDefs.PostView
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
 }): React.ReactNode {
   const postShadowed = usePostShadow(post)
   const richText = useMemo(
     () =>
-      isRecipePostView(post)
+      dangerousIsRecipeView(record)
         ? new RichTextAPI({
-            text: recipePostSummaryRichText(post.record.revisionContent),
+          text: recipePostSummaryRichText(record.revisionContent),
             facets: [],
           })
         : new RichTextAPI({
@@ -183,7 +187,7 @@ let FeedItemInner = ({
   onShowLess,
 }: FeedItemProps & {
   richText: RichTextAPI
-  post: Shadow<AppBskyFeedDefs.PostView>
+    post: Shadow<AnyPostView>
   rootPost: AppBskyFeedDefs.PostView
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
 }): React.ReactNode => {
@@ -199,7 +203,7 @@ let FeedItemInner = ({
   }, [post.uri, post.author])
   const {sendInteraction, feedDescriptor} = useFeedFeedbackContext()
 
-  const revisionState = postRevisionState(post)
+  const revisionState = recordRevisionState(post)
 
   const revisionMismatch = useMemo(() => {
     if (
@@ -225,24 +229,32 @@ let FeedItemInner = ({
       feedContext,
       reqId,
     })
-
-    const text = isRecipePostView(post)
-      ? recipePostSummaryRichText(post.record.revisionContent)
-      : record.text || ''
-    openComposer({
-      type: 'post',
-      replyTo: {
-        uri: post.uri,
-        cid: post.cid,
-        revisionUri: isRecipePostView(post)
-          ? post.record.selectedRevisionUri
-          : undefined,
-        text: text,
-        author: post.author,
-        embed: post.embed,
-        moderation,
-      },
-    })
+    if (dangerousIsRecipeView(record)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          revisionUri: record.selectedRevisionUri,
+          text: recipePostSummaryRichText(record.revisionContent),
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+      })
+    } else {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          text: record.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+      })
+    }
   }
 
   const onOpenAuthor = () => {
@@ -496,7 +508,9 @@ let FeedItemInner = ({
                 label={_(msg`Show original version`)}
                 onPress={() => {
                   // TODO: add api method for retrieving revision and remove all query param logic from getPosts
-                  openModal({
+
+                  if (dangerousIsPostRecord(post.record) && post.record.reply?.root.revisionUri)
+                    openModal({
                     name: 'recipe-revision-view',
                     uri: `${rootPost.uri}?revision=${new AtUri(post.record.reply.root.revisionUri).rkey}`,
                   })
@@ -655,7 +669,6 @@ let RecipePostContent = ({
 }): React.ReactNode => {
   const { currentAccount } = useSession()
 
-  const postAuthor = post.author
   const postEmbed = post.embed
 
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
@@ -677,14 +690,6 @@ let RecipePostContent = ({
       : []
   }, [post, currentAccount?.did, threadgateHiddenReplies])
 
-  const content = post.record.revisionContent
-  const richText = useMemo(() => {
-    return new RichTextAPI({
-      text: content.text,
-      facets: content.facets
-    })
-  }, [content])
-
   return <ContentHider
     testID="contentHider-post"
     modui={moderation.ui('contentList')}
@@ -695,25 +700,7 @@ let RecipePostContent = ({
       style={[a.py_2xs]}
       additionalCauses={additionalPostAlerts}
     />
-    <View>
-      <H1 style={[a.text_xl]}>{content.name}</H1>
-    </View>
-    {richText.text ? (
-      <>
-        <RichText
-          enableTags
-          testID="postText"
-          value={richText}
-          numberOfLines={MAX_POST_LINES}
-          style={[a.flex_1, a.text_md]}
-          authorHandle={postAuthor.handle}
-          shouldProxyLinks={true}
-        />
-
-        <ShowMoreTextButton style={[a.text_md]} onPress={() => { }} />
-
-      </>
-    ) : undefined}
+    <ExpandableRecipePost revision={post.record} />
     {postEmbed ? (
       <View style={[a.pb_xs]}>
         <Embed

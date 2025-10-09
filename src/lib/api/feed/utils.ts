@@ -3,12 +3,14 @@ import {
   AppFoodiosFeedDefs,
   type AppFoodiosFeedRecipeRevision,
   AtUri,
+  AppBskyFeedPost,
 } from '@atproto/api'
 
 import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
 import {makeProfileLink} from '#/lib/routes/links'
 import {isWeb} from '#/platform/detection'
 import {type UsePreferencesQueryResponse} from '#/state/queries/preferences'
+import { dangerousIsType } from '#/types/bsky'
 
 let debugTopics = ''
 if (isWeb && typeof window !== 'undefined') {
@@ -38,15 +40,16 @@ export type RecipePostView = Omit<AppBskyFeedDefs.PostView, 'record'> & {
 
 export function isRecipePostView(v: unknown): v is RecipePostView {
   return (
-    AppBskyFeedDefs.isPostView(v) &&
+    dangerousIsType<AppBskyFeedDefs.PostView>(v, AppBskyFeedDefs.isPostView) &&
     AppFoodiosFeedDefs.isRecipeRevisionView(v.record)
   )
 }
 
 export function recordText(post: AppBskyFeedDefs.PostView): string {
-  return isRecipePostView(post)
-    ? recipePostSummaryRichText(post.record.revisionContent)
-    : (post.record?.text ?? '')
+  const record = post.record
+  return dangerousIsRecipeView(record)
+    ? recipePostSummaryRichText(record.revisionContent)
+    : dangerousIsPostRecord(record) ? record.text : ""
 }
 
 export function recipePostSummaryRichText(
@@ -67,16 +70,26 @@ export function postHref(
 
 export type RevisionState = 'unedited' | 'outdated' | 'edited'
 
-export function postRevisionState(
-  post: AppBskyFeedDefs.PostView,
-): RevisionState {
-  if (!isRecipePostView(post) || post.record.revisionRefs.length === 1) {
-    return 'unedited'
+export function recordRevisionState(record: unknown): RevisionState {
+  if (!dangerousIsRecipeView(record) || record.revisionRefs.length === 1) {
+    return "unedited"
   }
   if (
-    post.record.selectedRevisionUri === post.record.revisionRefs.at(-1)?.uri
+    record.selectedRevisionUri === record.revisionRefs.at(-1)?.uri
   ) {
     return 'edited'
   }
   return 'outdated'
 }
+
+export function dangerousIsPostRecord(v: unknown): v is AppBskyFeedPost.Record {
+  return dangerousIsType<AppBskyFeedPost.Record>(v, AppBskyFeedPost.isRecord)
+}
+
+export function dangerousIsRecipeView(v: unknown): v is AppFoodiosFeedDefs.RecipeRevisionView {
+  return dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(v, AppFoodiosFeedDefs.isRecipeRevisionView)
+}
+
+// export function threadRootUri(post: AnyPostView) {
+//   return dangerousIsPostRecord(post.record) ? post.uri :  post.record.
+// }

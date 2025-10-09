@@ -37,12 +37,13 @@ let ShareMenuButton = ({
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
   big?: boolean
-  record: AppBskyFeedPost.Record
+    record: AppBskyFeedPost.Record 
   richText: RichTextAPI
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShare: () => void
 }): React.ReactNode => {
+  // TODO: test recipe share
   const {_} = useLingui()
   const gate = useGate()
 

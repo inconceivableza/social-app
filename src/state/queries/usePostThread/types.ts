@@ -40,17 +40,19 @@ export type UsePostThreadQueryResult = {
   }
 }
 
+export type ThreadItemPostValue = Omit<AppBskyUnspeccedDefs.ThreadItemPost, 'post'> & {
+  post: Omit<AppBskyFeedDefs.PostView, 'record'> & {
+    record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
+  }
+}
+
 export type ThreadItem =
   | {
       type: 'threadPost'
       key: string
       uri: string
       depth: number
-      value: Omit<AppBskyUnspeccedDefs.ThreadItemPost, 'post'> & {
-        post: Omit<AppBskyFeedDefs.PostView, 'record'> & {
-          record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
-        }
-      }
+    value: ThreadItemPostValue
       isBlurred: boolean
       moderation: ModerationDecision
       ui: {
