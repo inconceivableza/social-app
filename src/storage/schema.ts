@@ -1,3 +1,5 @@
+import { PreparationState } from "#/view/com/recipe-preparation/types"
+
 /**
  * Device data that's specific to the device and does not vary based account
  */
@@ -17,7 +19,8 @@ export type Device = {
 
 export type Account = {
   searchTermHistory?: string[]
-  searchAccountHistory?: string[]
+  searchAccountHistory?: string[],
+  recipePreparations: Record<string, PreparationState>
 }
 
 export type EnvConfig = {
