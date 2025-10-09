@@ -13,12 +13,15 @@ import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {
+  dangerousIsPostRecord,
+  dangerousIsRecipeView,
   isRecipePostView,
   postHref,
-  postRevisionState,
   recipePostSummaryRichText,
+  recordRevisionState,
   recordText,
 } from '#/lib/api/feed/utils'
+import { branding } from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -65,10 +68,12 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {H1, H2, H3, Text} from '#/components/Typography'
+import { Text } from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
+import { AnyPostView } from '#/state/cache/types'
+import { ExpandableRecipePost, ExpandedRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 
 export function ThreadItemAnchor({
   item,
@@ -82,7 +87,8 @@ export function ThreadItemAnchor({
   postSource?: PostSource
 }) {
   const postShadow = usePostShadow(item.value.post)
-  const threadRootUri = item.value.post.record.reply?.root?.uri || item.uri
+  const record = item.value.post.record
+  const threadRootUri = dangerousIsPostRecord(record) ? record.reply?.root?.uri || item.uri : item.uri
   const isRoot = threadRootUri === item.uri
 
   if (postShadow === POST_TOMBSTONE) {
@@ -178,12 +184,11 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
 }: {
   item: Extract<ThreadItem, {type: 'threadPost'}>
   isRoot: boolean
-  postShadow: Shadow<AppBskyFeedDefs.PostView>
+    postShadow: Shadow<AnyPostView>
   onPostSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
-}) {
-  // TODO: display that the post was edited
+  }) {
   const t = useTheme()
   const {_, i18n} = useLingui()
   const {openComposer} = useOpenComposer()
@@ -197,9 +202,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const {isActive: live} = useActorStatus(post.author)
   const richText = useMemo(
     () =>
-      isRecipePostView(post)
+      dangerousIsRecipeView(record)
         ? new RichTextAPI({
-            text: recipePostSummaryRichText(post.record.revisionContent),
+          text: recipePostSummaryRichText(record.revisionContent),
           })
         : new RichTextAPI({
             text: record.text,
@@ -208,9 +213,9 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     [record, post],
   )
 
-  const threadRootUri = record.reply?.root?.uri || post.uri
+  const threadRootUri = dangerousIsPostRecord(record) ? record.reply?.root?.uri || post.uri : post.uri
   const authorHref = makeProfileLink(post.author)
-  const isThreadAuthor = getThreadAuthor(post, record) === currentAccount?.did
+  const isThreadAuthor = getThreadAuthor(post) === currentAccount?.did
 
   const likesHref = useMemo(() => {
     return postHref(post.author, post.uri, 'liked-by')
@@ -257,7 +262,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   }, [postSource])
 
   const onPressReply = useCallback(() => {
-    const text = isRecipePostView(post)
+    const text = dangerousIsRecipeView(post.record)
       ? recipePostSummaryRichText(post.record.revisionContent)
       : record.text
     openComposer({
@@ -402,7 +407,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               additionalCauses={additionalPostAlerts}
             />
             {record.$type === 'app.foodios.feed.defs#recipeRevisionView' ? (
-              <RecipeThreadItem revision={record} />
+              <ExpandedRecipePost expanded revision={record} />
             ) : richText?.text ? (
               <RichText
                 enableTags
@@ -520,62 +525,13 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   )
 })
 
-function RecipeThreadItem({
-  revision,
-}: {
-  revision: AppFoodiosFeedDefs.RecipeRevisionView
-}) {
-  const record = revision.revisionContent
-  const t = useTheme()
 
-  return <View style={[a.gap_sm]}>
-    <View style={[a.align_center]}>
-      <H1 style={[a.text_2xl]}>{record.name}</H1>
-    </View>
-    <View>
-      <Text>{record.text}</Text>
-    </View>
-
-    <View >
-      <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
-        <Trans context="recipe">Ingredients</Trans>
-      </H2>
-    </View>
-    <View style={[a.ml_sm]}>
-          {record.ingredients.map((ingredient, i) => {
-            return <View key={i} style={[a.flex_row, a.gap_sm]}>
-              <Text>{ingredient.quantity + " " + ingredient.unit}</Text>
-              <Text>{ingredient.name}</Text>
-            </View>
-          })}
-
-    </View>
-    <View >
-      <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
-        <Trans context="recipe">Instructions</Trans>
-      </H2>
-    </View>
-    <View>
-      {record.instructionSections.map(({ name, instructions }, sectionIdx) => {
-        return <View key={sectionIdx} style={[a.gap_sm]}>
-          {name && <H3 style={[a.font_bold]}>{name}</H3>}
-          <View style={[a.ml_sm]}>
-            {instructions.map((instruction, instructionIdx) => <View key={instructionIdx}>
-              <Text>{instructionIdx + 1 + '. ' + instruction.text}</Text>
-            </View>)}
-          </View>
-        </View>
-        })}
-    </View>
-
-  </View>
-}
 
 function ExpandedPostDetails({
   post,
   isThreadAuthor,
 }: {
-  post: Extract<ThreadItem, {type: 'threadPost'}>['value']['post']
+    post: AppBskyFeedDefs.PostView
   isThreadAuthor: boolean
 }) {
   const t = useTheme()
@@ -620,7 +576,7 @@ function ExpandedPostDetails({
     [openLink, translatorUrl, langPrefs, post],
   )
 
-  const revisionState = postRevisionState(post)
+  const revisionState = recordRevisionState(post.record)
 
   return (
     <View style={[a.gap_md, a.pt_md, a.align_start]}>
@@ -747,17 +703,22 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
 }
 
 function getThreadAuthor(
-  post: AppBskyFeedDefs.PostView,
-  record: AppBskyFeedPost.Record,
+  post: AnyPostView,
 ): string {
-  if (!record.reply) {
+  const record = post.record
+  if (dangerousIsRecipeView(record)) {
     return post.author.did
+  } else if (dangerousIsPostRecord(record)) {
+    if (!record.reply) {
+      return post.author.did
+    }
+    try {
+      return new AtUri(record.reply.root.uri).host
+    } catch {
+      return ''
+    }
   }
-  try {
-    return new AtUri(record.reply.root.uri).host
-  } catch {
-    return ''
-  }
+  return ""
 }
 
 export function ThreadItemAnchorSkeleton() {

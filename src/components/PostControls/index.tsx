@@ -1,12 +1,14 @@
 import {memo, useState} from 'react'
 import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {
+  AppFoodiosFeedDefs,
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
   type AppFoodiosFeedRecipePost,
   type RichText as RichTextAPI,
 } from '@atproto/api'
+
 import {msg, plural} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -55,7 +57,7 @@ let PostControls = ({
 }: {
   big?: boolean
   post: Shadow<AppBskyFeedDefs.PostView>
-  record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record
+    record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
   richText: RichTextAPI
   feedContext?: string | undefined
   reqId?: string | undefined

@@ -5,16 +5,15 @@ import {ModerationDecision} from '@atproto/api'
 import {
   isRecipePostView,
   postHref,
-  recipePostSummaryRichText,
   type RecipePostView,
 } from '#/lib/api/feed/utils'
 import {useGetPost} from '#/state/queries/post'
 import {LINEAR_AVI_WIDTH} from '#/screens/PostThread/const'
 import {atoms as a} from '#/alf'
-import {Embed, PostEmbedViewContext} from '#/components/Post/Embed'
-import {RichText} from '#/components/RichText'
+import { Embed, PostEmbedViewContext } from '#/components/Post/Embed'
 import {PostMeta} from '../util/PostMeta'
 import {PreviewableUserAvatar} from '../util/UserAvatar'
+import { ExpandedRecipePost } from '../posts/ExpandableRecipePost'
 
 export const snapPoints = ['fullscreen']
 
@@ -60,14 +59,7 @@ export function Component({uri}: {uri: string}) {
           style={[a.pb_xs]}
         />
 
-        {/* TODO: fix display here */}
-        <RichText
-          enableTags
-          value={recipePostSummaryRichText(post.record.revisionContent)}
-          style={[a.flex_1, a.text_md]}
-          authorHandle={post.author.handle}
-          shouldProxyLinks={true}
-        />
+        <ExpandedRecipePost expanded revision={post.record} />
 
         {post.embed && (
           <View style={[a.pb_xs]}>
