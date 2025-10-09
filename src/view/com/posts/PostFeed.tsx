@@ -761,7 +761,7 @@ let PostFeed = ({
             <PostAuthorDidProvider did={item.post.author.did}>
               <PostFeedItem
                 post={item.post}
-                record={item.post.record.revisionContent}
+                record={item.post.record}
                 reason={indexInSlice === 0 ? slice.reason : undefined}
                 feedContext={slice.feedContext}
                 reqId={slice.reqId}

@@ -38,7 +38,6 @@ export interface RecipePostDraft {
     embed: EmbedDraft
     labels: SelfLabel[]
     tags?: string[]
-    format: 'simple' | 'sections'
 }
 
 export type RecipeComposerAction = TaggedUnion<
@@ -46,7 +45,7 @@ export type RecipeComposerAction = TaggedUnion<
     {
         update_name: { value: string }
         update_main_text: { value: RichText, }
-        add_instruction_section: {}
+        add_instruction_section: { prevSectionId: string }
         remove_instruction_section: { sectionId: string }
         edit_section_name: { sectionId: string, value: string }
         add_instruction: { sectionId: string }
@@ -55,7 +54,6 @@ export type RecipeComposerAction = TaggedUnion<
         add_ingredient: {}
         edit_ingredient: { value: string, prop: keyof IngredientDraft, id: string }
         remove_ingredient: { id: string }
-        change_format: { value: string }
     }
     > | EmbedAction
 
@@ -79,10 +77,15 @@ function recipePostReducer(
         case 'update_main_text':
             state.text = action.value
             return state
-        case 'add_instruction_section':
-            state.instructionSections.push(newSection())
+        case 'add_instruction_section': {
+            const sections = state.instructionSections
+            const sectionIdx = sections.findIndex(section => section.id === action.prevSectionId)
+            if (sectionIdx < 0) {
+                throw new Error("Invalid section id " + action.prevSectionId)
+            }
+            sections.splice(sectionIdx, 1, sections[sectionIdx], newSection())
             return state
-        case 'edit_section_name': {
+        } case 'edit_section_name': {
             const section = findById(state.instructionSections, action.sectionId)
             section.name = action.value
             return state
@@ -99,13 +102,18 @@ function recipePostReducer(
             return state
         }
         case 'remove_instruction_section': {
-            const idx = state.instructionSections.findIndex(({ id }) => id === action.sectionId)
+            const sections = state.instructionSections
+            const idx = sections.findIndex(({ id }) => id === action.sectionId)
             if (idx < 0) {
                 throw new Error('Invalid section id ' + action.sectionId)
             }
-            state.instructionSections.splice(idx, 1)
-            if (!state.instructionSections.length) {
-                state.instructionSections.push(newSection())
+            sections.splice(idx, 1)
+            // If there's one remaining section, remove the name so that we revert to the simple view
+            if (sections.length === 1) {
+                delete sections[0].name
+            }
+            if (!sections.length) {
+                sections.push(newSection())
             }
             return state
         }
@@ -139,23 +147,6 @@ function recipePostReducer(
             if (!state.ingredients.length) {
                 state.ingredients.push(newIngredient())
             }
-            return state
-        }
-        case 'change_format': {
-            if (state.format === action.value) {
-                return state
-            }
-            if (action.value !== "simple" && action.value !== "sections") {
-                return state
-            }
-
-            state.format = action.value
-            if (action.value === "simple") {
-                const flattened = state.instructionSections.flatMap(({ instructions }) => instructions)
-                state.instructionSections = [{ id: nanoid(), instructions: flattened }]
-                return state
-            }
-
             return state
         }
         default: {
@@ -231,7 +222,6 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         text: new RichText({
             text: ''
         }),
-        format: 'simple',
         ingredients: [newIngredient()],
         instructionSections: [newSection()],
         labels: [],
@@ -244,10 +234,6 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
 
     const { name, text, facets, ingredients, instructionSections, labels, embed } = init.record.revisionContent
 
-    let format: RecipePostDraft["format"] = "simple"
-    if (instructionSections.length > 1 || instructionSections.at(0)?.name) {
-        format = "sections"
-    }
     return {
         id: nanoid(),
         name,
@@ -255,7 +241,6 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
             text,
             facets
         }),
-        format,
         ingredients: ingredients.map(ingredient => ({ ...ingredient, id: nanoid() })),
         instructionSections: instructionSections.length ? instructionSections.map(section => ({
             ...section, id: nanoid(),
