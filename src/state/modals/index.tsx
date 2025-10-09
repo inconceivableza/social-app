@@ -1,5 +1,5 @@
 import React from 'react'
-import {type AppBskyGraphDefs} from '@atproto/api'
+import { AppFoodiosFeedDefs, type AppBskyGraphDefs } from '@atproto/api'
 
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 
@@ -52,6 +52,11 @@ export interface RecipeRevisionViewModal {
   uri: string
 }
 
+export interface RecipePreparationModal {
+  name: 'recipe-preparation'
+  revisionView: AppFoodiosFeedDefs.RecipeRevisionView
+}
+
 export type Modal =
   // Account
   | DeleteAccountModal
@@ -72,6 +77,7 @@ export type Modal =
 
   // Recipes
   | RecipeRevisionViewModal
+  | RecipePreparationModal
 
 const ModalContext = React.createContext<{
   isModalActive: boolean
