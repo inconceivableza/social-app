@@ -708,7 +708,10 @@ function getThreadAuthor(
   const record = post.record
   if (dangerousIsRecipeView(record)) {
     return post.author.did
-  } else if (dangerousIsPostRecord(record) && record.reply) {
+  } else if (dangerousIsPostRecord(record)) {
+    if (!record.reply) {
+      return post.author.did
+    }
     try {
       return new AtUri(record.reply.root.uri).host
     } catch {

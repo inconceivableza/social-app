@@ -1,4 +1,4 @@
-import { AppBskyFeedPost, AppFoodiosFeedDefs, lexicons, type AppBskyFeedDefs } from '@atproto/api'
+import { AppBskyFeedPost, AppFoodiosFeedDefs, type AppBskyFeedDefs } from '@atproto/api'
 
 export interface FeedAPIResponse {
   cursor?: string

@@ -89,7 +89,3 @@ export function dangerousIsPostRecord(v: unknown): v is AppBskyFeedPost.Record {
 export function dangerousIsRecipeView(v: unknown): v is AppFoodiosFeedDefs.RecipeRevisionView {
   return dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(v, AppFoodiosFeedDefs.isRecipeRevisionView)
 }
-
-// export function threadRootUri(post: AnyPostView) {
-//   return dangerousIsPostRecord(post.record) ? post.uri :  post.record.
-// }
