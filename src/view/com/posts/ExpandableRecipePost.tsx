@@ -36,11 +36,9 @@ export function ExpandedRecipePost({
             facets: revision.revisionContent.facets
         })
     }, [revision])
-    return <View style={[a.gap_sm]}>
-        <View style={[
-            //a.align_center
-        ]}>
-            <H1 style={[a.text_2xl]}>{record.name}</H1>
+    return <View style={[a.gap_xs]}>
+        <View>
+            <H1 style={[a.text_lg, a.font_bold]}>{record.name}</H1>
         </View>
         <View>
             <RichText
@@ -60,8 +58,7 @@ export function ExpandedRecipePost({
             <View style={[a.ml_sm]}>
                 {record.ingredients.map((ingredient, i) => {
                     return <View key={i} style={[a.flex_row, a.gap_sm]}>
-                        <Text>{ingredient.quantity + " " + ingredient.unit}</Text>
-                        <Text>{ingredient.name}</Text>
+                        <Text>{`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}</Text>
                     </View>
                 })}
 
