@@ -1,7 +1,8 @@
 import type AtpAgent from '@atproto/api'
 import {
-  AppFoodiosFeedRecipeRevision,
   type AppFoodiosFeedRecipePost,
+  AppFoodiosFeedRecipeRevision,
+  type AppFoodiosFeedReviewRating,
 } from '@atproto/api'
 import {
   type $Typed,
@@ -40,7 +41,6 @@ import {
   createThreadgateRecord,
   threadgateAllowUISettingToAllowRecordValue,
 } from '#/state/queries/threadgate'
-import {BskyAppAgent} from '#/state/session/agent'
 import {
   type EmbedDraft,
   type EmbedState,
@@ -204,7 +204,7 @@ export async function post(
 }
 
 interface RecipePostOpts {
-  post: RecipePostDraft,
+  post: RecipePostDraft
 }
 export async function postRecipe(
   agent: AtpAgent,
@@ -223,7 +223,7 @@ export async function postRecipe(
   const [cid, rt, embed] = await Promise.all([
     computeCid(recipeRecord),
     resolveRT(agent, post.text),
-    resolveEmbed(agent, qc, post, () => { })
+    resolveEmbed(agent, qc, post, () => {}),
   ])
 
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
@@ -240,10 +240,13 @@ export async function postRecipe(
     name: post.name,
     embed,
   }
-  const validationResult = AppFoodiosFeedRecipeRevision.validateRecord(revisionRecord)
+  const validationResult =
+    AppFoodiosFeedRecipeRevision.validateRecord(revisionRecord)
   if (!validationResult.success) {
     // TODO catch
-    throw new Error("Invalid revision record: " + validationResult.error.message)
+    throw new Error(
+      'Invalid revision record: ' + validationResult.error.message,
+    )
   }
   // TODO: add recipe label
   // TODO: consider whether we need a new rkey for revision
@@ -298,7 +301,7 @@ export async function postRecipeRevision(
 
   const [rt, embed] = await Promise.all([
     resolveRT(agent, post.text),
-    resolveEmbed(agent, qc, post, () => { })
+    resolveEmbed(agent, qc, post, () => {}),
   ])
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
     $type: 'app.foodios.feed.recipeRevision',
@@ -343,6 +346,181 @@ export async function postRecipeRevision(
       throw e
     }
   }
+}
+
+interface ReviewRatingOpts {
+  thread: ThreadDraft
+  subject: ComAtprotoRepoStrongRef.Main
+  onStateChange?: (state: string) => void
+  langs?: string[]
+}
+
+export async function postReviewRating(
+  agent: BskyAgent,
+  queryClient: QueryClient,
+  opts: ReviewRatingOpts,
+) {
+  const thread = opts.thread
+  opts.onStateChange?.(t`Processing...`)
+
+  // this starts with the subject reviewed, then chains to form a thread if necessary
+  let replyPromise:
+    | Promise<AppBskyFeedPost.Record['reply']>
+    | AppBskyFeedPost.Record['reply']
+    | Promise<AppFoodiosFeedReviewRating.Record['subject']>
+    | AppFoodiosFeedReviewRating.Record['subject']
+    | undefined
+  // Not awaited to avoid waterfalls.
+  replyPromise = resolveReply(agent, opts.subject)
+
+  // add top 3 languages from user preferences if langs is provided
+  let langs = opts.langs
+  if (opts.langs) {
+    langs = opts.langs.slice(0, 3)
+  }
+
+  const did = agent.assertDid
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
+  const uris: string[] = []
+
+  let now = new Date()
+  let tid: TID | undefined
+
+  // A review could have follow-up posts in a thread; only the first will be a review-rating?
+  for (let i = 0; i < thread.posts.length; i++) {
+    const draft = thread.posts[i]
+    const isReviewRating = i === 0
+
+    // Not awaited to avoid waterfalls.
+    const rtPromise = resolveRT(agent, draft.richtext)
+    const embedPromise = resolveEmbed(
+      agent,
+      queryClient,
+      draft,
+      opts.onStateChange,
+    )
+    let labels: $Typed<ComAtprotoLabelDefs.SelfLabels> | undefined
+    if (draft.labels.length) {
+      labels = {
+        $type: 'com.atproto.label.defs#selfLabels',
+        values: draft.labels.map(val => ({val})),
+      }
+    }
+
+    // The sorting behavior for multiple posts sharing the same createdAt time is
+    // undefined, so what we'll do here is increment the time by 1 for every post
+    now.setMilliseconds(now.getMilliseconds() + 1)
+    tid = TID.next(tid)
+    const rkey = tid.toString()
+    const rtype = isReviewRating
+      ? 'app.foodios.feed.reviewRating'
+      : 'app.bsky.feed.post'
+    const uri = `at://${did}/${rtype}/${rkey}`
+    uris.push(uri)
+
+    const rt = await rtPromise
+    const embed = await embedPromise
+    const reply:
+      | AppBskyFeedPost.Record['reply']
+      | AppFoodiosFeedReviewRating.Record['subject'] = await replyPromise
+    const rating = isReviewRating
+      ? draft.rating === undefined
+        ? undefined
+        : Math.round(draft.rating * 2)
+      : undefined
+    const record: AppBskyFeedPost.Record | AppFoodiosFeedReviewRating.Record =
+      isReviewRating
+        ? {
+            $type: 'app.foodios.feed.reviewRating',
+            createdAt: now.toISOString(),
+            reviewBody: rt.text,
+            facets: rt.facets,
+            subject: reply?.root ?? opts.subject,
+            reviewRating: rating,
+            images: embed,
+            langs,
+            labels,
+          }
+        : {
+            // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
+            // present and will produce the wrong CID if you omit it.
+            $type: 'app.bsky.feed.post',
+            createdAt: now.toISOString(),
+            text: rt.text,
+            facets: rt.facets,
+            reply,
+            embed,
+            langs,
+            labels,
+          }
+    writes.push({
+      $type: 'com.atproto.repo.applyWrites#create',
+      collection: rtype,
+      rkey: rkey,
+      value: record,
+    })
+
+    if (i === 0 && thread.threadgate.some(tg => tg.type !== 'everybody')) {
+      writes.push({
+        $type: 'com.atproto.repo.applyWrites#create',
+        collection: 'app.bsky.feed.threadgate',
+        rkey: rkey,
+        value: createThreadgateRecord({
+          createdAt: now.toISOString(),
+          post: uri,
+          allow: threadgateAllowUISettingToAllowRecordValue(thread.threadgate),
+        }),
+      })
+    }
+
+    if (
+      thread.postgate.embeddingRules?.length ||
+      thread.postgate.detachedEmbeddingUris?.length
+    ) {
+      writes.push({
+        $type: 'com.atproto.repo.applyWrites#create',
+        collection: 'app.bsky.feed.postgate',
+        rkey: rkey,
+        value: {
+          ...thread.postgate,
+          $type: 'app.bsky.feed.postgate',
+          createdAt: now.toISOString(),
+          post: uri,
+        },
+      })
+    }
+
+    // Prepare a ref to the current post for the next post in the thread.
+    const ref: ComAtprotoRepoStrongRef.Main = {
+      cid: await computeCid(record),
+      uri,
+    }
+    replyPromise = {
+      root: reply?.root ?? ref,
+      parent: ref,
+    }
+  }
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create review-rating post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Review-rating post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
+
+  return {uris}
 }
 
 async function resolveRT(agent: BskyAgent, richtext: RichText) {
@@ -595,7 +773,10 @@ const mf_sha256 = Hasher.from({
 })
 
 async function computeCid(
-  record: AppBskyFeedPost.Record | AppFoodiosFeedRecipePost.Record,
+  record:
+    | AppBskyFeedPost.Record
+    | AppFoodiosFeedRecipePost.Record
+    | AppFoodiosFeedReviewRating.Record,
 ): Promise<string> {
   // IMPORTANT: `prepareObject` prepares the record to be hashed by removing
   // fields with undefined value, and converting BlobRef instances to the

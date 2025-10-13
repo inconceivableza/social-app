@@ -81,6 +81,17 @@ export function PostThread({uri}: {uri: string}) {
     },
     [thread],
   )
+  const optimisticOnReviewRate = useCallback(
+    (payload: OnPostSuccessData) => {
+      if (payload) {
+        const {replyToUri, posts} = payload
+        if (replyToUri && posts.length) {
+          thread.actions.insertReplies(replyToUri, posts)
+        }
+      }
+    },
+    [thread],
+  )
   const onReplyToAnchor = useCallback(() => {
     if (anchor?.type !== 'threadPost') {
       return
@@ -386,6 +397,7 @@ export function PostThread({uri}: {uri: string}) {
                 topBorder: index === 0,
               }}
               onPostSuccess={optimisticOnPostReply}
+              onReviewRateSuccess={optimisticOnReviewRate}
             />
           )
         } else if (item.depth === 0) {
@@ -415,6 +427,7 @@ export function PostThread({uri}: {uri: string}) {
                   item={item}
                   threadgateRecord={thread.data.threadgate?.record ?? undefined}
                   onPostSuccess={optimisticOnPostReply}
+                  onReviewRateSuccess={optimisticOnReviewRate}
                   postSource={anchorPostSource}
                 />
               </PostAuthorDidProvider>
@@ -499,6 +512,7 @@ export function PostThread({uri}: {uri: string}) {
     [
       thread,
       optimisticOnPostReply,
+      optimisticOnReviewRate,
       onReplyToAnchor,
       gtMobile,
       anchorPostSource,

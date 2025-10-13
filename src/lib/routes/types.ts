@@ -26,6 +26,7 @@ export type CommonNavigatorParams = {
   PostRepostedBy: {name: string; postType: string; rkey: string}
   PostQuotes: {name: string; postType: string; rkey: string}
   RecipeThread: {name: string; rkey: string}
+  ReviewRatingThread: {name: string, rkey: string}
   ProfileFeed: {
     name: string
     rkey: string

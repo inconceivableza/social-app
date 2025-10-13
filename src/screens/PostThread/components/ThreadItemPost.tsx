@@ -3,6 +3,7 @@ import {View} from 'react-native'
 import {
   type AppBskyFeedDefs,
   type AppBskyFeedThreadgate,
+  AppFoodiosFeedReviewRating,
   AtUri,
   RichText as RichTextAPI,
 } from '@atproto/api'
@@ -11,7 +12,10 @@ import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {
+  dangerousIsPostRecord,
+  dangerousIsRecipeView,
   isRecipePostView,
+  isReviewRatingView,
   postHref,
   recipePostSummaryRichText,
 } from '#/lib/api/feed/utils'
@@ -35,7 +39,7 @@ import {
   OUTER_SPACE,
   REPLY_LINE_WIDTH,
 } from '#/screens/PostThread/const'
-import {atoms as a, useTheme} from '#/alf'
+import {atoms as a, useTheme, web} from '#/alf'
 import {Button, ButtonIcon} from '#/components/Button'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
 import {OutdatedIcon} from '#/components/icons/Outdated'
@@ -67,6 +71,7 @@ export function ThreadItemPost({
   item,
   overrides,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
   anchor,
 }: ThreadItemPostProps) {
@@ -83,6 +88,7 @@ export function ThreadItemPost({
       threadgateRecord={threadgateRecord}
       overrides={overrides}
       onPostSuccess={onPostSuccess}
+      onReviewRateSuccess={onReviewRateSuccess}
       anchor={anchor}
     />
   )
@@ -191,6 +197,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   postShadow,
   overrides,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
   anchor,
 }: ThreadItemPostProps & {
@@ -209,10 +216,14 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
         ? new RichTextAPI({
             text: recipePostSummaryRichText(post.record.revisionContent),
           })
-        : new RichTextAPI({
-            text: record.text,
-            facets: record.facets,
-          }),
+        : isReviewRatingView(post)
+          ? new RichTextAPI({
+              text: post.record.reviewBody ?? '',
+            })
+          : new RichTextAPI({
+              text: record.text,
+              facets: record.facets,
+            }),
     [record, post],
   )
   const [limitLines, setLimitLines] = useState(
@@ -256,19 +267,47 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
     })
   }, [openComposer, post, record, onPostSuccess, moderation])
 
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(post)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          text: record.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+        onPostSuccess: onReviewRateSuccess,
+      })
+    }
+  }, [openComposer, post, record, onReviewRateSuccess, moderation])
+
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
 
   const {isActive: live} = useActorStatus(post.author)
   const {openModal} = useModalControls()
-  const replyRef = item.value.post.record.reply
+  // recipe revisions don't have a reply so they are the root
+  const rootReplyRef = AppFoodiosFeedReviewRating.isRecord(record)
+    ? record.subject
+    : dangerousIsPostRecord(record)
+      ? record.reply?.root
+      : null
   const anchorRevision = anchor?.value.post.record.selectedRevisionUri
   const revisionMismatch =
     anchorRevision &&
-    replyRef.root.revisionUri &&
-    anchorRevision !== replyRef.root.revisionUri
+    rootReplyRef &&
+    rootReplyRef.revisionUri &&
+    anchorRevision !== rootReplyRef.revisionUri
   const {_} = useLingui()
+  const constitutesRating =
+    AppFoodiosFeedReviewRating.isRecord(record) &&
+    typeof record.reviewRating !== 'undefined'
+  const constitutesReview =
+    AppFoodiosFeedReviewRating.isRecord(record) && record.reviewBody
   return (
     <SubtleHover>
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
@@ -324,11 +363,28 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                       // TODO: add api method for retrieving revision and remove all query param logic from getPosts
                       openModal({
                         name: 'recipe-revision-view',
-                        uri: `${anchor.uri}?revision=${new AtUri(replyRef.root.revisionUri).rkey}`,
+                        uri: `${anchor.uri}?revision=${new AtUri(rootReplyRef.revisionUri).rkey}`,
                       })
                     }}>
                     <ButtonIcon size="sm" icon={OutdatedIcon} />
                   </Button>
+                )}
+                {(constitutesRating || constitutesReview) && (
+                  <Text
+                    style={[
+                      a.pl_xs,
+                      a.italic,
+                      a.text_md,
+                      a.leading_tight,
+                      a.flex_grow,
+                      a.text_right,
+                      t.atoms.text_contrast_medium,
+                      web({
+                        whiteSpace: 'nowrap',
+                      }),
+                    ]}>
+                    {constitutesRating ? ' rated this' : ' reviewed this'}
+                  </Text>
                 )}
               </PostMeta>
               <LabelsOnMyPost post={post} style={[a.pb_xs]} />
@@ -370,6 +426,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 record={record}
                 richText={richText}
                 onPressReply={onPressReply}
+                onPressReviewRate={onPressReviewRate}
                 logContext="PostThreadItem"
                 threadgateRecord={threadgateRecord}
               />

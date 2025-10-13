@@ -4,7 +4,6 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   type AppBskyFeedThreadgate,
-  type AppFoodiosFeedDefs,
   AtUri,
   RichText as RichTextAPI,
 } from '@atproto/api'
@@ -16,12 +15,13 @@ import {
   dangerousIsPostRecord,
   dangerousIsRecipeView,
   isRecipePostView,
+  isReviewRatingView,
   postHref,
   recipePostSummaryRichText,
   recordRevisionState,
   recordText,
 } from '#/lib/api/feed/utils'
-import { branding } from '#/lib/constants'
+import {branding} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -36,6 +36,7 @@ import {
   usePostShadow,
 } from '#/state/cache/post-shadow'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
+import {type AnyPostView} from '#/state/cache/types'
 import {FeedFeedbackProvider, useFeedFeedback} from '#/state/feed-feedback'
 import {useLanguagePrefs} from '#/state/preferences'
 import {type ThreadItem} from '#/state/queries/usePostThread/types'
@@ -44,6 +45,7 @@ import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import {type PostSource} from '#/state/unstable-post-source'
 import {PostThreadFollowBtn} from '#/view/com/post-thread/PostThreadFollowBtn'
+import {ExpandedRecipePost} from '#/view/com/posts/ExpandableRecipePost'
 import {RevisionState} from '#/view/com/posts/RevisionState'
 import {formatCount} from '#/view/com/util/numeric/format'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
@@ -68,27 +70,29 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import { Text } from '#/components/Typography'
+import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { AnyPostView } from '#/state/cache/types'
-import { ExpandableRecipePost, ExpandedRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 
 export function ThreadItemAnchor({
   item,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
   postSource,
 }: {
   item: Extract<ThreadItem, {type: 'threadPost'}>
   onPostSuccess?: (data: OnPostSuccessData) => void
+  onReviewRateSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
 }) {
   const postShadow = usePostShadow(item.value.post)
   const record = item.value.post.record
-  const threadRootUri = dangerousIsPostRecord(record) ? record.reply?.root?.uri || item.uri : item.uri
+  const threadRootUri = dangerousIsPostRecord(record)
+    ? record.reply?.root?.uri || item.uri
+    : item.uri
   const isRoot = threadRootUri === item.uri
 
   if (postShadow === POST_TOMBSTONE) {
@@ -103,6 +107,7 @@ export function ThreadItemAnchor({
       isRoot={isRoot}
       postShadow={postShadow}
       onPostSuccess={onPostSuccess}
+      onReviewRateSuccess={onReviewRateSuccess}
       threadgateRecord={threadgateRecord}
       postSource={postSource}
     />
@@ -179,16 +184,18 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   isRoot,
   postShadow,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
   postSource,
 }: {
   item: Extract<ThreadItem, {type: 'threadPost'}>
   isRoot: boolean
-    postShadow: Shadow<AnyPostView>
+  postShadow: Shadow<AnyPostView>
   onPostSuccess?: (data: OnPostSuccessData) => void
+  onReviewRateSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
-  }) {
+}) {
   const t = useTheme()
   const {_, i18n} = useLingui()
   const {openComposer} = useOpenComposer()
@@ -204,16 +211,22 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     () =>
       dangerousIsRecipeView(record)
         ? new RichTextAPI({
-          text: recipePostSummaryRichText(record.revisionContent),
+            text: recipePostSummaryRichText(record.revisionContent),
           })
-        : new RichTextAPI({
-            text: record.text,
-            facets: record.facets,
-          }),
-    [record, post],
+        : isReviewRatingView(item.value.post)
+          ? new RichTextAPI({
+              text: item.value.post.record.reviewBody ?? '',
+            })
+          : new RichTextAPI({
+              text: record.text,
+              facets: record.facets,
+            }),
+    [record, item.value.post],
   )
 
-  const threadRootUri = dangerousIsPostRecord(record) ? record.reply?.root?.uri || post.uri : post.uri
+  const threadRootUri = dangerousIsPostRecord(record)
+    ? record.reply?.root?.uri || post.uri
+    : post.uri
   const authorHref = makeProfileLink(post.author)
   const isThreadAuthor = getThreadAuthor(post) === currentAccount?.did
 
@@ -294,6 +307,42 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     post,
     record,
     onPostSuccess,
+    moderation,
+    postSource,
+    feedFeedback,
+  ])
+
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(record)) {
+      openComposer({
+        type: 'review-rating',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          revisionUri: isRecipePostView(post)
+            ? post.record.selectedRevisionUri
+            : undefined,
+          text: "I'm reviewing this recipe",
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+        onPostSuccess: onReviewRateSuccess,
+      })
+      if (postSource) {
+        feedFeedback.sendInteraction({
+          item: post.uri,
+          event: 'app.bsky.feed.defs#interactionReply',
+          feedContext: postSource.post.feedContext,
+          reqId: postSource.post.reqId,
+        })
+      }
+    }
+  }, [
+    openComposer,
+    post,
+    record,
+    onReviewRateSuccess,
     moderation,
     postSource,
     feedFeedback,
@@ -511,6 +560,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 record={record}
                 richText={richText}
                 onPressReply={onPressReply}
+                onPressReviewRate={onPressReviewRate}
                 logContext="PostThreadItem"
                 threadgateRecord={threadgateRecord}
                 feedContext={postSource?.post?.feedContext}
@@ -525,13 +575,11 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   )
 })
 
-
-
 function ExpandedPostDetails({
   post,
   isThreadAuthor,
 }: {
-    post: AppBskyFeedDefs.PostView
+  post: AppBskyFeedDefs.PostView
   isThreadAuthor: boolean
 }) {
   const t = useTheme()
@@ -702,9 +750,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
   )
 }
 
-function getThreadAuthor(
-  post: AnyPostView,
-): string {
+function getThreadAuthor(post: AnyPostView): string {
   const record = post.record
   if (dangerousIsRecipeView(record)) {
     return post.author.did
@@ -718,7 +764,7 @@ function getThreadAuthor(
       return ''
     }
   }
-  return ""
+  return ''
 }
 
 export function ThreadItemAnchorSkeleton() {

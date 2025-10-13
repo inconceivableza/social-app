@@ -13,6 +13,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   type LayoutChangeEvent,
+  Pressable,
   ScrollView,
   type StyleProp,
   StyleSheet,
@@ -91,8 +92,9 @@ import {useProfileQuery} from '#/state/queries/profile'
 import {type Gif} from '#/state/queries/tenor'
 import {useAgent, useSession} from '#/state/session'
 import {
-  type PostComposerOpts,
+  type NormalComposerOpts,
   useComposerControls,
+  useComposerState,
 } from '#/state/shell/composer'
 import {type OnPostSuccessData} from '#/state/shell/composer'
 import {CharProgress} from '#/view/com/composer/char-progress/CharProgress'
@@ -128,9 +130,15 @@ import {atoms as a, native, useTheme, web} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import {CircleInfo_Stroke2_Corner0_Rounded as CircleInfo} from '#/components/icons/CircleInfo'
 import {EmojiArc_Stroke2_Corner0_Rounded as EmojiSmile} from '#/components/icons/Emoji'
+import {
+  Star_Filled_Corner0_Rounded as Star_Filled,
+  Star_Half_Filled_Corner0_Rounded as Star_Half_Filled,
+  Star_Stroke2_Corner0_Rounded as Star_Empty,
+} from '#/components/icons/Star'
 import {TimesLarge_Stroke2_Corner0_Rounded as X} from '#/components/icons/Times'
 import {LazyQuoteEmbed} from '#/components/Post/Embed/LazyQuoteEmbed'
 import * as Prompt from '#/components/Prompt'
+import {getHalfStars} from '#/components/StarRatings'
 import {Text as NewText} from '#/components/Typography'
 import {BottomSheetPortalProvider} from '../../../../modules/bottom-sheet'
 import {
@@ -157,7 +165,7 @@ type CancelRef = {
   onPressCancel: () => void
 }
 
-type Props = Omit<PostComposerOpts, 'type'>
+type Props = NormalComposerOpts
 export const ComposePost = ({
   replyTo,
   onPost,
@@ -186,6 +194,7 @@ export const ComposePost = ({
   const {closeAllDialogs} = useDialogStateControlContext()
   const {closeAllModals} = useModalControls()
   const {data: preferences} = usePreferencesQuery()
+  const postType = useComposerState()?.type ?? 'post'
 
   const [isKeyboardVisible] = useIsKeyboardVisible({iosUseWillEvents: true})
   const [isPublishing, setIsPublishing] = useState(false)
@@ -400,16 +409,33 @@ export const ComposePost = ({
 
     let postUri: string | undefined
     let postSuccessData: OnPostSuccessData
+    if (postType === 'review-rating' && !replyTo) {
+      setError(_(msg`Cannot post review-rating without a subject to review.`))
+      setIsPublishing(false)
+      return
+    }
     try {
       logger.info(`composer: posting...`)
       postUri = (
-        await apilib.post(agent, queryClient, {
-          thread,
-          replyTo: replyTo,
-          onStateChange: setPublishingStage,
-          langs: toPostLanguages(langPrefs.postLanguage),
-        })
-      ).uris[0]
+        postType === 'post'
+          ? await apilib.post(agent, queryClient, {
+              thread,
+              replyTo: replyTo,
+              onStateChange: setPublishingStage,
+              langs: toPostLanguages(langPrefs.postLanguage),
+            })
+          : postType === 'review-rating'
+            ? await apilib.postReviewRating(agent, queryClient, {
+                thread,
+                subject: replyTo!,
+                onStateChange: setPublishingStage,
+                langs: toPostLanguages(langPrefs.postLanguage),
+              })
+            : undefined
+      )?.uris[0]
+      if (postUri === undefined) {
+        throw new Error('Unsupported post type')
+      }
 
       /*
        * Wait for app view to have received the post(s). If this fails, it's
@@ -417,7 +443,7 @@ export const ComposePost = ({
        */
       try {
         if (postUri) {
-          logger.info(`composer: waiting for app view`)
+          logger.info(`composer: waiting for app view, postUri=${postUri}`)
 
           const posts = await retry(
             5,
@@ -541,6 +567,7 @@ export const ComposePost = ({
     replyTo,
     setLangPrefs,
     queryClient,
+    postType,
   ])
 
   // Preserves the referential identity passed to each post item.
@@ -671,6 +698,7 @@ export const ComposePost = ({
             isPublishQueued={publishOnUpload}
             isPublishing={isPublishing}
             isThread={thread.posts.length > 1}
+            isReviewRating={postType === 'review-rating'}
             publishingStage={publishingStage}
             topBarAnimatedStyle={topBarAnimatedStyle}
             onCancel={onPressCancel}
@@ -709,6 +737,7 @@ export const ComposePost = ({
                   isPartOfThread={thread.posts.length > 1}
                   isReply={index > 0 || !!replyTo}
                   isActive={post.id === activePost.id}
+                  isReviewRating={postType === 'review-rating'}
                   canRemovePost={thread.posts.length > 1}
                   canRemoveQuote={index > 0 || !initQuote}
                   onSelectVideo={selectVideo}
@@ -747,6 +776,7 @@ let ComposerPost = React.memo(function ComposerPost({
   isFirstPost,
   isLastPost,
   isPartOfThread,
+  isReviewRating,
   canRemovePost,
   canRemoveQuote,
   onClearVideo,
@@ -762,6 +792,7 @@ let ComposerPost = React.memo(function ComposerPost({
   isFirstPost: boolean
   isLastPost: boolean
   isPartOfThread: boolean
+  isReviewRating: boolean
   canRemovePost: boolean
   canRemoveQuote: boolean
   onClearVideo: (postId: string) => void
@@ -776,11 +807,13 @@ let ComposerPost = React.memo(function ComposerPost({
   const richtext = post.richtext
   const isTextOnly = !post.embed.link && !post.embed.quote && !post.embed.media
   const forceMinHeight = isWeb && isTextOnly && isActive
-  const selectTextInputPlaceholder = isReply
-    ? isFirstPost
-      ? _(msg`Write your reply`)
-      : _(msg`Add another post`)
-    : _(msg`${branding.verbage.post_prompt}`)
+  const selectTextInputPlaceholder = isReviewRating
+    ? _(msg`Write your review`)
+    : isReply
+      ? isFirstPost
+        ? _(msg`Write your reply`)
+        : _(msg`Add another post`)
+      : _(msg`${branding.verbage.post_prompt}`)
   const discardPromptControl = Prompt.usePromptControl()
 
   const dispatchPost = useCallback(
@@ -835,8 +868,12 @@ let ComposerPost = React.memo(function ComposerPost({
 
   useHideKeyboardOnBackground()
 
+  const unrated = post.rating === undefined
+  const halfStars = getHalfStars(post.rating ?? 5)
+
   return (
     <View
+      key="composerPostView" // complains if not given this key
       style={[
         a.mx_lg,
         a.mb_sm,
@@ -851,37 +888,94 @@ let ComposerPost = React.memo(function ComposerPost({
           type={currentProfile?.associated?.labeler ? 'labeler' : 'user'}
           style={[a.mt_xs]}
         />
-        <TextInput
-          ref={textInput}
-          style={[a.pt_xs]}
-          richtext={richtext}
-          placeholder={selectTextInputPlaceholder}
-          autoFocus
-          webForceMinHeight={forceMinHeight}
-          // To avoid overlap with the close button:
-          hasRightPadding={isPartOfThread}
-          isActive={isActive}
-          setRichText={rt => {
-            dispatchPost({type: 'update_richtext', richtext: rt})
-          }}
-          onFocus={() => {
-            dispatch({
-              type: 'focus_post',
-              postId: post.id,
-            })
-          }}
-          onPhotoPasted={onPhotoPasted}
-          onNewLink={onNewLink}
-          onError={onError}
-          onPressPublish={onPublish}
-          accessible={true}
-          accessibilityLabel={_(msg`Write post`)}
-          accessibilityHint={_(
-            msg`Compose posts up to ${plural(MAX_GRAPHEME_LENGTH || 0, {
-              other: '# characters',
-            })} in length`,
+        <View style={[a.flex_col, a.m_sm, a.align_start, isNative && a.flex_1]}>
+          {isReviewRating && (
+            <View style={[a.m_0, a.align_start]}>
+              <Button
+                key={'stars'}
+                variant={unrated ? 'gradient' : 'ghost'}
+                color={unrated ? 'gradient_midnight' : 'secondary'}
+                shape="square"
+                label=""
+                style={[a.ml_md, a.p_sm, a.align_start, a.justify_start]}
+                onPress={() => {
+                  console.log(`Pressed button outside stars`)
+                }}>
+                {true && (
+                  <View style={[a.flex_row, a.m_0]}>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <>
+                        <Pressable
+                          key={i}
+                          onPress={() => {
+                            const newRating =
+                              post.rating === undefined
+                                ? i
+                                : post.rating === i
+                                  ? i - 0.5
+                                  : post.rating === i - 0.5
+                                    ? undefined
+                                    : i
+                            console.log(
+                              `Pressed ${i}, setting rating to ${newRating} after ${post.rating}; halfStars=${halfStars}`,
+                            )
+                            colors.black
+                            dispatchPost({
+                              type: 'update_rating',
+                              rating: newRating,
+                            })
+                          }}
+                          accessibilityLabel={`${i} star${i > 1 ? 's' : ''}`}
+                          accessibilityHint="Set rating">
+                          <ButtonIcon
+                            icon={
+                              i * 2 <= halfStars
+                                ? Star_Filled
+                                : i * 2 - 1 <= halfStars
+                                  ? Star_Half_Filled
+                                  : Star_Empty
+                            }
+                          />
+                        </Pressable>
+                      </>
+                    ))}
+                  </View>
+                )}
+              </Button>
+            </View>
           )}
-        />
+          <TextInput
+            ref={textInput}
+            style={[a.pt_xs]}
+            richtext={richtext}
+            placeholder={selectTextInputPlaceholder}
+            autoFocus
+            webForceMinHeight={forceMinHeight}
+            // To avoid overlap with the close button:
+            hasRightPadding={isPartOfThread}
+            isActive={isActive}
+            setRichText={rt => {
+              dispatchPost({type: 'update_richtext', richtext: rt})
+            }}
+            onFocus={() => {
+              dispatch({
+                type: 'focus_post',
+                postId: post.id,
+              })
+            }}
+            onPhotoPasted={onPhotoPasted}
+            onNewLink={onNewLink}
+            onError={onError}
+            onPressPublish={onPublish}
+            accessible={true}
+            accessibilityLabel={_(msg`Write post`)}
+            accessibilityHint={_(
+              msg`Compose posts up to ${plural(MAX_GRAPHEME_LENGTH || 0, {
+                other: '# characters',
+              })} in length`,
+            )}
+          />
+        </View>
       </View>
 
       {canRemovePost && isActive && (
@@ -943,6 +1037,7 @@ function ComposerTopBar({
   isPublishQueued,
   isPublishing,
   isThread,
+  isReviewRating,
   publishingStage,
   onCancel,
   onPublish,
@@ -955,6 +1050,7 @@ function ComposerTopBar({
   isReply: boolean
   isPublishQueued: boolean
   isThread: boolean
+  isReviewRating: boolean
   onCancel: () => void
   onPublish: () => void
   topBarAnimatedStyle: StyleProp<ViewStyle>
@@ -994,37 +1090,39 @@ function ComposerTopBar({
           <Button
             testID="composerPublishBtn"
             label={
-              isReply
-                ? isThread
-                  ? _(
-                      msg({
-                        message: 'Publish replies',
-                        comment:
-                          'Accessibility label for button to publish multiple replies in a thread',
-                      }),
-                    )
-                  : _(
-                      msg({
-                        message: 'Publish reply',
-                        comment:
-                          'Accessibility label for button to publish a single reply',
-                      }),
-                    )
-                : isThread
-                  ? _(
-                      msg({
-                        message: 'Publish posts',
-                        comment:
-                          'Accessibility label for button to publish multiple posts in a thread',
-                      }),
-                    )
-                  : _(
-                      msg({
-                        message: 'Publish post',
-                        comment:
-                          'Accessibility label for button to publish a single post',
-                      }),
-                    )
+              isReviewRating
+                ? _(msg`Publish Review`)
+                : isReply
+                  ? isThread
+                    ? _(
+                        msg({
+                          message: 'Publish replies',
+                          comment:
+                            'Accessibility label for button to publish multiple replies in a thread',
+                        }),
+                      )
+                    : _(
+                        msg({
+                          message: 'Publish reply',
+                          comment:
+                            'Accessibility label for button to publish a single reply',
+                        }),
+                      )
+                  : isThread
+                    ? _(
+                        msg({
+                          message: 'Publish posts',
+                          comment:
+                            'Accessibility label for button to publish multiple posts in a thread',
+                        }),
+                      )
+                    : _(
+                        msg({
+                          message: 'Publish post',
+                          comment:
+                            'Accessibility label for button to publish a single post',
+                        }),
+                      )
             }
             variant="solid"
             color="primary"
@@ -1034,7 +1132,9 @@ function ComposerTopBar({
             onPress={onPublish}
             disabled={!canPost || isPublishQueued}>
             <ButtonText style={[a.text_md]}>
-              {isReply ? (
+              {isReviewRating ? (
+                <Trans context="action">Post Review</Trans>
+              ) : isReply ? (
                 <Trans context="action">Reply</Trans>
               ) : isThread ? (
                 <Trans context="action">Post All</Trans>

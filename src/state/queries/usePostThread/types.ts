@@ -6,6 +6,7 @@ import {
   type AppBskyUnspeccedGetPostThreadOtherV2,
   type AppBskyUnspeccedGetPostThreadV2,
   type AppFoodiosFeedDefs,
+  type AppFoodiosFeedReviewRating,
   type ModerationDecision,
 } from '@atproto/api'
 
@@ -40,9 +41,15 @@ export type UsePostThreadQueryResult = {
   }
 }
 
-export type ThreadItemPostValue = Omit<AppBskyUnspeccedDefs.ThreadItemPost, 'post'> & {
+export type ThreadItemPostValue = Omit<
+  AppBskyUnspeccedDefs.ThreadItemPost,
+  'post'
+> & {
   post: Omit<AppBskyFeedDefs.PostView, 'record'> & {
-    record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
+    record:
+      | AppBskyFeedPost.Record
+      | AppFoodiosFeedDefs.RecipeRevisionView
+      | AppFoodiosFeedReviewRating.Record
   }
 }
 
@@ -52,7 +59,7 @@ export type ThreadItem =
       key: string
       uri: string
       depth: number
-    value: ThreadItemPostValue
+      value: ThreadItemPostValue
       isBlurred: boolean
       moderation: ModerationDecision
       ui: {
