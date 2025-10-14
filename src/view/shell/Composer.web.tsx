@@ -20,7 +20,6 @@ export function Composer({}: {winHeight: number}) {
   const state = useComposerState()
   const isActive = !!(
     state?.type === 'post' ||
-    state?.type === 'postmodern' ||
     state?.type === 'review-rating'
   ) // only show for normal post composer on web
 
