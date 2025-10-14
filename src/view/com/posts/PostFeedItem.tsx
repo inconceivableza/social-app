@@ -278,7 +278,7 @@ let FeedItemInner = ({
       })
     }
   }
-
+  // TODO collapse based on line limit for recipes as well
   const onOpenAuthor = () => {
     sendInteraction({
       item: post.uri,
