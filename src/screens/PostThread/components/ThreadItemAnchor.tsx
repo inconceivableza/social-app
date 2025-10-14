@@ -231,7 +231,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     : post.uri
   const authorHref = makeProfileLink(post.author)
   const isThreadAuthor = getThreadAuthor(post) === currentAccount?.did
-  const { openModal } = useModalControls()
+  const { openModal, closeModal } = useModalControls()
 
   const likesHref = useMemo(() => {
     return postHref(post.author, post.uri, 'liked-by')
@@ -349,6 +349,12 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     feedFeedback,
   ])
 
+  const onPrepareReview = useCallback(() => {
+    closeModal()
+    onPressReviewRate()
+  },
+    [onPressReviewRate])
+
   const onOpenAuthor = () => {
     if (postSource) {
       feedFeedback.sendInteraction({
@@ -456,13 +462,14 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {dangerousIsRecipeView(record) ? (<>
+            {isRecipePostView(post) ? (<>
 
-              <ExpandedRecipePost expanded revision={record} titleComponent={<View><Button variant='outline' size='small' color="primary" style={[a.gap_xs]}
+              <ExpandedRecipePost expanded revision={post.record} titleComponent={<View><Button variant='outline' size='small' color="primary" style={[a.gap_xs]}
                 label={_(msg`Start recipe preparation`)} onPress={() => {
                   openModal({
                     name: 'recipe-preparation',
-                    revisionView: record
+                    recipePost: post,
+                    onReviewRecipe: onPrepareReview
                   })
                 }}>
                 <ButtonIcon icon={PlayIcon} />

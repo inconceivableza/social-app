@@ -1,7 +1,8 @@
 import React from 'react'
-import { AppFoodiosFeedDefs, type AppBskyGraphDefs } from '@atproto/api'
+import { type AppBskyGraphDefs } from '@atproto/api'
 
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
+import { RecipePostView } from '#/lib/api/feed/utils'
 
 export interface CreateOrEditListModal {
   name: 'create-or-edit-list'
@@ -54,7 +55,8 @@ export interface RecipeRevisionViewModal {
 
 export interface RecipePreparationModal {
   name: 'recipe-preparation'
-  revisionView: AppFoodiosFeedDefs.RecipeRevisionView
+  recipePost: RecipePostView
+  onReviewRecipe: () => void
 }
 
 export type Modal =

@@ -72,7 +72,7 @@ function Modal({modal}: {modal: ModalIface}) {
   } else if (modal.name === 'user-feedback') {
     element = <UserFeedbackModal.Component />
   } else if (modal.name === 'recipe-preparation') {
-    element = <RecipePreparationModal.Component revision={modal.revisionView} />
+    element = <RecipePreparationModal.Component recipePost={modal.recipePost} onReviewRecipe={modal.onReviewRecipe} />
   } else {
     return null
   }
