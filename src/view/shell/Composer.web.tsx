@@ -5,7 +5,7 @@ import {RemoveScrollBar} from 'react-remove-scroll-bar'
 
 import {useA11y} from '#/state/a11y'
 import {useModals} from '#/state/modals'
-import {type PostComposerOpts, useComposerState} from '#/state/shell/composer'
+import {type NormalComposerOpts, useComposerState} from '#/state/shell/composer'
 import {
   EmojiPicker,
   type EmojiPickerPosition,
@@ -18,7 +18,11 @@ const BOTTOM_BAR_HEIGHT = 61
 
 export function Composer({}: {winHeight: number}) {
   const state = useComposerState()
-  const isActive = !!(state?.type === 'post')
+  const isActive = !!(
+    state?.type === 'post' ||
+    state?.type === 'postmodern' ||
+    state?.type === 'review-rating'
+  ) // only show for normal post composer on web
 
   // rendering
   // =
@@ -35,7 +39,7 @@ export function Composer({}: {winHeight: number}) {
   )
 }
 
-function Inner({state}: {state: PostComposerOpts}) {
+function Inner({state}: {state: NormalComposerOpts}) {
   const ref = useComposerCancelRef()
   const {isModalActive} = useModals()
   const t = useTheme()

@@ -50,7 +50,24 @@ export interface RecipeComposerOpts {
   edit?: RecipePostView
 }
 
-export type ComposerOpts = PostComposerOpts | RecipeComposerOpts
+export interface ReviewRatingComposerOpts {
+  type: 'review-rating'
+  replyTo?: ComposerOptsPostRef
+  onPost?: (postUri: string | undefined) => void
+  onPostSuccess?: (data: OnPostSuccessData) => void
+  quote?: AppBskyFeedDefs.PostView
+  mention?: string // handle of user to mention
+  openEmojiPicker?: (pos: EmojiPickerPosition | undefined) => void
+  text?: string
+  imageUris?: {uri: string; width: number; height: number; altText?: string}[]
+  videoUri?: {uri: string; width: number; height: number}
+}
+
+export type NormalComposerOpts = PostComposerOpts | ReviewRatingComposerOpts
+export type ComposerOpts =
+  | PostComposerOpts
+  | RecipeComposerOpts
+  | ReviewRatingComposerOpts
 
 type StateContext = ComposerOpts | undefined
 type ControlsContext = {

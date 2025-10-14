@@ -1,16 +1,16 @@
 import {memo, useState} from 'react'
 import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {
-  AppFoodiosFeedDefs,
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
-  type AppFoodiosFeedRecipePost,
+  type AppFoodiosFeedDefs,
+  AppFoodiosFeedReviewRating,
   type RichText as RichTextAPI,
 } from '@atproto/api'
-
 import {msg, plural} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
+import type React from 'react'
 
 import {CountWheel} from '#/lib/custom-animations/CountWheel'
 import {AnimatedLikeIcon} from '#/lib/custom-animations/LikeIcon'
@@ -27,10 +27,11 @@ import {
   ProgressGuideAction,
   useProgressGuideControls,
 } from '#/state/shell/progress-guide'
-import {formatCount} from '#/view/com/util/numeric/format'
+import {formatCount, formatRating} from '#/view/com/util/numeric/format'
 import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, useBreakpoints} from '#/alf'
 import {Bubble_Stroke2_Corner2_Rounded as Bubble} from '#/components/icons/Bubble'
+import {getStarsSVG, halveStars, unratedSVG} from '../StarRatings'
 import {
   PostControlButton,
   PostControlButtonIcon,
@@ -39,6 +40,10 @@ import {
 import {PostMenuButton} from './PostMenu'
 import {RepostButton} from './RepostButton'
 import {ShareMenuButton} from './ShareMenu'
+
+function randomInt(max: number, min: number = 0) {
+  return Math.floor(Math.random() * (max - min)) + min
+}
 
 let PostControls = ({
   big,
@@ -50,6 +55,7 @@ let PostControls = ({
   style,
   onPressReply,
   onPostReply,
+  onPressReviewRate,
   logContext,
   threadgateRecord,
   onShowLess,
@@ -57,13 +63,18 @@ let PostControls = ({
 }: {
   big?: boolean
   post: Shadow<AppBskyFeedDefs.PostView>
-    record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
+  record:
+    | AppBskyFeedPost.Record
+    | AppFoodiosFeedDefs.RecipeRevisionView
+    | AppFoodiosFeedReviewRating.Record
   richText: RichTextAPI
   feedContext?: string | undefined
   reqId?: string | undefined
   style?: StyleProp<ViewStyle>
   onPressReply: () => void
   onPostReply?: (postUri: string | undefined) => void
+  onPressReviewRate: () => void
+  onPostReviewRate?: (postUri: string | undefined) => void
   logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
@@ -188,125 +199,199 @@ let PostControls = ({
     })
   }
 
+  const constitutesRating = AppFoodiosFeedReviewRating.isRecord(record)
+
+  const {rating, ratingCount} = constitutesRating
+    ? {rating: halveStars(record.reviewRating), ratingCount: undefined}
+    : randomInt(10) < 3
+      ? {rating: undefined, ratingCount: 0}
+      : {
+          rating: randomInt(10, 100) / 20.0,
+          ratingCount:
+            randomInt(100) + (randomInt(20) < 3 ? randomInt(1000) : 0),
+        }
+
   return (
-    <View
-      style={[
-        a.flex_row,
-        a.justify_between,
-        a.align_center,
-        !big && a.pt_2xs,
-        style,
-      ]}>
+    <>
       <View
         style={[
-          big ? a.align_center : [a.flex_1, a.align_start, {marginLeft: -6}],
-          replyDisabled ? {opacity: 0.5} : undefined,
+          a.flex_row,
+          a.justify_between,
+          a.align_center,
+          !big && a.pt_2xs,
+          style,
         ]}>
-        <PostControlButton
-          testID="replyBtn"
-          onPress={
-            !replyDisabled ? () => requireAuth(() => onPressReply()) : undefined
-          }
-          label={_(
-            msg({
-              message: `Reply (${plural(post.replyCount || 0, {
-                one: '# reply',
-                other: '# replies',
-              })})`,
-              comment:
-                'Accessibility label for the reply button, verb form followed by number of replies and noun form',
-            }),
-          )}
-          big={big}>
-          <PostControlButtonIcon icon={Bubble} />
-          {typeof post.replyCount !== 'undefined' && post.replyCount > 0 && (
-            <PostControlButtonText>
-              {formatCount(i18n, post.replyCount)}
-            </PostControlButtonText>
-          )}
-        </PostControlButton>
+        <View
+          style={[
+            big ? a.align_center : [a.flex_1, a.align_start, {marginLeft: -6}],
+            replyDisabled ? {opacity: 0.5} : undefined,
+          ]}>
+          <PostControlButton
+            testID="rateBtn"
+            onPress={
+              !replyDisabled && !constitutesRating
+                ? () => requireAuth(() => onPressReviewRate())
+                : undefined
+            }
+            label={_(
+              msg({
+                message: `Rating (${plural(post.replyCount || 0, {
+                  one: '# rating',
+                  other: '# ratings',
+                })})`,
+                comment:
+                  'Accessibility label for the ratings button, verb form followed by number of ratings and noun form',
+              }),
+            )}
+            big={big}>
+            {typeof rating === 'undefined' ? (
+              <></>
+            ) : constitutesRating ? (
+              <>
+                <PostControlButtonIcon icon={getStarsSVG(rating)} />
+                <PostControlButtonText>
+                  {formatRating(i18n, rating, undefined)}
+                </PostControlButtonText>
+              </>
+            ) : typeof ratingCount !== 'undefined' && ratingCount > 0 ? (
+              <>
+                <PostControlButtonIcon icon={getStarsSVG(rating)} />
+                <PostControlButtonText>
+                  {formatRating(i18n, rating, ratingCount)}
+                </PostControlButtonText>
+              </>
+            ) : (
+              <>
+                <PostControlButtonIcon icon={unratedSVG} />
+                <PostControlButtonText style={{fontStyle: 'italic'}}>
+                  Not rated yet...
+                </PostControlButtonText>
+              </>
+            )}
+          </PostControlButton>
+        </View>
       </View>
-      <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
-        <RepostButton
-          isReposted={!!post.viewer?.repost}
-          repostCount={(post.repostCount ?? 0) + (post.quoteCount ?? 0)}
-          onRepost={onRepost}
-          onQuote={onQuote}
-          big={big}
-          embeddingDisabled={Boolean(post.viewer?.embeddingDisabled)}
-        />
-      </View>
-      <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
-        <PostControlButton
-          testID="likeBtn"
-          big={big}
-          onPress={() => requireAuth(() => onPressToggleLike())}
-          label={
-            post.viewer?.like
-              ? _(
-                  msg({
-                    message: `Unlike (${plural(post.likeCount || 0, {
-                      one: '# like',
-                      other: '# likes',
-                    })})`,
-                    comment:
-                      'Accessibility label for the like button when the post has been liked, verb followed by number of likes and noun',
-                  }),
-                )
-              : _(
-                  msg({
-                    message: `Like (${plural(post.likeCount || 0, {
-                      one: '# like',
-                      other: '# likes',
-                    })})`,
-                    comment:
-                      'Accessibility label for the like button when the post has not been liked, verb form followed by number of likes and noun form',
-                  }),
-                )
-          }>
-          <AnimatedLikeIcon
-            isLiked={Boolean(post.viewer?.like)}
+      <View
+        style={[
+          a.flex_row,
+          a.justify_between,
+          a.align_center,
+          !big && a.pt_2xs,
+          style,
+        ]}>
+        <View
+          style={[
+            big ? a.align_center : [a.flex_1, a.align_start, {marginLeft: -6}],
+            replyDisabled ? {opacity: 0.5} : undefined,
+          ]}>
+          <PostControlButton
+            testID="replyBtn"
+            onPress={
+              !replyDisabled
+                ? () => requireAuth(() => onPressReply())
+                : undefined
+            }
+            label={_(
+              msg({
+                message: `Reply (${plural(post.replyCount || 0, {
+                  one: '# reply',
+                  other: '# replies',
+                })})`,
+                comment:
+                  'Accessibility label for the reply button, verb form followed by number of replies and noun form',
+              }),
+            )}
+            big={big}>
+            <PostControlButtonIcon icon={Bubble} />
+            {typeof post.replyCount !== 'undefined' && post.replyCount > 0 && (
+              <PostControlButtonText>
+                {formatCount(i18n, post.replyCount)}
+              </PostControlButtonText>
+            )}
+          </PostControlButton>
+        </View>
+        <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
+          <RepostButton
+            isReposted={!!post.viewer?.repost}
+            repostCount={(post.repostCount ?? 0) + (post.quoteCount ?? 0)}
+            onRepost={onRepost}
+            onQuote={onQuote}
             big={big}
-            hasBeenToggled={hasLikeIconBeenToggled}
+            embeddingDisabled={Boolean(post.viewer?.embeddingDisabled)}
           />
-          <CountWheel
-            likeCount={post.likeCount ?? 0}
+        </View>
+        <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
+          <PostControlButton
+            testID="likeBtn"
             big={big}
-            isLiked={Boolean(post.viewer?.like)}
-            hasBeenToggled={hasLikeIconBeenToggled}
-          />
-        </PostControlButton>
-      </View>
-      <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
-        <View style={[!big && a.ml_sm]}>
-          <ShareMenuButton
-            testID="postShareBtn"
+            onPress={() => requireAuth(() => onPressToggleLike())}
+            label={
+              post.viewer?.like
+                ? _(
+                    msg({
+                      message: `Unlike (${plural(post.likeCount || 0, {
+                        one: '# like',
+                        other: '# likes',
+                      })})`,
+                      comment:
+                        'Accessibility label for the like button when the post has been liked, verb followed by number of likes and noun',
+                    }),
+                  )
+                : _(
+                    msg({
+                      message: `Like (${plural(post.likeCount || 0, {
+                        one: '# like',
+                        other: '# likes',
+                      })})`,
+                      comment:
+                        'Accessibility label for the like button when the post has not been liked, verb form followed by number of likes and noun form',
+                    }),
+                  )
+            }>
+            <AnimatedLikeIcon
+              isLiked={Boolean(post.viewer?.like)}
+              big={big}
+              hasBeenToggled={hasLikeIconBeenToggled}
+            />
+            <CountWheel
+              likeCount={post.likeCount ?? 0}
+              big={big}
+              isLiked={Boolean(post.viewer?.like)}
+              hasBeenToggled={hasLikeIconBeenToggled}
+            />
+          </PostControlButton>
+        </View>
+        <View style={big ? a.align_center : [a.flex_1, a.align_start]}>
+          <View style={[!big && a.ml_sm]}>
+            <ShareMenuButton
+              testID="postShareBtn"
+              post={post}
+              big={big}
+              record={record}
+              richText={richText}
+              timestamp={post.indexedAt}
+              threadgateRecord={threadgateRecord}
+              onShare={onShare}
+            />
+          </View>
+        </View>
+        <View
+          style={big ? a.align_center : [gtMobile && a.flex_1, a.align_start]}>
+          <PostMenuButton
+            testID="postDropdownBtn"
             post={post}
+            postFeedContext={feedContext}
+            postReqId={reqId}
             big={big}
             record={record}
             richText={richText}
             timestamp={post.indexedAt}
             threadgateRecord={threadgateRecord}
-            onShare={onShare}
+            onShowLess={onShowLess}
           />
         </View>
       </View>
-      <View
-        style={big ? a.align_center : [gtMobile && a.flex_1, a.align_start]}>
-        <PostMenuButton
-          testID="postDropdownBtn"
-          post={post}
-          postFeedContext={feedContext}
-          postReqId={reqId}
-          big={big}
-          record={record}
-          richText={richText}
-          timestamp={post.indexedAt}
-          threadgateRecord={threadgateRecord}
-          onShowLess={onShowLess}
-        />
-      </View>
-    </View>
+    </>
   )
 }
 PostControls = memo(PostControls)

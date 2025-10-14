@@ -14,6 +14,7 @@ import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {
+  dangerousIsRecipeView,
   isRecipePostView,
   postHref,
   recipePostSummaryRichText,
@@ -167,6 +168,25 @@ function PostInner({
     })
   }, [openComposer, post, richText, moderation])
 
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(post)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          revisionUri: isRecipePostView(post)
+            ? post.record.selectedRevisionUri
+            : undefined,
+          text: richText.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+      })
+    }
+  }, [openComposer, post, richText, moderation])
+
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
@@ -284,6 +304,7 @@ function PostInner({
             record={post.record}
             richText={richText}
             onPressReply={onPressReply}
+            onPressReviewRate={onPressReviewRate}
             logContext="Post"
           />
         </View>

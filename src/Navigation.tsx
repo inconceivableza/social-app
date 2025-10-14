@@ -139,6 +139,7 @@ import {useNonReactiveCallback} from './lib/hooks/useNonReactiveCallback'
 import {useLoggedOutViewControls} from './state/shell/logged-out'
 import {useCloseAllActiveElements} from './state/util'
 import {RecipeThreadScreen} from './view/screens/RecipeThread'
+import { ReviewRatingThreadScreen } from './view/screens/ReviewRatingThread'
 
 const navigationRef = createNavigationContainerRef<AllNavigatorParams>()
 
@@ -291,6 +292,13 @@ function commonScreens(Stack: typeof Flat, unreadCountLabel?: string) {
         getComponent={() => RecipeThreadScreen}
         options={({route}) => ({
           title: title(msg`Recipe by @${route.params.name}`),
+        })}
+      />
+      <Stack.Screen
+        name="ReviewRatingThread"
+        getComponent={() => ReviewRatingThreadScreen}
+        options={({route}) => ({
+          title: title(msg`Review/Rating by @${route.params.name}`),
         })}
       />
       <Stack.Screen

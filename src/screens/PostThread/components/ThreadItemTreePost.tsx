@@ -8,7 +8,7 @@ import {
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 
-import {postHref} from '#/lib/api/feed/utils'
+import {dangerousIsRecipeView, postHref} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {countLines} from '#/lib/strings/helpers'
@@ -303,6 +303,23 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
     })
   }, [openComposer, post, record, onPostSuccess, moderation])
 
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(post)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          text: record.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+        onPostSuccess: onPostSuccess,
+      })
+    }
+  }, [openComposer, post, record, onPostSuccess, moderation])
+
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
@@ -371,6 +388,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
                     record={record}
                     richText={richText}
                     onPressReply={onPressReply}
+                    onPressReviewRate={onPressReviewRate}
                     logContext="PostThreadItem"
                     threadgateRecord={threadgateRecord}
                   />
