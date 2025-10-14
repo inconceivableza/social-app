@@ -3,7 +3,7 @@ import { RichText } from '#/components/RichText'
 import { H1, H2, H3, Text } from '#/components/Typography'
 import { AppFoodiosFeedDefs } from "@atproto/api"
 import { Trans } from '@lingui/macro'
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { View } from "react-native"
 import { RichText as RichTextAPI } from "@atproto/api"
 import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
@@ -22,10 +22,12 @@ export function ExpandableRecipePost({
 
 export function ExpandedRecipePost({
     revision,
-    expanded
+    expanded,
+    titleComponent
 }: {
     revision: AppFoodiosFeedDefs.RecipeRevisionView
     expanded: boolean
+        titleComponent?: React.ReactNode
 }) {
     // TODO: include embeds
     const record = revision.revisionContent
@@ -36,11 +38,13 @@ export function ExpandedRecipePost({
             facets: revision.revisionContent.facets
         })
     }, [revision])
-    return <View style={[a.gap_sm]}>
-        <View style={[
-            //a.align_center
-        ]}>
-            <H1 style={[a.text_2xl]}>{record.name}</H1>
+    return <View style={[a.gap_xs]}>
+        <View style={[a.flex_row]}>
+            <View style={{ justifyContent: 'center', marginRight: 'auto' }}>
+            <H1 style={[a.text_lg, a.font_bold]}>{record.name}</H1>
+            </View>
+
+            {titleComponent}
         </View>
         <View>
             <RichText
@@ -60,8 +64,7 @@ export function ExpandedRecipePost({
             <View style={[a.ml_sm]}>
                 {record.ingredients.map((ingredient, i) => {
                     return <View key={i} style={[a.flex_row, a.gap_sm]}>
-                        <Text>{ingredient.quantity + " " + ingredient.unit}</Text>
-                        <Text>{ingredient.name}</Text>
+                        <Text>{`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}</Text>
                     </View>
                 })}
 

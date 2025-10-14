@@ -1,7 +1,8 @@
 import React from 'react'
-import {type AppBskyGraphDefs} from '@atproto/api'
+import { type AppBskyGraphDefs } from '@atproto/api'
 
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
+import { RecipePostView } from '#/lib/api/feed/utils'
 
 export interface CreateOrEditListModal {
   name: 'create-or-edit-list'
@@ -52,6 +53,12 @@ export interface RecipeRevisionViewModal {
   uri: string
 }
 
+export interface RecipePreparationModal {
+  name: 'recipe-preparation'
+  recipePost: RecipePostView
+  onReviewRecipe: () => void
+}
+
 export type Modal =
   // Account
   | DeleteAccountModal
@@ -72,6 +79,7 @@ export type Modal =
 
   // Recipes
   | RecipeRevisionViewModal
+  | RecipePreparationModal
 
 const ModalContext = React.createContext<{
   isModalActive: boolean

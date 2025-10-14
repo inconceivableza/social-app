@@ -69,6 +69,7 @@ export type PostDraft = {
   labels: SelfLabel[]
   embed: EmbedDraft
   shortenedGraphemeLength: number
+  rating: number | undefined
 }
 
 export type EmbedAction =
@@ -89,10 +90,13 @@ export type EmbedAction =
   | {type: 'embed_update_gif'; alt: string}
   | {type: 'embed_remove_gif'}
 
+export type RatingAction = {type: 'update_rating'; rating: number | undefined}
+
 export type PostAction =
   | {type: 'update_richtext'; richtext: RichText}
   | {type: 'update_labels'; labels: SelfLabel[]}
   | EmbedAction
+  | RatingAction
 
 export type ThreadDraft = {
   posts: PostDraft[]
@@ -490,6 +494,12 @@ function postReducer(state: PostDraft, action: PostAction): PostDraft {
       return {
         ...state,
         labels: action.labels,
+      }
+    }
+    case 'update_rating': {
+      return {
+        ...state,
+        rating: action.rating,
       }
     }
     default: {

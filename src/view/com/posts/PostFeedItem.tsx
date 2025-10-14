@@ -5,11 +5,10 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   AppBskyFeedThreadgate,
-  type AppFoodiosFeedRecipePost,
+  type AppFoodiosFeedDefs,
   AtUri,
   type ModerationDecision,
   RichText as RichTextAPI,
-  AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {
   FontAwesomeIcon,
@@ -22,12 +21,12 @@ import {useQueryClient} from '@tanstack/react-query'
 import {useActorStatus} from '#/lib/actor-status'
 import {isReasonFeedSource, type ReasonFeedSource} from '#/lib/api/feed/types'
 import {
-  RecipePostView,
   dangerousIsPostRecord,
   dangerousIsRecipeView,
   isRecipePostView,
   postHref,
   recipePostSummaryRichText,
+  type RecipePostView,
   recordRevisionState,
 } from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
@@ -36,13 +35,14 @@ import {usePalette} from '#/lib/hooks/usePalette'
 import {makeProfileLink} from '#/lib/routes/links'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
-import { countLines } from '#/lib/strings/helpers'
+import {countLines} from '#/lib/strings/helpers'
 import {s} from '#/lib/styles'
 import {
   POST_TOMBSTONE,
   type Shadow,
   usePostShadow,
 } from '#/state/cache/post-shadow'
+import {type AnyPostView} from '#/state/cache/types'
 import {useFeedFeedbackContext} from '#/state/feed-feedback'
 import {useModalControls} from '#/state/modals'
 import {unstableCacheProfileView} from '#/state/queries/profile'
@@ -57,7 +57,7 @@ import {Link, TextLinkOnWebOnly} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
 import {Text} from '#/view/com/util/text/Text'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
-import { atoms as a, useTheme } from '#/alf'
+import {atoms as a} from '#/alf'
 import {Button, ButtonIcon} from '#/components/Button'
 import {OutdatedIcon} from '#/components/icons/Outdated'
 import {Pin_Stroke2_Corner0_Rounded as PinIcon} from '#/components/icons/Pin'
@@ -73,11 +73,10 @@ import {PostControls} from '#/components/PostControls'
 import {DiscoverDebug} from '#/components/PostControls/DiscoverDebug'
 import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
-import { SubtleWebHover } from '#/components/SubtleWebHover'
+import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
+import {ExpandableRecipePost} from './ExpandableRecipePost'
 import {RevisionState} from './RevisionState'
-import { ExpandableRecipePost } from './ExpandableRecipePost'
-import { AnyPostView } from '#/state/cache/types'
 
 interface FeedItemProps {
   record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
@@ -118,7 +117,7 @@ export function PostFeedItem({
   rootPost,
   onShowLess,
 }: FeedItemProps & {
-    post: AnyPostView
+  post: AnyPostView
   rootPost: AppBskyFeedDefs.PostView
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
 }): React.ReactNode {
@@ -127,14 +126,14 @@ export function PostFeedItem({
     () =>
       dangerousIsRecipeView(record)
         ? new RichTextAPI({
-          text: recipePostSummaryRichText(record.revisionContent),
+            text: recipePostSummaryRichText(record.revisionContent),
             facets: [],
           })
         : new RichTextAPI({
             text: record.text,
             facets: record.facets,
           }),
-    [record, post],
+    [record],
   )
   if (postShadowed === POST_TOMBSTONE) {
     return null
@@ -187,7 +186,7 @@ let FeedItemInner = ({
   onShowLess,
 }: FeedItemProps & {
   richText: RichTextAPI
-    post: Shadow<AnyPostView>
+  post: Shadow<AnyPostView>
   rootPost: AppBskyFeedDefs.PostView
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
 }): React.ReactNode => {
@@ -257,6 +256,29 @@ let FeedItemInner = ({
     }
   }
 
+  const onPressReviewRate = () => {
+    if (dangerousIsRecipeView(record)) {
+      sendInteraction({
+        item: post.uri,
+        event: 'app.bsky.feed.defs#interactionReply',
+        feedContext,
+        reqId,
+      })
+      openComposer({
+        type: 'review-rating',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          revisionUri: record.selectedRevisionUri,
+          text: recipePostSummaryRichText(record.revisionContent),
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+      })
+    }
+  }
+  // TODO collapse based on line limit for recipes as well
   const onOpenAuthor = () => {
     sendInteraction({
       item: post.uri,
@@ -509,11 +531,14 @@ let FeedItemInner = ({
                 onPress={() => {
                   // TODO: add api method for retrieving revision and remove all query param logic from getPosts
 
-                  if (dangerousIsPostRecord(post.record) && post.record.reply?.root.revisionUri)
+                  if (
+                    dangerousIsPostRecord(post.record) &&
+                    post.record.reply?.root.revisionUri
+                  )
                     openModal({
-                    name: 'recipe-revision-view',
-                    uri: `${rootPost.uri}?revision=${new AtUri(post.record.reply.root.revisionUri).rkey}`,
-                  })
+                      name: 'recipe-revision-view',
+                      uri: `${rootPost.uri}?revision=${new AtUri(post.record.reply.root.revisionUri).rkey}`,
+                    })
                 }}>
                 <ButtonIcon size="sm" icon={OutdatedIcon} />
               </Button>
@@ -529,26 +554,31 @@ let FeedItemInner = ({
               />
             )}
           <LabelsOnMyPost post={post} />
-          {isRecipePostView(post) ? <RecipePostContent
-            moderation={moderation}
-            onOpenEmbed={onOpenEmbed}
-            post={post}
-            threadgateRecord={threadgateRecord}
-          /> : <PostContent
-            moderation={moderation}
-            richText={richText}
-            postEmbed={post.embed}
-            postAuthor={post.author}
-            onOpenEmbed={onOpenEmbed}
-            post={post}
-            threadgateRecord={threadgateRecord}
-          />}
+          {isRecipePostView(post) ? (
+            <RecipePostContent
+              moderation={moderation}
+              onOpenEmbed={onOpenEmbed}
+              post={post}
+              threadgateRecord={threadgateRecord}
+            />
+          ) : (
+            <PostContent
+              moderation={moderation}
+              richText={richText}
+              postEmbed={post.embed}
+              postAuthor={post.author}
+              onOpenEmbed={onOpenEmbed}
+              post={post}
+              threadgateRecord={threadgateRecord}
+            />
+          )}
 
           <PostControls
             post={post}
             record={record}
             richText={richText}
             onPressReply={onPressReply}
+            onPressReviewRate={onPressReviewRate}
             logContext="FeedItem"
             feedContext={feedContext}
             reqId={reqId}
@@ -660,14 +690,14 @@ let RecipePostContent = ({
   threadgateRecord,
   post,
   onOpenEmbed,
-  moderation
+  moderation,
 }: {
   moderation: ModerationDecision
   onOpenEmbed: () => void
   post: RecipePostView
   threadgateRecord?: AppBskyFeedThreadgate.Record
 }): React.ReactNode => {
-  const { currentAccount } = useSession()
+  const {currentAccount} = useSession()
 
   const postEmbed = post.embed
 
@@ -681,40 +711,42 @@ let RecipePostContent = ({
       rootPostUri && new AtUri(rootPostUri).host === currentAccount?.did
     return isControlledByViewer && isPostHiddenByThreadgate
       ? [
-        {
-          type: 'reply-hidden',
-          source: { type: 'user', did: currentAccount?.did },
-          priority: 6,
-        },
-      ]
+          {
+            type: 'reply-hidden',
+            source: {type: 'user', did: currentAccount?.did},
+            priority: 6,
+          },
+        ]
       : []
   }, [post, currentAccount?.did, threadgateHiddenReplies])
 
-  return <ContentHider
-    testID="contentHider-post"
-    modui={moderation.ui('contentList')}
-    ignoreMute
-    childContainerStyle={styles.contentHiderChild}>
-    <PostAlerts
+  return (
+    <ContentHider
+      testID="contentHider-post"
       modui={moderation.ui('contentList')}
-      style={[a.py_2xs]}
-      additionalCauses={additionalPostAlerts}
-    />
-    <ExpandableRecipePost revision={post.record} />
-    {postEmbed ? (
-      <View style={[a.pb_xs]}>
-        <Embed
-          embed={postEmbed}
-          moderation={moderation}
-          onOpen={onOpenEmbed}
-          viewContext={PostEmbedViewContext.Feed}
-        />
-      </View>
-    ) : null}
-  </ContentHider>
+      ignoreMute
+      childContainerStyle={styles.contentHiderChild}>
+      <PostAlerts
+        modui={moderation.ui('contentList')}
+        style={[a.py_2xs]}
+        additionalCauses={additionalPostAlerts}
+      />
+      <ExpandableRecipePost revision={post.record} />
+      {postEmbed ? (
+        <View style={[a.pb_xs]}>
+          <Embed
+            embed={postEmbed}
+            moderation={moderation}
+            onOpen={onOpenEmbed}
+            viewContext={PostEmbedViewContext.Feed}
+          />
+        </View>
+      ) : null}
+    </ContentHider>
+  )
 }
 
-RecipePostContent = memo(RecipePostContent) 
+RecipePostContent = memo(RecipePostContent)
 
 function ReplyToLabel({
   profile,

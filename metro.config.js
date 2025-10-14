@@ -1,5 +1,6 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const {getSentryExpoConfig} = require('@sentry/react-native/metro')
+const path = require('node:path')
 const cfg = getSentryExpoConfig(__dirname)
 
 cfg.resolver.sourceExts = process.env.RN_SRC_EXT
@@ -18,6 +19,9 @@ cfg.resolver.assetExts = [...cfg.resolver.assetExts, 'woff2']
 
 // Enabled by default in RN 0.79+, but this breaks Lingui + others
 cfg.resolver.unstable_enablePackageExports = false
+
+// Support symlinks to ../atproto for running from dev source (and our forked version)
+cfg.watchFolders = [path.join(__dirname, '..', 'atproto')]
 
 cfg.resolver.resolveRequest = (context, moduleName, platform) => {
   // HACK: manually resolve a few packages that use `exports` in `package.json`.

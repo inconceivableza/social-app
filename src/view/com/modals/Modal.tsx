@@ -16,6 +16,7 @@ import * as PostLanguagesSettingsModal from './lang-settings/PostLanguagesSettin
 import * as RecipeRevisionViewModal from './RecipeRevisionView'
 import * as UserAddRemoveListsModal from './UserAddRemoveLists'
 import * as UserFeedbackModal from './UserFeedback'
+import * as RecipePreparationModal from './RecipePreparation'
 
 const DEFAULT_SNAPPOINTS = ['90%']
 const HANDLE_HEIGHT = 24
@@ -75,6 +76,9 @@ export function ModalsContainer() {
   } else if (activeModal?.name === 'user-feedback') {
     snapPoints = UserFeedbackModal.snapPoints
     element = <UserFeedbackModal.Component />
+  } else if (activeModal.name === "recipe-preparation") {
+    snapPoints = RecipePreparationModal.snapPoints
+    element = <RecipePreparationModal.Component recipePost={activeModal.recipePost} onReviewRecipe={modal.onReviewRecipe} />
   } else {
     return null
   }
