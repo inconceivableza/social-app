@@ -314,6 +314,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
 
   const onPressReviewRate = useCallback(() => {
     if (dangerousIsRecipeView(record)) {
+      const text = recipePostSummaryRichText(post.record.revisionContent)
       openComposer({
         type: 'review-rating',
         replyTo: {
@@ -322,7 +323,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
           revisionUri: isRecipePostView(post)
             ? post.record.selectedRevisionUri
             : undefined,
-          text: "I'm reviewing this recipe",
+          text,
           author: post.author,
           embed: post.embed,
           moderation,
