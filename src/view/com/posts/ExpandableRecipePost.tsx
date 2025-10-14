@@ -3,7 +3,7 @@ import { RichText } from '#/components/RichText'
 import { H1, H2, H3, Text } from '#/components/Typography'
 import { AppFoodiosFeedDefs } from "@atproto/api"
 import { Trans } from '@lingui/macro'
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { View } from "react-native"
 import { RichText as RichTextAPI } from "@atproto/api"
 import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
@@ -22,10 +22,12 @@ export function ExpandableRecipePost({
 
 export function ExpandedRecipePost({
     revision,
-    expanded
+    expanded,
+    titleComponent
 }: {
     revision: AppFoodiosFeedDefs.RecipeRevisionView
     expanded: boolean
+        titleComponent?: React.ReactNode
 }) {
     // TODO: include embeds
     const record = revision.revisionContent
@@ -37,8 +39,12 @@ export function ExpandedRecipePost({
         })
     }, [revision])
     return <View style={[a.gap_xs]}>
-        <View>
+        <View style={[a.flex_row]}>
+            <View style={{ justifyContent: 'center', marginRight: 'auto' }}>
             <H1 style={[a.text_lg, a.font_bold]}>{record.name}</H1>
+            </View>
+
+            {titleComponent}
         </View>
         <View>
             <RichText
