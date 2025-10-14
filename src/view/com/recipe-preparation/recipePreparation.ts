@@ -44,6 +44,8 @@ export type PreparationAction = {
 } | Action<"toggle_instruction", {
     sectionIdx: number
     instructionIdx: number
+}> | Action<"reset", {
+    record: AppFoodiosFeedRecipeRevision.Record
 }>
 
 export function preparationReducer(state: PreparationState, action: PreparationAction): PreparationState {
@@ -61,6 +63,9 @@ export function preparationReducer(state: PreparationState, action: PreparationA
             if (!instruction) return state
             instruction.checked = !instruction.checked
             return state
+        }
+        case "reset": {
+            return initPreparationState(action.record)
         }
     }
 }

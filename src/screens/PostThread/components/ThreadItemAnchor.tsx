@@ -54,7 +54,7 @@ import {
 } from '#/screens/PostThread/const'
 import {atoms as a, useTheme} from '#/alf'
 import {colors} from '#/components/Admonition'
-import {Button} from '#/components/Button'
+import { Button, ButtonIcon, ButtonText } from '#/components/Button'
 import {CalendarClock_Stroke2_Corner0_Rounded as CalendarClockIcon} from '#/components/icons/CalendarClock'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {InlineLinkText, Link} from '#/components/Link'
@@ -73,7 +73,9 @@ import {VerificationCheckButton} from '#/components/verification/VerificationChe
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
 import { AnyPostView } from '#/state/cache/types'
-import { ExpandableRecipePost, ExpandedRecipePost } from '#/view/com/posts/ExpandableRecipePost'
+import { ExpandedRecipePost } from '#/view/com/posts/ExpandableRecipePost'
+import { useModalControls } from '#/state/modals'
+import { Play_Filled_Corner0_Rounded as PlayIcon } from "#/components/icons/Play"
 
 export function ThreadItemAnchor({
   item,
@@ -216,6 +218,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const threadRootUri = dangerousIsPostRecord(record) ? record.reply?.root?.uri || post.uri : post.uri
   const authorHref = makeProfileLink(post.author)
   const isThreadAuthor = getThreadAuthor(post) === currentAccount?.did
+  const { openModal } = useModalControls()
 
   const likesHref = useMemo(() => {
     return postHref(post.author, post.uri, 'liked-by')
@@ -262,9 +265,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   }, [postSource])
 
   const onPressReply = useCallback(() => {
-    const text = dangerousIsRecipeView(post.record)
-      ? recipePostSummaryRichText(post.record.revisionContent)
-      : record.text
+    const text = recordText(post)
     openComposer({
       type: 'post',
       replyTo: {
@@ -406,9 +407,20 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {record.$type === 'app.foodios.feed.defs#recipeRevisionView' ? (
-              <ExpandedRecipePost expanded revision={record} />
-            ) : richText?.text ? (
+            {dangerousIsRecipeView(record) ? (<>
+
+              <ExpandedRecipePost expanded revision={record} titleComponent={<View><Button variant='outline' size='small' color="primary" style={[a.gap_xs]}
+                label={_(msg`Start recipe preparation`)} onPress={() => {
+                  openModal({
+                    name: 'recipe-preparation',
+                    revisionView: record
+                  })
+                }}>
+                <ButtonIcon icon={PlayIcon} />
+                <ButtonText><Trans>Prepare Recipe</Trans></ButtonText>
+              </Button></View>} />
+
+            </>) : richText?.text ? (
               <RichText
                 enableTags
                 selectable

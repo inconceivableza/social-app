@@ -1,20 +1,51 @@
 import { useTheme, atoms as a } from "#/alf";
-import { H2, H3, Text } from "#/components/Typography";
-import { AppFoodiosFeedDefs } from "@atproto/api";
+import { H1, H2, H3, Text } from "#/components/Typography";
+import { AppFoodiosFeedDefs, RichText as RichTextAPI } from "@atproto/api";
 import { Trans, msg } from "@lingui/macro";
 import { View } from "react-native";
 import * as Toggle from '#/components/forms/Toggle'
 
 import { usePreparationState } from "../recipe-preparation/recipePreparation";
 import { useLingui } from "@lingui/react";
+import { useEffect, useMemo, useState } from "react";
+import { padStart } from "lodash"
+import { Button, ButtonIcon, ButtonText } from "#/components/Button";
+
+import * as TextField from '#/components/forms/TextField'
+import { RichText } from "#/components/RichText";
+import { ShowMoreTextButton } from "#/components/Post/ShowMoreTextButton";
+import { countLines } from "#/lib/strings/helpers";
+import { Clock_Stroke2_Corner0_Rounded as ClockIcon } from "#/components/icons/Clock"
+
 
 export const snapPoints = ['fullscreen']
+
+const COLLAPSED_LINE_LIMIT = 3
+// Note: local storage is tied to the revision ID, so if the recipe is edited, progress inaccessible
+// TODO: handle scrolling
 export function Component({ revision }: { revision: AppFoodiosFeedDefs.RecipeRevisionView }) {
     const record = revision.revisionContent
     const t = useTheme()
     const { _ } = useLingui()
     const [state, dispatch] = usePreparationState(revision)
-    return <View>
+    const richText = useMemo(() => new RichTextAPI({
+        text: record.text,
+        facets: record.facets
+    }),
+        [record])
+    const [limitLines, setLimitLines] = useState(() => countLines(richText.text) >= COLLAPSED_LINE_LIMIT)
+    const [timers, setTimers] = useState({} as Record<`${number}-${number}`, boolean>)
+
+    return <View style={[a.gap_sm]}>
+        <View>
+            <H1 style={[a.text_lg, a.font_bold]}>{record.name}</H1>
+        </View>
+        <View>
+            <RichText value={richText} numberOfLines={limitLines ? COLLAPSED_LINE_LIMIT : undefined} />
+            {limitLines && (
+                <ShowMoreTextButton style={[a.text_md]} onPress={() => setLimitLines(false)} />
+            )}
+        </View>
         <View >
             <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
                 <Trans context="recipe">Ingredients</Trans>
@@ -48,7 +79,11 @@ export function Component({ revision }: { revision: AppFoodiosFeedDefs.RecipeRev
                     {name && <H3 style={[a.font_bold]}>{name}</H3>}
                     <View style={[a.ml_sm]}>
 
-                        {instructions.map((instruction, instructionIdx) => <View key={instructionIdx}>
+                        {instructions.map((instruction, instructionIdx) => {
+                            const instructionKey = `${sectionIdx}-${instructionIdx}` as const
+                            const hasTimer = timers[instructionKey]
+                            return <View
+                                style={[a.flex_row, a.gap_md]} key={instructionIdx}>
                             <Toggle.Item type="checkbox" label={_(msg`Toggle instruction`)}
                                 name={`toggle_ingredient_${instructionIdx}`}
                                 onChange={() => dispatch({ type: 'toggle_instruction', sectionIdx, instructionIdx })}
@@ -56,10 +91,20 @@ export function Component({ revision }: { revision: AppFoodiosFeedDefs.RecipeRev
                             >
                                 <Toggle.Checkbox />
                                 <Toggle.LabelText style={[a.text_md]}>
-                                    {`${instructionIdx + 1} ${instruction.text}`}
+                                        {`${instructionIdx + 1}. ${instruction.text}`}
                                 </Toggle.LabelText>
                             </Toggle.Item>
-                        </View>)}
+                                {hasTimer ?
+                                    <InstructionTimer /> :
+                                    <Button label={_(msg`Create timer`)} color="primary" variant="outline" shape="round"
+                                        style={{ borderColor: 'transparent' }} onPress={() =>
+                                            setTimers(ts => ({ ...ts, [instructionKey]: true }))
+                                        }>
+                                        <ButtonIcon icon={ClockIcon} />
+                                        <ButtonText>+</ButtonText>
+                                    </Button>}
+                            </View>
+                        })}
                     </View>
                 </View>
             })}
@@ -67,6 +112,102 @@ export function Component({ revision }: { revision: AppFoodiosFeedDefs.RecipeRev
     </View>
 }
 
-// handle revision changes
+// Displays a duration in {hours}:{minutes}:{seconds} format
+function displayTime(seconds: number) {
+    let value = seconds
+    const parts = [0, 0, 0]
+    for (let i = parts.length - 1; i >= 0; i--) {
+        parts[i] = Math.trunc(value % 60)
+        value /= 60
+    }
+    return parts.map(v => {
+        return padStart(v + "", 2, "0")
+    }).join(":")
+}
+
+// TODO: play sound when time's up
+// TODO: replace buttons with icons
+function InstructionTimer() {
+    const [seconds, setSeconds] = useState(0)
+    const [timingState, setTimingState] = useState<"inactive" | "active" | "complete">("inactive")
+    const [duration, setDuration] = useState({ hours: 0, minutes: 0, seconds: 0 })  // Duration in seconds
+    const { _ } = useLingui()
+
+    const durationSeconds = duration.hours * 60 * 60 + duration.minutes * 60 + duration.seconds
+
+    // TODO: ensure hours <= 24, minutes < 60, seconds < 60
+    function durationCallback(field: keyof typeof duration) {
+        return function (text: string) {
+            const value = Number(text)
+            if (Number.isNaN(value)) return;
+
+            setDuration(d => ({ ...d, [field]: value }))
+        }
+    }
+
+    useEffect(() => {
+        if (timingState !== "active") return;
+
+        const durationSeconds = duration.hours * 60 * 60 + duration.minutes * 60 + duration.seconds
+        const endTime = Date.now() + durationSeconds * 1000
+
+        const id = setInterval(() => {
+            const diff = endTime - Date.now()
+            // TODO: handle this during validation
+            if (diff > 1000 * 60 * 60 * 24) {
+                clearInterval(id)
+            }
+
+            if (diff < 0) {
+                setSeconds(0)
+                clearInterval(id)
+                setTimingState("complete")
+                // TODO: play sound, vibrate, visual indicator
+                return
+            }
+            setSeconds(Math.round(diff / 1000))
+        }, 1000)
+        return () => clearInterval(id)
+    }, [timingState, duration])
+    // TODO: used controlled inputs (prevents non numerical values)
+    return timingState === "inactive" ?
+        <View style={[a.flex_row, { width: "30%" }, a.gap_xs]}>
+            <View style={[{ width: "33%" }]}>
+                <TextField.Root>
+                    <TextField.Input style={{ height: 28 }} selectTextOnFocus onChangeText={durationCallback("hours")}
+                        inputMode="decimal" label={_(msg`Hours`)} defaultValue="00" />
+                </TextField.Root>
+            </View>
+            <View style={[a.justify_center]}><Text>:</Text></View>
+            <View style={[{ width: "33%" }]}>
+                <TextField.Root>
+                    <TextField.Input style={{ height: 28 }} selectTextOnFocus onChangeText={durationCallback("minutes")}
+                        inputMode="decimal" label={_(msg`Minutes`)} defaultValue="00" />
+                </TextField.Root>
+            </View>
+            <View style={[a.justify_center]}><Text>:</Text></View>
+            <View style={[{ width: "33%" }]}>
+                <TextField.Root>
+                    <TextField.Input style={{ height: 28 }} selectTextOnFocus onChangeText={durationCallback("seconds")}
+                        inputMode="decimal" label={_(msg`Seconds`)} defaultValue="00" />
+                </TextField.Root>
+            </View>
+            <Button disabled={durationSeconds <= 0} label={_(msg`Start timing`)}
+                variant="solid" size="small" color="primary" onPress={() => {
+                    if (durationSeconds <= 0) return;
+
+                    setTimingState("active")
+                }}>
+                <ButtonText>
+                    <Trans>Start</Trans></ButtonText>
+            </Button>
+        </View> : <View>
+            <View>
+                <Text>
+                    {displayTime(seconds)}
+                </Text>
+            </View>
+        </View>
+}
 
 
