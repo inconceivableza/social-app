@@ -74,8 +74,6 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { AnyPostView } from '#/state/cache/types'
-import { ExpandedRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 import { useModalControls } from '#/state/modals'
 import { Play_Filled_Corner0_Rounded as PlayIcon } from "#/components/icons/Play"
 
