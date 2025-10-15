@@ -1,0 +1,2655 @@
+[
+  {
+    "name": "African",
+    "children": [
+      {
+        "name": "Central African",
+        "children": [
+          {
+            "name": "Angolan"
+          },
+          {
+            "name": "Cameroonian"
+          },
+          {
+            "name": "Chadian"
+          },
+          {
+            "name": "Congolese"
+          },
+          {
+            "name": "Centrafrican"
+          },
+          {
+            "name": "Equatorial Guinea"
+          },
+          {
+            "name": "Gabonese"
+          },
+          {
+            "name": "Santomean"
+          }
+        ]
+      },
+      {
+        "name": "East African",
+        "children": [
+          {
+            "name": "Burundian"
+          },
+          {
+            "name": "Comorian"
+          },
+          {
+            "name": "Djiboutian"
+          },
+          {
+            "name": "Eritrean"
+          },
+          {
+            "name": "Ethiopian",
+            "children": [
+              {
+                "name": "Ethiopian Jewish"
+              }
+            ]
+          },
+          {
+            "name": "Kenyan"
+          },
+          {
+            "name": "Maasai"
+          },
+          {
+            "name": "Malagasy"
+          },
+          {
+            "name": "Malawian"
+          },
+          {
+            "name": "Mauritian"
+          },
+          {
+            "name": "Mozambican"
+          },
+          {
+            "name": "Rwandan"
+          },
+          {
+            "name": "Seychellois"
+          },
+          {
+            "name": "Somali"
+          },
+          {
+            "name": "Sudanese"
+          },
+          {
+            "name": "South Sudanese"
+          },
+          {
+            "name": "Tanzanian",
+            "children": [
+              {
+                "name": "Zanzibari"
+              }
+            ]
+          },
+          {
+            "name": "Ugandan"
+          },
+          {
+            "name": "Zambian"
+          },
+          {
+            "name": "Zimbabwean"
+          }
+        ]
+      },
+      {
+        "name": "North African",
+        "children": [
+          {
+            "name": "Algerian"
+          },
+          {
+            "name": "Berber"
+          },
+          {
+            "name": "Egyptian"
+          },
+          {
+            "name": "Libyan"
+          },
+          {
+            "name": "Moroccan"
+          },
+          {
+            "name": "Tunisian"
+          },
+          {
+            "name": "Western Saharan"
+          }
+        ]
+      },
+      {
+        "name": "Southern African",
+        "children": [
+          {
+            "name": "Botswana"
+          },
+          {
+            "name": "Eswatini"
+          },
+          {
+            "name": "Lesotho"
+          },
+          {
+            "name": "Namibian"
+          },
+          {
+            "name": "South African"
+          }
+        ]
+      },
+      {
+        "name": "West African",
+        "children": [
+          {
+            "name": "Benin"
+          },
+          {
+            "name": "Burkinabé"
+          },
+          {
+            "name": "Cape Verdean"
+          },
+          {
+            "name": "Gambian"
+          },
+          {
+            "name": "Ghanaian"
+          },
+          {
+            "name": "Guinean"
+          },
+          {
+            "name": "Guinea-Bissauan"
+          },
+          {
+            "name": "Ivorian"
+          },
+          {
+            "name": "Liberian"
+          },
+          {
+            "name": "Malian"
+          },
+          {
+            "name": "Mauritanian"
+          },
+          {
+            "name": "Niger"
+          },
+          {
+            "name": "Nigerian"
+          },
+          {
+            "name": "Saint Helenian"
+          },
+          {
+            "name": "Senegalese"
+          },
+          {
+            "name": "Sierra Leone"
+          },
+          {
+            "name": "Togolese"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Americas",
+    "children": [
+      {
+        "name": "Native American",
+        "children": [
+          {
+            "name": "Inuit"
+          },
+          {
+            "name": "Tlingit"
+          }
+        ]
+      },
+      {
+        "name": "North American",
+        "children": [
+          {
+            "name": "Bermudian"
+          },
+          {
+            "name": "Canadian",
+            "children": [
+              {
+                "name": "Canadian Chinese"
+              },
+              {
+                "name": "Maritime"
+              },
+              {
+                "name": "Quebec"
+              },
+              {
+                "name": "Toronto"
+              }
+            ]
+          },
+          {
+            "name": "Greenlandic"
+          },
+          {
+            "name": "Inuit"
+          },
+          {
+            "name": "Mexican",
+            "children": [
+              {
+                "name": "Chiapas"
+              },
+              {
+                "name": "Mexico City"
+              },
+              {
+                "name": "Oaxacan"
+              },
+              {
+                "name": "Veracruz"
+              },
+              {
+                "name": "Mesoamerican",
+                "children": [
+                  {
+                    "name": "Ancient Maya"
+                  },
+                  {
+                    "name": "Aztec"
+                  }
+                ]
+              },
+              {
+                "name": "Mexican-American",
+                "children": [
+                  {
+                    "name": "Cali-Mex",
+                    "children": [
+                      {
+                        "name": "Korean-Mexican fusion"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "New Mexican"
+                  },
+                  {
+                    "name": "Tex-Mex"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Tlingit"
+          }
+        ]
+      },
+      {
+        "name": "American",
+        "children": [
+          {
+            "name": "Midwestern American",
+            "children": [
+              {
+                "name": "Chicago"
+              },
+              {
+                "name": "North Dakota"
+              },
+              {
+                "name": "Omaha"
+              },
+              {
+                "name": "St. Louis"
+              },
+              {
+                "name": "Wisconsin"
+              },
+              {
+                "name": "Minnesotan",
+                "children": [
+                  {
+                    "name": "Iron Range"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Northeastern Americans",
+            "children": [
+              {
+                "name": "New England"
+              },
+              {
+                "name": "Mid-Atlantic United States",
+                "children": [
+                  {
+                    "name": "Baltimore"
+                  },
+                  {
+                    "name": "New Jersey"
+                  },
+                  {
+                    "name": "New York City"
+                  },
+                  {
+                    "name": "Pennsylvania Dutch"
+                  },
+                  {
+                    "name": "Philadelphia"
+                  },
+                  {
+                    "name": "Pittsburgh"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Southern American",
+            "children": [
+              {
+                "name": "Atlanta"
+              },
+              {
+                "name": "Floribbean"
+              },
+              {
+                "name": "Kentucky"
+              },
+              {
+                "name": "Louisiana Creole",
+                "children": [
+                  {
+                    "name": "Cajun"
+                  },
+                  {
+                    "name": "New Orleans"
+                  }
+                ]
+              },
+              {
+                "name": "Lowcountry",
+                "children": [
+                  {
+                    "name": "Soul food"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Southwestern American",
+            "children": [
+              {
+                "name": "New Mexican"
+              },
+              {
+                "name": "Texan",
+                "children": [
+                  {
+                    "name": "Tex-Mex"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Western American",
+            "children": [
+              {
+                "name": "Californian",
+                "children": [
+                  {
+                    "name": "Korean-Mexican fusion"
+                  }
+                ]
+              },
+              {
+                "name": "Hawaiian"
+              },
+              {
+                "name": "Pacific Northwest"
+              },
+              {
+                "name": "Rocky Mountain"
+              }
+            ]
+          },
+          {
+            "name": "Fusion",
+            "children": [
+              {
+                "name": "American Jewish"
+              },
+              {
+                "name": "Cajun"
+              },
+              {
+                "name": "Chinese American"
+              },
+              {
+                "name": "Filipino-American"
+              },
+              {
+                "name": "Floribbean"
+              },
+              {
+                "name": "German-American"
+              },
+              {
+                "name": "Greek-American"
+              },
+              {
+                "name": "Indian-American"
+              },
+              {
+                "name": "Italian-American"
+              },
+              {
+                "name": "Japanese-American"
+              },
+              {
+                "name": "Korean-American",
+                "children": [
+                  {
+                    "name": "Korean-Mexican fusion"
+                  }
+                ]
+              },
+              {
+                "name": "Mexican-American",
+                "children": [
+                  {
+                    "name": "Cali-Mex"
+                  },
+                  {
+                    "name": "New Mexican"
+                  },
+                  {
+                    "name": "Tex-Mex"
+                  }
+                ]
+              },
+              {
+                "name": "Pennsylvania Dutch"
+              },
+              {
+                "name": "Thai-American"
+              },
+              {
+                "name": "Vietnamese-American"
+              },
+              {
+                "name": "New American"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Central American",
+        "children": [
+          {
+            "name": "Belizean"
+          },
+          {
+            "name": "Costa Rican"
+          },
+          {
+            "name": "Guatemalan"
+          },
+          {
+            "name": "Honduran"
+          },
+          {
+            "name": "Mesoamerican",
+            "children": [
+              {
+                "name": "Ancient Maya"
+              }
+            ]
+          },
+          {
+            "name": "Nicaraguan"
+          },
+          {
+            "name": "Panamanian"
+          },
+          {
+            "name": "Salvadoran"
+          }
+        ]
+      },
+      {
+        "name": "South American",
+        "children": [
+          {
+            "name": "Argentine"
+          },
+          {
+            "name": "Bolivian"
+          },
+          {
+            "name": "Brazilian"
+          },
+          {
+            "name": "Chilean"
+          },
+          {
+            "name": "Colombian",
+            "children": [
+              {
+                "name": "Muisca"
+              }
+            ]
+          },
+          {
+            "name": "Ecuadorian"
+          },
+          {
+            "name": "French Guianan"
+          },
+          {
+            "name": "Guyanese"
+          },
+          {
+            "name": "Paraguayan",
+            "children": [
+              {
+                "name": "Asunción"
+              }
+            ]
+          },
+          {
+            "name": "Peruvian",
+            "children": [
+              {
+                "name": "Peruvian-Chinese"
+              },
+              {
+                "name": "Peruvian-Japanese"
+              },
+              {
+                "name": "Amazonian"
+              },
+              {
+                "name": "Arequipan"
+              },
+              {
+                "name": "Inca"
+              }
+            ]
+          },
+          {
+            "name": "Surinamese"
+          },
+          {
+            "name": "Uruguayan",
+            "children": [
+              {
+                "name": "Montevideo"
+              }
+            ]
+          },
+          {
+            "name": "Venezuelan"
+          }
+        ]
+      },
+      {
+        "name": "Caribbean",
+        "children": [
+          {
+            "name": "Anguillan"
+          },
+          {
+            "name": "Antigua and Barbuda"
+          },
+          {
+            "name": "Aruban"
+          },
+          {
+            "name": "Bahamian"
+          },
+          {
+            "name": "Barbadian"
+          },
+          {
+            "name": "Belizean"
+          },
+          {
+            "name": "British Virgin Islands"
+          },
+          {
+            "name": "Cayman Islands"
+          },
+          {
+            "name": "Caribbean Chinese"
+          },
+          {
+            "name": "Cuban"
+          },
+          {
+            "name": "Curaçao"
+          },
+          {
+            "name": "Dominica"
+          },
+          {
+            "name": "Dominican Republic"
+          },
+          {
+            "name": "Floribbean"
+          },
+          {
+            "name": "French Guianan"
+          },
+          {
+            "name": "Grenadian"
+          },
+          {
+            "name": "Guyanese"
+          },
+          {
+            "name": "Haitian"
+          },
+          {
+            "name": "Jamaican"
+          },
+          {
+            "name": "Martinican"
+          },
+          {
+            "name": "Montserrat"
+          },
+          {
+            "name": "Puerto Rican"
+          },
+          {
+            "name": "St. Kitts and Nevis"
+          },
+          {
+            "name": "Saint Lucian"
+          },
+          {
+            "name": "Surinamese"
+          },
+          {
+            "name": "Trinidad and Tobago"
+          },
+          {
+            "name": "Turks and Caicos"
+          },
+          {
+            "name": "US Virgin Islands"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Asian",
+    "children": [
+      {
+        "name": "Central Asian",
+        "children": [
+          {
+            "name": "Afghan",
+            "children": [
+              {
+                "name": "Hazara"
+              },
+              {
+                "name": "Pashtun"
+              }
+            ]
+          },
+          {
+            "name": "Azerbaijani"
+          },
+          {
+            "name": "Balochi"
+          },
+          {
+            "name": "Bashkir"
+          },
+          {
+            "name": "Bukharan Jewish"
+          },
+          {
+            "name": "Dagestani"
+          },
+          {
+            "name": "Iranian",
+            "children": [
+              {
+                "name": "Caspian"
+              },
+              {
+                "name": "Kurdish"
+              }
+            ]
+          },
+          {
+            "name": "Karakalpak"
+          },
+          {
+            "name": "Kazakh"
+          },
+          {
+            "name": "Koryo-saram"
+          },
+          {
+            "name": "Kyrgyz"
+          },
+          {
+            "name": "Tajik"
+          },
+          {
+            "name": "Tatar"
+          },
+          {
+            "name": "Turkmen"
+          },
+          {
+            "name": "Uyghur"
+          },
+          {
+            "name": "Uzbek"
+          }
+        ]
+      },
+      {
+        "name": "East Asian",
+        "children": [
+          {
+            "name": "Japanese",
+            "children": [
+              {
+                "name": "Ainu"
+              },
+              {
+                "name": "Kaiseki"
+              },
+              {
+                "name": "Okinawan"
+              },
+              {
+                "name": "Japanese regional",
+                "children": [
+                  {
+                    "name": "Nagoya"
+                  }
+                ]
+              },
+              {
+                "name": "Japanese fusion",
+                "children": [
+                  {
+                    "name": "Japanese-American"
+                  },
+                  {
+                    "name": "Japanese Chinese",
+                    "children": [
+                      {
+                        "name": "Shippoku"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Hawaiian"
+                  },
+                  {
+                    "name": "Itameshi"
+                  },
+                  {
+                    "name": "Yoshoku"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Korean",
+            "children": [
+              {
+                "name": "Korean Chinese"
+              },
+              {
+                "name": "Korean regional"
+              },
+              {
+                "name": "Korean royal court"
+              },
+              {
+                "name": "Korean temple"
+              },
+              {
+                "name": "Koryo-saram"
+              },
+              {
+                "name": "North Korean"
+              },
+              {
+                "name": "Sakhalin Korean"
+              },
+              {
+                "name": "South Korean"
+              },
+              {
+                "name": "Korean-Mexican fusion"
+              }
+            ]
+          },
+          {
+            "name": "Vietnamese"
+          }
+        ]
+      },
+      {
+        "name": "Chinese",
+        "children": [
+          {
+            "name": "Northern Chinese",
+            "children": [
+              {
+                "name": "Beijing",
+                "children": [
+                  {
+                    "name": "Chinese aristocrat"
+                  },
+                  {
+                    "name": "Chinese imperial"
+                  }
+                ]
+              },
+              {
+                "name": "Hebei"
+              },
+              {
+                "name": "Henan"
+              },
+              {
+                "name": "Northeastern Chinese",
+                "children": [
+                  {
+                    "name": "Heilongjiang"
+                  },
+                  {
+                    "name": "Jilin"
+                  },
+                  {
+                    "name": "Liaoning"
+                  },
+                  {
+                    "name": "Manchu"
+                  }
+                ]
+              },
+              {
+                "name": "Shandong"
+              },
+              {
+                "name": "Shanxi"
+              },
+              {
+                "name": "Tianjin"
+              },
+              {
+                "name": "Xuzhou"
+              }
+            ]
+          },
+          {
+            "name": "Central Chinese",
+            "children": [
+              {
+                "name": "Anhui"
+              },
+              {
+                "name": "Jiangsu",
+                "children": [
+                  {
+                    "name": "Huaiyang"
+                  }
+                ]
+              },
+              {
+                "name": "Shanghai",
+                "children": [
+                  {
+                    "name": "Haipai"
+                  }
+                ]
+              },
+              {
+                "name": "Zhejiang",
+                "children": [
+                  {
+                    "name": "Hangbang"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "North Western Chinese",
+            "children": [
+              {
+                "name": "Gansu"
+              },
+              {
+                "name": "Ningxia"
+              },
+              {
+                "name": "Qinghai"
+              },
+              {
+                "name": "Shaanxi"
+              }
+            ]
+          },
+          {
+            "name": "South Western Chinese",
+            "children": [
+              {
+                "name": "Guilin"
+              },
+              {
+                "name": "Guizhou"
+              },
+              {
+                "name": "Hubei"
+              },
+              {
+                "name": "Hunan"
+              },
+              {
+                "name": "Jiangxi"
+              },
+              {
+                "name": "Sichuan"
+              },
+              {
+                "name": "Tujia"
+              },
+              {
+                "name": "Yunnan"
+              }
+            ]
+          },
+          {
+            "name": "Southern Chinese",
+            "children": [
+              {
+                "name": "Cantonese",
+                "children": [
+                  {
+                    "name": "Guangxi"
+                  },
+                  {
+                    "name": "Hong Kong"
+                  },
+                  {
+                    "name": "Macanese"
+                  }
+                ]
+              },
+              {
+                "name": "Hakka"
+              },
+              {
+                "name": "Min",
+                "children": [
+                  {
+                    "name": "Fuzhou"
+                  },
+                  {
+                    "name": "Hainan"
+                  },
+                  {
+                    "name": "Minnan"
+                  },
+                  {
+                    "name": "Putian (Henghwa)"
+                  },
+                  {
+                    "name": "Chaoshan (Teochew)"
+                  }
+                ]
+              },
+              {
+                "name": "Ou"
+              },
+              {
+                "name": "Taiwan"
+              }
+            ]
+          },
+          {
+            "name": "Chinese minoritys",
+            "children": [
+              {
+                "name": "Hlai"
+              },
+              {
+                "name": "Kachin"
+              },
+              {
+                "name": "Miao",
+                "children": [
+                  {
+                    "name": "Hmong"
+                  }
+                ]
+              },
+              {
+                "name": "Mongolian"
+              },
+              {
+                "name": "Tibetan"
+              },
+              {
+                "name": "Wa"
+              },
+              {
+                "name": "Xinjiang (Uyghur)"
+              },
+              {
+                "name": "Yao"
+              },
+              {
+                "name": "Yi"
+              },
+              {
+                "name": "Zhuang"
+              }
+            ]
+          },
+          {
+            "name": "Chinese religiouss",
+            "children": [
+              {
+                "name": "Chinese Buddhist"
+              },
+              {
+                "name": "Chinese Islamic"
+              },
+              {
+                "name": "Taoist diet"
+              }
+            ]
+          },
+          {
+            "name": "Overseas Chinese",
+            "children": [
+              {
+                "name": "American Chinese"
+              },
+              {
+                "name": "Australian Chinese"
+              },
+              {
+                "name": "British Chinese"
+              },
+              {
+                "name": "Burmese Chinese"
+              },
+              {
+                "name": "Cambodian Chinese"
+              },
+              {
+                "name": "Canadian Chinese"
+              },
+              {
+                "name": "Caribbean Chinese"
+              },
+              {
+                "name": "Filipino Chinese"
+              },
+              {
+                "name": "French Chinese"
+              },
+              {
+                "name": "Indian Chinese"
+              },
+              {
+                "name": "Indonesian Chinese"
+              },
+              {
+                "name": "Japanese Chinese",
+                "children": [
+                  {
+                    "name": "Shippoku"
+                  }
+                ]
+              },
+              {
+                "name": "Latin American Chinese",
+                "children": [
+                  {
+                    "name": "Cuban Chinese"
+                  },
+                  {
+                    "name": "Mexican Chinese"
+                  },
+                  {
+                    "name": "Peruvian Chinese"
+                  },
+                  {
+                    "name": "Puerto Rican Chinese"
+                  }
+                ]
+              },
+              {
+                "name": "Korean Chinese"
+              },
+              {
+                "name": "Malaysian Chinese"
+              },
+              {
+                "name": "Mauritian Chinese"
+              },
+              {
+                "name": "New Zealand Chinese"
+              },
+              {
+                "name": "Pakistani Chinese"
+              },
+              {
+                "name": "Peranakan"
+              },
+              {
+                "name": "Singaporean Chinese"
+              },
+              {
+                "name": "Thai Chinese"
+              },
+              {
+                "name": "Vietnamese Chinese"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Highland Asian",
+        "children": [
+          {
+            "name": "Bhutanese"
+          },
+          {
+            "name": "Mongolian",
+            "children": [
+              {
+                "name": "Buryat"
+              },
+              {
+                "name": "Kalmyk"
+              }
+            ]
+          },
+          {
+            "name": "Sikkimese"
+          },
+          {
+            "name": "Tibetan"
+          },
+          {
+            "name": "Tuvan"
+          }
+        ]
+      },
+      {
+        "name": "North Asian",
+        "children": [
+          {
+            "name": "Russian",
+            "children": [
+              {
+                "name": "Buryat"
+              },
+              {
+                "name": "Chukchi"
+              },
+              {
+                "name": "Commander Islands"
+              },
+              {
+                "name": "Sakha"
+              },
+              {
+                "name": "Sakhalin Korean"
+              },
+              {
+                "name": "Yamal"
+              },
+              {
+                "name": "Yup'ik"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "South Asian",
+        "children": [
+          {
+            "name": "Bangladeshi",
+            "children": [
+              {
+                "name": "Bengali"
+              }
+            ]
+          },
+          {
+            "name": "Maldivian"
+          },
+          {
+            "name": "Nepalese",
+            "children": [
+              {
+                "name": "Newari"
+              }
+            ]
+          },
+          {
+            "name": "Sri Lankan"
+          }
+        ]
+      },
+      {
+        "name": "Indian",
+        "children": [
+          {
+            "name": "West Indian",
+            "children": [
+              {
+                "name": "Goan",
+                "children": [
+                  {
+                    "name": "Goan Catholic"
+                  }
+                ]
+              },
+              {
+                "name": "Gujarati"
+              },
+              {
+                "name": "Maharashtrian"
+              },
+              {
+                "name": "Malvani"
+              },
+              {
+                "name": "Parsi"
+              },
+              {
+                "name": "Rajasthani"
+              },
+              {
+                "name": "Sindhi"
+              }
+            ]
+          },
+          {
+            "name": "North Indian",
+            "children": [
+              {
+                "name": "Bhojpuri"
+              },
+              {
+                "name": "Kashmiri"
+              },
+              {
+                "name": "Maithil"
+              },
+              {
+                "name": "Mughlai"
+              },
+              {
+                "name": "Punjabi"
+              },
+              {
+                "name": "Rajasthani"
+              },
+              {
+                "name": "Uttar Pradesh",
+                "children": [
+                  {
+                    "name": "Awadhi"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "South Indian",
+            "children": [
+              {
+                "name": "Karnataka",
+                "children": [
+                  {
+                    "name": "Dakshina Karnataka"
+                  },
+                  {
+                    "name": "Kodava"
+                  },
+                  {
+                    "name": "Mangalurean",
+                    "children": [
+                      {
+                        "name": "Mangalurean Catholic"
+                      },
+                      {
+                        "name": "Navyath Muslim"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Udupi"
+                  },
+                  {
+                    "name": "Uttara Karnataka"
+                  }
+                ]
+              },
+              {
+                "name": "Kerala"
+              },
+              {
+                "name": "Tamil",
+                "children": [
+                  {
+                    "name": "Chettinad"
+                  }
+                ]
+              },
+              {
+                "name": "Telugu",
+                "children": [
+                  {
+                    "name": "Andhra"
+                  },
+                  {
+                    "name": "Hyderabadi"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "North East Indian",
+            "children": [
+              {
+                "name": "Assamese"
+              },
+              {
+                "name": "Manipuri",
+                "children": [
+                  {
+                    "name": "Meitei"
+                  }
+                ]
+              },
+              {
+                "name": "Mizo"
+              },
+              {
+                "name": "Naga"
+              },
+              {
+                "name": "Sikkimese"
+              },
+              {
+                "name": "Tripuri"
+              }
+            ]
+          },
+          {
+            "name": "East Indian",
+            "children": [
+              {
+                "name": "Bengali"
+              },
+              {
+                "name": "Bihari"
+              },
+              {
+                "name": "Jharkhandi"
+              },
+              {
+                "name": "Odia"
+              },
+              {
+                "name": "Oriya"
+              }
+            ]
+          },
+          {
+            "name": "Other Indian",
+            "children": [
+              {
+                "name": "Anglo-Indian"
+              },
+              {
+                "name": "Indo Caribbean"
+              },
+              {
+                "name": "Indian Chinese"
+              },
+              {
+                "name": "Indian fast food"
+              },
+              {
+                "name": "Indo-Fijian"
+              },
+              {
+                "name": "Indo-South African"
+              },
+              {
+                "name": "Jain"
+              },
+              {
+                "name": "Malaysian Indian"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Pakistani",
+        "children": [
+          {
+            "name": "Balochi"
+          },
+          {
+            "name": "Hazara"
+          },
+          {
+            "name": "Kashmiri"
+          },
+          {
+            "name": "Mughlai"
+          },
+          {
+            "name": "Muhajir"
+          },
+          {
+            "name": "Punjabi",
+            "children": [
+              {
+                "name": "Lahori"
+              },
+              {
+                "name": "Saraiki"
+              }
+            ]
+          },
+          {
+            "name": "Pashtun"
+          },
+          {
+            "name": "Sindhi"
+          }
+        ]
+      },
+      {
+        "name": "Mainland Southeast Asian",
+        "children": [
+          {
+            "name": "Burmese",
+            "children": [
+              {
+                "name": "Burmese Chinese"
+              }
+            ]
+          },
+          {
+            "name": "Cambodian"
+          },
+          {
+            "name": "Cham"
+          },
+          {
+            "name": "Hmong"
+          },
+          {
+            "name": "Kachin"
+          },
+          {
+            "name": "Karen"
+          },
+          {
+            "name": "Manipuri",
+            "children": [
+              {
+                "name": "Meitei"
+              }
+            ]
+          },
+          {
+            "name": "Mizo"
+          },
+          {
+            "name": "Naga"
+          },
+          {
+            "name": "Thai",
+            "children": [
+              {
+                "name": "Lanna"
+              },
+              {
+                "name": "Lao"
+              },
+              {
+                "name": "Shan"
+              },
+              {
+                "name": "Southern Thai"
+              },
+              {
+                "name": "Thai-Chinese"
+              }
+            ]
+          },
+          {
+            "name": "Tripuri"
+          },
+          {
+            "name": "Vietnamese"
+          },
+          {
+            "name": "Wa"
+          }
+        ]
+      },
+      {
+        "name": "Maritime Southeast Asian",
+        "children": [
+          {
+            "name": "Bruneian"
+          },
+          {
+            "name": "Christmas Island"
+          },
+          {
+            "name": "East Timor"
+          },
+          {
+            "name": "Filipino",
+            "children": [
+              {
+                "name": "Filipino-American"
+              },
+              {
+                "name": "Filipino Chinese"
+              },
+              {
+                "name": "Ilocano"
+              },
+              {
+                "name": "Kapampangan"
+              },
+              {
+                "name": "Mindanao"
+              },
+              {
+                "name": "Tagalog"
+              },
+              {
+                "name": "Visayan"
+              }
+            ]
+          },
+          {
+            "name": "Malaysian",
+            "children": [
+              {
+                "name": "Arab"
+              },
+              {
+                "name": "Eurasian"
+              },
+              {
+                "name": "Malay"
+              },
+              {
+                "name": "Malaysian Chinese"
+              },
+              {
+                "name": "Malaysian Indian"
+              },
+              {
+                "name": "Peranakan"
+              },
+              {
+                "name": "Sabahan"
+              },
+              {
+                "name": "Sarawakian"
+              }
+            ]
+          },
+          {
+            "name": "Singaporean"
+          }
+        ]
+      },
+      {
+        "name": "Indonesian",
+        "children": [
+          {
+            "name": "Acehnese"
+          },
+          {
+            "name": "Balinese"
+          },
+          {
+            "name": "Banjar"
+          },
+          {
+            "name": "Batak"
+          },
+          {
+            "name": "Indo"
+          },
+          {
+            "name": "Indonesian Arab"
+          },
+          {
+            "name": "Indonesian Chinese"
+          },
+          {
+            "name": "Indonesian Indian"
+          },
+          {
+            "name": "Javanese",
+            "children": [
+              {
+                "name": "Betawi"
+              },
+              {
+                "name": "Madurese"
+              },
+              {
+                "name": "Sundanese"
+              }
+            ]
+          },
+          {
+            "name": "Makassar"
+          },
+          {
+            "name": "Malay"
+          },
+          {
+            "name": "Manado"
+          },
+          {
+            "name": "Padang",
+            "children": [
+              {
+                "name": "Palembang"
+              },
+              {
+                "name": "Peranakan"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "West Asian",
+        "children": [
+          {
+            "name": "Armenian"
+          },
+          {
+            "name": "Eastern Arabian",
+            "children": [
+              {
+                "name": "Bahraini"
+              },
+              {
+                "name": "Emirati"
+              },
+              {
+                "name": "Kuwaiti"
+              },
+              {
+                "name": "Omani"
+              },
+              {
+                "name": "Qatari"
+              },
+              {
+                "name": "Saudi Arabian"
+              },
+              {
+                "name": "Yemeni"
+              }
+            ]
+          },
+          {
+            "name": "Kurdish"
+          },
+          {
+            "name": "Levantine",
+            "children": [
+              {
+                "name": "Iraqi"
+              },
+              {
+                "name": "Israeli",
+                "children": [
+                  {
+                    "name": "Ancient Israelite"
+                  }
+                ]
+              },
+              {
+                "name": "Jordanian"
+              },
+              {
+                "name": "Lebanese"
+              },
+              {
+                "name": "Mizrahi Jewish"
+              },
+              {
+                "name": "Palestinian"
+              },
+              {
+                "name": "Syrian",
+                "children": [
+                  {
+                    "name": "Syrian Jewish"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Assyrian"
+          },
+          {
+            "name": "Caucasian",
+            "children": [
+              {
+                "name": "Azerbaijani"
+              },
+              {
+                "name": "Chechen"
+              },
+              {
+                "name": "Circassian"
+              },
+              {
+                "name": "Dagestani"
+              },
+              {
+                "name": "Georgian"
+              },
+              {
+                "name": "Ossetian"
+              }
+            ]
+          },
+          {
+            "name": "Iranian",
+            "children": [
+              {
+                "name": "Balochi"
+              },
+              {
+                "name": "Caspian"
+              }
+            ]
+          },
+          {
+            "name": "Sephardic Jewish"
+          },
+          {
+            "name": "Turkish",
+            "children": [
+              {
+                "name": "Pontic Greek"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "European",
+    "children": [
+      {
+        "name": "Central European",
+        "children": [
+          {
+            "name": "Ashkenazi Jewish"
+          },
+          {
+            "name": "Austrian",
+            "children": [
+              {
+                "name": "Viennese"
+              }
+            ]
+          },
+          {
+            "name": "Czech",
+            "children": [
+              {
+                "name": "Moravian"
+              }
+            ]
+          },
+          {
+            "name": "Hungarian"
+          },
+          {
+            "name": "Liechtensteiner"
+          },
+          {
+            "name": "Polish",
+            "children": [
+              {
+                "name": "Silesian"
+              }
+            ]
+          },
+          {
+            "name": "Slovak"
+          },
+          {
+            "name": "Slovenian"
+          },
+          {
+            "name": "Swiss"
+          }
+        ]
+      },
+      {
+        "name": "German",
+        "children": [
+          {
+            "name": "German-American"
+          },
+          {
+            "name": "Austrian",
+            "children": [
+              {
+                "name": "Viennese"
+              }
+            ]
+          },
+          {
+            "name": "Baden"
+          },
+          {
+            "name": "Bavarian"
+          },
+          {
+            "name": "Brandenburg"
+          },
+          {
+            "name": "Franconian"
+          },
+          {
+            "name": "Hamburg"
+          },
+          {
+            "name": "Hessian"
+          },
+          {
+            "name": "Liechtensteiner"
+          },
+          {
+            "name": "Lower Saxon"
+          },
+          {
+            "name": "Mecklenburg"
+          },
+          {
+            "name": "Palatine"
+          },
+          {
+            "name": "Pomeranian"
+          },
+          {
+            "name": "Rhenish-Hessian"
+          },
+          {
+            "name": "Saxon"
+          },
+          {
+            "name": "Schleswig-Holstein"
+          },
+          {
+            "name": "Silesian"
+          },
+          {
+            "name": "Swabian"
+          },
+          {
+            "name": "Swiss"
+          },
+          {
+            "name": "Thuringian"
+          }
+        ]
+      },
+      {
+        "name": "Eastern European",
+        "children": [
+          {
+            "name": "Belarusian"
+          },
+          {
+            "name": "Cossack"
+          },
+          {
+            "name": "Russian",
+            "children": [
+              {
+                "name": "Bashkir"
+              },
+              {
+                "name": "Chechen"
+              },
+              {
+                "name": "Circassian"
+              },
+              {
+                "name": "Komi"
+              },
+              {
+                "name": "Mordovian"
+              },
+              {
+                "name": "Tatar"
+              },
+              {
+                "name": "Udmurt"
+              }
+            ]
+          },
+          {
+            "name": "Ukrainian",
+            "children": [
+              {
+                "name": "Crimean Tatar"
+              },
+              {
+                "name": "Odesite"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Northern European",
+        "children": [
+          {
+            "name": "Baltics",
+            "children": [
+              {
+                "name": "Estonian"
+              },
+              {
+                "name": "Latvian"
+              },
+              {
+                "name": "Lithuanian"
+              },
+              {
+                "name": "Livonian"
+              }
+            ]
+          },
+          {
+            "name": "Nordics",
+            "children": [
+              {
+                "name": "Danish",
+                "children": [
+                  {
+                    "name": "Faroese"
+                  },
+                  {
+                    "name": "New Nordic"
+                  }
+                ]
+              },
+              {
+                "name": "Finnish"
+              },
+              {
+                "name": "Icelandic"
+              },
+              {
+                "name": "Norwegian"
+              },
+              {
+                "name": "Sami"
+              },
+              {
+                "name": "Swedish"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "South Eastern European",
+        "children": [
+          {
+            "name": "Balkan",
+            "children": [
+              {
+                "name": "Albanian",
+                "children": [
+                  {
+                    "name": "Kosovan"
+                  }
+                ]
+              },
+              {
+                "name": "Aromanian"
+              },
+              {
+                "name": "Bosnian"
+              },
+              {
+                "name": "Bulgarian"
+              },
+              {
+                "name": "Croatian"
+              },
+              {
+                "name": "Gagauz"
+              },
+              {
+                "name": "Macedonian"
+              },
+              {
+                "name": "Montenegrin"
+              },
+              {
+                "name": "Serbian"
+              }
+            ]
+          },
+          {
+            "name": "Romani"
+          },
+          {
+            "name": "Romanian",
+            "children": [
+              {
+                "name": "Moldovan"
+              },
+              {
+                "name": "Transylvanian Saxon"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Southern European",
+        "children": [
+          {
+            "name": "Gibraltarian"
+          },
+          {
+            "name": "Greek",
+            "children": [
+              {
+                "name": "Macedonian (Greek)"
+              },
+              {
+                "name": "Cretan"
+              },
+              {
+                "name": "Cypriot"
+              },
+              {
+                "name": "the Ionian Islands"
+              },
+              {
+                "name": "Epirotic"
+              },
+              {
+                "name": "Pontic Greek"
+              },
+              {
+                "name": "Asia Minor Greek"
+              }
+            ]
+          },
+          {
+            "name": "Italian",
+            "children": [
+              {
+                "name": "Abruzzese and Molisan"
+              },
+              {
+                "name": "Italian-American"
+              },
+              {
+                "name": "Arbëreshë"
+              },
+              {
+                "name": "Basilicatan (Lucanian)"
+              },
+              {
+                "name": "Calabrian"
+              },
+              {
+                "name": "Corsican"
+              },
+              {
+                "name": "Lazian or Roman"
+              },
+              {
+                "name": "Ligurian"
+              },
+              {
+                "name": "Lombard",
+                "children": [
+                  {
+                    "name": "Mantuan"
+                  }
+                ]
+              },
+              {
+                "name": "Neapolitan"
+              },
+              {
+                "name": "Pugliese"
+              },
+              {
+                "name": "Sammarinese"
+              },
+              {
+                "name": "Sardinian"
+              },
+              {
+                "name": "Sicilian"
+              },
+              {
+                "name": "Tuscan"
+              },
+              {
+                "name": "Venetian"
+              }
+            ]
+          },
+          {
+            "name": "Maltese"
+          },
+          {
+            "name": "Monégasque"
+          },
+          {
+            "name": "Occitan"
+          },
+          {
+            "name": "Portuguese"
+          },
+          {
+            "name": "Spanish",
+            "children": [
+              {
+                "name": "Andalusian"
+              },
+              {
+                "name": "Asturian"
+              },
+              {
+                "name": "Aragonese"
+              },
+              {
+                "name": "Balearic"
+              },
+              {
+                "name": "Basque"
+              },
+              {
+                "name": "Canarian"
+              },
+              {
+                "name": "Cantabrian"
+              },
+              {
+                "name": "Castilian-Leonese"
+              },
+              {
+                "name": "Castilian-Manchego"
+              },
+              {
+                "name": "Catalan",
+                "children": [
+                  {
+                    "name": "Andorran"
+                  }
+                ]
+              },
+              {
+                "name": "Extremaduran"
+              },
+              {
+                "name": "Galician"
+              },
+              {
+                "name": "Leonese"
+              },
+              {
+                "name": "Madrid"
+              },
+              {
+                "name": "Minorcan"
+              },
+              {
+                "name": "Valencian"
+              }
+            ]
+          },
+          {
+            "name": "Sephardic Jewish"
+          }
+        ]
+      },
+      {
+        "name": "Western European",
+        "children": [
+          {
+            "name": "Belgian"
+          },
+          {
+            "name": "Dutch",
+            "children": [
+              {
+                "name": "Frisian"
+              },
+              {
+                "name": "Limburgian"
+              }
+            ]
+          },
+          {
+            "name": "French",
+            "children": [
+              {
+                "name": "Cajun"
+              },
+              {
+                "name": "Haute"
+              },
+              {
+                "name": "Lyonnaise"
+              },
+              {
+                "name": "Nouvelle"
+              },
+              {
+                "name": "Occitan"
+              },
+              {
+                "name": "Quebec"
+              }
+            ]
+          },
+          {
+            "name": "Luxembourg"
+          }
+        ]
+      },
+      {
+        "name": "British Isles",
+        "children": [
+          {
+            "name": "Cuisines of the Islands of the North Atlantic (IONA)",
+            "children": [
+              {
+                "name": "British",
+                "children": [
+                  {
+                    "name": "Anglo-Indian"
+                  },
+                  {
+                    "name": "British Chinese"
+                  },
+                  {
+                    "name": "Channel Islands"
+                  },
+                  {
+                    "name": "English",
+                    "children": [
+                      {
+                        "name": "Cornish"
+                      },
+                      {
+                        "name": "Devonian"
+                      },
+                      {
+                        "name": "Dorset"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Northern Irish"
+                  },
+                  {
+                    "name": "Scottish"
+                  },
+                  {
+                    "name": "Welsh",
+                    "children": [
+                      {
+                        "name": "Carmarthenshire"
+                      },
+                      {
+                        "name": "Ceredigion"
+                      },
+                      {
+                        "name": "Gower"
+                      },
+                      {
+                        "name": "Monmouthshire"
+                      },
+                      {
+                        "name": "Pembrokeshire"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Irish"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Oceanic",
+    "children": [
+      {
+        "name": "Australasian",
+        "children": [
+          {
+            "name": "Australian",
+            "children": [
+              {
+                "name": "Australian Chinese"
+              },
+              {
+                "name": "Bush tucker"
+              },
+              {
+                "name": "Tasmanian"
+              }
+            ]
+          },
+          {
+            "name": "New Zealand",
+            "children": [
+              {
+                "name": "New Zealand Chinese"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Melanesian",
+        "children": [
+          {
+            "name": "Bougainville"
+          },
+          {
+            "name": "Fijian"
+          },
+          {
+            "name": "New Caledonian"
+          },
+          {
+            "name": "Papua New Guinean"
+          },
+          {
+            "name": "Solomon Islands"
+          },
+          {
+            "name": "Vanuatuan"
+          }
+        ]
+      },
+      {
+        "name": "Micronesian",
+        "children": [
+          {
+            "name": "Kiribati"
+          },
+          {
+            "name": "Mariana Islands",
+            "children": [
+              {
+                "name": "Guamanian"
+              }
+            ]
+          },
+          {
+            "name": "Marshallese"
+          },
+          {
+            "name": "Nauruan"
+          },
+          {
+            "name": "Palauan"
+          }
+        ]
+      },
+      {
+        "name": "Polynesian",
+        "children": [
+          {
+            "name": "Cook Islands"
+          },
+          {
+            "name": "Hawaiian"
+          },
+          {
+            "name": "Niuean"
+          },
+          {
+            "name": "Pascuense (Easter Island)"
+          },
+          {
+            "name": "Pitcairn Islands"
+          },
+          {
+            "name": "Samoan"
+          },
+          {
+            "name": "Tahitian"
+          },
+          {
+            "name": "Tongan"
+          },
+          {
+            "name": "Tuvaluan"
+          },
+          {
+            "name": "Wallis and Futuna"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cuisine Styles",
+    "children": [
+      {
+        "name": "Fast food"
+      },
+      {
+        "name": "Fusion"
+      },
+      {
+        "name": "Haute"
+      },
+      {
+        "name": "Molecular gastronomy",
+        "children": [
+          {
+            "name": "Note by Note"
+          }
+        ]
+      },
+      {
+        "name": "Nouvelle"
+      },
+      {
+        "name": "Vegan"
+      },
+      {
+        "name": "Vegetarian",
+        "children": [
+          {
+            "name": "Indian vegetarian"
+          }
+        ]
+      },
+      {
+        "name": "Street food"
+      }
+    ]
+  },
+  {
+    "name": "Religiouss",
+    "children": [
+      {
+        "name": "Buddhist",
+        "children": [
+          {
+            "name": "Buddhist vegetarianism"
+          },
+          {
+            "name": "Korean temple"
+          }
+        ]
+      },
+      {
+        "name": "Chinese religiouss",
+        "children": [
+          {
+            "name": "Chinese Buddhist"
+          },
+          {
+            "name": "Chinese Islamic"
+          },
+          {
+            "name": "Taoist diet"
+          }
+        ]
+      },
+      {
+        "name": "Christian diet",
+        "children": [
+          {
+            "name": "Catholic diet"
+          },
+          {
+            "name": "Coptic Orthodox diet"
+          },
+          {
+            "name": "Ethiopian Orthodox diet"
+          },
+          {
+            "name": "Goan Catholic"
+          },
+          {
+            "name": "Mangalorean Catholic"
+          },
+          {
+            "name": "Mennonite"
+          }
+        ]
+      },
+      {
+        "name": "Hindu diet"
+      },
+      {
+        "name": "Islamic diet",
+        "children": [
+          {
+            "name": "Chinese Islamic"
+          }
+        ]
+      },
+      {
+        "name": "Jain diet"
+      },
+      {
+        "name": "Jewish",
+        "children": [
+          {
+            "name": "American Jewish"
+          },
+          {
+            "name": "Ashkenazi Jewish"
+          },
+          {
+            "name": "Bukharan Jewish"
+          },
+          {
+            "name": "Ethiopian Jewish"
+          },
+          {
+            "name": "Mizrahi Jewish"
+          },
+          {
+            "name": "Sephardic Jewish"
+          },
+          {
+            "name": "Syrian Jewish"
+          }
+        ]
+      },
+      {
+        "name": "Sikh"
+      }
+    ]
+  }
+]
