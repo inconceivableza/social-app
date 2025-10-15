@@ -35,10 +35,19 @@ export interface RecipePostDraft {
     text: RichText
     ingredients: IngredientDraft[]
     instructionSections: InstructionSectionDraft[]
+    prepTime?: number
+    cookTime?: number
+    cuisines?: string[]
+    categories?: string[]
+    suitableForDiet?: string[]
+    recipeYield?: unknown
+    nutrition?: unknown
+    attribution?: unknown
     embed: EmbedDraft
     labels: SelfLabel[]
     tags?: string[]
 }
+
 
 export type RecipeComposerAction = TaggedUnion<
     'type',
@@ -54,7 +63,11 @@ export type RecipeComposerAction = TaggedUnion<
         add_ingredient: {}
         edit_ingredient: { value: string, prop: keyof IngredientDraft, id: string }
         remove_ingredient: { id: string }
-    }
+        add_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
+        remove_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
+        set_prep_time: { value: number }
+        set_cook_time: { value: number }
+    } 
     > | EmbedAction
 
 function findById<T extends { id: string }>(arr: T[], id: string) {
@@ -149,6 +162,32 @@ function recipePostReducer(
             }
             return state
         }
+        case 'add_element': {
+            if (state[action.field]?.includes(action.value)) {
+                return state
+            }
+            const arr = state[action.field] ??= []
+            arr.push(action.value)
+            return state
+        }
+        case 'remove_element': {
+            const arr = state[action.field]
+            if (!arr) return state;
+            const idx = arr.indexOf(action.value)
+            if (idx < 0) {
+                return state
+            }
+            arr.splice(idx, 1)
+            return state
+        }
+        case 'set_cook_time': {
+            state.cookTime = action.value
+            return state
+        }
+        case 'set_prep_time': {
+            state.prepTime = action.value
+            return state
+        }
         default: {
             const embedState = embedReducer(state, action)
             return {
@@ -232,7 +271,9 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         },
     }
 
-    const { name, text, facets, ingredients, instructionSections, labels, embed } = init.record.revisionContent
+    const { name, text, facets, ingredients, instructionSections, labels, embed,
+        recipeCuisine, recipeCategory, prepTime, cookingTime
+    } = init.record.revisionContent
 
     return {
         id: nanoid(),
@@ -248,6 +289,9 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         })) : [newSection()],
         labels: _.cloneDeep(labels?.values ?? []),
         embed: embedToDraft(embed),
+        cuisines: recipeCuisine,
+        categories: recipeCategory,
+
     }
 }
 
