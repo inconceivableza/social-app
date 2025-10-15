@@ -198,9 +198,24 @@ let PostControls = ({
 
   const constitutesRating = AppFoodiosFeedReviewRating.isRecord(record)
   const receivesRatings = isRecipeRevisionView(record)
+  const aggRatingAverage100 = post?.ratingAverage100 ?? undefined
+  const aggRatingCount = post?.ratingCount ?? undefined
+  const receivedRatings = receivesRatings
+    ? {
+        ratingAverage:
+          aggRatingAverage100 !== undefined && aggRatingCount
+            ? aggRatingAverage100 / 100 / 2
+            : undefined,
+        ratingCount: aggRatingCount ?? 0,
+      }
+    : {ratingAverage: undefined, ratingCount: 0}
 
   const {showRatings, rating, ratingCount} = receivesRatings
-    ? {showRatings: true, rating: undefined, ratingCount: 0}
+    ? {
+        showRatings: true,
+        rating: receivedRatings.ratingAverage,
+        ratingCount: receivedRatings.ratingCount,
+      }
     : constitutesRating
       ? {
           showRatings: true,
