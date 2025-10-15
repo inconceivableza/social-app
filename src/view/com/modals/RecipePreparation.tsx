@@ -178,7 +178,8 @@ function InstructionTimer({ onDelete }: { onDelete: () => void }) {
                 clearInterval(id)
                 setSeconds(0)
                 setTimingState("complete")
-                // TODO: play sound, vibrate, visual indicator
+                // TODO: play sound - there's already /assets/dm.mp3, vibrate, visual indicator
+                // and test that alert occurs when in background
                 return
             }
             setSeconds(Math.round(diff / 1000))
