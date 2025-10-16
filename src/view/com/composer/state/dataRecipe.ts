@@ -7,19 +7,20 @@ interface HierarchyOption {
     children?: HierarchyOption[]
 }
 
-function processHierarchy(options: HierarchyOption[]) {
-    const uniqueOptions = new Set<string>()
+function processHierarchy(options: HierarchyOption[]): { id: string, label: string }[] {
+    const result: { id: string, label: string }[] = []
     traverseHierarchy(options, option => {
-        uniqueOptions.add(option)
+        result.push(option)
     })
-    return Array.from(uniqueOptions).sort()
+    return result.sort((a, b) => a.label > b.label ? 1 : -1)
 }
 
-function traverseHierarchy(options: HierarchyOption[], callback: (value: string) => void) {
+function traverseHierarchy(options: HierarchyOption[], callback: (value: { id: string, label: string }) => void, path: string[] = []) {
     options.forEach(option => {
-        callback(option.name)
+        const newPath = path.concat(option.name)
+        callback({ label: option.name, id: newPath.join(">") })
         if (option.children) {
-            traverseHierarchy(option.children, callback)
+            traverseHierarchy(option.children, callback, newPath)
         }
     })
 }

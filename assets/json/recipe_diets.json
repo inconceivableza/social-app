@@ -1,20 +1,35 @@
 [
     {
-        "name": "Vegetarian"
+    "name": "Diabetic"
     },
     {
-        "name": "Vegan"
+    "name": "GlutenFree"
     },
     {
-        "name": "Gluten free"
+    "name": "Halal"
     },
     {
-        "name": "Dairy free"
+    "name": "Hindu"
     },
     {
-        "name": "Pescatarian"
+    "name": "Kosher"
     },
     {
-        "name": "Banting"
+    "name": "Low Calorie"
+},
+{
+    "name": "Low Fat"
+},
+{
+    "name": "Low Lactose"
+},
+{
+    "name": "Low Salt"
+},
+{
+    "name": "Vegan"
+},
+{
+    "name": "Vegetarian"
     }
 ]

@@ -6,14 +6,14 @@ import { Text } from "#/components/Typography";
 import * as TextField from "#/components/forms/TextField";
 import { CircleX_Stroke2_Corner0_Rounded as CircleXIcon } from "#/components/icons/CircleX";
 import { useLingui } from "@lingui/react";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { TextInput as NativeTextInput } from "react-native";
 import { msg, Trans } from "@lingui/macro";
 import { View, ScrollView } from "react-native";
 
 
 interface ComboBoxProps {
-    options: string[];
+    options: { id: string, label: string }[];
     selection: string[];
     label: string;
     onSelect: (value: string) => void;
@@ -23,8 +23,16 @@ export function ComboBox({ options, selection, onRemove, onSelect, label }: Comb
     const t = useTheme();
     const { _ } = useLingui();
     const inputRef = useRef<NativeTextInput>(null);
-    const [filteredOptions, setFilteredOptions] = useState([] as string[]);
+    const [filteredOptions, setFilteredOptions] = useState([] as { id: string, label: string }[]);
     const expanded = !!filteredOptions.length;
+
+    const labelLookup = useMemo(() => {
+        return new Map(options.map(({ id, label }) => [id, label]))
+    }, [options])
+
+    const selectionLabels = useMemo(() => {
+        return selection.map(id => ({ label: labelLookup.get(id), id }))
+    }, [selection, labelLookup])
 
     // TODO: display "no results found" when applicable
     return <View>
@@ -43,8 +51,8 @@ export function ComboBox({ options, selection, onRemove, onSelect, label }: Comb
                             setFilteredOptions(options);
                             return;
                         }
-                        const filtered = options.filter(cuisine => cuisine.toLowerCase().includes(trimmed) &&
-                            !selection.includes(cuisine));
+                        const filtered = options.filter(({ label, id }) => label.toLowerCase().includes(trimmed) &&
+                            !selection.includes(id));
                         setFilteredOptions(filtered);
                     }} />
                 </TextField.Root>
@@ -55,15 +63,15 @@ export function ComboBox({ options, selection, onRemove, onSelect, label }: Comb
                         maxHeight: 200,
                         display: expanded ? undefined : 'none'
                     }}>
-                        {filteredOptions.map(name => <View key={name}>
+                        {filteredOptions.map(({ label, id }) => <View key={id}>
                             <Button label={_(msg`${name}`)} size="small" style={[a.justify_start]}
                                 onPress={(e) => {
-                                    if (selection.includes(name)) return;
-                                    onSelect(name);
+                                    if (selection.includes(id)) return;
+                                    onSelect(id);
                                 }}
                             >
                                 <ButtonText style={[a.text_left]}>
-                                    <Trans>{name}</Trans>
+                                    {label}
                                 </ButtonText>
                             </Button>
                         </View>)}
@@ -71,14 +79,14 @@ export function ComboBox({ options, selection, onRemove, onSelect, label }: Comb
                 </Tooltip.Content>
             </View>
         </Tooltip.Outer>
-        {!!selection.length && <View style={[a.flex_row, a.mt_xs]}>
-            {selection.map((value, i) => <View key={value} style={[
+        {!!selectionLabels.length && <View style={[a.flex_row, a.mt_xs, a.gap_xs]}>
+            {selectionLabels.map(({ id, label }, i) => <View key={id} style={[
                 a.rounded_sm, t.atoms.bg_contrast_25, a.p_sm, a.flex_row, a.gap_xs, a.justify_center
             ]}>
-                <Text>{value}</Text>
+                <Text>{label}</Text>
                 <Button color="primary" label={_(msg`Remove selection`)}
                     onPress={() => {
-                        onRemove(value);
+                        onRemove(id);
                     }}
                 >
                     <ButtonIcon icon={CircleXIcon} />

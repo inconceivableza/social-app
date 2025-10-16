@@ -1,14 +1,38 @@
 [
     {
+        "name": "Appetizer"
+    },
+    {
         "name": "Breakfast"
     },
     {
         "name": "Brunch"
     },
     {
-        "name": "Lunch"
+        "name": "Dessert"
     },
     {
         "name": "Dinner"
+    },
+    {
+        "name": "Drink"
+    },
+    {
+        "name": "Lunch"
+    },
+    {
+        "name": "Main course"
+    },
+    {
+        "name": "Sauce"
+    },
+    {
+        "name": "Side dish"
+    },
+    {
+        "name": "Snack"
+    },
+    {
+        "name": "Starter"
     }
 ]
