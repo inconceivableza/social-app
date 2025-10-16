@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid/non-secure'
 import { AppBskyEmbedImages, AppFoodiosFeedRecipeRevision, AppFoodiosFeedRecipeRevisionRecord, RichText } from '@atproto/api'
 import { RecipePostView } from '#/lib/api/feed/utils'
 import _ from 'lodash'
+import { Attribution } from '../recipe/RecipeAttribution'
 
 type TaggedUnion<Tag extends string, O extends object> = {
     [K in keyof O]: Record<Tag, K> & O[K]
@@ -29,20 +30,22 @@ interface InstructionSectionDraft {
     instructions: InstructionDraft[]
 }
 
+type NutritionDraft = Omit<AppFoodiosFeedRecipeRevision.Nutrition, "$type">
+
 export interface RecipePostDraft {
     id: string,
     name: string
     text: RichText
     ingredients: IngredientDraft[]
     instructionSections: InstructionSectionDraft[]
-    prepTime?: number
-    cookTime?: number
+    prepTime?: string
+    cookTime?: string
     cuisines?: string[]
     categories?: string[]
     suitableForDiet?: string[]
-    recipeYield?: unknown
-    nutrition?: unknown
-    attribution?: unknown
+    recipeYield?: { quantity: string, unit: string }
+    nutrition?: NutritionDraft
+    attribution?: Attribution
     embed: EmbedDraft
     labels: SelfLabel[]
     tags?: string[]
@@ -65,8 +68,12 @@ export type RecipeComposerAction = TaggedUnion<
         remove_ingredient: { id: string }
         add_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
         remove_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
-        set_prep_time: { value: number }
-        set_cook_time: { value: number }
+        set_prep_time: { value: string }
+        set_cook_time: { value: string }
+        set_yield: { field: "quantity" | "unit", value: string }
+        set_nutrition_serving: { field: "quantity" | "unit", value: string }
+        update_nutrition: { field: Exclude<keyof NutritionDraft, "servingSize">, value: string }
+        update_attribution: { value?: Attribution }
     } 
     > | EmbedAction
 
@@ -188,6 +195,32 @@ function recipePostReducer(
             state.prepTime = action.value
             return state
         }
+        case 'set_yield': {
+            const recipeYield = state.recipeYield ??= { quantity: "0", unit: "" }
+            recipeYield[action.field] = action.value
+            return state
+        }
+        case 'set_nutrition_serving': {
+            const nutrition = state.nutrition ??= {
+                servingSize: { quantity: "0", unit: "" },
+                energy: "0"
+            }
+            nutrition.servingSize[action.field] = action.value
+            return state
+        }
+        case 'update_nutrition': {
+            const nutrition = state.nutrition ??= {
+                servingSize: { quantity: "0", unit: "" },
+                energy: "0"
+            }
+            nutrition[action.field] = action.value
+            return state
+        }
+        case 'update_attribution': {
+            state.attribution = action.value
+            return state
+        }
+
         default: {
             const embedState = embedReducer(state, action)
             return {
