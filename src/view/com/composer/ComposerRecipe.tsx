@@ -18,7 +18,7 @@ import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
 import { SelectVideoBtn } from "./videos/SelectVideoBtn";
 import Animated, { LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
-import React, { Dispatch, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { Dispatch, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
@@ -54,6 +54,11 @@ import { ComboBox } from "#/components/forms/ComboBox";
 import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecipe";
 import { NumberField } from "#/components/forms/NumberField";
 import { AppFoodiosFeedRecipeRevision } from "@atproto/api";
+import { RecipeAttribution } from "./recipe/RecipeAttribution";
+import {
+    ChevronBottom_Stroke2_Corner0_Rounded as ChevronDownIcon,
+    ChevronTop_Stroke2_Corner0_Rounded as ChevronUpIcon,
+} from '#/components/icons/Chevron'
 
 const msgs = {
     button_add_ingredient: msg({
@@ -360,15 +365,14 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         </View>
                     </View>
 
-                    <View>
-                        <View>
-                            <H2><Trans>Nutritional Information</Trans></H2>
-                        </View>
-
+                    <Accordion heading={_(msg`Nutritional Information`)}>
                         <RecipeNutrition state={state} dispatch={dispatch} />
+                    </Accordion>
 
-                    </View>
-
+                    <Accordion heading={_(msg`Attribution`)}>
+                        <RecipeAttribution value={state.attribution}
+                            onChange={(value) => dispatch({ type: 'update_attribution', value })} />
+                    </Accordion>
 
                     <View>
                         <ComposerEmbeds
@@ -398,6 +402,22 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         </KeyboardAvoidingView>
     </BottomSheetPortalProvider>
 
+}
+
+function Accordion(props: PropsWithChildren<{ heading: string }>) {
+    const [expanded, setExpanded] = useState(false)
+    const { _ } = useLingui()
+    const t = useTheme()
+    return <View style={[a.border, t.atoms.border_contrast_medium, a.rounded_xs, a.p_md]}>
+        <View style={[a.align_center]}>
+            <Button label={props.heading} onPress={() => setExpanded(v => !v)}>
+                <ButtonText style={[a.text_md]}>{props.heading}</ButtonText>
+                <ButtonIcon icon={expanded ? ChevronUpIcon : ChevronDownIcon} />
+            </Button>
+        </View>
+
+        {expanded && <View style={[a.mt_md]}>{props.children}</View>}
+    </View>
 }
 
 interface NutritionElement {
