@@ -10,6 +10,7 @@ import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
 import { useLingui } from '@lingui/react'
 import { Accordion } from '#/components/Accordion'
 import { NutritionElement, nutritionFields } from '../recipe/NutritionFields'
+import { RecipeAttributionDisplay } from '../recipe/RecipeAttributionDisplay'
 
 export function ExpandableRecipePost({
     revision,
@@ -33,6 +34,7 @@ export function ExpandedRecipePost({
         titleComponent?: React.ReactNode
 }) {
     // TODO: include embeds - currently added by wrappers
+    // TODO: count lines - if too long truncate unless expanded
     const record = revision.revisionContent
     const t = useTheme()
     const { _ } = useLingui()
@@ -49,6 +51,37 @@ export function ExpandedRecipePost({
             </View>
 
             {titleComponent}
+        </View>
+        <View style={a.gap_xs}>
+
+            {record.recipeCategory?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                <Text>{`${plural(record.recipeCategory.length, {
+                    one: 'Category',
+                    other: 'Categories'
+                })}:`}</Text>
+                {/* TODO: make these clickable */}
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCategory.map(value => <Text>{_(value)}</Text>)}</View>
+            </View>}
+
+            {record.suitableForDiet?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                <Text>{`${plural(record.suitableForDiet.length, {
+                    one: 'Suitable for diet',
+                    other: 'Suitable for diets'
+                })}:`}</Text>
+                {/* TODO: make these clickable */}
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.suitableForDiet.map(value => <Text>{_(value)}</Text>)}</View>
+            </View>}
+
+            {record.recipeCuisine?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                <Text>{`${plural(record.recipeCuisine.length, {
+                    one: 'Cuisine',
+                    other: 'Cuisines'
+                })}:`}</Text>
+                {/* TODO: make these clickable */}
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCuisine.map(value => <Text>{_(value)}</Text>)}</View>
+            </View>}
+
+            {/* TODO: recipe yield */}
         </View>
         <View>
             <RichText
@@ -105,6 +138,10 @@ export function ExpandedRecipePost({
             </View>
             {record.nutrition && <Accordion heading={_(msg`Nutritional Information`)}>
                 <NutritionView nutrition={record.nutrition} />
+            </Accordion>}
+
+            {record.attribution && <Accordion heading={_(msg`Attribution`)}>
+                <RecipeAttributionDisplay attribution={record.attribution} />
             </Accordion>}
         </View>}
     </View>
