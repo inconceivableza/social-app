@@ -18,7 +18,7 @@ import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
 import { SelectVideoBtn } from "./videos/SelectVideoBtn";
 import Animated, { LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
-import React, { Dispatch, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { Dispatch, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
@@ -55,10 +55,8 @@ import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecip
 import { NumberField } from "#/components/forms/NumberField";
 import { AppFoodiosFeedRecipeRevision } from "@atproto/api";
 import { RecipeAttribution } from "./recipe/RecipeAttribution";
-import {
-    ChevronBottom_Stroke2_Corner0_Rounded as ChevronDownIcon,
-    ChevronTop_Stroke2_Corner0_Rounded as ChevronUpIcon,
-} from '#/components/icons/Chevron'
+import { Accordion } from "../../../components/Accordion";
+import { NutritionElement, nutritionFields } from "../recipe/NutritionFields";
 
 const msgs = {
     button_add_ingredient: msg({
@@ -416,48 +414,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
 
 }
 
-function Accordion(props: PropsWithChildren<{ heading: string }>) {
-    const [expanded, setExpanded] = useState(false)
-    const { _ } = useLingui()
-    const t = useTheme()
-    return <View style={[a.border, t.atoms.border_contrast_medium, a.rounded_xs, a.p_md]}>
-        <View style={[a.align_center]}>
-            <Button label={props.heading} onPress={() => setExpanded(v => !v)}>
-                <ButtonText style={[a.text_md]}>{props.heading}</ButtonText>
-                <ButtonIcon icon={expanded ? ChevronUpIcon : ChevronDownIcon} />
-            </Button>
-        </View>
-
-        {expanded && <View style={[a.mt_md]}>{props.children}</View>}
-    </View>
-}
-
-interface NutritionElement {
-    field: Exclude<keyof AppFoodiosFeedRecipeRevision.Nutrition, "servingSize" | "$type">
-    label: string
-    unit: string,
-    subFields?: NutritionElement[]
-}
-
-const nutritionFields: NutritionElement[] = [
-    { field: 'energy', label: 'Energy', unit: 'kJ' },
-    {
-        field: 'carbohydrateContent', label: 'Glycaemic carbohydrate', unit: 'g',
-        subFields: [{ field: 'sugarContent', 'label': 'Sugar', unit: 'g' },]
-    },
-    {
-        field: 'fatContent', label: 'Total fat', unit: 'g',
-        subFields: [
-            { field: 'saturatedFatContent', label: 'Saturated fat', unit: 'g' },
-            { field: 'unsaturatedFatContent', label: 'Unsaturated fat', unit: 'g' },
-            { field: 'transFatContent', label: 'Trans fat', unit: 'g' },
-            { field: 'cholesterolContent', label: 'Cholesterol', unit: 'mg' },
-        ]
-    },
-    { field: 'proteinContent', label: 'Protein', unit: 'g' },
-    { field: 'sodiumContent', label: 'Sodium', unit: 'mg' },
-]
-
 function NutritionField({ unit, state, dispatch, field, label, subFields }:
     NutritionElement & { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
     const { _ } = useLingui()
@@ -465,7 +421,7 @@ function NutritionField({ unit, state, dispatch, field, label, subFields }:
         <NumberField defaultValue={state.nutrition?.[field]} label={_(label)}
             onChange={value => dispatch({ type: 'update_nutrition', field, value })}
         >
-            <TextField.SuffixText label={_(unit)} ><Trans>{unit}</Trans></TextField.SuffixText>
+            <TextField.SuffixText label={_(unit)} >{_(unit)}</TextField.SuffixText>
         </NumberField>
         <View style={[a.pl_md]}>
             {subFields?.map(subField => <NutritionField key={subField.field} {...subField} state={state} dispatch={dispatch} />)}
@@ -484,7 +440,7 @@ function RecipeNutrition({ state, dispatch }: { state: RecipePostDraft, dispatch
             </View>
             <View>
                 <TextField.Root >
-                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
+                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.nutrition?.servingSize.unit}
                         onChangeText={value => dispatch({ type: 'set_nutrition_serving', field: 'unit', value })}
                     />
                 </TextField.Root>
