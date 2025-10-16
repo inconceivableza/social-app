@@ -270,6 +270,67 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         label={_(msg`Title`)}
                     />
                     </TextField.Root>
+
+                    <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center]}>
+                        <View style={[a.flex_row, a.gap_xs, a.border, t.atoms.border_contrast_low, a.rounded_sm, a.p_sm, { width: "40%" }]}>
+                            <View style={[{ width: "65%" }]}>
+                                <NumberField label={_(msg`Yield`)} defaultValue={state.recipeYield?.quantity}
+                                    onChange={value => dispatch({ type: 'set_yield', field: 'quantity', value })}
+                                />
+                            </View>
+                            <View style={[{ width: "35%" }]}>
+                                <TextField.Root >
+                                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
+                                        onChangeText={value => dispatch({ type: 'set_yield', field: 'unit', value })}
+                                    />
+                                </TextField.Root>
+                            </View>
+                        </View>
+
+                        <View style={{ width: "40%" }}>
+                            <ComboBox options={recipeCategories} label={_(msg`Categories`)}
+                                selection={state.categories ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'categories', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'categories', value })}
+                            />
+                        </View>
+                    </View>
+                    <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
+                        <View style={{ width: "40%" }}>
+
+                            <ComboBox options={recipeDiets} label={_(msg`Suitable diets`)}
+                                selection={state.suitableForDiet ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'suitableForDiet', value })}
+                            />
+                        </View>
+                        <View style={{ width: "40%" }}>
+                            <ComboBox options={recipeCuisines} label={_(msg`Cuisine type`)}
+                                selection={state.cuisines ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'cuisines', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'cuisines', value })}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={[a.flex_row, a.gap_md]}>
+                        <View style={{ flexBasis: "40%" }}>
+                            <NumberField label={_(msg`Preparation time`)} defaultValue={state.prepTime}
+                                onChange={value => dispatch({ type: 'set_prep_time', value })}
+                            >
+                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                            </NumberField>
+                        </View>
+
+                        <View style={[{ flexBasis: "40%" }]}>
+                            <NumberField label={_(msg`Cooking time`)} defaultValue={state.cookTime}
+                                onChange={value => dispatch({ type: 'set_cook_time', value })}
+                            >
+                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                            </NumberField>
+                        </View>
+                    </View>
+
                     <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
 
                         {/* TODO fix color, width */}
@@ -314,55 +375,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             <H2 style={[a.text_lg]}><Trans context="recipe">Instructions</Trans></H2>
                         </View>
                         <RecipeInstructions state={state} dispatch={dispatch} />
-                    </View>
-
-                    <View>
-                        <ComboBox options={recipeCuisines} label={_(msg`Cuisine type`)}
-                            selection={state.cuisines ?? []}
-                            onRemove={(value) => dispatch({ type: 'remove_element', field: 'cuisines', value })}
-                            onSelect={(value) => dispatch({ type: 'add_element', field: 'cuisines', value })}
-                        />
-                    </View>
-                    <View>
-                        <ComboBox options={recipeCategories} label={_(msg`Categories`)}
-                            selection={state.categories ?? []}
-                            onRemove={(value) => dispatch({ type: 'remove_element', field: 'categories', value })}
-                            onSelect={(value) => dispatch({ type: 'add_element', field: 'categories', value })}
-                        />
-                    </View>
-                    <View>
-                        <ComboBox options={recipeDiets} label={_(msg`Suitable diets`)}
-                            selection={state.suitableForDiet ?? []}
-                            onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
-                            onSelect={(value) => dispatch({ type: 'add_element', field: 'suitableForDiet', value })}
-                        />
-                    </View>
-
-                    <View>
-                        <NumberField label={_(msg`Preparation time`)} defaultValue={state.prepTime}
-                            onChange={value => dispatch({ type: 'set_prep_time', value })}
-                        />
-                    </View>
-
-                    <View>
-                        <NumberField label={_(msg`Cooking time`)} defaultValue={state.cookTime}
-                            onChange={value => dispatch({ type: 'set_cook_time', value })}
-                        />
-                    </View>
-
-                    <View style={[a.flex_row, a.gap_xs]}>
-                        <View>
-                            <NumberField label={_(msg`Yield`)} defaultValue={state.recipeYield?.quantity}
-                                onChange={value => dispatch({ type: 'set_yield', field: 'quantity', value })}
-                            />
-                        </View>
-                        <View>
-                            <TextField.Root >
-                                <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
-                                    onChangeText={value => dispatch({ type: 'set_yield', field: 'unit', value })}
-                                />
-                            </TextField.Root>
-                        </View>
                     </View>
 
                     <Accordion heading={_(msg`Nutritional Information`)}>
@@ -488,9 +500,7 @@ function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispat
     const { _ } = useLingui()
     const t = useTheme()
 
-    return <View style={[a.gap_sm, a.border, a.p_sm, {
-        borderColor: t.palette.contrast_100
-    }]}><View style={[a.gap_xs]}>
+    return <View style={[a.gap_sm, a.border, a.p_sm, t.atoms.border_contrast_low, a.rounded_sm]}><View style={[a.gap_xs]}>
             {state.ingredients.map(({ id, name, quantity, unit }) =>
                 <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
                     {/* TODO rather use labels instead of placeholders for small screens */}
@@ -550,9 +560,8 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
     const t = useTheme()
     const hasMultiSections = state.instructionSections.length > 1 || state.instructionSections.at(0)?.name
     return <View >
-        {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, {
-            borderColor: t.palette.contrast_100
-        }]} key={section.id}>
+        {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, t.atoms.border_contrast_low, a.rounded_sm]}
+            key={section.id}>
             <View>
                 <View style={[a.gap_sm,]}>
                     {hasMultiSections &&
