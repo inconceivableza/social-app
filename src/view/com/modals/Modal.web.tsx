@@ -15,6 +15,7 @@ import * as PostLanguagesSettingsModal from './lang-settings/PostLanguagesSettin
 import * as RecipeRevisionViewModal from './RecipeRevisionView'
 import * as UserAddRemoveLists from './UserAddRemoveLists'
 import * as UserFeedbackModal from './UserFeedback'
+import * as RecipePreparationModal from './RecipePreparation'
 
 export function ModalsContainer() {
   const {isModalActive, activeModals} = useModals()
@@ -70,6 +71,8 @@ function Modal({modal}: {modal: ModalIface}) {
     element = <RecipeRevisionViewModal.Component uri={modal.uri} />
   } else if (modal.name === 'user-feedback') {
     element = <UserFeedbackModal.Component />
+  } else if (modal.name === 'recipe-preparation') {
+    element = <RecipePreparationModal.Component recipePost={modal.recipePost} onReviewRecipe={modal.onReviewRecipe} />
   } else {
     return null
   }

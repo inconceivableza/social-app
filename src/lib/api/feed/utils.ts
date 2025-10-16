@@ -11,7 +11,8 @@ import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
 import {makeProfileLink} from '#/lib/routes/links'
 import {isWeb} from '#/platform/detection'
 import {type UsePreferencesQueryResponse} from '#/state/queries/preferences'
-import {dangerousIsType} from '#/types/bsky'
+import { dangerousIsType } from '#/types/bsky'
+import { AnyPostView } from '#/state/cache/types'
 
 let debugTopics = ''
 if (isWeb && typeof window !== 'undefined') {
@@ -64,7 +65,7 @@ export function isReviewRatingView(v: unknown): v is ReviewRatingView {
   )
 }
 
-export function recordText(post: AppBskyFeedDefs.PostView): string {
+export function recordText(post: AnyPostView): string {
   const record = post.record
   return dangerousIsRecipeView(record)
     ? recipePostSummaryRichText(record.revisionContent)
