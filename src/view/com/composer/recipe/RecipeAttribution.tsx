@@ -177,7 +177,7 @@ export function RecipeAttribution({ value, onChange }: RecipeAttributionProps) {
               >
 
                 <Select.ValueText
-                  placeholder={_(msg`Select attribution type`)}
+                  placeholder={_(msg`Attribution type`)}
                   style={[t.atoms.text_contrast_medium]}
                 />
                 <Select.Icon style={[t.atoms.text_contrast_medium]} />
@@ -290,7 +290,7 @@ function OriginalAttributionFields({
           >
 
             <Select.ValueText
-              placeholder={_(msg`Select license type`)}
+              placeholder={_(msg`License type`)}
               style={[t.atoms.text_contrast_medium]}
             />
             <Select.Icon style={[t.atoms.text_contrast_medium]} />
@@ -402,7 +402,7 @@ function PublicationAttributionFields({
             ]}
           >
             <Select.ValueText
-              placeholder={_(msg`Select publication type`)}
+              placeholder={_(msg`Publication type`)}
               style={[t.atoms.text_contrast_medium]}
             />
             <Select.Icon style={[t.atoms.text_contrast_medium]} />
