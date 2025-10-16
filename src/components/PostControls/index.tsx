@@ -198,6 +198,11 @@ let PostControls = ({
 
   const constitutesRating = AppFoodiosFeedReviewRating.isRecord(record)
   const receivesRatings = isRecipeRevisionView(record)
+  const reviewCount = post?.reviewCount ?? undefined
+  const replyCount: number | undefined =
+    post.replyCount !== undefined && reviewCount === undefined
+      ? undefined
+      : (post.replyCount ?? 0) + (reviewCount ?? 0)
   const aggRatingAverage100 = post?.ratingAverage100 ?? undefined
   const aggRatingCount = post?.ratingCount ?? undefined
   const receivedRatings = receivesRatings
@@ -319,7 +324,7 @@ let PostControls = ({
             }
             label={_(
               msg({
-                message: `Reply (${plural(post.replyCount || 0, {
+                message: `Reply (${plural(replyCount || 0, {
                   one: '# reply',
                   other: '# replies',
                 })})`,
@@ -329,9 +334,9 @@ let PostControls = ({
             )}
             big={big}>
             <PostControlButtonIcon icon={Bubble} />
-            {typeof post.replyCount !== 'undefined' && post.replyCount > 0 && (
+            {typeof replyCount !== 'undefined' && replyCount > 0 && (
               <PostControlButtonText>
-                {formatCount(i18n, post.replyCount)}
+                {formatCount(i18n, replyCount)}
               </PostControlButtonText>
             )}
           </PostControlButton>
