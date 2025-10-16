@@ -1,24 +1,24 @@
 import * as TextField from "#/components/forms/TextField";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 
 interface NumberFieldProps {
     label: string
-    onChange: (value: number) => void
-    defaultValue?: number
+    onChange: (value: string) => void
+    defaultValue?: string
 }
 
-export function NumberField({ label, onChange, defaultValue }: NumberFieldProps) {
+export function NumberField({ label, onChange, defaultValue, children }: PropsWithChildren<NumberFieldProps>) {
     const [invalid, setInvalid] = useState(false)
     return <TextField.Root isInvalid={invalid}>
-        <TextField.Input label={label} defaultValue={defaultValue ? defaultValue + "" : undefined}
+        <TextField.Input label={label} defaultValue={defaultValue}
             inputMode="numeric" onChangeText={text => {
-                const value = Number(text)
-                const isInvalid = Number.isNaN(value)
+                const isInvalid = Number.isNaN(Number(text))
                 setInvalid(isInvalid)
                 if (!isInvalid) {
-                    onChange(value)
+                    onChange(text)
                 }
             }}
         />
+        {children}
     </TextField.Root>
 }

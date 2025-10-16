@@ -53,6 +53,7 @@ import { BottomSheetPortalProvider } from '../../../../modules/bottom-sheet'
 import { ComboBox } from "#/components/forms/ComboBox";
 import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecipe";
 import { NumberField } from "#/components/forms/NumberField";
+import { AppFoodiosFeedRecipeRevision } from "@atproto/api";
 
 const msgs = {
     button_add_ingredient: msg({
@@ -344,6 +345,31 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         />
                     </View>
 
+                    <View style={[a.flex_row, a.gap_xs]}>
+                        <View>
+                            <NumberField label={_(msg`Yield`)} defaultValue={state.recipeYield?.quantity}
+                                onChange={value => dispatch({ type: 'set_yield', field: 'quantity', value })}
+                            />
+                        </View>
+                        <View>
+                            <TextField.Root >
+                                <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
+                                    onChangeText={value => dispatch({ type: 'set_yield', field: 'unit', value })}
+                                />
+                            </TextField.Root>
+                        </View>
+                    </View>
+
+                    <View>
+                        <View>
+                            <H2><Trans>Nutritional Information</Trans></H2>
+                        </View>
+
+                        <RecipeNutrition state={state} dispatch={dispatch} />
+
+                    </View>
+
+
                     <View>
                         <ComposerEmbeds
                             canRemoveQuote={true} // TODO: check this
@@ -374,6 +400,68 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
 
 }
 
+interface NutritionElement {
+    field: Exclude<keyof AppFoodiosFeedRecipeRevision.Nutrition, "servingSize" | "$type">
+    label: string
+    unit: string,
+    subFields?: NutritionElement[]
+}
+
+const nutritionFields: NutritionElement[] = [
+    { field: 'energy', label: 'Energy', unit: 'kJ' },
+    {
+        field: 'carbohydrateContent', label: 'Glycaemic carbohydrate', unit: 'g',
+        subFields: [{ field: 'sugarContent', 'label': 'Sugar', unit: 'g' },]
+    },
+    {
+        field: 'fatContent', label: 'Total fat', unit: 'g',
+        subFields: [
+            { field: 'saturatedFatContent', label: 'Saturated fat', unit: 'g' },
+            { field: 'unsaturatedFatContent', label: 'Unsaturated fat', unit: 'g' },
+            { field: 'transFatContent', label: 'Trans fat', unit: 'g' },
+            { field: 'cholesterolContent', label: 'Cholesterol', unit: 'mg' },
+        ]
+    },
+    { field: 'proteinContent', label: 'Protein', unit: 'g' },
+    { field: 'sodiumContent', label: 'Sodium', unit: 'mg' },
+]
+
+function NutritionField({ unit, state, dispatch, field, label, subFields }:
+    NutritionElement & { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+    const { _ } = useLingui()
+    return <View style={[a.gap_xs]}>
+        <NumberField defaultValue={state.nutrition?.[field]} label={_(label)}
+            onChange={value => dispatch({ type: 'update_nutrition', field, value })}
+        >
+            <TextField.SuffixText label={_(unit)} ><Trans>{unit}</Trans></TextField.SuffixText>
+        </NumberField>
+        <View style={[a.pl_md]}>
+            {subFields?.map(subField => <NutritionField key={subField.field} {...subField} state={state} dispatch={dispatch} />)}
+        </View>
+    </View>
+}
+
+function RecipeNutrition({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+    const { _ } = useLingui()
+
+    return <View style={[a.gap_xs]}>
+        <View style={[a.flex_row, a.gap_xs]}>
+            <View>
+                <NumberField label={_(msg`Serving size`)} defaultValue={state.nutrition?.servingSize.quantity}
+                    onChange={value => dispatch({ type: 'set_nutrition_serving', field: 'quantity', value })} />
+            </View>
+            <View>
+                <TextField.Root >
+                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
+                        onChangeText={value => dispatch({ type: 'set_nutrition_serving', field: 'unit', value })}
+                    />
+                </TextField.Root>
+            </View>
+        </View>
+        {nutritionFields.map(field => <NutritionField key={field.field} {...field} state={state} dispatch={dispatch} />)}
+    </View>
+}
+
 
 
 function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
@@ -396,11 +484,9 @@ function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispat
                     </View>
 
                     <View style={{ flexBasis: "17%" }}>
-                        <TextField.Root>
-                            <TextField.Input label={_(msg`Quantity`)} defaultValue={quantity} keyboardType="numeric" onChangeText={value => {
+                        <NumberField label={_(msg`Quantity`)} defaultValue={quantity} onChange={value => {
                             dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
-                            }} />
-                        </TextField.Root>
+                        }} />
                     </View>
                     <View style={{ flexBasis: "11%" }}>
                         <TextField.Root>
