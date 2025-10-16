@@ -1,12 +1,15 @@
-import { atoms as a, useTheme } from '#/alf'
+import { atoms as a, atoms, useTheme } from '#/alf'
 import { RichText } from '#/components/RichText'
 import { H1, H2, H3, Text } from '#/components/Typography'
-import { AppFoodiosFeedDefs } from "@atproto/api"
-import { Trans } from '@lingui/macro'
+import { AppFoodiosFeedDefs, AppFoodiosFeedRecipeRevision } from "@atproto/api"
+import { Trans, msg, plural } from '@lingui/macro'
 import React, { useMemo, useState } from "react"
 import { View } from "react-native"
 import { RichText as RichTextAPI } from "@atproto/api"
 import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
+import { useLingui } from '@lingui/react'
+import { Accordion } from '#/components/Accordion'
+import { NutritionElement, nutritionFields } from '../recipe/NutritionFields'
 
 export function ExpandableRecipePost({
     revision,
@@ -29,9 +32,10 @@ export function ExpandedRecipePost({
     expanded: boolean
         titleComponent?: React.ReactNode
 }) {
-    // TODO: include embeds
+    // TODO: include embeds - currently added by wrappers
     const record = revision.revisionContent
     const t = useTheme()
+    const { _ } = useLingui()
     const richText = useMemo(() => {
         return new RichTextAPI({
             text: revision.revisionContent.text,
@@ -55,7 +59,20 @@ export function ExpandedRecipePost({
                 shouldProxyLinks={true}
             />
         </View>
-        {expanded && <View>
+        {expanded && <View style={[a.gap_xs]}>
+            <View>
+                {/* TODO replace labels with icons */}
+                {record.prepTime ? <View>
+                    <Text>{`${_(msg`Prep:`)} ${plural(record.prepTime, {
+                        one: '# minute',
+                        other: '# minutes'
+                    })}`}</Text>
+                </View> : null}
+
+                {record.cookingTime ? <View>
+                    <Text>{`${_(msg`Cook:`)} ${record.cookingTime} ${_(msg`minutes`)}`}</Text>
+                </View> : null}
+            </View>
             <View >
                 <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
                     <Trans context="recipe">Ingredients</Trans>
@@ -86,6 +103,31 @@ export function ExpandedRecipePost({
                     </View>
                 })}
             </View>
+            {record.nutrition && <Accordion heading={_(msg`Nutritional Information`)}>
+                <NutritionView nutrition={record.nutrition} />
+            </Accordion>}
         </View>}
+    </View>
+}
+
+function NutritionView({ nutrition }: { nutrition: AppFoodiosFeedRecipeRevision.Nutrition }) {
+    return <View style={[atoms.gap_xs]}>
+        {nutritionFields.map((field) => <NutritionalValue {...field} nutrition={nutrition} />)}
+    </View>
+}
+
+function NutritionalValue({ nutrition, field, label, unit, subFields }: NutritionElement &
+{ nutrition: AppFoodiosFeedRecipeRevision.Nutrition }) {
+    const { _ } = useLingui()
+    const value = nutrition[field]
+    if (!value) {
+        return null
+    }
+    return <View key={field} style={atoms.gap_xs}>
+        <Text>{`${_(label)}: ${value}${_(unit)}`}</Text>
+        {subFields && <View style={[atoms.pl_sm, atoms.gap_xs]}>
+            {subFields.map(subField => <NutritionalValue {...subField} nutrition={nutrition} />)}
+        </View>
+        }
     </View>
 }
