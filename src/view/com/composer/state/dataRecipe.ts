@@ -3,24 +3,26 @@ import rawRecipeCategories from '../../../../../assets/json/recipe_categories.js
 import rawRecipeDiets from '../../../../../assets/json/recipe_diets.json'
 
 interface HierarchyOption {
-    name: string
+    id: string
+    label: string
     children?: HierarchyOption[]
 }
 
 function processHierarchy(options: HierarchyOption[]): { id: string, label: string }[] {
+    const uniqueIDs = new Map<string, string>()
     const result: { id: string, label: string }[] = []
     traverseHierarchy(options, option => {
-        result.push(option)
+        uniqueIDs.set(option.id, option.label)
     })
-    return result.sort((a, b) => a.label > b.label ? 1 : -1)
+
+    return Array.from(uniqueIDs.entries(), ([id, label]) => ({ id, label })).sort((a, b) => a.label > b.label ? 1 : -1)
 }
 
-function traverseHierarchy(options: HierarchyOption[], callback: (value: { id: string, label: string }) => void, path: string[] = []) {
+function traverseHierarchy(options: HierarchyOption[], callback: (value: { id: string, label: string }) => void) {
     options.forEach(option => {
-        const newPath = path.concat(option.name)
-        callback({ label: option.name, id: newPath.join(">") })
+        callback(option)
         if (option.children) {
-            traverseHierarchy(option.children, callback, newPath)
+            traverseHierarchy(option.children, callback)
         }
     })
 }

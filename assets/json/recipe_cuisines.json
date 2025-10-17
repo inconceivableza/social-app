@@ -1,1844 +1,2387 @@
 [
   {
-    "name": "African",
+    "id": "CuisineAfrican",
+    "label": "African",
     "children": [
       {
-        "name": "Central African",
+        "id": "CuisineCentralAfrican",
+        "label": "Central African",
         "children": [
           {
-            "name": "Angolan"
+            "id": "CuisineAngolan",
+            "label": "Angolan"
           },
           {
-            "name": "Cameroonian"
+            "id": "CuisineCameroonian",
+            "label": "Cameroonian"
           },
           {
-            "name": "Chadian"
+            "id": "CuisineChadian",
+            "label": "Chadian"
           },
           {
-            "name": "Congolese"
+            "id": "CuisineCongolese",
+            "label": "Congolese"
           },
           {
-            "name": "Centrafrican"
+            "id": "CuisineCentrafrican",
+            "label": "Centrafrican"
           },
           {
-            "name": "Equatorial Guinea"
+            "id": "CuisineEquatorialGuinea",
+            "label": "Equatorial Guinea"
           },
           {
-            "name": "Gabonese"
+            "id": "CuisineGabonese",
+            "label": "Gabonese"
           },
           {
-            "name": "Santomean"
+            "id": "CuisineSantomean",
+            "label": "Santomean"
           }
         ]
       },
       {
-        "name": "East African",
+        "id": "CuisineEastAfrican",
+        "label": "East African",
         "children": [
           {
-            "name": "Burundian"
+            "id": "CuisineBurundian",
+            "label": "Burundian"
           },
           {
-            "name": "Comorian"
+            "id": "CuisineComorian",
+            "label": "Comorian"
           },
           {
-            "name": "Djiboutian"
+            "id": "CuisineDjiboutian",
+            "label": "Djiboutian"
           },
           {
-            "name": "Eritrean"
+            "id": "CuisineEritrean",
+            "label": "Eritrean"
           },
           {
-            "name": "Ethiopian",
+            "id": "CuisineEthiopian",
+            "label": "Ethiopian",
             "children": [
               {
-                "name": "Ethiopian Jewish"
+                "id": "CuisineEthiopianJewish",
+                "label": "Ethiopian Jewish"
               }
             ]
           },
           {
-            "name": "Kenyan"
+            "id": "CuisineKenyan",
+            "label": "Kenyan"
           },
           {
-            "name": "Maasai"
+            "id": "CuisineMaasai",
+            "label": "Maasai"
           },
           {
-            "name": "Malagasy"
+            "id": "CuisineMalagasy",
+            "label": "Malagasy"
           },
           {
-            "name": "Malawian"
+            "id": "CuisineMalawian",
+            "label": "Malawian"
           },
           {
-            "name": "Mauritian"
+            "id": "CuisineMauritian",
+            "label": "Mauritian"
           },
           {
-            "name": "Mozambican"
+            "id": "CuisineMozambican",
+            "label": "Mozambican"
           },
           {
-            "name": "Rwandan"
+            "id": "CuisineRwandan",
+            "label": "Rwandan"
           },
           {
-            "name": "Seychellois"
+            "id": "CuisineSeychellois",
+            "label": "Seychellois"
           },
           {
-            "name": "Somali"
+            "id": "CuisineSomali",
+            "label": "Somali"
           },
           {
-            "name": "Sudanese"
+            "id": "CuisineSudanese",
+            "label": "Sudanese"
           },
           {
-            "name": "South Sudanese"
+            "id": "CuisineSouthSudanese",
+            "label": "South Sudanese"
           },
           {
-            "name": "Tanzanian",
+            "id": "CuisineTanzanian",
+            "label": "Tanzanian",
             "children": [
               {
-                "name": "Zanzibari"
+                "id": "CuisineZanzibari",
+                "label": "Zanzibari"
               }
             ]
           },
           {
-            "name": "Ugandan"
+            "id": "CuisineUgandan",
+            "label": "Ugandan"
           },
           {
-            "name": "Zambian"
+            "id": "CuisineZambian",
+            "label": "Zambian"
           },
           {
-            "name": "Zimbabwean"
+            "id": "CuisineZimbabwean",
+            "label": "Zimbabwean"
           }
         ]
       },
       {
-        "name": "North African",
+        "id": "CuisineNorthAfrican",
+        "label": "North African",
         "children": [
           {
-            "name": "Algerian"
+            "id": "CuisineAlgerian",
+            "label": "Algerian"
           },
           {
-            "name": "Berber"
+            "id": "CuisineBerber",
+            "label": "Berber"
           },
           {
-            "name": "Egyptian"
+            "id": "CuisineEgyptian",
+            "label": "Egyptian"
           },
           {
-            "name": "Libyan"
+            "id": "CuisineLibyan",
+            "label": "Libyan"
           },
           {
-            "name": "Moroccan"
+            "id": "CuisineMoroccan",
+            "label": "Moroccan"
           },
           {
-            "name": "Tunisian"
+            "id": "CuisineTunisian",
+            "label": "Tunisian"
           },
           {
-            "name": "Western Saharan"
+            "id": "CuisineWesternSaharan",
+            "label": "Western Saharan"
           }
         ]
       },
       {
-        "name": "Southern African",
+        "id": "CuisineSouthernAfrican",
+        "label": "Southern African",
         "children": [
           {
-            "name": "Botswana"
+            "id": "CuisineBotswana",
+            "label": "Botswana"
           },
           {
-            "name": "Eswatini"
+            "id": "CuisineEswatini",
+            "label": "Eswatini"
           },
           {
-            "name": "Lesotho"
+            "id": "CuisineLesotho",
+            "label": "Lesotho"
           },
           {
-            "name": "Namibian"
+            "id": "CuisineNamibian",
+            "label": "Namibian"
           },
           {
-            "name": "South African"
+            "id": "CuisineSouthAfrican",
+            "label": "South African"
           }
         ]
       },
       {
-        "name": "West African",
+        "id": "CuisineWestAfrican",
+        "label": "West African",
         "children": [
           {
-            "name": "Benin"
+            "id": "CuisineBenin",
+            "label": "Benin"
           },
           {
-            "name": "Burkinabé"
+            "id": "CuisineBurkinab",
+            "label": "Burkinabé"
           },
           {
-            "name": "Cape Verdean"
+            "id": "CuisineCapeVerdean",
+            "label": "Cape Verdean"
           },
           {
-            "name": "Gambian"
+            "id": "CuisineGambian",
+            "label": "Gambian"
           },
           {
-            "name": "Ghanaian"
+            "id": "CuisineGhanaian",
+            "label": "Ghanaian"
           },
           {
-            "name": "Guinean"
+            "id": "CuisineGuinean",
+            "label": "Guinean"
           },
           {
-            "name": "Guinea-Bissauan"
+            "id": "CuisineGuineaBissauan",
+            "label": "Guinea-Bissauan"
           },
           {
-            "name": "Ivorian"
+            "id": "CuisineIvorian",
+            "label": "Ivorian"
           },
           {
-            "name": "Liberian"
+            "id": "CuisineLiberian",
+            "label": "Liberian"
           },
           {
-            "name": "Malian"
+            "id": "CuisineMalian",
+            "label": "Malian"
           },
           {
-            "name": "Mauritanian"
+            "id": "CuisineMauritanian",
+            "label": "Mauritanian"
           },
           {
-            "name": "Niger"
+            "id": "CuisineNiger",
+            "label": "Niger"
           },
           {
-            "name": "Nigerian"
+            "id": "CuisineNigerian",
+            "label": "Nigerian"
           },
           {
-            "name": "Saint Helenian"
+            "id": "CuisineSaintHelenian",
+            "label": "Saint Helenian"
           },
           {
-            "name": "Senegalese"
+            "id": "CuisineSenegalese",
+            "label": "Senegalese"
           },
           {
-            "name": "Sierra Leone"
+            "id": "CuisineSierraLeone",
+            "label": "Sierra Leone"
           },
           {
-            "name": "Togolese"
+            "id": "CuisineTogolese",
+            "label": "Togolese"
           }
         ]
       }
     ]
   },
   {
-    "name": "Americas",
+    "id": "CuisineAmericas",
+    "label": "Americas",
     "children": [
       {
-        "name": "Native American",
+        "id": "CuisineNativeAmerican",
+        "label": "Native American",
         "children": [
           {
-            "name": "Inuit"
+            "id": "CuisineInuit",
+            "label": "Inuit"
           },
           {
-            "name": "Tlingit"
+            "id": "CuisineTlingit",
+            "label": "Tlingit"
           }
         ]
       },
       {
-        "name": "North American",
+        "id": "CuisineNorthAmerican",
+        "label": "North American",
         "children": [
           {
-            "name": "Bermudian"
+            "id": "CuisineBermudian",
+            "label": "Bermudian"
           },
           {
-            "name": "Canadian",
+            "id": "CuisineCanadian",
+            "label": "Canadian",
             "children": [
               {
-                "name": "Canadian Chinese"
+                "id": "CuisineCanadianChinese",
+                "label": "Canadian Chinese"
               },
               {
-                "name": "Maritime"
+                "id": "CuisineMaritime",
+                "label": "Maritime"
               },
               {
-                "name": "Quebec"
+                "id": "CuisineQuebec",
+                "label": "Quebec"
               },
               {
-                "name": "Toronto"
+                "id": "CuisineToronto",
+                "label": "Toronto"
               }
             ]
           },
           {
-            "name": "Greenlandic"
+            "id": "CuisineGreenlandic",
+            "label": "Greenlandic"
           },
           {
-            "name": "Inuit"
+            "id": "CuisineInuit",
+            "label": "Inuit"
           },
           {
-            "name": "Mexican",
+            "id": "CuisineMexican",
+            "label": "Mexican",
             "children": [
               {
-                "name": "Chiapas"
+                "id": "CuisineChiapas",
+                "label": "Chiapas"
               },
               {
-                "name": "Mexico City"
+                "id": "CuisineMexicoCity",
+                "label": "Mexico City"
               },
               {
-                "name": "Oaxacan"
+                "id": "CuisineOaxacan",
+                "label": "Oaxacan"
               },
               {
-                "name": "Veracruz"
+                "id": "CuisineVeracruz",
+                "label": "Veracruz"
               },
               {
-                "name": "Mesoamerican",
+                "id": "CuisineMesoamerican",
+                "label": "Mesoamerican",
                 "children": [
                   {
-                    "name": "Ancient Maya"
+                    "id": "CuisineAncientMaya",
+                    "label": "Ancient Maya"
                   },
                   {
-                    "name": "Aztec"
+                    "id": "CuisineAztec",
+                    "label": "Aztec"
                   }
                 ]
               },
               {
-                "name": "Mexican-American",
+                "id": "CuisineMexicanAmerican",
+                "label": "Mexican-American",
                 "children": [
                   {
-                    "name": "Cali-Mex",
+                    "id": "CuisineCaliMex",
+                    "label": "Cali-Mex",
                     "children": [
                       {
-                        "name": "Korean-Mexican fusion"
+                        "id": "CuisineKoreanMexicanFusion",
+                        "label": "Korean-Mexican fusion"
                       }
                     ]
                   },
                   {
-                    "name": "New Mexican"
+                    "id": "CuisineNewMexican",
+                    "label": "New Mexican"
                   },
                   {
-                    "name": "Tex-Mex"
+                    "id": "CuisineTexMex",
+                    "label": "Tex-Mex"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Tlingit"
+            "id": "CuisineTlingit",
+            "label": "Tlingit"
           }
         ]
       },
       {
-        "name": "American",
+        "id": "CuisineAmerican",
+        "label": "American",
         "children": [
           {
-            "name": "Midwestern American",
+            "id": "CuisineMidwesternAmerican",
+            "label": "Midwestern American",
             "children": [
               {
-                "name": "Chicago"
+                "id": "CuisineChicago",
+                "label": "Chicago"
               },
               {
-                "name": "North Dakota"
+                "id": "CuisineNorthDakota",
+                "label": "North Dakota"
               },
               {
-                "name": "Omaha"
+                "id": "CuisineOmaha",
+                "label": "Omaha"
               },
               {
-                "name": "St. Louis"
+                "id": "CuisineStLouis",
+                "label": "St. Louis"
               },
               {
-                "name": "Wisconsin"
+                "id": "CuisineWisconsin",
+                "label": "Wisconsin"
               },
               {
-                "name": "Minnesotan",
+                "id": "CuisineMinnesotan",
+                "label": "Minnesotan",
                 "children": [
                   {
-                    "name": "Iron Range"
+                    "id": "CuisineIronRange",
+                    "label": "Iron Range"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Northeastern Americans",
+            "id": "CuisineNortheasternAmericans",
+            "label": "Northeastern Americans",
             "children": [
               {
-                "name": "New England"
+                "id": "CuisineNewEngland",
+                "label": "New England"
               },
               {
-                "name": "Mid-Atlantic United States",
+                "id": "CuisineMidAtlanticUnitedStates",
+                "label": "Mid-Atlantic United States",
                 "children": [
                   {
-                    "name": "Baltimore"
+                    "id": "CuisineBaltimore",
+                    "label": "Baltimore"
                   },
                   {
-                    "name": "New Jersey"
+                    "id": "CuisineNewJersey",
+                    "label": "New Jersey"
                   },
                   {
-                    "name": "New York City"
+                    "id": "CuisineNewYorkCity",
+                    "label": "New York City"
                   },
                   {
-                    "name": "Pennsylvania Dutch"
+                    "id": "CuisinePennsylvaniaDutch",
+                    "label": "Pennsylvania Dutch"
                   },
                   {
-                    "name": "Philadelphia"
+                    "id": "CuisinePhiladelphia",
+                    "label": "Philadelphia"
                   },
                   {
-                    "name": "Pittsburgh"
+                    "id": "CuisinePittsburgh",
+                    "label": "Pittsburgh"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Southern American",
+            "id": "CuisineSouthernAmerican",
+            "label": "Southern American",
             "children": [
               {
-                "name": "Atlanta"
+                "id": "CuisineAtlanta",
+                "label": "Atlanta"
               },
               {
-                "name": "Floribbean"
+                "id": "CuisineFloribbean",
+                "label": "Floribbean"
               },
               {
-                "name": "Kentucky"
+                "id": "CuisineKentucky",
+                "label": "Kentucky"
               },
               {
-                "name": "Louisiana Creole",
+                "id": "CuisineLouisianaCreole",
+                "label": "Louisiana Creole",
                 "children": [
                   {
-                    "name": "Cajun"
+                    "id": "CuisineCajun",
+                    "label": "Cajun"
                   },
                   {
-                    "name": "New Orleans"
+                    "id": "CuisineNewOrleans",
+                    "label": "New Orleans"
                   }
                 ]
               },
               {
-                "name": "Lowcountry",
+                "id": "CuisineLowcountry",
+                "label": "Lowcountry",
                 "children": [
                   {
-                    "name": "Soul food"
+                    "id": "CuisineSoulFood",
+                    "label": "Soul food"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Southwestern American",
+            "id": "CuisineSouthwesternAmerican",
+            "label": "Southwestern American",
             "children": [
               {
-                "name": "New Mexican"
+                "id": "CuisineNewMexican",
+                "label": "New Mexican"
               },
               {
-                "name": "Texan",
+                "id": "CuisineTexan",
+                "label": "Texan",
                 "children": [
                   {
-                    "name": "Tex-Mex"
+                    "id": "CuisineTexMex",
+                    "label": "Tex-Mex"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Western American",
+            "id": "CuisineWesternAmerican",
+            "label": "Western American",
             "children": [
               {
-                "name": "Californian",
+                "id": "CuisineCalifornian",
+                "label": "Californian",
                 "children": [
                   {
-                    "name": "Korean-Mexican fusion"
+                    "id": "CuisineKoreanMexicanFusion",
+                    "label": "Korean-Mexican fusion"
                   }
                 ]
               },
               {
-                "name": "Hawaiian"
+                "id": "CuisineHawaiian",
+                "label": "Hawaiian"
               },
               {
-                "name": "Pacific Northwest"
+                "id": "CuisinePacificNorthwest",
+                "label": "Pacific Northwest"
               },
               {
-                "name": "Rocky Mountain"
+                "id": "CuisineRockyMountain",
+                "label": "Rocky Mountain"
               }
             ]
           },
           {
-            "name": "Fusion",
+            "id": "CuisineFusion",
+            "label": "Fusion",
             "children": [
               {
-                "name": "American Jewish"
+                "id": "CuisineAmericanJewish",
+                "label": "American Jewish"
               },
               {
-                "name": "Cajun"
+                "id": "CuisineCajun",
+                "label": "Cajun"
               },
               {
-                "name": "Chinese American"
+                "id": "CuisineChineseAmerican",
+                "label": "Chinese American"
               },
               {
-                "name": "Filipino-American"
+                "id": "CuisineFilipinoAmerican",
+                "label": "Filipino-American"
               },
               {
-                "name": "Floribbean"
+                "id": "CuisineFloribbean",
+                "label": "Floribbean"
               },
               {
-                "name": "German-American"
+                "id": "CuisineGermanAmerican",
+                "label": "German-American"
               },
               {
-                "name": "Greek-American"
+                "id": "CuisineGreekAmerican",
+                "label": "Greek-American"
               },
               {
-                "name": "Indian-American"
+                "id": "CuisineIndianAmerican",
+                "label": "Indian-American"
               },
               {
-                "name": "Italian-American"
+                "id": "CuisineItalianAmerican",
+                "label": "Italian-American"
               },
               {
-                "name": "Japanese-American"
+                "id": "CuisineJapaneseAmerican",
+                "label": "Japanese-American"
               },
               {
-                "name": "Korean-American",
+                "id": "CuisineKoreanAmerican",
+                "label": "Korean-American",
                 "children": [
                   {
-                    "name": "Korean-Mexican fusion"
+                    "id": "CuisineKoreanMexicanFusion",
+                    "label": "Korean-Mexican fusion"
                   }
                 ]
               },
               {
-                "name": "Mexican-American",
+                "id": "CuisineMexicanAmerican",
+                "label": "Mexican-American",
                 "children": [
                   {
-                    "name": "Cali-Mex"
+                    "id": "CuisineCaliMex",
+                    "label": "Cali-Mex"
                   },
                   {
-                    "name": "New Mexican"
+                    "id": "CuisineNewMexican",
+                    "label": "New Mexican"
                   },
                   {
-                    "name": "Tex-Mex"
+                    "id": "CuisineTexMex",
+                    "label": "Tex-Mex"
                   }
                 ]
               },
               {
-                "name": "Pennsylvania Dutch"
+                "id": "CuisinePennsylvaniaDutch",
+                "label": "Pennsylvania Dutch"
               },
               {
-                "name": "Thai-American"
+                "id": "CuisineThaiAmerican",
+                "label": "Thai-American"
               },
               {
-                "name": "Vietnamese-American"
+                "id": "CuisineVietnameseAmerican",
+                "label": "Vietnamese-American"
               },
               {
-                "name": "New American"
+                "id": "CuisineNewAmerican",
+                "label": "New American"
               }
             ]
           }
         ]
       },
       {
-        "name": "Central American",
+        "id": "CuisineCentralAmerican",
+        "label": "Central American",
         "children": [
           {
-            "name": "Belizean"
+            "id": "CuisineBelizean",
+            "label": "Belizean"
           },
           {
-            "name": "Costa Rican"
+            "id": "CuisineCostaRican",
+            "label": "Costa Rican"
           },
           {
-            "name": "Guatemalan"
+            "id": "CuisineGuatemalan",
+            "label": "Guatemalan"
           },
           {
-            "name": "Honduran"
+            "id": "CuisineHonduran",
+            "label": "Honduran"
           },
           {
-            "name": "Mesoamerican",
+            "id": "CuisineMesoamerican",
+            "label": "Mesoamerican",
             "children": [
               {
-                "name": "Ancient Maya"
+                "id": "CuisineAncientMaya",
+                "label": "Ancient Maya"
               }
             ]
           },
           {
-            "name": "Nicaraguan"
+            "id": "CuisineNicaraguan",
+            "label": "Nicaraguan"
           },
           {
-            "name": "Panamanian"
+            "id": "CuisinePanamanian",
+            "label": "Panamanian"
           },
           {
-            "name": "Salvadoran"
+            "id": "CuisineSalvadoran",
+            "label": "Salvadoran"
           }
         ]
       },
       {
-        "name": "South American",
+        "id": "CuisineSouthAmerican",
+        "label": "South American",
         "children": [
           {
-            "name": "Argentine"
+            "id": "CuisineArgentine",
+            "label": "Argentine"
           },
           {
-            "name": "Bolivian"
+            "id": "CuisineBolivian",
+            "label": "Bolivian"
           },
           {
-            "name": "Brazilian"
+            "id": "CuisineBrazilian",
+            "label": "Brazilian"
           },
           {
-            "name": "Chilean"
+            "id": "CuisineChilean",
+            "label": "Chilean"
           },
           {
-            "name": "Colombian",
+            "id": "CuisineColombian",
+            "label": "Colombian",
             "children": [
               {
-                "name": "Muisca"
+                "id": "CuisineMuisca",
+                "label": "Muisca"
               }
             ]
           },
           {
-            "name": "Ecuadorian"
+            "id": "CuisineEcuadorian",
+            "label": "Ecuadorian"
           },
           {
-            "name": "French Guianan"
+            "id": "CuisineFrenchGuianan",
+            "label": "French Guianan"
           },
           {
-            "name": "Guyanese"
+            "id": "CuisineGuyanese",
+            "label": "Guyanese"
           },
           {
-            "name": "Paraguayan",
+            "id": "CuisineParaguayan",
+            "label": "Paraguayan",
             "children": [
               {
-                "name": "Asunción"
+                "id": "CuisineAsuncin",
+                "label": "Asunción"
               }
             ]
           },
           {
-            "name": "Peruvian",
+            "id": "CuisinePeruvian",
+            "label": "Peruvian",
             "children": [
               {
-                "name": "Peruvian-Chinese"
+                "id": "CuisinePeruvianChinese",
+                "label": "Peruvian-Chinese"
               },
               {
-                "name": "Peruvian-Japanese"
+                "id": "CuisinePeruvianJapanese",
+                "label": "Peruvian-Japanese"
               },
               {
-                "name": "Amazonian"
+                "id": "CuisineAmazonian",
+                "label": "Amazonian"
               },
               {
-                "name": "Arequipan"
+                "id": "CuisineArequipan",
+                "label": "Arequipan"
               },
               {
-                "name": "Inca"
+                "id": "CuisineInca",
+                "label": "Inca"
               }
             ]
           },
           {
-            "name": "Surinamese"
+            "id": "CuisineSurinamese",
+            "label": "Surinamese"
           },
           {
-            "name": "Uruguayan",
+            "id": "CuisineUruguayan",
+            "label": "Uruguayan",
             "children": [
               {
-                "name": "Montevideo"
+                "id": "CuisineMontevideo",
+                "label": "Montevideo"
               }
             ]
           },
           {
-            "name": "Venezuelan"
+            "id": "CuisineVenezuelan",
+            "label": "Venezuelan"
           }
         ]
       },
       {
-        "name": "Caribbean",
+        "id": "CuisineCaribbean",
+        "label": "Caribbean",
         "children": [
           {
-            "name": "Anguillan"
+            "id": "CuisineAnguillan",
+            "label": "Anguillan"
           },
           {
-            "name": "Antigua and Barbuda"
+            "id": "CuisineAntiguaAndBarbuda",
+            "label": "Antigua and Barbuda"
           },
           {
-            "name": "Aruban"
+            "id": "CuisineAruban",
+            "label": "Aruban"
           },
           {
-            "name": "Bahamian"
+            "id": "CuisineBahamian",
+            "label": "Bahamian"
           },
           {
-            "name": "Barbadian"
+            "id": "CuisineBarbadian",
+            "label": "Barbadian"
           },
           {
-            "name": "Belizean"
+            "id": "CuisineBelizean",
+            "label": "Belizean"
           },
           {
-            "name": "British Virgin Islands"
+            "id": "CuisineBritishVirginIslands",
+            "label": "British Virgin Islands"
           },
           {
-            "name": "Cayman Islands"
+            "id": "CuisineCaymanIslands",
+            "label": "Cayman Islands"
           },
           {
-            "name": "Caribbean Chinese"
+            "id": "CuisineCaribbeanChinese",
+            "label": "Caribbean Chinese"
           },
           {
-            "name": "Cuban"
+            "id": "CuisineCuban",
+            "label": "Cuban"
           },
           {
-            "name": "Curaçao"
+            "id": "CuisineCuraao",
+            "label": "Curaçao"
           },
           {
-            "name": "Dominica"
+            "id": "CuisineDominica",
+            "label": "Dominica"
           },
           {
-            "name": "Dominican Republic"
+            "id": "CuisineDominicanRepublic",
+            "label": "Dominican Republic"
           },
           {
-            "name": "Floribbean"
+            "id": "CuisineFloribbean",
+            "label": "Floribbean"
           },
           {
-            "name": "French Guianan"
+            "id": "CuisineFrenchGuianan",
+            "label": "French Guianan"
           },
           {
-            "name": "Grenadian"
+            "id": "CuisineGrenadian",
+            "label": "Grenadian"
           },
           {
-            "name": "Guyanese"
+            "id": "CuisineGuyanese",
+            "label": "Guyanese"
           },
           {
-            "name": "Haitian"
+            "id": "CuisineHaitian",
+            "label": "Haitian"
           },
           {
-            "name": "Jamaican"
+            "id": "CuisineJamaican",
+            "label": "Jamaican"
           },
           {
-            "name": "Martinican"
+            "id": "CuisineMartinican",
+            "label": "Martinican"
           },
           {
-            "name": "Montserrat"
+            "id": "CuisineMontserrat",
+            "label": "Montserrat"
           },
           {
-            "name": "Puerto Rican"
+            "id": "CuisinePuertoRican",
+            "label": "Puerto Rican"
           },
           {
-            "name": "St. Kitts and Nevis"
+            "id": "CuisineStKittsAndNevis",
+            "label": "St. Kitts and Nevis"
           },
           {
-            "name": "Saint Lucian"
+            "id": "CuisineSaintLucian",
+            "label": "Saint Lucian"
           },
           {
-            "name": "Surinamese"
+            "id": "CuisineSurinamese",
+            "label": "Surinamese"
           },
           {
-            "name": "Trinidad and Tobago"
+            "id": "CuisineTrinidadAndTobago",
+            "label": "Trinidad and Tobago"
           },
           {
-            "name": "Turks and Caicos"
+            "id": "CuisineTurksAndCaicos",
+            "label": "Turks and Caicos"
           },
           {
-            "name": "US Virgin Islands"
+            "id": "CuisineUSVirginIslands",
+            "label": "US Virgin Islands"
           }
         ]
       }
     ]
   },
   {
-    "name": "Asian",
+    "id": "CuisineAsian",
+    "label": "Asian",
     "children": [
       {
-        "name": "Central Asian",
+        "id": "CuisineCentralAsian",
+        "label": "Central Asian",
         "children": [
           {
-            "name": "Afghan",
+            "id": "CuisineAfghan",
+            "label": "Afghan",
             "children": [
               {
-                "name": "Hazara"
+                "id": "CuisineHazara",
+                "label": "Hazara"
               },
               {
-                "name": "Pashtun"
+                "id": "CuisinePashtun",
+                "label": "Pashtun"
               }
             ]
           },
           {
-            "name": "Azerbaijani"
+            "id": "CuisineAzerbaijani",
+            "label": "Azerbaijani"
           },
           {
-            "name": "Balochi"
+            "id": "CuisineBalochi",
+            "label": "Balochi"
           },
           {
-            "name": "Bashkir"
+            "id": "CuisineBashkir",
+            "label": "Bashkir"
           },
           {
-            "name": "Bukharan Jewish"
+            "id": "CuisineBukharanJewish",
+            "label": "Bukharan Jewish"
           },
           {
-            "name": "Dagestani"
+            "id": "CuisineDagestani",
+            "label": "Dagestani"
           },
           {
-            "name": "Iranian",
+            "id": "CuisineIranian",
+            "label": "Iranian",
             "children": [
               {
-                "name": "Caspian"
+                "id": "CuisineCaspian",
+                "label": "Caspian"
               },
               {
-                "name": "Kurdish"
+                "id": "CuisineKurdish",
+                "label": "Kurdish"
               }
             ]
           },
           {
-            "name": "Karakalpak"
+            "id": "CuisineKarakalpak",
+            "label": "Karakalpak"
           },
           {
-            "name": "Kazakh"
+            "id": "CuisineKazakh",
+            "label": "Kazakh"
           },
           {
-            "name": "Koryo-saram"
+            "id": "CuisineKoryosaram",
+            "label": "Koryo-saram"
           },
           {
-            "name": "Kyrgyz"
+            "id": "CuisineKyrgyz",
+            "label": "Kyrgyz"
           },
           {
-            "name": "Tajik"
+            "id": "CuisineTajik",
+            "label": "Tajik"
           },
           {
-            "name": "Tatar"
+            "id": "CuisineTatar",
+            "label": "Tatar"
           },
           {
-            "name": "Turkmen"
+            "id": "CuisineTurkmen",
+            "label": "Turkmen"
           },
           {
-            "name": "Uyghur"
+            "id": "CuisineUyghur",
+            "label": "Uyghur"
           },
           {
-            "name": "Uzbek"
+            "id": "CuisineUzbek",
+            "label": "Uzbek"
           }
         ]
       },
       {
-        "name": "East Asian",
+        "id": "CuisineEastAsian",
+        "label": "East Asian",
         "children": [
           {
-            "name": "Japanese",
+            "id": "CuisineJapanese",
+            "label": "Japanese",
             "children": [
               {
-                "name": "Ainu"
+                "id": "CuisineAinu",
+                "label": "Ainu"
               },
               {
-                "name": "Kaiseki"
+                "id": "CuisineKaiseki",
+                "label": "Kaiseki"
               },
               {
-                "name": "Okinawan"
+                "id": "CuisineOkinawan",
+                "label": "Okinawan"
               },
               {
-                "name": "Japanese regional",
+                "id": "CuisineJapaneseRegional",
+                "label": "Japanese regional",
                 "children": [
                   {
-                    "name": "Nagoya"
+                    "id": "CuisineNagoya",
+                    "label": "Nagoya"
                   }
                 ]
               },
               {
-                "name": "Japanese fusion",
+                "id": "CuisineJapaneseFusion",
+                "label": "Japanese fusion",
                 "children": [
                   {
-                    "name": "Japanese-American"
+                    "id": "CuisineJapaneseAmerican",
+                    "label": "Japanese-American"
                   },
                   {
-                    "name": "Japanese Chinese",
+                    "id": "CuisineJapaneseChinese",
+                    "label": "Japanese Chinese",
                     "children": [
                       {
-                        "name": "Shippoku"
+                        "id": "CuisineShippoku",
+                        "label": "Shippoku"
                       }
                     ]
                   },
                   {
-                    "name": "Hawaiian"
+                    "id": "CuisineHawaiian",
+                    "label": "Hawaiian"
                   },
                   {
-                    "name": "Itameshi"
+                    "id": "CuisineItameshi",
+                    "label": "Itameshi"
                   },
                   {
-                    "name": "Yoshoku"
+                    "id": "CuisineYoshoku",
+                    "label": "Yoshoku"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Korean",
+            "id": "CuisineKorean",
+            "label": "Korean",
             "children": [
               {
-                "name": "Korean Chinese"
+                "id": "CuisineKoreanChinese",
+                "label": "Korean Chinese"
               },
               {
-                "name": "Korean regional"
+                "id": "CuisineKoreanRegional",
+                "label": "Korean regional"
               },
               {
-                "name": "Korean royal court"
+                "id": "CuisineKoreanRoyalCourt",
+                "label": "Korean royal court"
               },
               {
-                "name": "Korean temple"
+                "id": "CuisineKoreanTemple",
+                "label": "Korean temple"
               },
               {
-                "name": "Koryo-saram"
+                "id": "CuisineKoryosaram",
+                "label": "Koryo-saram"
               },
               {
-                "name": "North Korean"
+                "id": "CuisineNorthKorean",
+                "label": "North Korean"
               },
               {
-                "name": "Sakhalin Korean"
+                "id": "CuisineSakhalinKorean",
+                "label": "Sakhalin Korean"
               },
               {
-                "name": "South Korean"
+                "id": "CuisineSouthKorean",
+                "label": "South Korean"
               },
               {
-                "name": "Korean-Mexican fusion"
+                "id": "CuisineKoreanMexicanFusion",
+                "label": "Korean-Mexican fusion"
               }
             ]
           },
           {
-            "name": "Vietnamese"
+            "id": "CuisineVietnamese",
+            "label": "Vietnamese"
           }
         ]
       },
       {
-        "name": "Chinese",
+        "id": "CuisineChinese",
+        "label": "Chinese",
         "children": [
           {
-            "name": "Northern Chinese",
+            "id": "CuisineNorthernChinese",
+            "label": "Northern Chinese",
             "children": [
               {
-                "name": "Beijing",
+                "id": "CuisineBeijing",
+                "label": "Beijing",
                 "children": [
                   {
-                    "name": "Chinese aristocrat"
+                    "id": "CuisineChineseAristocrat",
+                    "label": "Chinese aristocrat"
                   },
                   {
-                    "name": "Chinese imperial"
+                    "id": "CuisineChineseImperial",
+                    "label": "Chinese imperial"
                   }
                 ]
               },
               {
-                "name": "Hebei"
+                "id": "CuisineHebei",
+                "label": "Hebei"
               },
               {
-                "name": "Henan"
+                "id": "CuisineHenan",
+                "label": "Henan"
               },
               {
-                "name": "Northeastern Chinese",
+                "id": "CuisineNortheasternChinese",
+                "label": "Northeastern Chinese",
                 "children": [
                   {
-                    "name": "Heilongjiang"
+                    "id": "CuisineHeilongjiang",
+                    "label": "Heilongjiang"
                   },
                   {
-                    "name": "Jilin"
+                    "id": "CuisineJilin",
+                    "label": "Jilin"
                   },
                   {
-                    "name": "Liaoning"
+                    "id": "CuisineLiaoning",
+                    "label": "Liaoning"
                   },
                   {
-                    "name": "Manchu"
+                    "id": "CuisineManchu",
+                    "label": "Manchu"
                   }
                 ]
               },
               {
-                "name": "Shandong"
+                "id": "CuisineShandong",
+                "label": "Shandong"
               },
               {
-                "name": "Shanxi"
+                "id": "CuisineShanxi",
+                "label": "Shanxi"
               },
               {
-                "name": "Tianjin"
+                "id": "CuisineTianjin",
+                "label": "Tianjin"
               },
               {
-                "name": "Xuzhou"
+                "id": "CuisineXuzhou",
+                "label": "Xuzhou"
               }
             ]
           },
           {
-            "name": "Central Chinese",
+            "id": "CuisineCentralChinese",
+            "label": "Central Chinese",
             "children": [
               {
-                "name": "Anhui"
+                "id": "CuisineAnhui",
+                "label": "Anhui"
               },
               {
-                "name": "Jiangsu",
+                "id": "CuisineJiangsu",
+                "label": "Jiangsu",
                 "children": [
                   {
-                    "name": "Huaiyang"
+                    "id": "CuisineHuaiyang",
+                    "label": "Huaiyang"
                   }
                 ]
               },
               {
-                "name": "Shanghai",
+                "id": "CuisineShanghai",
+                "label": "Shanghai",
                 "children": [
                   {
-                    "name": "Haipai"
+                    "id": "CuisineHaipai",
+                    "label": "Haipai"
                   }
                 ]
               },
               {
-                "name": "Zhejiang",
+                "id": "CuisineZhejiang",
+                "label": "Zhejiang",
                 "children": [
                   {
-                    "name": "Hangbang"
+                    "id": "CuisineHangbang",
+                    "label": "Hangbang"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "North Western Chinese",
+            "id": "CuisineNorthWesternChinese",
+            "label": "North Western Chinese",
             "children": [
               {
-                "name": "Gansu"
+                "id": "CuisineGansu",
+                "label": "Gansu"
               },
               {
-                "name": "Ningxia"
+                "id": "CuisineNingxia",
+                "label": "Ningxia"
               },
               {
-                "name": "Qinghai"
+                "id": "CuisineQinghai",
+                "label": "Qinghai"
               },
               {
-                "name": "Shaanxi"
+                "id": "CuisineShaanxi",
+                "label": "Shaanxi"
               }
             ]
           },
           {
-            "name": "South Western Chinese",
+            "id": "CuisineSouthWesternChinese",
+            "label": "South Western Chinese",
             "children": [
               {
-                "name": "Guilin"
+                "id": "CuisineGuilin",
+                "label": "Guilin"
               },
               {
-                "name": "Guizhou"
+                "id": "CuisineGuizhou",
+                "label": "Guizhou"
               },
               {
-                "name": "Hubei"
+                "id": "CuisineHubei",
+                "label": "Hubei"
               },
               {
-                "name": "Hunan"
+                "id": "CuisineHunan",
+                "label": "Hunan"
               },
               {
-                "name": "Jiangxi"
+                "id": "CuisineJiangxi",
+                "label": "Jiangxi"
               },
               {
-                "name": "Sichuan"
+                "id": "CuisineSichuan",
+                "label": "Sichuan"
               },
               {
-                "name": "Tujia"
+                "id": "CuisineTujia",
+                "label": "Tujia"
               },
               {
-                "name": "Yunnan"
+                "id": "CuisineYunnan",
+                "label": "Yunnan"
               }
             ]
           },
           {
-            "name": "Southern Chinese",
+            "id": "CuisineSouthernChinese",
+            "label": "Southern Chinese",
             "children": [
               {
-                "name": "Cantonese",
+                "id": "CuisineCantonese",
+                "label": "Cantonese",
                 "children": [
                   {
-                    "name": "Guangxi"
+                    "id": "CuisineGuangxi",
+                    "label": "Guangxi"
                   },
                   {
-                    "name": "Hong Kong"
+                    "id": "CuisineHongKong",
+                    "label": "Hong Kong"
                   },
                   {
-                    "name": "Macanese"
+                    "id": "CuisineMacanese",
+                    "label": "Macanese"
                   }
                 ]
               },
               {
-                "name": "Hakka"
+                "id": "CuisineHakka",
+                "label": "Hakka"
               },
               {
-                "name": "Min",
+                "id": "CuisineMin",
+                "label": "Min",
                 "children": [
                   {
-                    "name": "Fuzhou"
+                    "id": "CuisineFuzhou",
+                    "label": "Fuzhou"
                   },
                   {
-                    "name": "Hainan"
+                    "id": "CuisineHainan",
+                    "label": "Hainan"
                   },
                   {
-                    "name": "Minnan"
+                    "id": "CuisineMinnan",
+                    "label": "Minnan"
                   },
                   {
-                    "name": "Putian (Henghwa)"
+                    "id": "CuisinePutianHenghwa",
+                    "label": "Putian (Henghwa)"
                   },
                   {
-                    "name": "Chaoshan (Teochew)"
+                    "id": "CuisineChaoshanTeochew",
+                    "label": "Chaoshan (Teochew)"
                   }
                 ]
               },
               {
-                "name": "Ou"
+                "id": "CuisineOu",
+                "label": "Ou"
               },
               {
-                "name": "Taiwan"
+                "id": "CuisineTaiwan",
+                "label": "Taiwan"
               }
             ]
           },
           {
-            "name": "Chinese minoritys",
+            "id": "CuisineChineseMinoritys",
+            "label": "Chinese minoritys",
             "children": [
               {
-                "name": "Hlai"
+                "id": "CuisineHlai",
+                "label": "Hlai"
               },
               {
-                "name": "Kachin"
+                "id": "CuisineKachin",
+                "label": "Kachin"
               },
               {
-                "name": "Miao",
+                "id": "CuisineMiao",
+                "label": "Miao",
                 "children": [
                   {
-                    "name": "Hmong"
+                    "id": "CuisineHmong",
+                    "label": "Hmong"
                   }
                 ]
               },
               {
-                "name": "Mongolian"
+                "id": "CuisineMongolian",
+                "label": "Mongolian"
               },
               {
-                "name": "Tibetan"
+                "id": "CuisineTibetan",
+                "label": "Tibetan"
               },
               {
-                "name": "Wa"
+                "id": "CuisineWa",
+                "label": "Wa"
               },
               {
-                "name": "Xinjiang (Uyghur)"
+                "id": "CuisineXinjiangUyghur",
+                "label": "Xinjiang (Uyghur)"
               },
               {
-                "name": "Yao"
+                "id": "CuisineYao",
+                "label": "Yao"
               },
               {
-                "name": "Yi"
+                "id": "CuisineYi",
+                "label": "Yi"
               },
               {
-                "name": "Zhuang"
+                "id": "CuisineZhuang",
+                "label": "Zhuang"
               }
             ]
           },
           {
-            "name": "Chinese religiouss",
+            "id": "CuisineChineseReligiouss",
+            "label": "Chinese religiouss",
             "children": [
               {
-                "name": "Chinese Buddhist"
+                "id": "CuisineChineseBuddhist",
+                "label": "Chinese Buddhist"
               },
               {
-                "name": "Chinese Islamic"
+                "id": "CuisineChineseIslamic",
+                "label": "Chinese Islamic"
               },
               {
-                "name": "Taoist diet"
+                "id": "CuisineTaoistDiet",
+                "label": "Taoist diet"
               }
             ]
           },
           {
-            "name": "Overseas Chinese",
+            "id": "CuisineOverseasChinese",
+            "label": "Overseas Chinese",
             "children": [
               {
-                "name": "American Chinese"
+                "id": "CuisineAmericanChinese",
+                "label": "American Chinese"
               },
               {
-                "name": "Australian Chinese"
+                "id": "CuisineAustralianChinese",
+                "label": "Australian Chinese"
               },
               {
-                "name": "British Chinese"
+                "id": "CuisineBritishChinese",
+                "label": "British Chinese"
               },
               {
-                "name": "Burmese Chinese"
+                "id": "CuisineBurmeseChinese",
+                "label": "Burmese Chinese"
               },
               {
-                "name": "Cambodian Chinese"
+                "id": "CuisineCambodianChinese",
+                "label": "Cambodian Chinese"
               },
               {
-                "name": "Canadian Chinese"
+                "id": "CuisineCanadianChinese",
+                "label": "Canadian Chinese"
               },
               {
-                "name": "Caribbean Chinese"
+                "id": "CuisineCaribbeanChinese",
+                "label": "Caribbean Chinese"
               },
               {
-                "name": "Filipino Chinese"
+                "id": "CuisineFilipinoChinese",
+                "label": "Filipino Chinese"
               },
               {
-                "name": "French Chinese"
+                "id": "CuisineFrenchChinese",
+                "label": "French Chinese"
               },
               {
-                "name": "Indian Chinese"
+                "id": "CuisineIndianChinese",
+                "label": "Indian Chinese"
               },
               {
-                "name": "Indonesian Chinese"
+                "id": "CuisineIndonesianChinese",
+                "label": "Indonesian Chinese"
               },
               {
-                "name": "Japanese Chinese",
+                "id": "CuisineJapaneseChinese",
+                "label": "Japanese Chinese",
                 "children": [
                   {
-                    "name": "Shippoku"
+                    "id": "CuisineShippoku",
+                    "label": "Shippoku"
                   }
                 ]
               },
               {
-                "name": "Latin American Chinese",
+                "id": "CuisineLatinAmericanChinese",
+                "label": "Latin American Chinese",
                 "children": [
                   {
-                    "name": "Cuban Chinese"
+                    "id": "CuisineCubanChinese",
+                    "label": "Cuban Chinese"
                   },
                   {
-                    "name": "Mexican Chinese"
+                    "id": "CuisineMexicanChinese",
+                    "label": "Mexican Chinese"
                   },
                   {
-                    "name": "Peruvian Chinese"
+                    "id": "CuisinePeruvianChinese",
+                    "label": "Peruvian Chinese"
                   },
                   {
-                    "name": "Puerto Rican Chinese"
+                    "id": "CuisinePuertoRicanChinese",
+                    "label": "Puerto Rican Chinese"
                   }
                 ]
               },
               {
-                "name": "Korean Chinese"
+                "id": "CuisineKoreanChinese",
+                "label": "Korean Chinese"
               },
               {
-                "name": "Malaysian Chinese"
+                "id": "CuisineMalaysianChinese",
+                "label": "Malaysian Chinese"
               },
               {
-                "name": "Mauritian Chinese"
+                "id": "CuisineMauritianChinese",
+                "label": "Mauritian Chinese"
               },
               {
-                "name": "New Zealand Chinese"
+                "id": "CuisineNewZealandChinese",
+                "label": "New Zealand Chinese"
               },
               {
-                "name": "Pakistani Chinese"
+                "id": "CuisinePakistaniChinese",
+                "label": "Pakistani Chinese"
               },
               {
-                "name": "Peranakan"
+                "id": "CuisinePeranakan",
+                "label": "Peranakan"
               },
               {
-                "name": "Singaporean Chinese"
+                "id": "CuisineSingaporeanChinese",
+                "label": "Singaporean Chinese"
               },
               {
-                "name": "Thai Chinese"
+                "id": "CuisineThaiChinese",
+                "label": "Thai Chinese"
               },
               {
-                "name": "Vietnamese Chinese"
+                "id": "CuisineVietnameseChinese",
+                "label": "Vietnamese Chinese"
               }
             ]
           }
         ]
       },
       {
-        "name": "Highland Asian",
+        "id": "CuisineHighlandAsian",
+        "label": "Highland Asian",
         "children": [
           {
-            "name": "Bhutanese"
+            "id": "CuisineBhutanese",
+            "label": "Bhutanese"
           },
           {
-            "name": "Mongolian",
+            "id": "CuisineMongolian",
+            "label": "Mongolian",
             "children": [
               {
-                "name": "Buryat"
+                "id": "CuisineBuryat",
+                "label": "Buryat"
               },
               {
-                "name": "Kalmyk"
+                "id": "CuisineKalmyk",
+                "label": "Kalmyk"
               }
             ]
           },
           {
-            "name": "Sikkimese"
+            "id": "CuisineSikkimese",
+            "label": "Sikkimese"
           },
           {
-            "name": "Tibetan"
+            "id": "CuisineTibetan",
+            "label": "Tibetan"
           },
           {
-            "name": "Tuvan"
+            "id": "CuisineTuvan",
+            "label": "Tuvan"
           }
         ]
       },
       {
-        "name": "North Asian",
+        "id": "CuisineNorthAsian",
+        "label": "North Asian",
         "children": [
           {
-            "name": "Russian",
+            "id": "CuisineRussian",
+            "label": "Russian",
             "children": [
               {
-                "name": "Buryat"
+                "id": "CuisineBuryat",
+                "label": "Buryat"
               },
               {
-                "name": "Chukchi"
+                "id": "CuisineChukchi",
+                "label": "Chukchi"
               },
               {
-                "name": "Commander Islands"
+                "id": "CuisineCommanderIslands",
+                "label": "Commander Islands"
               },
               {
-                "name": "Sakha"
+                "id": "CuisineSakha",
+                "label": "Sakha"
               },
               {
-                "name": "Sakhalin Korean"
+                "id": "CuisineSakhalinKorean",
+                "label": "Sakhalin Korean"
               },
               {
-                "name": "Yamal"
+                "id": "CuisineYamal",
+                "label": "Yamal"
               },
               {
-                "name": "Yup'ik"
+                "id": "CuisineYupik",
+                "label": "Yup'ik"
               }
             ]
           }
         ]
       },
       {
-        "name": "South Asian",
+        "id": "CuisineSouthAsian",
+        "label": "South Asian",
         "children": [
           {
-            "name": "Bangladeshi",
+            "id": "CuisineBangladeshi",
+            "label": "Bangladeshi",
             "children": [
               {
-                "name": "Bengali"
+                "id": "CuisineBengali",
+                "label": "Bengali"
               }
             ]
           },
           {
-            "name": "Maldivian"
+            "id": "CuisineMaldivian",
+            "label": "Maldivian"
           },
           {
-            "name": "Nepalese",
+            "id": "CuisineNepalese",
+            "label": "Nepalese",
             "children": [
               {
-                "name": "Newari"
+                "id": "CuisineNewari",
+                "label": "Newari"
               }
             ]
           },
           {
-            "name": "Sri Lankan"
+            "id": "CuisineSriLankan",
+            "label": "Sri Lankan"
           }
         ]
       },
       {
-        "name": "Indian",
+        "id": "CuisineIndian",
+        "label": "Indian",
         "children": [
           {
-            "name": "West Indian",
+            "id": "CuisineWestIndian",
+            "label": "West Indian",
             "children": [
               {
-                "name": "Goan",
+                "id": "CuisineGoan",
+                "label": "Goan",
                 "children": [
                   {
-                    "name": "Goan Catholic"
+                    "id": "CuisineGoanCatholic",
+                    "label": "Goan Catholic"
                   }
                 ]
               },
               {
-                "name": "Gujarati"
+                "id": "CuisineGujarati",
+                "label": "Gujarati"
               },
               {
-                "name": "Maharashtrian"
+                "id": "CuisineMaharashtrian",
+                "label": "Maharashtrian"
               },
               {
-                "name": "Malvani"
+                "id": "CuisineMalvani",
+                "label": "Malvani"
               },
               {
-                "name": "Parsi"
+                "id": "CuisineParsi",
+                "label": "Parsi"
               },
               {
-                "name": "Rajasthani"
+                "id": "CuisineRajasthani",
+                "label": "Rajasthani"
               },
               {
-                "name": "Sindhi"
+                "id": "CuisineSindhi",
+                "label": "Sindhi"
               }
             ]
           },
           {
-            "name": "North Indian",
+            "id": "CuisineNorthIndian",
+            "label": "North Indian",
             "children": [
               {
-                "name": "Bhojpuri"
+                "id": "CuisineBhojpuri",
+                "label": "Bhojpuri"
               },
               {
-                "name": "Kashmiri"
+                "id": "CuisineKashmiri",
+                "label": "Kashmiri"
               },
               {
-                "name": "Maithil"
+                "id": "CuisineMaithil",
+                "label": "Maithil"
               },
               {
-                "name": "Mughlai"
+                "id": "CuisineMughlai",
+                "label": "Mughlai"
               },
               {
-                "name": "Punjabi"
+                "id": "CuisinePunjabi",
+                "label": "Punjabi"
               },
               {
-                "name": "Rajasthani"
+                "id": "CuisineRajasthani",
+                "label": "Rajasthani"
               },
               {
-                "name": "Uttar Pradesh",
+                "id": "CuisineUttarPradesh",
+                "label": "Uttar Pradesh",
                 "children": [
                   {
-                    "name": "Awadhi"
+                    "id": "CuisineAwadhi",
+                    "label": "Awadhi"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "South Indian",
+            "id": "CuisineSouthIndian",
+            "label": "South Indian",
             "children": [
               {
-                "name": "Karnataka",
+                "id": "CuisineKarnataka",
+                "label": "Karnataka",
                 "children": [
                   {
-                    "name": "Dakshina Karnataka"
+                    "id": "CuisineDakshinaKarnataka",
+                    "label": "Dakshina Karnataka"
                   },
                   {
-                    "name": "Kodava"
+                    "id": "CuisineKodava",
+                    "label": "Kodava"
                   },
                   {
-                    "name": "Mangalurean",
+                    "id": "CuisineMangalurean",
+                    "label": "Mangalurean",
                     "children": [
                       {
-                        "name": "Mangalurean Catholic"
+                        "id": "CuisineMangalureanCatholic",
+                        "label": "Mangalurean Catholic"
                       },
                       {
-                        "name": "Navyath Muslim"
+                        "id": "CuisineNavyathMuslim",
+                        "label": "Navyath Muslim"
                       }
                     ]
                   },
                   {
-                    "name": "Udupi"
+                    "id": "CuisineUdupi",
+                    "label": "Udupi"
                   },
                   {
-                    "name": "Uttara Karnataka"
+                    "id": "CuisineUttaraKarnataka",
+                    "label": "Uttara Karnataka"
                   }
                 ]
               },
               {
-                "name": "Kerala"
+                "id": "CuisineKerala",
+                "label": "Kerala"
               },
               {
-                "name": "Tamil",
+                "id": "CuisineTamil",
+                "label": "Tamil",
                 "children": [
                   {
-                    "name": "Chettinad"
+                    "id": "CuisineChettinad",
+                    "label": "Chettinad"
                   }
                 ]
               },
               {
-                "name": "Telugu",
+                "id": "CuisineTelugu",
+                "label": "Telugu",
                 "children": [
                   {
-                    "name": "Andhra"
+                    "id": "CuisineAndhra",
+                    "label": "Andhra"
                   },
                   {
-                    "name": "Hyderabadi"
+                    "id": "CuisineHyderabadi",
+                    "label": "Hyderabadi"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "North East Indian",
+            "id": "CuisineNorthEastIndian",
+            "label": "North East Indian",
             "children": [
               {
-                "name": "Assamese"
+                "id": "CuisineAssamese",
+                "label": "Assamese"
               },
               {
-                "name": "Manipuri",
+                "id": "CuisineManipuri",
+                "label": "Manipuri",
                 "children": [
                   {
-                    "name": "Meitei"
+                    "id": "CuisineMeitei",
+                    "label": "Meitei"
                   }
                 ]
               },
               {
-                "name": "Mizo"
+                "id": "CuisineMizo",
+                "label": "Mizo"
               },
               {
-                "name": "Naga"
+                "id": "CuisineNaga",
+                "label": "Naga"
               },
               {
-                "name": "Sikkimese"
+                "id": "CuisineSikkimese",
+                "label": "Sikkimese"
               },
               {
-                "name": "Tripuri"
+                "id": "CuisineTripuri",
+                "label": "Tripuri"
               }
             ]
           },
           {
-            "name": "East Indian",
+            "id": "CuisineEastIndian",
+            "label": "East Indian",
             "children": [
               {
-                "name": "Bengali"
+                "id": "CuisineBengali",
+                "label": "Bengali"
               },
               {
-                "name": "Bihari"
+                "id": "CuisineBihari",
+                "label": "Bihari"
               },
               {
-                "name": "Jharkhandi"
+                "id": "CuisineJharkhandi",
+                "label": "Jharkhandi"
               },
               {
-                "name": "Odia"
+                "id": "CuisineOdia",
+                "label": "Odia"
               },
               {
-                "name": "Oriya"
+                "id": "CuisineOriya",
+                "label": "Oriya"
               }
             ]
           },
           {
-            "name": "Other Indian",
+            "id": "CuisineOtherIndian",
+            "label": "Other Indian",
             "children": [
               {
-                "name": "Anglo-Indian"
+                "id": "CuisineAngloIndian",
+                "label": "Anglo-Indian"
               },
               {
-                "name": "Indo Caribbean"
+                "id": "CuisineIndoCaribbean",
+                "label": "Indo Caribbean"
               },
               {
-                "name": "Indian Chinese"
+                "id": "CuisineIndianChinese",
+                "label": "Indian Chinese"
               },
               {
-                "name": "Indian fast food"
+                "id": "CuisineIndianFastFood",
+                "label": "Indian fast food"
               },
               {
-                "name": "Indo-Fijian"
+                "id": "CuisineIndoFijian",
+                "label": "Indo-Fijian"
               },
               {
-                "name": "Indo-South African"
+                "id": "CuisineIndoSouthAfrican",
+                "label": "Indo-South African"
               },
               {
-                "name": "Jain"
+                "id": "CuisineJain",
+                "label": "Jain"
               },
               {
-                "name": "Malaysian Indian"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Pakistani",
-        "children": [
-          {
-            "name": "Balochi"
-          },
-          {
-            "name": "Hazara"
-          },
-          {
-            "name": "Kashmiri"
-          },
-          {
-            "name": "Mughlai"
-          },
-          {
-            "name": "Muhajir"
-          },
-          {
-            "name": "Punjabi",
-            "children": [
-              {
-                "name": "Lahori"
-              },
-              {
-                "name": "Saraiki"
-              }
-            ]
-          },
-          {
-            "name": "Pashtun"
-          },
-          {
-            "name": "Sindhi"
-          }
-        ]
-      },
-      {
-        "name": "Mainland Southeast Asian",
-        "children": [
-          {
-            "name": "Burmese",
-            "children": [
-              {
-                "name": "Burmese Chinese"
-              }
-            ]
-          },
-          {
-            "name": "Cambodian"
-          },
-          {
-            "name": "Cham"
-          },
-          {
-            "name": "Hmong"
-          },
-          {
-            "name": "Kachin"
-          },
-          {
-            "name": "Karen"
-          },
-          {
-            "name": "Manipuri",
-            "children": [
-              {
-                "name": "Meitei"
-              }
-            ]
-          },
-          {
-            "name": "Mizo"
-          },
-          {
-            "name": "Naga"
-          },
-          {
-            "name": "Thai",
-            "children": [
-              {
-                "name": "Lanna"
-              },
-              {
-                "name": "Lao"
-              },
-              {
-                "name": "Shan"
-              },
-              {
-                "name": "Southern Thai"
-              },
-              {
-                "name": "Thai-Chinese"
-              }
-            ]
-          },
-          {
-            "name": "Tripuri"
-          },
-          {
-            "name": "Vietnamese"
-          },
-          {
-            "name": "Wa"
-          }
-        ]
-      },
-      {
-        "name": "Maritime Southeast Asian",
-        "children": [
-          {
-            "name": "Bruneian"
-          },
-          {
-            "name": "Christmas Island"
-          },
-          {
-            "name": "East Timor"
-          },
-          {
-            "name": "Filipino",
-            "children": [
-              {
-                "name": "Filipino-American"
-              },
-              {
-                "name": "Filipino Chinese"
-              },
-              {
-                "name": "Ilocano"
-              },
-              {
-                "name": "Kapampangan"
-              },
-              {
-                "name": "Mindanao"
-              },
-              {
-                "name": "Tagalog"
-              },
-              {
-                "name": "Visayan"
-              }
-            ]
-          },
-          {
-            "name": "Malaysian",
-            "children": [
-              {
-                "name": "Arab"
-              },
-              {
-                "name": "Eurasian"
-              },
-              {
-                "name": "Malay"
-              },
-              {
-                "name": "Malaysian Chinese"
-              },
-              {
-                "name": "Malaysian Indian"
-              },
-              {
-                "name": "Peranakan"
-              },
-              {
-                "name": "Sabahan"
-              },
-              {
-                "name": "Sarawakian"
-              }
-            ]
-          },
-          {
-            "name": "Singaporean"
-          }
-        ]
-      },
-      {
-        "name": "Indonesian",
-        "children": [
-          {
-            "name": "Acehnese"
-          },
-          {
-            "name": "Balinese"
-          },
-          {
-            "name": "Banjar"
-          },
-          {
-            "name": "Batak"
-          },
-          {
-            "name": "Indo"
-          },
-          {
-            "name": "Indonesian Arab"
-          },
-          {
-            "name": "Indonesian Chinese"
-          },
-          {
-            "name": "Indonesian Indian"
-          },
-          {
-            "name": "Javanese",
-            "children": [
-              {
-                "name": "Betawi"
-              },
-              {
-                "name": "Madurese"
-              },
-              {
-                "name": "Sundanese"
-              }
-            ]
-          },
-          {
-            "name": "Makassar"
-          },
-          {
-            "name": "Malay"
-          },
-          {
-            "name": "Manado"
-          },
-          {
-            "name": "Padang",
-            "children": [
-              {
-                "name": "Palembang"
-              },
-              {
-                "name": "Peranakan"
+                "id": "CuisineMalaysianIndian",
+                "label": "Malaysian Indian"
               }
             ]
           }
         ]
       },
       {
-        "name": "West Asian",
+        "id": "CuisinePakistani",
+        "label": "Pakistani",
         "children": [
           {
-            "name": "Armenian"
+            "id": "CuisineBalochi",
+            "label": "Balochi"
           },
           {
-            "name": "Eastern Arabian",
+            "id": "CuisineHazara",
+            "label": "Hazara"
+          },
+          {
+            "id": "CuisineKashmiri",
+            "label": "Kashmiri"
+          },
+          {
+            "id": "CuisineMughlai",
+            "label": "Mughlai"
+          },
+          {
+            "id": "CuisineMuhajir",
+            "label": "Muhajir"
+          },
+          {
+            "id": "CuisinePunjabi",
+            "label": "Punjabi",
             "children": [
               {
-                "name": "Bahraini"
+                "id": "CuisineLahori",
+                "label": "Lahori"
               },
               {
-                "name": "Emirati"
-              },
-              {
-                "name": "Kuwaiti"
-              },
-              {
-                "name": "Omani"
-              },
-              {
-                "name": "Qatari"
-              },
-              {
-                "name": "Saudi Arabian"
-              },
-              {
-                "name": "Yemeni"
+                "id": "CuisineSaraiki",
+                "label": "Saraiki"
               }
             ]
           },
           {
-            "name": "Kurdish"
+            "id": "CuisinePashtun",
+            "label": "Pashtun"
           },
           {
-            "name": "Levantine",
+            "id": "CuisineSindhi",
+            "label": "Sindhi"
+          }
+        ]
+      },
+      {
+        "id": "CuisineMainlandSoutheastAsian",
+        "label": "Mainland Southeast Asian",
+        "children": [
+          {
+            "id": "CuisineBurmese",
+            "label": "Burmese",
             "children": [
               {
-                "name": "Iraqi"
+                "id": "CuisineBurmeseChinese",
+                "label": "Burmese Chinese"
+              }
+            ]
+          },
+          {
+            "id": "CuisineCambodian",
+            "label": "Cambodian"
+          },
+          {
+            "id": "CuisineCham",
+            "label": "Cham"
+          },
+          {
+            "id": "CuisineHmong",
+            "label": "Hmong"
+          },
+          {
+            "id": "CuisineKachin",
+            "label": "Kachin"
+          },
+          {
+            "id": "CuisineKaren",
+            "label": "Karen"
+          },
+          {
+            "id": "CuisineManipuri",
+            "label": "Manipuri",
+            "children": [
+              {
+                "id": "CuisineMeitei",
+                "label": "Meitei"
+              }
+            ]
+          },
+          {
+            "id": "CuisineMizo",
+            "label": "Mizo"
+          },
+          {
+            "id": "CuisineNaga",
+            "label": "Naga"
+          },
+          {
+            "id": "CuisineThai",
+            "label": "Thai",
+            "children": [
+              {
+                "id": "CuisineLanna",
+                "label": "Lanna"
               },
               {
-                "name": "Israeli",
+                "id": "CuisineLao",
+                "label": "Lao"
+              },
+              {
+                "id": "CuisineShan",
+                "label": "Shan"
+              },
+              {
+                "id": "CuisineSouthernThai",
+                "label": "Southern Thai"
+              },
+              {
+                "id": "CuisineThaiChinese",
+                "label": "Thai-Chinese"
+              }
+            ]
+          },
+          {
+            "id": "CuisineTripuri",
+            "label": "Tripuri"
+          },
+          {
+            "id": "CuisineVietnamese",
+            "label": "Vietnamese"
+          },
+          {
+            "id": "CuisineWa",
+            "label": "Wa"
+          }
+        ]
+      },
+      {
+        "id": "CuisineMaritimeSoutheastAsian",
+        "label": "Maritime Southeast Asian",
+        "children": [
+          {
+            "id": "CuisineBruneian",
+            "label": "Bruneian"
+          },
+          {
+            "id": "CuisineChristmasIsland",
+            "label": "Christmas Island"
+          },
+          {
+            "id": "CuisineEastTimor",
+            "label": "East Timor"
+          },
+          {
+            "id": "CuisineFilipino",
+            "label": "Filipino",
+            "children": [
+              {
+                "id": "CuisineFilipinoAmerican",
+                "label": "Filipino-American"
+              },
+              {
+                "id": "CuisineFilipinoChinese",
+                "label": "Filipino Chinese"
+              },
+              {
+                "id": "CuisineIlocano",
+                "label": "Ilocano"
+              },
+              {
+                "id": "CuisineKapampangan",
+                "label": "Kapampangan"
+              },
+              {
+                "id": "CuisineMindanao",
+                "label": "Mindanao"
+              },
+              {
+                "id": "CuisineTagalog",
+                "label": "Tagalog"
+              },
+              {
+                "id": "CuisineVisayan",
+                "label": "Visayan"
+              }
+            ]
+          },
+          {
+            "id": "CuisineMalaysian",
+            "label": "Malaysian",
+            "children": [
+              {
+                "id": "CuisineArab",
+                "label": "Arab"
+              },
+              {
+                "id": "CuisineEurasian",
+                "label": "Eurasian"
+              },
+              {
+                "id": "CuisineMalay",
+                "label": "Malay"
+              },
+              {
+                "id": "CuisineMalaysianChinese",
+                "label": "Malaysian Chinese"
+              },
+              {
+                "id": "CuisineMalaysianIndian",
+                "label": "Malaysian Indian"
+              },
+              {
+                "id": "CuisinePeranakan",
+                "label": "Peranakan"
+              },
+              {
+                "id": "CuisineSabahan",
+                "label": "Sabahan"
+              },
+              {
+                "id": "CuisineSarawakian",
+                "label": "Sarawakian"
+              }
+            ]
+          },
+          {
+            "id": "CuisineSingaporean",
+            "label": "Singaporean"
+          }
+        ]
+      },
+      {
+        "id": "CuisineIndonesian",
+        "label": "Indonesian",
+        "children": [
+          {
+            "id": "CuisineAcehnese",
+            "label": "Acehnese"
+          },
+          {
+            "id": "CuisineBalinese",
+            "label": "Balinese"
+          },
+          {
+            "id": "CuisineBanjar",
+            "label": "Banjar"
+          },
+          {
+            "id": "CuisineBatak",
+            "label": "Batak"
+          },
+          {
+            "id": "CuisineIndo",
+            "label": "Indo"
+          },
+          {
+            "id": "CuisineIndonesianArab",
+            "label": "Indonesian Arab"
+          },
+          {
+            "id": "CuisineIndonesianChinese",
+            "label": "Indonesian Chinese"
+          },
+          {
+            "id": "CuisineIndonesianIndian",
+            "label": "Indonesian Indian"
+          },
+          {
+            "id": "CuisineJavanese",
+            "label": "Javanese",
+            "children": [
+              {
+                "id": "CuisineBetawi",
+                "label": "Betawi"
+              },
+              {
+                "id": "CuisineMadurese",
+                "label": "Madurese"
+              },
+              {
+                "id": "CuisineSundanese",
+                "label": "Sundanese"
+              }
+            ]
+          },
+          {
+            "id": "CuisineMakassar",
+            "label": "Makassar"
+          },
+          {
+            "id": "CuisineMalay",
+            "label": "Malay"
+          },
+          {
+            "id": "CuisineManado",
+            "label": "Manado"
+          },
+          {
+            "id": "CuisinePadang",
+            "label": "Padang",
+            "children": [
+              {
+                "id": "CuisinePalembang",
+                "label": "Palembang"
+              },
+              {
+                "id": "CuisinePeranakan",
+                "label": "Peranakan"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "CuisineWestAsian",
+        "label": "West Asian",
+        "children": [
+          {
+            "id": "CuisineArmenian",
+            "label": "Armenian"
+          },
+          {
+            "id": "CuisineEasternArabian",
+            "label": "Eastern Arabian",
+            "children": [
+              {
+                "id": "CuisineBahraini",
+                "label": "Bahraini"
+              },
+              {
+                "id": "CuisineEmirati",
+                "label": "Emirati"
+              },
+              {
+                "id": "CuisineKuwaiti",
+                "label": "Kuwaiti"
+              },
+              {
+                "id": "CuisineOmani",
+                "label": "Omani"
+              },
+              {
+                "id": "CuisineQatari",
+                "label": "Qatari"
+              },
+              {
+                "id": "CuisineSaudiArabian",
+                "label": "Saudi Arabian"
+              },
+              {
+                "id": "CuisineYemeni",
+                "label": "Yemeni"
+              }
+            ]
+          },
+          {
+            "id": "CuisineKurdish",
+            "label": "Kurdish"
+          },
+          {
+            "id": "CuisineLevantine",
+            "label": "Levantine",
+            "children": [
+              {
+                "id": "CuisineIraqi",
+                "label": "Iraqi"
+              },
+              {
+                "id": "CuisineIsraeli",
+                "label": "Israeli",
                 "children": [
                   {
-                    "name": "Ancient Israelite"
+                    "id": "CuisineAncientIsraelite",
+                    "label": "Ancient Israelite"
                   }
                 ]
               },
               {
-                "name": "Jordanian"
+                "id": "CuisineJordanian",
+                "label": "Jordanian"
               },
               {
-                "name": "Lebanese"
+                "id": "CuisineLebanese",
+                "label": "Lebanese"
               },
               {
-                "name": "Mizrahi Jewish"
+                "id": "CuisineMizrahiJewish",
+                "label": "Mizrahi Jewish"
               },
               {
-                "name": "Palestinian"
+                "id": "CuisinePalestinian",
+                "label": "Palestinian"
               },
               {
-                "name": "Syrian",
+                "id": "CuisineSyrian",
+                "label": "Syrian",
                 "children": [
                   {
-                    "name": "Syrian Jewish"
+                    "id": "CuisineSyrianJewish",
+                    "label": "Syrian Jewish"
                   }
                 ]
               }
             ]
           },
           {
-            "name": "Assyrian"
+            "id": "CuisineAssyrian",
+            "label": "Assyrian"
           },
           {
-            "name": "Caucasian",
+            "id": "CuisineCaucasian",
+            "label": "Caucasian",
             "children": [
               {
-                "name": "Azerbaijani"
+                "id": "CuisineAzerbaijani",
+                "label": "Azerbaijani"
               },
               {
-                "name": "Chechen"
+                "id": "CuisineChechen",
+                "label": "Chechen"
               },
               {
-                "name": "Circassian"
+                "id": "CuisineCircassian",
+                "label": "Circassian"
               },
               {
-                "name": "Dagestani"
+                "id": "CuisineDagestani",
+                "label": "Dagestani"
               },
               {
-                "name": "Georgian"
+                "id": "CuisineGeorgian",
+                "label": "Georgian"
               },
               {
-                "name": "Ossetian"
+                "id": "CuisineOssetian",
+                "label": "Ossetian"
               }
             ]
           },
           {
-            "name": "Iranian",
+            "id": "CuisineIranian",
+            "label": "Iranian",
             "children": [
               {
-                "name": "Balochi"
+                "id": "CuisineBalochi",
+                "label": "Balochi"
               },
               {
-                "name": "Caspian"
+                "id": "CuisineCaspian",
+                "label": "Caspian"
               }
             ]
           },
           {
-            "name": "Sephardic Jewish"
+            "id": "CuisineSephardicJewish",
+            "label": "Sephardic Jewish"
           },
           {
-            "name": "Turkish",
+            "id": "CuisineTurkish",
+            "label": "Turkish",
             "children": [
               {
-                "name": "Pontic Greek"
+                "id": "CuisinePonticGreek",
+                "label": "Pontic Greek"
               }
             ]
           }
@@ -1847,554 +2390,718 @@
     ]
   },
   {
-    "name": "European",
+    "id": "CuisineEuropean",
+    "label": "European",
     "children": [
       {
-        "name": "Central European",
+        "id": "CuisineCentralEuropean",
+        "label": "Central European",
         "children": [
           {
-            "name": "Ashkenazi Jewish"
+            "id": "CuisineAshkenaziJewish",
+            "label": "Ashkenazi Jewish"
           },
           {
-            "name": "Austrian",
+            "id": "CuisineAustrian",
+            "label": "Austrian",
             "children": [
               {
-                "name": "Viennese"
+                "id": "CuisineViennese",
+                "label": "Viennese"
               }
             ]
           },
           {
-            "name": "Czech",
+            "id": "CuisineCzech",
+            "label": "Czech",
             "children": [
               {
-                "name": "Moravian"
+                "id": "CuisineMoravian",
+                "label": "Moravian"
               }
             ]
           },
           {
-            "name": "Hungarian"
+            "id": "CuisineHungarian",
+            "label": "Hungarian"
           },
           {
-            "name": "Liechtensteiner"
+            "id": "CuisineLiechtensteiner",
+            "label": "Liechtensteiner"
           },
           {
-            "name": "Polish",
+            "id": "CuisinePolish",
+            "label": "Polish",
             "children": [
               {
-                "name": "Silesian"
+                "id": "CuisineSilesian",
+                "label": "Silesian"
               }
             ]
           },
           {
-            "name": "Slovak"
+            "id": "CuisineSlovak",
+            "label": "Slovak"
           },
           {
-            "name": "Slovenian"
+            "id": "CuisineSlovenian",
+            "label": "Slovenian"
           },
           {
-            "name": "Swiss"
+            "id": "CuisineSwiss",
+            "label": "Swiss"
           }
         ]
       },
       {
-        "name": "German",
+        "id": "CuisineGerman",
+        "label": "German",
         "children": [
           {
-            "name": "German-American"
+            "id": "CuisineGermanAmerican",
+            "label": "German-American"
           },
           {
-            "name": "Austrian",
+            "id": "CuisineAustrian",
+            "label": "Austrian",
             "children": [
               {
-                "name": "Viennese"
+                "id": "CuisineViennese",
+                "label": "Viennese"
               }
             ]
           },
           {
-            "name": "Baden"
+            "id": "CuisineBaden",
+            "label": "Baden"
           },
           {
-            "name": "Bavarian"
+            "id": "CuisineBavarian",
+            "label": "Bavarian"
           },
           {
-            "name": "Brandenburg"
+            "id": "CuisineBrandenburg",
+            "label": "Brandenburg"
           },
           {
-            "name": "Franconian"
+            "id": "CuisineFranconian",
+            "label": "Franconian"
           },
           {
-            "name": "Hamburg"
+            "id": "CuisineHamburg",
+            "label": "Hamburg"
           },
           {
-            "name": "Hessian"
+            "id": "CuisineHessian",
+            "label": "Hessian"
           },
           {
-            "name": "Liechtensteiner"
+            "id": "CuisineLiechtensteiner",
+            "label": "Liechtensteiner"
           },
           {
-            "name": "Lower Saxon"
+            "id": "CuisineLowerSaxon",
+            "label": "Lower Saxon"
           },
           {
-            "name": "Mecklenburg"
+            "id": "CuisineMecklenburg",
+            "label": "Mecklenburg"
           },
           {
-            "name": "Palatine"
+            "id": "CuisinePalatine",
+            "label": "Palatine"
           },
           {
-            "name": "Pomeranian"
+            "id": "CuisinePomeranian",
+            "label": "Pomeranian"
           },
           {
-            "name": "Rhenish-Hessian"
+            "id": "CuisineRhenishHessian",
+            "label": "Rhenish-Hessian"
           },
           {
-            "name": "Saxon"
+            "id": "CuisineSaxon",
+            "label": "Saxon"
           },
           {
-            "name": "Schleswig-Holstein"
+            "id": "CuisineSchleswigHolstein",
+            "label": "Schleswig-Holstein"
           },
           {
-            "name": "Silesian"
+            "id": "CuisineSilesian",
+            "label": "Silesian"
           },
           {
-            "name": "Swabian"
+            "id": "CuisineSwabian",
+            "label": "Swabian"
           },
           {
-            "name": "Swiss"
+            "id": "CuisineSwiss",
+            "label": "Swiss"
           },
           {
-            "name": "Thuringian"
+            "id": "CuisineThuringian",
+            "label": "Thuringian"
           }
         ]
       },
       {
-        "name": "Eastern European",
+        "id": "CuisineEasternEuropean",
+        "label": "Eastern European",
         "children": [
           {
-            "name": "Belarusian"
+            "id": "CuisineBelarusian",
+            "label": "Belarusian"
           },
           {
-            "name": "Cossack"
+            "id": "CuisineCossack",
+            "label": "Cossack"
           },
           {
-            "name": "Russian",
+            "id": "CuisineRussian",
+            "label": "Russian",
             "children": [
               {
-                "name": "Bashkir"
+                "id": "CuisineBashkir",
+                "label": "Bashkir"
               },
               {
-                "name": "Chechen"
+                "id": "CuisineChechen",
+                "label": "Chechen"
               },
               {
-                "name": "Circassian"
+                "id": "CuisineCircassian",
+                "label": "Circassian"
               },
               {
-                "name": "Komi"
+                "id": "CuisineKomi",
+                "label": "Komi"
               },
               {
-                "name": "Mordovian"
+                "id": "CuisineMordovian",
+                "label": "Mordovian"
               },
               {
-                "name": "Tatar"
+                "id": "CuisineTatar",
+                "label": "Tatar"
               },
               {
-                "name": "Udmurt"
+                "id": "CuisineUdmurt",
+                "label": "Udmurt"
               }
             ]
           },
           {
-            "name": "Ukrainian",
+            "id": "CuisineUkrainian",
+            "label": "Ukrainian",
             "children": [
               {
-                "name": "Crimean Tatar"
+                "id": "CuisineCrimeanTatar",
+                "label": "Crimean Tatar"
               },
               {
-                "name": "Odesite"
+                "id": "CuisineOdesite",
+                "label": "Odesite"
               }
             ]
           }
         ]
       },
       {
-        "name": "Northern European",
+        "id": "CuisineNorthernEuropean",
+        "label": "Northern European",
         "children": [
           {
-            "name": "Baltics",
+            "id": "CuisineBaltics",
+            "label": "Baltics",
             "children": [
               {
-                "name": "Estonian"
+                "id": "CuisineEstonian",
+                "label": "Estonian"
               },
               {
-                "name": "Latvian"
+                "id": "CuisineLatvian",
+                "label": "Latvian"
               },
               {
-                "name": "Lithuanian"
+                "id": "CuisineLithuanian",
+                "label": "Lithuanian"
               },
               {
-                "name": "Livonian"
+                "id": "CuisineLivonian",
+                "label": "Livonian"
               }
             ]
           },
           {
-            "name": "Nordics",
+            "id": "CuisineNordics",
+            "label": "Nordics",
             "children": [
               {
-                "name": "Danish",
+                "id": "CuisineDanish",
+                "label": "Danish",
                 "children": [
                   {
-                    "name": "Faroese"
+                    "id": "CuisineFaroese",
+                    "label": "Faroese"
                   },
                   {
-                    "name": "New Nordic"
+                    "id": "CuisineNewNordic",
+                    "label": "New Nordic"
                   }
                 ]
               },
               {
-                "name": "Finnish"
+                "id": "CuisineFinnish",
+                "label": "Finnish"
               },
               {
-                "name": "Icelandic"
+                "id": "CuisineIcelandic",
+                "label": "Icelandic"
               },
               {
-                "name": "Norwegian"
+                "id": "CuisineNorwegian",
+                "label": "Norwegian"
               },
               {
-                "name": "Sami"
+                "id": "CuisineSami",
+                "label": "Sami"
               },
               {
-                "name": "Swedish"
+                "id": "CuisineSwedish",
+                "label": "Swedish"
               }
             ]
           }
         ]
       },
       {
-        "name": "South Eastern European",
+        "id": "CuisineSouthEasternEuropean",
+        "label": "South Eastern European",
         "children": [
           {
-            "name": "Balkan",
+            "id": "CuisineBalkan",
+            "label": "Balkan",
             "children": [
               {
-                "name": "Albanian",
+                "id": "CuisineAlbanian",
+                "label": "Albanian",
                 "children": [
                   {
-                    "name": "Kosovan"
+                    "id": "CuisineKosovan",
+                    "label": "Kosovan"
                   }
                 ]
               },
               {
-                "name": "Aromanian"
+                "id": "CuisineAromanian",
+                "label": "Aromanian"
               },
               {
-                "name": "Bosnian"
+                "id": "CuisineBosnian",
+                "label": "Bosnian"
               },
               {
-                "name": "Bulgarian"
+                "id": "CuisineBulgarian",
+                "label": "Bulgarian"
               },
               {
-                "name": "Croatian"
+                "id": "CuisineCroatian",
+                "label": "Croatian"
               },
               {
-                "name": "Gagauz"
+                "id": "CuisineGagauz",
+                "label": "Gagauz"
               },
               {
-                "name": "Macedonian"
+                "id": "CuisineMacedonian",
+                "label": "Macedonian"
               },
               {
-                "name": "Montenegrin"
+                "id": "CuisineMontenegrin",
+                "label": "Montenegrin"
               },
               {
-                "name": "Serbian"
+                "id": "CuisineSerbian",
+                "label": "Serbian"
               }
             ]
           },
           {
-            "name": "Romani"
+            "id": "CuisineRomani",
+            "label": "Romani"
           },
           {
-            "name": "Romanian",
+            "id": "CuisineRomanian",
+            "label": "Romanian",
             "children": [
               {
-                "name": "Moldovan"
+                "id": "CuisineMoldovan",
+                "label": "Moldovan"
               },
               {
-                "name": "Transylvanian Saxon"
+                "id": "CuisineTransylvanianSaxon",
+                "label": "Transylvanian Saxon"
               }
             ]
           }
         ]
       },
       {
-        "name": "Southern European",
+        "id": "CuisineSouthernEuropean",
+        "label": "Southern European",
         "children": [
           {
-            "name": "Gibraltarian"
+            "id": "CuisineGibraltarian",
+            "label": "Gibraltarian"
           },
           {
-            "name": "Greek",
+            "id": "CuisineGreek",
+            "label": "Greek",
             "children": [
               {
-                "name": "Macedonian (Greek)"
+                "id": "CuisineMacedonianGreek",
+                "label": "Macedonian (Greek)"
               },
               {
-                "name": "Cretan"
+                "id": "CuisineCretan",
+                "label": "Cretan"
               },
               {
-                "name": "Cypriot"
+                "id": "CuisineCypriot",
+                "label": "Cypriot"
               },
               {
-                "name": "the Ionian Islands"
+                "id": "CuisineTheIonianIslands",
+                "label": "the Ionian Islands"
               },
               {
-                "name": "Epirotic"
+                "id": "CuisineEpirotic",
+                "label": "Epirotic"
               },
               {
-                "name": "Pontic Greek"
+                "id": "CuisinePonticGreek",
+                "label": "Pontic Greek"
               },
               {
-                "name": "Asia Minor Greek"
+                "id": "CuisineAsiaMinorGreek",
+                "label": "Asia Minor Greek"
               }
             ]
           },
           {
-            "name": "Italian",
+            "id": "CuisineItalian",
+            "label": "Italian",
             "children": [
               {
-                "name": "Abruzzese and Molisan"
+                "id": "CuisineAbruzzeseAndMolisan",
+                "label": "Abruzzese and Molisan"
               },
               {
-                "name": "Italian-American"
+                "id": "CuisineItalianAmerican",
+                "label": "Italian-American"
               },
               {
-                "name": "Arbëreshë"
+                "id": "CuisineArbresh",
+                "label": "Arbëreshë"
               },
               {
-                "name": "Basilicatan (Lucanian)"
+                "id": "CuisineBasilicatanLucanian",
+                "label": "Basilicatan (Lucanian)"
               },
               {
-                "name": "Calabrian"
+                "id": "CuisineCalabrian",
+                "label": "Calabrian"
               },
               {
-                "name": "Corsican"
+                "id": "CuisineCorsican",
+                "label": "Corsican"
               },
               {
-                "name": "Lazian or Roman"
+                "id": "CuisineLazianOrRoman",
+                "label": "Lazian or Roman"
               },
               {
-                "name": "Ligurian"
+                "id": "CuisineLigurian",
+                "label": "Ligurian"
               },
               {
-                "name": "Lombard",
+                "id": "CuisineLombard",
+                "label": "Lombard",
                 "children": [
                   {
-                    "name": "Mantuan"
+                    "id": "CuisineMantuan",
+                    "label": "Mantuan"
                   }
                 ]
               },
               {
-                "name": "Neapolitan"
+                "id": "CuisineNeapolitan",
+                "label": "Neapolitan"
               },
               {
-                "name": "Pugliese"
+                "id": "CuisinePugliese",
+                "label": "Pugliese"
               },
               {
-                "name": "Sammarinese"
+                "id": "CuisineSammarinese",
+                "label": "Sammarinese"
               },
               {
-                "name": "Sardinian"
+                "id": "CuisineSardinian",
+                "label": "Sardinian"
               },
               {
-                "name": "Sicilian"
+                "id": "CuisineSicilian",
+                "label": "Sicilian"
               },
               {
-                "name": "Tuscan"
+                "id": "CuisineTuscan",
+                "label": "Tuscan"
               },
               {
-                "name": "Venetian"
+                "id": "CuisineVenetian",
+                "label": "Venetian"
               }
             ]
           },
           {
-            "name": "Maltese"
+            "id": "CuisineMaltese",
+            "label": "Maltese"
           },
           {
-            "name": "Monégasque"
+            "id": "CuisineMongasque",
+            "label": "Monégasque"
           },
           {
-            "name": "Occitan"
+            "id": "CuisineOccitan",
+            "label": "Occitan"
           },
           {
-            "name": "Portuguese"
+            "id": "CuisinePortuguese",
+            "label": "Portuguese"
           },
           {
-            "name": "Spanish",
+            "id": "CuisineSpanish",
+            "label": "Spanish",
             "children": [
               {
-                "name": "Andalusian"
+                "id": "CuisineAndalusian",
+                "label": "Andalusian"
               },
               {
-                "name": "Asturian"
+                "id": "CuisineAsturian",
+                "label": "Asturian"
               },
               {
-                "name": "Aragonese"
+                "id": "CuisineAragonese",
+                "label": "Aragonese"
               },
               {
-                "name": "Balearic"
+                "id": "CuisineBalearic",
+                "label": "Balearic"
               },
               {
-                "name": "Basque"
+                "id": "CuisineBasque",
+                "label": "Basque"
               },
               {
-                "name": "Canarian"
+                "id": "CuisineCanarian",
+                "label": "Canarian"
               },
               {
-                "name": "Cantabrian"
+                "id": "CuisineCantabrian",
+                "label": "Cantabrian"
               },
               {
-                "name": "Castilian-Leonese"
+                "id": "CuisineCastilianLeonese",
+                "label": "Castilian-Leonese"
               },
               {
-                "name": "Castilian-Manchego"
+                "id": "CuisineCastilianManchego",
+                "label": "Castilian-Manchego"
               },
               {
-                "name": "Catalan",
+                "id": "CuisineCatalan",
+                "label": "Catalan",
                 "children": [
                   {
-                    "name": "Andorran"
+                    "id": "CuisineAndorran",
+                    "label": "Andorran"
                   }
                 ]
               },
               {
-                "name": "Extremaduran"
+                "id": "CuisineExtremaduran",
+                "label": "Extremaduran"
               },
               {
-                "name": "Galician"
+                "id": "CuisineGalician",
+                "label": "Galician"
               },
               {
-                "name": "Leonese"
+                "id": "CuisineLeonese",
+                "label": "Leonese"
               },
               {
-                "name": "Madrid"
+                "id": "CuisineMadrid",
+                "label": "Madrid"
               },
               {
-                "name": "Minorcan"
+                "id": "CuisineMinorcan",
+                "label": "Minorcan"
               },
               {
-                "name": "Valencian"
+                "id": "CuisineValencian",
+                "label": "Valencian"
               }
             ]
           },
           {
-            "name": "Sephardic Jewish"
+            "id": "CuisineSephardicJewish",
+            "label": "Sephardic Jewish"
           }
         ]
       },
       {
-        "name": "Western European",
+        "id": "CuisineWesternEuropean",
+        "label": "Western European",
         "children": [
           {
-            "name": "Belgian"
+            "id": "CuisineBelgian",
+            "label": "Belgian"
           },
           {
-            "name": "Dutch",
+            "id": "CuisineDutch",
+            "label": "Dutch",
             "children": [
               {
-                "name": "Frisian"
+                "id": "CuisineFrisian",
+                "label": "Frisian"
               },
               {
-                "name": "Limburgian"
+                "id": "CuisineLimburgian",
+                "label": "Limburgian"
               }
             ]
           },
           {
-            "name": "French",
+            "id": "CuisineFrench",
+            "label": "French",
             "children": [
               {
-                "name": "Cajun"
+                "id": "CuisineCajun",
+                "label": "Cajun"
               },
               {
-                "name": "Haute"
+                "id": "CuisineHaute",
+                "label": "Haute"
               },
               {
-                "name": "Lyonnaise"
+                "id": "CuisineLyonnaise",
+                "label": "Lyonnaise"
               },
               {
-                "name": "Nouvelle"
+                "id": "CuisineNouvelle",
+                "label": "Nouvelle"
               },
               {
-                "name": "Occitan"
+                "id": "CuisineOccitan",
+                "label": "Occitan"
               },
               {
-                "name": "Quebec"
+                "id": "CuisineQuebec",
+                "label": "Quebec"
               }
             ]
           },
           {
-            "name": "Luxembourg"
+            "id": "CuisineLuxembourg",
+            "label": "Luxembourg"
           }
         ]
       },
       {
-        "name": "British Isles",
+        "id": "CuisineBritishIsles",
+        "label": "British Isles",
         "children": [
           {
-            "name": "Cuisines of the Islands of the North Atlantic (IONA)",
+            "id": "CuisineCuisinesOfTheIslandsOfTheNorthAtlanticIONA",
+            "label": "Cuisines of the Islands of the North Atlantic (IONA)",
             "children": [
               {
-                "name": "British",
+                "id": "CuisineBritish",
+                "label": "British",
                 "children": [
                   {
-                    "name": "Anglo-Indian"
+                    "id": "CuisineAngloIndian",
+                    "label": "Anglo-Indian"
                   },
                   {
-                    "name": "British Chinese"
+                    "id": "CuisineBritishChinese",
+                    "label": "British Chinese"
                   },
                   {
-                    "name": "Channel Islands"
+                    "id": "CuisineChannelIslands",
+                    "label": "Channel Islands"
                   },
                   {
-                    "name": "English",
+                    "id": "CuisineEnglish",
+                    "label": "English",
                     "children": [
                       {
-                        "name": "Cornish"
+                        "id": "CuisineCornish",
+                        "label": "Cornish"
                       },
                       {
-                        "name": "Devonian"
+                        "id": "CuisineDevonian",
+                        "label": "Devonian"
                       },
                       {
-                        "name": "Dorset"
+                        "id": "CuisineDorset",
+                        "label": "Dorset"
                       }
                     ]
                   },
                   {
-                    "name": "Northern Irish"
+                    "id": "CuisineNorthernIrish",
+                    "label": "Northern Irish"
                   },
                   {
-                    "name": "Scottish"
+                    "id": "CuisineScottish",
+                    "label": "Scottish"
                   },
                   {
-                    "name": "Welsh",
+                    "id": "CuisineWelsh",
+                    "label": "Welsh",
                     "children": [
                       {
-                        "name": "Carmarthenshire"
+                        "id": "CuisineCarmarthenshire",
+                        "label": "Carmarthenshire"
                       },
                       {
-                        "name": "Ceredigion"
+                        "id": "CuisineCeredigion",
+                        "label": "Ceredigion"
                       },
                       {
-                        "name": "Gower"
+                        "id": "CuisineGower",
+                        "label": "Gower"
                       },
                       {
-                        "name": "Monmouthshire"
+                        "id": "CuisineMonmouthshire",
+                        "label": "Monmouthshire"
                       },
                       {
-                        "name": "Pembrokeshire"
+                        "id": "CuisinePembrokeshire",
+                        "label": "Pembrokeshire"
                       }
                     ]
                   }
                 ]
               },
               {
-                "name": "Irish"
+                "id": "CuisineIrish",
+                "label": "Irish"
               }
             ]
           }
@@ -2403,252 +3110,324 @@
     ]
   },
   {
-    "name": "Oceanic",
+    "id": "CuisineOceanic",
+    "label": "Oceanic",
     "children": [
       {
-        "name": "Australasian",
+        "id": "CuisineAustralasian",
+        "label": "Australasian",
         "children": [
           {
-            "name": "Australian",
+            "id": "CuisineAustralian",
+            "label": "Australian",
             "children": [
               {
-                "name": "Australian Chinese"
+                "id": "CuisineAustralianChinese",
+                "label": "Australian Chinese"
               },
               {
-                "name": "Bush tucker"
+                "id": "CuisineBushTucker",
+                "label": "Bush tucker"
               },
               {
-                "name": "Tasmanian"
+                "id": "CuisineTasmanian",
+                "label": "Tasmanian"
               }
             ]
           },
           {
-            "name": "New Zealand",
+            "id": "CuisineNewZealand",
+            "label": "New Zealand",
             "children": [
               {
-                "name": "New Zealand Chinese"
+                "id": "CuisineNewZealandChinese",
+                "label": "New Zealand Chinese"
               }
             ]
           }
         ]
       },
       {
-        "name": "Melanesian",
+        "id": "CuisineMelanesian",
+        "label": "Melanesian",
         "children": [
           {
-            "name": "Bougainville"
+            "id": "CuisineBougainville",
+            "label": "Bougainville"
           },
           {
-            "name": "Fijian"
+            "id": "CuisineFijian",
+            "label": "Fijian"
           },
           {
-            "name": "New Caledonian"
+            "id": "CuisineNewCaledonian",
+            "label": "New Caledonian"
           },
           {
-            "name": "Papua New Guinean"
+            "id": "CuisinePapuaNewGuinean",
+            "label": "Papua New Guinean"
           },
           {
-            "name": "Solomon Islands"
+            "id": "CuisineSolomonIslands",
+            "label": "Solomon Islands"
           },
           {
-            "name": "Vanuatuan"
+            "id": "CuisineVanuatuan",
+            "label": "Vanuatuan"
           }
         ]
       },
       {
-        "name": "Micronesian",
+        "id": "CuisineMicronesian",
+        "label": "Micronesian",
         "children": [
           {
-            "name": "Kiribati"
+            "id": "CuisineKiribati",
+            "label": "Kiribati"
           },
           {
-            "name": "Mariana Islands",
+            "id": "CuisineMarianaIslands",
+            "label": "Mariana Islands",
             "children": [
               {
-                "name": "Guamanian"
+                "id": "CuisineGuamanian",
+                "label": "Guamanian"
               }
             ]
           },
           {
-            "name": "Marshallese"
+            "id": "CuisineMarshallese",
+            "label": "Marshallese"
           },
           {
-            "name": "Nauruan"
+            "id": "CuisineNauruan",
+            "label": "Nauruan"
           },
           {
-            "name": "Palauan"
+            "id": "CuisinePalauan",
+            "label": "Palauan"
           }
         ]
       },
       {
-        "name": "Polynesian",
+        "id": "CuisinePolynesian",
+        "label": "Polynesian",
         "children": [
           {
-            "name": "Cook Islands"
+            "id": "CuisineCookIslands",
+            "label": "Cook Islands"
           },
           {
-            "name": "Hawaiian"
+            "id": "CuisineHawaiian",
+            "label": "Hawaiian"
           },
           {
-            "name": "Niuean"
+            "id": "CuisineNiuean",
+            "label": "Niuean"
           },
           {
-            "name": "Pascuense (Easter Island)"
+            "id": "CuisinePascuenseEasterIsland",
+            "label": "Pascuense (Easter Island)"
           },
           {
-            "name": "Pitcairn Islands"
+            "id": "CuisinePitcairnIslands",
+            "label": "Pitcairn Islands"
           },
           {
-            "name": "Samoan"
+            "id": "CuisineSamoan",
+            "label": "Samoan"
           },
           {
-            "name": "Tahitian"
+            "id": "CuisineTahitian",
+            "label": "Tahitian"
           },
           {
-            "name": "Tongan"
+            "id": "CuisineTongan",
+            "label": "Tongan"
           },
           {
-            "name": "Tuvaluan"
+            "id": "CuisineTuvaluan",
+            "label": "Tuvaluan"
           },
           {
-            "name": "Wallis and Futuna"
+            "id": "CuisineWallisAndFutuna",
+            "label": "Wallis and Futuna"
           }
         ]
       }
     ]
   },
   {
-    "name": "Cuisine Styles",
+    "id": "CuisineCuisineStyles",
+    "label": "Cuisine Styles",
     "children": [
       {
-        "name": "Fast food"
+        "id": "CuisineFastFood",
+        "label": "Fast food"
       },
       {
-        "name": "Fusion"
+        "id": "CuisineFusion",
+        "label": "Fusion"
       },
       {
-        "name": "Haute"
+        "id": "CuisineHaute",
+        "label": "Haute"
       },
       {
-        "name": "Molecular gastronomy",
+        "id": "CuisineMolecularGastronomy",
+        "label": "Molecular gastronomy",
         "children": [
           {
-            "name": "Note by Note"
+            "id": "CuisineNoteByNote",
+            "label": "Note by Note"
           }
         ]
       },
       {
-        "name": "Nouvelle"
+        "id": "CuisineNouvelle",
+        "label": "Nouvelle"
       },
       {
-        "name": "Vegan"
+        "id": "CuisineVegan",
+        "label": "Vegan"
       },
       {
-        "name": "Vegetarian",
+        "id": "CuisineVegetarian",
+        "label": "Vegetarian",
         "children": [
           {
-            "name": "Indian vegetarian"
+            "id": "CuisineIndianVegetarian",
+            "label": "Indian vegetarian"
           }
         ]
       },
       {
-        "name": "Street food"
+        "id": "CuisineStreetFood",
+        "label": "Street food"
       }
     ]
   },
   {
-    "name": "Religiouss",
+    "id": "CuisineReligiouss",
+    "label": "Religiouss",
     "children": [
       {
-        "name": "Buddhist",
+        "id": "CuisineBuddhist",
+        "label": "Buddhist",
         "children": [
           {
-            "name": "Buddhist vegetarianism"
+            "id": "CuisineBuddhistVegetarianism",
+            "label": "Buddhist vegetarianism"
           },
           {
-            "name": "Korean temple"
+            "id": "CuisineKoreanTemple",
+            "label": "Korean temple"
           }
         ]
       },
       {
-        "name": "Chinese religiouss",
+        "id": "CuisineChineseReligiouss",
+        "label": "Chinese religiouss",
         "children": [
           {
-            "name": "Chinese Buddhist"
+            "id": "CuisineChineseBuddhist",
+            "label": "Chinese Buddhist"
           },
           {
-            "name": "Chinese Islamic"
+            "id": "CuisineChineseIslamic",
+            "label": "Chinese Islamic"
           },
           {
-            "name": "Taoist diet"
+            "id": "CuisineTaoistDiet",
+            "label": "Taoist diet"
           }
         ]
       },
       {
-        "name": "Christian diet",
+        "id": "CuisineChristianDiet",
+        "label": "Christian diet",
         "children": [
           {
-            "name": "Catholic diet"
+            "id": "CuisineCatholicDiet",
+            "label": "Catholic diet"
           },
           {
-            "name": "Coptic Orthodox diet"
+            "id": "CuisineCopticOrthodoxDiet",
+            "label": "Coptic Orthodox diet"
           },
           {
-            "name": "Ethiopian Orthodox diet"
+            "id": "CuisineEthiopianOrthodoxDiet",
+            "label": "Ethiopian Orthodox diet"
           },
           {
-            "name": "Goan Catholic"
+            "id": "CuisineGoanCatholic",
+            "label": "Goan Catholic"
           },
           {
-            "name": "Mangalorean Catholic"
+            "id": "CuisineMangaloreanCatholic",
+            "label": "Mangalorean Catholic"
           },
           {
-            "name": "Mennonite"
+            "id": "CuisineMennonite",
+            "label": "Mennonite"
           }
         ]
       },
       {
-        "name": "Hindu diet"
+        "id": "CuisineHinduDiet",
+        "label": "Hindu diet"
       },
       {
-        "name": "Islamic diet",
+        "id": "CuisineIslamicDiet",
+        "label": "Islamic diet",
         "children": [
           {
-            "name": "Chinese Islamic"
+            "id": "CuisineChineseIslamic",
+            "label": "Chinese Islamic"
           }
         ]
       },
       {
-        "name": "Jain diet"
+        "id": "CuisineJainDiet",
+        "label": "Jain diet"
       },
       {
-        "name": "Jewish",
+        "id": "CuisineJewish",
+        "label": "Jewish",
         "children": [
           {
-            "name": "American Jewish"
+            "id": "CuisineAmericanJewish",
+            "label": "American Jewish"
           },
           {
-            "name": "Ashkenazi Jewish"
+            "id": "CuisineAshkenaziJewish",
+            "label": "Ashkenazi Jewish"
           },
           {
-            "name": "Bukharan Jewish"
+            "id": "CuisineBukharanJewish",
+            "label": "Bukharan Jewish"
           },
           {
-            "name": "Ethiopian Jewish"
+            "id": "CuisineEthiopianJewish",
+            "label": "Ethiopian Jewish"
           },
           {
-            "name": "Mizrahi Jewish"
+            "id": "CuisineMizrahiJewish",
+            "label": "Mizrahi Jewish"
           },
           {
-            "name": "Sephardic Jewish"
+            "id": "CuisineSephardicJewish",
+            "label": "Sephardic Jewish"
           },
           {
-            "name": "Syrian Jewish"
+            "id": "CuisineSyrianJewish",
+            "label": "Syrian Jewish"
           }
         ]
       },
       {
-        "name": "Sikh"
+        "id": "CuisineSikh",
+        "label": "Sikh"
       }
     ]
   }

@@ -1,35 +1,46 @@
 [
-    {
-    "name": "Diabetic"
-    },
-    {
-    "name": "GlutenFree"
-    },
-    {
-    "name": "Halal"
-    },
-    {
-    "name": "Hindu"
-    },
-    {
-    "name": "Kosher"
-    },
-    {
-    "name": "Low Calorie"
-},
-{
-    "name": "Low Fat"
-},
-{
-    "name": "Low Lactose"
-},
-{
-    "name": "Low Salt"
-},
-{
-    "name": "Vegan"
-},
-{
-    "name": "Vegetarian"
-    }
+  {
+    "id": "DietDiabetic",
+    "label": "Diabetic"
+  },
+  {
+    "id": "DietGlutenFree",
+    "label": "GlutenFree"
+  },
+  {
+    "id": "DietHalal",
+    "label": "Halal"
+  },
+  {
+    "id": "DietHindu",
+    "label": "Hindu"
+  },
+  {
+    "id": "DietKosher",
+    "label": "Kosher"
+  },
+  {
+    "id": "DietLowCalorie",
+    "label": "Low Calorie"
+  },
+  {
+    "id": "DietLowFat",
+    "label": "Low Fat"
+  },
+  {
+    "id": "DietLowLactose",
+    "label": "Low Lactose"
+  },
+  {
+    "id": "DietLowSalt",
+    "label": "Low Salt"
+  },
+  {
+    "id": "DietVegan",
+    "label": "Vegan"
+  },
+  {
+    "id": "DietVegetarian",
+    "label": "Vegetarian"
+  }
 ]

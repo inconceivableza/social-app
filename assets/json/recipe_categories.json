@@ -1,38 +1,50 @@
 [
-    {
-        "name": "Appetizer"
-    },
-    {
-        "name": "Breakfast"
-    },
-    {
-        "name": "Brunch"
-    },
-    {
-        "name": "Dessert"
-    },
-    {
-        "name": "Dinner"
-    },
-    {
-        "name": "Drink"
-    },
-    {
-        "name": "Lunch"
-    },
-    {
-        "name": "Main course"
-    },
-    {
-        "name": "Sauce"
-    },
-    {
-        "name": "Side dish"
-    },
-    {
-        "name": "Snack"
-    },
-    {
-        "name": "Starter"
-    }
+  {
+    "id": "CategoryAppetizer",
+    "label": "Appetizer"
+  },
+  {
+    "id": "CategoryBreakfast",
+    "label": "Breakfast"
+  },
+  {
+    "id": "CategoryBrunch",
+    "label": "Brunch"
+  },
+  {
+    "id": "CategoryDessert",
+    "label": "Dessert"
+  },
+  {
+    "id": "CategoryDinner",
+    "label": "Dinner"
+  },
+  {
+    "id": "CategoryDrink",
+    "label": "Drink"
+  },
+  {
+    "id": "CategoryLunch",
+    "label": "Lunch"
+  },
+  {
+    "id": "CategoryMainCourse",
+    "label": "Main course"
+  },
+  {
+    "id": "CategorySauce",
+    "label": "Sauce"
+  },
+  {
+    "id": "CategorySideDish",
+    "label": "Side dish"
+  },
+  {
+    "id": "CategorySnack",
+    "label": "Snack"
+  },
+  {
+    "id": "CategoryStarter",
+    "label": "Starter"
+  }
 ]
