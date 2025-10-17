@@ -41,10 +41,12 @@ export function ComboBox({ options, selection, onRemove, onSelect, label }: Comb
                 <TextField.Root>
                     <TextField.Input onBlur={() => {
                         inputRef.current?.clear();
+                        // TODO: find more robust way to do this - perhaps don't unmount the component, just make invisible
+                        // May break in a slow browser
                         // Delay this slightly, otherwise option selection doesn't work
                         setTimeout(() => {
                             setFilteredOptions([]);
-                        }, 100);
+                        }, 200);
                     }} inputRef={inputRef} label={label} onChangeText={value => {
                         const trimmed = value.trim().toLowerCase();
                         if (!trimmed.length) {
