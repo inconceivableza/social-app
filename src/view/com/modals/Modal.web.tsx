@@ -12,10 +12,10 @@ import * as DeleteAccountModal from './DeleteAccount'
 import * as InviteCodesModal from './InviteCodes'
 import * as ContentLanguagesSettingsModal from './lang-settings/ContentLanguagesSettings'
 import * as PostLanguagesSettingsModal from './lang-settings/PostLanguagesSettings'
+import * as RecipePreparationModal from './RecipePreparation'
 import * as RecipeRevisionViewModal from './RecipeRevisionView'
 import * as UserAddRemoveLists from './UserAddRemoveLists'
 import * as UserFeedbackModal from './UserFeedback'
-import * as RecipePreparationModal from './RecipePreparation'
 
 export function ModalsContainer() {
   const {isModalActive, activeModals} = useModals()
@@ -52,6 +52,7 @@ function Modal({modal}: {modal: ModalIface}) {
     // do nothing, we just want to stop it from bubbling
   }
 
+  let containerStyles = styles.container
   let element
   if (modal.name === 'create-or-edit-list') {
     element = <CreateOrEditListModal.Component {...modal} />
@@ -72,7 +73,13 @@ function Modal({modal}: {modal: ModalIface}) {
   } else if (modal.name === 'user-feedback') {
     element = <UserFeedbackModal.Component />
   } else if (modal.name === 'recipe-preparation') {
-    element = <RecipePreparationModal.Component recipePost={modal.recipePost} onReviewRecipe={modal.onReviewRecipe} />
+    element = (
+      <RecipePreparationModal.Component
+        recipePost={modal.recipePost}
+        onReviewRecipe={modal.onReviewRecipe}
+      />
+    )
+    containerStyles = styles.scrollableContainer
   } else {
     return null
   }
@@ -88,7 +95,7 @@ function Modal({modal}: {modal: ModalIface}) {
         <TouchableWithoutFeedback onPress={onInnerPress}>
           <View
             style={[
-              styles.container,
+              containerStyles,
               isMobile && styles.containerMobile,
               pal.view,
               pal.border,
@@ -127,5 +134,17 @@ const styles = StyleSheet.create({
   containerMobile: {
     borderRadius: 0,
     paddingHorizontal: 0,
+  },
+  scrollableContainer: {
+    width: 600,
+    // @ts-ignore web only
+    maxWidth: '100vw',
+    // @ts-ignore web only
+    maxHeight: '90vh',
+    paddingVertical: 20,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    overflow: 'scroll',
   },
 })

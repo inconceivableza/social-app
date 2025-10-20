@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid/non-secure'
 import { AppBskyEmbedImages, AppFoodiosFeedRecipeRevision, AppFoodiosFeedRecipeRevisionRecord, RichText } from '@atproto/api'
 import { RecipePostView } from '#/lib/api/feed/utils'
 import _ from 'lodash'
+import { Attribution } from '../recipe/RecipeAttribution'
 
 type TaggedUnion<Tag extends string, O extends object> = {
     [K in keyof O]: Record<Tag, K> & O[K]
@@ -29,16 +30,27 @@ interface InstructionSectionDraft {
     instructions: InstructionDraft[]
 }
 
+type NutritionDraft = Omit<AppFoodiosFeedRecipeRevision.Nutrition, "$type">
+
 export interface RecipePostDraft {
     id: string,
     name: string
     text: RichText
     ingredients: IngredientDraft[]
     instructionSections: InstructionSectionDraft[]
+    prepTime?: string
+    cookTime?: string
+    cuisines?: string[]
+    categories?: string[]
+    suitableForDiet?: string[]
+    recipeYield?: { quantity: string, unit: string }
+    nutrition?: NutritionDraft
+    attribution?: Attribution
     embed: EmbedDraft
     labels: SelfLabel[]
     tags?: string[]
 }
+
 
 export type RecipeComposerAction = TaggedUnion<
     'type',
@@ -54,7 +66,15 @@ export type RecipeComposerAction = TaggedUnion<
         add_ingredient: {}
         edit_ingredient: { value: string, prop: keyof IngredientDraft, id: string }
         remove_ingredient: { id: string }
-    }
+        add_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
+        remove_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
+        set_prep_time: { value: string }
+        set_cook_time: { value: string }
+        set_yield: { field: "quantity" | "unit", value: string }
+        set_nutrition_serving: { field: "quantity" | "unit", value: string }
+        update_nutrition: { field: Exclude<keyof NutritionDraft, "servingSize">, value: string }
+        update_attribution: { value?: Attribution }
+    } 
     > | EmbedAction
 
 function findById<T extends { id: string }>(arr: T[], id: string) {
@@ -149,6 +169,58 @@ function recipePostReducer(
             }
             return state
         }
+        case 'add_element': {
+            if (state[action.field]?.includes(action.value)) {
+                return state
+            }
+            const arr = state[action.field] ??= []
+            arr.push(action.value)
+            return state
+        }
+        case 'remove_element': {
+            const arr = state[action.field]
+            if (!arr) return state;
+            const idx = arr.indexOf(action.value)
+            if (idx < 0) {
+                return state
+            }
+            arr.splice(idx, 1)
+            return state
+        }
+        case 'set_cook_time': {
+            state.cookTime = action.value
+            return state
+        }
+        case 'set_prep_time': {
+            state.prepTime = action.value
+            return state
+        }
+        case 'set_yield': {
+            const recipeYield = state.recipeYield ??= { quantity: "0", unit: "" }
+            recipeYield[action.field] = action.value
+            return state
+        }
+        case 'set_nutrition_serving': {
+            const nutrition = state.nutrition ??= {
+                servingSize: { quantity: "0", unit: "" },
+                energy: "0"
+            }
+            nutrition.servingSize[action.field] = action.value
+            return state
+        }
+        case 'update_nutrition': {
+            const nutrition = state.nutrition ??= {
+                servingSize: { quantity: "0", unit: "" },
+                energy: "0"
+            }
+            nutrition[action.field] = action.value
+            return state
+        }
+        case 'update_attribution': {
+            state.attribution = action.value
+            return state
+        }
+
         default: {
             const embedState = embedReducer(state, action)
             return {
@@ -232,7 +304,9 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         },
     }
 
-    const { name, text, facets, ingredients, instructionSections, labels, embed } = init.record.revisionContent
+    const { name, text, facets, ingredients, instructionSections, labels, embed,
+        recipeCuisine, recipeCategory, prepTime, cookingTime
+    } = init.record.revisionContent
 
     return {
         id: nanoid(),
@@ -248,6 +322,9 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         })) : [newSection()],
         labels: _.cloneDeep(labels?.values ?? []),
         embed: embedToDraft(embed),
+        cuisines: recipeCuisine,
+        categories: recipeCategory,
+
     }
 }
 

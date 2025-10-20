@@ -54,9 +54,11 @@ export function Target({children}: {children: React.ReactNode}) {
 export function Content({
   children,
   label,
+  fill
 }: {
   children: React.ReactNode
   label: string
+    fill?: string
 }) {
   const t = useTheme()
   const {position, onVisibleChange} = useContext(TooltipContext)
@@ -71,6 +73,7 @@ export function Content({
         onInteractOutside={() => onVisibleChange(false)}
         style={flatten([
           a.rounded_sm,
+          fill ? { backgroundColor: fill } :
           select(t.name, {
             light: t.atoms.bg,
             dark: t.atoms.bg_contrast_100,
@@ -88,7 +91,7 @@ export function Content({
         <Popover.Arrow
           width={ARROW_SIZE}
           height={ARROW_SIZE / 2}
-          fill={select(t.name, {
+          fill={fill ?? select(t.name, {
             light: t.atoms.bg.backgroundColor,
             dark: t.atoms.bg_contrast_100.backgroundColor,
             dim: t.atoms.bg_contrast_100.backgroundColor,

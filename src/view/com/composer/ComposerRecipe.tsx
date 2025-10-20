@@ -34,25 +34,29 @@ import {
     type EmojiPickerState,
 } from '#/view/com/composer/text-input/web/EmojiPicker'
 import { TextInputRef, TextInput } from "./text-input/TextInput";
-import { usePalette } from "#/lib/hooks/usePalette";
 import { colors } from "#/lib/styles";
-import { Text } from '#/view/com/util/text/Text'
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsKeyboardVisible } from "#/lib/hooks/useIsKeyboardVisible";
-import { clearThumbnailCache } from "./videos/VideoTranscodeBackdrop";
 import { RecipePostView } from "#/lib/api/feed/utils";
 import { retry } from "#/lib/async/retry";
 import { emitPostCreated } from "#/state/events";
 import { logger } from "#/logger";
 import * as Toast from '#/view/com/util/Toast'
-import { Input, LabelText } from "#/components/forms/TextField";
+import * as TextField from "#/components/forms/TextField";
 import { Trash_Stroke2_Corner0_Rounded as TrashIcon } from '#/components/icons/Trash'
-import { H1, H2 } from "#/components/Typography";
+import { H2 } from "#/components/Typography";
 import { PlusSmall_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icons/Plus"
 import * as Menu from '#/components/Menu'
 import { HITSLOP_20 } from '#/lib/constants'
 import { DotGrid_Stroke2_Corner0_Rounded as Ellipsis } from '#/components/icons/DotGrid'
 import { BottomSheetPortalProvider } from '../../../../modules/bottom-sheet'
+import { ComboBox } from "#/components/forms/ComboBox";
+import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecipe";
+import { NumberField } from "#/components/forms/NumberField";
+import { AppFoodiosFeedRecipeRevision } from "@atproto/api";
+import { RecipeAttribution } from "./recipe/RecipeAttribution";
+import { Accordion } from "../../../components/Accordion";
+import { NutritionElement, nutritionFields } from "../recipe/NutritionFields";
 
 const msgs = {
     button_add_ingredient: msg({
@@ -226,8 +230,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         closeComposer()
     }, [closeComposer])
 
-
-
     return <BottomSheetPortalProvider>
         <KeyboardAvoidingView
             testID="composePostView"
@@ -255,19 +257,78 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         paddingHorizontal: 8,
                     }]}
                 >
-                    <Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
+                    <TextField.Root>
+                        <TextField.Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
                         style={[a.pt_xs]}
 
                         inputRef={titleInputRef}
                         onChangeText={value => dispatch({ type: 'update_name', value })}
                         autoFocus
-                        onFocus={() => {
-                            console.log('!')
-                            setFocused("title")
-                            //currentRef.current = titleInputRef.current ?? undefined
-                        }}
+
                         label={_(msg`Title`)}
                     />
+                    </TextField.Root>
+
+                    <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center]}>
+                        <View style={[a.flex_row, a.gap_xs, a.border, t.atoms.border_contrast_low, a.rounded_sm, a.p_sm, { width: "40%" }]}>
+                            <View style={[{ width: "65%" }]}>
+                                <NumberField label={_(msg`Yield`)} defaultValue={state.recipeYield?.quantity}
+                                    onChange={value => dispatch({ type: 'set_yield', field: 'quantity', value })}
+                                />
+                            </View>
+                            <View style={[{ width: "35%" }]}>
+                                <TextField.Root >
+                                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
+                                        onChangeText={value => dispatch({ type: 'set_yield', field: 'unit', value })}
+                                    />
+                                </TextField.Root>
+                            </View>
+                        </View>
+
+                        <View style={{ width: "40%" }}>
+                            <ComboBox options={recipeCategories} label={_(msg`Categories`)}
+                                selection={state.categories ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'categories', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'categories', value })}
+                            />
+                        </View>
+                    </View>
+                    <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
+                        <View style={{ width: "40%" }}>
+
+                            <ComboBox options={recipeDiets} label={_(msg`Suitable diets`)}
+                                selection={state.suitableForDiet ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'suitableForDiet', value })}
+                            />
+                        </View>
+                        <View style={{ width: "40%" }}>
+                            <ComboBox options={recipeCuisines} label={_(msg`Cuisine type`)}
+                                selection={state.cuisines ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'cuisines', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'cuisines', value })}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={[a.flex_row, a.gap_md]}>
+                        <View style={{ flexBasis: "40%" }}>
+                            <NumberField label={_(msg`Preparation time`)} defaultValue={state.prepTime}
+                                onChange={value => dispatch({ type: 'set_prep_time', value })}
+                            >
+                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                            </NumberField>
+                        </View>
+
+                        <View style={[{ flexBasis: "40%" }]}>
+                            <NumberField label={_(msg`Cooking time`)} defaultValue={state.cookTime}
+                                onChange={value => dispatch({ type: 'set_cook_time', value })}
+                            >
+                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                            </NumberField>
+                        </View>
+                    </View>
+
                     <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
 
                         {/* TODO fix color, width */}
@@ -313,6 +374,16 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         </View>
                         <RecipeInstructions state={state} dispatch={dispatch} />
                     </View>
+
+                    <Accordion heading={_(msg`Nutritional Information`)}>
+                        <RecipeNutrition state={state} dispatch={dispatch} />
+                    </Accordion>
+
+                    <Accordion heading={_(msg`Attribution`)}>
+                        <RecipeAttribution value={state.attribution}
+                            onChange={(value) => dispatch({ type: 'update_attribution', value })} />
+                    </Accordion>
+
                     <View>
                         <ComposerEmbeds
                             canRemoveQuote={true} // TODO: check this
@@ -322,13 +393,9 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             isActivePost={true}
                         />
                     </View>
-
-
-
-
                 </Animated.ScrollView>
                 <ComposerFooter
-                    emojiEnabled={focused === "description" || focused === "title"}
+                    emojiEnabled={focused === "description"}
                     post={state}
                     dispatch={dispatch}
 
@@ -347,31 +414,73 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
 
 }
 
+function NutritionField({ unit, state, dispatch, field, label, subFields }:
+    NutritionElement & { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+    const { _ } = useLingui()
+    return <View style={[a.gap_xs]}>
+        <NumberField defaultValue={state.nutrition?.[field]} label={_(label)}
+            onChange={value => dispatch({ type: 'update_nutrition', field, value })}
+        >
+            <TextField.SuffixText label={_(unit)} >{_(unit)}</TextField.SuffixText>
+        </NumberField>
+        <View style={[a.pl_md]}>
+            {subFields?.map(subField => <NutritionField key={subField.field} {...subField} state={state} dispatch={dispatch} />)}
+        </View>
+    </View>
+}
+
+function RecipeNutrition({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+    const { _ } = useLingui()
+
+    return <View style={[a.gap_xs]}>
+        <View style={[a.flex_row, a.gap_xs]}>
+            <View>
+                <NumberField label={_(msg`Serving size`)} defaultValue={state.nutrition?.servingSize.quantity}
+                    onChange={value => dispatch({ type: 'set_nutrition_serving', field: 'quantity', value })} />
+            </View>
+            <View>
+                <TextField.Root >
+                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.nutrition?.servingSize.unit}
+                        onChangeText={value => dispatch({ type: 'set_nutrition_serving', field: 'unit', value })}
+                    />
+                </TextField.Root>
+            </View>
+        </View>
+        {nutritionFields.map(field => <NutritionField key={field.field} {...field} state={state} dispatch={dispatch} />)}
+    </View>
+}
+
+
+
 function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
     const { _ } = useLingui()
     const t = useTheme()
 
-    return <View style={[a.gap_sm, a.border, a.p_sm, {
-        borderColor: t.palette.contrast_100
-    }]}><View style={[a.gap_xs]}>
+    return <View style={[a.gap_sm, a.border, a.p_sm, t.atoms.border_contrast_low, a.rounded_sm]}><View style={[a.gap_xs]}>
             {state.ingredients.map(({ id, name, quantity, unit }) =>
                 <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
                     {/* TODO rather use labels instead of placeholders for small screens */}
 
                     <View style={{ flexGrow: 1, flexBasis: '50%' }}>
-                        <Input label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
+                        <TextField.Root>
+                            <TextField.Input label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
                             dispatch({ type: "edit_ingredient", prop: "name", value, id })
                         }} />
+                        </TextField.Root>
                     </View>
 
                     <View style={{ flexBasis: "17%" }}>
-                        <Input label={_(msg`Quantity`)} defaultValue={quantity} keyboardType="numeric" onChangeText={value => {
+                        <NumberField label={_(msg`Quantity`)} defaultValue={quantity} onChange={value => {
                             dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
-                        }} /></View>
+                        }} />
+                    </View>
                     <View style={{ flexBasis: "11%" }}>
-                        <Input label={_(msg`Unit`)} defaultValue={unit} onChangeText={value => {
+                        <TextField.Root>
+                            <TextField.Input label={_(msg`Unit`)} defaultValue={unit} onChangeText={value => {
                             dispatch({ type: "edit_ingredient", prop: "unit", value, id })
-                        }} /></View>
+                            }} />
+                        </TextField.Root>
+                    </View>
                     <View style={{ justifyContent: "center" }}>
                         <Button
                             label={_(msg`Remove ingredient`)}
@@ -407,9 +516,8 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
     const t = useTheme()
     const hasMultiSections = state.instructionSections.length > 1 || state.instructionSections.at(0)?.name
     return <View >
-        {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, {
-            borderColor: t.palette.contrast_100
-        }]} key={section.id}>
+        {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, t.atoms.border_contrast_low, a.rounded_sm]}
+            key={section.id}>
             <View>
                 <View style={[a.gap_sm,]}>
                     {hasMultiSections &&
@@ -419,9 +527,11 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                                 // TODO: check on small screen
 
                             }]}>
-                                <Input defaultValue={section.name} onChangeText={value => {
+                                <TextField.Root>
+                                    <TextField.Input defaultValue={section.name} onChangeText={value => {
                                     dispatch({ type: "edit_section_name", sectionId: section.id, value })
                                 }} label={_(msg`Section title`)} />
+                                </TextField.Root>
                             </View>
                             <Menu.Root>
                                 <Menu.Trigger label={_(msg`Instruction section options`)}>
@@ -456,7 +566,8 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                         {section.instructions.map(instruction =>
                             <View style={[a.flex_row, a.gap_sm]} key={instruction.id}>
                                 <View style={[a.flex_grow]}>
-                                    <Input label={_(msg`Instruction`)}
+                                    <TextField.Root>
+                                        <TextField.Input label={_(msg`Instruction`)}
                                         defaultValue={instruction.text}
                                         onChangeText={value => {
                                             dispatch({
@@ -467,6 +578,8 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
                                             })
                                         }}
                                     />
+                                    </TextField.Root>
+
                                 </View>
                                 <View style={{ justifyContent: "center" }}>
                                     <Button
