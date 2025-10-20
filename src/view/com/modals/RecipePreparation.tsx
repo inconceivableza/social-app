@@ -1,5 +1,6 @@
 import {useEffect, useMemo, useState} from 'react'
 import {View} from 'react-native'
+import {UITextView} from 'react-native-uitextview'
 import {RichText as RichTextAPI} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -16,7 +17,7 @@ import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {RichText} from '#/components/RichText'
-import {H1, H2, H3, Text} from '#/components/Typography'
+import {H1, H2, H3} from '#/components/Typography'
 import {usePreparationState} from '../recipe-preparation/recipePreparation'
 
 export const snapPoints = ['fullscreen']
@@ -324,14 +325,15 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
         {borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400},
       ]}>
       <View>
-        <Text
+        <UITextView
           style={[
             a.font_bold,
             a.leading_tight,
             timingState === 'complete' ? {color: t.palette.negative_300} : {},
+            {fontFamily: 'monospace'},
           ]}>
           {displayTime(seconds)}
-        </Text>
+        </UITextView>
       </View>
       <Button label={_(msg`Stop timer`)} onPress={onDelete}>
         <ButtonIcon icon={TrashIcon} />
