@@ -225,7 +225,7 @@ export async function postRecipe(
     resolveRT(agent, post.text),
     resolveEmbed(agent, qc, post, () => {}),
   ])
-
+  // TODO: factor out a conversion function from draft to record - also used in postRecipeRevision
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
     $type: 'app.foodios.feed.recipeRevision',
     recipePostRef: {
@@ -239,6 +239,14 @@ export async function postRecipe(
     facets: rt.facets,
     name: post.name,
     embed,
+    cookingTime: post.cookTime,
+    prepTime: post.prepTime,
+    recipeCategory: post.categories,
+    recipeCuisine: post.cuisines,
+    suitableForDiet: post.suitableForDiet,
+    attribution: post.attribution,
+    nutrition: post.nutrition,
+    recipeYield: post.recipeYield,
   }
   const validationResult =
     AppFoodiosFeedRecipeRevision.validateRecord(revisionRecord)
@@ -317,6 +325,14 @@ export async function postRecipeRevision(
     facets: rt.facets,
     name: post.name,
     embed,
+    cookingTime: post.cookTime,
+    prepTime: post.prepTime,
+    recipeCategory: post.categories,
+    recipeCuisine: post.cuisines,
+    suitableForDiet: post.suitableForDiet,
+    attribution: post.attribution,
+    nutrition: post.nutrition,
+    recipeYield: post.recipeYield,
   }
 
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [

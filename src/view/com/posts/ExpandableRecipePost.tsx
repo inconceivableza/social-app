@@ -1,12 +1,16 @@
-import { atoms as a, useTheme } from '#/alf'
+import { atoms as a, atoms, useTheme } from '#/alf'
 import { RichText } from '#/components/RichText'
 import { H1, H2, H3, Text } from '#/components/Typography'
-import { AppFoodiosFeedDefs } from "@atproto/api"
-import { Trans } from '@lingui/macro'
+import { AppFoodiosFeedDefs, AppFoodiosFeedRecipeRevision } from "@atproto/api"
+import { Trans, msg, plural } from '@lingui/macro'
 import React, { useMemo, useState } from "react"
 import { View } from "react-native"
 import { RichText as RichTextAPI } from "@atproto/api"
 import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
+import { useLingui } from '@lingui/react'
+import { Accordion } from '#/components/Accordion'
+import { NutritionElement, nutritionFields } from '../recipe/NutritionFields'
+import { RecipeAttributionDisplay } from '../recipe/RecipeAttributionDisplay'
 
 export function ExpandableRecipePost({
     revision,
@@ -29,9 +33,11 @@ export function ExpandedRecipePost({
     expanded: boolean
         titleComponent?: React.ReactNode
 }) {
-    // TODO: include embeds
+    // TODO: include embeds - currently added by wrappers
+    // TODO: count lines - if too long truncate unless expanded
     const record = revision.revisionContent
     const t = useTheme()
+    const { _ } = useLingui()
     const richText = useMemo(() => {
         return new RichTextAPI({
             text: revision.revisionContent.text,
@@ -46,6 +52,37 @@ export function ExpandedRecipePost({
 
             {titleComponent}
         </View>
+        <View style={a.gap_xs}>
+
+            {record.recipeCategory?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                <Text>{`${plural(record.recipeCategory.length, {
+                    one: 'Category',
+                    other: 'Categories'
+                })}:`}</Text>
+                {/* TODO: make these clickable */}
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCategory.map(value => <Text>{_(value)}</Text>)}</View>
+            </View>}
+
+            {record.suitableForDiet?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                <Text>{`${plural(record.suitableForDiet.length, {
+                    one: 'Suitable for diet',
+                    other: 'Suitable for diets'
+                })}:`}</Text>
+                {/* TODO: make these clickable */}
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.suitableForDiet.map(value => <Text>{_(value)}</Text>)}</View>
+            </View>}
+
+            {record.recipeCuisine?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+                <Text>{`${plural(record.recipeCuisine.length, {
+                    one: 'Cuisine',
+                    other: 'Cuisines'
+                })}:`}</Text>
+                {/* TODO: make these clickable */}
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCuisine.map(value => <Text>{_(value)}</Text>)}</View>
+            </View>}
+
+            {/* TODO: recipe yield */}
+        </View>
         <View>
             <RichText
                 enableTags
@@ -55,7 +92,20 @@ export function ExpandedRecipePost({
                 shouldProxyLinks={true}
             />
         </View>
-        {expanded && <View>
+        {expanded && <View style={[a.gap_xs]}>
+            <View>
+                {/* TODO replace labels with icons */}
+                {record.prepTime ? <View>
+                    <Text>{`${_(msg`Prep:`)} ${plural(record.prepTime, {
+                        one: '# minute',
+                        other: '# minutes'
+                    })}`}</Text>
+                </View> : null}
+
+                {record.cookingTime ? <View>
+                    <Text>{`${_(msg`Cook:`)} ${record.cookingTime} ${_(msg`minutes`)}`}</Text>
+                </View> : null}
+            </View>
             <View >
                 <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
                     <Trans context="recipe">Ingredients</Trans>
@@ -86,6 +136,35 @@ export function ExpandedRecipePost({
                     </View>
                 })}
             </View>
+            {record.nutrition && <Accordion heading={_(msg`Nutritional Information`)}>
+                <NutritionView nutrition={record.nutrition} />
+            </Accordion>}
+
+            {record.attribution && <Accordion heading={_(msg`Attribution`)}>
+                <RecipeAttributionDisplay attribution={record.attribution} />
+            </Accordion>}
         </View>}
+    </View>
+}
+
+function NutritionView({ nutrition }: { nutrition: AppFoodiosFeedRecipeRevision.Nutrition }) {
+    return <View style={[atoms.gap_xs]}>
+        {nutritionFields.map((field) => <NutritionalValue {...field} nutrition={nutrition} />)}
+    </View>
+}
+
+function NutritionalValue({ nutrition, field, label, unit, subFields }: NutritionElement &
+{ nutrition: AppFoodiosFeedRecipeRevision.Nutrition }) {
+    const { _ } = useLingui()
+    const value = nutrition[field]
+    if (!value) {
+        return null
+    }
+    return <View key={field} style={atoms.gap_xs}>
+        <Text>{`${_(label)}: ${value}${_(unit)}`}</Text>
+        {subFields && <View style={[atoms.pl_sm, atoms.gap_xs]}>
+            {subFields.map(subField => <NutritionalValue {...subField} nutrition={nutrition} />)}
+        </View>
+        }
     </View>
 }
