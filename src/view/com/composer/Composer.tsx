@@ -376,7 +376,7 @@ export const ComposePost = ({
     thread.posts.every(
       post =>
         post.shortenedGraphemeLength <= MAX_GRAPHEME_LENGTH &&
-        !isEmptyPost(post) &&
+        (!isEmptyPost(post) || post.rating !== undefined) &&
         !(
           post.embed.media?.type === 'video' &&
           post.embed.media.video.status === 'error'
@@ -699,6 +699,8 @@ export const ComposePost = ({
             isPublishing={isPublishing}
             isThread={thread.posts.length > 1}
             isReviewRating={postType === 'review-rating'}
+            hasRating={thread.posts[0]?.rating !== undefined}
+            hasReview={!isEmptyPost(thread.posts[0])}
             publishingStage={publishingStage}
             topBarAnimatedStyle={topBarAnimatedStyle}
             onCancel={onPressCancel}
@@ -1038,6 +1040,8 @@ function ComposerTopBar({
   isPublishing,
   isThread,
   isReviewRating,
+  hasRating,
+  hasReview,
   publishingStage,
   onCancel,
   onPublish,
@@ -1051,6 +1055,8 @@ function ComposerTopBar({
   isPublishQueued: boolean
   isThread: boolean
   isReviewRating: boolean
+  hasRating: boolean
+  hasReview: boolean
   onCancel: () => void
   onPublish: () => void
   topBarAnimatedStyle: StyleProp<ViewStyle>
@@ -1133,7 +1139,9 @@ function ComposerTopBar({
             disabled={!canPost || isPublishQueued}>
             <ButtonText style={[a.text_md]}>
               {isReviewRating ? (
-                <Trans context="action">Post Review</Trans>
+                <Trans context="action">
+                  {hasRating && !hasReview ? 'Post Rating' : 'Post Review'}
+                </Trans>
               ) : isReply ? (
                 <Trans context="action">Reply</Trans>
               ) : isThread ? (

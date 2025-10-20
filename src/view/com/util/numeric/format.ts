@@ -31,5 +31,5 @@ export const formatRating = (
           // @ts-expect-error - roundingMode not in the types
           roundingMode: 'trunc',
         })
-  return reviewersStr ? ratingStr : `${ratingStr} (${reviewersStr})`
+  return !reviewersStr ? ratingStr : `${ratingStr} (${reviewersStr})`
 }

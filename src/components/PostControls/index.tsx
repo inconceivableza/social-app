@@ -8,6 +8,7 @@ import {
   AppFoodiosFeedReviewRating,
   type RichText as RichTextAPI,
 } from '@atproto/api'
+import {isRecipeRevisionView} from '@atproto/api/client/types/app/foodios/feed/defs'
 import {msg, plural} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import type React from 'react'
@@ -40,10 +41,6 @@ import {
 import {PostMenuButton} from './PostMenu'
 import {RepostButton} from './RepostButton'
 import {ShareMenuButton} from './ShareMenu'
-
-function randomInt(max: number, min: number = 0) {
-  return Math.floor(Math.random() * (max - min)) + min
-}
 
 let PostControls = ({
   big,
@@ -200,16 +197,37 @@ let PostControls = ({
   }
 
   const constitutesRating = AppFoodiosFeedReviewRating.isRecord(record)
+  const receivesRatings = isRecipeRevisionView(record)
+  const reviewCount = post?.reviewCount ?? undefined
+  const replyCount: number | undefined =
+    post.replyCount !== undefined && reviewCount === undefined
+      ? undefined
+      : (post.replyCount ?? 0) + (reviewCount ?? 0)
+  const aggRatingAverage100 = post?.ratingAverage100 ?? undefined
+  const aggRatingCount = post?.ratingCount ?? undefined
+  const receivedRatings = receivesRatings
+    ? {
+        ratingAverage:
+          aggRatingAverage100 !== undefined && aggRatingCount
+            ? aggRatingAverage100 / 100 / 2
+            : undefined,
+        ratingCount: aggRatingCount ?? 0,
+      }
+    : {ratingAverage: undefined, ratingCount: 0}
 
-  const {rating, ratingCount} = constitutesRating
-    ? {rating: halveStars(record.reviewRating), ratingCount: undefined}
-    : randomInt(10) < 3
-      ? {rating: undefined, ratingCount: 0}
-      : {
-          rating: randomInt(10, 100) / 20.0,
-          ratingCount:
-            randomInt(100) + (randomInt(20) < 3 ? randomInt(1000) : 0),
+  const {showRatings, rating, ratingCount} = receivesRatings
+    ? {
+        showRatings: true,
+        rating: receivedRatings.ratingAverage,
+        ratingCount: receivedRatings.ratingCount,
+      }
+    : constitutesRating
+      ? {
+          showRatings: true,
+          rating: halveStars(record.reviewRating),
+          ratingCount: undefined,
         }
+      : {showRatings: false, rating: undefined, ratingCount: 0}
 
   return (
     <>
@@ -221,55 +239,68 @@ let PostControls = ({
           !big && a.pt_2xs,
           style,
         ]}>
-        <View
-          style={[
-            big ? a.align_center : [a.flex_1, a.align_start, {marginLeft: -6}],
-            replyDisabled ? {opacity: 0.5} : undefined,
-          ]}>
-          <PostControlButton
-            testID="rateBtn"
-            onPress={
-              !replyDisabled && !constitutesRating
-                ? () => requireAuth(() => onPressReviewRate())
-                : undefined
-            }
-            label={_(
-              msg({
-                message: `Rating (${plural(post.replyCount || 0, {
-                  one: '# rating',
-                  other: '# ratings',
-                })})`,
-                comment:
-                  'Accessibility label for the ratings button, verb form followed by number of ratings and noun form',
-              }),
-            )}
-            big={big}>
-            {typeof rating === 'undefined' ? (
-              <></>
-            ) : constitutesRating ? (
-              <>
-                <PostControlButtonIcon icon={getStarsSVG(rating)} />
-                <PostControlButtonText>
-                  {formatRating(i18n, rating, undefined)}
-                </PostControlButtonText>
-              </>
-            ) : typeof ratingCount !== 'undefined' && ratingCount > 0 ? (
-              <>
-                <PostControlButtonIcon icon={getStarsSVG(rating)} />
-                <PostControlButtonText>
-                  {formatRating(i18n, rating, ratingCount)}
-                </PostControlButtonText>
-              </>
-            ) : (
-              <>
-                <PostControlButtonIcon icon={unratedSVG} />
-                <PostControlButtonText style={{fontStyle: 'italic'}}>
-                  Not rated yet...
-                </PostControlButtonText>
-              </>
-            )}
-          </PostControlButton>
-        </View>
+        {showRatings && (
+          <View
+            style={[
+              big
+                ? a.align_center
+                : [a.flex_1, a.align_start, {marginLeft: -6}],
+              replyDisabled ? {opacity: 0.5} : undefined,
+            ]}>
+            <PostControlButton
+              testID="rateBtn"
+              onPress={
+                !replyDisabled && receivesRatings
+                  ? () => requireAuth(() => onPressReviewRate())
+                  : undefined
+              }
+              label={_(
+                msg({
+                  message: `Rating (${plural(post.replyCount || 0, {
+                    one: '# rating',
+                    other: '# ratings',
+                  })})`,
+                  comment:
+                    'Accessibility label for the ratings button, verb form followed by number of ratings and noun form',
+                }),
+              )}
+              big={big}>
+              {constitutesRating ? (
+                <>
+                  <PostControlButtonIcon
+                    icon={
+                      rating === undefined ? unratedSVG : getStarsSVG(rating)
+                    }
+                  />
+                  <PostControlButtonText
+                    style={rating === undefined && {fontStyle: 'italic'}}>
+                    {rating !== undefined
+                      ? formatRating(i18n, rating, undefined)
+                      : 'No rating given'}
+                  </PostControlButtonText>
+                </>
+              ) : receivesRatings ? (
+                rating !== undefined ? (
+                  <>
+                    <PostControlButtonIcon icon={getStarsSVG(rating)} />
+                    <PostControlButtonText>
+                      {formatRating(i18n, rating, ratingCount)}
+                    </PostControlButtonText>
+                  </>
+                ) : (
+                  <>
+                    <PostControlButtonIcon icon={unratedSVG} />
+                    <PostControlButtonText style={{fontStyle: 'italic'}}>
+                      Not rated yet...
+                    </PostControlButtonText>
+                  </>
+                )
+              ) : (
+                <></>
+              )}
+            </PostControlButton>
+          </View>
+        )}
       </View>
       <View
         style={[
@@ -293,7 +324,7 @@ let PostControls = ({
             }
             label={_(
               msg({
-                message: `Reply (${plural(post.replyCount || 0, {
+                message: `Reply (${plural(replyCount || 0, {
                   one: '# reply',
                   other: '# replies',
                 })})`,
@@ -303,9 +334,9 @@ let PostControls = ({
             )}
             big={big}>
             <PostControlButtonIcon icon={Bubble} />
-            {typeof post.replyCount !== 'undefined' && post.replyCount > 0 && (
+            {typeof replyCount !== 'undefined' && replyCount > 0 && (
               <PostControlButtonText>
-                {formatCount(i18n, post.replyCount)}
+                {formatCount(i18n, replyCount)}
               </PostControlButtonText>
             )}
           </PostControlButton>
