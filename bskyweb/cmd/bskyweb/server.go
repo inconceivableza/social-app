@@ -785,9 +785,9 @@ type EnvConfigResponse struct {
 	LINK_HOST               string `json:"LINK_HOST"`
 	OGCARD_URL              string `json:"OGCARD_URL"`
 	PREVIEW_LINK_META_PROXY string `json:"PREVIEW_LINK_META_PROXY"`
-	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"`
+	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"` // not currently used by main social-app's env-config
 	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
-	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"`
+	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"` // not currently used by main social-app's env-config
 	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
 	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
 	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
