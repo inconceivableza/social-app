@@ -26,7 +26,7 @@ export type CommonNavigatorParams = {
   PostRepostedBy: {name: string; postType: string; rkey: string}
   PostQuotes: {name: string; postType: string; rkey: string}
   RecipeThread: {name: string; rkey: string}
-  ReviewRatingThread: {name: string, rkey: string}
+  ReviewRatingThread: {name: string; rkey: string}
   ProfileFeed: {
     name: string
     rkey: string
@@ -81,9 +81,14 @@ export type CommonNavigatorParams = {
   Start: {name: string; rkey: string}
   StarterPack: {name: string; rkey: string; new?: boolean}
   StarterPackShort: {code: string}
-  StarterPackWizard: undefined
+  StarterPackWizard: {
+    fromDialog?: boolean
+    targetDid?: string
+    onSuccess?: () => void
+  }
   StarterPackEdit: {rkey?: string}
   VideoFeed: VideoFeedSourceContext
+  Bookmarks: undefined
 }
 
 export type BottomTabNavigatorParams = CommonNavigatorParams & {

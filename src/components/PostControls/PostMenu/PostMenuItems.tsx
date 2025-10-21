@@ -18,10 +18,10 @@ import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
 import {isRecipePostView, postHref, recordText} from '#/lib/api/feed/utils'
-import {IS_INTERNAL} from '#/lib/app-info'
 import {DISCOVER_DEBUG_DIDS} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
+import {useTranslate} from '#/lib/hooks/useTranslate'
 import {getCurrentRoute} from '#/lib/routes/helpers'
 import {
   type CommonNavigatorParams,
@@ -30,7 +30,6 @@ import {
 import {logEvent, useGate} from '#/lib/statsig/statsig'
 import {richTextToString} from '#/lib/strings/rich-text-helpers'
 import {toShareUrl} from '#/lib/strings/url-helpers'
-import {getTranslatorLink} from '#/locale/helpers'
 import {logger} from '#/logger'
 import {type Shadow} from '#/state/cache/post-shadow'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
@@ -85,6 +84,7 @@ import {
   useReportDialogControl,
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
+import {IS_INTERNAL} from '#/env'
 import * as bsky from '#/types/bsky'
 
 let PostMenuItems = ({
@@ -120,6 +120,7 @@ let PostMenuItems = ({
   const {hidePost} = useHiddenPostsApi()
   const feedFeedback = useFeedFeedbackContext()
   const openLink = useOpenLink()
+  const translate = useTranslate()
   const navigation = useNavigation<NavigationProp>()
   const {mutedWordsDialogControl} = useGlobalDialogsControlContext()
   const blockPromptControl = useDialogControl()
@@ -172,10 +173,6 @@ let PostMenuItems = ({
   const href = useMemo(() => {
     return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
-  const translatorUrl = getTranslatorLink(
-    recordText(post),
-    langPrefs.primaryLanguage,
-  )
 
   const onDeletePost = () => {
     deletePostMutate({uri: postUri}).then(
@@ -234,8 +231,8 @@ let PostMenuItems = ({
     Toast.show(_(msg`Copied to clipboard`), 'clipboard-check')
   }
 
-  const onPressTranslate = async () => {
-    await openLink(translatorUrl, true)
+  const onPressTranslate = () => {
+    translate(recordText(post), langPrefs.primaryLanguage)
 
     if (
       bsky.dangerousIsType<AppBskyFeedPost.Record>(
@@ -270,7 +267,9 @@ let PostMenuItems = ({
       feedContext: postFeedContext,
       reqId: postReqId,
     })
-    Toast.show(_(msg({message: 'Feedback sent!', context: 'toast'})))
+    Toast.show(
+      _(msg({message: 'Feedback sent to feed operator', context: 'toast'})),
+    )
   }
 
   const onPressShowLess = () => {
@@ -286,7 +285,9 @@ let PostMenuItems = ({
         feedContext: postFeedContext,
       })
     } else {
-      Toast.show(_(msg({message: 'Feedback sent!', context: 'toast'})))
+      Toast.show(
+        _(msg({message: 'Feedback sent to feed operator', context: 'toast'})),
+      )
     }
   }
 
@@ -507,13 +508,16 @@ let PostMenuItems = ({
         )}
 
         {isDiscoverDebugUser && (
-          <Menu.Item
-            testID="postDropdownReportMisclassificationBtn"
-            label={_(msg`Assign topic for algo`)}
-            onPress={onReportMisclassification}>
-            <Menu.ItemText>{_(msg`Assign topic for algo`)}</Menu.ItemText>
-            <Menu.ItemIcon icon={AtomIcon} position="right" />
-          </Menu.Item>
+          <>
+            <Menu.Divider />
+            <Menu.Item
+              testID="postDropdownReportMisclassificationBtn"
+              label={_(msg`Assign topic for algo`)}
+              onPress={onReportMisclassification}>
+              <Menu.ItemText>{_(msg`Assign topic for algo`)}</Menu.ItemText>
+              <Menu.ItemIcon icon={AtomIcon} position="right" />
+            </Menu.Item>
+          </>
         )}
 
         {hasSession && (

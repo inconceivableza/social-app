@@ -9,8 +9,6 @@ import {
   type ModerationDecision,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {
@@ -23,28 +21,25 @@ import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {countLines} from '#/lib/strings/helpers'
-import {colors, s} from '#/lib/styles'
+import {colors} from '#/lib/styles'
 import {
   POST_TOMBSTONE,
   type Shadow,
   usePostShadow,
 } from '#/state/cache/post-shadow'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
-import {precacheProfile} from '#/state/queries/profile'
-import {useSession} from '#/state/session'
+import {unstableCacheProfileView} from '#/state/queries/profile'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
-import {Text} from '#/view/com/util/text/Text'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
-import {UserInfoText} from '#/view/com/util/UserInfoText'
 import {atoms as a} from '#/alf'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {LabelsOnMyPost} from '#/components/moderation/LabelsOnMe'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {Embed, PostEmbedViewContext} from '#/components/Post/Embed'
+import {PostRepliedTo} from '#/components/Post/PostRepliedTo'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
-import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
@@ -54,11 +49,13 @@ export function Post({
   showReplyLine,
   hideTopBorder,
   style,
+  onBeforePress,
 }: {
   post: AppBskyFeedDefs.PostView
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
+  onBeforePress?: () => void
 }) {
   const moderationOpts = useModerationOpts()
   // handle recipe post
@@ -110,6 +107,7 @@ export function Post({
         showReplyLine={showReplyLine}
         hideTopBorder={hideTopBorder}
         style={style}
+        onBeforePress={onBeforePress}
       />
     )
   }
@@ -124,6 +122,7 @@ function PostInner({
   showReplyLine,
   hideTopBorder,
   style,
+  onBeforePress: outerOnBeforePress,
 }: {
   post: Shadow<AppBskyFeedDefs.PostView>
   record:
@@ -134,6 +133,7 @@ function PostInner({
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
+  onBeforePress?: () => void
 }) {
   const queryClient = useQueryClient()
   const pal = usePalette('default')
@@ -164,9 +164,10 @@ function PostInner({
         author: post.author,
         embed: post.embed,
         moderation,
+        langs: record.langs,
       },
     })
-  }, [openComposer, post, richText, moderation])
+  }, [openComposer, post, richText, moderation, record.langs])
 
   const onPressReviewRate = useCallback(() => {
     if (dangerousIsRecipeView(post)) {
@@ -192,11 +193,9 @@ function PostInner({
   }, [setLimitLines])
 
   const onBeforePress = useCallback(() => {
-    precacheProfile(queryClient, post.author)
-  }, [queryClient, post.author])
-
-  const {currentAccount} = useSession()
-  const isMe = replyAuthorDid === currentAccount?.did
+    unstableCacheProfileView(queryClient, post.author)
+    outerOnBeforePress?.()
+  }, [queryClient, post.author, outerOnBeforePress])
 
   const [hover, setHover] = useState(false)
   return (
@@ -234,34 +233,7 @@ function PostInner({
             postHref={itemHref}
           />
           {replyAuthorDid !== '' && (
-            <View style={[s.flexRow, s.mb2, s.alignCenter]}>
-              <FontAwesomeIcon
-                icon="reply"
-                size={9}
-                style={[pal.textLight, s.mr5]}
-              />
-              <Text
-                type="sm"
-                style={[pal.textLight, s.mr2]}
-                lineHeight={1.2}
-                numberOfLines={1}>
-                {isMe ? (
-                  <Trans context="description">Reply to you</Trans>
-                ) : (
-                  <Trans context="description">
-                    Reply to{' '}
-                    <ProfileHoverCard did={replyAuthorDid}>
-                      <UserInfoText
-                        type="sm"
-                        did={replyAuthorDid}
-                        attr="displayName"
-                        style={[pal.textLight]}
-                      />
-                    </ProfileHoverCard>
-                  </Trans>
-                )}
-              </Text>
-            </View>
+            <PostRepliedTo parentAuthor={replyAuthorDid} />
           )}
           <LabelsOnMyPost post={post} />
           <ContentHider

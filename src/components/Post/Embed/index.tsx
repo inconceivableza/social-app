@@ -11,11 +11,17 @@ import {
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
-import { dangerousIsRecipeView, postHref, recipePostSummaryRichText, recordRevisionState } from '#/lib/api/feed/utils'
-import { usePalette } from '#/lib/hooks/usePalette'
+import {
+  dangerousIsRecipeView,
+  postHref,
+  recipePostSummaryRichText,
+  recordRevisionState,
+} from '#/lib/api/feed/utils'
+import {usePalette} from '#/lib/hooks/usePalette'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
+import {ExpandableRecipePost} from '#/view/com/posts/ExpandableRecipePost'
 import {PostAuthorDidProvider} from '#/view/com/posts/PostContext'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
@@ -44,7 +50,6 @@ import {
   QuoteEmbedViewContext,
 } from './types'
 import {VideoEmbed} from './VideoEmbed'
-import { ExpandableRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -90,14 +95,18 @@ function MediaEmbed({
   switch (embed.type) {
     case 'images': {
       return (
-        <ContentHider modui={rest.moderation?.ui('contentMedia')}>
+        <ContentHider
+          modui={rest.moderation?.ui('contentMedia')}
+          activeStyle={[a.mt_sm]}>
           <ImageEmbed embed={embed} {...rest} />
         </ContentHider>
       )
     }
     case 'link': {
       return (
-        <ContentHider modui={rest.moderation?.ui('contentMedia')}>
+        <ContentHider
+          modui={rest.moderation?.ui('contentMedia')}
+          activeStyle={[a.mt_sm]}>
           <ExternalEmbed
             link={embed.view.external}
             onOpen={rest.onOpen}
@@ -108,7 +117,9 @@ function MediaEmbed({
     }
     case 'video': {
       return (
-        <ContentHider modui={rest.moderation?.ui('contentMedia')}>
+        <ContentHider
+          modui={rest.moderation?.ui('contentMedia')}
+          activeStyle={[a.mt_sm]}>
           <VideoEmbed embed={embed.view} />
         </ContentHider>
       )
@@ -308,14 +319,15 @@ export function QuoteEmbed({
                   showAvatar
                   postHref={itemHref}
                   timestamp={quote.indexedAt}>
-                  {revisionState === "outdated" ? (
+                  {revisionState === 'outdated' ? (
                     <Text style={[a.pl_xs, t.atoms.text]}>
                       <Trans>Outdated</Trans>
                     </Text>
-                  ) : revisionState === "edited" ?
+                  ) : revisionState === 'edited' ? (
                     <Text style={[a.pl_xs, t.atoms.text]}>
                       <Trans>Edited</Trans>
-                    </Text> : null}
+                    </Text>
+                  ) : null}
                 </PostMeta>
               </View>
               {moderation ? (
@@ -324,9 +336,9 @@ export function QuoteEmbed({
                   style={[a.py_xs]}
                 />
               ) : null}
-              {dangerousIsRecipeView(quote.record) ?
+              {dangerousIsRecipeView(quote.record) ? (
                 <ExpandableRecipePost revision={quote.record} />
-                : richText ? (
+              ) : richText ? (
                 <RichText
                   value={richText}
                   style={a.text_md}

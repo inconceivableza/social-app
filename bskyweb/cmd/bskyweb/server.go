@@ -422,6 +422,9 @@ func serve(cctx *cli.Context) error {
 	e.GET("/starter-pack-short/:code", server.WebGeneric)
 	e.GET("/start/:handleOrDID/:rkey", server.WebStarterPack)
 
+	// bookmarks
+	e.GET("/saved", server.WebGeneric)
+
 	// ipcc
 	e.GET("/ipcc", server.WebIpCC)
 
@@ -720,8 +723,10 @@ type IPCCRequest struct {
 type IPCCResponse struct {
 	CC               string `json:"countryCode"`
 	AgeRestrictedGeo bool   `json:"isAgeRestrictedGeo,omitempty"`
+	AgeBlockedGeo    bool   `json:"isAgeBlockedGeo,omitempty"`
 }
 
+// This product includes GeoLite2 Data created by MaxMind, available from https://www.maxmind.com.
 func (srv *Server) WebIpCC(c echo.Context) error {
 	realIP := c.RealIP()
 	addr, err := netip.ParseAddr(realIP)
@@ -767,17 +772,22 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 }
 
 type EnvConfigResponse struct {
+	ATP_APPVIEW_DID         string `json:"ATP_APPVIEW_DID"`
 	ATP_APPVIEW_URL         string `json:"ATP_APPVIEW_URL"`
+	ATP_PDS_DID             string `json:"ATP_PDS_DID"`
 	ATP_PDS_URL             string `json:"ATP_PDS_URL"`
 	ATP_PUBLIC_APPVIEW_URL  string `json:"ATP_PUBLIC_APPVIEW_URL"`
+	BLUESKY_PROXY_DID       string `json:"BLUESKY_PROXY_DID"`
+	CHAT_PROXY_DID          string `json:"CHAT_PROXY_DID"`
 	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
+	DM_SERVICE_DID          string `json:"DM_SERVICE_DID"`
 	GIF_SERVICE             string `json:"GIF_SERVICE"`
 	LINK_HOST               string `json:"LINK_HOST"`
 	OGCARD_URL              string `json:"OGCARD_URL"`
 	PREVIEW_LINK_META_PROXY string `json:"PREVIEW_LINK_META_PROXY"`
-	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"`
+	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"` // not currently used by main social-app's env-config
 	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
-	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"`
+	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"` // not currently used by main social-app's env-config
 	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
 	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
 	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
@@ -789,10 +799,15 @@ type EnvConfigResponse struct {
 
 func (srv *Server) WebEnvConfig(c echo.Context) error {
 	var outResponse = EnvConfigResponse{
+		ATP_APPVIEW_DID:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_DID"),
 		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
+		ATP_PDS_DID:             os.Getenv("EXPO_PUBLIC_ATP_PDS_DID"),
 		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
 		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
+		BLUESKY_PROXY_DID:       os.Getenv("EXPO_PUBLIC_BLUESKY_PROXY_DID"),
+		CHAT_PROXY_DID:          os.Getenv("EXPO_PUBLIC_CHAT_PROXY_DID"),
 		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
+		DM_SERVICE_DID:          os.Getenv("EXPO_PUBLIC_DM_SERVICE_DID"),
 		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
 		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),
 		OGCARD_URL:              os.Getenv("EXPO_PUBLIC_OGCARD_URL"),

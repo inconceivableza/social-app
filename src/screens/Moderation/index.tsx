@@ -23,6 +23,7 @@ import {
 import {isNonConfigurableModerationAuthority} from '#/state/session/additional-moderation-authorities'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {atoms as a, useBreakpoints, useTheme, type ViewStyleProp} from '#/alf'
+import {Admonition} from '#/components/Admonition'
 import {AgeAssuranceAdmonition} from '#/components/ageAssurance/AgeAssuranceAdmonition'
 import {Button, ButtonText} from '#/components/Button'
 import * as Dialog from '#/components/Dialog'
@@ -203,6 +204,24 @@ export function ModerationScreenInner({
 
   return (
     <View style={[a.pt_2xl, a.px_lg, gtMobile && a.px_2xl]}>
+      {isDeclaredUnderage && (
+        <View style={[a.pb_2xl]}>
+          <Admonition type="tip" style={[a.pb_md]}>
+            <Trans>
+              Your declared age is under 18. Some settings below may be
+              disabled. If this was a mistake, you may edit your birthdate in
+              your{' '}
+              <InlineLinkText
+                to="/settings/account"
+                label={_(msg`Go to account settings`)}>
+                account settings
+              </InlineLinkText>
+              .
+            </Trans>
+          </Admonition>
+        </View>
+      )}
+
       <Text
         style={[a.text_md, a.font_bold, a.pb_md, t.atoms.text_contrast_high]}>
         <Trans>Moderation tools</Trans>
@@ -406,7 +425,9 @@ export function ModerationScreenInner({
                         <Trans>
                           Adult content can only be enabled via the Web at{' '}
                           <InlineLinkText
-                            label={_(msg`The ${branding.naming.app_name} web application`)}
+                            label={_(
+                              msg`The ${branding.naming.app_name} web application`,
+                            )}
                             to=""
                             onPress={evt => {
                               evt.preventDefault()

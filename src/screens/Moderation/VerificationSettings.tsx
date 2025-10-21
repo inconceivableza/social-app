@@ -39,12 +39,17 @@ export function Screen() {
           <SettingsList.Item>
             <Admonition type="tip" style={[a.flex_1]}>
               <Trans>
-                Verifications on {branding.naming.app_name} work differently than on other
-                platforms.{' '}
+                Verifications on {branding.naming.app_name} work differently
+                than on other platforms.{' '}
                 <InlineLinkText
                   overridePresentation
                   to={urls.website.blog.initialVerificationAnnouncement}
-                  label={_(msg`Learn more`)}
+                  label={_(
+                    msg({
+                      message: `Learn more`,
+                      context: `english-only-resource`,
+                    }),
+                  )}
                   onPress={() => {
                     logger.metric(
                       'verification:learn-more',

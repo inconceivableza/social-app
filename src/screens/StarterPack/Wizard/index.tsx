@@ -9,7 +9,6 @@ import {
   AtUri,
   type ModerationOpts,
 } from '@atproto/api'
-import {type GeneratorView} from '@atproto/api/client/types/app/bsky/feed/defs'
 import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect, useNavigation} from '@react-navigation/native'
@@ -52,7 +51,7 @@ import {StepDetails} from '#/screens/StarterPack/Wizard/StepDetails'
 import {StepFeeds} from '#/screens/StarterPack/Wizard/StepFeeds'
 import {StepProfiles} from '#/screens/StarterPack/Wizard/StepProfiles'
 import {atoms as a, useTheme, web} from '#/alf'
-import {Button, ButtonText} from '#/components/Button'
+import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import {useDialogControl} from '#/components/Dialog'
 import * as Layout from '#/components/Layout'
 import {ListMaybePlaceholder} from '#/components/Lists'
@@ -68,11 +67,18 @@ export function Wizard({
   CommonNavigatorParams,
   'StarterPackEdit' | 'StarterPackWizard'
 >) {
-  const {rkey} = route.params ?? {}
+  const params = route.params ?? {}
+  const rkey = 'rkey' in params ? params.rkey : undefined
+  const fromDialog = 'fromDialog' in params ? params.fromDialog : false
+  const targetDid = 'targetDid' in params ? params.targetDid : undefined
+  const onSuccess = 'onSuccess' in params ? params.onSuccess : undefined
   const {currentAccount} = useSession()
   const moderationOpts = useModerationOpts()
 
   const {_} = useLingui()
+
+  // Use targetDid if provided (from dialog), otherwise use current account
+  const profileDid = targetDid || currentAccount!.did
 
   const {
     data: starterPack,
@@ -91,7 +97,7 @@ export function Wizard({
     data: profile,
     isLoading: isLoadingProfile,
     isError: isErrorProfile,
-  } = useProfileQuery({did: currentAccount?.did})
+  } = useProfileQuery({did: profileDid})
 
   const isEdit = Boolean(rkey)
   const isReady =
@@ -127,12 +133,17 @@ export function Wizard({
     <Layout.Screen
       testID="starterPackWizardScreen"
       style={web([{minHeight: 0}, a.flex_1])}>
-      <Provider starterPack={starterPack} listItems={listItems}>
+      <Provider
+        starterPack={starterPack}
+        listItems={listItems}
+        targetProfile={profile}>
         <WizardInner
           currentStarterPack={starterPack}
           currentListItems={listItems}
           profile={profile}
           moderationOpts={moderationOpts}
+          fromDialog={fromDialog}
+          onSuccess={onSuccess}
         />
       </Provider>
     </Layout.Screen>
@@ -144,17 +155,22 @@ function WizardInner({
   currentListItems,
   profile,
   moderationOpts,
+  fromDialog,
+  onSuccess,
 }: {
   currentStarterPack?: AppBskyGraphDefs.StarterPackView
   currentListItems?: AppBskyGraphDefs.ListItemView[]
   profile: AppBskyActorDefs.ProfileViewDetailed
   moderationOpts: ModerationOpts
+  fromDialog?: boolean
+  onSuccess?: () => void
 }) {
   const navigation = useNavigation<NavigationProp>()
   const {_} = useLingui()
   const setMinimalShellMode = useSetMinimalShellMode()
   const [state, dispatch] = useWizardState()
   const {currentAccount} = useSession()
+
   const {data: currentProfile} = useProfileQuery({
     did: currentAccount?.did,
     staleTime: 0,
@@ -213,11 +229,17 @@ function WizardInner({
     })
     Image.prefetch([getStarterPackOgCard(currentProfile!.did, rkey)])
     dispatch({type: 'SetProcessing', processing: false})
-    navigation.replace('StarterPack', {
-      name: currentAccount!.handle,
-      rkey,
-      new: true,
-    })
+
+    if (fromDialog) {
+      navigation.goBack()
+      onSuccess?.()
+    } else {
+      navigation.replace('StarterPack', {
+        name: profile!.handle,
+        rkey,
+        new: true,
+      })
+    }
   }
 
   const onSuccessEdit = () => {
@@ -285,6 +307,14 @@ function WizardInner({
     )
   }
 
+  const items = state.currentStep === 'Profiles' ? state.profiles : state.feeds
+
+  const isEditEnabled =
+    (state.currentStep === 'Profiles' && items.length > 1) ||
+    (state.currentStep === 'Feeds' && items.length > 0)
+
+  const editDialogControl = useDialogControl()
+
   return (
     <Layout.Center style={[a.flex_1]}>
       <Layout.Header.Outer>
@@ -298,12 +328,24 @@ function WizardInner({
             }
           }}
         />
-        <Layout.Header.Content>
+        <Layout.Header.Content align="left">
           <Layout.Header.TitleText>
             {currUiStrings.header}
           </Layout.Header.TitleText>
         </Layout.Header.Content>
-        <Layout.Header.Slot />
+        {isEditEnabled ? (
+          <Button
+            label={_(msg`Edit`)}
+            color="secondary"
+            size="small"
+            onPress={editDialogControl.open}>
+            <ButtonText>
+              <Trans>Edit</Trans>
+            </ButtonText>
+          </Button>
+        ) : (
+          <Layout.Header.Slot />
+        )}
       </Layout.Header.Outer>
 
       <Container>
@@ -317,13 +359,15 @@ function WizardInner({
       </Container>
 
       {state.currentStep !== 'Details' && (
-        <Footer
-          onNext={onNext}
-          nextBtnText={currUiStrings.nextBtn}
-          moderationOpts={moderationOpts}
-          profile={profile}
-        />
+        <Footer onNext={onNext} nextBtnText={currUiStrings.nextBtn} />
       )}
+      <WizardEditListDialog
+        control={editDialogControl}
+        state={state}
+        dispatch={dispatch}
+        moderationOpts={moderationOpts}
+        profile={profile}
+      />
     </Layout.Center>
   )
 }
@@ -363,28 +407,15 @@ function Container({children}: {children: React.ReactNode}) {
 function Footer({
   onNext,
   nextBtnText,
-  moderationOpts,
-  profile,
 }: {
   onNext: () => void
   nextBtnText: string
-  moderationOpts: ModerationOpts
-  profile: AppBskyActorDefs.ProfileViewDetailed
 }) {
-  const {_} = useLingui()
   const t = useTheme()
-  const [state, dispatch] = useWizardState()
-  const editDialogControl = useDialogControl()
+  const [state] = useWizardState()
   const {bottom: bottomInset} = useSafeAreaInsets()
-
-  const items =
-    state.currentStep === 'Profiles'
-      ? [profile, ...state.profiles]
-      : state.feeds
-
-  const isEditEnabled =
-    (state.currentStep === 'Profiles' && items.length > 1) ||
-    (state.currentStep === 'Feeds' && items.length > 0)
+  const {currentAccount} = useSession()
+  const items = state.currentStep === 'Profiles' ? state.profiles : state.feeds
 
   const minimumItems = state.currentStep === 'Profiles' ? 8 : 0
 
@@ -422,14 +453,26 @@ function Footer({
         </View>
       )}
 
-      <View style={[a.flex_row, a.gap_xs]}>
+      <View style={[a.flex_row]}>
         {items.slice(0, 6).map((p, index) => (
-          <UserAvatar
+          <View
             key={index}
-            avatar={p.avatar}
-            size={32}
-            type={state.currentStep === 'Profiles' ? 'user' : 'algo'}
-          />
+            style={[
+              a.rounded_full,
+              {
+                borderWidth: 0.5,
+                borderColor: t.atoms.bg.backgroundColor,
+              },
+              state.currentStep === 'Profiles'
+                ? {zIndex: 1 - index, marginLeft: index > 0 ? -8 : 0}
+                : {marginRight: 4},
+            ]}>
+            <UserAvatar
+              avatar={p.avatar}
+              size={32}
+              type={state.currentStep === 'Profiles' ? 'user' : 'algo'}
+            />
+          </View>
         ))}
       </View>
 
@@ -438,19 +481,44 @@ function Footer({
           <Text style={[a.text_center, textStyles]}>
             {
               items.length < 2 ? (
-                <Trans>
-                  It's just you right now! Add more people to your starter pack
-                  by searching above.
-                </Trans>
+                currentAccount?.did === items[0].did ? (
+                  <Trans>
+                    It's just you right now! Add more people to your starter
+                    pack by searching above.
+                  </Trans>
+                ) : (
+                  <Trans>
+                    It's just{' '}
+                    <Text style={[a.font_bold, textStyles]} emoji>
+                      {getName(items[0])}{' '}
+                    </Text>
+                    right now! Add more people to your starter pack by searching
+                    above.
+                  </Trans>
+                )
               ) : items.length === 2 ? (
-                <Trans>
-                  <Text style={[a.font_bold, textStyles]}>You</Text> and
-                  <Text> </Text>
-                  <Text style={[a.font_bold, textStyles]} emoji>
-                    {getName(items[1] /* [0] is self, skip it */)}{' '}
-                  </Text>
-                  are included in your starter pack
-                </Trans>
+                currentAccount?.did === items[0].did ? (
+                  <Trans>
+                    <Text style={[a.font_bold, textStyles]}>You</Text> and
+                    <Text> </Text>
+                    <Text style={[a.font_bold, textStyles]} emoji>
+                      {getName(items[1] /* [0] is self, skip it */)}{' '}
+                    </Text>
+                    are included in your starter pack
+                  </Trans>
+                ) : (
+                  <Trans>
+                    <Text style={[a.font_bold, textStyles]}>
+                      {getName(items[0])}
+                    </Text>{' '}
+                    and
+                    <Text> </Text>
+                    <Text style={[a.font_bold, textStyles]} emoji>
+                      {getName(items[1] /* [0] is self, skip it */)}{' '}
+                    </Text>
+                    are included in your starter pack
+                  </Trans>
+                )
               ) : items.length > 2 ? (
                 <Trans context="profiles">
                   <Text style={[a.font_bold, textStyles]} emoji>
@@ -529,61 +597,38 @@ function Footer({
 
       <View
         style={[
-          a.flex_row,
           a.w_full,
-          a.justify_between,
           a.align_center,
+          a.gap_2xl,
           isNative ? a.mt_sm : a.mt_md,
         ]}>
-        {isEditEnabled ? (
-          <Button
-            label={_(msg`Edit`)}
-            variant="solid"
-            color="secondary"
-            size="small"
-            style={{width: 70}}
-            onPress={editDialogControl.open}>
-            <ButtonText>
-              <Trans>Edit</Trans>
-            </ButtonText>
-          </Button>
-        ) : (
-          <View style={{width: 70, height: 35}} />
+        {state.currentStep === 'Profiles' && items.length < 8 && (
+          <Text style={[a.font_bold, textStyles, t.atoms.text_contrast_medium]}>
+            <Trans>Add {8 - items.length} more to continue</Trans>
+          </Text>
         )}
-        {state.currentStep === 'Profiles' && items.length < 8 ? (
-          <>
-            <Text
-              style={[a.font_bold, textStyles, t.atoms.text_contrast_medium]}>
-              <Trans>Add {8 - items.length} more to continue</Trans>
-            </Text>
-            <View style={{width: 70}} />
-          </>
-        ) : (
-          <Button
-            label={nextBtnText}
-            variant="solid"
-            color="primary"
-            size="small"
-            onPress={onNext}
-            disabled={!state.canNext || state.processing}>
-            <ButtonText>{nextBtnText}</ButtonText>
-            {state.processing && <Loader size="xs" style={{color: 'white'}} />}
-          </Button>
-        )}
+        <Button
+          label={nextBtnText}
+          style={[a.w_full, a.py_md, a.px_2xl]}
+          color="primary"
+          size="large"
+          onPress={onNext}
+          disabled={
+            !state.canNext ||
+            state.processing ||
+            (state.currentStep === 'Profiles' && items.length < 8)
+          }>
+          <ButtonText>{nextBtnText}</ButtonText>
+          {state.processing && <ButtonIcon icon={Loader} />}
+        </Button>
       </View>
-
-      <WizardEditListDialog
-        control={editDialogControl}
-        state={state}
-        dispatch={dispatch}
-        moderationOpts={moderationOpts}
-        profile={profile}
-      />
     </View>
   )
 }
 
-function getName(item: bsky.profile.AnyProfileView | GeneratorView) {
+function getName(
+  item: bsky.profile.AnyProfileView | AppBskyFeedDefs.GeneratorView,
+) {
   if (typeof item.displayName === 'string') {
     return enforceLen(sanitizeDisplayName(item.displayName), 28, true)
   } else if ('handle' in item && typeof item.handle === 'string') {

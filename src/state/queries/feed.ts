@@ -52,6 +52,7 @@ export type FeedSourceFeedInfo = {
   creatorDid: string
   creatorHandle: string
   likeCount: number | undefined
+  acceptsInteractions?: boolean
   likeUri: string | undefined
   contentMode: AppBskyFeedDefs.GeneratorView['contentMode']
 }
@@ -76,6 +77,12 @@ export type FeedSourceListInfo = {
 }
 
 export type FeedSourceInfo = FeedSourceFeedInfo | FeedSourceListInfo
+
+export function isFeedSourceFeedInfo(
+  feed: FeedSourceInfo,
+): feed is FeedSourceFeedInfo {
+  return feed.type === 'feed'
+}
 
 const feedSourceInfoQueryKeyRoot = 'getFeedSourceInfo'
 export const feedSourceInfoQueryKey = ({uri}: {uri: string}) => [
@@ -119,6 +126,7 @@ export function hydrateFeedGenerator(
     creatorDid: view.creator.did,
     creatorHandle: view.creator.handle,
     likeCount: view.likeCount,
+    acceptsInteractions: view.acceptsInteractions,
     likeUri: view.viewer?.like,
     contentMode: view.contentMode,
   }
@@ -611,6 +619,29 @@ export function useSavedFeeds() {
         count: result.length,
         feeds: result,
       }
+    },
+  })
+}
+
+const feedInfoQueryKeyRoot = 'feedInfo'
+
+export function useFeedInfo(feedUri: string | undefined) {
+  const agent = useAgent()
+
+  return useQuery({
+    staleTime: STALE.INFINITY,
+    queryKey: [feedInfoQueryKeyRoot, feedUri],
+    queryFn: async () => {
+      if (!feedUri) {
+        return undefined
+      }
+
+      const res = await agent.app.bsky.feed.getFeedGenerator({
+        feed: feedUri,
+      })
+
+      const feedSourceInfo = hydrateFeedGenerator(res.data.view)
+      return feedSourceInfo
     },
   })
 }

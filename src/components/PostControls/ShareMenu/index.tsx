@@ -1,4 +1,5 @@
 import {memo, useMemo, useState} from 'react'
+import {type Insets} from 'react-native'
 import {
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
@@ -33,15 +34,17 @@ let ShareMenuButton = ({
   timestamp,
   threadgateRecord,
   onShare,
+  hitSlop,
 }: {
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
   big?: boolean
-    record: AppBskyFeedPost.Record 
+  record: AppBskyFeedPost.Record
   richText: RichTextAPI
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShare: () => void
+  hitSlop?: Insets
 }): React.ReactNode => {
   // TODO: test recipe share
   const {_} = useLingui()
@@ -91,7 +94,8 @@ let ShareMenuButton = ({
                 big={big}
                 label={props.accessibilityLabel}
                 {...props}
-                onLongPress={native(onNativeLongPress)}>
+                onLongPress={native(onNativeLongPress)}
+                hitSlop={hitSlop}>
                 <PostControlButtonIcon icon={ShareIcon} />
               </PostControlButton>
             )

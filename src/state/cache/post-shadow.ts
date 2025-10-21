@@ -20,12 +20,22 @@ export interface PostShadow {
   isDeleted: boolean
   embed: AppBskyEmbedRecord.View | AppBskyEmbedRecordWithMedia.View | undefined
   pinned: boolean
+  optimisticReplyCount: number | undefined
+  bookmarked: boolean | undefined
 }
 
 export const POST_TOMBSTONE = Symbol('PostTombstone')
 
 const emitter = new EventEmitter()
 const shadows: WeakMap<AnyPostView, Partial<PostShadow>> = new WeakMap()
+
+/**
+ * Use with caution! This function returns the raw shadow data for a post.
+ * Prefer using `usePostShadow`.
+ */
+export function dangerousGetPostShadow(post: AppBskyFeedDefs.PostView) {
+  return shadows.get(post)
+}
 
 export function usePostShadow(
   post: AnyPostView,
@@ -77,6 +87,18 @@ function mergeShadow(
     likeCount = Math.max(0, likeCount)
   }
 
+  let bookmarkCount = post.bookmarkCount ?? 0
+  if ('bookmarked' in shadow) {
+    const wasBookmarked = !!post.viewer?.bookmarked
+    const isBookmarked = !!shadow.bookmarked
+    if (wasBookmarked && !isBookmarked) {
+      bookmarkCount--
+    } else if (!wasBookmarked && isBookmarked) {
+      bookmarkCount++
+    }
+    bookmarkCount = Math.max(0, bookmarkCount)
+  }
+
   let repostCount = post.repostCount ?? 0
   if ('repostUri' in shadow) {
     const wasReposted = !!post.viewer?.repost
@@ -87,6 +109,11 @@ function mergeShadow(
       repostCount++
     }
     repostCount = Math.max(0, repostCount)
+  }
+
+  let replyCount = post.replyCount ?? 0
+  if ('optimisticReplyCount' in shadow) {
+    replyCount = shadow.optimisticReplyCount ?? replyCount
   }
 
   let embed: typeof post.embed
@@ -106,11 +133,15 @@ function mergeShadow(
     embed: embed || post.embed,
     likeCount: likeCount,
     repostCount: repostCount,
+    replyCount: replyCount,
+    bookmarkCount: bookmarkCount,
     viewer: {
       ...(post.viewer || {}),
       like: 'likeUri' in shadow ? shadow.likeUri : post.viewer?.like,
       repost: 'repostUri' in shadow ? shadow.repostUri : post.viewer?.repost,
       pinned: 'pinned' in shadow ? shadow.pinned : post.viewer?.pinned,
+      bookmarked:
+        'bookmarked' in shadow ? shadow.bookmarked : post.viewer?.bookmarked,
     },
   })
 }

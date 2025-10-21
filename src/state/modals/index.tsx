@@ -1,8 +1,8 @@
 import React from 'react'
-import { type AppBskyGraphDefs } from '@atproto/api'
+import {type AppBskyGraphDefs} from '@atproto/api'
 
+import {type RecipePostView} from '#/lib/api/feed/utils'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
-import { RecipePostView } from '#/lib/api/feed/utils'
 
 export interface CreateOrEditListModal {
   name: 'create-or-edit-list'
@@ -36,14 +36,7 @@ export interface ContentLanguagesSettingsModal {
   name: 'content-languages-settings'
 }
 
-export interface PostLanguagesSettingsModal {
-  name: 'post-languages-settings'
-}
-
-export interface ChangePasswordModal {
-  name: 'change-password'
-}
-
+/* FIXME use the dialog system from `#/components/Dialog.tsx` */
 export interface UserFeedbackModal {
   name: 'user-feedback'
 }
@@ -59,14 +52,15 @@ export interface RecipePreparationModal {
   onReviewRecipe: () => void
 }
 
+/**
+ * @deprecated DO NOT ADD NEW MODALS
+ */
 export type Modal =
   // Account
   | DeleteAccountModal
-  | ChangePasswordModal
 
   // Curation
   | ContentLanguagesSettingsModal
-  | PostLanguagesSettingsModal
 
   // Lists
   | CreateOrEditListModal
@@ -88,6 +82,7 @@ const ModalContext = React.createContext<{
   isModalActive: false,
   activeModals: [],
 })
+ModalContext.displayName = 'ModalContext'
 
 const ModalControlContext = React.createContext<{
   openModal: (modal: Modal) => void
@@ -98,6 +93,7 @@ const ModalControlContext = React.createContext<{
   closeModal: () => false,
   closeAllModals: () => false,
 })
+ModalControlContext.displayName = 'ModalControlContext'
 
 export function Provider({children}: React.PropsWithChildren<{}>) {
   const [activeModals, setActiveModals] = React.useState<Modal[]>([])
@@ -146,10 +142,16 @@ export function Provider({children}: React.PropsWithChildren<{}>) {
   )
 }
 
+/**
+ * @deprecated use the dialog system from `#/components/Dialog.tsx`
+ */
 export function useModals() {
   return React.useContext(ModalContext)
 }
 
+/**
+ * @deprecated use the dialog system from `#/components/Dialog.tsx`
+ */
 export function useModalControls() {
   return React.useContext(ModalControlContext)
 }

@@ -20,7 +20,10 @@ import {Envelope_Stroke2_Corner0_Rounded as Envelope} from '#/components/icons/E
 import {Lock_Stroke2_Corner0_Rounded as Lock} from '#/components/icons/Lock'
 import {Ticket_Stroke2_Corner0_Rounded as Ticket} from '#/components/icons/Ticket'
 import {Loader} from '#/components/Loader'
+import {usePreemptivelyCompleteActivePolicyUpdate} from '#/components/PolicyUpdateOverlay/usePreemptivelyCompleteActivePolicyUpdate'
 import {BackNextButtons} from '../BackNextButtons'
+
+const ALLOW_CUSTOM_HOSTING = true
 
 function sanitizeDate(date: Date): Date {
   if (!date || date.toString() === 'Invalid Date') {
@@ -45,6 +48,8 @@ export function StepInfo({
 }) {
   const {_} = useLingui()
   const {state, dispatch} = useSignupContext()
+  const preemptivelyCompleteActivePolicyUpdate =
+    usePreemptivelyCompleteActivePolicyUpdate()
 
   const inviteCodeValueRef = useRef<string>(state.inviteCode)
   const emailValueRef = useRef<string>(state.email)
@@ -129,6 +134,7 @@ export function StepInfo({
       })
     }
 
+    preemptivelyCompleteActivePolicyUpdate()
     dispatch({type: 'setInviteCode', value: inviteCode})
     dispatch({type: 'setEmail', value: email})
     dispatch({type: 'setPassword', value: password})
@@ -144,15 +150,17 @@ export function StepInfo({
 
   return (
     <ScreenTransition>
-      <View style={[a.gap_md]}>
+      <View style={[a.gap_md, a.pt_lg]}>
         <FormError error={state.error} />
-        {/*
-        <HostingProvider
-          minimal
-          serviceUrl={state.serviceUrl}
-          onSelectServiceUrl={v => dispatch({type: 'setServiceUrl', value: v})}
-        />
-        */}
+        {ALLOW_CUSTOM_HOSTING && (
+          <HostingProvider
+            minimal
+            serviceUrl={state.serviceUrl}
+            onSelectServiceUrl={v =>
+              dispatch({type: 'setServiceUrl', value: v})
+            }
+          />
+        )}
         {state.isLoading || isLoadingStarterPack ? (
           <View style={[a.align_center]}>
             <Loader size="xl" />

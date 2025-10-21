@@ -181,7 +181,7 @@ function CreateAnother() {
         color="secondary"
         size="small"
         style={[a.self_center]}
-        onPress={() => navigation.navigate('StarterPackWizard')}>
+        onPress={() => navigation.navigate('StarterPackWizard', {})}>
         <ButtonText>
           <Trans>Create another</Trans>
         </ButtonText>
@@ -215,7 +215,7 @@ function Empty() {
     onError: e => {
       logger.error('Failed to generate starter pack', {safeMessage: e})
       setIsGenerating(false)
-      if (e.name === 'NOT_ENOUGH_FOLLOWERS') {
+      if (e.message.includes('NOT_ENOUGH_FOLLOWERS')) {
         followersDialogControl.open()
       } else {
         errorDialogControl.open()
@@ -239,7 +239,7 @@ function Empty() {
     ],
   })
   const navToWizard = useCallback(() => {
-    navigation.navigate('StarterPackWizard')
+    navigation.navigate('StarterPackWizard', {})
   }, [navigation])
   const wrappedNavToWizard = requireEmailVerification(navToWizard, {
     instructions: [
@@ -309,8 +309,8 @@ function Empty() {
         </Prompt.TitleText>
         <Prompt.DescriptionText>
           <Trans>
-            {branding.naming.app_name} will choose a set of recommended accounts from people in
-            your network.
+            {branding.naming.app_name} will choose a set of recommended accounts
+            from people in your network.
           </Trans>
         </Prompt.DescriptionText>
         <Prompt.Actions>
@@ -323,7 +323,7 @@ function Empty() {
             color="secondary"
             cta={_(msg`Let me choose`)}
             onPress={() => {
-              navigation.navigate('StarterPackWizard')
+              navigation.navigate('StarterPackWizard', {})
             }}
           />
         </Prompt.Actions>
