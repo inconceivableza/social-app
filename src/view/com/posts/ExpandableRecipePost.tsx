@@ -80,8 +80,6 @@ export function ExpandedRecipePost({
                 {/* TODO: make these clickable */}
                 <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCuisine.map(value => <Text>{_(value)}</Text>)}</View>
             </View>}
-
-            {/* TODO: recipe yield */}
         </View>
         <View>
             <RichText
@@ -104,6 +102,10 @@ export function ExpandedRecipePost({
 
                 {record.cookingTime ? <View>
                     <Text>{`${_(msg`Cook:`)} ${record.cookingTime} ${_(msg`minutes`)}`}</Text>
+                </View> : null}
+
+                {record.recipeYield ? <View>
+                    <Text>{`${_(msg`Yield:`)} ${record.recipeYield.quantity} ${record.recipeYield.unit}`}</Text>
                 </View> : null}
             </View>
             <View >
