@@ -9,7 +9,6 @@ import {
   getStoredEnvContent,
 } from '#/state/env-config'
 import {type ProxyHeaderValue} from '#/state/session/agent'
-import {BLUESKY_PROXY_DID, CHAT_PROXY_DID} from '#/env'
 
 beginResolveEnvConfig()
 export const envConfig = getStoredEnvConfig()
@@ -331,7 +330,7 @@ export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
 
 // temp hack for e2e - esb
 export const BLUESKY_PROXY_HEADER = {
-  value: `${BLUESKY_PROXY_DID}#bsky_appview`,
+  value: `${envConfig.BSKY_PROXY_DID || envConfig.BSKY_SERVICE_DID}#bsky_appview`,
   get() {
     return this.value as ProxyHeaderValue
   },
@@ -341,7 +340,7 @@ export const BLUESKY_PROXY_HEADER = {
 }
 
 export const DM_SERVICE_HEADERS = {
-  'atproto-proxy': `${CHAT_PROXY_DID}#bsky_chat`,
+  'atproto-proxy': `${envConfig.DM_PROXY_DID || envConfig.DM_SERVICE_DID}#bsky_chat`,
 }
 
 export const BLUESKY_MOD_SERVICE_HEADERS = {

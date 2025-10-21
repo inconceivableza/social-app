@@ -775,6 +775,8 @@ type EnvConfigResponse struct {
 	ATP_APPVIEW_URL         string `json:"ATP_APPVIEW_URL"`
 	ATP_PDS_URL             string `json:"ATP_PDS_URL"`
 	ATP_PUBLIC_APPVIEW_URL  string `json:"ATP_PUBLIC_APPVIEW_URL"`
+	BLUESKY_PROXY_DID       string `json:"BLUESKY_PROXY_DID"`
+	CHAT_PROXY_DID          string `json:"CHAT_PROXY_DID"`
 	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
 	GIF_SERVICE             string `json:"GIF_SERVICE"`
 	LINK_HOST               string `json:"LINK_HOST"`
@@ -797,6 +799,8 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
 		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
 		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
+		BLUESKY_PROXY_DID:       os.Getenv("EXPO_PUBLIC_BLUESKY_PROXY_DID"),
+		CHAT_PROXY_DID:          os.Getenv("EXPO_PUBLIC_CHAT_PROXY_DID"),
 		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
 		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
 		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),

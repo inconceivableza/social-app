@@ -55,8 +55,10 @@ export type Account = {
 export type EnvConfig = {
   APPVIEW_DID: string
   APPVIEW_URL: string
+  BSKY_PROXY_DID: string
   BSKY_SERVICE: string
   BSKY_SERVICE_DID: string
+  DM_PROXY_DID: string
   DM_SERVICE_DID: string
   GIF_HOST: string
   HELP_DESK_URL: string
