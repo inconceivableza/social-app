@@ -1,6 +1,6 @@
 import {type Insets, Platform} from 'react-native'
 import Constants from 'expo-constants'
-import {type AppBskyActorDefs} from '@atproto/api'
+import {type AppBskyActorDefs, BSKY_LABELER_DID} from '@atproto/api'
 
 import {
   beginResolveEnvConfig,
@@ -8,6 +8,8 @@ import {
   getStoredEnvConfig,
   getStoredEnvContent,
 } from '#/state/env-config'
+import {type ProxyHeaderValue} from '#/state/session/agent'
+import {BLUESKY_PROXY_DID, CHAT_PROXY_DID} from '#/env'
 
 beginResolveEnvConfig()
 export const envConfig = getStoredEnvConfig()
@@ -18,6 +20,7 @@ export const STAGING_SERVICE =
   DOMAIN_ENVCONFIGS.staging.BSKY_SERVICE ||
   DOMAIN_ENVCONFIGS.bluesky_staging.BSKY_SERVICE
 export const BSKY_SERVICE = envConfig.BSKY_SERVICE
+export const BSKY_SERVICE_DID = envConfig.BSKY_SERVICE_DID
 export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 export const HELP_DESK_URL = envConfig.HELP_DESK_URL
@@ -155,7 +158,6 @@ export const createHitslop = (size: number): Insets => ({
 export const HITSLOP_10 = createHitslop(10)
 export const HITSLOP_20 = createHitslop(20)
 export const HITSLOP_30 = createHitslop(30)
-export const POST_CTRL_HITSLOP = {top: 5, bottom: 10, left: 10, right: 10}
 export const LANG_DROPDOWN_HITSLOP = {top: 10, bottom: 10, left: 4, right: 4}
 export const BACK_HITSLOP = HITSLOP_30
 export const MAX_POST_LINES = 25
@@ -292,6 +294,10 @@ export const VIDEO_SERVICE = envConfig.VIDEO_SERVICE
 export const VIDEO_SERVICE_DID = envConfig.VIDEO_SERVICE_DID
 
 export const VIDEO_MAX_DURATION_MS = 3 * 60 * 1000 // 3 minutes in milliseconds
+/**
+ * Maximum size of a video in megabytes, _not_ mebibytes. Backend uses
+ * ISO megabytes.
+ */
 export const VIDEO_MAX_SIZE = 1000 * 1000 * 100 // 100mb
 
 export const SUPPORTED_MIME_TYPES = [
@@ -317,12 +323,30 @@ export const urls = {
 
 // ironically named, as this points to the non-public api host
 export const PUBLIC_APPVIEW = envConfig.APPVIEW_URL
-// FIXME: appview_did -> env-config: APPVIEW_DID
 // This should then be loaded with env-config, and not configured separately for production and staging
-export const PUBLIC_APPVIEW_DID = 'did:web:api.web.dallan.inclan'
-export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
+export const PUBLIC_APPVIEW_DID = envConfig.APPVIEW_DID
+export const PUBLIC_STAGING_APPVIEW_DID = DOMAIN_ENVCONFIGS.staging.APPVIEW_DID
 
 export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
+
+// temp hack for e2e - esb
+export const BLUESKY_PROXY_HEADER = {
+  value: `${BLUESKY_PROXY_DID}#bsky_appview`,
+  get() {
+    return this.value as ProxyHeaderValue
+  },
+  set(value: string) {
+    this.value = value
+  },
+}
+
+export const DM_SERVICE_HEADERS = {
+  'atproto-proxy': `${CHAT_PROXY_DID}#bsky_chat`,
+}
+
+export const BLUESKY_MOD_SERVICE_HEADERS = {
+  'atproto-proxy': `${BSKY_LABELER_DID}#atproto_labeler`,
+}
 
 const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
 export const webLinks = {

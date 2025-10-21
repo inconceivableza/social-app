@@ -7,16 +7,14 @@ import {usePalette} from '#/lib/hooks/usePalette'
 import {useModalControls, useModals} from '#/state/modals'
 import {FullWindowOverlay} from '#/components/FullWindowOverlay'
 import {createCustomBackdrop} from '../util/BottomSheetCustomBackdrop'
-import * as ChangePasswordModal from './ChangePassword'
 import * as CreateOrEditListModal from './CreateOrEditList'
 import * as DeleteAccountModal from './DeleteAccount'
 import * as InviteCodesModal from './InviteCodes'
 import * as ContentLanguagesSettingsModal from './lang-settings/ContentLanguagesSettings'
-import * as PostLanguagesSettingsModal from './lang-settings/PostLanguagesSettings'
+import * as RecipePreparationModal from './RecipePreparation'
 import * as RecipeRevisionViewModal from './RecipeRevisionView'
 import * as UserAddRemoveListsModal from './UserAddRemoveLists'
 import * as UserFeedbackModal from './UserFeedback'
-import * as RecipePreparationModal from './RecipePreparation'
 
 const DEFAULT_SNAPPOINTS = ['90%']
 const HANDLE_HEIGHT = 24
@@ -64,21 +62,20 @@ export function ModalsContainer() {
   } else if (activeModal?.name === 'content-languages-settings') {
     snapPoints = ContentLanguagesSettingsModal.snapPoints
     element = <ContentLanguagesSettingsModal.Component />
-  } else if (activeModal?.name === 'post-languages-settings') {
-    snapPoints = PostLanguagesSettingsModal.snapPoints
-    element = <PostLanguagesSettingsModal.Component />
-  } else if (activeModal?.name === 'change-password') {
-    snapPoints = ChangePasswordModal.snapPoints
-    element = <ChangePasswordModal.Component />
   } else if (activeModal?.name === 'recipe-revision-view') {
     snapPoints = RecipeRevisionViewModal.snapPoints
     element = <RecipeRevisionViewModal.Component uri={activeModal.uri} />
   } else if (activeModal?.name === 'user-feedback') {
     snapPoints = UserFeedbackModal.snapPoints
     element = <UserFeedbackModal.Component />
-  } else if (activeModal.name === "recipe-preparation") {
+  } else if (activeModal.name === 'recipe-preparation') {
     snapPoints = RecipePreparationModal.snapPoints
-    element = <RecipePreparationModal.Component recipePost={activeModal.recipePost} onReviewRecipe={modal.onReviewRecipe} />
+    element = (
+      <RecipePreparationModal.Component
+        recipePost={activeModal.recipePost}
+        onReviewRecipe={modal.onReviewRecipe}
+      />
+    )
   } else {
     return null
   }

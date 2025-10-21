@@ -48,6 +48,11 @@ export type MetricEvents = {
   // Screen events
   'splash:signInPressed': {}
   'splash:createAccountPressed': {}
+  'welcomeModal:signupClicked': {}
+  'welcomeModal:exploreClicked': {}
+  'welcomeModal:signinClicked': {}
+  'welcomeModal:dismissed': {}
+  'welcomeModal:presented': {}
   'signup:nextPressed': {
     activeStep: number
     phoneVerificationRequired?: boolean
@@ -67,7 +72,9 @@ export type MetricEvents = {
     activeStep: number
     backgroundCount: number
   }
-  'signup:handleTaken': {}
+  'signup:handleTaken': {typeahead?: boolean}
+  'signup:handleAvailable': {typeahead?: boolean}
+  'signup:handleSuggestionSelected': {method: string}
   'signin:hostingProviderPressed': {
     hostingProviderDidChange: boolean
   }
@@ -87,6 +94,13 @@ export type MetricEvents = {
   'onboarding:interests:nextPressed': {
     selectedInterests: string[]
     selectedInterestsLength: number
+  }
+  'onboarding:suggestedAccounts:tabPressed': {
+    tab: string
+  }
+  'onboarding:suggestedAccounts:followAllPressed': {
+    tab: string
+    numAccounts: number
   }
   'onboarding:suggestedAccounts:nextPressed': {
     selectedAccountsLength: number
@@ -116,6 +130,9 @@ export type MetricEvents = {
   'onboarding:finished:avatarResult': {
     avatarResult: 'default' | 'created' | 'uploaded'
   }
+  'onboarding:valueProp:stepOne:nextPressed': {}
+  'onboarding:valueProp:stepTwo:nextPressed': {}
+  'onboarding:valueProp:skipPressed': {}
   'home:feedDisplayed': {
     feedUrl: string
     feedType: string
@@ -222,6 +239,14 @@ export type MetricEvents = {
   'post:pin': {}
   'post:unpin': {}
   'post:edit': {}
+  'post:bookmark': {
+    logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
+  }
+  'post:unbookmark': {
+    logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
+  }
+  'bookmarks:view': {}
+  'bookmarks:post-clicked': {}
   'profile:follow': {
     didBecomeMutual: boolean | undefined
     followeeClout: number | undefined
@@ -241,6 +266,7 @@ export type MetricEvents = {
       | 'PostOnboardingFindFollows'
       | 'ImmersiveVideo'
       | 'ExploreSuggestedAccounts'
+      | 'OnboardingSuggestedAccounts'
   }
   'suggestedUser:follow': {
     logContext:
@@ -248,12 +274,17 @@ export type MetricEvents = {
       | 'InterstitialDiscover'
       | 'InterstitialProfile'
       | 'Profile'
+      | 'Onboarding'
     location: 'Card' | 'Profile'
     recId?: number
     position: number
   }
   'suggestedUser:press': {
-    logContext: 'Explore' | 'InterstitialDiscover' | 'InterstitialProfile'
+    logContext:
+      | 'Explore'
+      | 'InterstitialDiscover'
+      | 'InterstitialProfile'
+      | 'Onboarding'
     recId?: number
     position: number
   }
@@ -279,6 +310,7 @@ export type MetricEvents = {
       | 'PostOnboardingFindFollows'
       | 'ImmersiveVideo'
       | 'ExploreSuggestedAccounts'
+      | 'OnboardingSuggestedAccounts'
   }
   'chat:create': {
     logContext: 'ProfileHeader' | 'NewChatDialog' | 'SendViaChatDialog'
@@ -474,4 +506,11 @@ export type MetricEvents = {
   'ageAssurance:redirectDialogFail': {}
   'ageAssurance:appealDialogOpen': {}
   'ageAssurance:appealDialogSubmit': {}
+
+  /*
+   * Specifically for the `BlockedGeoOverlay`
+   */
+  'blockedGeoOverlay:shown': {}
+
+  'geo:debug': {}
 }

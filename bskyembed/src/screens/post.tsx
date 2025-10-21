@@ -13,7 +13,7 @@ import {
   getSocialAppName,
   getSocialAppUrl,
 } from '../env-config'
-import {getRkey} from '../utils'
+import {getRkey} from '../util/rkey'
 
 const root = document.getElementById('app')
 if (!root) throw new Error('No root element')

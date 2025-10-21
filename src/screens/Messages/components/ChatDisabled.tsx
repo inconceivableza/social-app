@@ -5,7 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useMutation} from '@tanstack/react-query'
 
-import {branding} from '#/lib/constants'
+import {BLUESKY_MOD_SERVICE_HEADERS, branding} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useAgent, useSession} from '#/state/session'
 import * as Toast from '#/view/com/util/Toast'
@@ -74,14 +74,20 @@ function DialogInner() {
     mutationFn: async () => {
       if (!currentAccount)
         throw new Error('No current account, should be unreachable')
-      await agent.createModerationReport({
-        reasonType: ComAtprotoModerationDefs.REASONAPPEAL,
-        subject: {
-          $type: 'com.atproto.admin.defs#repoRef',
-          did: currentAccount.did,
+      await agent.createModerationReport(
+        {
+          reasonType: ComAtprotoModerationDefs.REASONAPPEAL,
+          subject: {
+            $type: 'com.atproto.admin.defs#repoRef',
+            did: currentAccount.did,
+          },
+          reason: details,
         },
-        reason: details,
-      })
+        {
+          encoding: 'application/json',
+          headers: BLUESKY_MOD_SERVICE_HEADERS,
+        },
+      )
     },
     onError: err => {
       logger.error('Failed to submit chat appeal', {message: err})
@@ -102,7 +108,10 @@ function DialogInner() {
         <Trans>Appeal this decision</Trans>
       </Text>
       <Text style={[a.text_md, a.leading_snug]}>
-        <Trans>This appeal will be sent to {branding.naming.app_name}'s moderation service.</Trans>
+        <Trans>
+          This appeal will be sent to {branding.naming.app_name}'s moderation
+          service.
+        </Trans>
       </Text>
       <View style={[a.my_md]}>
         <Dialog.Input
