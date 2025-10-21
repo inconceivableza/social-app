@@ -1,83 +1,85 @@
+import React, {type Dispatch, useCallback, useMemo, useRef, useState} from 'react'
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
-  StyleProp,
+  type StyleProp,
   StyleSheet,
-  TextInput as NativeTextInput,
-  ViewStyle,
+  type TextInput as NativeTextInput,
+  type ViewStyle,
 } from 'react-native'
 import {View} from 'react-native'
-import {atoms as a, native, useTheme, web} from '#/alf'
-import {isAndroid, isIOS} from '#/platform/detection'
-import {
-  ComposerEmbeds,
-  ToolbarWrapper,
-  VideoUploadToolbar,
-  useKeyboardVerticalOffset,
-  useScrollTracker,
-} from './Composer'
-import {
-  type AssetType,
-  SelectMediaButton,
-  type SelectMediaButtonProps,
-} from '#/view/com/composer/photos/SelectMediaBtn'
-import {
-  RecipeComposerAction,
-  RecipePostDraft,
-  useRecipePostReducer,
-} from './state/composerRecipe'
-import * as apilib from '#/lib/api/index'
-import {useAgent, useSession} from '#/state/session'
-import {Button, ButtonText, ButtonIcon} from '#/components/Button'
-import {msg, plural} from '@lingui/macro'
-import {Trans} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
-import {useComposerControls} from '#/state/shell/composer'
-import {SelectGifBtn} from './photos/SelectGifBtn'
-import {OpenCameraBtn} from './photos/OpenCameraBtn'
 import Animated, {
   LayoutAnimationConfig,
   LinearTransition,
   useAnimatedRef,
 } from 'react-native-reanimated'
-import React, {Dispatch, useCallback, useMemo, useRef, useState} from 'react'
-import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
-import {ImagePickerAsset} from 'expo-image-picker'
-import {EmbedAction, MAX_IMAGES} from './state/composer'
-import {createComposerImage, ComposerImage} from '#/state/gallery'
-import {Gif} from '#/state/queries/tenor'
-import {PostLanguageSelect} from './select-language/PostLanguageSelectDialog'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {type ImagePickerAsset} from 'expo-image-picker'
+import {msg, plural} from '@lingui/macro'
+import {Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
-import {uploadVideoDirect} from './state/video'
+
+import {type RecipePostView} from '#/lib/api/feed/utils'
+import * as apilib from '#/lib/api/index'
+import {retry} from '#/lib/async/retry'
+import {HITSLOP_20, MAX_RECIPE_TITLE_GRAPHEME_LENGTH} from '#/lib/constants'
+import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
+import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
+import {colors} from '#/lib/styles'
+import {logger} from '#/logger'
+import {isAndroid, isIOS} from '#/platform/detection'
+import {emitPostCreated} from '#/state/events'
+import {type ComposerImage,createComposerImage} from '#/state/gallery'
+import {type Gif} from '#/state/queries/tenor'
+import {useAgent, useSession} from '#/state/session'
+import {useComposerControls} from '#/state/shell/composer'
+import {
+  ComposerEmbeds,
+  ToolbarWrapper,
+  useKeyboardVerticalOffset,
+  useScrollTracker,
+  VideoUploadToolbar,
+} from '#/view/com/composer/Composer'
+import {OpenCameraBtn} from '#/view/com/composer/photos/OpenCameraBtn'
+import {SelectGifBtn} from '#/view/com/composer/photos/SelectGifBtn'
+import {RecipeAttribution} from '#/view/com/composer/recipe/RecipeAttribution'
+import {TextInput} from '#/view/com/composer/text-input/TextInput'
 import {
   EmojiPicker,
   type EmojiPickerPosition,
   type EmojiPickerState,
 } from '#/view/com/composer/text-input/web/EmojiPicker'
-import {TextInputRef, TextInput} from './text-input/TextInput'
-import {colors} from '#/lib/styles'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
-import {RecipePostView} from '#/lib/api/feed/utils'
-import {retry} from '#/lib/async/retry'
-import {emitPostCreated} from '#/state/events'
-import {logger} from '#/logger'
 import * as Toast from '#/view/com/util/Toast'
-import * as TextField from '#/components/forms/TextField'
-import {EmojiArc_Stroke2_Corner0_Rounded as EmojiSmileIcon} from '#/components/icons/Emoji'
-import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
-import {H2} from '#/components/Typography'
-import {PlusSmall_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
-import * as Menu from '#/components/Menu'
-import {HITSLOP_20, MAX_RECIPE_TITLE_GRAPHEME_LENGTH} from '#/lib/constants'
-import {DotGrid_Stroke2_Corner0_Rounded as Ellipsis} from '#/components/icons/DotGrid'
-import {BottomSheetPortalProvider} from '../../../../modules/bottom-sheet'
+import {atoms as a, native, useTheme, web} from '#/alf'
+import {Button, ButtonIcon,ButtonText} from '#/components/Button'
 import {ComboBox} from '#/components/forms/ComboBox'
-import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
 import {NumberField} from '#/components/forms/NumberField'
-import {RecipeAttribution} from './recipe/RecipeAttribution'
+import * as TextField from '#/components/forms/TextField'
+import {DotGrid_Stroke2_Corner0_Rounded as Ellipsis} from '#/components/icons/DotGrid'
+import {EmojiArc_Stroke2_Corner0_Rounded as EmojiSmileIcon} from '#/components/icons/Emoji'
+import {PlusSmall_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
+import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
+import * as Menu from '#/components/Menu'
+import {H2} from '#/components/Typography'
+import {BottomSheetPortalProvider} from '../../../../modules/bottom-sheet'
 import {Accordion} from '../../../components/Accordion'
-import {NutritionElement, nutritionFields} from '../recipe/NutritionFields'
+import {type NutritionElement, nutritionFields} from '../recipe/NutritionFields'
+import {PostLanguageSelect} from './select-language/PostLanguageSelect'
+import {
+  type AssetType,
+  SelectMediaButton,
+  type SelectMediaButtonProps,
+} from './SelectMediaButton'
+import {type EmbedAction, MAX_IMAGES} from './state/composer'
+import {
+  type RecipeComposerAction,
+  type RecipePostDraft,
+  useRecipePostReducer,
+} from './state/composerRecipe'
+import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
+import {uploadVideoDirect} from './state/video'
+import {type TextInputRef} from './text-input/TextInput.types'
 
 const msgs = {
   button_add_ingredient: msg({
