@@ -3,29 +3,27 @@ import {
 } from "react-native";
 import { View } from "react-native";
 import { atoms as a, native, useTheme, web } from '#/alf'
-import { isAndroid, isIOS, isWeb } from '#/platform/detection'
+import { isAndroid, isIOS } from '#/platform/detection'
 import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset, useScrollTracker } from "./Composer";
-import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
+import { type AssetType, SelectMediaButton, type SelectMediaButtonProps } from '#/view/com/composer/photos/SelectMediaBtn'
 import { RecipeComposerAction, RecipePostDraft, useRecipePostReducer } from "./state/composerRecipe";
 import * as apilib from '#/lib/api/index'
 import { useAgent, useSession } from "#/state/session";
 import { Button, ButtonText, ButtonIcon } from '#/components/Button'
-import { msg } from "@lingui/macro";
+import { msg, plural } from "@lingui/macro";
 import { Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { useComposerControls } from "#/state/shell/composer";
 import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
-import { SelectVideoBtn } from "./videos/SelectVideoBtn";
 import Animated, { LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
-import React, { Dispatch, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { Dispatch, useCallback, useMemo, useRef, useState } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
-import { ComposerImage } from "#/state/gallery";
+import { createComposerImage, ComposerImage } from "#/state/gallery";
 import { Gif } from "#/state/queries/tenor";
-import { EmojiArc_Stroke2_Corner0_Rounded as EmojiSmile } from '#/components/icons/Emoji'
-import { SelectLangBtn } from "./select-language/SelectLangBtn";
+import { PostLanguageSelect } from "./select-language/PostLanguageSelectDialog";
 import { useQueryClient } from "@tanstack/react-query";
 import { uploadVideoDirect } from "./state/video";
 import {
@@ -43,17 +41,17 @@ import { emitPostCreated } from "#/state/events";
 import { logger } from "#/logger";
 import * as Toast from '#/view/com/util/Toast'
 import * as TextField from "#/components/forms/TextField";
+import {EmojiArc_Stroke2_Corner0_Rounded as EmojiSmileIcon} from '#/components/icons/Emoji'
 import { Trash_Stroke2_Corner0_Rounded as TrashIcon } from '#/components/icons/Trash'
 import { H2 } from "#/components/Typography";
 import { PlusSmall_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icons/Plus"
 import * as Menu from '#/components/Menu'
-import { HITSLOP_20 } from '#/lib/constants'
+import { HITSLOP_20, MAX_RECIPE_TITLE_GRAPHEME_LENGTH } from '#/lib/constants'
 import { DotGrid_Stroke2_Corner0_Rounded as Ellipsis } from '#/components/icons/DotGrid'
 import { BottomSheetPortalProvider } from '../../../../modules/bottom-sheet'
 import { ComboBox } from "#/components/forms/ComboBox";
 import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecipe";
 import { NumberField } from "#/components/forms/NumberField";
-import { AppFoodiosFeedRecipeRevision } from "@atproto/api";
 import { RecipeAttribution } from "./recipe/RecipeAttribution";
 import { Accordion } from "../../../components/Accordion";
 import { NutritionElement, nutritionFields } from "../recipe/NutritionFields";
@@ -187,7 +185,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         onScrollViewContentSizeChange,
         onScrollViewLayout,
         topBarAnimatedStyle,
-        bottomBarAnimatedStyle,
     } = useScrollTracker({
         scrollViewRef,
         stickyBottom: false, // TODO: check
@@ -202,9 +199,8 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                     currentRef as unknown as React.MutableRefObject<HTMLElement>,
             })
         }
-    }, [onOpenPicker, focused])
+    }, [onOpenPicker])
 
-    const isTextOnly = !state.embed.link && !state.embed.quote && !state.embed.media
     const insets = useSafeAreaInsets()
     const [isKeyboardVisible] = useIsKeyboardVisible({ iosUseWillEvents: true })
 
@@ -355,6 +351,11 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                             onPressPublish={() => { }}
                             accessible={true}
                             accessibilityLabel={_(msg`Write recipe description`)}
+                            accessibilityHint={_(
+                                msg`Compose recipe description up to ${plural(MAX_RECIPE_TITLE_GRAPHEME_LENGTH || 0, {
+                                other: '# characters',
+                                })} in length`,
+                            )}
                             hasRightPadding={false}
                         />
                     </View>
@@ -787,82 +788,145 @@ function ComposerFooter({
     const t = useTheme()
     const { _ } = useLingui()
     const { isMobile } = useWebMediaQueries()
+    /*
+    * Once we've allowed a certain type of asset to be selected, we don't allow
+    * other types of media to be selected.
+    */
+    const [selectedAssetsType, setSelectedAssetsType] = useState<
+        AssetType | undefined
+    >(undefined)
 
     const media = post.embed?.media
     const images = media?.type === 'images' ? media.images : []
     const video = media?.type === 'video' ? media.video : null
     const isMaxImages = images.length >= MAX_IMAGES
+    const isMaxVideos = !!video
 
-    const onImageAdd = useCallback(
-        (next: ComposerImage[]) => {
-            dispatch({
-                type: 'embed_add_images',
-                images: next,
+  let selectedAssetsCount = 0
+  let isMediaSelectionDisabled = false
+
+  if (media?.type === 'images') {
+    isMediaSelectionDisabled = isMaxImages
+    selectedAssetsCount = images.length
+  } else if (media?.type === 'video') {
+    isMediaSelectionDisabled = isMaxVideos
+    selectedAssetsCount = 1
+  } else {
+    isMediaSelectionDisabled = !!media
+  }
+
+  const onImageAdd = useCallback(
+    (next: ComposerImage[]) => {
+      dispatch({
+        type: 'embed_add_images',
+        images: next,
+      })
+    },
+    [dispatch],
+  )
+
+  const onSelectGif = useCallback(
+    (gif: Gif) => {
+      dispatch({type: 'embed_add_gif', gif})
+    },
+    [dispatch],
+  )
+
+  /*
+   * Reset if the user clears any selected media
+   */
+  if (selectedAssetsType !== undefined && !media) {
+    setSelectedAssetsType(undefined)
+  }
+
+  const onSelectAssets = useCallback<SelectMediaButtonProps['onSelectAssets']>(
+    async ({type, assets, errors}) => {
+      setSelectedAssetsType(type)
+
+      if (assets.length) {
+        if (type === 'image') {
+          const images: ComposerImage[] = []
+
+          await Promise.all(
+            assets.map(async image => {
+              const composerImage = await createComposerImage({
+                path: image.uri,
+                width: image.width,
+                height: image.height,
+                mime: image.mimeType!,
+              })
+              images.push(composerImage)
+            }),
+          ).catch(e => {
+            logger.error(`createComposerImage failed`, {
+              safeMessage: e.message,
             })
-        },
-        [dispatch],
-    )
+          })
 
-    const onSelectGif = useCallback(
-        (gif: Gif) => {
-            dispatch({ type: 'embed_add_gif', gif })
-        },
-        [dispatch],
-    )
+          onImageAdd(images)
+        } else if (type === 'video') {
+          onSelectVideo(post.id, assets[0])
+        } else if (type === 'gif') {
+          onSelectVideo(post.id, assets[0])
+        }
+      }
+
+      errors.map(error => {
+        // TODO: update to toast
+        Toast.show(error)
+      })
+    },
+    [post.id, onSelectVideo, onImageAdd],
+  )
 
     return (
-        <View
-            style={[
-                a.flex_row,
-                a.py_xs,
-                { paddingLeft: 7, paddingRight: 16 },
-                a.align_center,
-                a.border_t,
-                t.atoms.bg,
-                t.atoms.border_contrast_medium,
-                a.justify_between,
-            ]}>
-            <View style={[a.flex_row, a.align_center]}>
-                <LayoutAnimationConfig skipEntering skipExiting>
-                    {video && video.status !== 'done' ? (
-                        <VideoUploadToolbar state={video} />
-                    ) : (
-                        <ToolbarWrapper style={[a.flex_row, a.align_center, a.gap_xs]}>
-                            <SelectPhotoBtn
-                                size={images.length}
-                                disabled={media?.type === 'images' ? isMaxImages : !!media}
-                                onAdd={onImageAdd}
-                            />
-                            <SelectVideoBtn
-                                onSelectVideo={asset => onSelectVideo(post.id, asset)}
-                                disabled={!!media}
-                                setError={onError}
-                            />
-                            <OpenCameraBtn
-                                disabled={media?.type === 'images' ? isMaxImages : !!media}
-                                onAdd={onImageAdd}
-                            />
-                            <SelectGifBtn onSelectGif={onSelectGif} disabled={!!media} />
-                            {!isMobile ? (
-                                <Button
-                                    onPress={onEmojiButtonPress}
-                                    style={a.p_sm}
-                                        disabled={!emojiEnabled}
-                                    label={_(msg`Open emoji picker`)}
-                                    accessibilityHint={_(msg`Opens emoji picker`)}
-                                    variant="ghost"
-                                    shape="round"
-                                    color="primary">
-                                    <EmojiSmile size="lg" />
-                                </Button>
-                            ) : null}
-                        </ToolbarWrapper>
-                    )}
-                </LayoutAnimationConfig>
-            </View>
-            <View style={[a.flex_row, a.align_center, a.justify_between]}>
-                <SelectLangBtn />
-            </View>
+      <View
+        style={[
+          a.flex_row,
+          a.py_xs,
+          {paddingLeft: 7, paddingRight: 16},
+          a.align_center,
+          a.border_t,
+          t.atoms.bg,
+          t.atoms.border_contrast_medium,
+          a.justify_between,
+        ]}>
+        <View style={[a.flex_row, a.align_center]}>
+          <LayoutAnimationConfig skipEntering skipExiting>
+            {video && video.status !== 'done' ? (
+              <VideoUploadToolbar state={video} />
+            ) : (
+              <ToolbarWrapper style={[a.flex_row, a.align_center, a.gap_xs]}>
+                <SelectMediaButton
+                  disabled={isMediaSelectionDisabled}
+                  allowedAssetTypes={selectedAssetsType}
+                  selectedAssetsCount={selectedAssetsCount}
+                  onSelectAssets={onSelectAssets}
+                />
+                <OpenCameraBtn
+                  disabled={media?.type === 'images' ? isMaxImages : !!media}
+                  onAdd={onImageAdd}
+                />
+                <SelectGifBtn onSelectGif={onSelectGif} disabled={!!media} />
+                {!isMobile ? (
+                  <Button
+                    onPress={onEmojiButtonPress}
+                    style={a.p_sm}
+                    label={_(msg`Open emoji picker`)}
+                    accessibilityHint={_(msg`Opens emoji picker`)}
+                    variant="ghost"
+                    shape="round"
+                    color="primary">
+                    <EmojiSmileIcon size="lg" />
+                  </Button>
+                ) : null}
+              </ToolbarWrapper>
+            )}
+          </LayoutAnimationConfig>
         </View>
+        <View style={[a.flex_row, a.align_center, a.justify_between]}>
+          <PostLanguageSelect />
+        </View>
+      </View>
     )
 }
