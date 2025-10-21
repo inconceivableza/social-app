@@ -72,7 +72,7 @@ function OriginalAttributionDisplay({
   value: $Typed<AppFoodiosFeedRecipeRevision.OriginalAttribution>
 }) {
   const { _ } = useLingui()
-  const licenseLabel = licenseLabels[value.license.$type] || 'Unknown'
+  const licenseLabel = licenseLabels[value.license.licenseType] ?? _(msg`Unknown`)
 
   return (
     <View style={[a.gap_xs]}>
@@ -117,9 +117,7 @@ function PublicationAttributionDisplay({
   value: $Typed<AppFoodiosFeedRecipeRevision.PublicationAttribution>
 }) {
   const { _ } = useLingui()
-  const pubTypeLabel = value.publicationType
-    ? publicationTypeLabels[value.publicationType.$type] || value.publicationType.$type
-    : 'Publication'
+  const pubTypeLabel = publicationTypeLabels[value.publicationType.publicationType] ?? _(msg`Unknown`)
 
   return (
     <View style={[a.gap_xs]}>

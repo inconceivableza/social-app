@@ -42,51 +42,55 @@ const attributionTypeLabels: Record<AttributionType, string> = {
   product: 'Product',
 }
 
-const licenseOptions = [
+const licenseOptions: (AppFoodiosFeedRecipeRevision.OriginalAttribution["license"] & {
+  label: string
+})[] = [
   {
-    id: 'app.foodios.feed.defs#licenseAllRights',
+    $type: 'app.foodios.feed.defs#licenseAllRights',
     label: 'All Rights Reserved',
-    value: 'licenseAllRights',
+    licenseType: 'licenseAllRights',
   },
   {
-    id: 'app.foodios.feed.defs#licenseCreativeCommonsBy',
+    $type: 'app.foodios.feed.defs#licenseCreativeCommonsBy',
     label: 'CC BY 4.0 (Attribution)',
-    value: 'licenseCreativeCommonsBy',
+    licenseType: 'licenseCreativeCommonsBy',
   },
   {
-    id: 'app.foodios.feed.defs#licenseCreativeCommonsBySa',
+    $type: 'app.foodios.feed.defs#licenseCreativeCommonsBySa',
     label: 'CC BY-SA 4.0 (Attribution-ShareAlike)',
-    value: 'licenseCreativeCommonsBySa',
+    licenseType: 'licenseCreativeCommonsBySa',
   },
   {
-    id: 'app.foodios.feed.defs#licenseCreativeCommonsByNc',
+    $type: 'app.foodios.feed.defs#licenseCreativeCommonsByNc',
     label: 'CC BY-NC 4.0 (Attribution-NonCommercial)',
-    value: 'licenseCreativeCommonsByNc',
+    licenseType: 'licenseCreativeCommonsByNc',
   },
   {
-    id: 'app.foodios.feed.defs#licenseCreativeCommonsByNcSa',
+    $type: 'app.foodios.feed.defs#licenseCreativeCommonsByNcSa',
     label: 'CC BY-NC-SA 4.0 (Attribution-NonCommercial-ShareAlike)',
-    value: 'licenseCreativeCommonsByNcSa',
+    licenseType: 'licenseCreativeCommonsByNcSa',
   },
   {
-    id: 'app.foodios.feed.defs#licensePublicDomain',
+    $type: 'app.foodios.feed.defs#licensePublicDomain',
     label: 'Public Domain',
-    value: 'licensePublicDomain',
+    licenseType: 'licensePublicDomain',
   },
 ]
 
-const publicationTypeOptions = [
+const publicationTypeOptions: (AppFoodiosFeedRecipeRevision.PublicationAttribution["publicationType"] & {
+  label: string
+})[] = [
   {
-    id: 'app.foodios.feed.defs#publicationTypeBook',
+    $type: 'app.foodios.feed.defs#publicationTypeBook',
     label: 'Book',
-    value: 'publicationTypeBook',
+    publicationType: 'publicationTypeBook',
   },
   {
-    id: 'app.foodios.feed.defs#publicationTypeMagazine',
+    $type: 'app.foodios.feed.defs#publicationTypeMagazine',
     label: 'Magazine',
-    value: 'publicationTypeMagazine',
+    publicationType: 'publicationTypeMagazine',
   },
-]
+  ] 
 
 export function RecipeAttribution({ value, onChange }: RecipeAttributionProps) {
   const { _ } = useLingui()
@@ -262,15 +266,12 @@ function OriginalAttributionFields({
   }, [value.license])
 
   const handleLicenseChange = (licenseId: string) => {
-    const license = licenseOptions.find(opt => opt.id === licenseId)
+    const license = licenseOptions.find(opt => opt.$type === licenseId)
     if (!license) return
 
     onChange({
       ...value,
-      license: {
-        $type: licenseId as any,
-        licenseType: license.value as any,
-      },
+      license,
     })
   }
 
@@ -299,8 +300,8 @@ function OriginalAttributionFields({
 
         </Select.Trigger>
         <Select.Content
-          renderItem={({ label, id }) => (
-            <Select.Item value={id} label={_(label)}>
+          renderItem={({ label, $type }) => (
+            <Select.Item value={$type} label={_(label)}>
               <Select.ItemText><Trans>{label}</Trans></Select.ItemText>
             </Select.Item>
           )}
@@ -375,15 +376,12 @@ function PublicationAttributionFields({
   }, [value.publicationType])
 
   const handlePublicationTypeChange = (typeId: string) => {
-    const pubType = publicationTypeOptions.find(opt => opt.id === typeId)
+    const pubType = publicationTypeOptions.find(opt => opt.$type === typeId)
     if (!pubType) return
 
     onChange({
       ...value,
-      publicationType: {
-        $type: typeId as any,
-        publicationType: pubType.value as any,
-      },
+      publicationType: pubType,
     })
   }
 
@@ -411,8 +409,8 @@ function PublicationAttributionFields({
 
         </Select.Trigger>
         <Select.Content
-          renderItem={({ label, id }) => (
-            <Select.Item value={id} label={_(label)}>
+          renderItem={({ label, $type }) => (
+            <Select.Item value={$type} label={_(label)}>
               <Select.ItemText><Trans>{label}</Trans></Select.ItemText>
             </Select.Item>
           )}
