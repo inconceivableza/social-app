@@ -115,7 +115,8 @@ const InternalToEnvName: EnvConfig & Record<string, string> = {
 const processEnvConfigValues: Record<string, string> = {
   ATP_APPVIEW_DID: process.env.EXPO_PUBLIC_ATP_APPVIEW_DID,
   ATP_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_APPVIEW_URL,
-  ATP_PDS_HOST: process.env.EXPO_PUBLIC_ATP_PDS_HOST,
+  ATP_PDS_DID: process.env.EXPO_PUBLIC_ATP_PDS_DID,
+  ATP_PDS_URL: process.env.EXPO_PUBLIC_ATP_PDS_URL,
   ATP_PUBLIC_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL,
   BLUESKY_PROXY_DID: process.env.EXPO_PUBLIC_BLUESKY_PROXY_DID,
   CHAT_PROXY_DID: process.env.EXPO_PUBLIC_CHAT_PROXY_DID,

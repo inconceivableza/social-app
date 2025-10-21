@@ -772,12 +772,15 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 }
 
 type EnvConfigResponse struct {
+	ATP_APPVIEW_DID         string `json:"ATP_APPVIEW_DID"`
 	ATP_APPVIEW_URL         string `json:"ATP_APPVIEW_URL"`
+	ATP_PDS_DID             string `json:"ATP_PDS_DID"`
 	ATP_PDS_URL             string `json:"ATP_PDS_URL"`
 	ATP_PUBLIC_APPVIEW_URL  string `json:"ATP_PUBLIC_APPVIEW_URL"`
 	BLUESKY_PROXY_DID       string `json:"BLUESKY_PROXY_DID"`
 	CHAT_PROXY_DID          string `json:"CHAT_PROXY_DID"`
 	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
+	DM_SERVICE_DID          string `json:"DM_SERVICE_DID"`
 	GIF_SERVICE             string `json:"GIF_SERVICE"`
 	LINK_HOST               string `json:"LINK_HOST"`
 	OGCARD_URL              string `json:"OGCARD_URL"`
@@ -796,12 +799,15 @@ type EnvConfigResponse struct {
 
 func (srv *Server) WebEnvConfig(c echo.Context) error {
 	var outResponse = EnvConfigResponse{
+		ATP_APPVIEW_DID:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_DID"),
 		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
+		ATP_PDS_DID:             os.Getenv("EXPO_PUBLIC_ATP_PDS_DID"),
 		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
 		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
 		BLUESKY_PROXY_DID:       os.Getenv("EXPO_PUBLIC_BLUESKY_PROXY_DID"),
 		CHAT_PROXY_DID:          os.Getenv("EXPO_PUBLIC_CHAT_PROXY_DID"),
 		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
+		DM_SERVICE_DID:          os.Getenv("EXPO_PUBLIC_DM_SERVICE_DID"),
 		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
 		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),
 		OGCARD_URL:              os.Getenv("EXPO_PUBLIC_OGCARD_URL"),
