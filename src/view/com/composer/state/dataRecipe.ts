@@ -8,21 +8,22 @@ interface HierarchyOption {
     children?: HierarchyOption[]
 }
 
-function processHierarchy(options: HierarchyOption[]): { id: string, label: string }[] {
-    const uniqueIDs = new Map<string, string>()
-    const result: { id: string, label: string }[] = []
-    traverseHierarchy(options, option => {
-        uniqueIDs.set(option.id, option.label)
+function processHierarchy(options: HierarchyOption[]): { id: string, label: string, paths: string[][] }[] {
+    const uniqueIDs = {} as Record<string, { label: string, paths: string[][] }>
+    traverseHierarchy(options, (option, path) => {
+        const entry = uniqueIDs[option.id] ??= { label: option.label, paths: [] }
+        entry.paths.push(path)
     })
 
-    return Array.from(uniqueIDs.entries(), ([id, label]) => ({ id, label })).sort((a, b) => a.label > b.label ? 1 : -1)
+    return Object.entries(uniqueIDs).map(([id, value]) => ({ id, ...value })).sort((a, b) => a.label > b.label ? 1 : -1)
 }
 
-function traverseHierarchy(options: HierarchyOption[], callback: (value: { id: string, label: string }) => void) {
+function traverseHierarchy(options: HierarchyOption[], callback: (value: { id: string, label: string }, path: string[]) => void, path: string[] = []) {
     options.forEach(option => {
-        callback(option)
+        callback(option, path)
+        path = path.concat(option.id)
         if (option.children) {
-            traverseHierarchy(option.children, callback)
+            traverseHierarchy(option.children, callback, path)
         }
     })
 }
