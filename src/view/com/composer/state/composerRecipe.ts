@@ -79,8 +79,8 @@ export type RecipeComposerAction = TaggedUnion<
         update_nutrition: { field: Exclude<keyof NutritionDraft, "servingSize">, value: string }
         clear_nutrition: {}
         update_attribution: { value?: Attribution }
-    } 
-    > | EmbedAction
+    }
+> | EmbedAction
 
 function findById<T extends { id: string }>(arr: T[], id: string) {
     const result = arr.find((section) => section.id === id)
