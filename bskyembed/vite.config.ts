@@ -1,9 +1,11 @@
-import {resolve} from 'node:path'
-
 import preact from '@preact/preset-vite'
 import legacy from '@vitejs/plugin-legacy'
+import {dirname, resolve} from 'path'
+import {fileURLToPath} from 'url'
 import type {UserConfig} from 'vite'
 import paths from 'vite-tsconfig-paths'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const config: UserConfig = {
   plugins: [
@@ -15,23 +17,37 @@ const config: UserConfig = {
   ],
   resolve: {
     alias: {
-      '@atproto/api': resolve(
-        __dirname,
-        '../../atproto/packages/api/dist/index.js',
-      ),
+      '@atproto/api': resolve(__dirname, '../../atproto/packages/api/dist'),
       '@atproto/lexicon': resolve(
         __dirname,
-        '../../atproto/packages/lexicon/dist/index.js',
+        '../../atproto/packages/lexicon/dist',
       ),
       '@atproto/syntax': resolve(
         __dirname,
-        '../../atproto/packages/syntax/dist/index.js',
+        '../../atproto/packages/syntax/dist',
       ),
+      '@atproto/common-web': resolve(
+        __dirname,
+        '../../atproto/packages/common-web/dist',
+      ),
+      '@atproto/xrpc': resolve(__dirname, '../../atproto/packages/xrpc/dist'),
     },
     preserveSymlinks: true,
   },
+  optimizeDeps: {
+    include: [
+      '@atproto/api',
+      '@atproto/lexicon',
+      '@atproto/syntax',
+      '@atproto/common-web',
+      '@atproto/xrpc',
+    ],
+  },
   build: {
     assetsDir: 'static',
+    commonjsOptions: {
+      include: [/atproto/],
+    },
     rollupOptions: {
       input: {
         index: resolve(__dirname, 'index.html'),
