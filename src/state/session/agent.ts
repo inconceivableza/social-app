@@ -6,7 +6,7 @@ import {
   BskyAgent,
   type Did,
 } from '@atproto/api'
-import {type SessionManager} from '@atproto/api/dist/session-manager'
+import {type SessionManager} from '@atproto/api'
 import {TID} from '@atproto/common-web'
 import {type FetchHandler, type FetchHandlerOptions} from '@atproto/xrpc'
 

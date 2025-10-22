@@ -4,7 +4,7 @@ import {
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
-  type AppFoodiosFeedDefs,
+  AppFoodiosFeedDefs,
   AppFoodiosFeedReviewRating,
   type RichText as RichTextAPI,
 } from '@atproto/api'

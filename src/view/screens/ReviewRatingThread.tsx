@@ -1,5 +1,5 @@
 import {useCallback} from 'react'
-import {ids} from '@atproto/api/client/lexicons'
+import {lexiconIds as ids} from '@atproto/api'
 import {useFocusEffect} from '@react-navigation/native'
 import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 
