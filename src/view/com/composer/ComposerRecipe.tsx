@@ -378,7 +378,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         </View>
                     </View>
 
-                    <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
+          <View style={[{ backgroundColor: t.palette.contrast_50, }, errorBorder(t, errors?.tree?.text)]}>
 
                         {/* TODO fix color, width */}
                         <TextInput
