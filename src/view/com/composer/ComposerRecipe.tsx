@@ -2,11 +2,11 @@ import {
     ActivityIndicator, KeyboardAvoidingView, StyleProp, StyleSheet, TextInput as NativeTextInput, ViewStyle,
 } from "react-native";
 import { View } from "react-native";
-import { atoms as a, native, useTheme, web } from '#/alf'
-import { isAndroid, isIOS, isWeb } from '#/platform/detection'
+import { atoms as a, native, useTheme, web, type Theme } from '#/alf'
+import { isAndroid, isIOS } from '#/platform/detection'
 import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset, useScrollTracker } from "./Composer";
 import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
-import { RecipeComposerAction, RecipePostDraft, useRecipePostReducer } from "./state/composerRecipe";
+import { RecipePostDraft, RecipeReducerOutput, useRecipePostReducer } from "./state/composerRecipe";
 import * as apilib from '#/lib/api/index'
 import { useAgent, useSession } from "#/state/session";
 import { Button, ButtonText, ButtonIcon } from '#/components/Button'
@@ -17,8 +17,8 @@ import { useComposerControls } from "#/state/shell/composer";
 import { SelectGifBtn } from "./photos/SelectGifBtn";
 import { OpenCameraBtn } from "./photos/OpenCameraBtn";
 import { SelectVideoBtn } from "./videos/SelectVideoBtn";
-import Animated, { LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
-import React, { Dispatch, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Animated, { FadeIn, FadeOut, LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
+import React, { PropsWithChildren, useCallback, useMemo, useRef, useState } from "react";
 import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
 import { ImagePickerAsset } from "expo-image-picker";
 import { EmbedAction, MAX_IMAGES } from "./state/composer";
@@ -44,7 +44,7 @@ import { logger } from "#/logger";
 import * as Toast from '#/view/com/util/Toast'
 import * as TextField from "#/components/forms/TextField";
 import { Trash_Stroke2_Corner0_Rounded as TrashIcon } from '#/components/icons/Trash'
-import { H2 } from "#/components/Typography";
+import { H2, Text } from "#/components/Typography";
 import { PlusSmall_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icons/Plus"
 import * as Menu from '#/components/Menu'
 import { HITSLOP_20 } from '#/lib/constants'
@@ -52,11 +52,12 @@ import { DotGrid_Stroke2_Corner0_Rounded as Ellipsis } from '#/components/icons/
 import { BottomSheetPortalProvider } from '../../../../modules/bottom-sheet'
 import { ComboBox } from "#/components/forms/ComboBox";
 import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecipe";
-import { NumberField } from "#/components/forms/NumberField";
-import { AppFoodiosFeedRecipeRevision } from "@atproto/api";
 import { RecipeAttribution } from "./recipe/RecipeAttribution";
 import { Accordion } from "../../../components/Accordion";
 import { NutritionElement, nutritionFields } from "../recipe/NutritionFields";
+import { CircleInfo_Stroke2_Corner0_Rounded as CircleInfo } from '#/components/icons/CircleInfo'
+import { TimesLarge_Stroke2_Corner0_Rounded as X } from '#/components/icons/Times'
+
 
 const msgs = {
     button_add_ingredient: msg({
@@ -76,13 +77,22 @@ const msgs = {
     })
 }
 
+function errorBorder(t: Theme, err: unknown) {
+
+  return err ? {
+    backgroundColor: t.palette.negative_25,
+    borderColor: t.palette.negative_300,
+  } : {}
+}
+
 // TODO: NB fix description being focused first
 
 export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     const keyboardVerticalOffset = useKeyboardVerticalOffset()
     const { closeComposer } = useComposerControls()
 
-    const [state, dispatch] = useRecipePostReducer({ edit })
+  const reducerResult = useRecipePostReducer({ edit })
+  const { state, dispatch } = reducerResult
     const agent = useAgent()
     const queryClient = useQueryClient()
     const [pickerState, setPickerState] = React.useState<EmojiPickerState>({
@@ -91,9 +101,14 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     })
     const { _ } = useLingui()
     const [isPublishing, setIsPublishing] = useState(false)
+
     async function onPressPublish() {
-        // TODO: validation
+      if (reducerResult.errors) {
+        setDisplayErrors(true)
+        return
+      }
         setIsPublishing(true)
+      try {
         if (edit) {
             await apilib.postRecipeRevision(agent, queryClient, {
                 post: state,
@@ -103,6 +118,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
             const postUri = await apilib.postRecipe(agent, queryClient, {
                 post: state,
             })
+
             try {
                 await retry(5, () => true,
                     async () => {
@@ -112,23 +128,34 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         }
 
                     },
-                    1e3)
-
+                  1e3)
             } catch (e) {
-                logger.info(`composer: waiting for app view failed`, {
+              logger.info(`recipe composer: waiting for app view failed`, {
                     safeMessage: e,
                 })
             }
-
+          emitPostCreated()
+          closeComposer()
+          Toast.show(_(msg`Your recipe has been published`))
         }
-        emitPostCreated()
-        // TODO: catch errors
+      } catch (e) {
+        logger.error(`recipe composer: error publishing recipe`, {
+          safeMessage: e
+        })
+        Toast.show(_(msg`There was an error publishing your recipe`), 'xmark')
+
+      } finally {
         setIsPublishing(false)
-        closeComposer()
-        Toast.show(_(msg`Your recipe has been published`))
+      }
+
     }
     const { currentAccount } = useSession()
     const currentDid = currentAccount!.did
+
+  const [displayErrors, setDisplayErrors] = useState(false)
+  const errors = useMemo(() => displayErrors ? reducerResult.errors : undefined, [
+    reducerResult.errors, displayErrors
+  ])
 
     const selectVideo = React.useCallback(
         (postId: string, asset: ImagePickerAsset) => {
@@ -225,7 +252,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
         }),
         [insets, isKeyboardVisible],
     )
-
     const onPressCancel = useCallback(() => {
         closeComposer()
     }, [closeComposer])
@@ -241,8 +267,8 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                 aria-modal
                 accessibilityViewIsModal>
                 <ComposerTopBar onCancel={onPressCancel} onPublish={onPressPublish}
-                    canPost isPublishing={isPublishing} topBarAnimatedStyle={topBarAnimatedStyle}
-                />
+            isPublishing={isPublishing} topBarAnimatedStyle={topBarAnimatedStyle}
+          ><ErrorBanner errors={errors} onClearError={() => setDisplayErrors(false)} /></ComposerTopBar>
 
                 <Animated.ScrollView
                     ref={scrollViewRef}
@@ -257,79 +283,79 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         paddingHorizontal: 8,
                     }]}
                 >
-                    <TextField.Root>
+            <TextField.Root isInvalid={!!errors?.tree?.name} >
                         <TextField.Input defaultValue={ /* Populate the initial name when creating a revision */ state.name}
-                        style={[a.pt_xs]}
+                style={[a.pt_xs]}
 
                         inputRef={titleInputRef}
                         onChangeText={value => dispatch({ type: 'update_name', value })}
-                        autoFocus
+                autoFocus
+                label={_(msg`Name`)}
+              />
+            </TextField.Root>
 
-                        label={_(msg`Title`)}
-                    />
-                    </TextField.Root>
-
-                    <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center]}>
-                        <View style={[a.flex_row, a.gap_xs, a.border, t.atoms.border_contrast_low, a.rounded_sm, a.p_sm, { width: "40%" }]}>
-                            <View style={[{ width: "65%" }]}>
-                                <NumberField label={_(msg`Yield`)} defaultValue={state.recipeYield?.quantity}
-                                    onChange={value => dispatch({ type: 'set_yield', field: 'quantity', value })}
-                                />
+            <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center]} >
+              <View style={[a.flex_row, a.gap_xs, a.border, t.atoms.border_contrast_low, a.rounded_sm, a.p_sm,
+              { width: "40%" }]}>
+                <View style={[{ width: "65%" }]}>
+                  <TextField.Root isInvalid={!!errors?.tree?.recipeYield?.quantity} >
+                    <TextField.Input inputMode="numeric" label={_(msg`Yield`)} defaultValue={state.recipeYield?.quantity}
+                      onChangeText={value => dispatch({ type: 'set_yield', field: 'quantity', value })} />
+                  </TextField.Root>
                             </View>
                             <View style={[{ width: "35%" }]}>
-                                <TextField.Root >
+                  <TextField.Root isInvalid={!!errors?.tree?.recipeYield?.unit}>
                                     <TextField.Input label={_(msg`Unit`)} defaultValue={state.recipeYield?.unit}
                                         onChangeText={value => dispatch({ type: 'set_yield', field: 'unit', value })}
                                     />
-                                </TextField.Root>
+                  </TextField.Root>
                             </View>
                         </View>
 
-                        <View style={{ width: "40%" }}>
+              <View style={[{ width: "40%" }, errorBorder(t, errors?.tree?.categories)]}>
                             <ComboBox options={recipeCategories} label={_(msg`Categories`)}
                                 selection={state.categories ?? []}
                                 onRemove={(value) => dispatch({ type: 'remove_element', field: 'categories', value })}
                                 onSelect={(value) => dispatch({ type: 'add_element', field: 'categories', value })}
-                            />
+                />
                         </View>
                     </View>
                     <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
-                        <View style={{ width: "40%" }}>
+              <View style={[{ width: "40%" }, errorBorder(t, errors?.tree?.suitableForDiet)]}>
 
                             <ComboBox options={recipeDiets} label={_(msg`Suitable diets`)}
                                 selection={state.suitableForDiet ?? []}
-                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
+                  onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
                                 onSelect={(value) => dispatch({ type: 'add_element', field: 'suitableForDiet', value })}
                             />
                         </View>
-                        <View style={{ width: "40%" }}>
+              <View style={[{ width: "40%" }, errorBorder(t, errors?.tree?.suitableForDiet)]}>
                             <ComboBox options={recipeCuisines} label={_(msg`Cuisine type`)}
                                 selection={state.cuisines ?? []}
                                 onRemove={(value) => dispatch({ type: 'remove_element', field: 'cuisines', value })}
                                 onSelect={(value) => dispatch({ type: 'add_element', field: 'cuisines', value })}
                             />
                         </View>
-                    </View>
+            </View>
 
-                    <View style={[a.flex_row, a.gap_md]}>
+            <View style={[a.flex_row, a.gap_md]}>
                         <View style={{ flexBasis: "40%" }}>
-                            <NumberField label={_(msg`Preparation time`)} defaultValue={state.prepTime}
-                                onChange={value => dispatch({ type: 'set_prep_time', value })}
-                            >
-                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
-                            </NumberField>
-                        </View>
-
+                <TextField.Root isInvalid={!!errors?.tree?.prepTime}>
+                  <TextField.Input inputMode="numeric" label={_(msg`Preparation time`)} defaultValue={state.prepTime}
+                    onChangeText={value => dispatch({ type: 'set_prep_time', value })} />
+                  <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                </TextField.Root >
+              </View>
                         <View style={[{ flexBasis: "40%" }]}>
-                            <NumberField label={_(msg`Cooking time`)} defaultValue={state.cookTime}
-                                onChange={value => dispatch({ type: 'set_cook_time', value })}
-                            >
+                <TextField.Root isInvalid={!!errors?.tree?.cookTime}>
+                  <TextField.Input inputMode="numeric" label={_(msg`Cooking time`)} defaultValue={state.cookTime}
+                    onChangeText={value => dispatch({ type: 'set_cook_time', value })} />
                                 <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
-                            </NumberField>
+                </TextField.Root>
                         </View>
                     </View>
 
-                    <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
+            <View style={[{ backgroundColor: t.palette.contrast_50, }, errorBorder(t, errors?.tree?.text)]}>
 
                         {/* TODO fix color, width */}
                         <TextInput
@@ -363,7 +389,7 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         <View style={[a.align_center]}>
                             <H2 style={[a.text_lg]}><Trans context="recipe">Ingredients</Trans></H2>
                         </View>
-                        <RecipeIngredients state={state} dispatch={dispatch} />
+              <RecipeIngredients state={state} dispatch={dispatch} errors={errors} />
 
                     </View>
 
@@ -372,17 +398,19 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
                         <View style={[a.align_center]}>
                             <H2 style={[a.text_lg]}><Trans context="recipe">Instructions</Trans></H2>
                         </View>
-                        <RecipeInstructions state={state} dispatch={dispatch} />
+              <RecipeInstructions state={state} dispatch={dispatch} errors={errors} />
                     </View>
 
                     <Accordion heading={_(msg`Nutritional Information`)}>
-                        <RecipeNutrition state={state} dispatch={dispatch} />
+              <RecipeNutrition state={state} dispatch={dispatch} errors={errors} />
                     </Accordion>
-
+            <View style={errorBorder(t, errors?.tree?.attribution)}>
                     <Accordion heading={_(msg`Attribution`)}>
                         <RecipeAttribution value={state.attribution}
                             onChange={(value) => dispatch({ type: 'update_attribution', value })} />
                     </Accordion>
+            </View>
+
 
                     <View>
                         <ComposerEmbeds
@@ -414,71 +442,131 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
 
 }
 
-function NutritionField({ unit, state, dispatch, field, label, subFields }:
-    NutritionElement & { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
-    const { _ } = useLingui()
+function ErrorBanner({ errors, onClearError }: { errors: RecipeReducerOutput["errors"], onClearError: () => void }) {
+  const t = useTheme()
+  const { _ } = useLingui()
+  if (!errors?.flat.length) {
+    return null
+  }
+  return <Animated.View
+    style={[a.px_lg, a.pb_sm]}
+    entering={FadeIn}
+    exiting={FadeOut}>
+    <View
+      style={[
+        a.px_md,
+        a.py_sm,
+        a.gap_xs,
+        a.rounded_sm,
+        t.atoms.bg_contrast_25,
+      ]}>
+
+      <View style={[a.relative, a.flex_row, a.gap_sm, { paddingRight: 48 }]}>
+        <View>
+          {errors.flat.map(issue => <View style={[a.flex_row, a.gap_sm]}>
+            <CircleInfo fill={t.palette.negative_400} />
+            <Text key={issue.path.join('-')} style={[a.flex_1, a.leading_snug, { paddingTop: 1 }]}>{_(issue.message)}</Text>
+          </View>)}
+        </View>
+        <Button
+          label={_(msg`Dismiss error`)}
+          size="tiny"
+          color="secondary"
+          variant="ghost"
+          shape="round"
+          style={[a.absolute, { top: 0, right: 0 }]}
+          onPress={onClearError}>
+          <ButtonIcon icon={X} />
+        </Button>
+      </View>
+
+    </View>
+  </Animated.View>
+}
+
+function NutritionField({ unit, state, dispatch, field, label, subFields, errors }:
+  NutritionElement & RecipeReducerOutput) {
+  const { _ } = useLingui()
     return <View style={[a.gap_xs]}>
-        <NumberField defaultValue={state.nutrition?.[field]} label={_(label)}
-            onChange={value => dispatch({ type: 'update_nutrition', field, value })}
-        >
+      <TextField.Root isInvalid={!!errors?.tree?.nutrition?.[field]}>
+        <TextField.Input inputMode="numeric" value={state.nutrition?.[field] ?? ""} label={_(label)}
+          onChangeText={value => dispatch({ type: 'update_nutrition', field, value })} />
             <TextField.SuffixText label={_(unit)} >{_(unit)}</TextField.SuffixText>
-        </NumberField>
+      </TextField.Root>
         <View style={[a.pl_md]}>
-            {subFields?.map(subField => <NutritionField key={subField.field} {...subField} state={state} dispatch={dispatch} />)}
-        </View>
+        {subFields?.map(subField => <NutritionField key={subField.field} {...subField} state={state} dispatch={dispatch} errors={errors} />)}
+      </View>
     </View>
 }
 
-function RecipeNutrition({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+function RecipeNutrition({ state, dispatch, errors }: RecipeReducerOutput) {
     const { _ } = useLingui()
 
-    return <View style={[a.gap_xs]}>
-        <View style={[a.flex_row, a.gap_xs]}>
-            <View>
-                <NumberField label={_(msg`Serving size`)} defaultValue={state.nutrition?.servingSize.quantity}
-                    onChange={value => dispatch({ type: 'set_nutrition_serving', field: 'quantity', value })} />
+  return <View style={[a.gap_xs]}>
+    <View style={[a.flex_row, a.gap_xs, a.align_center]}>
+      <View>
+        <TextField.Root>
+          <TextField.Input inputMode="numeric" label={_(msg`Serving size`)}
+            value={state.nutrition?.servingSize.quantity ?? ""} isInvalid={!!errors?.tree?.nutrition?.servingSize?.quantity}
+            onChangeText={value => dispatch({ type: 'set_nutrition_serving', field: 'quantity', value })}
+          />
+        </TextField.Root>
             </View>
-            <View>
-                <TextField.Root >
-                    <TextField.Input label={_(msg`Unit`)} defaultValue={state.nutrition?.servingSize.unit}
-                        onChangeText={value => dispatch({ type: 'set_nutrition_serving', field: 'unit', value })}
-                    />
-                </TextField.Root>
-            </View>
+      <View style={{ width: "25%", marginRight: 'auto' }} >
+        <TextField.Root isInvalid={!!errors?.tree?.nutrition?.servingSize?.unit}>
+          <TextField.Input label={_(msg`Unit`)} value={state.nutrition?.servingSize.unit ?? ""}
+            onChangeText={value => dispatch({ type: 'set_nutrition_serving', field: 'unit', value })}
+          />
+        </TextField.Root>
+      </View>
+      <View>
+        <Button
+          label={_(msg`Clear nutrition`)}
+          variant="outline"
+          color="negative"
+          size="small"
+          onPress={() => dispatch({ type: "clear_nutrition" })}>
+          <ButtonText>
+            <Trans>Clear</Trans>
+          </ButtonText>
+        </Button>
         </View>
-        {nutritionFields.map(field => <NutritionField key={field.field} {...field} state={state} dispatch={dispatch} />)}
+    </View>
+    {nutritionFields.map(field => <NutritionField key={field.field} {...field} state={state} dispatch={dispatch} errors={errors} />)}
     </View>
 }
 
 
 
-function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+function RecipeIngredients({ state, dispatch, errors }: RecipeReducerOutput) {
     const { _ } = useLingui()
     const t = useTheme()
 
     return <View style={[a.gap_sm, a.border, a.p_sm, t.atoms.border_contrast_low, a.rounded_sm]}><View style={[a.gap_xs]}>
-            {state.ingredients.map(({ id, name, quantity, unit }) =>
+      {state.ingredients.map(({ id, name, quantity, unit }, i) =>
                 <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
                     {/* TODO rather use labels instead of placeholders for small screens */}
 
                     <View style={{ flexGrow: 1, flexBasis: '50%' }}>
                         <TextField.Root>
-                            <TextField.Input label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
+              <TextField.Input isInvalid={!!errors?.tree?.ingredients?.[i]?.name} label={_(msg`Item`)} defaultValue={name} onChangeText={value => {
                             dispatch({ type: "edit_ingredient", prop: "name", value, id })
                         }} />
-                        </TextField.Root>
-                    </View>
+            </TextField.Root>
+          </View>
 
-                    <View style={{ flexBasis: "17%" }}>
-                        <NumberField label={_(msg`Quantity`)} defaultValue={quantity} onChange={value => {
+          <View style={{ flexBasis: "17%" }}>
+            <TextField.Root isInvalid={!!errors?.tree?.ingredients?.[i]?.quantity}>
+              <TextField.Input inputMode="numeric" label={_(msg`Quantity`)} defaultValue={quantity} onChangeText={value => {
                             dispatch({ type: "edit_ingredient", prop: "quantity", value, id })
-                        }} />
+              }} />
+            </TextField.Root>
                     </View>
                     <View style={{ flexBasis: "11%" }}>
                         <TextField.Root>
                             <TextField.Input label={_(msg`Unit`)} defaultValue={unit} onChangeText={value => {
                             dispatch({ type: "edit_ingredient", prop: "unit", value, id })
-                            }} />
+              }} isInvalid={!!errors?.tree?.ingredients?.[i]?.unit} />
                         </TextField.Root>
                     </View>
                     <View style={{ justifyContent: "center" }}>
@@ -511,12 +599,12 @@ function RecipeIngredients({ state, dispatch }: { state: RecipePostDraft, dispat
 
 }
 
-function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispatch: Dispatch<RecipeComposerAction> }) {
+function RecipeInstructions({ state, dispatch, errors }: RecipeReducerOutput) {
     const { _ } = useLingui()
     const t = useTheme()
     const hasMultiSections = state.instructionSections.length > 1 || state.instructionSections.at(0)?.name
     return <View >
-        {state.instructionSections.map((section) => <View style={[a.border, a.p_sm, a.flex_grow, t.atoms.border_contrast_low, a.rounded_sm]}
+      {state.instructionSections.map((section, i) => <View style={[a.border, a.p_sm, a.flex_grow, t.atoms.border_contrast_low, a.rounded_sm]}
             key={section.id}>
             <View>
                 <View style={[a.gap_sm,]}>
@@ -628,10 +716,7 @@ function RecipeInstructions({ state, dispatch }: { state: RecipePostDraft, dispa
 
             </View>
 
-        </View>)}
-
-
-
+      </View>)}
     </View>
 }
 
@@ -699,18 +784,18 @@ const styles = StyleSheet.create({
 
 // TODO: add error child
 function ComposerTopBar({
-    topBarAnimatedStyle,
+  topBarAnimatedStyle,
     onCancel,
     isPublishing,
     onPublish,
-    canPost
-}: {
+  children
+}: PropsWithChildren<{
     topBarAnimatedStyle: StyleProp<ViewStyle>
     onCancel: () => void
     isPublishing: boolean
     onPublish: () => void
-    canPost: boolean
-}) {
+
+}>) {
     const { _ } = useLingui()
     return (
         <Animated.View
@@ -735,11 +820,11 @@ function ComposerTopBar({
                 <View style={a.flex_1} />
                 {isPublishing ? (
 
-                    <View style={styles.postBtn}>
-                        <ActivityIndicator />
-                    </View>
+            <View style={styles.postBtn}>
+              <ActivityIndicator />
+            </View>
 
-                ) : (
+          ) : 
                     <Button
                         testID="composerPublishBtn"
                         label={_(
@@ -752,17 +837,18 @@ function ComposerTopBar({
                         }
                         variant="solid"
                         color="primary"
-                        shape="default"
+              shape="default"
                         size="small"
                         style={[a.rounded_full, a.py_sm]}
                         onPress={onPublish}
-                        disabled={!canPost}>
-                        <ButtonText style={[a.text_md]}>
+            >
+              <ButtonText style={[a.text_md]}>
                             <Trans context="action">Post</Trans>
                         </ButtonText>
-                    </Button>
-                )}
+            </Button>}
+
             </View>
+        {children}
         </Animated.View>
     )
 }
