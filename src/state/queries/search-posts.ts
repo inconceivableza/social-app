@@ -32,8 +32,16 @@ export function useSearchPostsQuery({
   query,
   sort,
   enabled,
+  searchType,
+  recipeCategories,
+  recipeCuisines,
+  recipeDiets
 }: {
   query: string
+    searchType?: string
+    recipeCuisines?: string[],
+    recipeCategories?: string[],
+    recipeDiets?: string[]
   sort?: 'top' | 'latest'
   enabled?: boolean
 }) {
@@ -66,6 +74,10 @@ export function useSearchPostsQuery({
         limit: 25,
         cursor: pageParam,
         sort,
+        searchType,
+        recipeCategories,
+        recipeCuisines,
+        recipeDiets
       })
       return res.data
     },

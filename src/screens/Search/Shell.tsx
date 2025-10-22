@@ -47,6 +47,10 @@ import {SearchHistory} from './components/SearchHistory'
 import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
+import * as ToggleButton from '#/components/forms/ToggleButton'
+import { RecipeSearchFields } from './components/RecipeSearchFields'
+import { AppBskyFeedSearchPosts } from '@atproto/api'
+import { AdditionalQueryParams } from './types'
 
 export function SearchScreenShell({
   queryParam,
@@ -273,6 +277,8 @@ export function SearchScreenShell({
 
   const showHeader = !gtMobile || navButton !== 'menu'
 
+  const [searchType, setSearchType] = useState<'all' | 'recipes'>('all')
+
   return (
     <Layout.Screen testID={testID}>
       <View
@@ -319,8 +325,18 @@ export function SearchScreenShell({
           )}
           <View style={[a.px_lg, a.pt_sm, a.pb_sm, a.overflow_hidden]}>
             <View style={[a.gap_sm]}>
-              <View style={[a.w_full, a.flex_row, a.align_stretch, a.gap_xs]}>
-                <View style={[a.flex_1]}>
+              <View style={[a.w_full, a.flex_row, a.align_stretch, a.gap_xs, a.align_center]}>
+                <View style={{ width: '25%' }}>
+                  <ToggleButton.Group label={_(msg`Search type`)} onChange={(values) => {
+                    const found = searchTypeOptions.find(({ value }) => value === values[0])
+                    setSearchType(found?.value ?? "all")
+                  }} values={[searchType]}>
+                    {searchTypeOptions.map(({ label, value }) => <ToggleButton.Button label={_(label)} name={value}>
+                      <ToggleButton.ButtonText>{_(label)}</ToggleButton.ButtonText>
+                    </ToggleButton.Button>)}
+                  </ToggleButton.Group>
+                </View>
+                <View style={{ flexGrow: 1 }}>
                   <SearchInput
                     ref={textInput}
                     value={searchText}
@@ -350,7 +366,9 @@ export function SearchScreenShell({
                   </Button>
                 )}
               </View>
-
+              {searchType === "recipes" && <View>
+                <RecipeSearchFields />
+              </View>}  
               {showFilters && !showHeader && (
                 <View
                   style={[
@@ -402,6 +420,7 @@ export function SearchScreenShell({
         }}>
         <SearchScreenInner
           query={query}
+          additionalParams={{ searchType }}
           queryWithParams={queryWithParams}
           headerHeight={headerHeight}
           focusSearchInput={focusSearchInput}
@@ -411,14 +430,17 @@ export function SearchScreenShell({
   )
 }
 
+
 let SearchScreenInner = ({
   query,
   queryWithParams,
+  additionalParams,
   headerHeight,
   focusSearchInput,
 }: {
   query: string
   queryWithParams: string
+    additionalParams: AdditionalQueryParams
   headerHeight: number
   focusSearchInput: () => void
 }): React.ReactNode => {
@@ -441,6 +463,7 @@ let SearchScreenInner = ({
     <SearchResults
       query={query}
       queryWithParams={queryWithParams}
+      additionalParams={additionalParams}
       activeTab={activeTab}
       headerHeight={headerHeight}
       onPageSelected={onPageSelected}
@@ -534,3 +557,11 @@ function scrollToTopWeb() {
     window.scrollTo(0, 0)
   }
 }
+
+const searchTypeOptions = [{
+  value: 'all',
+  label: msg`All`
+}, {
+  value: 'recipes',
+  label: msg`Recipes`
+}] as const
