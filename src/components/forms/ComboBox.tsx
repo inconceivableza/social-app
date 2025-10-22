@@ -44,7 +44,7 @@ export function ComboBox({
   // TODO: display "no results found" when applicable
   return (
     <View>
-      <Tooltip.Outer visible onVisibleChange={() => {}}>
+      <Tooltip.Outer visible onVisibleChange={() => { }}>
         <Tooltip.Target>
           <TextField.Root>
             <TextField.Input
@@ -77,7 +77,7 @@ export function ComboBox({
         </Tooltip.Target>
         <View>
           <Tooltip.Content
-            fill={expanded ? undefined : 'transparent'}
+            hide={!expanded}
             label={_(`Options`)}>
             <ScrollView
               style={{
@@ -87,7 +87,6 @@ export function ComboBox({
               {filteredOptions.map(({label, id}) => (
                 <View key={id}>
                   <Button
-                    color="primary"
                     label={_(msg`${name}`)}
                     size="small"
                     style={[a.justify_start]}
@@ -104,7 +103,7 @@ export function ComboBox({
         </View>
       </Tooltip.Outer>
       {!!selectionLabels.length && (
-        <View style={[a.flex_row, a.mt_xs, a.gap_xs]}>
+        <View style={[a.flex_row, a.mt_xs, a.gap_xs, a.flex_wrap]}>
           {selectionLabels.map(({id, label}, _i) => (
             <View
               key={id}
@@ -114,11 +113,10 @@ export function ComboBox({
                 a.p_sm,
                 a.flex_row,
                 a.gap_xs,
-                a.justify_center,
+                a.align_center,
               ]}>
               <Text>{label}</Text>
               <Button
-                color="primary"
                 label={_(msg`Remove selection`)}
                 onPress={() => {
                   onRemove(id)
