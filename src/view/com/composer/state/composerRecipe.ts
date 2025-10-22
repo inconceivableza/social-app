@@ -376,7 +376,7 @@ export type RecipeReducerOutput = ReturnType<typeof useRecipePostReducer>
 const ingredientDraftSchema = z.object({
     id: z.string(),
     name: z.string().min(1, msg`Ingredient name cannot be empty`),
-    quantity: z.coerce.number({ errorMap: () => msg`Ingredient quantity must be a number` as { message: string } }),
+    quantity: z.coerce.number({ errorMap: () => msg`Ingredient quantity must be a number` as { message: string } }).refine(v => v > 0, msg`Ingredient quantity cannot be empty`),
     unit: z.string().min(1, msg`Ingredient unit cannot be empty`),
 })
 
