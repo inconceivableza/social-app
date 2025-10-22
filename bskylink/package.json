@@ -8,7 +8,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@atproto/api": "link:../atproto/packages/api/dist",
+    "@atproto/api": "link:../../atproto/packages/api/dist",
     "@atproto/common": "^0.4.11",
     "@types/escape-html": "^1.0.4",
     "body-parser": "^1.20.2",
