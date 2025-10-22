@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@atproto/api": "link:../atproto/packages/api/dist",
+    "@atproto/api": "link:../../atproto/packages/api/dist",
     "preact": "^10.4.8"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "resolutions": {
-    "@atproto/lexicon": "link:../atproto/packages/lexicon/dist",
-    "@atproto/syntax": "link:../atproto/packages/syntax/dist"
+    "@atproto/lexicon": "link:../../atproto/packages/lexicon/dist",
+    "@atproto/syntax": "link:../../atproto/packages/syntax/dist"
   }
 }

@@ -10,8 +10,8 @@
     "install-fonts": "node --loader ts-node/esm scripts/install-fonts.ts"
   },
   "dependencies": {
-    "@atproto/api": "link:../atproto/packages/api/dist",
-    "@atproto/common": "link:../atproto/packages/common/dist",
+    "@atproto/api": "link:../../atproto/packages/api/dist",
+    "@atproto/common": "link:../../atproto/packages/common/dist",
     "@resvg/resvg-js": "^2.6.2",
     "express": "^4.19.2",
     "http-terminator": "^3.2.0",

@@ -1,10 +1,10 @@
 import {
   AtpAgent,
+  ConfirmEmailExpiredTokenError as ExpiredTokenError,
   CredentialSession,
   type ToolsOzoneSafelinkDefs,
   type ToolsOzoneSafelinkQueryEvents,
 } from '@atproto/api'
-import {ExpiredTokenError} from '@atproto/api/dist/client/types/com/atproto/server/confirmEmail.js'
 import {MINUTE} from '@atproto/common'
 import {LRUCache} from 'lru-cache'
 
