@@ -13,6 +13,23 @@ const config: UserConfig = {
       targets: ['defaults', 'not IE 11'],
     }),
   ],
+  resolve: {
+    alias: {
+      '@atproto/api': resolve(
+        __dirname,
+        '../../atproto/packages/api/dist/index.js',
+      ),
+      '@atproto/lexicon': resolve(
+        __dirname,
+        '../../atproto/packages/lexicon/dist/index.js',
+      ),
+      '@atproto/syntax': resolve(
+        __dirname,
+        '../../atproto/packages/syntax/dist/index.js',
+      ),
+    },
+    preserveSymlinks: true,
+  },
   build: {
     assetsDir: 'static',
     rollupOptions: {
