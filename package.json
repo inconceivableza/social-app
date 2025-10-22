@@ -72,7 +72,11 @@
     "icons:optimize": "svgo -f ./assets/icons"
   },
   "dependencies": {
-    "@atproto/api": "link:../atproto/packages/api/dist",
+    "@atproto/api": "link:../atproto/packages/api",
+    "@atproto/common-web": "link:../atproto/packages/common-web",
+    "@atproto/lexicon": "link:../atproto/packages/lexicon",
+    "@atproto/syntax": "link:../atproto/packages/syntax",
+    "@atproto/xrpc": "link:../atproto/packages/xrpc",
     "@bitdrift/react-native": "^0.6.8",
     "@braintree/sanitize-url": "^6.0.2",
     "@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
@@ -283,8 +287,11 @@
     "webpack-bundle-analyzer": "^4.10.1"
   },
   "resolutions": {
-    "@atproto/lexicon": "link:../atproto/packages/lexicon/dist",
-    "@atproto/syntax": "link:../atproto/packages/syntax/dist",
+    "@atproto/api": "link:../atproto/packages/api",
+    "@atproto/common-web": "link:../atproto/packages/common-web",
+    "@atproto/lexicon": "link:../atproto/packages/lexicon",
+    "@atproto/syntax": "link:../atproto/packages/syntax",
+    "@atproto/xrpc": "link:../atproto/packages/xrpc",
     "@expo/image-utils": "0.6.3",
     "@react-native/babel-preset": "0.79.3",
     "@react-native/normalize-colors": "0.79.3",
