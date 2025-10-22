@@ -211,6 +211,7 @@ export async function postRecipe(
   qc: QueryClient,
   {post}: RecipePostOpts,
 ) {
+  // TODO: strip out empty fields
   const now = new Date()
   const did = agent.assertDid
   const tid = TID.next()
