@@ -10,10 +10,6 @@ import {
   type ModerationDecision,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {
-  FontAwesomeIcon,
-  type FontAwesomeIconStyle,
-} from '@fortawesome/react-native-fontawesome'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
@@ -36,7 +32,6 @@ import {makeProfileLink} from '#/lib/routes/links'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {countLines} from '#/lib/strings/helpers'
-import {s} from '#/lib/styles'
 import {
   POST_TOMBSTONE,
   type Shadow,
@@ -68,6 +63,7 @@ import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {type AppModerationCause} from '#/components/Pills'
 import {Embed} from '#/components/Post/Embed'
 import {PostEmbedViewContext} from '#/components/Post/Embed/types'
+import {PostRepliedTo} from '#/components/Post/PostRepliedTo'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {DiscoverDebug} from '#/components/PostControls/DiscoverDebug'
@@ -200,7 +196,7 @@ let FeedItemInner = ({
   const href = useMemo(() => {
     return postHref(post.author, post.uri)
   }, [post.uri, post.author])
-  const {sendInteraction, feedDescriptor} = useFeedFeedbackContext()
+  const {sendInteraction, feedSourceInfo} = useFeedFeedbackContext()
 
   const revisionState = recordRevisionState(post)
 
@@ -239,6 +235,7 @@ let FeedItemInner = ({
           author: post.author,
           embed: post.embed,
           moderation,
+          langs: record.langs,
         },
       })
     } else {
@@ -251,6 +248,7 @@ let FeedItemInner = ({
           author: post.author,
           embed: post.embed,
           moderation,
+          langs: record.langs,
         },
       })
     }
@@ -315,7 +313,7 @@ let FeedItemInner = ({
     })
     unstableCacheProfileView(queryClient, post.author)
     setUnstablePostSource(buildPostSourceKey(post.uri, post.author.handle), {
-      feed: feedDescriptor,
+      feedSourceInfo,
       post: {
         post,
         reason: AppBskyFeedDefs.isReasonRepost(reason) ? reason : undefined,
@@ -547,10 +545,10 @@ let FeedItemInner = ({
 
           {showReplyTo &&
             (parentAuthor || isParentBlocked || isParentNotFound) && (
-              <ReplyToLabel
-                blocked={isParentBlocked}
-                notFound={isParentNotFound}
-                profile={parentAuthor}
+              <PostRepliedTo
+                parentAuthor={parentAuthor}
+                isParentBlocked={isParentBlocked}
+                isParentNotFound={isParentNotFound}
               />
             )}
           <LabelsOnMyPost post={post} />
@@ -748,80 +746,10 @@ let RecipePostContent = ({
 
 RecipePostContent = memo(RecipePostContent)
 
-function ReplyToLabel({
-  profile,
-  blocked,
-  notFound,
-}: {
-  profile: AppBskyActorDefs.ProfileViewBasic | undefined
-  blocked?: boolean
-  notFound?: boolean
-}) {
-  const pal = usePalette('default')
-  const {currentAccount} = useSession()
-
-  let label
-  if (blocked) {
-    label = <Trans context="description">Reply to a blocked post</Trans>
-  } else if (notFound) {
-    label = <Trans context="description">Reply to a post</Trans>
-  } else if (profile != null) {
-    const isMe = profile.did === currentAccount?.did
-    if (isMe) {
-      label = <Trans context="description">Reply to you</Trans>
-    } else {
-      label = (
-        <Trans context="description">
-          Reply to{' '}
-          <ProfileHoverCard did={profile.did}>
-            <TextLinkOnWebOnly
-              type="md"
-              style={pal.textLight}
-              lineHeight={1.2}
-              numberOfLines={1}
-              href={makeProfileLink(profile)}
-              text={
-                <Text emoji type="md" style={pal.textLight} lineHeight={1.2}>
-                  {profile.displayName
-                    ? sanitizeDisplayName(profile.displayName)
-                    : sanitizeHandle(profile.handle)}
-                </Text>
-              }
-            />
-          </ProfileHoverCard>
-        </Trans>
-      )
-    }
-  }
-
-  if (!label) {
-    // Should not happen.
-    return null
-  }
-
-  return (
-    <View style={[s.flexRow, s.mb2, s.alignCenter]}>
-      <FontAwesomeIcon
-        icon="reply"
-        size={9}
-        style={[{color: pal.colors.textLight} as FontAwesomeIconStyle, s.mr5]}
-      />
-      <Text
-        type="md"
-        style={[pal.textLight, s.mr2]}
-        lineHeight={1.2}
-        numberOfLines={1}>
-        {label}
-      </Text>
-    </View>
-  )
-}
-
 const styles = StyleSheet.create({
   outer: {
     paddingLeft: 10,
     paddingRight: 15,
-    // @ts-ignore web only -prf
     cursor: 'pointer',
   },
   replyLine: {

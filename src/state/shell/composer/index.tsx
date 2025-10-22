@@ -20,6 +20,7 @@ import * as Toast from '#/view/com/util/Toast'
 
 export type ComposerOptsPostRef = ComAtprotoRepoStrongRef.Main & {
   text: string
+  langs?: string[]
   author: AppBskyActorDefs.ProfileViewBasic
   embed?: AppBskyFeedDefs.PostView['embed']
   moderation?: ModerationDecision
@@ -76,12 +77,14 @@ type ControlsContext = {
 }
 
 const stateContext = React.createContext<StateContext>(undefined)
+stateContext.displayName = 'ComposerStateContext'
 const controlsContext = React.createContext<ControlsContext>({
   openComposer(_opts: ComposerOpts) {},
   closeComposer() {
     return false
   },
 })
+controlsContext.displayName = 'ComposerControlsContext'
 
 export function Provider({children}: React.PropsWithChildren<{}>) {
   const {_} = useLingui()

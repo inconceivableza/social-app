@@ -63,8 +63,12 @@ export type {EnvConfig, EnvContent}
 const HELP_DESK_LANG = 'en-us'
 
 const EMPTY_CONFIG: EnvConfig = {
+  APPVIEW_DID: '',
   APPVIEW_URL: '',
+  BSKY_PROXY_DID: '',
   BSKY_SERVICE: '',
+  BSKY_SERVICE_DID: '',
+  DM_PROXY_DID: '',
   DM_SERVICE_DID: '',
   GIF_HOST: '',
   HELP_DESK_URL: '',
@@ -83,9 +87,13 @@ const EMPTY_CONFIG: EnvConfig = {
   VIDEO_SERVICE_DID: '',
 }
 
-const InternalToEnvName: Record<string, string> = {
+const InternalToEnvName: EnvConfig & Record<string, string> = {
+  APPVIEW_DID: 'EXPO_PUBLIC_ATP_APPVIEW_DID',
   APPVIEW_URL: 'EXPO_PUBLIC_ATP_APPVIEW_URL',
+  BSKY_PROXY_DID: 'EXPO_PUBLIC_BLUESKY_PROXY_DID',
   BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PDS_URL',
+  BSKY_SERVICE_DID: 'EXPO_PUBLIC_ATP_PDS_DID',
+  DM_PROXY_DID: 'EXPO_PUBLIC_CHAT_PROXY_DID',
   DM_SERVICE_DID: 'EXPO_PUBLIC_DM_SERVICE_DID',
   GIF_HOST: 'EXPO_PUBLIC_GIF_HOST',
   HELP_DESK_URL: 'EXPO_PUBLIC_SOCIAL_HELP_DESK_URL',
@@ -105,9 +113,13 @@ const InternalToEnvName: Record<string, string> = {
 }
 
 const processEnvConfigValues: Record<string, string> = {
+  ATP_APPVIEW_DID: process.env.EXPO_PUBLIC_ATP_APPVIEW_DID,
   ATP_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_APPVIEW_URL,
-  ATP_PDS_HOST: process.env.EXPO_PUBLIC_ATP_PDS_HOST,
+  ATP_PDS_DID: process.env.EXPO_PUBLIC_ATP_PDS_DID,
+  ATP_PDS_URL: process.env.EXPO_PUBLIC_ATP_PDS_URL,
   ATP_PUBLIC_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL,
+  BLUESKY_PROXY_DID: process.env.EXPO_PUBLIC_BLUESKY_PROXY_DID,
+  CHAT_PROXY_DID: process.env.EXPO_PUBLIC_CHAT_PROXY_DID,
   CORS_ALLOWED_ORIGINS: process.env.EXPO_PUBLIC_CORS_ALLOWED_ORIGINS,
   DM_SERVICE_DID: process.env.EXPO_PUBLIC_DM_SERVICE_DID,
   GIF_HOST: process.env.EXPO_PUBLIC_GIF_HOST,
@@ -189,8 +201,12 @@ const systemEnvContents = (Constants?.expoConfig?.extra || {})['env-content']
 
 // The defaults as bluesky originally ships them in social-app
 const BLUESKY_CONFIG: EnvConfig = {
+  APPVIEW_DID: 'did:web:api.bsky.app',
   APPVIEW_URL: 'https://api.bsky.app',
+  BSKY_PROXY_DID: 'did:web:api.bsky.app',
   BSKY_SERVICE: 'https://bsky.social',
+  BSKY_SERVICE_DID: 'did:web:bsky.social',
+  DM_PROXY_DID: 'did:web:api.bsky.chat',
   DM_SERVICE_DID: 'did:web:api.bsky.chat',
   GIF_HOST: 't.gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
@@ -366,8 +382,12 @@ const EMPTY_CONTENT: EnvContent = {
 
 // The defaults are only different for some items on staging
 const BLUESKY_STAGING_CONFIG: EnvConfig = {
+  APPVIEW_DID: BLUESKY_CONFIG.APPVIEW_DID,
   APPVIEW_URL: BLUESKY_CONFIG.APPVIEW_URL,
+  BSKY_PROXY_DID: 'did:web:staging.bsky.dev', // use the same proxy as the service
   BSKY_SERVICE: 'https://staging.bsky.dev',
+  BSKY_SERVICE_DID: 'did:web:staging.bsky.dev',
+  DM_PROXY_DID: BLUESKY_CONFIG.DM_SERVICE_DID, // use the same proxy as the service
   DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,

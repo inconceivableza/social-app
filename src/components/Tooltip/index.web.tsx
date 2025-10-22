@@ -20,6 +20,7 @@ const TooltipContext = createContext<TooltipContextType>({
   position: 'bottom',
   onVisibleChange: () => {},
 })
+TooltipContext.displayName = 'TooltipContext'
 
 export function Outer({
   children,
@@ -54,11 +55,11 @@ export function Target({children}: {children: React.ReactNode}) {
 export function Content({
   children,
   label,
-  fill
+  fill,
 }: {
   children: React.ReactNode
   label: string
-    fill?: string
+  fill?: string
 }) {
   const t = useTheme()
   const {position, onVisibleChange} = useContext(TooltipContext)
@@ -73,12 +74,13 @@ export function Content({
         onInteractOutside={() => onVisibleChange(false)}
         style={flatten([
           a.rounded_sm,
-          fill ? { backgroundColor: fill } :
-          select(t.name, {
-            light: t.atoms.bg,
-            dark: t.atoms.bg_contrast_100,
-            dim: t.atoms.bg_contrast_100,
-          }),
+          fill
+            ? {backgroundColor: fill}
+            : select(t.name, {
+                light: t.atoms.bg,
+                dark: t.atoms.bg_contrast_100,
+                dim: t.atoms.bg_contrast_100,
+              }),
           {
             minWidth: 'max-content',
             boxShadow: select(t.name, {
@@ -91,11 +93,14 @@ export function Content({
         <Popover.Arrow
           width={ARROW_SIZE}
           height={ARROW_SIZE / 2}
-          fill={fill ?? select(t.name, {
-            light: t.atoms.bg.backgroundColor,
-            dark: t.atoms.bg_contrast_100.backgroundColor,
-            dim: t.atoms.bg_contrast_100.backgroundColor,
-          })}
+          fill={
+            fill ??
+            select(t.name, {
+              light: t.atoms.bg.backgroundColor,
+              dark: t.atoms.bg_contrast_100.backgroundColor,
+              dim: t.atoms.bg_contrast_100.backgroundColor,
+            })
+          }
         />
         <View style={[a.px_md, a.py_sm, {maxWidth: BUBBLE_MAX_WIDTH}]}>
           {children}

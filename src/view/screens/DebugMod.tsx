@@ -32,8 +32,11 @@ import {
   groupNotifications,
   shouldFilterNotif,
 } from '#/state/queries/notifications/util'
+import {threadPost} from '#/state/queries/usePostThread/views'
 import {useSession} from '#/state/session'
 import {CenteredView, ScrollView} from '#/view/com/util/Views'
+import {ThreadItemAnchor} from '#/screens/PostThread/components/ThreadItemAnchor'
+import {ThreadItemPost} from '#/screens/PostThread/components/ThreadItemPost'
 import {ProfileHeaderStandard} from '#/screens/Profile/Header/ProfileHeaderStandard'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
@@ -525,13 +528,13 @@ export const DebugModScreen = ({}: NativeStackScreenProps<
                   <MockPostFeedItem post={post} moderation={postModeration} />
 
                   <Heading title="Post" subtitle="viewed directly" />
-                  <MockPostThreadItem post={post} moderation={postModeration} />
+                  <MockPostThreadItem post={post} moderationOpts={modOpts} />
 
                   <Heading title="Post" subtitle="reply in thread" />
                   <MockPostThreadItem
                     post={post}
-                    moderation={postModeration}
-                    reply
+                    moderationOpts={modOpts}
+                    isReply
                   />
                 </>
               )}
@@ -843,30 +846,34 @@ function MockPostFeedItem({
 
 function MockPostThreadItem({
   post,
-  moderation,
-  reply,
+  moderationOpts,
+  isReply,
 }: {
   post: AppBskyFeedDefs.PostView
-  moderation: ModerationDecision
-  reply?: boolean
+  moderationOpts: ModerationOpts
+  isReply?: boolean
 }) {
-  // FIXME: adjust this to the new-style thread approach
-  return post && moderation && reply ? null : null /* (
-    <PostThreadItem
-      // @ts-ignore
-      post={post}
-      record={post.record as AppBskyFeedPost.Record}
-      moderation={moderation}
-      depth={reply ? 1 : 0}
-      isHighlightedPost={!reply}
-      treeView={false}
-      prevPost={undefined}
-      nextPost={undefined}
-      hasPrecedingItem={false}
-      overrideBlur={false}
-      onPostReply={() => {}}
-    />
-  ) */
+  const thread = threadPost({
+    uri: post.uri,
+    depth: isReply ? 1 : 0,
+    value: {
+      $type: 'app.bsky.unspecced.defs#threadItemPost',
+      post,
+      moreParents: false,
+      moreReplies: 0,
+      opThread: false,
+      hiddenByThreadgate: false,
+      mutedByViewer: false,
+    },
+    moderationOpts,
+    threadgateHiddenReplies: new Set<string>(),
+  })
+
+  return isReply ? (
+    <ThreadItemPost item={thread} />
+  ) : (
+    <ThreadItemAnchor item={thread} />
+  )
 }
 
 function MockNotifItem({

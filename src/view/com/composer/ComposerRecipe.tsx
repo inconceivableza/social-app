@@ -1,60 +1,86 @@
+import React, {PropsWithChildren, useCallback, useMemo, useRef, useState} from 'react'
 import {
-  ActivityIndicator, KeyboardAvoidingView, StyleProp, StyleSheet, TextInput as NativeTextInput, ViewStyle,
-} from "react-native";
-import { View } from "react-native";
-import { atoms as a, native, useTheme, web, type Theme } from '#/alf'
-import { isAndroid, isIOS } from '#/platform/detection'
-import { ComposerEmbeds, ToolbarWrapper, VideoUploadToolbar, useKeyboardVerticalOffset, useScrollTracker } from "./Composer";
-import { SelectPhotoBtn } from '#/view/com/composer/photos/SelectPhotoBtn'
-import { RecipePostDraft, RecipeReducerOutput, useRecipePostReducer } from "./state/composerRecipe";
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  type StyleProp,
+  StyleSheet,
+  type TextInput as NativeTextInput,
+  type ViewStyle,
+} from 'react-native'
+import {View} from 'react-native'
+import Animated, {
+  LayoutAnimationConfig,
+  LinearTransition,
+  useAnimatedRef,
+  FadeIn, FadeOut
+} from 'react-native-reanimated'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {type ImagePickerAsset} from 'expo-image-picker'
+import {msg, plural} from '@lingui/macro'
+import {Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
+import {useQueryClient} from '@tanstack/react-query'
+
+import {type RecipePostView} from '#/lib/api/feed/utils'
 import * as apilib from '#/lib/api/index'
-import { useAgent, useSession } from "#/state/session";
-import { Button, ButtonText, ButtonIcon } from '#/components/Button'
-import { msg } from "@lingui/macro";
-import { Trans } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
-import { useComposerControls } from "#/state/shell/composer";
-import { SelectGifBtn } from "./photos/SelectGifBtn";
-import { OpenCameraBtn } from "./photos/OpenCameraBtn";
-import { SelectVideoBtn } from "./videos/SelectVideoBtn";
-import Animated, { FadeIn, FadeOut, LayoutAnimationConfig, LinearTransition, useAnimatedRef } from "react-native-reanimated";
-import React, { PropsWithChildren, useCallback, useMemo, useRef, useState } from "react";
-import { useWebMediaQueries } from "#/lib/hooks/useWebMediaQueries";
-import { ImagePickerAsset } from "expo-image-picker";
-import { EmbedAction, MAX_IMAGES } from "./state/composer";
-import { ComposerImage } from "#/state/gallery";
-import { Gif } from "#/state/queries/tenor";
-import { EmojiArc_Stroke2_Corner0_Rounded as EmojiSmile } from '#/components/icons/Emoji'
-import { SelectLangBtn } from "./select-language/SelectLangBtn";
-import { useQueryClient } from "@tanstack/react-query";
-import { uploadVideoDirect } from "./state/video";
+import {retry} from '#/lib/async/retry'
+import {HITSLOP_20, MAX_RECIPE_TITLE_GRAPHEME_LENGTH} from '#/lib/constants'
+import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
+import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
+import {colors} from '#/lib/styles'
+import {logger} from '#/logger'
+import {isAndroid, isIOS} from '#/platform/detection'
+import {emitPostCreated} from '#/state/events'
+import {type ComposerImage,createComposerImage} from '#/state/gallery'
+import {type Gif} from '#/state/queries/tenor'
+import {useAgent, useSession} from '#/state/session'
+import {useComposerControls} from '#/state/shell/composer'
+import {
+  ComposerEmbeds,
+  ToolbarWrapper,
+  useKeyboardVerticalOffset,
+  useScrollTracker,
+  VideoUploadToolbar,
+} from '#/view/com/composer/Composer'
+import {OpenCameraBtn} from '#/view/com/composer/photos/OpenCameraBtn'
+import {SelectGifBtn} from '#/view/com/composer/photos/SelectGifBtn'
+import {RecipeAttribution} from '#/view/com/composer/recipe/RecipeAttribution'
+import {TextInput} from '#/view/com/composer/text-input/TextInput'
 import {
   EmojiPicker,
   type EmojiPickerPosition,
   type EmojiPickerState,
 } from '#/view/com/composer/text-input/web/EmojiPicker'
-import { TextInputRef, TextInput } from "./text-input/TextInput";
-import { colors } from "#/lib/styles";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useIsKeyboardVisible } from "#/lib/hooks/useIsKeyboardVisible";
-import { RecipePostView } from "#/lib/api/feed/utils";
-import { retry } from "#/lib/async/retry";
-import { emitPostCreated } from "#/state/events";
-import { logger } from "#/logger";
 import * as Toast from '#/view/com/util/Toast'
-import * as TextField from "#/components/forms/TextField";
-import { Trash_Stroke2_Corner0_Rounded as TrashIcon } from '#/components/icons/Trash'
-import { H2, Text } from "#/components/Typography";
-import { PlusSmall_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icons/Plus"
+import {atoms as a, native, useTheme, web, Theme} from '#/alf'
+import {Button, ButtonIcon,ButtonText} from '#/components/Button'
+import {ComboBox} from '#/components/forms/ComboBox'
+import {NumberField} from '#/components/forms/NumberField'
+import * as TextField from '#/components/forms/TextField'
+import {DotGrid_Stroke2_Corner0_Rounded as Ellipsis} from '#/components/icons/DotGrid'
+import {EmojiArc_Stroke2_Corner0_Rounded as EmojiSmileIcon} from '#/components/icons/Emoji'
+import {PlusSmall_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
+import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import * as Menu from '#/components/Menu'
-import { HITSLOP_20 } from '#/lib/constants'
-import { DotGrid_Stroke2_Corner0_Rounded as Ellipsis } from '#/components/icons/DotGrid'
-import { BottomSheetPortalProvider } from '../../../../modules/bottom-sheet'
-import { ComboBox } from "#/components/forms/ComboBox";
-import { recipeCategories, recipeCuisines, recipeDiets } from "./state/dataRecipe";
-import { RecipeAttribution } from "./recipe/RecipeAttribution";
-import { Accordion } from "../../../components/Accordion";
-import { NutritionElement, nutritionFields } from "../recipe/NutritionFields";
+import {H2, Text} from '#/components/Typography'
+import {BottomSheetPortalProvider} from '../../../../modules/bottom-sheet'
+import {Accordion} from '../../../components/Accordion'
+import {type NutritionElement, nutritionFields} from '../recipe/NutritionFields'
+import {PostLanguageSelect} from './select-language/PostLanguageSelect'
+import {
+  type AssetType,
+  SelectMediaButton,
+  type SelectMediaButtonProps,
+} from './SelectMediaButton'
+import {type EmbedAction, MAX_IMAGES} from './state/composer'
+import {
+  type RecipePostDraft,
+  useRecipePostReducer,
+  type RecipeReducerOutput,
+} from './state/composerRecipe'
+import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
+import {uploadVideoDirect} from './state/video'
+import {type TextInputRef} from './text-input/TextInput.types'
 import { CircleInfo_Stroke2_Corner0_Rounded as CircleInfo } from '#/components/icons/CircleInfo'
 import { TimesLarge_Stroke2_Corner0_Rounded as X } from '#/components/icons/Times'
 
@@ -62,19 +88,16 @@ import { TimesLarge_Stroke2_Corner0_Rounded as X } from '#/components/icons/Time
 const msgs = {
   button_add_ingredient: msg({
     message: 'Add ingredient',
-    comment:
-      'Accessibility label for adding an ingredient to a recipe',
+    comment: 'Accessibility label for adding an ingredient to a recipe',
   }),
   button_add_step: msg({
     message: 'Add step',
-    comment:
-      'Accessibility label for adding a step to a recipe',
+    comment: 'Accessibility label for adding a step to a recipe',
   }),
   button_post_recipe: msg({
     message: 'Publish post',
-    comment:
-      'Accessibility label for button to publish a single post',
-  })
+    comment: 'Accessibility label for button to publish a single post',
+  }),
 }
 
 function errorBorder(t: Theme, err: unknown) {
@@ -214,7 +237,6 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
     onScrollViewContentSizeChange,
     onScrollViewLayout,
     topBarAnimatedStyle,
-    bottomBarAnimatedStyle,
   } = useScrollTracker({
     scrollViewRef,
     stickyBottom: false, // TODO: check
@@ -229,11 +251,10 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
           currentRef as unknown as React.MutableRefObject<HTMLElement>,
       })
     }
-  }, [onOpenPicker, focused])
+  }, [onOpenPicker])
 
-  const isTextOnly = !state.embed.link && !state.embed.quote && !state.embed.media
   const insets = useSafeAreaInsets()
-  const [isKeyboardVisible] = useIsKeyboardVisible({ iosUseWillEvents: true })
+  const [isKeyboardVisible] = useIsKeyboardVisible({iosUseWillEvents: true})
 
   const t = useTheme()
 
@@ -243,15 +264,16 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
       paddingBottom:
         // iOS - when keyboard is closed, keep the bottom bar in the safe area
         (isIOS && !isKeyboardVisible) ||
-          // Android - Android >=35 KeyboardAvoidingView adds double padding when
-          // keyboard is closed, so we subtract that in the offset and add it back
-          // here when the keyboard is open
-          (isAndroid && isKeyboardVisible)
+        // Android - Android >=35 KeyboardAvoidingView adds double padding when
+        // keyboard is closed, so we subtract that in the offset and add it back
+        // here when the keyboard is open
+        (isAndroid && isKeyboardVisible)
           ? insets.bottom
           : 0,
     }),
     [insets, isKeyboardVisible],
   )
+
   const onPressCancel = useCallback(() => {
     closeComposer()
   }, [closeComposer])
@@ -312,86 +334,95 @@ export function ComposerRecipe({ edit }: { edit?: RecipePostView }) {
               </View>
             </View>
 
-            <View style={[{ width: "40%" }, errorBorder(t, errors?.tree?.categories)]}>
-              <ComboBox options={recipeCategories} label={_(msg`Categories`)}
-                selection={state.categories ?? []}
-                onRemove={(value) => dispatch({ type: 'remove_element', field: 'categories', value })}
-                onSelect={(value) => dispatch({ type: 'add_element', field: 'categories', value })}
-              />
-            </View>
-          </View>
-          <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
-            <View style={[{ width: "40%" }, errorBorder(t, errors?.tree?.suitableForDiet)]}>
+                        <View style={{ width: "40%" }}>
+                            <ComboBox options={recipeCategories} label={_(msg`Categories`)}
+                                selection={state.categories ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'categories', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'categories', value })}
+                            />
+                        </View>
+                    </View>
+                    <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
+                        <View style={{ width: "40%" }}>
 
-              <ComboBox options={recipeDiets} label={_(msg`Suitable diets`)}
-                selection={state.suitableForDiet ?? []}
-                onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
-                onSelect={(value) => dispatch({ type: 'add_element', field: 'suitableForDiet', value })}
-              />
-            </View>
-            <View style={[{ width: "40%" }, errorBorder(t, errors?.tree?.suitableForDiet)]}>
-              <ComboBox options={recipeCuisines} label={_(msg`Cuisine type`)}
-                selection={state.cuisines ?? []}
-                onRemove={(value) => dispatch({ type: 'remove_element', field: 'cuisines', value })}
-                onSelect={(value) => dispatch({ type: 'add_element', field: 'cuisines', value })}
-              />
-            </View>
-          </View>
+                            <ComboBox options={recipeDiets} label={_(msg`Suitable diets`)}
+                                selection={state.suitableForDiet ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'suitableForDiet', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'suitableForDiet', value })}
+                            />
+                        </View>
+                        <View style={{ width: "40%" }}>
+                            <ComboBox options={recipeCuisines} label={_(msg`Cuisine type`)}
+                                selection={state.cuisines ?? []}
+                                onRemove={(value) => dispatch({ type: 'remove_element', field: 'cuisines', value })}
+                                onSelect={(value) => dispatch({ type: 'add_element', field: 'cuisines', value })}
+                            />
+                        </View>
+                    </View>
 
-          <View style={[a.flex_row, a.gap_md]}>
-            <View style={{ flexBasis: "40%" }}>
-              <TextField.Root isInvalid={!!errors?.tree?.prepTime}>
-                <TextField.Input inputMode="numeric" label={_(msg`Preparation time`)} defaultValue={state.prepTime}
-                  onChangeText={value => dispatch({ type: 'set_prep_time', value })} />
-                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
-              </TextField.Root >
-            </View>
-            <View style={[{ flexBasis: "40%" }]}>
-              <TextField.Root isInvalid={!!errors?.tree?.cookTime}>
-                <TextField.Input inputMode="numeric" label={_(msg`Cooking time`)} defaultValue={state.cookTime}
-                  onChangeText={value => dispatch({ type: 'set_cook_time', value })} />
-                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
-              </TextField.Root>
-            </View>
-          </View>
+                    <View style={[a.flex_row, a.gap_md]}>
+                        <View style={{ flexBasis: "40%" }}>
+                            <NumberField label={_(msg`Preparation time`)} defaultValue={state.prepTime}
+                                onChange={value => dispatch({ type: 'set_prep_time', value })}
+                            >
+                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                            </NumberField>
+                        </View>
 
-          <View style={[{ backgroundColor: t.palette.contrast_50, }, errorBorder(t, errors?.tree?.text)]}>
+                        <View style={[{ flexBasis: "40%" }]}>
+                            <NumberField label={_(msg`Cooking time`)} defaultValue={state.cookTime}
+                                onChange={value => dispatch({ type: 'set_cook_time', value })}
+                            >
+                                <TextField.SuffixText label={_(msg`minutes`)}><Trans>minutes</Trans></TextField.SuffixText>
+                            </NumberField>
+                        </View>
+                    </View>
 
-            {/* TODO fix color, width */}
-            <TextInput
+                    <View style={[{ backgroundColor: t.palette.contrast_50, }]}>
 
-              ref={descriptionInputRef}
-              style={[a.pt_xs, a.w_full, { flexBasis: '100%' }]}
-              richtext={state.text}
-              placeholder={_(msg`Description`)}
-              webForceMinHeight={false}
-              isActive={focused === "description"} // TODO: fix
-              setRichText={rt => {
-                dispatch({ type: 'update_main_text', value: rt })
-              }}
+                        {/* TODO fix color, width */}
+                        <TextInput
 
-              onFocus={() => {
+                            ref={descriptionInputRef}
+                            style={[a.pt_xs, a.w_full, { flexBasis: '100%' }]}
+                            richtext={state.text}
+                            placeholder={_(msg`Description`)}
+                            webForceMinHeight={false}
+                            isActive={focused === "description"} // TODO: fix
+                            setRichText={rt => {
+                                dispatch({ type: 'update_main_text', value: rt })
+                            }}
 
-                setFocused("description")
-                currentRef.current = descriptionInputRef.current ?? undefined
-              }}
-              onPhotoPasted={() => { }}
-              onNewLink={() => { }}
-              onError={() => { }}
-              onPressPublish={() => { }}
-              accessible={true}
-              accessibilityLabel={_(msg`Write recipe description`)}
-              hasRightPadding={false}
-            />
-          </View>
-          {/* Ingredients */}
-          <View style={[a.gap_sm]}>
-            <View style={[a.align_center]}>
-              <H2 style={[a.text_lg]}><Trans context="recipe">Ingredients</Trans></H2>
-            </View>
-            <RecipeIngredients state={state} dispatch={dispatch} errors={errors} />
+                            onFocus={() => {
 
-          </View>
+                                setFocused("description")
+                                currentRef.current = descriptionInputRef.current ?? undefined
+                            }}
+                            onPhotoPasted={() => { }}
+                            onNewLink={() => { }}
+                            onError={() => { }}
+                            onPressPublish={() => { }}
+                            accessible={true}
+                            accessibilityLabel={_(msg`Write recipe description`)}
+                            accessibilityHint={_(
+                              msg`Compose recipe description up to ${plural(
+                                MAX_RECIPE_TITLE_GRAPHEME_LENGTH || 0,
+                                {
+                                  other: '# characters',
+                                },
+                              )} in length`,
+                            )}
+                            hasRightPadding={false}
+                        />
+                    </View>
+                    {/* Ingredients */}
+                    <View style={[a.gap_sm]}>
+                        <View style={[a.align_center]}>
+                            <H2 style={[a.text_lg]}><Trans context="recipe">Ingredients</Trans></H2>
+                        </View>
+                        <RecipeIngredients state={state} dispatch={dispatch} errors={errors}/>
+
+                    </View>
 
           {/* Instructions */}
           <View style={[a.gap_sm]}>
@@ -542,10 +573,10 @@ function RecipeIngredients({ state, dispatch, errors }: RecipeReducerOutput) {
   const { _ } = useLingui()
   const t = useTheme()
 
-  return <View style={[a.gap_sm, a.border, a.p_sm, t.atoms.border_contrast_low, a.rounded_sm]}><View style={[a.gap_xs]}>
-    {state.ingredients.map(({ id, name, quantity, unit }, i) =>
-      <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
-        {/* TODO rather use labels instead of placeholders for small screens */}
+    return <View style={[a.gap_sm, a.border, a.p_sm, t.atoms.border_contrast_low, a.rounded_sm]}><View style={[a.gap_xs]}>
+            {state.ingredients.map(({ id, name, quantity, unit }, i) =>
+                <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
+                    {/* TODO rather use labels instead of placeholders for small screens */}
 
         <View style={{ flexGrow: 1, flexBasis: '50%' }}>
           <TextField.Root>
@@ -782,7 +813,6 @@ const styles = StyleSheet.create({
   },
 })
 
-// TODO: add error child
 function ComposerTopBar({
   topBarAnimatedStyle,
   onCancel,
@@ -796,7 +826,7 @@ function ComposerTopBar({
   onPublish: () => void
 
 }>) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
   return (
     <Animated.View
       style={topBarAnimatedStyle}
@@ -808,7 +838,7 @@ function ComposerTopBar({
           color="primary"
           shape="default"
           size="small"
-          style={[a.rounded_full, a.py_sm, { paddingLeft: 7, paddingRight: 7 }]}
+          style={[a.rounded_full, a.py_sm, {paddingLeft: 7, paddingRight: 7}]}
           onPress={onCancel}
           accessibilityHint={_(
             msg`Closes post composer and discards post draft`,
@@ -819,40 +849,35 @@ function ComposerTopBar({
         </Button>
         <View style={a.flex_1} />
         {isPublishing ? (
-
           <View style={styles.postBtn}>
             <ActivityIndicator />
           </View>
-
-        ) :
+        ) : (
           <Button
             testID="composerPublishBtn"
             label={_(
               msg({
                 message: 'Publish recipe',
-                comment:
-                  'Accessibility label for button to publish a recipe',
+                comment: 'Accessibility label for button to publish a recipe',
               }),
-            )
-            }
+            )}
             variant="solid"
             color="primary"
             shape="default"
             size="small"
             style={[a.rounded_full, a.py_sm]}
-            onPress={onPublish}
-          >
+            onPress={onPublish}>
+    
             <ButtonText style={[a.text_md]}>
               <Trans context="action">Post</Trans>
             </ButtonText>
-          </Button>}
-
+          </Button>
+        )}
       </View>
       {children}
     </Animated.View>
   )
 }
-
 
 function ComposerFooter({
   post,
@@ -860,24 +885,44 @@ function ComposerFooter({
   onEmojiButtonPress,
   onError,
   onSelectVideo,
-  emojiEnabled
+  emojiEnabled,
 }: {
-    post: RecipePostDraft,
-    dispatch: (action: EmbedAction) => void
-    onEmojiButtonPress: () => void
-    onError: (error: string) => void
-    emojiEnabled: boolean
-    onSelectVideo: (postId: string, asset: ImagePickerAsset) => void
+  post: RecipePostDraft
+  dispatch: (action: EmbedAction) => void
+  onEmojiButtonPress: () => void
+  onError: (error: string) => void
+  emojiEnabled: boolean
+  onSelectVideo: (postId: string, asset: ImagePickerAsset) => void
 }) {
-
   const t = useTheme()
-  const { _ } = useLingui()
-  const { isMobile } = useWebMediaQueries()
+  const {_} = useLingui()
+  const {isMobile} = useWebMediaQueries()
+  /*
+   * Once we've allowed a certain type of asset to be selected, we don't allow
+   * other types of media to be selected.
+   */
+  const [selectedAssetsType, setSelectedAssetsType] = useState<
+    AssetType | undefined
+  >(undefined)
 
   const media = post.embed?.media
   const images = media?.type === 'images' ? media.images : []
   const video = media?.type === 'video' ? media.video : null
   const isMaxImages = images.length >= MAX_IMAGES
+  const isMaxVideos = !!video
+
+  let selectedAssetsCount = 0
+  let isMediaSelectionDisabled = false
+
+  if (media?.type === 'images') {
+    isMediaSelectionDisabled = isMaxImages
+    selectedAssetsCount = images.length
+  } else if (media?.type === 'video') {
+    isMediaSelectionDisabled = isMaxVideos
+    selectedAssetsCount = 1
+  } else {
+    isMediaSelectionDisabled = !!media
+  }
 
   const onImageAdd = useCallback(
     (next: ComposerImage[]) => {
@@ -891,9 +936,56 @@ function ComposerFooter({
 
   const onSelectGif = useCallback(
     (gif: Gif) => {
-      dispatch({ type: 'embed_add_gif', gif })
+      dispatch({type: 'embed_add_gif', gif})
     },
     [dispatch],
+  )
+
+  /*
+   * Reset if the user clears any selected media
+   */
+  if (selectedAssetsType !== undefined && !media) {
+    setSelectedAssetsType(undefined)
+  }
+
+  const onSelectAssets = useCallback<SelectMediaButtonProps['onSelectAssets']>(
+    async ({type, assets, errors}) => {
+      setSelectedAssetsType(type)
+
+      if (assets.length) {
+        if (type === 'image') {
+          const images: ComposerImage[] = []
+
+          await Promise.all(
+            assets.map(async image => {
+              const composerImage = await createComposerImage({
+                path: image.uri,
+                width: image.width,
+                height: image.height,
+                mime: image.mimeType!,
+              })
+              images.push(composerImage)
+            }),
+          ).catch(e => {
+            logger.error(`createComposerImage failed`, {
+              safeMessage: e.message,
+            })
+          })
+
+          onImageAdd(images)
+        } else if (type === 'video') {
+          onSelectVideo(post.id, assets[0])
+        } else if (type === 'gif') {
+          onSelectVideo(post.id, assets[0])
+        }
+      }
+
+      errors.map(error => {
+        // TODO: update to toast
+        Toast.show(error)
+      })
+    },
+    [post.id, onSelectVideo, onImageAdd],
   )
 
   return (
@@ -901,7 +993,7 @@ function ComposerFooter({
       style={[
         a.flex_row,
         a.py_xs,
-        { paddingLeft: 7, paddingRight: 16 },
+        {paddingLeft: 7, paddingRight: 16},
         a.align_center,
         a.border_t,
         t.atoms.bg,
@@ -914,15 +1006,11 @@ function ComposerFooter({
             <VideoUploadToolbar state={video} />
           ) : (
             <ToolbarWrapper style={[a.flex_row, a.align_center, a.gap_xs]}>
-              <SelectPhotoBtn
-                size={images.length}
-                disabled={media?.type === 'images' ? isMaxImages : !!media}
-                onAdd={onImageAdd}
-              />
-              <SelectVideoBtn
-                onSelectVideo={asset => onSelectVideo(post.id, asset)}
-                disabled={!!media}
-                setError={onError}
+              <SelectMediaButton
+                disabled={isMediaSelectionDisabled}
+                allowedAssetTypes={selectedAssetsType}
+                selectedAssetsCount={selectedAssetsCount}
+                onSelectAssets={onSelectAssets}
               />
               <OpenCameraBtn
                 disabled={media?.type === 'images' ? isMaxImages : !!media}
@@ -933,13 +1021,12 @@ function ComposerFooter({
                 <Button
                   onPress={onEmojiButtonPress}
                   style={a.p_sm}
-                  disabled={!emojiEnabled}
                   label={_(msg`Open emoji picker`)}
                   accessibilityHint={_(msg`Opens emoji picker`)}
                   variant="ghost"
                   shape="round"
                   color="primary">
-                  <EmojiSmile size="lg" />
+                  <EmojiSmileIcon size="lg" />
                 </Button>
               ) : null}
             </ToolbarWrapper>
@@ -947,7 +1034,7 @@ function ComposerFooter({
         </LayoutAnimationConfig>
       </View>
       <View style={[a.flex_row, a.align_center, a.justify_between]}>
-        <SelectLangBtn />
+        <PostLanguageSelect />
       </View>
     </View>
   )

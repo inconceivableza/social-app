@@ -15,6 +15,7 @@ import {isNative} from '#/platform/detection'
 import {useAgeAssuranceContext} from '#/state/ageAssurance'
 import {type SessionAccount, useAgent, useSession} from '#/state/session'
 import BackgroundNotificationHandler from '#/../modules/expo-background-notification-handler'
+import {IS_DEV} from '#/env'
 
 /**
  * @private
@@ -133,7 +134,7 @@ export function useGetAndRegisterPushToken() {
     }: {
       isAgeRestricted?: boolean
     } = {}) => {
-      if (!isNative) return
+      if (!isNative || IS_DEV) return
 
       /**
        * This will also fire the listener added via `addPushTokenListener`. That
