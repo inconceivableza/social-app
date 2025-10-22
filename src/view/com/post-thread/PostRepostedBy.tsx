@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from 'react'
 import {type AppBskyActorDefs as ActorDefs} from '@atproto/api'
-import {type RepostInfo} from '@atproto/api/client/types/app/bsky/feed/getRepostedBy'
+import {type AppBskyFeedGetRepostedBy} from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -45,7 +45,13 @@ export function PostRepostedBy({
   } = usePostRepostedByQuery(resolvedUri?.uri)
 
   const renderItem = useCallback(
-    ({item, index}: {item: RepostInfo; index: number}) => {
+    ({
+      item,
+      index,
+    }: {
+      item: AppBskyFeedGetRepostedBy.RepostInfo
+      index: number
+    }) => {
       return (
         <div key={item.profileView.did}>
           <ProfileCardWithFollowBtn

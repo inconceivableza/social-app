@@ -8,7 +8,6 @@ import {
   AppFoodiosFeedReviewRating,
   type RichText as RichTextAPI,
 } from '@atproto/api'
-import {isRecipeRevisionView} from '@atproto/api/client/types/app/foodios/feed/defs'
 import {msg, plural} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import type React from 'react'
@@ -202,7 +201,7 @@ let PostControls = ({
   }
 
   const constitutesRating = AppFoodiosFeedReviewRating.isRecord(record)
-  const receivesRatings = isRecipeRevisionView(record)
+  const receivesRatings = AppFoodiosFeedDefs.isRecipeRevisionView(record)
   const reviewCount = post?.reviewCount ?? undefined
   const replyCount: number | undefined =
     post.replyCount !== undefined && reviewCount === undefined

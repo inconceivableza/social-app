@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import {View} from 'react-native'
 import {type $Typed} from '@atproto/api'
-import {type ViewRecord} from '@atproto/api/client/types/app/bsky/embed/record'
+import {type AppBskyEmbedRecord} from '@atproto/api'
 
 import {createEmbedViewRecordFromPost} from '#/state/queries/postgate/util'
 import {useResolveLinkQuery} from '#/state/queries/resolve-link'
@@ -18,7 +18,7 @@ export function LazyQuoteEmbed({uri}: {uri: string}) {
       return createEmbedViewRecordFromPost(data.view)
     } else if (data.kind === 'recipePost') {
       const {view} = data
-      const viewRec: $Typed<ViewRecord> = {
+      const viewRec: $Typed<AppBskyEmbedRecord.ViewRecord> = {
         $type: 'app.bsky.embed.record#viewRecord',
         uri: view.uri,
         cid: view.cid,
