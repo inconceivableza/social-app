@@ -8,10 +8,10 @@ import {
   type AppBskyNotificationListNotifications,
   type BskyAgent,
   hasMutedWord,
+  lexiconIds,
   moderateNotification,
   type ModerationOpts,
 } from '@atproto/api'
-import {ids} from '@atproto/api/client/lexicons'
 import {type QueryClient} from '@tanstack/react-query'
 import chunk from 'lodash.chunk'
 
@@ -223,8 +223,8 @@ async function fetchSubjects(
   const packUris = new Set<string>()
   for (const notif of groupedNotifs) {
     if (
-      notif.subjectUri?.includes(ids.AppBskyFeedPost) ||
-      notif.subjectUri?.includes(ids.AppFoodiosFeedRecipePost)
+      notif.subjectUri?.includes(lexiconIds.AppBskyFeedPost) ||
+      notif.subjectUri?.includes(lexiconIds.AppFoodiosFeedRecipePost)
     ) {
       postUris.add(notif.subjectUri)
     } else if (

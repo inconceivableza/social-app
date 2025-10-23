@@ -1,23 +1,42 @@
-FROM golang:1.24-bullseye AS build-env
+FROM node:20-alpine3.22 as build-node
+
+RUN corepack enable
+
+WORKDIR /usr/src/atproto
+
+COPY --from=atproto /package.json ./
+RUN corepack prepare --activate
+
+COPY --from=atproto ./tsconfig ./tsconfig
+COPY --from=atproto ./packages/api/package.json ./packages/api/package.json
+COPY --from=atproto ./packages/common-web/package.json ./packages/common-web/package.json
+COPY --from=atproto ./packages/syntax/package.json ./packages/syntax/package.json
+COPY --from=atproto ./packages/lexicon/package.json ./packages/lexicon/package.json
+COPY --from=atproto ./packages/xrpc/package.json ./packages/xrpc/package.json
+COPY --from=atproto ./package.json ./package.json
+COPY --from=atproto ./pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=atproto ./pnpm-workspace.yaml ./pnpm-workspace.yaml
+
+RUN pnpm install --frozen-lockfile
+
+# COPY --from=atproto / .
+
+COPY --from=atproto ./*.js* ./
+# NOTE api's transitive dependencies go here: if that changes, this needs to be updated.
+COPY --from=atproto ./tsconfig ./tsconfig
+COPY --from=atproto ./packages/api ./packages/api
+COPY --from=atproto ./packages/common-web ./packages/common-web
+COPY --from=atproto ./packages/syntax ./packages/syntax
+COPY --from=atproto ./packages/lexicon ./packages/lexicon
+COPY --from=atproto ./packages/xrpc ./packages/xrpc
+# build all packages with external node_modules
+RUN pnpm build
+# clean up
+# RUN rm -rf node_modules
+# install only prod deps, hoisted to root node_modules dir
+# RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
 
 WORKDIR /usr/src/social-app
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-#
-# Node
-#
-ENV NODE_VERSION=20
-ENV NVM_DIR=/usr/share/nvm
-
-#
-# Go
-#
-ENV GODEBUG="netdns=go"
-ENV GOOS="linux"
-ENV GOARCH="amd64"
-ENV CGO_ENABLED=1
-ENV GOEXPERIMENT="loopvar"
 
 # The latest git hash of the preview branch on render.com
 # https://render.com/docs/docker-secrets#environment-variables-in-docker-builds
@@ -60,41 +79,24 @@ ARG EXPO_PUBLIC_STATSIG_CLIENT_KEY=$EXPO_PUBLIC_STATSIG_CLIENT_KEY
 ARG EXPO_PUBLIC_STATSIG_API_URL
 ARG EXPO_PUBLIC_STATSIG_API_URL=$EXPO_PUBLIC_STATSIG_API_URL
 
-RUN mkdir --parents $NVM_DIR && \
-  wget \
-    --output-document=/tmp/nvm-install.sh \
-    https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh && \
-  bash /tmp/nvm-install.sh
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm install $NODE_VERSION
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
+RUN echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
   echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER" >> .env && \
-  echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env && \
-  npm install --global yarn && \
-  npm install --global pnpm
+  echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env
+
+#
+# Node
+#
+ENV NODE_VERSION=20
+ENV NVM_DIR=/usr/share/nvm
 
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 COPY ./lingui.config.js ./lingui.config.js
+COPY ./scripts/ ./scripts
 
-WORKDIR /usr/src/atproto
+RUN corepack prepare --activate
 
-COPY --from=atproto / .
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  pnpm install && \
-  pnpm build
-
-WORKDIR /usr/src/social-app
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  yarn
+RUN yarn
 #
 # Copy everything into the container
 #
@@ -104,9 +106,7 @@ COPY . .
 # Generate the JavaScript webpack.
 #
 
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
+RUN echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
   echo "EXPO_PUBLIC_ENV=$EXPO_PUBLIC_ENV" >> .env && \
   echo "EXPO_PUBLIC_RELEASE_VERSION=$EXPO_PUBLIC_RELEASE_VERSION" >> .env && \
   echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER" >> .env && \
@@ -116,8 +116,23 @@ RUN \. "$NVM_DIR/nvm.sh" && \
   if grep -q "invalid syntax" "i18n.log"; then echo "\n\nFound compilation errors!\n\n" && exit 1; else echo "\n\nNo compile errors!\n\n"; fi && \
   SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$EXPO_PUBLIC_RELEASE_VERSION SENTRY_DIST=$EXPO_PUBLIC_BUNDLE_IDENTIFIER yarn build-web
 
-# DEBUG
-RUN find ./bskyweb/static && find ./web-build/static
+FROM golang:1.24-bullseye AS build-env
+
+WORKDIR /usr/src/social-app
+
+COPY --from=build-node /usr/src/social-app/web-build /usr/src/social-app/web-build
+COPY --from=build-node /usr/src/social-app/bskyweb /usr/src/social-app/bskyweb
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+#
+# Go
+#
+ENV GODEBUG="netdns=go"
+ENV GOOS="linux"
+ENV GOARCH="amd64"
+ENV CGO_ENABLED=1
+ENV GOEXPERIMENT="loopvar"
 
 #
 # Generate the bskyweb Go binary.

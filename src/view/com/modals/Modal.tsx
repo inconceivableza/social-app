@@ -68,12 +68,12 @@ export function ModalsContainer() {
   } else if (activeModal?.name === 'user-feedback') {
     snapPoints = UserFeedbackModal.snapPoints
     element = <UserFeedbackModal.Component />
-  } else if (activeModal.name === 'recipe-preparation') {
+  } else if (activeModal?.name === 'recipe-preparation') {
     snapPoints = RecipePreparationModal.snapPoints
     element = (
       <RecipePreparationModal.Component
         recipePost={activeModal.recipePost}
-        onReviewRecipe={modal.onReviewRecipe}
+        onReviewRecipe={activeModal.onReviewRecipe}
       />
     )
   } else {

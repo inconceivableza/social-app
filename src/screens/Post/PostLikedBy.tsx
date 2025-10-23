@@ -1,5 +1,5 @@
 import React from 'react'
-import {ids} from '@atproto/api/client/lexicons'
+import {lexiconIds as ids} from '@atproto/api'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 

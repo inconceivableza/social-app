@@ -1,7 +1,6 @@
 import {useMemo} from 'react'
 import {View} from 'react-native'
 import {type AppBskyNotificationDefs} from '@atproto/api'
-import {type FilterablePreference} from '@atproto/api/client/types/app/bsky/notification/defs'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -53,7 +52,9 @@ export function Inner({
 }: {
   name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>
   syncOthers?: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>[]
-  preference: AppBskyNotificationDefs.Preference | FilterablePreference
+  preference:
+    | AppBskyNotificationDefs.Preference
+    | AppBskyNotificationDefs.FilterablePreference
   allowDisableInApp: boolean
 }) {
   const t = useTheme()

@@ -64,20 +64,10 @@
     "@atproto/xrpc-server" "^0.9.4"
 
 "@atproto/api@^0.16.7":
-  version "0.16.7"
-  resolved "https://registry.yarnpkg.com/@atproto/api/-/api-0.16.7.tgz#eb0c520dbdaf74ba6f5ad7f9c6afe2d1389b8a0a"
-  integrity sha512-EdVWkEgaEQm1LEiiP1fW/XXXpMNmtvT5c9+cZVRiwYc4rTB66WIJJWqmaMT/tB7nccMkFjr6FtwObq5LewWfgw==
-  dependencies:
-    "@atproto/common-web" "^0.4.2"
-    "@atproto/lexicon" "^0.5.0"
-    "@atproto/syntax" "^0.4.1"
-    "@atproto/xrpc" "^0.7.4"
-    await-lock "^2.2.2"
-    multiformats "^9.9.0"
-    tlds "^1.234.0"
-    zod "^3.23.8"
+  version "0.0.0"
+  uid ""
 
-"@atproto/api@link:../atproto/packages/api/dist":
+"@atproto/api@link:../atproto/packages/api":
   version "0.0.0"
   uid ""
 
@@ -165,14 +155,16 @@
     typed-emitter "^2.1.0"
 
 "@atproto/common-web@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@atproto/common-web/-/common-web-0.4.2.tgz#6e3add6939da93d3dfbc8f87e26dc4f57fad7259"
-  integrity sha512-vrXwGNoFGogodjQvJDxAeP3QbGtawgZute2ed1XdRO0wMixLk3qewtikZm06H259QDJVu6voKC5mubml+WgQUw==
-  dependencies:
-    graphemer "^1.4.0"
-    multiformats "^9.9.0"
-    uint8arrays "3.0.0"
-    zod "^3.23.8"
+  version "0.0.0"
+  uid ""
+
+"@atproto/common-web@link:../atproto/packages/common-web":
+  version "0.0.0"
+  uid ""
+
+"@atproto/common-web@workspace:^":
+  version "0.0.0"
+  uid ""
 
 "@atproto/common@0.1.0":
   version "0.1.0"
@@ -304,7 +296,11 @@
   version "0.0.0"
   uid ""
 
-"@atproto/lexicon@link:../atproto/packages/lexicon/dist":
+"@atproto/lexicon@link:../atproto/packages/lexicon":
+  version "0.0.0"
+  uid ""
+
+"@atproto/lexicon@workspace:^":
   version "0.0.0"
   uid ""
 
@@ -498,7 +494,11 @@
   version "0.0.0"
   uid ""
 
-"@atproto/syntax@link:../atproto/packages/syntax/dist":
+"@atproto/syntax@link:../atproto/packages/syntax":
+  version "0.0.0"
+  uid ""
+
+"@atproto/syntax@workspace:^":
   version "0.0.0"
   uid ""
 
@@ -521,12 +521,16 @@
     zod "^3.23.8"
 
 "@atproto/xrpc@^0.7.4":
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/@atproto/xrpc/-/xrpc-0.7.4.tgz#030342548797c1f344968c457a8659dbb60a2d60"
-  integrity sha512-sDi68+QE1XHegTaNAndlX41Gp827pouSzSs8CyAwhrqZdsJUxE3P7TMtrA0z+zAjvxVyvzscRc0TsN/fGUGrhw==
-  dependencies:
-    "@atproto/lexicon" "^0.5.0"
-    zod "^3.23.8"
+  version "0.0.0"
+  uid ""
+
+"@atproto/xrpc@link:../atproto/packages/xrpc":
+  version "0.0.0"
+  uid ""
+
+"@atproto/xrpc@workspace:^":
+  version "0.0.0"
+  uid ""
 
 "@aws-crypto/crc32@3.0.0":
   version "3.0.0"
