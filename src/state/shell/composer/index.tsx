@@ -130,7 +130,13 @@ export function Provider({children}: React.PropsWithChildren<{}>) {
         })
       }
     } else {
-      setState(opts)
+      setState(prevOpts => {
+        if (prevOpts) {
+          // Never replace an already open composer.
+          return prevOpts
+        }
+        return opts
+      })
     }
   })
 

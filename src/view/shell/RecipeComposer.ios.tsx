@@ -4,16 +4,16 @@ import {Modal, View} from 'react-native'
 import {useDialogStateControlContext} from '#/state/dialogs'
 import {useComposerState} from '#/state/shell/composer'
 import {atoms as a, useTheme} from '#/alf'
-import {ComposePost, useComposerCancelRef} from '../com/composer/Composer'
+import {useComposerCancelRef} from '../com/composer/Composer'
+import {ComposerRecipe} from '../com/composer/ComposerRecipe'
 
-export function Composer({}: {winHeight: number}) {
+export function RecipeComposer({}: {winHeight: number}) {
   const {setFullyExpandedCount} = useDialogStateControlContext()
   const t = useTheme()
   const state = useComposerState()
   const ref = useComposerCancelRef()
 
-  const open =
-    !!state && (state?.type === 'post' || state?.type === 'review-rating')
+  const open = !!state && state?.type === 'recipe'
   const prevOpen = React.useRef(open)
 
   React.useEffect(() => {
@@ -35,17 +35,7 @@ export function Composer({}: {winHeight: number}) {
       allowSwipeDismissal="true"
       onRequestClose={() => ref.current?.onPressCancel()}>
       <View style={[t.atoms.bg, a.flex_1]}>
-        <ComposePost
-          cancelRef={ref}
-          replyTo={state?.replyTo}
-          onPost={state?.onPost}
-          onPostSuccess={state?.onPostSuccess}
-          quote={state?.quote}
-          mention={state?.mention}
-          text={state?.text}
-          imageUris={state?.imageUris}
-          videoUri={state?.videoUri}
-        />
+        <ComposerRecipe edit={state?.edit} />
       </View>
     </Modal>
   )

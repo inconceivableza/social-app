@@ -4,9 +4,9 @@ import {Animated, Easing} from 'react-native'
 import {useAnimatedValue} from '#/lib/hooks/useAnimatedValue'
 import {useComposerState} from '#/state/shell/composer'
 import {atoms as a, useTheme} from '#/alf'
-import {ComposePost} from '../com/composer/Composer'
+import {ComposerRecipe} from '../com/composer/ComposerRecipe'
 
-export function Composer({winHeight}: {winHeight: number}) {
+export function RecipeComposer({winHeight}: {winHeight: number}) {
   const state = useComposerState()
   const t = useTheme()
   const initInterp = useAnimatedValue(0)
@@ -37,7 +37,7 @@ export function Composer({winHeight}: {winHeight: number}) {
   // rendering
   // =
 
-  if (state?.type !== 'post' && state?.type !== 'review-rating') {
+  if (state?.type !== 'recipe') {
     return null
   }
 
@@ -46,16 +46,7 @@ export function Composer({winHeight}: {winHeight: number}) {
       style={[a.absolute, a.inset_0, t.atoms.bg, wrapperAnimStyle]}
       aria-modal
       accessibilityViewIsModal>
-      <ComposePost
-        replyTo={state.replyTo}
-        onPost={state.onPost}
-        onPostSuccess={state.onPostSuccess}
-        quote={state.quote}
-        mention={state.mention}
-        text={state.text}
-        imageUris={state.imageUris}
-        videoUri={state.videoUri}
-      />
+      <ComposerRecipe edit={state.edit} />
     </Animated.View>
   )
 }
