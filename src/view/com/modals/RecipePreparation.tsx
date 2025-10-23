@@ -8,6 +8,7 @@ import {padStart} from 'lodash'
 
 import {type RecipePostView} from '#/lib/api/feed/utils'
 import {countLines} from '#/lib/strings/helpers'
+import {isAndroid} from '#/platform/detection'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
@@ -20,11 +21,10 @@ import {RichText} from '#/components/RichText'
 import {H1, H2, H3} from '#/components/Typography'
 import {usePreparationState} from '../recipe-preparation/recipePreparation'
 
-export const snapPoints = ['95%']
+export const snapPoints = [isAndroid ? 'fullscreen' : '90%']
 
 const COLLAPSED_LINE_LIMIT = 3
 // Note: local storage is tied to the revision ID, so if the recipe is edited, progress inaccessible
-// TODO: handle scrolling
 export function Component({
   recipePost,
   onReviewRecipe,
