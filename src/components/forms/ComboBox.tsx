@@ -88,7 +88,7 @@ export function ComboBox({
                 <View key={id}>
                   <Button
                     color="primary"
-                    label={_(msg`${name}`)}
+                    label={_(msg`${label}`)}
                     size="small"
                     style={[a.justify_start]}
                     onPress={_e => {
