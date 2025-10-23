@@ -11,35 +11,34 @@ import {CircleX_Stroke2_Corner0_Rounded as CircleXIcon} from '#/components/icons
 import * as Tooltip from '#/components/Tooltip'
 import {Text} from '#/components/Typography'
 
-interface ComboBoxProps {
-  options: {id: string; label: string}[]
-  selection: string[]
+interface BaseOption { id: string; label: string }
+
+interface ComboBoxProps<T extends BaseOption> {
+  options: T[]
+  selection: T[]
   label: string
-  onSelect: (value: string) => void
-  onRemove: (value: string) => void
+  onSelect: (value: T) => void
+  onRemove: (value: T) => void
 }
-export function ComboBox({
+
+
+export function ComboBox<T extends BaseOption>({
   options,
   selection,
   onRemove,
   onSelect,
   label,
-}: ComboBoxProps) {
+}: ComboBoxProps<T>) {
   const t = useTheme()
   const {_} = useLingui()
   const inputRef = useRef<NativeTextInput>(null)
   const [filteredOptions, setFilteredOptions] = useState(
-    [] as {id: string; label: string}[],
+    [] as T[],
   )
+  const uniqSelection = selection.sort((a, b) => a.label > b.label ? 1 : -1).reduce((acc, opt) =>
+    opt.label === acc.at(-1)?.label ? acc : acc.concat(opt), [] as T[])
+
   const expanded = !!filteredOptions.length
-
-  const labelLookup = useMemo(() => {
-    return new Map(options.map(({id, label}) => [id, label]))
-  }, [options])
-
-  const selectionLabels = useMemo(() => {
-    return selection.map(id => ({label: labelLookup.get(id), id}))
-  }, [selection, labelLookup])
 
   // TODO: display "no results found" when applicable
   return (
@@ -68,7 +67,7 @@ export function ComboBox({
                 const filtered = options.filter(
                   ({label, id}) =>
                     label.toLowerCase().includes(trimmed) &&
-                    !selection.includes(id),
+                    !selection.find((opt) => opt.id === id),
                 )
                 setFilteredOptions(filtered)
               }}
@@ -84,17 +83,16 @@ export function ComboBox({
                 maxHeight: 200,
                 display: expanded ? undefined : 'none',
               }}>
-              {filteredOptions.map(({label, id}) => (
-                <View key={id}>
+              {filteredOptions.map((opt) => (
+                <View key={opt.id}>
                   <Button
-                    label={_(msg`${name}`)}
+                    label={_(opt.label)}
                     size="small"
                     style={[a.justify_start]}
                     onPress={_e => {
-                      if (selection.includes(id)) return
-                      onSelect(id)
+                      onSelect(opt)
                     }}>
-                    <ButtonText style={[a.text_left]}>{label}</ButtonText>
+                    <ButtonText style={[a.text_left]}>{_(opt.label)}</ButtonText>
                   </Button>
                 </View>
               ))}
@@ -102,11 +100,11 @@ export function ComboBox({
           </Tooltip.Content>
         </View>
       </Tooltip.Outer>
-      {!!selectionLabels.length && (
+      {!!uniqSelection.length && (
         <View style={[a.flex_row, a.mt_xs, a.gap_xs, a.flex_wrap]}>
-          {selectionLabels.map(({id, label}, _i) => (
+          {uniqSelection.map((opt, _i) => (
             <View
-              key={id}
+              key={opt.id}
               style={[
                 a.rounded_sm,
                 t.atoms.bg_contrast_25,
@@ -115,11 +113,11 @@ export function ComboBox({
                 a.gap_xs,
                 a.align_center,
               ]}>
-              <Text>{label}</Text>
+              <Text>{opt.label}</Text>
               <Button
                 label={_(msg`Remove selection`)}
                 onPress={() => {
-                  onRemove(id)
+                  onRemove(opt)
                 }}>
                 <ButtonIcon icon={CircleXIcon} />
               </Button>
