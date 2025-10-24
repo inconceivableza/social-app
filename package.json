@@ -10,6 +10,8 @@
     "prepare": "is-ci || husky install",
     "postinstall": "patch-package && yarn intl:compile",
     "prebuild": "expo prebuild --clean",
+    "prepare-eas-build": "./scripts/pack-external-packages.sh",
+    "eas-build-pre-install": "./scripts/eas-build-pre-install.sh",
     "android": "expo run:android",
     "android:prod": "expo run:android --variant release",
     "android:profile": "BSKY_PROFILE=1 expo run:android --variant release",
