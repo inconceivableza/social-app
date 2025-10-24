@@ -1,12 +1,15 @@
 import escapeHTML from 'escape-html'
 import {type Request} from 'express'
 
+import {type AppContext} from '../context'
+
 export function linkWarningContents(
   req: Request,
   opts: {
     type: 'warn' | 'block'
     link: string
   },
+  ctx: AppContext,
 ): string {
   const continueButton =
     opts.type === 'warn'
@@ -38,7 +41,7 @@ export function linkWarningContents(
     </div>
     <div class="button-group">
       ${continueButton}
-      <a class="button primary" href="https://bsky.app">${req.__('Return to Bluesky')}</a>
+      <a class="button primary" href="https://${ctx.cfg.service.appHostname}">${req.__(`Return to ${ctx.cfg.service.appName}`)}</a>
     </div>
   `
 }
