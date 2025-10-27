@@ -70,6 +70,7 @@ const EMPTY_CONFIG: EnvConfig = {
   BSKY_SERVICE_DID: '',
   DM_PROXY_DID: '',
   DM_SERVICE_DID: '',
+  GEOLOCATION_CONFIG_URL: '',
   GIF_HOST: '',
   HELP_DESK_URL: '',
   LINK_HOST: '',
@@ -95,6 +96,7 @@ const InternalToEnvName: EnvConfig & Record<string, string> = {
   BSKY_SERVICE_DID: 'EXPO_PUBLIC_ATP_PDS_DID',
   DM_PROXY_DID: 'EXPO_PUBLIC_CHAT_PROXY_DID',
   DM_SERVICE_DID: 'EXPO_PUBLIC_DM_SERVICE_DID',
+  GEOLOCATION_CONFIG_URL: 'EXPO_PUBLIC_GEOLOCATION_CONFIG_URL',
   GIF_HOST: 'EXPO_PUBLIC_GIF_HOST',
   HELP_DESK_URL: 'EXPO_PUBLIC_SOCIAL_HELP_DESK_URL',
   LINK_HOST: 'EXPO_PUBLIC_LINK_HOST',
@@ -208,6 +210,7 @@ const BLUESKY_CONFIG: EnvConfig = {
   BSKY_SERVICE_DID: 'did:web:bsky.social',
   DM_PROXY_DID: 'did:web:api.bsky.chat',
   DM_SERVICE_DID: 'did:web:api.bsky.chat',
+  GEOLOCATION_CONFIG_URL: 'https://ip.bsky.app/config',
   GIF_HOST: 't.gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
   LINK_HOST: 'https://go.bsky.app',
@@ -389,6 +392,7 @@ const BLUESKY_STAGING_CONFIG: EnvConfig = {
   BSKY_SERVICE_DID: 'did:web:staging.bsky.dev',
   DM_PROXY_DID: BLUESKY_CONFIG.DM_SERVICE_DID, // use the same proxy as the service
   DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
+  GEOLOCATION_CONFIG_URL: 'https://bsky.app/ipcc', // not sure if staging actually uses this or the bsky one
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
   LINK_HOST: BLUESKY_CONFIG.LINK_HOST,

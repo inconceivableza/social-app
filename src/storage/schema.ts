@@ -60,6 +60,7 @@ export type EnvConfig = {
   BSKY_SERVICE_DID: string
   DM_PROXY_DID: string
   DM_SERVICE_DID: string
+  GEOLOCATION_CONFIG_URL: string
   GIF_HOST: string
   HELP_DESK_URL: string
   LINK_HOST: string
