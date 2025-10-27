@@ -4,6 +4,7 @@ import {type AppBskyFeedDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {augmentSearchQuery} from '#/lib/strings/helpers'
 import {useActorSearch} from '#/state/queries/actor-search'
@@ -177,6 +178,7 @@ let SearchScreenPostResults = ({
   const {currentAccount} = useSession()
   const [isPTR, setIsPTR] = useState(false)
   const isLoggedin = Boolean(currentAccount?.did)
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const augmentedQuery = useMemo(() => {
     return augmentSearchQuery(query || '', {did: currentAccount?.did})
@@ -271,7 +273,7 @@ let SearchScreenPostResults = ({
             <Text> </Text>
             <Text style={t.atoms.text_contrast_medium}>
               to search for news, sports, politics, and everything else
-              happening on Bluesky.
+              happening on {appName}.
             </Text>
           </Trans>
         </Text>

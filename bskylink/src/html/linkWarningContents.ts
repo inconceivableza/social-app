@@ -41,7 +41,7 @@ export function linkWarningContents(
     </div>
     <div class="button-group">
       ${continueButton}
-      <a class="button primary" href="https://${ctx.cfg.service.appHostname}">${req.__(`Return to ${ctx.cfg.service.appName}`)}</a>
+      <a class="button primary" href="https://${ctx.cfg.service.appHostname}">${req.__(`Return to {{appName}}`, {appName: ctx.cfg.service.appName})}</a>
     </div>
   `
 }

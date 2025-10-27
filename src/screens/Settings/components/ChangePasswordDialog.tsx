@@ -4,6 +4,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import * as EmailValidator from 'email-validator'
 
+import {branding} from '#/lib/constants'
 import {cleanError, isNetworkError} from '#/lib/strings/errors'
 import {checkAndFormatResetCode} from '#/lib/strings/password'
 import {logger} from '#/logger'
@@ -45,6 +46,7 @@ function Inner() {
   const {currentAccount} = useSession()
   const agent = useAgent()
   const control = Dialog.useDialogContext()
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const [stage, setStage] = useState(Stages.RequestCode)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -68,7 +70,7 @@ function Inner() {
     Done: {
       title: _(msg`Password changed`),
       message: _(
-        msg`Your password has been changed successfully! Please use your new password when you sign in to Bluesky from now on.`,
+        msg`Your password has been changed successfully! Please use your new password when you sign in to ${appName} from now on.`,
       ),
     },
   }

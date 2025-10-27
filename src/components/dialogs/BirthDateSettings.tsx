@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {webLinks} from '#/lib/constants'
+import {branding, webLinks} from '#/lib/constants'
 import {cleanError} from '#/lib/strings/errors'
 import {getAge, getDateAgo} from '#/lib/strings/time'
 import {logger} from '#/logger'
@@ -89,6 +89,7 @@ function BirthdayInner({
     mutateAsync: setBirthDate,
   } = usePreferencesSetBirthDateMutation()
   const hasChanged = date !== preferences.birthDate
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const age = getAge(new Date(date))
   const isUnder13 = age < 13
@@ -130,7 +131,7 @@ function BirthdayInner({
       {isUnder13 && (
         <Admonition type="error">
           <Trans>
-            You must be at least 13 years old to use Bluesky. Read our{' '}
+            You must be at least 13 years old to use {appName}. Read our{' '}
             <InlineLinkText to={webLinks.tos} label={_(msg`Terms of Service`)}>
               Terms of Service
             </InlineLinkText>{' '}
