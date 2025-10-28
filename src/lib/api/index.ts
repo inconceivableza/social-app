@@ -660,6 +660,17 @@ async function resolveMedia(
     onStateChange?.(t`Uploading images...`)
     const images: AppBskyEmbedImages.Image[] = await Promise.all(
       imagesDraft.map(async (image, i) => {
+        if (image.source.fullsize && image.source.path.startsWith('cid:')) {
+          logger.debug(`Unchanged image #${i}`)
+          const cid = CID.parse(image.source.path.replace('cid:', ''))
+          const dynamicSource = image.transformed ?? image.source
+          const newRef = new BlobRef(cid, dynamicSource.mime, dynamicSource.size ?? 0)
+          return {
+            image: newRef.toJSON(),
+            alt: image.alt,
+            aspectRatio: {width: dynamicSource.width, height: dynamicSource.height},
+          }
+        }
         logger.debug(`Compressing image #${i}`)
         const {path, width, height, mime} = await compressImage(image)
         logger.debug(`Uploading image #${i}`)

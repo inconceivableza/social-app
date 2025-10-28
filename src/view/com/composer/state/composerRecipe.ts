@@ -1,14 +1,15 @@
 import { useMemo, useReducer } from 'react'
-
-import { type SelfLabel } from '#/lib/moderation'
-import { EmbedAction, embedReducer, type EmbedDraft } from './composer'
-import { nanoid } from 'nanoid/non-secure'
-import { AppFoodiosFeedRecipeRevision, RichText } from '@atproto/api'
-import { RecipePostView } from '#/lib/api/feed/utils'
-import _ from 'lodash'
-import { Attribution } from '../recipe/RecipeAttribution'
-import z from "zod"
+import { AppBskyEmbedImages, AppBskyFeedDefs, AppFoodiosFeedRecipeRevision, RichText } from '@atproto/api'
 import { msg } from '@lingui/macro'
+import _ from 'lodash'
+import { nanoid } from 'nanoid/non-secure'
+import z from "zod"
+
+import { RecipePostView } from '#/lib/api/feed/utils'
+import { type SelfLabel } from '#/lib/moderation'
+import { isNative } from '#/platform/detection'
+import { Attribution } from '../recipe/RecipeAttribution'
+import { EmbedAction, type EmbedDraft,embedReducer } from './composer'
 import { recipeCategories, recipeCuisines, recipeDiets } from "./dataRecipe";
 
 
@@ -271,35 +272,71 @@ function newSection(): InstructionSectionDraft {
     }
 }
 
-// TODO: fix
-function embedToDraft(embed: AppFoodiosFeedRecipeRevision.Record["embed"]): EmbedDraft {
-    //if (!embed) 
-    return {
+const SUPPORTED_IMAGE_MIME_TYPES: Array<string> = ([
+    'image/gif',
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+    'image/webp',
+    'image/avif',
+    isNative ? '' : 'image/heic',
+  ] as const).filter(Boolean)
+
+function imageExtToMimeType(extension: string) {
+  const extMap: Record<string, string> = {'jpg': 'jpeg', 'svg': 'svg+xml'}
+  const ext = extension.toLowerCase()
+  const potMime = 'image/' + (extMap[ext] ?? ext)
+  if (SUPPORTED_IMAGE_MIME_TYPES.includes(potMime)) {
+    return potMime
+  }
+  return null
+}
+
+function getExt(path: string) {
+    const lastAt = path.lastIndexOf('@')
+    const lastDot = path.lastIndexOf('.')
+    const pos = lastAt > lastDot ? lastAt : lastDot
+    return (pos === -1) ? '' : path.substring(pos+1)
+}
+
+function embedToDraft(
+    postEmbed: AppBskyFeedDefs.PostView["embed"],
+    recordEmbed: AppFoodiosFeedRecipeRevision.Record["embed"]
+): EmbedDraft {
+    if (!postEmbed || !recordEmbed) return {
         quote: undefined,
         media: undefined,
         link: undefined,
     }
 
-    // if (AppBskyEmbedImages.isMain(embed)) {
-    //     return {
-    //         quote: undefined,
-    //         media: {
-    //             type: 'images',
-    //             images: embed.images.map(({ alt, image, aspectRatio }) => ({
-    //                 source: {
-    //                     height: aspectRatio!.height,
-    //                     width: aspectRatio!.width,
-    //                     path: image.ref,
-    //                     id: nanoid(),
-    //                     mime: extToMimeType(fullsize)
-    //                 },
-    //                 alt
-    //             }))
-    //         },
-    //         link: undefined,
-    //     }
-    // }
+    if (AppBskyEmbedImages.isView(postEmbed) && AppBskyEmbedImages.isMain(recordEmbed)) {
+        return {
+            quote: undefined,
+            media: {
+                type: 'images',
+                images: postEmbed.images.map(({ alt, fullsize, thumb, aspectRatio }, index) => ({
+                    source: {
+                        height: aspectRatio!.height,
+                        width: aspectRatio!.width,
+                        path: `cid:${recordEmbed.images[index].image.ref.toString()}`,
+                        fullsize: fullsize,
+                        thumb: thumb,
+                        size: recordEmbed.images[index].image.size,
+                        id: nanoid(),
+                        mime: imageExtToMimeType(getExt(fullsize)) ?? 'image/unknown',
+                    },
+                    alt
+                }))
+            },
+            link: undefined,
+        }
+    }
 
+    return {
+        quote: undefined,
+        media: undefined,
+        link: undefined,
+    }
 }
 
 const initState = (init?: RecipePostView): RecipePostDraft => {
@@ -319,10 +356,11 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         },
     }
 
-    const { name, text, facets, ingredients, instructionSections, labels, embed,
+    const { name, text, facets, ingredients, instructionSections, labels, embed: recordEmbed,
         recipeCuisine, recipeCategory, prepTime, cookingTime, attribution, nutrition,
         recipeYield, suitableForDiet, tags, langs
     } = init.record.revisionContent
+    const { embed: postEmbed } = init
 
     return {
         id: nanoid(),
@@ -337,7 +375,7 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
             instructions: section.instructions.map((instruction) => ({ ...instruction, id: nanoid() }))
         })) : [newSection()],
         labels: labels && "values" in labels ? labels.values.map(v => v.val) : [],
-        embed: embedToDraft(embed),
+        embed: embedToDraft(postEmbed, recordEmbed),
         cuisines: recipeCuisine,
         categories: recipeCategory,
         cookTime: cookingTime,

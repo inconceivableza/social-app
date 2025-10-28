@@ -159,6 +159,9 @@ const GalleryItem = ({
     altTextControl.open()
   }
 
+  const displayImage = image.transformed ?? image.source
+  const sourceUri = displayImage.fullsize || displayImage.path
+
   return (
     <View
       style={imageStyle as ViewStyle}
@@ -224,7 +227,7 @@ const GalleryItem = ({
         testID="selectedPhotoImage"
         style={[styles.image, imageStyle]}
         source={{
-          uri: (image.transformed ?? image.source).path,
+          uri: sourceUri,
         }}
         accessible={true}
         accessibilityIgnoresInvertColors

@@ -24,10 +24,14 @@ export type ImageTransformation = {
 }
 
 export type ImageMeta = {
-  path: string
+  path: string // normally url, but can be cid: for editing
   width: number
   height: number
   mime: string
+  // for loading existing media in edit
+  fullsize?: string // fullsize url
+  thumb?: string // thumbnail url
+  size?: number
 }
 
 export type ImageSource = ImageMeta & {
