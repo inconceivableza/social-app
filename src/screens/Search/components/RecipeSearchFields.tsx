@@ -1,5 +1,5 @@
 import { ComboBox } from "#/components/forms/ComboBox";
-import { recipeCuisines, recipeCategories, recipeDiets, type HierarchyOption, ProcessedHierarchy } from "#/view/com/composer/state/dataRecipe";
+import { recipeCuisines, recipeCategories, recipeDiets, type HierarchyOption, ProcessedHierarchy, pathToHierarchyOption } from "#/view/com/composer/state/dataRecipe";
 import { View } from "react-native";
 import { cloneDeep } from 'lodash'
 import { Dispatch, useReducer } from "react";
@@ -62,7 +62,7 @@ function recipeSearchReducer(state: RecipeSearchState, { type, value, field }: R
 function makeParamSchema(h: ProcessedHierarchy) {
     return z.string().optional().transform(s => {
         if (!s) return []
-        const idsSet = new Set(s.split(",").map(path => path.split("/").at(-1)).filter((id): id is string => !!id))
+        const idsSet = new Set(s.split(",").map(path => pathToHierarchyOption(path, h)?.id).filter((id): id is string => !!id))
         const ids = [...idsSet].sort()
         return ids.map(id => h.lookup[id]).filter(Boolean)
     }).catch(() => [])
