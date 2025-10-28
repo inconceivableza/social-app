@@ -7,6 +7,7 @@ import {SearchScreenShell} from './Shell'
 export function SearchScreen(
   props: NativeStackScreenProps<SearchTabNavigatorParams, 'Search'>,
 ) {
+  // TODO: maybe just pass in all params
   const queryParam = props.route?.params?.q ?? ''
 
   return (

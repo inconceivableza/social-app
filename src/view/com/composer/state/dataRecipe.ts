@@ -42,7 +42,7 @@ export const recipeCategories = processHierarchy(rawRecipeCategories)
 export const recipeCuisines = processHierarchy(rawRecipeCuisines)
 export const recipeDiets = processHierarchy(rawRecipeDiets)
 
-type ProcessedHierarchy = ReturnType<typeof processHierarchy>
+export type ProcessedHierarchy = ReturnType<typeof processHierarchy>
 
 const DELIMITER = "/"
 

@@ -22,20 +22,17 @@ import * as FeedCard from '#/components/FeedCard'
 import * as Layout from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {SearchError} from '#/components/SearchError'
-import {Text} from '#/components/Typography'
-import { AdditionalQueryParams } from './types'
+import { Text } from '#/components/Typography'
 
 let SearchResults = ({
   query,
   queryWithParams,
-  additionalParams,
   activeTab,
   onPageSelected,
   headerHeight,
 }: {
   query: string
-  queryWithParams: string
-    additionalParams: AdditionalQueryParams
+    queryWithParams: string
   activeTab: number
   onPageSelected: (page: number) => void
   headerHeight: number
@@ -51,7 +48,6 @@ let SearchResults = ({
         component: (
           <SearchScreenPostResults
             query={queryWithParams}
-            additionalParams={additionalParams}
             sort="top"
             active={activeTab === 0}
           />
@@ -62,7 +58,6 @@ let SearchResults = ({
         component: (
           <SearchScreenPostResults
             query={queryWithParams}
-            additionalParams={additionalParams}
             sort="latest"
             active={activeTab === 1}
           />
@@ -171,12 +166,10 @@ type SearchResultSlice =
 
 let SearchScreenPostResults = ({
   query,
-  additionalParams,
   sort,
   active,
 }: {
-  query: string
-    additionalParams: AdditionalQueryParams
+    query: string
   sort?: 'top' | 'latest'
   active: boolean
 }): React.ReactNode => {
@@ -198,7 +191,7 @@ let SearchScreenPostResults = ({
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useSearchPostsQuery({ query: augmentedQuery, sort, enabled: active, ...additionalParams })
+  } = useSearchPostsQuery({ query: augmentedQuery, sort, enabled: active })
 
   const pal = usePalette('default')
   const t = useTheme()
@@ -315,7 +308,7 @@ let SearchScreenPostResults = ({
               contentContainerStyle={{paddingBottom: 100}}
             />
           ) : (
-            <EmptyState message={_(msg`No results found for ${query}`)} />
+                <EmptyState message={_(msg`No results found`)} />
           )}
         </>
       ) : (

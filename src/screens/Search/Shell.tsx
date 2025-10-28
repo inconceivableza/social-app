@@ -48,9 +48,8 @@ import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
 import * as ToggleButton from '#/components/forms/ToggleButton'
-import { RecipeSearchFields } from './components/RecipeSearchFields'
-import { AppBskyFeedSearchPosts } from '@atproto/api'
-import { AdditionalQueryParams } from './types'
+import { recipeParamsSchema, RecipeSearchFields, useRecipeSearchState } from './components/RecipeSearchFields'
+import { mapValues, pickBy } from "lodash" 
 
 export function SearchScreenShell({
   queryParam,
@@ -133,11 +132,28 @@ export function SearchScreenShell({
     },
     [accountHistory, setAccountHistory],
   )
-
-  const {params, query, queryWithParams} = useQueryManager({
+  // TODO: rethink query manager so that query construction doesn't happen in two steps
+  let { params: incompleteParams, query } = useQueryManager({
     initialQuery: queryParam,
     fixedParams,
   })
+
+  const parsedParams = useMemo(() => {
+    return recipeParamsSchema.parse(route.params)
+  }, [])
+
+  const [recipeSearchFields, dispatchRecipeSearch] = useRecipeSearchState(parsedParams)
+
+  const [searchType, setSearchType] = useState<'all' | 'recipes'>(parsedParams.searchType)
+
+  const { queryWithParams, params } = useMemo(() => {
+    const recipeParams = mapValues(recipeSearchFields, (opts) => opts.map(opt => opt.paths[0].join("/")).join(","))
+    const params = { ...incompleteParams, ...recipeParams, searchType }
+    const { setLang, ...rest } = params
+    const queryWithParams = makeSearchQuery(query, rest)
+    return { queryWithParams, params }
+  }, [query, incompleteParams, recipeSearchFields, searchType])
+
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
 
   // web only - measure header height for sticky positioning
@@ -175,16 +191,17 @@ export function SearchScreenShell({
       scrollToTopWeb()
       setShowAutocomplete(false)
       updateSearchHistory(item)
+      const { setLang, ...rest } = params
 
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, {...route.params, q: item})
+        navigation.push(route.name, { ...route.params, q: item, ...pickBy(rest) })
       } else {
         textInput.current?.blur()
         navigation.setParams({q: item})
       }
     },
-    [updateSearchHistory, navigation, route],
+    [updateSearchHistory, navigation, route, params],
   )
 
   const onPressCancelSearch = useCallback(() => {
@@ -277,8 +294,6 @@ export function SearchScreenShell({
 
   const showHeader = !gtMobile || navButton !== 'menu'
 
-  const [searchType, setSearchType] = useState<'all' | 'recipes'>('all')
-
   return (
     <Layout.Screen testID={testID}>
       <View
@@ -367,7 +382,7 @@ export function SearchScreenShell({
                 )}
               </View>
               {searchType === "recipes" && <View>
-                <RecipeSearchFields />
+                <RecipeSearchFields state={recipeSearchFields} dispatch={dispatchRecipeSearch} />
               </View>}  
               {showFilters && !showHeader && (
                 <View
@@ -393,11 +408,11 @@ export function SearchScreenShell({
           display: showAutocomplete && !fixedParams ? 'flex' : 'none',
           flex: 1,
         }}>
-        {searchText.length > 0 ? (
+        {queryWithParams.length ? (
           <AutocompleteResults
             isAutocompleteFetching={isAutocompleteFetching}
             autocompleteData={autocompleteData}
-            searchText={searchText}
+            queryType={searchType}
             onSubmit={onSubmit}
             onResultPress={onAutocompleteResultPress}
             onProfileClick={handleProfileClick}
@@ -420,7 +435,6 @@ export function SearchScreenShell({
         }}>
         <SearchScreenInner
           query={query}
-          additionalParams={{ searchType }}
           queryWithParams={queryWithParams}
           headerHeight={headerHeight}
           focusSearchInput={focusSearchInput}
@@ -434,13 +448,11 @@ export function SearchScreenShell({
 let SearchScreenInner = ({
   query,
   queryWithParams,
-  additionalParams,
   headerHeight,
   focusSearchInput,
 }: {
   query: string
-  queryWithParams: string
-    additionalParams: AdditionalQueryParams
+    queryWithParams: string
   headerHeight: number
   focusSearchInput: () => void
 }): React.ReactNode => {
@@ -458,12 +470,10 @@ let SearchScreenInner = ({
     },
     [setMinimalShellMode],
   )
-
   return queryWithParams ? (
     <SearchResults
       query={query}
       queryWithParams={queryWithParams}
-      additionalParams={additionalParams}
       activeTab={activeTab}
       headerHeight={headerHeight}
       onPageSelected={onPageSelected}
@@ -524,26 +534,28 @@ function useQueryManager({
   }
 
   const params = useMemo(
-    () => ({
+    () => {
+      return {
       // default stuff
       ...initialParams,
       // managed stuff
       lang,
       ...fixedParams,
-    }),
-    [lang, initialParams, fixedParams],
+        // ...recipeParams
+      }
+    },
+    [lang, initialParams, fixedParams,],
   )
   const handlers = useMemo(
     () => ({
       setLang,
     }),
-    [setLang],
+    [setLang,],
   )
 
   return useMemo(() => {
     return {
       query,
-      queryWithParams: makeSearchQuery(query, params),
       params: {
         ...params,
         ...handlers,
