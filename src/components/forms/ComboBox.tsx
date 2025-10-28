@@ -56,6 +56,12 @@ export function ComboBox<T extends BaseOption>({
                   setFilteredOptions([])
                 }, 200)
               }}
+              onFocus={() => {
+                const filtered = options.filter(
+                  ({ id }) => !selection.find((opt) => opt.id === id),
+                )
+                setFilteredOptions(filtered)
+              }}
               inputRef={inputRef}
               label={label}
               onChangeText={value => {
