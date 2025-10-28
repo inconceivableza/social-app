@@ -193,11 +193,17 @@ function recipePostReducer(
             return state
         }
         case 'set_cook_time': {
-            state.cookTime = action.value
+            if (action.value === "")
+                delete state.cookTime
+            else
+                state.cookTime = action.value
             return state
         }
         case 'set_prep_time': {
-            state.prepTime = action.value
+            if (action.value === "")
+                delete state.prepTime
+            else
+                state.prepTime = action.value
             return state
         }
         case 'set_yield': {
@@ -376,8 +382,8 @@ export type RecipeReducerOutput = ReturnType<typeof useRecipePostReducer>
 const ingredientDraftSchema = z.object({
     id: z.string(),
     name: z.string().min(1, msg`Ingredient name cannot be empty`),
-    quantity: z.coerce.number({ errorMap: () => msg`Ingredient quantity must be a number` as { message: string } }).refine(v => v > 0, msg`Ingredient quantity cannot be empty`),
-    unit: z.string().min(1, msg`Ingredient unit cannot be empty`),
+    quantity: z.coerce.number({ errorMap: () => msg`Ingredient quantity must be a number` as { message: string } }).optional(),
+    unit: z.string(),
 })
 
 const instructionDraftSchema = z.object({
@@ -394,7 +400,7 @@ const instructionSectionDraftSchema = z.object({
 
 const nutritionServingSizeSchema = z.object({
     quantity: z.coerce.number({ errorMap: () => msg`Serving size quantity must be a number` as { message: string } }),
-    unit: z.string().min(1, msg`Serving size unit cannot be empty`),
+    unit: z.string(),
 })
 
 const nutritionDraftSchema = z.object({
@@ -413,8 +419,8 @@ const nutritionDraftSchema = z.object({
 })
 
 const recipeYieldSchema = z.object({
-    quantity: z.coerce.number({ errorMap: () => msg`Recipe yield quantity must be a number` as { message: string } }).min(1, msg`Recipe yield quantity must be greater than zero`),
-    unit: z.string().min(1, msg`Recipe yield unit cannot be empty`),
+    quantity: z.coerce.number({ errorMap: () => msg`Recipe yield quantity must be a number` as { message: string } }).optional(), // min(1, msg`Recipe yield quantity must be greater than zero`),
+    unit: z.string().optional(), // .min(1, msg`Recipe yield unit cannot be empty`),
 })
 
 const licenseSchema = z.discriminatedUnion('$type', [
@@ -533,7 +539,7 @@ const dietSchema = makeOptionsSchema(recipeDiets)
 
 const recipePostDraftSchema = z.object({
     name: z.string().min(1, msg`Name cannot be empty`),
-    text: z.instanceof(RichText).refine(rt => rt.text.length >= 1, msg`Description cannot be empty`),
+    text: z.instanceof(RichText).optional(),
     ingredients: z.array(ingredientDraftSchema).min(1, msg`At least one ingredient required`),
     instructionSections: z.array(instructionSectionDraftSchema).min(1, `At least one instruction required`),
     prepTime: z.coerce.number({ errorMap: () => msg`Preparation time must be a number` as { message: string } }).min(1, msg`Preparation time must be greater than zero`).optional(),
