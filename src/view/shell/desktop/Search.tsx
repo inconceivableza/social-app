@@ -130,7 +130,7 @@ export function DesktopSearch() {
             <>
               <SearchLinkCard
                 label={_(msg`Search for "${query}"`)}
-                  to={`/1?q=${encodeURIComponent(query)}`}
+                  to={`/search?q=${encodeURIComponent(query)}`}
                 style={
                   (autocompleteData?.length ?? 0) > 0
                     ? {borderBottomWidth: 1}
