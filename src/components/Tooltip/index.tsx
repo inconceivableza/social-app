@@ -144,11 +144,11 @@ export function Target({children}: {children: React.ReactNode}) {
 export function Content({
   children,
   label,
-  fill,
+  hide,
 }: {
   children: React.ReactNode
   label: string
-  fill?: string
+    hide?: boolean
 }) {
   const {position, visible, onVisibleChange} = useContext(TooltipContext)
   const {targetMeasurements} = useContext(TargetContext)
@@ -163,7 +163,7 @@ export function Content({
       <Bubble
         label={label}
         position={position}
-        fill={fill}
+        hide={hide}
         /*
          * Gotta pass these in here. Inside the Bubble, we're Potal-ed outside
          * the context providers.
@@ -182,11 +182,11 @@ function Bubble({
   position,
   requestClose,
   targetMeasurements,
-  fill,
+  hide,
 }: {
   children: React.ReactNode
   label: string
-  fill?: string
+    hide?: boolean
   position: TooltipContextType['position']
   requestClose: () => void
   targetMeasurements: Exclude<
@@ -339,8 +339,8 @@ function Bubble({
             a.top_0,
             a.z_10,
             t.atoms.bg,
-            fill
-              ? {backgroundColor: fill}
+            hide
+              ? { backgroundColor: 'transparent' }
               : select(t.name, {
                   light: t.atoms.bg,
                   dark: t.atoms.bg_contrast_100,
@@ -367,7 +367,7 @@ function Bubble({
               dark: t.atoms.bg_contrast_100,
               dim: t.atoms.bg_contrast_100,
             }),
-            t.atoms.shadow_md,
+            !hide && t.atoms.shadow_md,
             {
               shadowOpacity: 0.2,
               shadowOffset: {

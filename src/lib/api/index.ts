@@ -51,6 +51,7 @@ import {createGIFDescription} from '../gif-alt-text'
 import {isRecipeUri} from '../strings/url-helpers'
 import {type RecipePostView} from './feed/utils'
 import {uploadBlob} from './upload-blob'
+import { hierarchyOptionToPaths } from '#/view/com/composer/state/dataRecipe'
 
 export {uploadBlob}
 
@@ -242,9 +243,9 @@ export async function postRecipe(
     embed,
     cookingTime: post.cookTime,
     prepTime: post.prepTime,
-    recipeCategory: post.categories,
-    recipeCuisine: post.cuisines,
-    suitableForDiet: post.suitableForDiet,
+    recipeCategory: post.recipeCategories?.flatMap(hierarchyOptionToPaths),
+    recipeCuisine: post.recipeCuisines?.flatMap(hierarchyOptionToPaths),
+    suitableForDiet: post.recipeDiets?.flatMap(hierarchyOptionToPaths),
     attribution: post.attribution,
     nutrition: post.nutrition,
     recipeYield: post.recipeYield,
