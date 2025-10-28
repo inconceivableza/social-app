@@ -510,7 +510,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                   <Trans context="recipe">Instructions</Trans>
                 </H2>
               </View>
-              <RecipeInstructions state={state} dispatch={dispatch} />
+              <RecipeInstructions state={state} dispatch={dispatch} errors={errors}/>
             </View>
 
             <Accordion heading={_(msg`Nutritional Information`)}>
