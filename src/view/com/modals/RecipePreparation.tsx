@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from 'react'
-import {View} from 'react-native'
+import {ScrollView, View} from 'react-native'
 import {UITextView} from 'react-native-uitextview'
 import {RichText as RichTextAPI} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
@@ -8,6 +8,7 @@ import {padStart} from 'lodash'
 
 import {type RecipePostView} from '#/lib/api/feed/utils'
 import {countLines} from '#/lib/strings/helpers'
+import {isAndroid} from '#/platform/detection'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
@@ -20,11 +21,10 @@ import {RichText} from '#/components/RichText'
 import {H1, H2, H3} from '#/components/Typography'
 import {usePreparationState} from '../recipe-preparation/recipePreparation'
 
-export const snapPoints = ['fullscreen']
+export const snapPoints = [isAndroid ? 'fullscreen' : '90%']
 
 const COLLAPSED_LINE_LIMIT = 3
 // Note: local storage is tied to the revision ID, so if the recipe is edited, progress inaccessible
-// TODO: handle scrolling
 export function Component({
   recipePost,
   onReviewRecipe,
@@ -53,7 +53,7 @@ export function Component({
   )
 
   return (
-    <View style={[a.gap_sm]}>
+    <ScrollView style={[a.gap_sm]}>
       <View>
         <H1 style={[a.text_lg, a.font_bold]}>{revisionContent.name}</H1>
       </View>
@@ -183,7 +183,7 @@ export function Component({
           </ButtonText>
         </Button>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

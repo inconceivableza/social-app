@@ -1,6 +1,10 @@
 import assert from 'node:assert'
 
-import {type AppBskyGraphDefs, AtUri} from '@atproto/api'
+import {
+  type AppBskyGraphDefs,
+  AtUri,
+  type ComAtprotoLabelDefs,
+} from '@atproto/api'
 import resvg from '@resvg/resvg-js'
 import {type Express} from 'express'
 import satori from 'satori'
@@ -14,6 +18,14 @@ import {type AppContext} from '../context.js'
 import {httpLogger} from '../logger.js'
 import {loadEmojiAsSvg} from '../util.js'
 import {handler, originVerifyMiddleware} from './util.js'
+
+// The parts we use of ProfileViewBasic and ProfileView
+interface ProfileViewType {
+  avatar?: string
+  labels?: ComAtprotoLabelDefs.Label[]
+  did: string
+  [key: string]: any
+}
 
 export default function (ctx: AppContext, app: Express) {
   return app.get(
@@ -36,7 +48,7 @@ export default function (ctx: AppContext, app: Express) {
         return res.status(404).end('not found')
       }
       const imageEntries = await Promise.all(
-        [starterPack.creator]
+        [starterPack.creator as ProfileViewType]
           .concat(starterPack.listItemsSample.map(li => li.subject))
           // has avatar
           .filter(p => p.avatar)

@@ -20,7 +20,7 @@ import {
   type ComAtprotoRepoStrongRef,
   RichText,
 } from '@atproto/api'
-import {ids} from '@atproto/api/client/lexicons'
+import {lexiconIds as ids} from '@atproto/api'
 import {TID} from '@atproto/common-web'
 import * as dcbor from '@ipld/dag-cbor'
 import {t} from '@lingui/macro'

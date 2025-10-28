@@ -6,10 +6,9 @@ import {
   BskyAgent,
   type Did,
 } from '@atproto/api'
-import {type FetchHandler} from '@atproto/api/dist/agent'
-import {type SessionManager} from '@atproto/api/dist/session-manager'
+import {type SessionManager} from '@atproto/api'
 import {TID} from '@atproto/common-web'
-import {type FetchHandlerOptions} from '@atproto/xrpc'
+import {type FetchHandler, type FetchHandlerOptions} from '@atproto/xrpc'
 
 import {networkRetry} from '#/lib/async/retry'
 import {

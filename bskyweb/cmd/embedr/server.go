@@ -29,8 +29,6 @@ import (
 
 	"github.com/klauspost/compress/gzhttp"
 	"github.com/klauspost/compress/gzip"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/urfave/cli/v2"
 )
 
@@ -40,7 +38,7 @@ type Server struct {
 	metricsHttpd *http.Server
 	xrpcc        *xrpc.Client
 	dir          identity.Directory
-	cfg   *Config
+	cfg          *Config
 }
 
 type Config struct {

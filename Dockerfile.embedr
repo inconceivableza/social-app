@@ -1,12 +1,73 @@
-FROM golang:1.24.5-bullseye AS build-env
+FROM node:20-alpine3.22 as build-node
 
-WORKDIR /usr/src/social-app
+RUN corepack enable
 
-ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /usr/src/atproto
+
+COPY --from=atproto /package.json ./
+RUN corepack prepare --activate
+
+COPY --from=atproto ./tsconfig ./tsconfig
+COPY --from=atproto ./packages/api/package.json ./packages/api/package.json
+COPY --from=atproto ./packages/common-web/package.json ./packages/common-web/package.json
+COPY --from=atproto ./packages/syntax/package.json ./packages/syntax/package.json
+COPY --from=atproto ./packages/lexicon/package.json ./packages/lexicon/package.json
+COPY --from=atproto ./packages/xrpc/package.json ./packages/xrpc/package.json
+COPY --from=atproto ./package.json ./package.json
+COPY --from=atproto ./pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=atproto ./pnpm-workspace.yaml ./pnpm-workspace.yaml 
+
+RUN pnpm install --frozen-lockfile
+
+# COPY --from=atproto / .
+
+COPY --from=atproto ./*.js* ./
+# NOTE api's transitive dependencies go here: if that changes, this needs to be updated.
+COPY --from=atproto ./tsconfig ./tsconfig
+COPY --from=atproto ./packages/api ./packages/api
+COPY --from=atproto ./packages/common-web ./packages/common-web
+COPY --from=atproto ./packages/syntax ./packages/syntax
+COPY --from=atproto ./packages/lexicon ./packages/lexicon
+COPY --from=atproto ./packages/xrpc ./packages/xrpc
+# build all packages with external node_modules
+RUN pnpm build
+# clean up
+# RUN rm -rf node_modules
+# install only prod deps, hoisted to root node_modules dir
+# RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
+
+WORKDIR /usr/src/social-app/
 
 # Node
 ENV NODE_VERSION=20
 ENV NVM_DIR=/usr/share/nvm
+
+COPY ./package.json .
+COPY ./scripts ./scripts
+
+RUN corepack prepare --activate
+
+COPY ./bskyembed ./bskyembed
+COPY ./bskyweb ./bskyweb
+#
+# Generate the JavaScript webpack. NOTE: this will change
+#
+RUN cd bskyembed && yarn install --frozen-lockfile && cd .. && \
+  yarn build-embed
+
+# hack around issue with empty directory and go:embed
+RUN touch bskyweb/static/js/empty.txt
+RUN touch bskyweb/static/css/empty.txt
+RUN touch bskyweb/static/media/empty.txt
+
+FROM golang:1.24.5-bullseye AS build-env
+
+WORKDIR /usr/src/social-app
+
+COPY --from=build-node /usr/src/social-app/bskyembed /usr/src/social-app/bskyembed
+COPY --from=build-node /usr/src/social-app/bskyweb /usr/src/social-app/bskyweb
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Go
 ENV GODEBUG="netdns=go"
@@ -15,33 +76,6 @@ ENV GOARCH="amd64"
 ENV CGO_ENABLED=1
 ENV GOEXPERIMENT="loopvar"
 
-COPY . .
-
-#
-# Generate the JavaScript webpack. NOTE: this will change
-#
-RUN mkdir --parents $NVM_DIR && \
-  wget \
-    --output-document=/tmp/nvm-install.sh \
-    https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh && \
-  bash /tmp/nvm-install.sh
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm install $NODE_VERSION && \
-  nvm use $NODE_VERSION && \
-  npm install --global yarn && \
-  yarn && \
-  cd bskyembed && yarn install --frozen-lockfile && cd .. && \
-  yarn intl:build && \
-  yarn build-embed
-
-# DEBUG
-RUN find ./bskyweb/embedr-static && find ./bskyweb/embedr-templates && find ./bskyembed/dist
-
-# hack around issue with empty directory and go:embed
-RUN touch bskyweb/static/js/empty.txt
-RUN touch bskyweb/static/css/empty.txt
-RUN touch bskyweb/static/media/empty.txt
 
 #
 # Generate the embedr Go binary.

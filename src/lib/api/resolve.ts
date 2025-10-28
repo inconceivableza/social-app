@@ -5,7 +5,7 @@ import {
 } from '@atproto/api'
 import {AtUri} from '@atproto/api'
 import {type BskyAgent} from '@atproto/api'
-import {ids} from '@atproto/api/client/lexicons'
+import {lexiconIds as ids} from '@atproto/api'
 
 import {POST_IMG_MAX} from '#/lib/constants'
 import {getLinkMeta} from '#/lib/link-meta/link-meta'

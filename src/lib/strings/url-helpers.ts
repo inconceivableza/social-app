@@ -1,5 +1,4 @@
-import {AtUri} from '@atproto/api'
-import {ids} from '@atproto/api/client/lexicons'
+import {AtUri, lexiconIds as ids} from '@atproto/api'
 import psl from 'psl'
 import TLDs from 'tlds'
 

@@ -43,6 +43,7 @@ import {BottomSheetOutlet} from '../../../modules/bottom-sheet'
 import {updateActiveViewAsync} from '../../../modules/expo-bluesky-swiss-army/src/VisibilityView'
 import {Composer} from './Composer'
 import {DrawerContent} from './Drawer'
+import {RecipeComposer} from './RecipeComposer'
 
 function ShellInner() {
   const winDim = useWindowDimensions()
@@ -99,6 +100,7 @@ function ShellInner() {
       </View>
 
       <Composer winHeight={winDim.height} />
+      <RecipeComposer winHeight={winDim.height} />
       <ModalsContainer />
       <MutedWordsDialog />
       <SigninDialog />
