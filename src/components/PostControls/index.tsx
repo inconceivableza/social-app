@@ -442,7 +442,6 @@ let PostControls = ({
             postFeedContext={feedContext}
             postReqId={reqId}
             big={big}
-            record={record}
             richText={richText}
             timestamp={post.indexedAt}
             threadgateRecord={threadgateRecord}
