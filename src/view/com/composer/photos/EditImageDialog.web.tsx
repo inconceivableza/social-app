@@ -149,6 +149,7 @@ function EditImageInner({
     }),
     [onPressSubmit],
   )
+  const srcPath = source.fullsize ?? source.path
 
   return (
     <View
@@ -168,7 +169,7 @@ function EditImageInner({
         className="ReactCrop--no-animate"
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setIsDragging(false)}>
-        <img src={source.path} style={{maxHeight: `50vh`}} />
+        <img src={srcPath} style={{maxHeight: `50vh`}} />
       </ReactCrop>
       {/* Eat clicks when dragging, otherwise mousing up over the backdrop
         causes the dialog to close */}
