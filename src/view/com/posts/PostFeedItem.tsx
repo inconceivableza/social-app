@@ -42,6 +42,7 @@ import {useFeedFeedbackContext} from '#/state/feed-feedback'
 import {useModalControls} from '#/state/modals'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import {
   buildPostSourceKey,
@@ -112,10 +113,12 @@ export function PostFeedItem({
   isParentNotFound,
   rootPost,
   onShowLess,
+  onPostSuccess,
 }: FeedItemProps & {
   post: AnyPostView
   rootPost: AppBskyFeedDefs.PostView
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
+  onPostSuccess?: (data: OnPostSuccessData) => void
 }): React.ReactNode {
   const postShadowed = usePostShadow(post)
   const richText = useMemo(
@@ -156,6 +159,7 @@ export function PostFeedItem({
         isParentNotFound={isParentNotFound}
         rootPost={rootPost}
         onShowLess={onShowLess}
+        onPostSuccess={onPostSuccess}
       />
     )
   }
@@ -180,11 +184,13 @@ let FeedItemInner = ({
   isParentNotFound,
   rootPost,
   onShowLess,
+  onPostSuccess,
 }: FeedItemProps & {
   richText: RichTextAPI
   post: Shadow<AnyPostView>
   rootPost: AppBskyFeedDefs.PostView
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
+  onPostSuccess?: (data: OnPostSuccessData) => void
 }): React.ReactNode => {
   const queryClient = useQueryClient()
   const {openComposer} = useOpenComposer()
@@ -577,6 +583,7 @@ let FeedItemInner = ({
             richText={richText}
             onPressReply={onPressReply}
             onPressReviewRate={onPressReviewRate}
+            onPostChanged={onPostSuccess}
             logContext="FeedItem"
             feedContext={feedContext}
             reqId={reqId}

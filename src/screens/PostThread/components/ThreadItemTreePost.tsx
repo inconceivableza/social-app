@@ -391,6 +391,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
                     richText={richText}
                     onPressReply={onPressReply}
                     onPressReviewRate={onPressReviewRate}
+                    onPostChanged={onPostSuccess}
                     logContext="PostThreadItem"
                     threadgateRecord={threadgateRecord}
                   />

@@ -25,7 +25,13 @@ export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 export const HELP_DESK_URL = envConfig.HELP_DESK_URL
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
-export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
+const usingBlueskyEmbed = [
+  DOMAIN_ENVCONFIGS.bluesky.SOCIAL_EMBED_SERVICE,
+  DOMAIN_ENVCONFIGS.bluesky_staging.SOCIAL_EMBED_SERVICE,
+].includes(EMBED_SERVICE)
+export const EMBED_SCRIPT = usingBlueskyEmbed
+  ? `${EMBED_SERVICE}/static/embed.js`
+  : `${EMBED_SERVICE}/embed.js`
 export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
 export const CHAT_DISABLED = true

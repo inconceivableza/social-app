@@ -77,8 +77,10 @@ export function PostThread({uri}: {uri: string}) {
   const optimisticOnPostReply = useCallback(
     (payload: OnPostSuccessData) => {
       if (payload) {
-        const {replyToUri, posts} = payload
-        if (replyToUri && posts.length) {
+        const {replyToUri, posts, wasEdited} = payload
+        if (wasEdited) {
+          thread.actions.refetch()
+        } else if (replyToUri && posts.length) {
           thread.actions.insertReplies(replyToUri, posts)
         }
       }

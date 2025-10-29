@@ -23,6 +23,7 @@ import {
   usePostRepostMutationQueue,
 } from '#/state/queries/post'
 import {useRequireAuth} from '#/state/session'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {
   ProgressGuideAction,
   useProgressGuideControls,
@@ -54,6 +55,7 @@ let PostControls = ({
   onPressReply,
   onPostReply,
   onPressReviewRate,
+  onPostChanged,
   logContext,
   threadgateRecord,
   onShowLess,
@@ -74,6 +76,7 @@ let PostControls = ({
   onPostReply?: (postUri: string | undefined) => void
   onPressReviewRate: () => void
   onPostReviewRate?: (postUri: string | undefined) => void
+  onPostChanged?: (payload: OnPostSuccessData) => void
   logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
@@ -449,6 +452,7 @@ let PostControls = ({
             hitSlop={{
               left: secondaryControlSpacingStyles.gap / 2,
             }}
+            onPostChanged={onPostChanged}
           />
         </View>
       </View>

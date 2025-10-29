@@ -621,6 +621,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 richText={richText}
                 onPressReply={onPressReply}
                 onPressReviewRate={onPressReviewRate}
+                onPostChanged={onPostSuccess}
                 logContext="PostThreadItem"
                 threadgateRecord={threadgateRecord}
                 feedContext={postSource?.post?.feedContext}

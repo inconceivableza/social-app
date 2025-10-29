@@ -29,6 +29,7 @@ import {
 } from '#/state/cache/post-shadow'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
@@ -43,7 +44,7 @@ import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
-import { ExpandableRecipePost } from '../posts/ExpandableRecipePost'
+import {ExpandableRecipePost} from '../posts/ExpandableRecipePost'
 
 export function Post({
   post,
@@ -51,12 +52,14 @@ export function Post({
   hideTopBorder,
   style,
   onBeforePress,
+  onPostSuccess,
 }: {
   post: AppBskyFeedDefs.PostView
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
   onBeforePress?: () => void
+  onPostSuccess?: (data: OnPostSuccessData) => void
 }) {
   const moderationOpts = useModerationOpts()
   // handle recipe post
@@ -109,6 +112,7 @@ export function Post({
         hideTopBorder={hideTopBorder}
         style={style}
         onBeforePress={onBeforePress}
+        onPostSuccess={onPostSuccess}
       />
     )
   }
@@ -124,6 +128,7 @@ function PostInner({
   hideTopBorder,
   style,
   onBeforePress: outerOnBeforePress,
+  onPostSuccess,
 }: {
   post: Shadow<AppBskyFeedDefs.PostView>
   record:
@@ -135,6 +140,7 @@ function PostInner({
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
   onBeforePress?: () => void
+  onPostSuccess?: (data: OnPostSuccessData) => void
 }) {
   const queryClient = useQueryClient()
   const pal = usePalette('default')
@@ -245,8 +251,9 @@ function PostInner({
               modui={moderation.ui('contentView')}
               style={[a.py_xs]}
             />
-            {isRecipePostView(post) ? <ExpandableRecipePost revision={post.record} />
-              : richText.text ? (
+            {isRecipePostView(post) ? (
+              <ExpandableRecipePost revision={post.record} />
+            ) : richText.text ? (
               <View>
                 <RichText
                   enableTags
@@ -279,6 +286,7 @@ function PostInner({
             richText={richText}
             onPressReply={onPressReply}
             onPressReviewRate={onPressReviewRate}
+            onPostChanged={onPostSuccess}
             logContext="Post"
           />
         </View>

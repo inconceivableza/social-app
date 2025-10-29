@@ -1,6 +1,7 @@
 import React, {
   type PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -41,7 +42,10 @@ import {emitPostCreated} from '#/state/events'
 import {type ComposerImage, createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {useAgent, useSession} from '#/state/session'
-import {useComposerControls} from '#/state/shell/composer'
+import {
+  type OnPostSuccessData,
+  useComposerControls,
+} from '#/state/shell/composer'
 import {
   ComposerEmbeds,
   ToolbarWrapper,
@@ -53,7 +57,9 @@ import {OpenCameraBtn} from '#/view/com/composer/photos/OpenCameraBtn'
 import {SelectGifBtn} from '#/view/com/composer/photos/SelectGifBtn'
 import {RecipeAttribution} from '#/view/com/composer/recipe/RecipeAttribution'
 import {TextInput} from '#/view/com/composer/text-input/TextInput'
+import {textInputWebEmitter} from '#/view/com/composer/text-input/textInputWebEmitter'
 import {
+  type Emoji,
   EmojiPicker,
   type EmojiPickerPosition,
   type EmojiPickerState,
@@ -88,7 +94,7 @@ import {
 } from './state/composerRecipe'
 import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
 import {uploadVideoDirect} from './state/video'
-import {type TextInputRef} from './text-input/TextInput.types'
+import {isTextInputRef, type TextInputRef} from './text-input/TextInput.types'
 
 const msgs = {
   button_add_ingredient: msg({
@@ -116,7 +122,13 @@ function errorBorder(t: Theme, err: unknown) {
 
 // TODO: NB fix description being focused first
 
-export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
+export function ComposerRecipe({
+  edit,
+  onPostSuccess,
+}: {
+  edit?: RecipePostView
+  onPostSuccess?: (data: OnPostSuccessData) => void
+}) {
   const keyboardVerticalOffset = useKeyboardVerticalOffset()
   const {closeComposer} = useComposerControls()
 
@@ -141,6 +153,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
     try {
       if (edit) {
         const parentRevisionUri = edit.record?.selectedRevisionUri
+        let updatedPosts = null
         await apilib.postRecipeRevision(agent, queryClient, {
           post: state,
           parentRevisionPost: edit,
@@ -164,6 +177,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                   `composer: app view still has previous revision`,
                 )
               }
+              updatedPosts = data.posts
             },
             1e3,
           )
@@ -175,6 +189,13 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
         emitPostCreated()
         closeComposer()
         Toast.show(_(msg`Your recipe has been updated`))
+        if (updatedPosts !== null && onPostSuccess) {
+          let postSuccessData: OnPostSuccessData = {
+            posts: updatedPosts,
+            wasEdited: true,
+          }
+          onPostSuccess(postSuccessData)
+        }
       } else {
         const postUri = await apilib.postRecipe(agent, queryClient, {
           post: state,
@@ -248,10 +269,46 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
 
   const titleInputRef = useRef<NativeTextInput>(null)
   const descriptionInputRef = useRef<TextInputRef>(null)
-  const currentRef = useRef<TextInputRef>()
-  const [focused, setFocused] = useState<'title' | 'description' | undefined>(
-    'title',
+  const currentRef = useRef<EmojiInputElement>()
+  const [emojiTarget, setEmojiTarget] = useState<string | undefined>(undefined)
+  const setEmojiFocus = useCallback(
+    (targetName?: string | undefined, targetRef?: EmojiInputElement) => {
+      setEmojiTarget(targetName)
+      currentRef.current = targetRef ?? null
+    },
+    [setEmojiTarget],
   )
+
+  const onEmojiInserted = useCallback(
+    (emoji: Emoji) => {
+      if (!currentRef.current) return
+      const currentInput = currentRef.current
+      if (
+        currentInput instanceof HTMLInputElement ||
+        currentInput instanceof HTMLTextAreaElement
+      ) {
+        currentInput.focus()
+        currentInput.setRangeText(emoji.native)
+        const afterPos =
+          (currentInput.selectionStart ?? 0) + emoji.native.length
+        currentInput.setSelectionRange(afterPos, afterPos)
+        currentInput.dispatchEvent(new Event('input', {bubbles: true}))
+      }
+    },
+    [currentRef],
+  )
+  useEffect(() => {
+    if (!emojiTarget || emojiTarget === 'description') {
+      return
+    }
+    textInputWebEmitter.addListener('emoji-inserted', onEmojiInserted)
+    return () => {
+      textInputWebEmitter.removeListener('emoji-inserted', onEmojiInserted)
+    }
+  }, [onEmojiInserted, currentRef, emojiTarget])
+
+  // const currentlyFocusedField = NativeTextInput.State.currentlyFocusedField()
+  // console.log("Focus", currentlyFocusedField)
   const onOpenPicker = React.useCallback(
     (pos: EmojiPickerPosition | undefined) => {
       if (!pos) return
@@ -283,14 +340,16 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
   })
 
   const onEmojiButtonPress = useCallback(() => {
-    const rect = currentRef.current?.getCursorPosition()
-    if (rect) {
-      onOpenPicker({
-        ...rect,
-        nextFocusRef:
-          currentRef as unknown as React.MutableRefObject<HTMLElement>,
-      })
-    }
+    const rect = isTextInputRef(currentRef.current)
+      ? currentRef.current?.getCursorPosition()
+      : currentRef.current instanceof HTMLInputElement
+        ? currentRef.current?.getBoundingClientRect()
+        : undefined
+    onOpenPicker({
+      ...(rect ?? {top: 0, bottom: 0, left: 0, right: 0}),
+      nextFocusRef:
+        currentRef as unknown as React.MutableRefObject<HTMLElement>,
+    })
   }, [onOpenPicker])
 
   const insets = useSafeAreaInsets()
@@ -363,8 +422,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 inputRef={titleInputRef}
                 onChangeText={value => dispatch({type: 'update_name', value})}
                 onFocus={() => {
-                  setFocused('title')
-                  currentRef.current = titleInputRef.current ?? undefined
+                  setEmojiFocus('title', titleInputRef.current)
                 }}
                 autoFocus
                 label={_(msg`Name`)}
@@ -390,6 +448,9 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                         inputMode="numeric"
                         label={_(msg`Yield (How much)`)}
                         defaultValue={state.recipeYield?.quantity}
+                        onFocus={() => {
+                          setEmojiFocus()
+                        }}
                         onChangeText={value =>
                           dispatch({
                             type: 'set_yield',
@@ -406,6 +467,9 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                       <TextField.Input
                         label={_(msg`Unit (servings)`)}
                         defaultValue={state.recipeYield?.unit}
+                        onFocus={() => {
+                          setEmojiFocus(undefined, null)
+                        }}
                         onChangeText={value =>
                           dispatch({type: 'set_yield', field: 'unit', value})
                         }
@@ -532,13 +596,12 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 richtext={state.text}
                 placeholder={_(msg`Description`)}
                 webForceMinHeight={false}
-                isActive={focused === 'description'} // TODO: fix
+                isActive={emojiTarget === 'description'} // TODO: fix
                 setRichText={rt => {
                   dispatch({type: 'update_main_text', value: rt})
                 }}
                 onFocus={() => {
-                  setFocused('description')
-                  currentRef.current = descriptionInputRef.current ?? undefined
+                  setEmojiFocus('description', descriptionInputRef.current)
                 }}
                 onPhotoPasted={() => {}}
                 onNewLink={() => {}}
@@ -568,6 +631,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 state={state}
                 dispatch={dispatch}
                 errors={errors}
+                setEmojiFocus={setEmojiFocus}
               />
             </View>
 
@@ -582,6 +646,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 state={state}
                 dispatch={dispatch}
                 errors={errors}
+                setEmojiFocus={setEmojiFocus}
               />
             </View>
 
@@ -590,6 +655,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 state={state}
                 dispatch={dispatch}
                 errors={errors}
+                setEmojiFocus={setEmojiFocus}
               />
             </Accordion>
             <View style={errorBorder(t, errors?.tree?.attribution)}>
@@ -614,7 +680,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
             </View>
           </Animated.ScrollView>
           <ComposerFooter
-            emojiEnabled={focused === 'description' || focused === 'name'}
+            emojiEnabled={!!emojiTarget}
             post={state}
             dispatch={dispatch}
             onEmojiButtonPress={onEmojiButtonPress}
@@ -682,6 +748,20 @@ function ErrorBanner({
   )
 }
 
+type EmojiFocusSetter = {
+  setEmojiFocus: (
+    targetName: string | undefined,
+    targetRef: EmojiInputElement,
+  ) => void
+}
+
+type EmojiInputElement =
+  | TextInputRef
+  | NativeTextInput
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | null
+
 function NutritionField({
   unit,
   state,
@@ -690,7 +770,8 @@ function NutritionField({
   label,
   subFields,
   errors,
-}: NutritionElement & RecipeReducerOutput) {
+  setEmojiFocus,
+}: NutritionElement & RecipeReducerOutput & EmojiFocusSetter) {
   const {_} = useLingui()
   return (
     <View style={[a.gap_xs]}>
@@ -699,6 +780,9 @@ function NutritionField({
           inputMode="numeric"
           value={state.nutrition?.[field] ?? ''}
           label={_(label)}
+          onFocus={() => {
+            setEmojiFocus(undefined, null)
+          }}
           onChangeText={value =>
             dispatch({type: 'update_nutrition', field, value})
           }
@@ -713,6 +797,7 @@ function NutritionField({
             state={state}
             dispatch={dispatch}
             errors={errors}
+            setEmojiFocus={setEmojiFocus}
           />
         ))}
       </View>
@@ -720,7 +805,12 @@ function NutritionField({
   )
 }
 
-function RecipeNutrition({state, dispatch, errors}: RecipeReducerOutput) {
+function RecipeNutrition({
+  state,
+  dispatch,
+  errors,
+  setEmojiFocus,
+}: RecipeReducerOutput & EmojiFocusSetter) {
   const {_} = useLingui()
 
   return (
@@ -733,6 +823,9 @@ function RecipeNutrition({state, dispatch, errors}: RecipeReducerOutput) {
               label={_(msg`Serving size`)}
               value={state.nutrition?.servingSize.quantity ?? ''}
               isInvalid={!!errors?.tree?.nutrition?.servingSize?.quantity}
+              onFocus={() => {
+                setEmojiFocus(undefined, null)
+              }}
               onChangeText={value =>
                 dispatch({
                   type: 'set_nutrition_serving',
@@ -749,6 +842,9 @@ function RecipeNutrition({state, dispatch, errors}: RecipeReducerOutput) {
             <TextField.Input
               label={_(msg`Unit`)}
               value={state.nutrition?.servingSize.unit ?? ''}
+              onFocus={() => {
+                setEmojiFocus(undefined, null)
+              }}
               onChangeText={value =>
                 dispatch({type: 'set_nutrition_serving', field: 'unit', value})
               }
@@ -775,15 +871,30 @@ function RecipeNutrition({state, dispatch, errors}: RecipeReducerOutput) {
           state={state}
           dispatch={dispatch}
           errors={errors}
+          setEmojiFocus={setEmojiFocus}
         />
       ))}
     </View>
   )
 }
 
-function RecipeIngredients({state, dispatch, errors}: RecipeReducerOutput) {
+function RecipeIngredients({
+  state,
+  dispatch,
+  errors,
+  setEmojiFocus,
+}: RecipeReducerOutput & EmojiFocusSetter) {
   const {_} = useLingui()
   const t = useTheme()
+  const inputRefs = useRef<{[key: string]: EmojiInputElement}>({})
+  const setInputRef = (key: string, el: EmojiInputElement) => {
+    const instKey = `ingr:${key}`
+    inputRefs.current[instKey] = el
+  }
+  const setKeyedEmojiFocus = (key: string) => {
+    const instKey = `ingr:${key}`
+    setEmojiFocus(instKey, inputRefs.current[instKey])
+  }
 
   return (
     <View
@@ -805,6 +916,8 @@ function RecipeIngredients({state, dispatch, errors}: RecipeReducerOutput) {
                   isInvalid={!!errors?.tree?.ingredients?.[i]?.name}
                   label={_(msg`Item`)}
                   defaultValue={name}
+                  inputRef={el => setInputRef(`${id}/name`, el)}
+                  onFocus={() => setKeyedEmojiFocus(`${id}/name`)}
                   onChangeText={value => {
                     dispatch({type: 'edit_ingredient', prop: 'name', value, id})
                   }}
@@ -819,6 +932,9 @@ function RecipeIngredients({state, dispatch, errors}: RecipeReducerOutput) {
                   inputMode="numeric"
                   label={_(msg`Quantity`)}
                   defaultValue={quantity}
+                  onFocus={() => {
+                    setEmojiFocus(undefined, null)
+                  }}
                   onChangeText={value => {
                     dispatch({
                       type: 'edit_ingredient',
@@ -835,6 +951,9 @@ function RecipeIngredients({state, dispatch, errors}: RecipeReducerOutput) {
                 <TextField.Input
                   label={_(msg`Unit`)}
                   defaultValue={unit}
+                  onFocus={() => {
+                    setEmojiFocus(undefined, null)
+                  }}
                   onChangeText={value => {
                     dispatch({type: 'edit_ingredient', prop: 'unit', value, id})
                   }}
@@ -873,12 +992,25 @@ function RecipeIngredients({state, dispatch, errors}: RecipeReducerOutput) {
   )
 }
 
-function RecipeInstructions({state, dispatch}: RecipeReducerOutput) {
+function RecipeInstructions({
+  state,
+  dispatch,
+  setEmojiFocus,
+}: RecipeReducerOutput & EmojiFocusSetter) {
   const {_} = useLingui()
   const t = useTheme()
   const hasMultiSections =
     state.instructionSections.length > 1 ||
     state.instructionSections.at(0)?.name
+  const inputRefs = useRef<{[key: string]: EmojiInputElement}>({})
+  const setInputRef = (key: string, el: EmojiInputElement) => {
+    const instKey = `inst:${key}`
+    inputRefs.current[instKey] = el
+  }
+  const setKeyedEmojiFocus = (key: string) => {
+    const instKey = `inst:${key}`
+    setEmojiFocus(instKey, inputRefs.current[instKey])
+  }
   return (
     <View>
       {state.instructionSections.map((section, _i) => (
@@ -907,7 +1039,13 @@ function RecipeInstructions({state, dispatch}: RecipeReducerOutput) {
                     ]}>
                     <TextField.Root>
                       <TextField.Input
+                        inputRef={el =>
+                          setInputRef(`inst:${section.id}/name`, el)
+                        }
                         defaultValue={section.name}
+                        onFocus={() => {
+                          setKeyedEmojiFocus(`inst:${section.id}/name`)
+                        }}
                         onChangeText={value => {
                           dispatch({
                             type: 'edit_section_name',
@@ -963,6 +1101,17 @@ function RecipeInstructions({state, dispatch}: RecipeReducerOutput) {
                         <TextField.Input
                           label={_(msg`Instruction`)}
                           defaultValue={instruction.text}
+                          inputRef={el =>
+                            setInputRef(
+                              `inst:${section.id}/${instruction.id}/text`,
+                              el,
+                            )
+                          }
+                          onFocus={() => {
+                            setKeyedEmojiFocus(
+                              `inst:${section.id}/${instruction.id}/text`,
+                            )
+                          }}
                           onChangeText={value => {
                             dispatch({
                               type: 'edit_instruction_text',
