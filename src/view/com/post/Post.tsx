@@ -43,6 +43,7 @@ import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import {SubtleWebHover} from '#/components/SubtleWebHover'
 import * as bsky from '#/types/bsky'
+import { ExpandableRecipePost } from '../posts/ExpandableRecipePost'
 
 export function Post({
   post,
@@ -244,7 +245,8 @@ function PostInner({
               modui={moderation.ui('contentView')}
               style={[a.py_xs]}
             />
-            {richText.text ? (
+            {isRecipePostView(post) ? <ExpandableRecipePost revision={post.record} />
+              : richText.text ? (
               <View>
                 <RichText
                   enableTags

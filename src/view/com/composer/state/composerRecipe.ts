@@ -10,7 +10,7 @@ import { type SelfLabel } from '#/lib/moderation'
 import { isNative } from '#/platform/detection'
 import { Attribution } from '../recipe/RecipeAttribution'
 import { EmbedAction, type EmbedDraft,embedReducer } from './composer'
-import { recipeCategories, recipeCuisines, recipeDiets } from "./dataRecipe";
+import { HierarchyOption, recipeCategories, recipeCuisines, recipeDiets } from "./dataRecipe";
 
 
 type TaggedUnion<Tag extends string, O extends object> = {
@@ -45,9 +45,9 @@ export interface RecipePostDraft {
     instructionSections: InstructionSectionDraft[]
     prepTime?: string
     cookTime?: string
-    cuisines?: string[]
-    categories?: string[]
-    suitableForDiet?: string[]
+    recipeCuisines?: HierarchyOption[]
+    recipeCategories?: HierarchyOption[]
+    recipeDiets?: HierarchyOption[]
     recipeYield?: { quantity: string, unit: string }
     nutrition?: NutritionDraft
     attribution?: Attribution
@@ -71,8 +71,8 @@ export type RecipeComposerAction = TaggedUnion<
         add_ingredient: {}
         edit_ingredient: { value: string, prop: keyof IngredientDraft, id: string }
         remove_ingredient: { id: string }
-        add_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
-        remove_element: { field: "cuisines" | "categories" | "suitableForDiet", value: string }
+        add_element: { field: "recipeCuisines" | "recipeCategories" | "recipeDiets", value: HierarchyOption }
+        remove_element: { field: "recipeCuisines" | "recipeCategories" | "recipeDiets", value: HierarchyOption }
         set_prep_time: { value: string }
         set_cook_time: { value: string }
         set_yield: { field: "quantity" | "unit", value: string }
@@ -176,7 +176,8 @@ function recipePostReducer(
             return state
         }
         case 'add_element': {
-            if (state[action.field]?.includes(action.value)) {
+
+            if (state[action.field]?.find(({ id }) => id === action.value.id)) {
                 return state
             }
             const arr = state[action.field] ??= []
@@ -186,7 +187,7 @@ function recipePostReducer(
         case 'remove_element': {
             const arr = state[action.field]
             if (!arr) return state;
-            const idx = arr.indexOf(action.value)
+            const idx = arr.findIndex(opt => opt.id === action.value.id)
             if (idx < 0) {
                 return state
             }
@@ -376,14 +377,14 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         })) : [newSection()],
         labels: labels && "values" in labels ? labels.values.map(v => v.val) : [],
         embed: embedToDraft(postEmbed, recordEmbed),
-        cuisines: recipeCuisine,
-        categories: recipeCategory,
+        recipeCuisines: recipeCuisine?.map(path => recipeCuisines.lookup[path.split("/").at(-1) ?? ""]).filter(Boolean),
+        recipeCategories: recipeCategory?.map(path => recipeCategories.lookup[path.split("/").at(-1) ?? ""]).filter(Boolean),
+        recipeDiets: suitableForDiet?.map(path => recipeDiets.lookup[path.split("/").at(-1) ?? ""]).filter(Boolean),
         cookTime: cookingTime,
         prepTime,
         attribution,
         nutrition,
         recipeYield,
-        suitableForDiet,
         tags
     }
 }
@@ -567,13 +568,6 @@ const attributionSchema = z.discriminatedUnion('type', [
 
 const selfLabelSchema = z.enum(['sexual', 'nudity', 'porn', 'graphic-media'])
 
-function makeOptionsSchema(options: { id: string }[]) {
-    return z.string().refine(s => !!options.find(({ id }) => s === id))
-}
-
-const categorySchema = makeOptionsSchema(recipeCategories)
-const cuisineSchema = makeOptionsSchema(recipeCuisines)
-const dietSchema = makeOptionsSchema(recipeDiets)
 
 const recipePostDraftSchema = z.object({
     name: z.string().min(1, msg`Name cannot be empty`),
@@ -582,9 +576,9 @@ const recipePostDraftSchema = z.object({
     instructionSections: z.array(instructionSectionDraftSchema).min(1, `At least one instruction required`),
     prepTime: z.coerce.number({ errorMap: () => msg`Preparation time must be a number` as { message: string } }).min(1, msg`Preparation time must be greater than zero`).optional(),
     cookTime: z.coerce.number({ errorMap: () => msg`Cooking time must be a number` as { message: string } }).min(1, msg`Cooking time must be greater than zero`).optional(),
-    cuisines: z.array(cuisineSchema).optional(),
-    categories: z.array(categorySchema).optional(),
-    suitableForDiet: z.array(dietSchema).optional(),
+    cuisines: z.array(recipeCuisines.schema).optional(),
+    categories: z.array(recipeCategories.schema).optional(),
+    suitableForDiet: z.array(recipeDiets.schema).optional(),
     recipeYield: recipeYieldSchema.optional(),
     nutrition: nutritionDraftSchema.optional(),
     attribution: attributionSchema.optional(),

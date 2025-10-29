@@ -47,6 +47,9 @@ import {SearchHistory} from './components/SearchHistory'
 import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
+import * as ToggleButton from '#/components/forms/ToggleButton'
+import { recipeParamsSchema, RecipeSearchFields, useRecipeSearchState } from './components/RecipeSearchFields'
+import { mapValues, pickBy } from "lodash" 
 
 export function SearchScreenShell({
   queryParam,
@@ -129,11 +132,28 @@ export function SearchScreenShell({
     },
     [accountHistory, setAccountHistory],
   )
-
-  const {params, query, queryWithParams} = useQueryManager({
+  // TODO: rethink query manager so that query construction doesn't happen in two steps
+  let { params: incompleteParams, query } = useQueryManager({
     initialQuery: queryParam,
     fixedParams,
   })
+
+  const parsedParams = useMemo(() => {
+    return recipeParamsSchema.parse(route.params)
+  }, [])
+
+  const [recipeSearchFields, dispatchRecipeSearch] = useRecipeSearchState(parsedParams)
+
+  const [searchType, setSearchType] = useState<'all' | 'recipes'>(parsedParams.searchType)
+
+  const { queryWithParams, params } = useMemo(() => {
+    const recipeParams = mapValues(recipeSearchFields, (opts) => opts.map(opt => opt.paths[0].join("/")).join(","))
+    const params = { ...incompleteParams, ...recipeParams, searchType }
+    const { setLang, ...rest } = params
+    const queryWithParams = makeSearchQuery(query, rest)
+    return { queryWithParams, params }
+  }, [query, incompleteParams, recipeSearchFields, searchType])
+
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
 
   // web only - measure header height for sticky positioning
@@ -171,16 +191,17 @@ export function SearchScreenShell({
       scrollToTopWeb()
       setShowAutocomplete(false)
       updateSearchHistory(item)
+      const { setLang, ...rest } = params
 
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, {...route.params, q: item})
+        navigation.push(route.name, { ...route.params, q: item, ...pickBy(rest) })
       } else {
         textInput.current?.blur()
         navigation.setParams({q: item})
       }
     },
-    [updateSearchHistory, navigation, route],
+    [updateSearchHistory, navigation, route, params],
   )
 
   const onPressCancelSearch = useCallback(() => {
@@ -319,8 +340,18 @@ export function SearchScreenShell({
           )}
           <View style={[a.px_lg, a.pt_sm, a.pb_sm, a.overflow_hidden]}>
             <View style={[a.gap_sm]}>
-              <View style={[a.w_full, a.flex_row, a.align_stretch, a.gap_xs]}>
-                <View style={[a.flex_1]}>
+              <View style={[a.w_full, a.flex_row, a.align_stretch, a.gap_xs, a.align_center]}>
+                <View style={{ width: '25%' }}>
+                  <ToggleButton.Group label={_(msg`Search type`)} onChange={(values) => {
+                    const found = searchTypeOptions.find(({ value }) => value === values[0])
+                    setSearchType(found?.value ?? "all")
+                  }} values={[searchType]}>
+                    {searchTypeOptions.map(({ label, value }) => <ToggleButton.Button label={_(label)} name={value}>
+                      <ToggleButton.ButtonText>{_(label)}</ToggleButton.ButtonText>
+                    </ToggleButton.Button>)}
+                  </ToggleButton.Group>
+                </View>
+                <View style={{ flexGrow: 1 }}>
                   <SearchInput
                     ref={textInput}
                     value={searchText}
@@ -350,7 +381,9 @@ export function SearchScreenShell({
                   </Button>
                 )}
               </View>
-
+              {searchType === "recipes" && <View>
+                <RecipeSearchFields state={recipeSearchFields} dispatch={dispatchRecipeSearch} />
+              </View>}  
               {showFilters && !showHeader && (
                 <View
                   style={[
@@ -375,11 +408,11 @@ export function SearchScreenShell({
           display: showAutocomplete && !fixedParams ? 'flex' : 'none',
           flex: 1,
         }}>
-        {searchText.length > 0 ? (
+        {queryWithParams.length ? (
           <AutocompleteResults
             isAutocompleteFetching={isAutocompleteFetching}
             autocompleteData={autocompleteData}
-            searchText={searchText}
+            queryType={searchType}
             onSubmit={onSubmit}
             onResultPress={onAutocompleteResultPress}
             onProfileClick={handleProfileClick}
@@ -411,6 +444,7 @@ export function SearchScreenShell({
   )
 }
 
+
 let SearchScreenInner = ({
   query,
   queryWithParams,
@@ -418,7 +452,7 @@ let SearchScreenInner = ({
   focusSearchInput,
 }: {
   query: string
-  queryWithParams: string
+    queryWithParams: string
   headerHeight: number
   focusSearchInput: () => void
 }): React.ReactNode => {
@@ -436,7 +470,6 @@ let SearchScreenInner = ({
     },
     [setMinimalShellMode],
   )
-
   return queryWithParams ? (
     <SearchResults
       query={query}
@@ -501,26 +534,28 @@ function useQueryManager({
   }
 
   const params = useMemo(
-    () => ({
+    () => {
+      return {
       // default stuff
       ...initialParams,
       // managed stuff
       lang,
       ...fixedParams,
-    }),
-    [lang, initialParams, fixedParams],
+        // ...recipeParams
+      }
+    },
+    [lang, initialParams, fixedParams,],
   )
   const handlers = useMemo(
     () => ({
       setLang,
     }),
-    [setLang],
+    [setLang,],
   )
 
   return useMemo(() => {
     return {
       query,
-      queryWithParams: makeSearchQuery(query, params),
       params: {
         ...params,
         ...handlers,
@@ -534,3 +569,11 @@ function scrollToTopWeb() {
     window.scrollTo(0, 0)
   }
 }
+
+const searchTypeOptions = [{
+  value: 'all',
+  label: msg`All`
+}, {
+  value: 'recipes',
+  label: msg`Recipes`
+}] as const

@@ -33,7 +33,7 @@ export function useSearchPostsQuery({
   sort,
   enabled,
 }: {
-  query: string
+    query: string
   sort?: 'top' | 'latest'
   enabled?: boolean
 }) {
@@ -65,7 +65,7 @@ export function useSearchPostsQuery({
         q: query,
         limit: 25,
         cursor: pageParam,
-        sort,
+        sort
       })
       return res.data
     },

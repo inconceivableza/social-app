@@ -11,6 +11,7 @@ import { useLingui } from '@lingui/react'
 import { Accordion } from '#/components/Accordion'
 import { NutritionElement, nutritionFields } from '../recipe/NutritionFields'
 import { RecipeAttributionDisplay } from '../recipe/RecipeAttributionDisplay'
+import { recipeCuisines, recipeCategories, recipeDiets, pathToHierarchyOption, dedupHierarchyOptions } from '../composer/state/dataRecipe'
 
 export function ExpandableRecipePost({
     revision,
@@ -60,7 +61,11 @@ export function ExpandedRecipePost({
                     other: 'Categories'
                 })}:`}</Text>
                 {/* TODO: make these clickable */}
-                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCategory.map(value => <Text>{_(value)}</Text>)}</View>
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCategory.map(path => {
+                    const option = pathToHierarchyOption(path, recipeCategories)
+                    return option && <Text>{_(option.label)}</Text>
+
+                })}</View>
             </View>}
 
             {record.suitableForDiet?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
@@ -69,7 +74,11 @@ export function ExpandedRecipePost({
                     other: 'Suitable for diets'
                 })}:`}</Text>
                 {/* TODO: make these clickable */}
-                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.suitableForDiet.map(value => <Text>{_(value)}</Text>)}</View>
+                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.suitableForDiet.map(path => {
+                    const option = pathToHierarchyOption(path, recipeDiets)
+                    return option && <Text>{_(option.label)}</Text>
+
+                })}</View>
             </View>}
 
             {record.recipeCuisine?.length && <View style={[a.flex_row, a.align_center, a.gap_sm]}>
@@ -78,7 +87,13 @@ export function ExpandedRecipePost({
                     other: 'Cuisines'
                 })}:`}</Text>
                 {/* TODO: make these clickable */}
-                <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>{record.recipeCuisine.map(value => <Text>{_(value)}</Text>)}</View>
+                <View style={[a.flex_row, a.gap_xs, a.flex_wrap]}>
+                    {dedupHierarchyOptions(record.recipeCuisine.flatMap(path => {
+                        const option = pathToHierarchyOption(path, recipeCuisines)
+                        return option ? [option] : []
+
+                    })).map(opt => <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}><Text>{_(opt.label)}</Text></View>)}
+                </View>
             </View>}
         </View>
         <View>

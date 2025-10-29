@@ -55,11 +55,11 @@ export function Target({children}: {children: React.ReactNode}) {
 export function Content({
   children,
   label,
-  fill,
+  hide,
 }: {
   children: React.ReactNode
   label: string
-  fill?: string
+    hide?: boolean
 }) {
   const t = useTheme()
   const {position, onVisibleChange} = useContext(TooltipContext)
@@ -74,8 +74,8 @@ export function Content({
         onInteractOutside={() => onVisibleChange(false)}
         style={flatten([
           a.rounded_sm,
-          fill
-            ? {backgroundColor: fill}
+          hide
+            ? { backgroundColor: 'transparent' }
             : select(t.name, {
                 light: t.atoms.bg,
                 dark: t.atoms.bg_contrast_100,
@@ -83,18 +83,20 @@ export function Content({
               }),
           {
             minWidth: 'max-content',
+          },
+          !hide && {
             boxShadow: select(t.name, {
               light: `0 0 24px ${transparentifyColor(t.palette.black, 0.2)}`,
               dark: `0 0 24px ${transparentifyColor(t.palette.black, 0.2)}`,
               dim: `0 0 24px ${transparentifyColor(t.palette.black, 0.2)}`,
-            }),
+          })
           },
         ])}>
         <Popover.Arrow
           width={ARROW_SIZE}
           height={ARROW_SIZE / 2}
           fill={
-            fill ??
+            hide ? 'transparent' :
             select(t.name, {
               light: t.atoms.bg.backgroundColor,
               dark: t.atoms.bg_contrast_100.backgroundColor,

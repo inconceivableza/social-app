@@ -14,14 +14,14 @@ import * as Layout from '#/components/Layout'
 let AutocompleteResults = ({
   isAutocompleteFetching,
   autocompleteData,
-  searchText,
+  queryType,
   onSubmit,
   onResultPress,
   onProfileClick,
 }: {
   isAutocompleteFetching: boolean
   autocompleteData: AppBskyActorDefs.ProfileViewBasic[] | undefined
-  searchText: string
+    queryType: "recipes" | "all" 
   onSubmit: () => void
   onResultPress: () => void
   onProfileClick: (profile: AppBskyActorDefs.ProfileViewBasic) => void
@@ -42,13 +42,9 @@ let AutocompleteResults = ({
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag">
           <SearchLinkCard
-            label={_(msg`Search for "${searchText}"`)}
-            onPress={native(onSubmit)}
-            to={
-              isNative
-                ? undefined
-                : `/search?q=${encodeURIComponent(searchText)}`
-            }
+
+              label={_(msg`Search for matching ${queryType === "all" ? _(`posts`) : _(`recipes`)}`)}
+              onPress={onSubmit}
             style={a.border_b}
           />
           {autocompleteData?.map(item => (

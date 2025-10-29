@@ -416,20 +416,20 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
 
                 <View style={{width: '40%'}}>
                   <ComboBox
-                    options={recipeCategories}
+                    options={recipeCategories.options}
                     label={_(msg`Categories`)}
-                    selection={state.categories ?? []}
+                    selection={state.recipeCategories ?? []}
                     onRemove={value =>
                       dispatch({
                         type: 'remove_element',
-                        field: 'categories',
+                        field: 'recipeCategories',
                         value,
                       })
                     }
                     onSelect={value =>
                       dispatch({
                         type: 'add_element',
-                        field: 'categories',
+                        field: 'recipeCategories',
                         value,
                       })
                     }
@@ -439,20 +439,20 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
               <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
                 <View style={{width: '40%'}}>
                   <ComboBox
-                    options={recipeDiets}
+                    options={recipeDiets.options}
                     label={_(msg`Suitable diets`)}
-                    selection={state.suitableForDiet ?? []}
+                    selection={state.recipeDiets ?? []}
                     onRemove={value =>
                       dispatch({
                         type: 'remove_element',
-                        field: 'suitableForDiet',
+                        field: 'recipeDiets',
                         value,
                       })
                     }
                     onSelect={value =>
                       dispatch({
                         type: 'add_element',
-                        field: 'suitableForDiet',
+                        field: 'recipeDiets',
                         value,
                       })
                     }
@@ -460,18 +460,22 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                 </View>
                 <View style={{width: '40%'}}>
                   <ComboBox
-                    options={recipeCuisines}
+                    options={recipeCuisines.options}
                     label={_(msg`Cuisine type`)}
-                    selection={state.cuisines ?? []}
+                    selection={state.recipeCuisines ?? []}
                     onRemove={value =>
                       dispatch({
                         type: 'remove_element',
-                        field: 'cuisines',
+                        field: 'recipeCuisines',
                         value,
                       })
                     }
                     onSelect={value =>
-                      dispatch({type: 'add_element', field: 'cuisines', value})
+                      dispatch({
+                        type: 'add_element',
+                        field: 'recipeCuisines',
+                        value,
+                      })
                     }
                   />
                 </View>
@@ -574,7 +578,11 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                   <Trans context="recipe">Instructions</Trans>
                 </H2>
               </View>
-              <RecipeInstructions state={state} dispatch={dispatch} />
+              <RecipeInstructions
+                state={state}
+                dispatch={dispatch}
+                errors={errors}
+              />
             </View>
 
             <Accordion heading={_(msg`Nutritional Information`)}>
