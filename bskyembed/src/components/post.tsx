@@ -3,6 +3,8 @@ import {
   AppBskyFeedPost,
   AppBskyRichtextFacet,
   RichText,
+  AppFoodiosFeedDefs,
+  AppFoodiosFeedReviewRating
 } from '@atproto/api'
 import {h} from 'preact'
 
@@ -15,7 +17,7 @@ import {CONTENT_LABELS} from '../labels'
 import * as bsky from '../types/bsky'
 import {niceDate} from '../util/nice-date'
 import {prettyNumber} from '../util/pretty-number'
-import {getRkey} from '../util/rkey'
+import { postHref } from '../util/rkey'
 import {getVerificationState} from '../util/verification-state'
 import {Container} from './container'
 import {Embed} from './embed'
@@ -33,22 +35,14 @@ export function Post({thread}: Props) {
     CONTENT_LABELS.includes(label.val),
   )
 
-  let record: AppBskyFeedPost.Record | null = null
-  if (
-    bsky.dangerousIsType<AppBskyFeedPost.Record>(
-      post.record,
-      AppBskyFeedPost.isRecord,
-    )
-  ) {
-    record = post.record
-  }
+  const record = post.record
 
   const verification = getVerificationState({profile: post.author})
 
-  const href = `/profile/${post.author.did}/post/${getRkey(post)}`
+  const href = postHref(post)
   return (
     <Container href={href}>
-      <div className="flex-1 flex-col flex gap-2" lang={record?.langs?.[0]}>
+      <div className="flex-1 flex-col flex gap-2" lang={Array.isArray(record?.langs) ? record?.langs?.[0] : ''}>
         <div className="flex gap-2.5 items-center cursor-pointer w-full max-w-full">
           <Link
             href={`/profile/${post.author.did}`}
@@ -87,7 +81,7 @@ export function Post({thread}: Props) {
             <img src={logo} className="h-8" />
           </Link>
         </div>
-        <PostContent record={record} />
+        <PostInner record={record} />
         <Embed content={post.embed} labels={post.labels} />
         <Link href={href}>
           <time
@@ -137,11 +131,37 @@ export function Post({thread}: Props) {
   )
 }
 
-function PostContent({record}: {record: AppBskyFeedPost.Record | null}) {
+function PostInner({ record }: { record: unknown }) {
+  console.log(record)
+  if (bsky.dangerousIsType<AppBskyFeedPost.Record>(
+    record,
+    AppBskyFeedPost.isRecord,
+  ) || bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+    record,
+    AppFoodiosFeedReviewRating.isRecord,
+  )) {
+    return <RichTextDisplay record={record} />
+  } else if (bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
+    record,
+    AppFoodiosFeedDefs.isRecipeRevisionView,
+  )) {
+    return <RecipeContent record={record} />
+  }
+  return null
+}
+
+function RecipeContent({ record: { revisionContent } }: { record: AppFoodiosFeedDefs.RecipeRevisionView }) {
+  return <p>
+    {revisionContent.name}
+    <RichTextDisplay record={revisionContent} />
+  </p>
+}
+
+function RichTextDisplay({ record }: { record: Partial<Pick<AppBskyFeedPost.Record, "text" | "facets">> }) {
   if (!record) return null
 
   const rt = new RichText({
-    text: record.text,
+    text: record.text ?? "",
     facets: record.facets,
   })
 

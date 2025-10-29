@@ -80,7 +80,7 @@ function LandingPage() {
                 throw new Error('Invalid pathname')
               }
               const [profile, didOrHandle, type, rkey] = split
-              if (profile !== 'profile' || type !== 'post') {
+              if (profile !== 'profile' || type !== 'post' && type !== 'recipePost' && type !== "reviewRating") {
                 throw new Error('Invalid profile or type')
               }
 
@@ -95,7 +95,11 @@ function LandingPage() {
                 did = resolution.data.did
               }
 
-              atUri = `at://${did}/app.bsky.feed.post/${rkey}`
+              const collection = type === "post" ? "app.bsky.feed.post" :
+                type === "recipePost" ? "app.foodios.feed.recipePost" :
+                  type === "reviewRating" ? "app.foodios.feed.reviewRating" : ""
+
+              atUri = `at://${did}/${collection}/${rkey}`
             } catch (err) {
               console.log(err)
               throw new Error(`Invalid ${getSocialAppName()} URL`)
