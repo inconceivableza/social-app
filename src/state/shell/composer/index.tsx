@@ -92,6 +92,7 @@ export function Provider({children}: React.PropsWithChildren<{}>) {
   const queryClient = useQueryClient()
 
   const openComposer = useNonReactiveCallback((opts: ComposerOpts) => {
+    console.log('state-composer-openComposer', opts)
     if (opts.type === 'post') {
       if (opts.quote) {
         const path = postUriToRelativePath(opts.quote.uri)

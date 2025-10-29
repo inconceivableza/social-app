@@ -19,6 +19,10 @@ export type TextInputRef = {
   maybeClosePopup: () => boolean
 }
 
+export function isTextInputRef(obj: any): obj is TextInputRef {
+  return typeof obj === 'object' && obj !== null && 'getCursorPosition' in obj
+}
+
 export type TextInputProps = {
   ref: React.Ref<TextInputRef>
   richtext: RichText
