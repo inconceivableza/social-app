@@ -326,7 +326,7 @@ export function usePostDeleteMutation() {
   const agent = useAgent()
   return useMutation<void, Error, {uri: string}>({
     mutationFn: async ({uri}) => {
-      await agent.deletePost(uri)
+      await agent.deleteRecord(uri)
     },
     onSuccess(_, variables) {
       updatePostShadow(queryClient, variables.uri, {isDeleted: true})
