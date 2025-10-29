@@ -55,6 +55,10 @@ import { hierarchyOptionToPaths } from '#/view/com/composer/state/dataRecipe'
 
 export {uploadBlob}
 
+type RemoveIndexSignature<T> = {
+  [K in keyof T as string extends K ? never : K]: T[K]
+};
+
 interface PostOpts {
   thread: ThreadDraft
   replyTo?: ComAtprotoRepoStrongRef.Main
@@ -329,9 +333,9 @@ export async function postRecipeRevision(
     embed,
     cookingTime: post.cookTime,
     prepTime: post.prepTime,
-    recipeCategory: post.categories,
-    recipeCuisine: post.cuisines,
-    suitableForDiet: post.suitableForDiet,
+    recipeCategory: post.recipeCategories?.flatMap(hierarchyOptionToPaths),
+    recipeCuisine: post.recipeCuisines?.flatMap(hierarchyOptionToPaths),
+    suitableForDiet: post.recipeDiets?.flatMap(hierarchyOptionToPaths),
     attribution: post.attribution,
     nutrition: post.nutrition,
     recipeYield: post.recipeYield,
@@ -446,19 +450,20 @@ export async function postReviewRating(
         ? undefined
         : Math.round(draft.rating * 2)
       : undefined
-    const record: AppBskyFeedPost.Record | AppFoodiosFeedReviewRating.Record =
+
+
+    const record: AppBskyFeedPost.Record | RemoveIndexSignature<AppFoodiosFeedReviewRating.Record> =
       isReviewRating
         ? {
-            $type: 'app.foodios.feed.reviewRating',
-            createdAt: now.toISOString(),
-            reviewBody: rt.text,
-            facets: rt.facets,
-            subject: reply?.root ?? opts.subject,
-            reviewRating: rating,
-            images: embed,
-            langs,
-            labels,
-          }
+          $type: 'app.foodios.feed.reviewRating',
+          createdAt: now.toISOString(),
+          text: rt.text,
+          subject: reply?.root ?? opts.subject,
+          reviewRating: rating,
+          embed,
+          langs,
+          labels,
+        }
         : {
             // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
             // present and will produce the wrong CID if you omit it.

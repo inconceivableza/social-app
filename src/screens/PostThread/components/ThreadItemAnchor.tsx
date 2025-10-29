@@ -220,11 +220,10 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
           })
         : isReviewRatingView(item.value.post)
           ? new RichTextAPI({
-              text: item.value.post.record.reviewBody ?? '',
+            text: item.value.post.record.text ?? '',
             })
           : new RichTextAPI({
-              text: record.text,
-              facets: record.facets,
+            text: record.text ?? '',
             }),
     [record, item.value.post],
   )
