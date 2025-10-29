@@ -43,6 +43,7 @@ import {
 } from '#/state/queries/post-feed'
 import {useLiveNowConfig} from '#/state/service-config'
 import {useSession} from '#/state/session'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useProgressGuide} from '#/state/shell/progress-guide'
 import {useSelectedFeed} from '#/state/shell/selected-feed'
 import {List, type ListRef} from '#/view/com/util/List'
@@ -225,6 +226,9 @@ let PostFeed = ({
   const {gtMobile} = useBreakpoints()
   const {rightNavVisible} = useLayoutBreakpoints()
   const areVideoFeedsEnabled = isNative
+  const [updatedPosts, setUpdatedPosts] = useState<
+    Record<string, AppBskyUnspeccedGetPostThreadV2.ThreadItem>
+  >({})
 
   const [hasPressedShowLessUris, setHasPressedShowLessUris] = useState(
     () => new Set<string>(),
@@ -306,6 +310,21 @@ let PostFeed = ({
     return listenPostCreated(onPostCreated)
   }, [onPostCreated])
 
+  const onPostSuccess = useCallback(
+    (payload: OnPostSuccessData) => {
+      if (payload) {
+        if (payload.wasEdited) {
+          const reUpdatedPosts = {...updatedPosts}
+          payload.posts.forEach(post => {
+            reUpdatedPosts[post.uri] = post
+          })
+          setUpdatedPosts(reUpdatedPosts)
+        }
+      }
+    },
+    [updatedPosts, setUpdatedPosts],
+  )
+
   useEffect(() => {
     if (enabled && !disablePoll) {
       const timeSinceFirstLoad = Date.now() - lastFetchRef.current
@@ -358,6 +377,26 @@ let PostFeed = ({
     // wraps a slice item, and replaces it with a showLessFollowup item
     // if the user has pressed show less on it
     const sliceItem = (row: Extract<FeedRow, {type: 'sliceItem'}>) => {
+      if (updatedPosts[row.slice.items[row.indexInSlice]?.uri]) {
+        return {
+          ...row,
+          slice: {
+            ...row.slice,
+            items: row.slice.items.map(item => {
+              const updatedPost = updatedPosts[item.uri]
+              if (updatedPost) {
+                return {
+                  ...item,
+                  post: updatedPost,
+                  record: updatedPost.record,
+                  uri: updatedPost.uri,
+                }
+              }
+              return item
+            }),
+          },
+        }
+      }
       if (hasPressedShowLessUris.has(row.slice.items[row.indexInSlice]?.uri)) {
         return {
           type: 'showLessFollowup',
@@ -627,6 +666,7 @@ let PostFeed = ({
     hasPressedShowLessUris,
     ageAssuranceBannerState,
     isCurrentFeedAtStartupSelected,
+    updatedPosts,
   ])
 
   // events
@@ -753,15 +793,17 @@ let PostFeed = ({
                 hideTopBorder={rowIndex === 0 && indexInSlice === 0}
                 rootPost={slice.items[0].post}
                 onShowLess={onPressShowLess}
+                onPostSuccess={onPostSuccess}
               />
             </PostAuthorDidProvider>
           )
         } else if (item.type === 'recipe') {
+          const updatedPost = updatedPosts[item.post.uri] ?? item.post
           return (
-            <PostAuthorDidProvider did={item.post.author.did}>
+            <PostAuthorDidProvider did={updatedPost.author.did}>
               <PostFeedItem
-                post={item.post}
-                record={item.post.record}
+                post={updatedPost}
+                record={updatedPost.record}
                 reason={indexInSlice === 0 ? slice.reason : undefined}
                 feedContext={slice.feedContext}
                 reqId={slice.reqId}
@@ -779,6 +821,7 @@ let PostFeed = ({
                 hideTopBorder={rowIndex === 0 && indexInSlice === 0}
                 rootPost={slice.items[0].post}
                 onShowLess={onPressShowLess}
+                onPostSuccess={onPostSuccess}
               />
             </PostAuthorDidProvider>
           )
@@ -835,6 +878,8 @@ let PostFeed = ({
       feedTab,
       feedCacheKey,
       onPressShowLess,
+      updatedPosts,
+      onPostSuccess,
     ],
   )
 

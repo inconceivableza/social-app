@@ -1,4 +1,4 @@
-import {memo, useMemo} from 'react'
+import {memo, useCallback, useMemo} from 'react'
 import {
   Platform,
   type PressableProps,
@@ -49,6 +49,7 @@ import {
 } from '#/state/queries/profile'
 import {useToggleReplyVisibilityMutation} from '#/state/queries/threadgate'
 import {useRequireAuth, useSession} from '#/state/session'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import * as Toast from '#/view/com/util/Toast'
 import {useDialogControl} from '#/components/Dialog'
@@ -95,6 +96,7 @@ let PostMenuItems = ({
   richText,
   threadgateRecord,
   onShowLess,
+  onPostChanged,
 }: {
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
@@ -108,6 +110,7 @@ let PostMenuItems = ({
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
+  onPostChanged?: (payload: OnPostSuccessData) => void
 }): React.ReactNode => {
   const {hasSession, currentAccount} = useSession()
   const {_} = useLingui()
@@ -408,6 +411,14 @@ let PostMenuItems = ({
     gate('debug_show_feedcontext')
 
   const {openComposer} = useOpenComposer()
+  const optimisticOnPostEdit = useCallback(
+    (payload: OnPostSuccessData) => {
+      if (payload && onPostChanged) {
+        onPostChanged(payload)
+      }
+    },
+    [onPostChanged],
+  )
 
   return (
     <>
@@ -424,7 +435,9 @@ let PostMenuItems = ({
                     openComposer({
                       type: 'recipe',
                       edit: post,
+                      onPostSuccess: optimisticOnPostEdit,
                     })
+                    // TODO: when this composer is closed after a onPressPublish, update
                   }}>
                   <Menu.ItemText>{_(msg`Edit`)}</Menu.ItemText>
                   <Menu.ItemIcon icon={EditBig} position="right" />

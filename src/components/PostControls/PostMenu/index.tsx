@@ -30,6 +30,7 @@ let PostMenuButton = ({
   threadgateRecord,
   onShowLess,
   hitSlop,
+  onPostChanged,
 }: {
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
@@ -42,6 +43,7 @@ let PostMenuButton = ({
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
   hitSlop?: Insets
+  onPostChanged?: (payload: OnPostSuccessData) => void
 }): React.ReactNode => {
   const {_} = useLingui()
 
@@ -88,6 +90,7 @@ let PostMenuButton = ({
             timestamp={timestamp}
             threadgateRecord={threadgateRecord}
             onShowLess={onShowLess}
+            onPostChanged={onPostChanged}
           />
         )}
       </Menu.Root>

@@ -30,6 +30,7 @@ export type OnPostSuccessData =
   | {
       replyToUri?: string
       posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
+      wasEdited?: boolean
     }
   | undefined
 
@@ -49,6 +50,7 @@ export interface PostComposerOpts {
 export interface RecipeComposerOpts {
   type: 'recipe'
   edit?: RecipePostView
+  onPostSuccess?: (data: OnPostSuccessData) => void
 }
 
 export interface ReviewRatingComposerOpts {

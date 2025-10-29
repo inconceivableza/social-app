@@ -42,7 +42,10 @@ import {emitPostCreated} from '#/state/events'
 import {type ComposerImage, createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {useAgent, useSession} from '#/state/session'
-import {useComposerControls} from '#/state/shell/composer'
+import {
+  type OnPostSuccessData,
+  useComposerControls,
+} from '#/state/shell/composer'
 import {
   ComposerEmbeds,
   ToolbarWrapper,
@@ -119,7 +122,13 @@ function errorBorder(t: Theme, err: unknown) {
 
 // TODO: NB fix description being focused first
 
-export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
+export function ComposerRecipe({
+  edit,
+  onPostSuccess,
+}: {
+  edit?: RecipePostView
+  onPostSuccess?: (data: OnPostSuccessData) => void
+}) {
   const keyboardVerticalOffset = useKeyboardVerticalOffset()
   const {closeComposer} = useComposerControls()
 
@@ -144,6 +153,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
     try {
       if (edit) {
         const parentRevisionUri = edit.record?.selectedRevisionUri
+        let updatedPosts = null
         await apilib.postRecipeRevision(agent, queryClient, {
           post: state,
           parentRevisionPost: edit,
@@ -167,6 +177,7 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
                   `composer: app view still has previous revision`,
                 )
               }
+              updatedPosts = data.posts
             },
             1e3,
           )
@@ -178,6 +189,13 @@ export function ComposerRecipe({edit}: {edit?: RecipePostView}) {
         emitPostCreated()
         closeComposer()
         Toast.show(_(msg`Your recipe has been updated`))
+        if (updatedPosts !== null && onPostSuccess) {
+          let postSuccessData: OnPostSuccessData = {
+            posts: updatedPosts,
+            wasEdited: true,
+          }
+          onPostSuccess(postSuccessData)
+        }
       } else {
         const postUri = await apilib.postRecipe(agent, queryClient, {
           post: state,
