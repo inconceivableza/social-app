@@ -17,7 +17,7 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
-import {isRecipePostView, postHref, recordText} from '#/lib/api/feed/utils'
+import { dangerousIsPostRecord, isRecipePostView, postHref, recordText } from '#/lib/api/feed/utils'
 import {DISCOVER_DEBUG_DIDS} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
@@ -92,7 +92,6 @@ let PostMenuItems = ({
   post,
   postFeedContext,
   postReqId,
-  record,
   richText,
   threadgateRecord,
   onShowLess,
@@ -101,8 +100,7 @@ let PostMenuItems = ({
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
   postFeedContext: string | undefined
-  postReqId: string | undefined
-  record: AppBskyFeedPost.Record
+    postReqId: string | undefined
   richText: RichTextAPI
   style?: StyleProp<ViewStyle>
   hitSlop?: PressableProps['hitSlop']
@@ -147,8 +145,9 @@ let PostMenuItems = ({
     })
   }, [post, currentAccount])
 
-  const rootUri = record.reply?.root?.uri || postUri
-  const isReply = Boolean(record.reply)
+  const isBskyPost = dangerousIsPostRecord(post.record)
+  const rootUri = post.record.reply?.root?.uri || postUri
+  const isReply = Boolean(post.record.reply)
   const [isThreadMuted, muteThread, unmuteThread] = useThreadMuteMutationQueue(
     post,
     rootUri,
@@ -533,7 +532,7 @@ let PostMenuItems = ({
           </>
         )}
 
-        {hasSession && (
+        {hasSession && isBskyPost && (
           <>
             <Menu.Divider />
             <Menu.Group>
@@ -563,7 +562,7 @@ let PostMenuItems = ({
           </>
         )}
 
-        {hasSession &&
+        {hasSession && isBskyPost &&
           (canHideReplyForEveryone || canDetachQuote || canHidePostForMe) && (
             <>
               <Menu.Divider />
@@ -649,7 +648,7 @@ let PostMenuItems = ({
           <>
             <Menu.Divider />
             <Menu.Group>
-              {!isAuthor && (
+              {!isAuthor && isBskyPost && (
                 <>
                   <Menu.Item
                     testID="postDropdownMuteBtn"
@@ -690,7 +689,7 @@ let PostMenuItems = ({
                 </>
               )}
 
-              {isAuthor && (
+              {isAuthor && isBskyPost && (
                 <>
                   <Menu.Item
                     testID="postDropdownEditPostInteractions"

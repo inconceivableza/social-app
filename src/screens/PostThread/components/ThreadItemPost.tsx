@@ -218,12 +218,12 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
           })
         : isReviewRatingView(post)
           ? new RichTextAPI({
-              text: post.record.reviewBody ?? '',
-            })
+            text: post.record.text ?? '',
+          })
           : new RichTextAPI({
-              text: record.text,
-              facets: record.facets,
-            }),
+            text: record.text ?? '',
+            facets: record.facets,
+          }),
     [record, post],
   )
   const [limitLines, setLimitLines] = useState(
@@ -308,7 +308,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
     AppFoodiosFeedReviewRating.isRecord(record) &&
     typeof record.reviewRating !== 'undefined'
   const constitutesReview =
-    AppFoodiosFeedReviewRating.isRecord(record) && record.reviewBody
+    AppFoodiosFeedReviewRating.isRecord(record) && record.text
   return (
     <SubtleHover>
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>

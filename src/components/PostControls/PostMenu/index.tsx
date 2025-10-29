@@ -24,7 +24,6 @@ let PostMenuButton = ({
   postFeedContext,
   postReqId,
   big,
-  record,
   richText,
   timestamp,
   threadgateRecord,
@@ -36,8 +35,7 @@ let PostMenuButton = ({
   post: Shadow<AppBskyFeedDefs.PostView>
   postFeedContext: string | undefined
   postReqId: string | undefined
-  big?: boolean
-  record: AppBskyFeedPost.Record
+    big?: boolean
   richText: RichTextAPI
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
@@ -85,7 +83,6 @@ let PostMenuButton = ({
             post={post}
             postFeedContext={postFeedContext}
             postReqId={postReqId}
-            record={record}
             richText={richText}
             timestamp={timestamp}
             threadgateRecord={threadgateRecord}
