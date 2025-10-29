@@ -1,14 +1,15 @@
 import { useMemo, useReducer } from 'react'
-
-import { type SelfLabel } from '#/lib/moderation'
-import { EmbedAction, embedReducer, type EmbedDraft } from './composer'
-import { nanoid } from 'nanoid/non-secure'
-import { AppFoodiosFeedRecipeRevision, RichText } from '@atproto/api'
-import { RecipePostView } from '#/lib/api/feed/utils'
-import _ from 'lodash'
-import { Attribution } from '../recipe/RecipeAttribution'
-import z from "zod"
+import { AppBskyEmbedImages, AppBskyFeedDefs, AppFoodiosFeedRecipeRevision, RichText } from '@atproto/api'
 import { msg } from '@lingui/macro'
+import _ from 'lodash'
+import { nanoid } from 'nanoid/non-secure'
+import z from "zod"
+
+import { RecipePostView } from '#/lib/api/feed/utils'
+import { type SelfLabel } from '#/lib/moderation'
+import { isNative } from '#/platform/detection'
+import { Attribution } from '../recipe/RecipeAttribution'
+import { EmbedAction, type EmbedDraft,embedReducer } from './composer'
 import { HierarchyOption, recipeCategories, recipeCuisines, recipeDiets } from "./dataRecipe";
 
 
@@ -194,11 +195,17 @@ function recipePostReducer(
             return state
         }
         case 'set_cook_time': {
-            state.cookTime = action.value
+            if (action.value === "")
+                delete state.cookTime
+            else
+                state.cookTime = action.value
             return state
         }
         case 'set_prep_time': {
-            state.prepTime = action.value
+            if (action.value === "")
+                delete state.prepTime
+            else
+                state.prepTime = action.value
             return state
         }
         case 'set_yield': {
@@ -266,35 +273,71 @@ function newSection(): InstructionSectionDraft {
     }
 }
 
-// TODO: fix
-function embedToDraft(embed: AppFoodiosFeedRecipeRevision.Record["embed"]): EmbedDraft {
-    //if (!embed) 
-    return {
+const SUPPORTED_IMAGE_MIME_TYPES: Array<string> = ([
+    'image/gif',
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+    'image/webp',
+    'image/avif',
+    isNative ? '' : 'image/heic',
+  ] as const).filter(Boolean)
+
+function imageExtToMimeType(extension: string) {
+  const extMap: Record<string, string> = {'jpg': 'jpeg', 'svg': 'svg+xml'}
+  const ext = extension.toLowerCase()
+  const potMime = 'image/' + (extMap[ext] ?? ext)
+  if (SUPPORTED_IMAGE_MIME_TYPES.includes(potMime)) {
+    return potMime
+  }
+  return null
+}
+
+function getExt(path: string) {
+    const lastAt = path.lastIndexOf('@')
+    const lastDot = path.lastIndexOf('.')
+    const pos = lastAt > lastDot ? lastAt : lastDot
+    return (pos === -1) ? '' : path.substring(pos+1)
+}
+
+function embedToDraft(
+    postEmbed: AppBskyFeedDefs.PostView["embed"],
+    recordEmbed: AppFoodiosFeedRecipeRevision.Record["embed"]
+): EmbedDraft {
+    if (!postEmbed || !recordEmbed) return {
         quote: undefined,
         media: undefined,
         link: undefined,
     }
 
-    // if (AppBskyEmbedImages.isMain(embed)) {
-    //     return {
-    //         quote: undefined,
-    //         media: {
-    //             type: 'images',
-    //             images: embed.images.map(({ alt, image, aspectRatio }) => ({
-    //                 source: {
-    //                     height: aspectRatio!.height,
-    //                     width: aspectRatio!.width,
-    //                     path: image.ref,
-    //                     id: nanoid(),
-    //                     mime: extToMimeType(fullsize)
-    //                 },
-    //                 alt
-    //             }))
-    //         },
-    //         link: undefined,
-    //     }
-    // }
+    if (AppBskyEmbedImages.isView(postEmbed) && AppBskyEmbedImages.isMain(recordEmbed)) {
+        return {
+            quote: undefined,
+            media: {
+                type: 'images',
+                images: postEmbed.images.map(({ alt, fullsize, thumb, aspectRatio }, index) => ({
+                    source: {
+                        height: aspectRatio!.height,
+                        width: aspectRatio!.width,
+                        path: `cid:${recordEmbed.images[index].image.ref.toString()}`,
+                        fullsize: fullsize,
+                        thumb: thumb,
+                        size: recordEmbed.images[index].image.size,
+                        id: nanoid(),
+                        mime: imageExtToMimeType(getExt(fullsize)) ?? 'image/unknown',
+                    },
+                    alt
+                }))
+            },
+            link: undefined,
+        }
+    }
 
+    return {
+        quote: undefined,
+        media: undefined,
+        link: undefined,
+    }
 }
 
 const initState = (init?: RecipePostView): RecipePostDraft => {
@@ -314,10 +357,11 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         },
     }
 
-    const { name, text, facets, ingredients, instructionSections, labels, embed,
+    const { name, text, facets, ingredients, instructionSections, labels, embed: recordEmbed,
         recipeCuisine, recipeCategory, prepTime, cookingTime, attribution, nutrition,
         recipeYield, suitableForDiet, tags, langs
     } = init.record.revisionContent
+    const { embed: postEmbed } = init
 
     return {
         id: nanoid(),
@@ -332,7 +376,7 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
             instructions: section.instructions.map((instruction) => ({ ...instruction, id: nanoid() }))
         })) : [newSection()],
         labels: labels && "values" in labels ? labels.values.map(v => v.val) : [],
-        embed: embedToDraft(embed),
+        embed: embedToDraft(postEmbed, recordEmbed),
         recipeCuisines: recipeCuisine?.map(path => recipeCuisines.lookup[path.split("/").at(-1) ?? ""]).filter(Boolean),
         recipeCategories: recipeCategory?.map(path => recipeCategories.lookup[path.split("/").at(-1) ?? ""]).filter(Boolean),
         recipeDiets: suitableForDiet?.map(path => recipeDiets.lookup[path.split("/").at(-1) ?? ""]).filter(Boolean),
@@ -377,8 +421,8 @@ export type RecipeReducerOutput = ReturnType<typeof useRecipePostReducer>
 const ingredientDraftSchema = z.object({
     id: z.string(),
     name: z.string().min(1, msg`Ingredient name cannot be empty`),
-    quantity: z.coerce.number({ errorMap: () => msg`Ingredient quantity must be a number` as { message: string } }).refine(v => v > 0, msg`Ingredient quantity cannot be empty`),
-    unit: z.string().min(1, msg`Ingredient unit cannot be empty`),
+    quantity: z.coerce.number({ errorMap: () => msg`Ingredient quantity must be a number` as { message: string } }).optional(),
+    unit: z.string(),
 })
 
 const instructionDraftSchema = z.object({
@@ -395,7 +439,7 @@ const instructionSectionDraftSchema = z.object({
 
 const nutritionServingSizeSchema = z.object({
     quantity: z.coerce.number({ errorMap: () => msg`Serving size quantity must be a number` as { message: string } }),
-    unit: z.string().min(1, msg`Serving size unit cannot be empty`),
+    unit: z.string(),
 })
 
 const nutritionDraftSchema = z.object({
@@ -414,8 +458,8 @@ const nutritionDraftSchema = z.object({
 })
 
 const recipeYieldSchema = z.object({
-    quantity: z.coerce.number({ errorMap: () => msg`Recipe yield quantity must be a number` as { message: string } }).min(1, msg`Recipe yield quantity must be greater than zero`),
-    unit: z.string().min(1, msg`Recipe yield unit cannot be empty`),
+    quantity: z.coerce.number({ errorMap: () => msg`Recipe yield quantity must be a number` as { message: string } }).optional(), // min(1, msg`Recipe yield quantity must be greater than zero`),
+    unit: z.string().optional(), // .min(1, msg`Recipe yield unit cannot be empty`),
 })
 
 const licenseSchema = z.discriminatedUnion('$type', [
@@ -527,7 +571,7 @@ const selfLabelSchema = z.enum(['sexual', 'nudity', 'porn', 'graphic-media'])
 
 const recipePostDraftSchema = z.object({
     name: z.string().min(1, msg`Name cannot be empty`),
-    text: z.instanceof(RichText).refine(rt => rt.text.length >= 1, msg`Description cannot be empty`),
+    text: z.instanceof(RichText).optional(),
     ingredients: z.array(ingredientDraftSchema).min(1, msg`At least one ingredient required`),
     instructionSections: z.array(instructionSectionDraftSchema).min(1, `At least one instruction required`),
     prepTime: z.coerce.number({ errorMap: () => msg`Preparation time must be a number` as { message: string } }).min(1, msg`Preparation time must be greater than zero`).optional(),

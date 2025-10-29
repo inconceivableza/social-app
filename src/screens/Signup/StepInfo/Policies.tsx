@@ -4,8 +4,7 @@ import {type ComAtprotoServerDescribeServer} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {webLinks} from '#/lib/constants'
-import {branding} from '#/lib/constants'
+import {branding, webLinks} from '#/lib/constants'
 import {useGate} from '#/lib/statsig/statsig'
 import {atoms as a, useTheme} from '#/alf'
 import {Admonition} from '#/components/Admonition'
@@ -15,6 +14,7 @@ import {Text} from '#/components/Typography'
 function CommunityGuidelinesNotice({}: {}) {
   const {_} = useLingui()
   const gate = useGate()
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   if (gate('disable_onboarding_policy_update_notice')) return null
 
@@ -24,13 +24,13 @@ function CommunityGuidelinesNotice({}: {}) {
         <Trans>
           You also agree to{' '}
           <InlineLinkText
-            label={_(msg`Bluesky's Community Guidelines`)}
+            label={_(msg`${appName}'s Community Guidelines`)}
             to={webLinks.communityDeprecated}>
-            Bluesky’s Community Guidelines
+            {appName}’s Community Guidelines
           </InlineLinkText>
           . An{' '}
           <InlineLinkText
-            label={_(msg`Bluesky's Updated Community Guidelines`)}
+            label={_(msg`${appName}'s Updated Community Guidelines`)}
             to={webLinks.community}>
             updated version of our Community Guidelines
           </InlineLinkText>{' '}

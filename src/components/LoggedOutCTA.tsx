@@ -2,6 +2,7 @@ import {View, type ViewStyle} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {type Gate} from '#/lib/statsig/gates'
 import {useGate} from '#/lib/statsig/statsig'
 import {isWeb} from '#/platform/detection'
@@ -23,6 +24,9 @@ export function LoggedOutCTA({style, gateName}: LoggedOutCTAProps) {
   const gate = useGate()
   const t = useTheme()
   const {_} = useLingui()
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
+  const appDescription =
+    branding.verbage?.app_description || _(msg`The open social internet.`)
 
   // Only show for logged-out users on web
   if (hasSession || !isWeb) {
@@ -51,7 +55,7 @@ export function LoggedOutCTA({style, gateName}: LoggedOutCTAProps) {
           <Logo width={30} style={[a.mr_md]} />
           <View style={[a.flex_1]}>
             <Text style={[a.text_lg, a.font_bold, a.leading_snug]}>
-              <Trans>Join Bluesky</Trans>
+              <Trans>Join {appName}</Trans>
             </Text>
             <Text
               style={[
@@ -60,7 +64,7 @@ export function LoggedOutCTA({style, gateName}: LoggedOutCTAProps) {
                 a.leading_snug,
                 t.atoms.text_contrast_medium,
               ]}>
-              <Trans>The open social network.</Trans>
+              {appDescription}
             </Text>
           </View>
         </View>

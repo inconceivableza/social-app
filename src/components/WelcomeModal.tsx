@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {FocusGuards, FocusScope} from 'radix-ui/internal'
 
+import {branding} from '#/lib/constants'
 import {logger} from '#/logger'
 import {useLoggedOutViewControls} from '#/state/shell/logged-out'
 import {Logo} from '#/view/icons/Logo'
@@ -29,6 +30,7 @@ export function WelcomeModal({control}: WelcomeModalProps) {
   const {gtMobile} = useBreakpoints()
   const [isExiting, setIsExiting] = useState(false)
   const [signInLinkHovered, setSignInLinkHovered] = useState(false)
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const fadeOutAndClose = (callback?: () => void) => {
     setIsExiting(true)
@@ -112,7 +114,7 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                       a.user_select_none,
                       {color: '#354358', letterSpacing: -0.5},
                     ]}>
-                    Bluesky
+                    {appName}
                   </Text>
                 </View>
               </View>

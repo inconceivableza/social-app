@@ -3,6 +3,7 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding, webLinks} from '#/lib/constants'
 import {isAndroid} from '#/platform/detection'
 import {useA11y} from '#/state/a11y'
 import {atoms as a, useTheme} from '#/alf'
@@ -17,6 +18,7 @@ export function Content({state}: {state: PolicyUpdateState}) {
   const t = useTheme()
   const {_} = useLingui()
   const {screenReaderEnabled} = useA11y()
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const handleClose = useCallback(() => {
     state.complete()
@@ -26,22 +28,22 @@ export function Content({state}: {state: PolicyUpdateState}) {
   const links = {
     terms: {
       overridePresentation: false,
-      to: `https://bsky.social/about/support/tos`,
+      to: webLinks.tos,
       label: _(msg`Terms of Service`),
     },
     privacy: {
       overridePresentation: false,
-      to: `https://bsky.social/about/support/privacy-policy`,
+      to: webLinks.privacy,
       label: _(msg`Privacy Policy`),
     },
     copyright: {
       overridePresentation: false,
-      to: `https://bsky.social/about/support/copyright`,
+      to: webLinks.copyright,
       label: _(msg`Copyright Policy`),
     },
     guidelines: {
       overridePresentation: false,
-      to: `https://bsky.social/about/support/community-guidelines`,
+      to: webLinks.community,
       label: _(msg`Community Guidelines`),
     },
     blog: {
@@ -161,7 +163,7 @@ export function Content({state}: {state: PolicyUpdateState}) {
           <Button
             label={_(msg`Continue`)}
             accessibilityHint={_(
-              msg`Tap to acknowledge that you understand and agree to these updates and continue using Bluesky`,
+              msg`Tap to acknowledge that you understand and agree to these updates and continue using ${appName}`,
             )}
             color="primary"
             size="large"

@@ -92,6 +92,7 @@ ENV NVM_DIR=/usr/share/nvm
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 COPY ./lingui.config.js ./lingui.config.js
+COPY ./patches/ ./patches
 COPY ./scripts/ ./scripts
 
 RUN corepack prepare --activate

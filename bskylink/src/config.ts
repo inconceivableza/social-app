@@ -23,7 +23,10 @@ interface Branding {
     ios_clip_name?: string
     [key: string]: any
   }
-  naming: object | null
+  naming: {
+    app_name?: string
+    [key: string]: any
+  }
   styling: object | null
   verbage: object | null
 }
@@ -46,6 +49,7 @@ export type ServiceConfig = {
   hostnames: string[]
   hostnamesSet: Set<string>
   appHostname: string
+  appName: string
   appId: string
   appClipId: string
   safelinkEnabled: boolean
@@ -74,6 +78,7 @@ export type Environment = {
   appId?: string
   appClipId?: string
   appHostname?: string
+  appName?: string
   dbPostgresUrl?: string
   dbPostgresMigrationUrl?: string
   dbPostgresSchema?: string
@@ -91,6 +96,7 @@ export const readEnv = (): Environment => {
   const teamId = branding.code?.apple_team_id || 'B3LX46C5HS'
   const packageId = branding.code?.web_package_id || 'xyz.blueskyweb.app'
   const clipName = branding.code?.ios_clip_name || 'BlueskyClip'
+  const appName = branding.naming?.app_name || 'Bluesky'
   const appId = `${teamId}.${packageId}`
   const appClipId = `${teamId}.${packageId}.${clipName}`
   return {
@@ -98,6 +104,7 @@ export const readEnv = (): Environment => {
     version: envStr('LINK_VERSION'),
     hostnames: envList('LINK_HOSTNAMES'),
     appHostname: envStr('LINK_APP_HOSTNAME'),
+    appName: appName,
     appId: appId,
     appClipId: appClipId,
     dbPostgresUrl: envStr('LINK_DB_POSTGRES_URL'),
@@ -124,6 +131,7 @@ export const envToCfg = (env: Environment): Config => {
     appId: env.appId || 'B3LX46C5HS.xyz.blueskyweb.app',
     appClipId: env.appClipId || 'B3LX46C5HS.xyz.blueskyweb.BlueskyClip',
     appHostname: env.appHostname ?? 'bsky.app',
+    appName: env.appName ?? 'Bluesky',
     safelinkEnabled: env.safelinkEnabled ?? false,
     safelinkPdsUrl: env.safelinkPdsUrl,
     safelinkAgentIdentifier: env.safelinkAgentIdentifier,

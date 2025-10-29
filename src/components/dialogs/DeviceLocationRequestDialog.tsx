@@ -4,6 +4,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {wait} from '#/lib/async/wait'
+import {branding} from '#/lib/constants'
 import {isNetworkError, useCleanError} from '#/lib/hooks/useCleanError'
 import {logger} from '#/logger'
 import {isWeb} from '#/platform/detection'
@@ -60,6 +61,7 @@ function DeviceLocationRequestDialogInner({onLocationAcquired}: Props) {
   const requestDeviceLocation = useRequestDeviceLocation()
   const {config} = useGeolocationConfig()
   const cleanError = useCleanError()
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const [isRequesting, setIsRequesting] = useState(false)
   const [error, setError] = useState<string>('')
@@ -89,7 +91,7 @@ function DeviceLocationRequestDialogInner({onLocationAcquired}: Props) {
       } else {
         setError(
           _(
-            msg`Unable to access location. You'll need to visit your system settings to enable location services for Bluesky.`,
+            msg`Unable to access location. You'll need to visit your system settings to enable location services for ${appName}.`,
           ),
         )
       }
@@ -114,9 +116,9 @@ function DeviceLocationRequestDialogInner({onLocationAcquired}: Props) {
       <View style={[a.gap_sm, a.pb_xs]}>
         <Text style={[a.text_md, a.leading_snug, t.atoms.text_contrast_medium]}>
           <Trans>
-            Tap below to allow Bluesky to access your GPS location. We will then
-            use that data to more accurately determine the content and features
-            available in your region.
+            Tap below to allow {appName} to access your GPS location. We will
+            then use that data to more accurately determine the content and
+            features available in your region.
           </Trans>
         </Text>
 

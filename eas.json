@@ -14,11 +14,17 @@
       "distribution": "internal",
       "channel": "development",
       "ios": {
-        "simulator": true,
         "resourceClass": "large"
       },
       "env": {
         "EXPO_PUBLIC_ENV": "development"
+      }
+    },
+    "development-simulator": {
+      "extends": "development",
+      "ios": {
+        "simulator": true,
+        "resourceClass": "large"
       }
     },
     "preview": {

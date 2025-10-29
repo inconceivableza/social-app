@@ -9,6 +9,7 @@ import {
   getStoredEnvContent,
 } from '#/state/env-config'
 import {type ProxyHeaderValue} from '#/state/session/agent'
+import {BAPP_CONFIG_DEV_URL, IS_DEV} from '#/env'
 
 beginResolveEnvConfig()
 export const envConfig = getStoredEnvConfig()
@@ -346,6 +347,14 @@ export const DM_SERVICE_HEADERS = {
 export const BLUESKY_MOD_SERVICE_HEADERS = {
   'atproto-proxy': `${BSKY_LABELER_DID}#atproto_labeler`,
 }
+
+// const IPCC_URL is the old style and not used by default any more
+const BAPP_CONFIG_URL_PROD = `https://ip.bsky.app/config`
+const BAPP_CONFIG_URL = IS_DEV
+  ? (BAPP_CONFIG_DEV_URL ?? BAPP_CONFIG_URL_PROD)
+  : BAPP_CONFIG_URL_PROD
+export const GEOLOCATION_CONFIG_URL =
+  envConfig.GEOLOCATION_CONFIG_URL || BAPP_CONFIG_URL
 
 const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
 export const webLinks = {

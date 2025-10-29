@@ -59,10 +59,14 @@ export default function (ctx: AppContext, app: Express) {
             case 'block':
               html = linkWarningLayout(
                 'Blocked Link Warning',
-                linkWarningContents(req, {
-                  type: 'block',
-                  link: url.href,
-                }),
+                linkWarningContents(
+                  req,
+                  {
+                    type: 'block',
+                    link: url.href,
+                  },
+                  ctx,
+                ),
               )
               res.setHeader('Cache-Control', 'no-store')
               redirectLogger.info({rule}, 'Block rule matched')
@@ -70,10 +74,14 @@ export default function (ctx: AppContext, app: Express) {
             case 'warn':
               html = linkWarningLayout(
                 'Malicious Link Warning',
-                linkWarningContents(req, {
-                  type: 'warn',
-                  link: url.href,
-                }),
+                linkWarningContents(
+                  req,
+                  {
+                    type: 'warn',
+                    link: url.href,
+                  },
+                  ctx,
+                ),
               )
               res.setHeader('Cache-Control', 'no-store')
               redirectLogger.info({rule}, 'Warn rule matched')

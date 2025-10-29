@@ -13,7 +13,8 @@ function withMobileBuildConfig(config) {
       // Copy missing assets for notification sounds into the main app bundle
       // This should not be needed but this plugin seems to have have affected Expo's automatic asset copying
       const platformProjectRoot = config.modRequest.platformProjectRoot
-      const mainAppDir = path.join(platformProjectRoot, 'FoodiosDev')
+      const platformProjectName = config.modRequest.projectName
+      const mainAppDir = path.join(platformProjectRoot, platformProjectName)
 
       const aiffPath = path.join(mainAppDir, 'dm.aiff')
       if (!fs.existsSync(aiffPath)) {

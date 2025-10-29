@@ -319,6 +319,7 @@ function ValueProposition({
   const t = useTheme()
   const {_} = useLingui()
   const {gtMobile} = useBreakpoints()
+  const appName = branding.naming?.app_name || _(msg`Bluesky`)
 
   const image = [PROP_1[t.name], PROP_2[t.name], PROP_3[t.name]][subStep]
 
@@ -341,7 +342,7 @@ function ValueProposition({
         msg`No more doomscrolling junk-filled algorithms. Find feeds that work for you, not against you.`,
       ),
       alt: _(
-        msg`A collection of popular feeds you can find on Bluesky, including News, Booksky, Game Dev, Blacksky, and Fountain Pens`,
+        msg`A collection of popular feeds you can find on ${appName}, including News, Booksky, Game Dev, Blacksky, and Fountain Pens`,
       ),
     },
     {
@@ -356,10 +357,10 @@ function ValueProposition({
     {
       title: _(msg`Forget the noise`),
       description: _(
-        msg`No ads, no invasive tracking, no engagement traps. Bluesky respects your time and attention.`,
+        msg`No ads, no invasive tracking, no engagement traps. ${appNAme} respects your time and attention.`,
       ),
       alt: _(
-        msg`An illustration of several Bluesky posts alongside repost, like, and comment icons`,
+        msg`An illustration of several ${appName} posts alongside repost, like, and comment icons`,
       ),
     },
   ][subStep]
