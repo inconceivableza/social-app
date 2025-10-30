@@ -126,7 +126,11 @@ function loadEnvContent(): EnvContent {
       const config = configCache || loadEnvConfig()
       const appviewUrl = config.VITE_APPVIEW_URL
       const request = new XMLHttpRequest()
-      request.open('GET', `${appviewUrl}/.well-known/env-content`, false)
+      request.open(
+        'GET',
+        `${appviewUrl}/.well-known/atproto-appview-env-content`,
+        false,
+      )
       request.send()
       if (request.status === 200) {
         contentCache = JSON.parse(request.responseText) as EnvContent
