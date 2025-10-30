@@ -5,6 +5,7 @@ import {
   type AppBskyFeedGetPostThread,
   AppBskyFeedPost,
   AppFoodiosFeedDefs,
+  type AppFoodiosFeedReviewRating,
   AtUri,
   moderatePost,
   moderateRecipe,
@@ -13,6 +14,7 @@ import {
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
+import {type ReviewRatingView} from '#/lib/api/feed/utils'
 import {
   findAllPostsInQueryData as findAllPostsInExploreFeedPreviewsQueryData,
   findAllProfilesInQueryData as findAllProfilesInExploreFeedPreviewsQueryData,
@@ -78,6 +80,17 @@ export interface ThreadRecipe {
   ctx: ThreadCtx
 }
 
+export interface ThreadReview {
+  type: 'review'
+  _reactKey: string
+  uri: string
+  post: ReviewRatingView
+  record: AppFoodiosFeedReviewRating.Record
+  replies: ThreadNode[] | undefined
+  hasOPLike: boolean | undefined
+  ctx: ThreadCtx
+}
+
 export type ThreadNotFound = {
   type: 'not-found'
   _reactKey: string
@@ -100,6 +113,7 @@ export type ThreadUnknown = {
 export type ThreadNode =
   | ThreadPost
   | ThreadRecipe
+  | ThreadReview
   | ThreadNotFound
   | ThreadBlocked
   | ThreadUnknown
@@ -678,7 +692,6 @@ function postViewToPlaceholderThread(post: AnyPostView): ThreadNode {
   }
 
   const {record} = post
-
   if (AppBskyFeedPost.isRecord(record)) {
     return {
       type: 'post',
@@ -718,6 +731,26 @@ function postViewToPlaceholderThread(post: AnyPostView): ThreadNode {
       },
     }
   }
+
+  if (isReviewRatingView(post)) {
+    return {
+      type: 'review',
+      _reactKey: post.uri,
+      uri: post.uri,
+      post: post,
+      record: post.record,
+      replies: undefined,
+      hasOPLike: undefined,
+      ctx: {
+        depth: 0,
+        isHighlightedPost: true,
+        hasMore: false,
+        isParentLoading: false,
+        isChildLoading: true, // assume yes (show the spinner) just in case
+      },
+    }
+  }
+
   throw new Error('unexpected post type')
 }
 

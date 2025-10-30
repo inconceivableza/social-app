@@ -73,7 +73,6 @@ export function ExpandedRecipePost({
             {record.name}
           </Text>
         </View>
-
         {titleComponent}
       </View>
       <View style={a.gap_xs}>
@@ -83,40 +82,53 @@ export function ExpandedRecipePost({
               one: 'Category',
               other: 'Categories',
             })}:`}</Text>
-            {/* TODO: make these clickable */}
-            <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>
-              {record.recipeCategory.map(path => {
-                const option = pathToHierarchyOption(path, recipeCategories)
-                return option && <Text>{_(option.label)}</Text>
-              })}
+            <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+              {dedupHierarchyOptions(
+                record.recipeCategory.flatMap(path => {
+                  const option = pathToHierarchyOption(path, recipeCategories)
+                  return option ? [option] : []
+                }),
+              ).map(opt => (
+                <View
+                  style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
+                  key={opt.id}>
+                  <Text>{_(opt.label)}</Text>
+                </View>
+              ))}
             </View>
           </View>
         ) : null}
 
         {record.suitableForDiet?.length ? (
-          <View style={[a.flex_row, a.align_center, a.gap_sm]}>
+          <View style={[a.flex_row, a.align_start, a.gap_sm]}>
             <Text>{`${plural(record.suitableForDiet.length, {
               one: 'Suitable for diet',
               other: 'Suitable for diets',
             })}:`}</Text>
-            {/* TODO: make these clickable */}
-            <View style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}>
-              {record.suitableForDiet.map(path => {
-                const option = pathToHierarchyOption(path, recipeDiets)
-                return option && <Text>{_(option.label)}</Text>
-              })}
+            <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+              {dedupHierarchyOptions(
+                record.suitableForDiet.flatMap(path => {
+                  const option = pathToHierarchyOption(path, recipeDiets)
+                  return option ? [option] : []
+                }),
+              ).map(opt => (
+                <View
+                  style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
+                  key={opt.id}>
+                  <Text>{_(opt.label)}</Text>
+                </View>
+              ))}
             </View>
           </View>
         ) : null}
 
         {record.recipeCuisine?.length ? (
-          <View style={[a.flex_row, a.align_center, a.gap_sm]}>
-            <Text>{`${plural(record.recipeCuisine?.length ?? 0, {
+          <View style={[a.flex_row, a.align_start, a.gap_sm]}>
+            <Text>{`${plural(record.recipeCuisine.length, {
               one: 'Cuisine',
               other: 'Cuisines',
             })}:`}</Text>
-            {/* TODO: make these clickable */}
-            <View style={[a.flex_row, a.gap_xs, a.flex_wrap]}>
+            <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
               {dedupHierarchyOptions(
                 (record.recipeCuisine ?? []).flatMap(path => {
                   const option = pathToHierarchyOption(path, recipeCuisines)

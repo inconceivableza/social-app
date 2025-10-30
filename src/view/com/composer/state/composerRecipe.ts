@@ -735,9 +735,18 @@ const recipePostDraftSchema = z.object({
     })
     .min(1, msg`Cooking time must be greater than zero`)
     .optional(),
-  cuisines: z.array(recipeCuisines.schema).optional(),
-  categories: z.array(recipeCategories.schema).optional(),
-  suitableForDiet: z.array(recipeDiets.schema).optional(),
+  cuisines: z
+    .array(recipeCuisines.schema)
+    .max(10, msg`Too many cuisines selected`)
+    .optional(),
+  categories: z
+    .array(recipeCategories.schema)
+    .max(10, msg`Too many categories selected`)
+    .optional(),
+  suitableForDiet: z
+    .array(recipeDiets.schema)
+    .max(10, msg`Too many diets selected`)
+    .optional(),
   recipeYield: recipeYieldSchema.optional(),
   nutrition: nutritionDraftSchema.optional(),
   attribution: attributionSchema.optional(),

@@ -5,13 +5,19 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   type AppFoodiosFeedDefs,
+  type AppFoodiosFeedReviewRating,
 } from '@atproto/api'
 
 import * as bsky from '#/types/bsky'
 import {isPostInLanguage} from '../../locale/helpers'
 import {FALLBACK_MARKER_POST} from './feed/home'
 import {type ReasonFeedSource} from './feed/types'
-import {isRecipePostView, type RecipePostView} from './feed/utils'
+import {
+  isRecipePostView,
+  isReviewRatingView,
+  type RecipePostView,
+  type ReviewRatingView,
+} from './feed/utils'
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost
 
@@ -35,7 +41,11 @@ type FeedSliceItem =
       post: RecipePostView
       record: AppFoodiosFeedDefs.RecipeRevisionView
     }
-//
+  | {
+      type: 'review'
+      post: ReviewRatingView
+      record: AppFoodiosFeedReviewRating.Record
+    }
 
 type AuthorContext = {
   author: AppBskyActorDefs.ProfileViewBasic
@@ -90,6 +100,16 @@ export class FeedViewPostsSlice {
       })
       return
     }
+
+    if (isReviewRatingView(post)) {
+      this.items.push({
+        type: 'review',
+        post,
+        record: post.record,
+      })
+      return
+    }
+
     const parent = reply?.parent
     const isParentBlocked = AppBskyFeedDefs.isBlockedPost(parent)
     const isParentNotFound = AppBskyFeedDefs.isNotFoundPost(parent)
