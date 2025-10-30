@@ -40,8 +40,7 @@ import {
   embedViewRecordToPostView,
   getEmbeddedPost,
 } from './util'
-import { cond } from "lodash"
-import { isReviewRatingView, ReviewRatingView } from '#/lib/api/feed/utils'
+import { ReviewRatingView } from '#/lib/api/feed/utils'
 
 const REPLY_TREE_DEPTH = 10
 export const RQKEY_ROOT = 'post-thread'
