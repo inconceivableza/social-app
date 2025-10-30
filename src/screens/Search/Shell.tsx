@@ -133,7 +133,7 @@ export function SearchScreenShell({
     [accountHistory, setAccountHistory],
   )
   // TODO: rethink query manager so that query construction doesn't happen in two steps
-  let { params: incompleteParams, query } = useQueryManager({
+  let { params: incompleteParams, query, handlers } = useQueryManager({
     initialQuery: queryParam,
     fixedParams,
   })
@@ -147,10 +147,11 @@ export function SearchScreenShell({
   const [searchType, setSearchType] = useState<'all' | 'recipes'>(parsedParams.searchType)
 
   const { queryWithParams, params } = useMemo(() => {
-    const recipeParams = mapValues(recipeSearchFields, (opts) => opts.map(opt => opt.paths[0].join("/")).join(","))
+    const recipeParams = mapValues(recipeSearchFields, (opts) =>
+      // Certain options have multiple paths i.e. multiple parents. We want results from all of them.
+      opts.flatMap(opt => opt.paths.map(path => path.join("/"))).join(","))
     const params = { ...incompleteParams, ...recipeParams, searchType }
-    const { setLang, ...rest } = params
-    const queryWithParams = makeSearchQuery(query, rest)
+    const queryWithParams = makeSearchQuery(query, params)
     return { queryWithParams, params }
   }, [query, incompleteParams, recipeSearchFields, searchType])
 
@@ -191,11 +192,10 @@ export function SearchScreenShell({
       scrollToTopWeb()
       setShowAutocomplete(false)
       updateSearchHistory(item)
-      const { setLang, ...rest } = params
 
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, { ...route.params, q: item, ...pickBy(rest) })
+        navigation.push(route.name, { q: item, ...pickBy(params) })
       } else {
         textInput.current?.blur()
         navigation.setParams({q: item})
@@ -277,6 +277,7 @@ export function SearchScreenShell({
   )
 
   const onSearchInputFocus = useCallback(() => {
+    if (searchType === "recipes") return;
     if (isWeb) {
       // Prevent a jump on iPad by ensuring that
       // the initial focused render has no result list.
@@ -286,14 +287,13 @@ export function SearchScreenShell({
     } else {
       setShowAutocomplete(true)
     }
-  }, [setShowAutocomplete])
+  }, [setShowAutocomplete, searchType])
 
   const focusSearchInput = useCallback(() => {
     textInput.current?.focus()
   }, [])
 
   const showHeader = !gtMobile || navButton !== 'menu'
-
   return (
     <Layout.Screen testID={testID}>
       <View
@@ -330,7 +330,7 @@ export function SearchScreenShell({
                 {showFilters ? (
                   <SearchLanguageDropdown
                     value={params.lang}
-                    onChange={params.setLang}
+                    onChange={handlers.setLang}
                   />
                 ) : (
                   <Layout.Header.Slot />
@@ -394,7 +394,7 @@ export function SearchScreenShell({
                   ]}>
                   <SearchLanguageDropdown
                     value={params.lang}
-                    onChange={params.setLang}
+                    onChange={handlers.setLang}
                   />
                 </View>
               )}
@@ -408,7 +408,7 @@ export function SearchScreenShell({
           display: showAutocomplete && !fixedParams ? 'flex' : 'none',
           flex: 1,
         }}>
-        {queryWithParams.length ? (
+        {query.trim() ? (
           <AutocompleteResults
             isAutocompleteFetching={isAutocompleteFetching}
             autocompleteData={autocompleteData}
@@ -558,8 +558,8 @@ function useQueryManager({
       query,
       params: {
         ...params,
-        ...handlers,
       },
+      handlers
     }
   }, [query, params, handlers])
 }

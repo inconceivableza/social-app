@@ -27,7 +27,7 @@ import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
-import {aggregateUserInterests, type RecipePostView} from '#/lib/api/feed/utils'
+import { aggregateUserInterests, ReviewRatingView, type RecipePostView } from '#/lib/api/feed/utils'
 import {FeedTuner, type FeedTunerFn} from '#/lib/api/feed-manip'
 import {
   branding,
@@ -96,12 +96,20 @@ export type FeedPostSliceItem =
       isParentNotFound?: boolean
     }
   | FeedRecipeSliceItem
+  | FeedReviewSliceItem
 
 interface FeedRecipeSliceItem {
   type: 'recipe'
   _reactKey: string
   uri: string
   post: RecipePostView
+}
+
+interface FeedReviewSliceItem {
+  type: 'review'
+  _reactKey: string
+  uri: string
+  post: ReviewRatingView
 }
 
 export interface FeedPostSlice {
@@ -388,26 +396,36 @@ export function usePostFeedQuery(
                     reason: slice.reason,
                     feedPostUri: slice.feedPostUri,
                     items: slice.items.map((item, i) => {
-                      if (item.type === 'post') {
-                        return {
-                          type: 'post',
-                          _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
-                          uri: item.post.uri,
-                          post: item.post,
-                          record: item.record,
-                          moderation: moderations[item.post.uri],
-                          parentAuthor: item.parentAuthor,
-                          isParentBlocked: item.isParentBlocked,
-                          isParentNotFound: item.isParentNotFound,
-                        }
-                      }
-                      return {
-                        type: 'recipe',
-                        _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
-                        uri: item.post.uri,
-                        post: item.post,
-                        record: item.record,
-                      }
+                      switch (item.type) {
+                        case 'post':
+                          return {
+                            type: 'post',
+                            _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
+                            uri: item.post.uri,
+                            post: item.post,
+                            record: item.record,
+                            moderation: moderations[item.post.uri],
+                            parentAuthor: item.parentAuthor,
+                            isParentBlocked: item.isParentBlocked,
+                            isParentNotFound: item.isParentNotFound,
+                          }
+                        case 'recipe':
+                          return {
+                            type: 'recipe',
+                            _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
+                            uri: item.post.uri,
+                            post: item.post,
+                            record: item.record,
+                          }
+                        case 'review':
+                          return {
+                            type: 'review',
+                            _reactKey: `${slice._reactKey}-${i}-${item.post.uri}`,
+                            uri: item.post.uri,
+                            post: item.post,
+                            record: item.record,
+                          }
+                      } 
                     }),
                   }
                   return feedPostSlice
