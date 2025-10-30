@@ -76,7 +76,7 @@ import {PlusSmall_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/
 import {TimesLarge_Stroke2_Corner0_Rounded as X} from '#/components/icons/Times'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import * as Menu from '#/components/Menu'
-import {H2, Text} from '#/components/Typography'
+import {Text} from '#/components/Typography'
 import {BottomSheetPortalProvider} from '../../../../modules/bottom-sheet'
 import {Accordion} from '../../../components/Accordion'
 import {type NutritionElement, nutritionFields} from '../recipe/NutritionFields'
@@ -623,9 +623,9 @@ export function ComposerRecipe({
             {/* Ingredients */}
             <View style={[a.gap_sm]}>
               <View style={[a.align_center]}>
-                <H2 style={[a.text_lg]}>
+                <Text style={[a.text_lg]}>
                   <Trans context="recipe">Ingredients</Trans>
-                </H2>
+                </Text>
               </View>
               <RecipeIngredients
                 state={state}
@@ -638,9 +638,9 @@ export function ComposerRecipe({
             {/* Instructions */}
             <View style={[a.gap_sm]}>
               <View style={[a.align_center]}>
-                <H2 style={[a.text_lg]}>
+                <Text style={[a.text_lg]}>
                   <Trans context="recipe">Instructions</Trans>
-                </H2>
+                </Text>
               </View>
               <RecipeInstructions
                 state={state}

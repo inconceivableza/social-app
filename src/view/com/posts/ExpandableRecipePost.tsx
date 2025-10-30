@@ -13,7 +13,7 @@ import {atoms as a, atoms, useTheme} from '#/alf'
 import {Accordion} from '#/components/Accordion'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {RichText} from '#/components/RichText'
-import {H1, H2, H3, Text} from '#/components/Typography'
+import {Text} from '#/components/Typography'
 import {
   dedupHierarchyOptions,
   pathToHierarchyOption,
@@ -69,7 +69,7 @@ export function ExpandedRecipePost({
     <View style={[a.gap_xs]}>
       <View style={[a.flex_row]}>
         <View style={{justifyContent: 'center', marginRight: 'auto'}}>
-          <H1 style={[a.text_lg, a.font_bold]}>{record.name}</H1>
+          <Text style={[a.text_xl, a.font_bold]}>{record.name}</Text>
         </View>
 
         {titleComponent}
@@ -166,9 +166,9 @@ export function ExpandedRecipePost({
             ) : null}
           </View>
           <View>
-            <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
+            <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Ingredients</Trans>
-            </H2>
+            </Text>
           </View>
           <View style={[a.ml_sm]}>
             {record.ingredients.map((ingredient, i) => {
@@ -180,16 +180,16 @@ export function ExpandedRecipePost({
             })}
           </View>
           <View>
-            <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
+            <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Instructions</Trans>
-            </H2>
+            </Text>
           </View>
           <View>
             {record.instructionSections.map(
               ({name, instructions}, sectionIdx) => {
                 return (
                   <View key={sectionIdx} style={[a.gap_sm]}>
-                    {name && <H3 style={[a.font_bold]}>{name}</H3>}
+                    {name && <Text style={[a.font_bold]}>{name}</Text>}
                     <View style={[a.ml_sm]}>
                       {instructions.map((instruction, instructionIdx) => (
                         <View key={instructionIdx}>

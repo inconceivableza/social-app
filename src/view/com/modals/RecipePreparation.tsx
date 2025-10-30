@@ -18,7 +18,7 @@ import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {RichText} from '#/components/RichText'
-import {H1, H2, H3} from '#/components/Typography'
+import {Text} from '#/components/Typography'
 import {usePreparationState} from '../recipe-preparation/recipePreparation'
 
 export const snapPoints = [isAndroid ? 'fullscreen' : '90%']
@@ -55,7 +55,7 @@ export function Component({
   return (
     <ScrollView style={[a.gap_sm]}>
       <View>
-        <H1 style={[a.text_lg, a.font_bold]}>{revisionContent.name}</H1>
+        <Text style={[a.text_xl, a.font_bold]}>{revisionContent.name}</Text>
       </View>
       <View>
         <RichText
@@ -70,9 +70,9 @@ export function Component({
         )}
       </View>
       <View>
-        <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
+        <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
           <Trans context="recipe">Ingredients</Trans>
-        </H2>
+        </Text>
       </View>
       <View style={[a.ml_sm]}>
         {revisionContent.ingredients.map((ingredient, i) => {
@@ -94,16 +94,16 @@ export function Component({
         })}
       </View>
       <View>
-        <H2 style={[a.text_lg, t.atoms.text_contrast_medium]}>
+        <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
           <Trans context="recipe">Instructions</Trans>
-        </H2>
+        </Text>
       </View>
       <View>
         {revisionContent.instructionSections.map(
           ({name, instructions}, sectionIdx) => {
             return (
               <View key={sectionIdx} style={[a.gap_sm]}>
-                {name && <H3 style={[a.font_bold]}>{name}</H3>}
+                {name && <Text style={[a.font_bold]}>{name}</Text>}
                 <View style={[a.ml_sm]}>
                   {instructions.map((instruction, instructionIdx) => {
                     const instructionKey =
