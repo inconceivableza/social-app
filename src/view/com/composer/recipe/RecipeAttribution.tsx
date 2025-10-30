@@ -1,18 +1,21 @@
-import React, { useMemo } from 'react'
-import { View } from 'react-native'
-import { msg, Trans } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
-import { $Typed, AppFoodiosFeedDefs, AppFoodiosFeedRecipeRevision } from '@atproto/api'
+import {useMemo} from 'react'
+import {View} from 'react-native'
+import {type $Typed, type AppFoodiosFeedRecipeRevision} from '@atproto/api'
+import {msg, Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 
-import { atoms as a, useTheme } from '#/alf'
-import { Button, ButtonIcon, ButtonText } from '#/components/Button'
+import {atoms as a, useTheme} from '#/alf'
+import {Button, ButtonText} from '#/components/Button'
+import {NumberField} from '#/components/forms/NumberField'
 import * as TextField from '#/components/forms/TextField'
-import { NumberField } from '#/components/forms/NumberField'
-import * as Select from "#/components/Select"
+import * as Select from '#/components/Select'
 
 // TODO: localization
 
-export type Attribution = Exclude<AppFoodiosFeedRecipeRevision.Record["attribution"], undefined>
+export type Attribution = Exclude<
+  AppFoodiosFeedRecipeRevision.Record['attribution'],
+  undefined
+>
 // | $Typed AppFoodiosFeedRecipeRevision.OriginalAttribution
 // | AppFoodiosFeedRecipeRevision.PersonAttribution
 // | AppFoodiosFeedRecipeRevision.PublicationAttribution
@@ -42,7 +45,7 @@ const attributionTypeLabels: Record<AttributionType, string> = {
   product: 'Product',
 }
 
-const licenseOptions: (AppFoodiosFeedRecipeRevision.OriginalAttribution["license"] & {
+const licenseOptions: (AppFoodiosFeedRecipeRevision.OriginalAttribution['license'] & {
   label: string
 })[] = [
   {
@@ -77,7 +80,7 @@ const licenseOptions: (AppFoodiosFeedRecipeRevision.OriginalAttribution["license
   },
 ]
 
-const publicationTypeOptions: (AppFoodiosFeedRecipeRevision.PublicationAttribution["publicationType"] & {
+const publicationTypeOptions: (AppFoodiosFeedRecipeRevision.PublicationAttribution['publicationType'] & {
   label: string
 })[] = [
   {
@@ -90,10 +93,10 @@ const publicationTypeOptions: (AppFoodiosFeedRecipeRevision.PublicationAttributi
     label: 'Magazine',
     publicationType: 'publicationTypeMagazine',
   },
-  ] 
+]
 
-export function RecipeAttribution({ value, onChange }: RecipeAttributionProps) {
-  const { _ } = useLingui()
+export function RecipeAttribution({value, onChange}: RecipeAttributionProps) {
+  const {_} = useLingui()
   const t = useTheme()
 
   const currentType: AttributionType | undefined = value?.type
@@ -167,41 +170,42 @@ export function RecipeAttribution({ value, onChange }: RecipeAttributionProps) {
     <View key={currentType} style={[a.gap_md]}>
       <View style={[a.flex_row, a.align_center, a.gap_sm]}>
         <View style={[a.flex_1]}>
-          <Select.Root value={currentType} onValueChange={(value) => handleTypeChange(value as AttributionType)}>
+          <Select.Root
+            value={currentType}
+            onValueChange={value => handleTypeChange(value as AttributionType)}>
             <Select.Trigger label={_(msg`Recipe attribution`)}>
-              {({ props }) => <Button label={props.accessibilityLabel} {...props}
-                color="secondary"
-                size="small"
-                variant="solid"
-
-                style={[
-                  a.pr_xs,
-                  a.pl_sm,
-                ]}
-              >
-
-                <Select.ValueText
-                  placeholder={_(msg`Attribution type`)}
-                  style={[t.atoms.text_contrast_medium]}
-                />
-                <Select.Icon style={[t.atoms.text_contrast_medium]} />
-
-              </Button>}
-
+              {({props}) => (
+                <Button
+                  label={props.accessibilityLabel}
+                  {...props}
+                  color="secondary"
+                  size="small"
+                  variant="solid"
+                  style={[a.pr_xs, a.pl_sm]}>
+                  <Select.ValueText
+                    placeholder={_(msg`Attribution type`)}
+                    style={[t.atoms.text_contrast_medium]}
+                  />
+                  <Select.Icon style={[t.atoms.text_contrast_medium]} />
+                </Button>
+              )}
             </Select.Trigger>
             <Select.Content
-              renderItem={({ label, value }) => (
+              renderItem={({label, value}) => (
                 <Select.Item value={value} label={_(label)}>
-                  <Select.ItemText><Trans>{label}</Trans></Select.ItemText>
+                  <Select.ItemText>
+                    <Trans>{label}</Trans>
+                  </Select.ItemText>
                 </Select.Item>
               )}
-              items={(Object.entries(attributionTypeLabels) as [
-                AttributionType,
-                string,
-              ][]).map(([value, label]) => ({ value, label }))}
+              items={(
+                Object.entries(attributionTypeLabels) as [
+                  AttributionType,
+                  string,
+                ][]
+              ).map(([value, label]) => ({value, label}))}
             />
           </Select.Root>
-
         </View>
         {currentType && (
           <Button
@@ -229,16 +233,13 @@ function AttributionFields({
   value: Attribution
   onChange: (attribution: Attribution) => void
 }) {
-
   switch (value.type) {
     case 'original':
       return <OriginalAttributionFields value={value} onChange={onChange} />
     case 'person':
       return <PersonAttributionFields value={value} onChange={onChange} />
     case 'publication':
-      return (
-        <PublicationAttributionFields value={value} onChange={onChange} />
-      )
+      return <PublicationAttributionFields value={value} onChange={onChange} />
     case 'website':
       return <WebsiteAttributionFields value={value} onChange={onChange} />
     case 'show':
@@ -255,9 +256,11 @@ function OriginalAttributionFields({
   onChange,
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.OriginalAttribution>
-  onChange: (attribution: $Typed<AppFoodiosFeedRecipeRevision.OriginalAttribution>) => void
+  onChange: (
+    attribution: $Typed<AppFoodiosFeedRecipeRevision.OriginalAttribution>,
+  ) => void
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
   const t = useTheme()
 
   const selectedLicense = useMemo(() => {
@@ -279,30 +282,28 @@ function OriginalAttributionFields({
     <View style={[a.gap_sm]}>
       <Select.Root value={selectedLicense} onValueChange={handleLicenseChange}>
         <Select.Trigger label={_(msg`License type`)}>
-          {({ props }) => <Button label={props.accessibilityLabel} {...props}
-            color="secondary"
-            size="small"
-            variant="solid"
-
-            style={[
-              a.pr_xs,
-              a.pl_sm,
-            ]}
-          >
-
-            <Select.ValueText
-              placeholder={_(msg`License type`)}
-              style={[t.atoms.text_contrast_medium]}
-            />
-            <Select.Icon style={[t.atoms.text_contrast_medium]} />
-
-          </Button>}
-
+          {({props}) => (
+            <Button
+              label={props.accessibilityLabel}
+              {...props}
+              color="secondary"
+              size="small"
+              variant="solid"
+              style={[a.pr_xs, a.pl_sm]}>
+              <Select.ValueText
+                placeholder={_(msg`License type`)}
+                style={[t.atoms.text_contrast_medium]}
+              />
+              <Select.Icon style={[t.atoms.text_contrast_medium]} />
+            </Button>
+          )}
         </Select.Trigger>
         <Select.Content
-          renderItem={({ label, $type }) => (
+          renderItem={({label, $type}) => (
             <Select.Item value={$type} label={_(label)}>
-              <Select.ItemText><Trans>{label}</Trans></Select.ItemText>
+              <Select.ItemText>
+                <Trans>{label}</Trans>
+              </Select.ItemText>
             </Select.Item>
           )}
           items={licenseOptions}
@@ -313,7 +314,7 @@ function OriginalAttributionFields({
         <TextField.Input
           label={_(msg`URL (optional)`)}
           defaultValue={value.url}
-          onChangeText={url => onChange({ ...value, url })}
+          onChangeText={url => onChange({...value, url})}
         />
       </TextField.Root>
     </View>
@@ -325,9 +326,11 @@ function PersonAttributionFields({
   onChange,
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.PersonAttribution>
-  onChange: (attribution: $Typed<AppFoodiosFeedRecipeRevision.PersonAttribution>) => void
+  onChange: (
+    attribution: $Typed<AppFoodiosFeedRecipeRevision.PersonAttribution>,
+  ) => void
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_sm]}>
@@ -335,21 +338,21 @@ function PersonAttributionFields({
         <TextField.Input
           label={_(msg`Name`)}
           defaultValue={value.name}
-          onChangeText={name => onChange({ ...value, name })}
+          onChangeText={name => onChange({...value, name})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`URL (optional)`)}
           defaultValue={value.url}
-          onChangeText={url => onChange({ ...value, url })}
+          onChangeText={url => onChange({...value, url})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Notes (optional)`)}
           defaultValue={value.notes}
-          onChangeText={notes => onChange({ ...value, notes })}
+          onChangeText={notes => onChange({...value, notes})}
           multiline
         />
       </TextField.Root>
@@ -366,11 +369,14 @@ function PublicationAttributionFields({
     attribution: $Typed<AppFoodiosFeedRecipeRevision.PublicationAttribution>,
   ) => void
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
   const t = useTheme()
 
   const selectedPublicationType = useMemo(() => {
-    if (!value.publicationType || typeof value.publicationType.$type !== 'string')
+    if (
+      !value.publicationType ||
+      typeof value.publicationType.$type !== 'string'
+    )
       return
     return value.publicationType.$type
   }, [value.publicationType])
@@ -387,31 +393,32 @@ function PublicationAttributionFields({
 
   return (
     <View style={[a.gap_sm]}>
-      <Select.Root value={selectedPublicationType} onValueChange={handlePublicationTypeChange}>
+      <Select.Root
+        value={selectedPublicationType}
+        onValueChange={handlePublicationTypeChange}>
         <Select.Trigger label={_(msg`Publication type`)}>
-          {({ props }) => <Button label={props.accessibilityLabel} {...props}
-            color="secondary"
-            size="small"
-            variant="solid"
-
-            style={[
-              a.pr_xs,
-              a.pl_sm,
-            ]}
-          >
-            <Select.ValueText
-              placeholder={_(msg`Publication type`)}
-              style={[t.atoms.text_contrast_medium]}
-            />
-            <Select.Icon style={[t.atoms.text_contrast_medium]} />
-
-          </Button>}
-
+          {({props}) => (
+            <Button
+              label={props.accessibilityLabel}
+              {...props}
+              color="secondary"
+              size="small"
+              variant="solid"
+              style={[a.pr_xs, a.pl_sm]}>
+              <Select.ValueText
+                placeholder={_(msg`Publication type`)}
+                style={[t.atoms.text_contrast_medium]}
+              />
+              <Select.Icon style={[t.atoms.text_contrast_medium]} />
+            </Button>
+          )}
         </Select.Trigger>
         <Select.Content
-          renderItem={({ label, $type }) => (
+          renderItem={({label, $type}) => (
             <Select.Item value={$type} label={_(label)}>
-              <Select.ItemText><Trans>{label}</Trans></Select.ItemText>
+              <Select.ItemText>
+                <Trans>{label}</Trans>
+              </Select.ItemText>
             </Select.Item>
           )}
           items={publicationTypeOptions}
@@ -421,47 +428,49 @@ function PublicationAttributionFields({
         <TextField.Input
           label={_(msg`Title`)}
           defaultValue={value.title}
-          onChangeText={title => onChange({ ...value, title })}
+          onChangeText={title => onChange({...value, title})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Author`)}
           defaultValue={value.author}
-          onChangeText={author => onChange({ ...value, author })}
+          onChangeText={author => onChange({...value, author})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Publisher (optional)`)}
           defaultValue={value.publisher}
-          onChangeText={publisher => onChange({ ...value, publisher })}
+          onChangeText={publisher => onChange({...value, publisher})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`ISBN (optional)`)}
           defaultValue={value.isbn}
-          onChangeText={isbn => onChange({ ...value, isbn })}
+          onChangeText={isbn => onChange({...value, isbn})}
         />
       </TextField.Root>
       <NumberField
         label={_(msg`Page (optional)`)}
         defaultValue={value.page?.toString()}
-        onChange={page => onChange({ ...value, page: page ? parseInt(page) : undefined })}
+        onChange={page =>
+          onChange({...value, page: page ? parseInt(page) : undefined})
+        }
       />
       <TextField.Root>
         <TextField.Input
           label={_(msg`URL (optional)`)}
           defaultValue={value.url}
-          onChangeText={url => onChange({ ...value, url })}
+          onChangeText={url => onChange({...value, url})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Notes (optional)`)}
           defaultValue={value.notes}
-          onChangeText={notes => onChange({ ...value, notes })}
+          onChangeText={notes => onChange({...value, notes})}
           multiline
         />
       </TextField.Root>
@@ -474,9 +483,11 @@ function WebsiteAttributionFields({
   onChange,
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.WebsiteAttribution>
-  onChange: (attribution: $Typed<AppFoodiosFeedRecipeRevision.WebsiteAttribution>) => void
+  onChange: (
+    attribution: $Typed<AppFoodiosFeedRecipeRevision.WebsiteAttribution>,
+  ) => void
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_sm]}>
@@ -484,21 +495,21 @@ function WebsiteAttributionFields({
         <TextField.Input
           label={_(msg`Website name`)}
           defaultValue={value.name}
-          onChangeText={name => onChange({ ...value, name })}
+          onChangeText={name => onChange({...value, name})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`URL`)}
           defaultValue={value.url}
-          onChangeText={url => onChange({ ...value, url })}
+          onChangeText={url => onChange({...value, url})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Notes (optional)`)}
           defaultValue={value.notes}
-          onChangeText={notes => onChange({ ...value, notes })}
+          onChangeText={notes => onChange({...value, notes})}
           multiline
         />
       </TextField.Root>
@@ -511,9 +522,11 @@ function ShowAttributionFields({
   onChange,
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.ShowAttribution>
-  onChange: (attribution: $Typed<AppFoodiosFeedRecipeRevision.ShowAttribution>) => void
+  onChange: (
+    attribution: $Typed<AppFoodiosFeedRecipeRevision.ShowAttribution>,
+  ) => void
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_sm]}>
@@ -521,28 +534,28 @@ function ShowAttributionFields({
         <TextField.Input
           label={_(msg`Show title`)}
           defaultValue={value.title}
-          onChangeText={title => onChange({ ...value, title })}
+          onChangeText={title => onChange({...value, title})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Episode (optional)`)}
           defaultValue={value.episode}
-          onChangeText={episode => onChange({ ...value, episode })}
+          onChangeText={episode => onChange({...value, episode})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Network`)}
           defaultValue={value.network}
-          onChangeText={network => onChange({ ...value, network })}
+          onChangeText={network => onChange({...value, network})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Air date (optional)`)}
           defaultValue={value.airDate}
-          onChangeText={airDate => onChange({ ...value, airDate })}
+          onChangeText={airDate => onChange({...value, airDate})}
           placeholder="YYYY-MM-DD"
         />
       </TextField.Root>
@@ -550,14 +563,14 @@ function ShowAttributionFields({
         <TextField.Input
           label={_(msg`URL (optional)`)}
           defaultValue={value.url}
-          onChangeText={url => onChange({ ...value, url })}
+          onChangeText={url => onChange({...value, url})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Notes (optional)`)}
           defaultValue={value.notes}
-          onChangeText={notes => onChange({ ...value, notes })}
+          onChangeText={notes => onChange({...value, notes})}
           multiline
         />
       </TextField.Root>
@@ -570,9 +583,11 @@ function ProductAttributionFields({
   onChange,
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.ProductAttribution>
-  onChange: (attribution: $Typed<AppFoodiosFeedRecipeRevision.ProductAttribution>) => void
+  onChange: (
+    attribution: $Typed<AppFoodiosFeedRecipeRevision.ProductAttribution>,
+  ) => void
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_sm]}>
@@ -580,35 +595,35 @@ function ProductAttributionFields({
         <TextField.Input
           label={_(msg`Brand`)}
           defaultValue={value.brand}
-          onChangeText={brand => onChange({ ...value, brand })}
+          onChangeText={brand => onChange({...value, brand})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Product name`)}
           defaultValue={value.name}
-          onChangeText={name => onChange({ ...value, name })}
+          onChangeText={name => onChange({...value, name})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`UPC (optional)`)}
           defaultValue={value.upc}
-          onChangeText={upc => onChange({ ...value, upc })}
+          onChangeText={upc => onChange({...value, upc})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`URL (optional)`)}
           defaultValue={value.url}
-          onChangeText={url => onChange({ ...value, url })}
+          onChangeText={url => onChange({...value, url})}
         />
       </TextField.Root>
       <TextField.Root>
         <TextField.Input
           label={_(msg`Notes (optional)`)}
           defaultValue={value.notes}
-          onChangeText={notes => onChange({ ...value, notes })}
+          onChangeText={notes => onChange({...value, notes})}
           multiline
         />
       </TextField.Root>

@@ -179,18 +179,18 @@ export const LoginForm = ({
 
   return (
     <FormContainer testID="loginForm" titleText={<Trans>Sign in</Trans>}>
-      {/*
-      <View>
-        <TextField.LabelText>
-          <Trans>Hosting provider</Trans>
-        </TextField.LabelText>
-        <HostingProvider
-          serviceUrl={serviceUrl}
-          onSelectServiceUrl={setServiceUrl}
-          onOpenDialog={onPressSelectService}
-        />
-      </View>
-      */}
+      {false && (
+        <View>
+          <TextField.LabelText>
+            <Trans>Hosting provider</Trans>
+          </TextField.LabelText>
+          <HostingProvider
+            serviceUrl={serviceUrl}
+            onSelectServiceUrl={setServiceUrl}
+            onOpenDialog={onPressSelectService}
+          />
+        </View>
+      )}
       <View>
         <TextField.LabelText>
           <Trans>Account</Trans>

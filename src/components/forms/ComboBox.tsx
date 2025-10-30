@@ -1,4 +1,4 @@
-import {useMemo, useRef, useState} from 'react'
+import {useRef, useState} from 'react'
 import {type TextInput as NativeTextInput} from 'react-native'
 import {ScrollView, View} from 'react-native'
 import {msg} from '@lingui/macro'
@@ -11,7 +11,10 @@ import {CircleX_Stroke2_Corner0_Rounded as CircleXIcon} from '#/components/icons
 import * as Tooltip from '#/components/Tooltip'
 import {Text} from '#/components/Typography'
 
-interface BaseOption { id: string; label: string }
+interface BaseOption {
+  id: string
+  label: string
+}
 
 interface ComboBoxProps<T extends BaseOption> {
   options: T[]
@@ -20,7 +23,6 @@ interface ComboBoxProps<T extends BaseOption> {
   onSelect: (value: T) => void
   onRemove: (value: T) => void
 }
-
 
 export function ComboBox<T extends BaseOption>({
   options,
@@ -32,18 +34,20 @@ export function ComboBox<T extends BaseOption>({
   const t = useTheme()
   const {_} = useLingui()
   const inputRef = useRef<NativeTextInput>(null)
-  const [filteredOptions, setFilteredOptions] = useState(
-    [] as T[],
-  )
-  const uniqSelection = selection.sort((a, b) => a.label > b.label ? 1 : -1).reduce((acc, opt) =>
-    opt.label === acc.at(-1)?.label ? acc : acc.concat(opt), [] as T[])
+  const [filteredOptions, setFilteredOptions] = useState([] as T[])
+  const uniqSelection = selection
+    .sort((a, b) => (a.label > b.label ? 1 : -1))
+    .reduce(
+      (acc, opt) => (opt.label === acc.at(-1)?.label ? acc : acc.concat(opt)),
+      [] as T[],
+    )
 
   const expanded = !!filteredOptions.length
 
   // TODO: display "no results found" when applicable
   return (
     <View>
-      <Tooltip.Outer visible onVisibleChange={() => { }}>
+      <Tooltip.Outer visible onVisibleChange={() => {}}>
         <Tooltip.Target>
           <TextField.Root>
             <TextField.Input
@@ -58,7 +62,7 @@ export function ComboBox<T extends BaseOption>({
               }}
               onFocus={() => {
                 const filtered = options.filter(
-                  ({ id }) => !selection.find((opt) => opt.id === id),
+                  ({id}) => !selection.find(opt => opt.id === id),
                 )
                 setFilteredOptions(filtered)
               }}
@@ -73,7 +77,7 @@ export function ComboBox<T extends BaseOption>({
                 const filtered = options.filter(
                   ({label, id}) =>
                     label.toLowerCase().includes(trimmed) &&
-                    !selection.find((opt) => opt.id === id),
+                    !selection.find(opt => opt.id === id),
                 )
                 setFilteredOptions(filtered)
               }}
@@ -81,15 +85,13 @@ export function ComboBox<T extends BaseOption>({
           </TextField.Root>
         </Tooltip.Target>
         <View>
-          <Tooltip.Content
-            hide={!expanded}
-            label={_(`Options`)}>
+          <Tooltip.Content hide={!expanded} label={_(`Options`)}>
             <ScrollView
               style={{
                 maxHeight: 200,
                 display: expanded ? undefined : 'none',
               }}>
-              {filteredOptions.map((opt) => (
+              {filteredOptions.map(opt => (
                 <View key={opt.id}>
                   <Button
                     label={_(opt.label)}
@@ -98,7 +100,9 @@ export function ComboBox<T extends BaseOption>({
                     onPress={_e => {
                       onSelect(opt)
                     }}>
-                    <ButtonText style={[a.text_left]}>{_(opt.label)}</ButtonText>
+                    <ButtonText style={[a.text_left]}>
+                      {_(opt.label)}
+                    </ButtonText>
                   </Button>
                 </View>
               ))}

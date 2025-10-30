@@ -1,14 +1,16 @@
-import React from 'react'
-import { View } from 'react-native'
-import { msg, Trans } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
-import { $Typed, AppFoodiosFeedRecipeRevision } from '@atproto/api'
+import {View} from 'react-native'
+import {type $Typed, type AppFoodiosFeedRecipeRevision} from '@atproto/api'
+import {msg, Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 
-import { atoms as a, useTheme } from '#/alf'
-import { Text } from '#/components/Typography'
-import { InlineLinkText } from '#/components/Link'
+import {atoms as a, useTheme} from '#/alf'
+import {InlineLinkText} from '#/components/Link'
+import {Text} from '#/components/Typography'
 
-export type Attribution = Exclude<AppFoodiosFeedRecipeRevision.Record["attribution"], undefined>
+export type Attribution = Exclude<
+  AppFoodiosFeedRecipeRevision.Record['attribution'],
+  undefined
+>
 
 interface RecipeAttributionDisplayProps {
   attribution: Attribution
@@ -19,7 +21,8 @@ const licenseLabels: Record<string, string> = {
   licenseCreativeCommonsBy: 'CC BY 4.0 (Attribution)',
   licenseCreativeCommonsBySa: 'CC BY-SA 4.0 (Attribution-ShareAlike)',
   licenseCreativeCommonsByNc: 'CC BY-NC 4.0 (Attribution-NonCommercial)',
-  licenseCreativeCommonsByNcSa: 'CC BY-NC-SA 4.0 (Attribution-NonCommercial-ShareAlike)',
+  licenseCreativeCommonsByNcSa:
+    'CC BY-NC-SA 4.0 (Attribution-NonCommercial-ShareAlike)',
   licensePublicDomain: 'Public Domain',
 }
 
@@ -28,7 +31,9 @@ const publicationTypeLabels: Record<string, string> = {
   publicationTypeMagazine: 'Magazine',
 }
 
-export function RecipeAttributionDisplay({ attribution }: RecipeAttributionDisplayProps) {
+export function RecipeAttributionDisplay({
+  attribution,
+}: RecipeAttributionDisplayProps) {
   const t = useTheme()
 
   if (!attribution) {
@@ -47,7 +52,7 @@ export function RecipeAttributionDisplay({ attribution }: RecipeAttributionDispl
   )
 }
 
-function AttributionContent({ attribution }: { attribution: Attribution }) {
+function AttributionContent({attribution}: {attribution: Attribution}) {
   switch (attribution.type) {
     case 'original':
       return <OriginalAttributionDisplay value={attribution} />
@@ -71,8 +76,9 @@ function OriginalAttributionDisplay({
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.OriginalAttribution>
 }) {
-  const { _ } = useLingui()
-  const licenseLabel = licenseLabels[value.license.licenseType] ?? _(msg`Unknown`)
+  const {_} = useLingui()
+  const licenseLabel =
+    licenseLabels[value.license.licenseType] ?? _(msg`Unknown`)
 
   return (
     <View style={[a.gap_xs]}>
@@ -81,7 +87,10 @@ function OriginalAttributionDisplay({
       </Text>
       <Text>{`${_(msg`License`)}: ${licenseLabel}`}</Text>
       {value.url && (
-        <InlineLinkText label={_(msg`Attribution link`)} to={value.url} style={[a.text_sm]}>
+        <InlineLinkText
+          label={_(msg`Attribution link`)}
+          to={value.url}
+          style={[a.text_sm]}>
           {value.url}
         </InlineLinkText>
       )}
@@ -94,7 +103,7 @@ function PersonAttributionDisplay({
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.PersonAttribution>
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_xs]}>
@@ -102,7 +111,10 @@ function PersonAttributionDisplay({
         <Trans context="recipe attribution">From person</Trans>: {value.name}
       </Text>
       {value.url && (
-        <InlineLinkText label={_(msg`Attribution link`)} to={value.url} style={[a.text_sm]}>
+        <InlineLinkText
+          label={_(msg`Attribution link`)}
+          to={value.url}
+          style={[a.text_sm]}>
           {value.url}
         </InlineLinkText>
       )}
@@ -116,21 +128,29 @@ function PublicationAttributionDisplay({
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.PublicationAttribution>
 }) {
-  const { _ } = useLingui()
-  const pubTypeLabel = publicationTypeLabels[value.publicationType.publicationType] ?? _(msg`Unknown`)
+  const {_} = useLingui()
+  const pubTypeLabel =
+    publicationTypeLabels[value.publicationType.publicationType] ??
+    _(msg`Unknown`)
 
   return (
     <View style={[a.gap_xs]}>
       <Text>
-        <Trans context="recipe attribution">From publication</Trans>: {value.title}
+        <Trans context="recipe attribution">From publication</Trans>:{' '}
+        {value.title}
       </Text>
       <Text>{`${_(msg`Author`)}: ${value.author}`}</Text>
       <Text>{`${_(msg`Type`)}: ${pubTypeLabel}`}</Text>
-      {value.publisher && <Text>{`${_(msg`Publisher`)}: ${value.publisher}`}</Text>}
+      {value.publisher && (
+        <Text>{`${_(msg`Publisher`)}: ${value.publisher}`}</Text>
+      )}
       {value.isbn && <Text>{`${_(msg`ISBN`)}: ${value.isbn}`}</Text>}
       {value.page && <Text>{`${_(msg`Page`)}: ${value.page}`}</Text>}
       {value.url && (
-        <InlineLinkText label={_(msg`Attribution link`)} to={value.url} style={[a.text_sm]}>
+        <InlineLinkText
+          label={_(msg`Attribution link`)}
+          to={value.url}
+          style={[a.text_sm]}>
           {value.url}
         </InlineLinkText>
       )}
@@ -144,13 +164,16 @@ function WebsiteAttributionDisplay({
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.WebsiteAttribution>
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
   return (
     <View style={[a.gap_xs]}>
       <Text>
         <Trans context="recipe attribution">From website</Trans>: {value.name}
       </Text>
-      <InlineLinkText label={_(msg`Attribution link`)} to={value.url} style={[a.text_sm]}>
+      <InlineLinkText
+        label={_(msg`Attribution link`)}
+        to={value.url}
+        style={[a.text_sm]}>
         {value.url}
       </InlineLinkText>
       {value.notes && <Text style={[a.text_sm, a.italic]}>{value.notes}</Text>}
@@ -163,7 +186,7 @@ function ShowAttributionDisplay({
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.ShowAttribution>
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_xs]}>
@@ -174,7 +197,10 @@ function ShowAttributionDisplay({
       <Text>{`${_(msg`Network`)}: ${value.network}`}</Text>
       {value.airDate && <Text>{`${_(msg`Air date`)}: ${value.airDate}`}</Text>}
       {value.url && (
-        <InlineLinkText label={_(msg`Attribution link`)} to={value.url} style={[a.text_sm]}>
+        <InlineLinkText
+          label={_(msg`Attribution link`)}
+          to={value.url}
+          style={[a.text_sm]}>
           {value.url}
         </InlineLinkText>
       )}
@@ -188,16 +214,20 @@ function ProductAttributionDisplay({
 }: {
   value: $Typed<AppFoodiosFeedRecipeRevision.ProductAttribution>
 }) {
-  const { _ } = useLingui()
+  const {_} = useLingui()
 
   return (
     <View style={[a.gap_xs]}>
       <Text>
-        <Trans context="recipe attribution">From product</Trans>: {value.brand} {value.name}
+        <Trans context="recipe attribution">From product</Trans>: {value.brand}{' '}
+        {value.name}
       </Text>
       {value.upc && <Text>{`${_(msg`UPC`)}: ${value.upc}`}</Text>}
       {value.url && (
-        <InlineLinkText label={_(msg`Attribution link`)} to={value.url} style={[a.text_sm]}>
+        <InlineLinkText
+          label={_(msg`Attribution link`)}
+          to={value.url}
+          style={[a.text_sm]}>
           {value.url}
         </InlineLinkText>
       )}

@@ -69,7 +69,7 @@ export type PostDraft = {
   labels: SelfLabel[]
   embed: EmbedDraft
   shortenedGraphemeLength: number
-  rating: number | undefined
+  rating?: number | undefined
 }
 
 export type EmbedAction =

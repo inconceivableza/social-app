@@ -10,9 +10,9 @@ import {
 import {BSKY_FEED_OWNER_DIDS} from '#/lib/constants'
 import {makeProfileLink} from '#/lib/routes/links'
 import {isWeb} from '#/platform/detection'
+import {type AnyPostView} from '#/state/cache/types'
 import {type UsePreferencesQueryResponse} from '#/state/queries/preferences'
-import { dangerousIsType } from '#/types/bsky'
-import { AnyPostView } from '#/state/cache/types'
+import {dangerousIsType} from '#/types/bsky'
 
 let debugTopics = ''
 if (isWeb && typeof window !== 'undefined') {

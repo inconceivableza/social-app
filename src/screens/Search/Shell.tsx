@@ -16,6 +16,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
+import {mapValues, pickBy} from 'lodash'
 
 import {branding, HITSLOP_10, HITSLOP_20} from '#/lib/constants'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
@@ -38,18 +39,21 @@ import {
 import {atoms as a, tokens, useBreakpoints, useTheme, web} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {SearchInput} from '#/components/forms/SearchInput'
+import * as ToggleButton from '#/components/forms/ToggleButton'
 import * as Layout from '#/components/Layout'
 import {Text} from '#/components/Typography'
 import {account, useStorage} from '#/storage'
 import type * as bsky from '#/types/bsky'
 import {AutocompleteResults} from './components/AutocompleteResults'
+import {
+  recipeParamsSchema,
+  RecipeSearchFields,
+  useRecipeSearchState,
+} from './components/RecipeSearchFields'
 import {SearchHistory} from './components/SearchHistory'
 import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
-import * as ToggleButton from '#/components/forms/ToggleButton'
-import { recipeParamsSchema, RecipeSearchFields, useRecipeSearchState } from './components/RecipeSearchFields'
-import { mapValues, pickBy } from "lodash" 
 
 export function SearchScreenShell({
   queryParam,
@@ -133,25 +137,30 @@ export function SearchScreenShell({
     [accountHistory, setAccountHistory],
   )
   // TODO: rethink query manager so that query construction doesn't happen in two steps
-  let { params: incompleteParams, query } = useQueryManager({
+  let {params: incompleteParams, query} = useQueryManager({
     initialQuery: queryParam,
     fixedParams,
   })
 
   const parsedParams = useMemo(() => {
     return recipeParamsSchema.parse(route.params)
-  }, [])
+  }, [route.params])
 
-  const [recipeSearchFields, dispatchRecipeSearch] = useRecipeSearchState(parsedParams)
+  const [recipeSearchFields, dispatchRecipeSearch] =
+    useRecipeSearchState(parsedParams)
 
-  const [searchType, setSearchType] = useState<'all' | 'recipes'>(parsedParams.searchType)
+  const [searchType, setSearchType] = useState<'all' | 'recipes'>(
+    parsedParams.searchType,
+  )
 
-  const { queryWithParams, params } = useMemo(() => {
-    const recipeParams = mapValues(recipeSearchFields, (opts) => opts.map(opt => opt.paths[0].join("/")).join(","))
-    const params = { ...incompleteParams, ...recipeParams, searchType }
-    const { setLang, ...rest } = params
+  const {queryWithParams, params} = useMemo(() => {
+    const recipeParams = mapValues(recipeSearchFields, opts =>
+      opts.map(opt => opt.paths[0].join('/')).join(','),
+    )
+    const params = {...incompleteParams, ...recipeParams, searchType}
+    const {setLang: _setLang, ...rest} = params
     const queryWithParams = makeSearchQuery(query, rest)
-    return { queryWithParams, params }
+    return {queryWithParams, params}
   }, [query, incompleteParams, recipeSearchFields, searchType])
 
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
@@ -191,11 +200,11 @@ export function SearchScreenShell({
       scrollToTopWeb()
       setShowAutocomplete(false)
       updateSearchHistory(item)
-      const { setLang, ...rest } = params
+      const {setLang: _setLang, ...rest} = params
 
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, { ...route.params, q: item, ...pickBy(rest) })
+        navigation.push(route.name, {...route.params, q: item, ...pickBy(rest)})
       } else {
         textInput.current?.blur()
         navigation.setParams({q: item})
@@ -340,18 +349,37 @@ export function SearchScreenShell({
           )}
           <View style={[a.px_lg, a.pt_sm, a.pb_sm, a.overflow_hidden]}>
             <View style={[a.gap_sm]}>
-              <View style={[a.w_full, a.flex_row, a.align_stretch, a.gap_xs, a.align_center]}>
-                <View style={{ width: '25%' }}>
-                  <ToggleButton.Group label={_(msg`Search type`)} onChange={(values) => {
-                    const found = searchTypeOptions.find(({ value }) => value === values[0])
-                    setSearchType(found?.value ?? "all")
-                  }} values={[searchType]}>
-                    {searchTypeOptions.map(({ label, value }) => <ToggleButton.Button label={_(label)} name={value}>
-                      <ToggleButton.ButtonText>{_(label)}</ToggleButton.ButtonText>
-                    </ToggleButton.Button>)}
+              <View
+                style={[
+                  a.w_full,
+                  a.flex_row,
+                  a.align_stretch,
+                  a.gap_xs,
+                  a.align_center,
+                ]}>
+                <View style={{width: '25%'}}>
+                  <ToggleButton.Group
+                    label={_(msg`Search type`)}
+                    onChange={values => {
+                      const found = searchTypeOptions.find(
+                        ({value}) => value === values[0],
+                      )
+                      setSearchType(found?.value ?? 'all')
+                    }}
+                    values={[searchType]}>
+                    {searchTypeOptions.map(({label, value}) => (
+                      <ToggleButton.Button
+                        label={_(label)}
+                        name={value}
+                        key={`searchtype-${value}`}>
+                        <ToggleButton.ButtonText>
+                          {_(label)}
+                        </ToggleButton.ButtonText>
+                      </ToggleButton.Button>
+                    ))}
                   </ToggleButton.Group>
                 </View>
-                <View style={{ flexGrow: 1 }}>
+                <View style={{flexGrow: 1}}>
                   <SearchInput
                     ref={textInput}
                     value={searchText}
@@ -381,9 +409,14 @@ export function SearchScreenShell({
                   </Button>
                 )}
               </View>
-              {searchType === "recipes" && <View>
-                <RecipeSearchFields state={recipeSearchFields} dispatch={dispatchRecipeSearch} />
-              </View>}  
+              {searchType === 'recipes' && (
+                <View>
+                  <RecipeSearchFields
+                    state={recipeSearchFields}
+                    dispatch={dispatchRecipeSearch}
+                  />
+                </View>
+              )}
               {showFilters && !showHeader && (
                 <View
                   style={[
@@ -444,7 +477,6 @@ export function SearchScreenShell({
   )
 }
 
-
 let SearchScreenInner = ({
   query,
   queryWithParams,
@@ -452,7 +484,7 @@ let SearchScreenInner = ({
   focusSearchInput,
 }: {
   query: string
-    queryWithParams: string
+  queryWithParams: string
   headerHeight: number
   focusSearchInput: () => void
 }): React.ReactNode => {
@@ -505,7 +537,9 @@ let SearchScreenInner = ({
             style={t.atoms.text_contrast_medium as StyleProp<ViewStyle>}
           />
           <Text style={[t.atoms.text_contrast_medium, a.text_md]}>
-            <Trans>Find posts, users, and feeds on {branding.naming.app_name}</Trans>
+            <Trans>
+              Find posts, users, and feeds on {branding.naming.app_name}
+            </Trans>
           </Text>
         </View>
       </View>
@@ -533,24 +567,21 @@ function useQueryManager({
     setLang(initialParams.lang || '')
   }
 
-  const params = useMemo(
-    () => {
-      return {
+  const params = useMemo(() => {
+    return {
       // default stuff
       ...initialParams,
       // managed stuff
       lang,
       ...fixedParams,
-        // ...recipeParams
-      }
-    },
-    [lang, initialParams, fixedParams,],
-  )
+      // ...recipeParams
+    }
+  }, [lang, initialParams, fixedParams])
   const handlers = useMemo(
     () => ({
       setLang,
     }),
-    [setLang,],
+    [setLang],
   )
 
   return useMemo(() => {
@@ -570,10 +601,13 @@ function scrollToTopWeb() {
   }
 }
 
-const searchTypeOptions = [{
-  value: 'all',
-  label: msg`All`
-}, {
-  value: 'recipes',
-  label: msg`Recipes`
-}] as const
+const searchTypeOptions = [
+  {
+    value: 'all',
+    label: msg`All`,
+  },
+  {
+    value: 'recipes',
+    label: msg`Recipes`,
+  },
+] as const

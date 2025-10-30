@@ -47,17 +47,17 @@ import {
   type ThreadDraft,
 } from '#/view/com/composer/state/composer'
 import {type RecipePostDraft} from '#/view/com/composer/state/composerRecipe'
+import {hierarchyOptionToPaths} from '#/view/com/composer/state/dataRecipe'
 import {createGIFDescription} from '../gif-alt-text'
 import {isRecipeUri} from '../strings/url-helpers'
 import {type RecipePostView} from './feed/utils'
 import {uploadBlob} from './upload-blob'
-import { hierarchyOptionToPaths } from '#/view/com/composer/state/dataRecipe'
 
 export {uploadBlob}
 
 type RemoveIndexSignature<T> = {
   [K in keyof T as string extends K ? never : K]: T[K]
-};
+}
 
 interface PostOpts {
   thread: ThreadDraft
@@ -451,10 +451,10 @@ export async function postReviewRating(
         : Math.round(draft.rating * 2)
       : undefined
 
-
-    const record: AppBskyFeedPost.Record | RemoveIndexSignature<AppFoodiosFeedReviewRating.Record> =
-      isReviewRating
-        ? {
+    const record:
+      | AppBskyFeedPost.Record
+      | RemoveIndexSignature<AppFoodiosFeedReviewRating.Record> = isReviewRating
+      ? {
           $type: 'app.foodios.feed.reviewRating',
           createdAt: now.toISOString(),
           text: rt.text,
@@ -464,18 +464,18 @@ export async function postReviewRating(
           langs,
           labels,
         }
-        : {
-            // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
-            // present and will produce the wrong CID if you omit it.
-            $type: 'app.bsky.feed.post',
-            createdAt: now.toISOString(),
-            text: rt.text,
-            facets: rt.facets,
-            reply,
-            embed,
-            langs,
-            labels,
-          }
+      : {
+          // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
+          // present and will produce the wrong CID if you omit it.
+          $type: 'app.bsky.feed.post',
+          createdAt: now.toISOString(),
+          text: rt.text,
+          facets: rt.facets,
+          reply,
+          embed,
+          langs,
+          labels,
+        }
     writes.push({
       $type: 'com.atproto.repo.applyWrites#create',
       collection: rtype,
@@ -670,11 +670,18 @@ async function resolveMedia(
           logger.debug(`Unchanged image #${i}`)
           const cid = CID.parse(image.source.path.replace('cid:', ''))
           const dynamicSource = image.transformed ?? image.source
-          const newRef = new BlobRef(cid, dynamicSource.mime, dynamicSource.size ?? 0)
+          const newRef = new BlobRef(
+            cid,
+            dynamicSource.mime,
+            dynamicSource.size ?? 0,
+          )
           return {
             image: newRef.toJSON(),
             alt: image.alt,
-            aspectRatio: {width: dynamicSource.width, height: dynamicSource.height},
+            aspectRatio: {
+              width: dynamicSource.width,
+              height: dynamicSource.height,
+            },
           }
         }
         logger.debug(`Compressing image #${i}`)
