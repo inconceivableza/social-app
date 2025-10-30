@@ -75,7 +75,7 @@ export function ExpandedRecipePost({
         {titleComponent}
       </View>
       <View style={a.gap_xs}>
-        {record.recipeCategory?.length && (
+        {record.recipeCategory?.length ? (
           <View style={[a.flex_row, a.align_center, a.gap_sm]}>
             <Text>{`${plural(record.recipeCategory.length, {
               one: 'Category',
@@ -89,9 +89,9 @@ export function ExpandedRecipePost({
               })}
             </View>
           </View>
-        )}
+        ) : null}
 
-        {record.suitableForDiet?.length && (
+        {record.suitableForDiet?.length ? (
           <View style={[a.flex_row, a.align_center, a.gap_sm]}>
             <Text>{`${plural(record.suitableForDiet.length, {
               one: 'Suitable for diet',
@@ -105,18 +105,18 @@ export function ExpandedRecipePost({
               })}
             </View>
           </View>
-        )}
+        ) : null}
 
-        {record.recipeCuisine?.length && (
+        {record.recipeCuisine?.length ? (
           <View style={[a.flex_row, a.align_center, a.gap_sm]}>
-            <Text>{`${plural(record.recipeCuisine.length, {
+            <Text>{`${plural(record.recipeCuisine?.length ?? 0, {
               one: 'Cuisine',
               other: 'Cuisines',
             })}:`}</Text>
             {/* TODO: make these clickable */}
             <View style={[a.flex_row, a.gap_xs, a.flex_wrap]}>
               {dedupHierarchyOptions(
-                record.recipeCuisine.flatMap(path => {
+                (record.recipeCuisine ?? []).flatMap(path => {
                   const option = pathToHierarchyOption(path, recipeCuisines)
                   return option ? [option] : []
                 }),
@@ -129,7 +129,7 @@ export function ExpandedRecipePost({
               ))}
             </View>
           </View>
-        )}
+        ) : null}
       </View>
       <View>
         <RichText
