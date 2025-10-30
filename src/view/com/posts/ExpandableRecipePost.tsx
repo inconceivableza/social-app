@@ -69,7 +69,9 @@ export function ExpandedRecipePost({
     <View style={[a.gap_xs]}>
       <View style={[a.flex_row]}>
         <View style={{justifyContent: 'center', marginRight: 'auto'}}>
-          <Text style={[a.text_xl, a.font_bold]}>{record.name}</Text>
+          <Text emoji style={[a.text_xl, a.font_bold]}>
+            {record.name}
+          </Text>
         </View>
 
         {titleComponent}
@@ -174,7 +176,8 @@ export function ExpandedRecipePost({
             {record.ingredients.map((ingredient, i) => {
               return (
                 <View key={i} style={[a.flex_row, a.gap_sm]}>
-                  <Text>{`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}</Text>
+                  <Text
+                    emoji>{`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}</Text>
                 </View>
               )
             })}
@@ -189,11 +192,15 @@ export function ExpandedRecipePost({
               ({name, instructions}, sectionIdx) => {
                 return (
                   <View key={sectionIdx} style={[a.gap_sm]}>
-                    {name && <Text style={[a.font_bold]}>{name}</Text>}
+                    {name && (
+                      <Text emoji style={[a.font_bold]}>
+                        {name}
+                      </Text>
+                    )}
                     <View style={[a.ml_sm]}>
                       {instructions.map((instruction, instructionIdx) => (
                         <View key={instructionIdx}>
-                          <Text>
+                          <Text emoji>
                             {instructionIdx + 1 + '. ' + instruction.text}
                           </Text>
                         </View>
