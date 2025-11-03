@@ -75,13 +75,16 @@ export function ExpandedRecipePost({
         </View>
         {titleComponent}
       </View>
-      <View style={a.gap_xs}>
+      <View style={[a.gap_xs, a.py_sm]}>
         {record.recipeCategory?.length ? (
-          <View style={[a.flex_row, a.align_center, a.gap_sm]}>
-            <Text>{`${plural(record.recipeCategory.length, {
-              one: 'Category',
-              other: 'Categories',
-            })}:`}</Text>
+          <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
+            <Text style={[a.font_medium]}>{`${plural(
+              record.recipeCategory.length,
+              {
+                one: 'Category',
+                other: 'Categories',
+              },
+            )}:`}</Text>
             <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
               {dedupHierarchyOptions(
                 record.recipeCategory.flatMap(path => {
@@ -100,11 +103,14 @@ export function ExpandedRecipePost({
         ) : null}
 
         {record.suitableForDiet?.length ? (
-          <View style={[a.flex_row, a.align_start, a.gap_sm]}>
-            <Text>{`${plural(record.suitableForDiet.length, {
-              one: 'Suitable for diet',
-              other: 'Suitable for diets',
-            })}:`}</Text>
+          <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
+            <Text style={[a.font_medium]}>{`${plural(
+              record.suitableForDiet.length,
+              {
+                one: 'Suitable for diet',
+                other: 'Suitable for diets',
+              },
+            )}:`}</Text>
             <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
               {dedupHierarchyOptions(
                 record.suitableForDiet.flatMap(path => {
@@ -123,11 +129,14 @@ export function ExpandedRecipePost({
         ) : null}
 
         {record.recipeCuisine?.length ? (
-          <View style={[a.flex_row, a.align_start, a.gap_sm]}>
-            <Text>{`${plural(record.recipeCuisine.length, {
-              one: 'Cuisine',
-              other: 'Cuisines',
-            })}:`}</Text>
+          <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
+            <Text style={[a.font_medium]}>{`${plural(
+              record.recipeCuisine.length,
+              {
+                one: 'Cuisine',
+                other: 'Cuisines',
+              },
+            )}:`}</Text>
             <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
               {dedupHierarchyOptions(
                 (record.recipeCuisine ?? []).flatMap(path => {
@@ -159,27 +168,36 @@ export function ExpandedRecipePost({
           <View>
             {/* TODO replace labels with icons */}
             {record.prepTime ? (
-              <View>
-                <Text>{`${_(msg`Prep:`)} ${plural(record.prepTime, {
-                  one: '# minute',
-                  other: '# minutes',
-                })}`}</Text>
+              <View style={[a.py_2xs, a.flex_row, a.align_baseline, a.gap_sm]}>
+                <Text style={[a.font_medium]}>{`${_(msg`Prep:`)}`}</Text>
+                <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+                  <Text>{`${plural(record.prepTime, {
+                    one: '# minute',
+                    other: '# minutes',
+                  })}`}</Text>
+                </View>
               </View>
             ) : null}
 
             {record.cookingTime ? (
-              <View>
-                <Text>{`${_(msg`Cook:`)} ${record.cookingTime} ${_(msg`minutes`)}`}</Text>
+              <View style={[a.py_2xs, a.flex_row, a.align_baseline, a.gap_sm]}>
+                <Text style={[a.font_medium]}>{`${_(msg`Cook:`)}`}</Text>
+                <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+                  <Text>{`${record.cookingTime} ${_(msg`minutes`)}`}</Text>
+                </View>
               </View>
             ) : null}
 
             {record.recipeYield ? (
-              <View>
-                <Text>{`${_(msg`Yield:`)} ${record.recipeYield.quantity} ${record.recipeYield.unit}`}</Text>
+              <View style={[a.py_2xs, a.flex_row, a.align_baseline, a.gap_sm]}>
+                <Text style={[a.font_medium]}>{`${_(msg`Yield:`)}`}</Text>
+                <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+                  <Text>{`${record.recipeYield.quantity} ${record.recipeYield.unit}`}</Text>
+                </View>
               </View>
             ) : null}
           </View>
-          <View>
+          <View style={[a.py_sm]}>
             <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Ingredients</Trans>
             </Text>
@@ -187,14 +205,14 @@ export function ExpandedRecipePost({
           <View style={[a.ml_sm]}>
             {record.ingredients.map((ingredient, i) => {
               return (
-                <View key={i} style={[a.flex_row, a.gap_sm]}>
+                <View key={i} style={[a.flex_row, a.gap_sm, a.py_xs]}>
                   <Text
                     emoji>{`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}</Text>
                 </View>
               )
             })}
           </View>
-          <View>
+          <View style={[a.py_sm]}>
             <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Instructions</Trans>
             </Text>
@@ -203,7 +221,7 @@ export function ExpandedRecipePost({
             {record.instructionSections.map(
               ({name, instructions}, sectionIdx) => {
                 return (
-                  <View key={sectionIdx} style={[a.gap_sm]}>
+                  <View key={sectionIdx} style={[a.gap_sm, a.py_xs]}>
                     {name && (
                       <Text emoji style={[a.font_bold]}>
                         {name}
@@ -211,7 +229,7 @@ export function ExpandedRecipePost({
                     )}
                     <View style={[a.ml_sm]}>
                       {instructions.map((instruction, instructionIdx) => (
-                        <View key={instructionIdx}>
+                        <View key={instructionIdx} style={[a.py_xs]}>
                           <Text emoji>
                             {instructionIdx + 1 + '. ' + instruction.text}
                           </Text>
