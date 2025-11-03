@@ -54,11 +54,17 @@ export function Component({
 
   return (
     <ScrollView style={[a.gap_sm]}>
-      <View>
+      <View style={[a.py_sm]}>
         <Text style={[a.text_xl, a.font_bold]}>{revisionContent.name}</Text>
       </View>
-      <View>
+      <View style={[a.py_sm]}>
         <RichText
+          style={[
+            {
+              fontSize: a.text_sm.fontSize,
+              lineHeight: a.text_sm.fontSize * 1.4,
+            },
+          ]}
           value={richText}
           numberOfLines={limitLines ? COLLAPSED_LINE_LIMIT : undefined}
         />
@@ -69,15 +75,15 @@ export function Component({
           />
         )}
       </View>
-      <View>
+      <View style={[a.py_sm]}>
         <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
           <Trans context="recipe">Ingredients</Trans>
         </Text>
       </View>
-      <View style={[a.ml_sm]}>
+      <View style={[a.ml_sm, a.py_xs]}>
         {revisionContent.ingredients.map((ingredient, i) => {
           return (
-            <View key={i}>
+            <View key={i} style={[a.py_2xs]}>
               <Toggle.Item
                 type="checkbox"
                 label={_(msg`Toggle ingredient`)}
@@ -85,7 +91,12 @@ export function Component({
                 onChange={() => dispatch({type: 'toggle_ingredient', idx: i})}
                 value={state.ingredients[i]?.checked}>
                 <Toggle.Checkbox />
-                <Toggle.LabelText style={[a.text_md]}>
+                <Toggle.LabelText
+                  style={[
+                    a.text_md,
+                    a.font_normal,
+                    {lineHeight: a.text_md.fontSize * 1.4},
+                  ]}>
                   {`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}
                 </Toggle.LabelText>
               </Toggle.Item>
@@ -93,7 +104,7 @@ export function Component({
           )
         })}
       </View>
-      <View>
+      <View style={[a.py_sm]}>
         <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
           <Trans context="recipe">Instructions</Trans>
         </Text>
@@ -102,16 +113,16 @@ export function Component({
         {revisionContent.instructionSections.map(
           ({name, instructions}, sectionIdx) => {
             return (
-              <View key={sectionIdx} style={[a.gap_sm]}>
-                {name && <Text style={[a.font_bold]}>{name}</Text>}
-                <View style={[a.ml_sm]}>
+              <View key={sectionIdx} style={[a.gap_sm, a.py_xs]}>
+                {name && <Text style={[a.font_bold, a.py_2xs]}>{name}</Text>}
+                <View style={[a.ml_sm, a.py_xs]}>
                   {instructions.map((instruction, instructionIdx) => {
                     const instructionKey =
                       `${sectionIdx}-${instructionIdx}` as const
                     const hasTimer = timers[instructionKey]
                     return (
                       <View
-                        style={[a.flex_row, a.flex_wrap, a.gap_md]}
+                        style={[a.flex_row, a.flex_wrap, a.gap_md, a.py_2xs]}
                         key={instructionIdx}>
                         <Toggle.Item
                           type="checkbox"
@@ -131,7 +142,12 @@ export function Component({
                           }
                           style={[a.align_start, a.flex_1]}>
                           <Toggle.Checkbox />
-                          <Toggle.LabelText style={[a.text_md]}>
+                          <Toggle.LabelText
+                            style={[
+                              a.text_md,
+                              a.font_normal,
+                              {lineHeight: a.text_md.fontSize * 1.4},
+                            ]}>
                             {`${instructionIdx + 1}. ${instruction.text}`}
                           </Toggle.LabelText>
                         </Toggle.Item>
@@ -172,7 +188,6 @@ export function Component({
       </View>
       <View style={[a.align_center, {marginTop: 4}]}>
         <Button
-          style={{width: '30%'}}
           size="large"
           variant="solid"
           color="primary"
