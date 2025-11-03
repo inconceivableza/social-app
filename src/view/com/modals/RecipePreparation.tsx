@@ -53,7 +53,7 @@ export function Component({
   )
 
   return (
-    <ScrollView style={[a.gap_sm]}>
+    <ScrollView style={[a.gap_sm, a.m_md]}>
       <View style={[a.py_sm]}>
         <Text style={[a.text_xl, a.font_bold]}>{revisionContent.name}</Text>
       </View>
@@ -122,7 +122,13 @@ export function Component({
                     const hasTimer = timers[instructionKey]
                     return (
                       <View
-                        style={[a.flex_row, a.flex_wrap, a.gap_md, a.py_2xs]}
+                        style={[
+                          a.flex_row,
+                          a.flex_wrap,
+                          a.gap_md,
+                          a.py_2xs,
+                          a.align_baseline,
+                        ]}
                         key={instructionIdx}>
                         <Toggle.Item
                           type="checkbox"
@@ -163,13 +169,10 @@ export function Component({
                         ) : (
                           <Button
                             label={_(msg`Create timer`)}
-                            color="primary"
-                            variant="outline"
+                            color="secondary"
+                            variant="solid"
                             shape="round"
-                            style={[
-                              a.flex_grow_0,
-                              {borderColor: 'transparent'},
-                            ]}
+                            style={[a.flex_grow_0, a.p_2xs]}
                             onPress={() =>
                               setTimers(ts => ({...ts, [instructionKey]: true}))
                             }>
@@ -269,50 +272,53 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
   }, [timingState, duration])
   // TODO: used controlled inputs (prevents non numerical values)
   return timingState === 'inactive' ? (
-    <View style={[a.flex_row, {width: '30%'}, a.gap_xs, a.mb_sm]}>
-      <View style={[a.p_0, a.m_0, {width: '29%'}]}>
+    <View style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_baseline]}>
+      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
         <TextField.Root>
           <TextField.Input
-            style={[a.p_0, a.m_0, {height: 24}]}
+            style={[a.p_0, a.m_0, {height: 40}]}
             selectTextOnFocus
             onChangeText={durationCallback('hours')}
             inputMode="decimal"
             label={_(msg`Hours`)}
             defaultValue="00"
           />
-          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`:`)}>
-            :
+          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`h`)}>
+            h
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_0, a.m_0, {width: '29%'}]}>
+      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
-            style={[a.p_0, a.m_0, {height: 24}]}
+            style={[a.p_0, a.m_0, {height: 40}]}
             selectTextOnFocus
             onChangeText={durationCallback('minutes')}
             inputMode="decimal"
             label={_(msg`Minutes`)}
             defaultValue="00"
           />
-          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`:`)}>
-            :
+          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`m`)}>
+            m
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_0, a.m_0, {width: '26%'}]}>
+      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
-            style={[a.p_0, a.m_0, {height: 24}]}
+            style={[a.p_0, a.m_0, {height: 40}]}
             selectTextOnFocus
             onChangeText={durationCallback('seconds')}
             inputMode="decimal"
             label={_(msg`Seconds`)}
             defaultValue="00"
           />
+          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`s`)}>
+            s
+          </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={{maxHeight: 24}}>
+      <View style={[a.flex_col, a.flex_1, {maxHeight: 24}]}>
         <Button
           disabled={durationSeconds <= 0}
           label={_(msg`Start timing`)}
@@ -334,7 +340,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
     <View
       style={[
         a.flex_row,
-        a.align_center,
+        a.align_baseline,
         a.gap_sm,
         a.p_sm,
         {borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400},
@@ -343,7 +349,6 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
         <UITextView
           style={[
             a.font_bold,
-            a.leading_tight,
             timingState === 'complete' ? {color: t.palette.negative_300} : {},
             {fontFamily: 'monospace'},
           ]}>
