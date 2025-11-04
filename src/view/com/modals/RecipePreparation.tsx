@@ -1,14 +1,17 @@
 import {useEffect, useMemo, useState} from 'react'
 import {ScrollView, View} from 'react-native'
+import {runOnJS} from 'react-native-reanimated'
 import {UITextView} from 'react-native-uitextview'
+import * as Notifications from 'expo-notifications'
 import {RichText as RichTextAPI} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {padStart} from 'lodash'
 
 import {type RecipePostView} from '#/lib/api/feed/utils'
+import {useHaptics} from '#/lib/haptics'
 import {countLines} from '#/lib/strings/helpers'
-import {isAndroid} from '#/platform/detection'
+import {isAndroid, isNative} from '#/platform/detection'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
@@ -37,6 +40,7 @@ export function Component({
   const revisionContent = revision.revisionContent
   const t = useTheme()
   const {_} = useLingui()
+  const playHaptic = useHaptics()
   const [state, dispatch] = usePreparationState(revision)
   const richText = useMemo(
     () =>
@@ -52,6 +56,38 @@ export function Component({
   const [timers, setTimers] = useState(
     {} as Record<`${number}-${number}`, boolean>,
   )
+  const scheduleLocalNotification = async (instructionKey: string) => {
+    if (isNative) {
+      console.log('Notification being scheduled')
+      const instructionSection =
+        revisionContent.instructionSections[
+          Number(instructionKey.split('-')[0])
+        ]
+      const sectionName = instructionSection?.name
+        ? `${instructionSection.name} - `
+        : ''
+      const instructionNumber = Number(instructionKey.split('-')[1]) + 1
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: _(msg`Recipe timer finished`),
+          body: _(
+            msg`The countdown for instruction ${sectionName}${instructionNumber} in recipe ${revisionContent.name} has finished.`,
+          ),
+          data: {reason: 'timer', subject: recipePost.uri, instructionKey},
+          sound: 'timer.aiff',
+        },
+        trigger: {
+          seconds: 1,
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          channelId: 'timer',
+        },
+      })
+      console.log('Notification scheduled')
+    } else {
+      console.log('No notifications on web')
+    }
+    runOnJS(playHaptic)('Heavy')
+  }
 
   return (
     <ScrollView style={[a.gap_sm, a.m_md]}>
@@ -166,6 +202,9 @@ export function Component({
                                 return {...ts}
                               })
                             }
+                            onNotify={() =>
+                              scheduleLocalNotification(instructionKey)
+                            }
                           />
                         ) : (
                           <Button
@@ -223,7 +262,13 @@ function displayTime(seconds: number) {
 
 // TODO: play sound when time's up
 // TODO: replace buttons with icons
-function InstructionTimer({onDelete}: {onDelete: () => void}) {
+function InstructionTimer({
+  onDelete,
+  onNotify,
+}: {
+  onDelete: () => void
+  onNotify: () => void
+}) {
   const [seconds, setSeconds] = useState(0)
   const [startTime, setStartTime] = useState<number | null>(null)
   const [timingState, setTimingState] = useState<
@@ -249,8 +294,6 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
   useEffect(() => {
     if (timingState !== 'active') return
 
-    const durationSeconds =
-      duration.hours * 60 * 60 + duration.minutes * 60 + duration.seconds
     const endTime = startTime + durationSeconds * 1000
 
     const id = setInterval(() => {
@@ -264,14 +307,13 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
         clearInterval(id)
         setSeconds(0)
         setTimingState('complete')
-        // TODO: play sound - there's already /assets/dm.mp3, vibrate, visual indicator
-        // and test that alert occurs when in background
+        onNotify()
         return
       }
       setSeconds(Math.round(diff / 1000))
     }, 1000)
     return () => clearInterval(id)
-  }, [timingState, startTime, duration])
+  }, [timingState, startTime, durationSeconds, onNotify])
   // TODO: used controlled inputs (prevents non numerical values)
   const timerButtonSize = isAndroid ? 'sm' : 'xs'
   return timingState === 'inactive' ? (

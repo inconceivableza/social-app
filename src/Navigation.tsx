@@ -118,6 +118,7 @@ import {QuoteNotificationSettingsScreen} from '#/screens/Settings/NotificationSe
 import {ReplyNotificationSettingsScreen} from '#/screens/Settings/NotificationSettings/ReplyNotificationSettings'
 import {RepostNotificationSettingsScreen} from '#/screens/Settings/NotificationSettings/RepostNotificationSettings'
 import {RepostsOnRepostsNotificationSettingsScreen} from '#/screens/Settings/NotificationSettings/RepostsOnRepostsNotificationSettings'
+import {TimerNotificationSettingsScreen} from '#/screens/Settings/NotificationSettings/TimerNotificationSettings'
 import {PrivacyAndSecuritySettingsScreen} from '#/screens/Settings/PrivacyAndSecuritySettings'
 import {SettingsScreen} from '#/screens/Settings/Settings'
 import {ThreadPreferencesScreen} from '#/screens/Settings/ThreadPreferences'
@@ -515,6 +516,14 @@ function commonScreens(Stack: typeof Flat, unreadCountLabel?: string) {
         getComponent={() => MiscellaneousNotificationSettingsScreen}
         options={{
           title: title(msg`Miscellaneous notifications`),
+          requireAuth: true,
+        }}
+      />
+      <Stack.Screen
+        name="TimerNotificationSettings"
+        getComponent={() => TimerNotificationSettingsScreen}
+        options={{
+          title: title(msg`Timer notifications`),
           requireAuth: true,
         }}
       />

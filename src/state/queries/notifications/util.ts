@@ -33,6 +33,7 @@ const GROUPABLE_REASONS = [
   'like-via-repost',
   'repost-via-repost',
   'subscribed-post',
+  'timer',
 ]
 const MS_1HR = 1e3 * 60 * 60
 const MS_2DAY = MS_1HR * 48
@@ -290,7 +291,8 @@ function toKnownType(
     notif.reason === 'unverified' ||
     notif.reason === 'like-via-repost' ||
     notif.reason === 'repost-via-repost' ||
-    notif.reason === 'subscribed-post'
+    notif.reason === 'subscribed-post' ||
+    notif.reason === 'timer'
   ) {
     return notif.reason as NotificationType
   }

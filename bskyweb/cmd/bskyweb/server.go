@@ -382,6 +382,7 @@ func serve(cctx *cli.Context) error {
 	e.GET("/settings/notifications/reposts-on-reposts", server.WebGeneric)
 	e.GET("/settings/notifications/activity", server.WebGeneric)
 	e.GET("/settings/notifications/miscellaneous", server.WebGeneric)
+	e.GET("/settings/notifications/timers", server.WebGeneric)
 	e.GET("/settings/app-icon", server.WebGeneric)
 	e.GET("/sys/debug", server.WebGeneric)
 	e.GET("/sys/debug-mod", server.WebGeneric)

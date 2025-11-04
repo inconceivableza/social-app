@@ -412,7 +412,10 @@ module.exports = function (_config) {
               './assets/icon-android-notification.png',
             ),
             color: '#1185fe',
-            sounds: PLATFORM === 'ios' ? ['assets/dm.aiff'] : ['assets/dm.mp3'],
+            sounds:
+              PLATFORM === 'ios'
+                ? ['assets/dm.aiff', 'assets/timer.aiff']
+                : ['assets/dm.mp3', 'assets/timer.mp3'],
           },
         ],
         'react-native-compressor',

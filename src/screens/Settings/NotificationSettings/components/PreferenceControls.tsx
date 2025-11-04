@@ -18,7 +18,7 @@ export function PreferenceControls({
   preference,
   allowDisableInApp = true,
 }: {
-  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>
+  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'> | 'timer'
   /**
    * Keep other prefs in sync with `name`. For use in the "everything else" category
    * which groups starterpack joins + verified + unverified notifications into a single toggle.
@@ -50,7 +50,7 @@ export function Inner({
   preference,
   allowDisableInApp,
 }: {
-  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>
+  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'> | 'timer'
   syncOthers?: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>[]
   preference:
     | AppBskyNotificationDefs.Preference
