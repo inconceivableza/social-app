@@ -173,7 +173,7 @@ export function Component({
                             color="secondary"
                             variant="solid"
                             shape="round"
-                            style={[a.flex_grow_0, a.p_2xs]}
+                            style={[a.flex_grow_0, a.py_2xs, a.px_sm]}
                             onPress={() =>
                               setTimers(ts => ({...ts, [instructionKey]: true}))
                             }>
@@ -273,9 +273,11 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
     return () => clearInterval(id)
   }, [timingState, startTime, duration])
   // TODO: used controlled inputs (prevents non numerical values)
+  const timerButtonSize = isAndroid ? 'sm' : 'xs'
   return timingState === 'inactive' ? (
-    <View style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_baseline]}>
-      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
+    <View
+      style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_center, {width: '100%'}]}>
+      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
         <TextField.Root>
           <TextField.Input
             style={[a.p_0, a.m_0, {height: 40}]}
@@ -290,7 +292,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1]}>
+      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
             style={[a.p_0, a.m_0, {height: 40}]}
@@ -305,7 +307,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1]}>
+      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
             style={[a.p_0, a.m_0, {height: 40}]}
@@ -320,15 +322,21 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.flex_col, a.flex_1, {maxHeight: 24}]}>
+      <View
+        style={[
+          a.p_xs,
+          a.m_0,
+          a.flex_row,
+          a.flex_0,
+          a.align_start,
+          {alignItems: 'center', columnGap: 4},
+        ]}>
         <Button
           disabled={durationSeconds <= 0}
           label={_(msg`Start timing`)}
-          style={{height: 28}}
           variant="solid"
           color="primary"
           size="small"
-          shape="round"
           onPress={() => {
             if (durationSeconds <= 0) return
             setSeconds(durationSeconds)
@@ -336,6 +344,14 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
             setTimingState('active')
           }}>
           <ButtonIcon icon={PlayIcon} />
+        </Button>
+        <Button
+          label={_(msg`Cancel timer setup`)}
+          onPress={onDelete}
+          variant="solid"
+          color="primary"
+          size="small">
+          <ButtonIcon icon={TrashIcon} />
         </Button>
       </View>
     </View>
@@ -376,7 +392,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
             setStartTime(Date.now())
             setTimingState('paused')
           }}>
-          <ButtonIcon icon={PauseIcon} size="xs" />
+          <ButtonIcon icon={PauseIcon} size={timerButtonSize} />
         </Button>
       )}
       {timingState === 'paused' && (
@@ -386,11 +402,11 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
             setStartTime(Date.now())
             setTimingState('active')
           }}>
-          <ButtonIcon icon={PlayIcon} size="xs" />
+          <ButtonIcon icon={PlayIcon} size={timerButtonSize} />
         </Button>
       )}
       <Button label={_(msg`Quit timer`)} onPress={onDelete}>
-        <ButtonIcon icon={TrashIcon} size="xs" />
+        <ButtonIcon icon={TrashIcon} size={timerButtonSize} />
       </Button>
     </View>
   )
