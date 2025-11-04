@@ -343,7 +343,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
     <View
       style={[
         a.flex_row,
-        a.align_baseline,
+        a.align_center,
         a.gap_sm,
         a.p_sm,
         {borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400},
@@ -351,9 +351,13 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
       <View>
         <UITextView
           style={[
-            a.font_bold,
-            timingState === 'complete' ? {color: t.palette.negative_300} : {},
-            {fontFamily: 'monospace'},
+            timingState === 'complete'
+              ? {color: t.palette.negative_300}
+              : {color: t.palette.contrast_700},
+            {
+              fontFamily: 'monospace, ui-monospace',
+              fontVariant: 'tabular-nums',
+            },
           ]}>
           {displayTime(seconds)}
         </UITextView>
