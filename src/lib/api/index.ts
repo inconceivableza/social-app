@@ -565,8 +565,24 @@ async function resolveReply(
   replyTo: ComAtprotoRepoStrongRef.Main,
 ) {
   const replyToUrip = new AtUri(replyTo.uri)
-  // TODO: use a utility function for checking the uri collection
-  const parentPost = await (isRecipeUri(replyTo.uri)
+  if (replyToUrip.collection === ids.AppFoodiosFeedReviewRating) {
+    const parentPost = await agent.getReviewRating({
+      repo: replyToUrip.host,
+      rkey: replyToUrip.rkey,
+    })
+    if (parentPost) {
+      const parentRef: ComAtprotoRepoStrongRef.Main = {
+        uri: parentPost.uri,
+        cid: parentPost.cid,
+        revisionUri: replyTo.revisionUri,
+      }
+      return {
+        root: parentPost.value.subject,
+        parent: parentRef,
+      }
+    }
+  }
+  const parentPost = await (replyToUrip.collection === ids.AppFoodiosFeedRecipePost
     ? agent.getRecipePost({
         repo: replyToUrip.host,
         rkey: replyToUrip.rkey,

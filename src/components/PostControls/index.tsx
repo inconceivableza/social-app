@@ -205,11 +205,6 @@ let PostControls = ({
 
   const constitutesRating = AppFoodiosFeedReviewRating.isRecord(record)
   const receivesRatings = AppFoodiosFeedDefs.isRecipeRevisionView(record)
-  const reviewCount = post?.reviewCount ?? undefined
-  const replyCount: number | undefined =
-    post.replyCount !== undefined && reviewCount === undefined
-      ? undefined
-      : (post.replyCount ?? 0) + (reviewCount ?? 0)
   const aggRatingAverage100 = post?.ratingAverage100 ?? undefined
   const aggRatingCount = post?.ratingCount ?? undefined
   const receivedRatings = receivesRatings
@@ -235,6 +230,7 @@ let PostControls = ({
           ratingCount: undefined,
         }
       : {showRatings: false, rating: undefined, ratingCount: 0}
+  const replyCount = (post.replyCount ?? 0) + (ratingCount ?? 0)
 
   const secondaryControlSpacingStyles = flatten([
     {gap: 0}, // default, we want `gap` to be defined on the resulting object

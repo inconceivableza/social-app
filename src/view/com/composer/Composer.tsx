@@ -404,6 +404,11 @@ export const ComposePost = ({
       return
     }
 
+    if (postType === "review-rating" && thread.posts[0].rating === undefined) {
+      setError(_(msg`Please provide a rating`))
+      return
+    }
+
     if (
       thread.posts.some(
         post =>
@@ -935,8 +940,8 @@ let ComposerPost = React.memo(function ComposerPost({
             <View style={[a.m_0, a.align_start]}>
               <Button
                 key={'stars'}
-                variant={unrated ? 'gradient' : 'ghost'}
-                color={unrated ? 'gradient_midnight' : 'secondary'}
+                variant={'outline'}
+                color={'secondary'}
                 shape="square"
                 label=""
                 style={[a.ml_md, a.p_sm, a.align_start, a.justify_start]}
@@ -958,10 +963,7 @@ let ComposerPost = React.memo(function ComposerPost({
                                   : post.rating === i - 0.5
                                     ? undefined
                                     : i
-                            console.log(
-                              `Pressed ${i}, setting rating to ${newRating} after ${post.rating}; halfStars=${halfStars}`,
-                            )
-                            colors.black
+
                             dispatchPost({
                               type: 'update_rating',
                               rating: newRating,
@@ -971,6 +973,7 @@ let ComposerPost = React.memo(function ComposerPost({
                           accessibilityHint="Set rating">
                           <ButtonIcon
                             icon={
+                              unrated ? Star_Empty :
                               i * 2 <= halfStars
                                 ? Star_Filled
                                 : i * 2 - 1 <= halfStars
