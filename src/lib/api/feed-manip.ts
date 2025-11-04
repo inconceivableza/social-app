@@ -5,14 +5,19 @@ import {
   AppBskyFeedDefs,
   AppBskyFeedPost,
   type AppFoodiosFeedDefs,
-  AppFoodiosFeedReviewRating,
+  type AppFoodiosFeedReviewRating,
 } from '@atproto/api'
 
 import * as bsky from '#/types/bsky'
 import {isPostInLanguage} from '../../locale/helpers'
 import {FALLBACK_MARKER_POST} from './feed/home'
 import {type ReasonFeedSource} from './feed/types'
-import { isRecipePostView, isReviewRatingView, ReviewRatingView, type RecipePostView } from './feed/utils'
+import {
+  isRecipePostView,
+  isReviewRatingView,
+  type RecipePostView,
+  type ReviewRatingView,
+} from './feed/utils'
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost
 
@@ -37,10 +42,10 @@ type FeedSliceItem =
       record: AppFoodiosFeedDefs.RecipeRevisionView
     }
   | {
-    type: 'review'
-    post: ReviewRatingView
-    record: AppFoodiosFeedReviewRating.Record
-  }
+      type: 'review'
+      post: ReviewRatingView
+      record: AppFoodiosFeedReviewRating.Record
+    }
 
 type AuthorContext = {
   author: AppBskyActorDefs.ProfileViewBasic

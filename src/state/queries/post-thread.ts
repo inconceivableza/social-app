@@ -5,7 +5,7 @@ import {
   type AppBskyFeedGetPostThread,
   AppBskyFeedPost,
   AppFoodiosFeedDefs,
-  AppFoodiosFeedReviewRating,
+  type AppFoodiosFeedReviewRating,
   AtUri,
   moderatePost,
   moderateRecipe,
@@ -14,6 +14,7 @@ import {
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
+import {type ReviewRatingView} from '#/lib/api/feed/utils'
 import {
   findAllPostsInQueryData as findAllPostsInExploreFeedPreviewsQueryData,
   findAllProfilesInQueryData as findAllProfilesInExploreFeedPreviewsQueryData,
@@ -40,7 +41,6 @@ import {
   embedViewRecordToPostView,
   getEmbeddedPost,
 } from './util'
-import { ReviewRatingView } from '#/lib/api/feed/utils'
 
 const REPLY_TREE_DEPTH = 10
 export const RQKEY_ROOT = 'post-thread'
@@ -691,7 +691,7 @@ function postViewToPlaceholderThread(post: AnyPostView): ThreadNode {
     throw new Error('unexpected post type')
   }
 
-  const { record } = post
+  const {record} = post
   if (AppBskyFeedPost.isRecord(record)) {
     return {
       type: 'post',

@@ -27,7 +27,11 @@ import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
-import { aggregateUserInterests, ReviewRatingView, type RecipePostView } from '#/lib/api/feed/utils'
+import {
+  aggregateUserInterests,
+  type RecipePostView,
+  type ReviewRatingView,
+} from '#/lib/api/feed/utils'
 import {FeedTuner, type FeedTunerFn} from '#/lib/api/feed-manip'
 import {
   branding,
@@ -425,7 +429,7 @@ export function usePostFeedQuery(
                             post: item.post,
                             record: item.record,
                           }
-                      } 
+                      }
                     }),
                   }
                   return feedPostSlice

@@ -10,10 +10,10 @@ import {
 import {useGetPost} from '#/state/queries/post'
 import {LINEAR_AVI_WIDTH} from '#/screens/PostThread/const'
 import {atoms as a} from '#/alf'
-import { Embed, PostEmbedViewContext } from '#/components/Post/Embed'
+import {Embed, PostEmbedViewContext} from '#/components/Post/Embed'
+import {ExpandedRecipePost} from '../posts/ExpandableRecipePost'
 import {PostMeta} from '../util/PostMeta'
 import {PreviewableUserAvatar} from '../util/UserAvatar'
-import { ExpandedRecipePost } from '../posts/ExpandableRecipePost'
 
 export const snapPoints = ['fullscreen']
 
@@ -23,7 +23,7 @@ export function Component({uri}: {uri: string}) {
   useEffect(() => {
     let cancelled = false
     getPost({uri}).then(
-        result => !cancelled && isRecipePostView(result) && setPost(result),
+      result => !cancelled && isRecipePostView(result) && setPost(result),
     )
     return () => {
       cancelled = true

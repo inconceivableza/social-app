@@ -2,7 +2,6 @@ import {memo, useMemo, useState} from 'react'
 import {type Insets} from 'react-native'
 import {
   type AppBskyFeedDefs,
-  type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
   type RichText as RichTextAPI,
 } from '@atproto/api'
@@ -35,7 +34,7 @@ let PostMenuButton = ({
   post: Shadow<AppBskyFeedDefs.PostView>
   postFeedContext: string | undefined
   postReqId: string | undefined
-    big?: boolean
+  big?: boolean
   richText: RichTextAPI
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record

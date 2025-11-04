@@ -1,4 +1,8 @@
-import { AppBskyFeedPost, AppFoodiosFeedDefs, type AppBskyFeedDefs } from '@atproto/api'
+import {
+  type AppBskyFeedDefs,
+  type AppBskyFeedPost,
+  type AppFoodiosFeedDefs,
+} from '@atproto/api'
 
 export interface FeedAPIResponse {
   cursor?: string
@@ -31,4 +35,6 @@ export function isReasonFeedSource(v: unknown): v is ReasonFeedSource {
   )
 }
 
-export type PostRecordField = AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
+export type PostRecordField =
+  | AppBskyFeedPost.Record
+  | AppFoodiosFeedDefs.RecipeRevisionView
