@@ -5,6 +5,7 @@ import {
   type AppBskyFeedDefs,
   AppBskyFeedPost,
   AppFoodiosFeedDefs,
+  AppFoodiosFeedReviewRating,
   moderatePost,
   RichText as RichTextAPI,
 } from '@atproto/api'
@@ -50,6 +51,7 @@ import {
   QuoteEmbedViewContext,
 } from './types'
 import {VideoEmbed} from './VideoEmbed'
+import { ReadOnlyRatingStars } from '#/components/StarRatings'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -282,7 +284,15 @@ export function QuoteEmbed({
             text: recipePostSummaryRichText(quote.record.revisionContent),
           })
         : undefined
-    } else {
+    } else if (bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+      quote.record,
+      AppFoodiosFeedReviewRating.isRecord)) {
+      const { text } = quote.record
+      return text ? new RichTextAPI({
+        text
+      }) : undefined
+    }
+    else {
       return undefined
     }
   }, [quote.record])
@@ -346,6 +356,10 @@ export function QuoteEmbed({
                   disableLinks
                 />
               ) : null}
+
+              {bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(quote.record, AppFoodiosFeedReviewRating.isRecord) ?
+                <ReadOnlyRatingStars record={quote.record} /> : null}
+
               {quote.embed && (
                 <PostAuthorDidProvider did={quote.author.did}>
                   <Embed

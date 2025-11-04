@@ -28,7 +28,7 @@ import {createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {createGIFDescription} from '../gif-alt-text'
 import {convertBskyAppUrlIfNeeded, makeRecordUri} from '../strings/url-helpers'
-import {isRecipePostView, type RecipePostView} from './feed/utils'
+import { isRecipePostView, isReviewRatingView, ReviewRatingView, type RecipePostView } from './feed/utils'
 
 type ResolvedExternalLink = {
   type: 'external'
@@ -73,6 +73,13 @@ interface ResolvedRecipePost {
   view: RecipePostView
 }
 
+interface ResolvedReviewPost {
+  type: 'record'
+  record: ComAtprotoRepoStrongRef.Main
+  kind: 'review'
+  view: ReviewRatingView
+}
+
 export type ResolvedLink =
   | ResolvedExternalLink
   | ResolvedPostRecord
@@ -80,7 +87,7 @@ export type ResolvedLink =
   | ResolvedListRecord
   | ResolvedStarterPackRecord
   | ResolvedRecipePost
-
+  | ResolvedReviewPost
 export class EmbeddingDisabledError extends Error {
   constructor() {
     super('Embedding is disabled for this record')
@@ -102,6 +109,8 @@ export async function resolveLink(
       collection = ids.AppFoodiosFeedRecipePost
     } else if (postType === 'post') {
       collection = ids.AppBskyFeedPost
+    } else if (postType === 'reviewRating') {
+      collection = ids.AppFoodiosFeedReviewRating
     } else {
       throw new Error('unknown post type ' + uri)
     }
@@ -120,6 +129,16 @@ export async function resolveLink(
         },
         kind: 'recipePost',
         view: post,
+      }
+    } else if (isReviewRatingView(post)) {
+      return {
+        type: 'record',
+        record: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+        kind: 'review',
+        view: post
       }
     }
     return {

@@ -33,6 +33,24 @@ export function LazyQuoteEmbed({uri}: {uri: string}) {
         embeds: view.embed ? [view.embed] : [],
       }
       return viewRec
+    } else if (data.kind === 'review') {
+      const { view } = data
+
+      const viewRec: $Typed<AppBskyEmbedRecord.ViewRecord> = {
+        $type: 'app.bsky.embed.record#viewRecord',
+        uri: view.uri,
+        cid: view.cid,
+        author: view.author,
+        value: view.record,
+        labels: view.labels,
+        replyCount: view.replyCount,
+        repostCount: view.repostCount,
+        likeCount: view.likeCount,
+        quoteCount: view.quoteCount,
+        indexedAt: view.indexedAt,
+        embeds: view.images ? [view.images] : [],
+      }
+      return viewRec
     }
   }, [data])
 

@@ -3,6 +3,13 @@ import Svg, {Path} from 'react-native-svg'
 
 import {colors} from '#/lib/styles'
 import {type Props, useCommonSVGProps} from './icons/common'
+import { AppFoodiosFeedReviewRating } from '@atproto/api'
+import { View } from 'react-native'
+import { atoms as a } from '#/alf'
+import { PostControlButton, PostControlButtonIcon, PostControlButtonText } from './PostControls/PostControlButton'
+import { formatRating } from '#/view/com/util/numeric/format'
+import { useLingui } from '@lingui/react'
+import { msg } from '@lingui/macro'
 
 export function getHalfStars(rating: number) {
   if (rating < 0) return 0
@@ -83,4 +90,30 @@ export const getStarsSVG = (rating: number) => {
   const roundedRating =
     rating === undefined ? undefined : starsSVG.get(Math.round(rating * 2) / 2)
   return roundedRating ?? unratedSVG
+}
+
+export function ReadOnlyRatingStars({ record }: { record: AppFoodiosFeedReviewRating.Record }) {
+  const { _, i18n } = useLingui()
+
+  const rating = halveStars(record.reviewRating)
+  return <View
+    style={[a.flex_1, a.align_start, { marginLeft: -6 }]}>
+    <PostControlButton
+      disabled
+      testID="rateBtn"
+      label={_(msg`Rating stars`)}
+    >
+      <PostControlButtonIcon
+        icon={
+          rating === undefined ? unratedSVG : getStarsSVG(rating)
+        }
+      />
+      <PostControlButtonText
+        style={rating === undefined && { fontStyle: 'italic' }}>
+        {rating !== undefined
+          ? formatRating(i18n, rating, undefined)
+          : 'No rating given'}
+      </PostControlButtonText>
+    </PostControlButton>
+  </View>
 }
