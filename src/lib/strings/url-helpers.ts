@@ -36,6 +36,20 @@ export function isValidDomain(str: string): boolean {
   })
 }
 
+const postTypeMap: Record<string, string> = {
+  "post": ids.AppBskyFeedPost,
+  "recipePost": ids.AppFoodiosFeedRecipePost,
+  "reviewRating": ids.AppFoodiosFeedReviewRating
+}
+
+export function routeParamsToRecordUri({ postType, rkey, name }: { postType: string, rkey: string, name: string }) {
+  const collection = postTypeMap[postType]
+  if (!collection) {
+    throw new Error("unknown post type " + postType)
+  }
+  return makeRecordUri(name, collection, rkey)
+}
+
 export function makeRecordUri(
   didOrName: string,
   collection: string,

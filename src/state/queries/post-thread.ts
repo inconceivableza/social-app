@@ -5,7 +5,7 @@ import {
   type AppBskyFeedGetPostThread,
   AppBskyFeedPost,
   AppFoodiosFeedDefs,
-  type AppFoodiosFeedReviewRating,
+  AppFoodiosFeedReviewRating,
   AtUri,
   moderatePost,
   moderateRecipe,
@@ -14,7 +14,7 @@ import {
 } from '@atproto/api'
 import {type QueryClient, useQuery, useQueryClient} from '@tanstack/react-query'
 
-import {type ReviewRatingView} from '#/lib/api/feed/utils'
+import { isReviewRatingView, type ReviewRatingView } from '#/lib/api/feed/utils'
 import {
   findAllPostsInQueryData as findAllPostsInExploreFeedPreviewsQueryData,
   findAllProfilesInQueryData as findAllProfilesInExploreFeedPreviewsQueryData,
@@ -126,7 +126,6 @@ export type PostThreadQueryData = {
 }
 
 export function usePostThreadQuery(uri: string | undefined) {
-  //
   const queryClient = useQueryClient()
   const agent = useAgent()
   return useQuery<PostThreadQueryData, Error>({
@@ -178,7 +177,7 @@ export function fillThreadModerationCache(
       }
     }
   } else if (node.type === 'recipe') {
-    cache.set(node, moderateRecipe(node.post, moderationOpts))
+    cache.set(node, moderateRecipe())
     if (node.replies) {
       for (const reply of node.replies) {
         fillThreadModerationCache(cache, reply, moderationOpts)
@@ -451,6 +450,30 @@ function responseToThreadNodes(
           hasMoreSelfThread: false, // populated in `annotateSelfThread`
         },
       }
+    } else if (isReviewRatingView(post)) {
+      return {
+        type: 'review',
+        _reactKey: node.post.uri,
+        uri: node.post.uri,
+        post: post,
+        record: post.record,
+        replies:
+          node.replies?.length && direction !== 'up'
+            ? node.replies
+              .map(reply => responseToThreadNodes(reply, depth + 1, 'down'))
+              // do not show blocked posts in replies
+              .filter(node => node.type !== 'blocked')
+            : undefined,
+        hasOPLike: Boolean(node?.threadContext?.rootAuthorLike),
+        ctx: {
+          depth,
+          isHighlightedPost: depth === 0,
+          hasMore:
+            direction === 'down' && !node.replies?.length && !!post.replyCount,
+          isSelfThread: false, // populated `annotateSelfThread`
+          hasMoreSelfThread: false, // populated in `annotateSelfThread`
+        },
+      }
     } else {
       return {type: 'unknown', uri: ''}
     }
@@ -516,7 +539,7 @@ function findPostInQueryData(
 ): ThreadNode | void {
   let partial
   for (let item of findAllPostsInQueryData(queryClient, uri)) {
-    if (item.type === 'post' || item.type === 'recipe') {
+    if (item.type === 'post' || item.type === 'recipe' || item.type === 'review') {
       // Currently, the backend doesn't send full post info in some cases
       // (for example, for quoted posts). We use missing `likeCount`
       // as a way to detect that. In the future, we should fix this on
@@ -549,7 +572,7 @@ export function* findAllPostsInQueryData(
     const {thread} = queryData
     for (const item of traverseThread(thread)) {
       if (
-        (item.type === 'post' || item.type === 'recipe') &&
+        (item.type === 'post' || item.type === 'recipe' || item.type === 'review') &&
         didOrHandleUriMatches(atUri, item.post)
       ) {
         const placeholder = threadNodeToPlaceholderThread(item)
@@ -602,7 +625,7 @@ export function* findAllProfilesInQueryData(
     const {thread} = queryData
     for (const item of traverseThread(thread)) {
       if (
-        (item.type === 'post' || item.type === 'recipe') &&
+        (item.type === 'post' || item.type === 'recipe' || item.type === 'review') &&
         item.post.author.did === did
       ) {
         yield item.post.author
@@ -648,7 +671,7 @@ function* traverseThread(node: ThreadNode): Generator<ThreadNode, void> {
 function threadNodeToPlaceholderThread(
   node: ThreadNode,
 ): ThreadNode | undefined {
-  if (node.type === 'post') {
+  if (node.type === 'post' || node.type === 'recipe' || node.type === "review") {
     return {
       type: node.type,
       _reactKey: node._reactKey,
@@ -666,24 +689,8 @@ function threadNodeToPlaceholderThread(
         isChildLoading: !!node.post.replyCount,
       },
     }
-  } else if (node.type === 'recipe') {
-    return {
-      type: node.type,
-      _reactKey: node._reactKey,
-      uri: node.uri,
-      post: node.post,
-      record: node.record,
-      replies: undefined,
-      hasOPLike: undefined,
-      ctx: {
-        depth: 0,
-        isHighlightedPost: true,
-        hasMore: false,
-        isParentLoading: false, // TODO: fix
-        isChildLoading: !!node.post.replyCount,
-      },
-    }
-  }
+  } 
+
 }
 
 function postViewToPlaceholderThread(post: AnyPostView): ThreadNode {
