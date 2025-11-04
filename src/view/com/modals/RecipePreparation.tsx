@@ -14,6 +14,7 @@ import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
 import * as Toggle from '#/components/forms/Toggle'
 import {Clock_Stroke2_Corner0_Rounded as ClockIcon} from '#/components/icons/Clock'
+import {Pause_Filled_Corner0_Rounded as PauseIcon} from '#/components/icons/Pause'
 import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
@@ -224,8 +225,9 @@ function displayTime(seconds: number) {
 // TODO: replace buttons with icons
 function InstructionTimer({onDelete}: {onDelete: () => void}) {
   const [seconds, setSeconds] = useState(0)
+  const [startTime, setStartTime] = useState<number | null>(null)
   const [timingState, setTimingState] = useState<
-    'inactive' | 'active' | 'complete'
+    'inactive' | 'active' | 'paused' | 'complete'
   >('inactive')
   const [duration, setDuration] = useState({hours: 0, minutes: 0, seconds: 0}) // Duration in seconds
   const {_} = useLingui()
@@ -249,7 +251,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
 
     const durationSeconds =
       duration.hours * 60 * 60 + duration.minutes * 60 + duration.seconds
-    const endTime = Date.now() + durationSeconds * 1000
+    const endTime = startTime + durationSeconds * 1000
 
     const id = setInterval(() => {
       const diff = endTime - Date.now()
@@ -269,7 +271,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
       setSeconds(Math.round(diff / 1000))
     }, 1000)
     return () => clearInterval(id)
-  }, [timingState, duration])
+  }, [timingState, startTime, duration])
   // TODO: used controlled inputs (prevents non numerical values)
   return timingState === 'inactive' ? (
     <View style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_baseline]}>
@@ -330,6 +332,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           onPress={() => {
             if (durationSeconds <= 0) return
             setSeconds(durationSeconds)
+            setStartTime(Date.now())
             setTimingState('active')
           }}>
           <ButtonIcon icon={PlayIcon} />
@@ -355,8 +358,35 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           {displayTime(seconds)}
         </UITextView>
       </View>
-      <Button label={_(msg`Stop timer`)} onPress={onDelete}>
-        <ButtonIcon icon={TrashIcon} />
+      {timingState === 'active' && (
+        <Button
+          label={_(msg`Pause timer`)}
+          onPress={() => {
+            const hours = Math.trunc(seconds / 3600)
+            const minuteSeconds = seconds - hours * 3600
+            setDuration({
+              hours,
+              minutes: Math.trunc(minuteSeconds / 60),
+              seconds: minuteSeconds % 60,
+            })
+            setStartTime(Date.now())
+            setTimingState('paused')
+          }}>
+          <ButtonIcon icon={PauseIcon} size="xs" />
+        </Button>
+      )}
+      {timingState === 'paused' && (
+        <Button
+          label={_(msg`Play timer`)}
+          onPress={() => {
+            setStartTime(Date.now())
+            setTimingState('active')
+          }}>
+          <ButtonIcon icon={PlayIcon} size="xs" />
+        </Button>
+      )}
+      <Button label={_(msg`Quit timer`)} onPress={onDelete}>
+        <ButtonIcon icon={TrashIcon} size="xs" />
       </Button>
     </View>
   )
