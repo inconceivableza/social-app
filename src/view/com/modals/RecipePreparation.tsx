@@ -292,7 +292,7 @@ function InstructionTimer({
   }
 
   useEffect(() => {
-    if (timingState !== 'active') return
+    if (timingState !== 'active' || startTime === null) return
 
     const endTime = startTime + durationSeconds * 1000
 
