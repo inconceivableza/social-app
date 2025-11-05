@@ -57,7 +57,7 @@ for PACKAGE_JSON in package.json packages/*/package.json; do
   PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON")
   PACKAGE_VERSION=$(jq -r .version "$PACKAGE_JSON")
   PACKAGE_DIR="$(dirname "$PACKAGE_JSON")"
-  if [ "$PACKAGE_DIR" == "."]; then
+  if [ "$PACKAGE_DIR" -eq "."]; then
     echo "  ✓ Extracted: $PACKAGE_NAME@$PACKAGE_VERSION at $PACKAGE_DIR"
   elif [ -d "$PACKAGE_DIR/dist" ]; then
     echo "  ✓ Extracted and built: $PACKAGE_NAME@$PACKAGE_VERSION at $PACKAGE_DIR"
