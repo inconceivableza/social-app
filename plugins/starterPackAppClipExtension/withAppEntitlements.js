@@ -6,9 +6,13 @@ const withAppEntitlements = config => {
     config.modResults['com.apple.security.application-groups'] = [
       config.extra.branding.code.apple_groups,
     ]
+    const clipBundleIdSuffix =
+      config.extra?.branding?.code?.ios_clip_name || 'BlueskyClip'
     config.modResults[
       'com.apple.developer.associated-appclip-app-identifiers'
-    ] = [`$(AppIdentifierPrefix)${config.ios.bundleIdentifier}.AppClip`]
+    ] = [
+      `$(AppIdentifierPrefix)${config.ios.bundleIdentifier}.${clipBundleIdSuffix}`,
+    ]
     return config
   })
 }
