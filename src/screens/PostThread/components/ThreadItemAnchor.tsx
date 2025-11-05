@@ -110,6 +110,7 @@ export function ThreadItemAnchor({
       key={postShadow.uri}
       item={item}
       isRoot={isRoot}
+      onPostSuccess={onPostSuccess}
       postShadow={postShadow}
       onReviewRateSuccess={onReviewRateSuccess}
       threadgateRecord={threadgateRecord}
@@ -203,8 +204,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const t = useTheme()
   const {_} = useLingui()
   const {openComposer} = useOpenComposer()
-  const {currentAccount, hasSession} = useSession()
-  const queryClient = useQueryClient()
+  const { currentAccount, hasSession } = useSession()
   const {gtTablet} = useBreakpoints()
   const feedFeedback = useFeedFeedback(postSource?.feedSourceInfo, hasSession)
   const formatPostStatCount = useFormatPostStatCount()
@@ -213,8 +213,6 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const moderation = item.moderation
   const authorShadow = useProfileShadow(post.author)
   const {isActive: live} = useActorStatus(post.author)
-
-
 
   const richText = useMemo(
     () =>
@@ -314,6 +312,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     openComposer,
     post,
     record,
+    onPostSuccess,
     moderation,
     postSource,
     feedFeedback,
