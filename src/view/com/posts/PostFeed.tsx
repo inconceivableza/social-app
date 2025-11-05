@@ -299,7 +299,7 @@ let PostFeed = ({
     // more than 1 page can trigger some UI freakouts on iOS and android
     // -prf
     if (
-      data?.pages.length === 1 &&
+      data?.pages.filter(p => !!p.slices.length).length === 1 &&
       (feed === 'following' ||
         feed === `author|${myDid}|posts_and_author_threads`)
     ) {
