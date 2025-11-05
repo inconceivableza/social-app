@@ -29,8 +29,7 @@ export type ComposerOptsPostRef = ComAtprotoRepoStrongRef.Main & {
 export type OnPostSuccessData =
   | {
       replyToUri?: string
-      posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
-      wasEdited?: boolean
+    posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
     }
   | undefined
 

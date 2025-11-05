@@ -29,7 +29,7 @@ import {Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
 
-import {type RecipePostView} from '#/lib/api/feed/utils'
+import { isRecipePostView, type RecipePostView } from '#/lib/api/feed/utils'
 import * as apilib from '#/lib/api/index'
 import {retry} from '#/lib/async/retry'
 import {HITSLOP_20, MAX_RECIPE_TITLE_GRAPHEME_LENGTH} from '#/lib/constants'
@@ -95,6 +95,7 @@ import {
 import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
 import {uploadVideoDirect} from './state/video'
 import {isTextInputRef, type TextInputRef} from './text-input/TextInput.types'
+import { AppBskyUnspeccedDefs } from '@atproto/api'
 
 const msgs = {
   button_add_ingredient: msg({
@@ -152,9 +153,7 @@ export function ComposerRecipe({
     setIsPublishing(true)
     try {
       if (edit) {
-        const parentRevisionUri = edit.record?.selectedRevisionUri
-        let updatedPosts = null
-        await apilib.postRecipeRevision(agent, queryClient, {
+        const newUri = await apilib.postRecipeRevision(agent, queryClient, {
           post: state,
           parentRevisionPost: edit,
         })
@@ -164,20 +163,27 @@ export function ComposerRecipe({
             5,
             () => true,
             async () => {
-              const {data} = await agent.app.bsky.feed.getPosts({
-                uris: [edit.uri],
+              const { data } = await agent.app.bsky.unspecced.getPostThreadV2({
+                anchor: edit.uri,
+                above: false,
+                below: 0,
+                branchingFactor: 0,
               })
-              if (data.posts.length < 1) {
+              if (data.thread.length !== 1) {
                 throw new Error(`composer: app view is not ready`)
               }
+              const newItem = data.thread[0].value
+              if (!AppBskyUnspeccedDefs.isThreadItemPost(newItem) || !isRecipePostView(newItem.post)) {
+                throw new Error(`composer: unexpected return value`)
+              }
               if (
-                data.posts[0].record?.selectedRevisionUri === parentRevisionUri
+                newItem.post.record?.selectedRevisionUri !== newUri
               ) {
                 throw new Error(
                   `composer: app view still has previous revision`,
                 )
               }
-              updatedPosts = data.posts
+              onPostSuccess?.({ posts: data.thread })
             },
             1e3,
           )
@@ -189,13 +195,6 @@ export function ComposerRecipe({
         emitPostCreated()
         closeComposer()
         Toast.show(_(msg`Your recipe has been updated`))
-        if (updatedPosts !== null && onPostSuccess) {
-          let postSuccessData: OnPostSuccessData = {
-            posts: updatedPosts,
-            wasEdited: true,
-          }
-          onPostSuccess(postSuccessData)
-        }
       } else {
         const postUri = await apilib.postRecipe(agent, queryClient, {
           post: state,

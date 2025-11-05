@@ -311,7 +311,9 @@ export async function postRecipeRevision(
 ) {
   const now = new Date()
   const tid = TID.next()
+  const did = agent.assertDid
   const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipeRevision}/${rkey}`
 
   const [rt, embed] = await Promise.all([
     resolveRT(agent, post.text),
@@ -356,6 +358,8 @@ export async function postRecipeRevision(
       writes: writes,
       validate: true,
     })
+
+    return uri
   } catch (e: any) {
     logger.error(`Failed to create recipe post`, {
       safeMessage: e.message,
