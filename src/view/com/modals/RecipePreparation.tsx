@@ -19,6 +19,7 @@ import * as Toggle from '#/components/forms/Toggle'
 import {Clock_Stroke2_Corner0_Rounded as ClockIcon} from '#/components/icons/Clock'
 import {Pause_Filled_Corner0_Rounded as PauseIcon} from '#/components/icons/Pause'
 import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
+import {PlusLarge_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {RichText} from '#/components/RichText'
@@ -291,6 +292,20 @@ function InstructionTimer({
     }
   }
 
+  function onAnotherMinute() {
+    setDuration({
+      hours: duration.hours,
+      minutes: duration.minutes + 1,
+      seconds: duration.seconds,
+    })
+    if (timingState === 'active' || timingState === 'paused') {
+      setSeconds(seconds + 60)
+    } else if (timingState === 'complete') {
+      setSeconds(seconds + 60)
+      setTimingState('paused')
+    }
+  }
+
   useEffect(() => {
     if (timingState !== 'active' || startTime === null) return
 
@@ -305,13 +320,14 @@ function InstructionTimer({
 
       if (diff <= 0) {
         clearInterval(id)
+        setDuration({hours: 0, minutes: 0, seconds: 0})
         setSeconds(0)
         setTimingState('complete')
         onNotify()
         return
       }
       setSeconds(Math.round(diff / 1000))
-    }, 1000)
+    }, 250)
     return () => clearInterval(id)
   }, [timingState, startTime, durationSeconds, onNotify])
   // TODO: used controlled inputs (prevents non numerical values)
@@ -411,7 +427,9 @@ function InstructionTimer({
           style={[
             timingState === 'complete'
               ? {color: t.palette.negative_300}
-              : {color: t.palette.contrast_700},
+              : timingState === 'paused'
+                ? {color: t.palette.contrast_700}
+                : {color: t.palette.primary_700},
             {
               fontFamily: 'monospace, ui-monospace',
               fontVariant: 'tabular-nums',
@@ -420,9 +438,12 @@ function InstructionTimer({
           {displayTime(seconds)}
         </UITextView>
       </View>
-      {timingState === 'active' && (
+      {(timingState === 'active' || timingState === 'complete') && (
         <Button
           label={_(msg`Pause timer`)}
+          disabled={timingState === 'complete'}
+          variant="ghost"
+          color={timingState === 'complete' ? 'secondary' : 'primary'}
           onPress={() => {
             const hours = Math.trunc(seconds / 3600)
             const minuteSeconds = seconds - hours * 3600
@@ -449,6 +470,9 @@ function InstructionTimer({
       )}
       <Button label={_(msg`Quit timer`)} onPress={onDelete}>
         <ButtonIcon icon={TrashIcon} size={timerButtonSize} />
+      </Button>
+      <Button label={_(msg`Add another minute`)} onPress={onAnotherMinute}>
+        <ButtonIcon icon={PlusIcon} size={timerButtonSize} />
       </Button>
     </View>
   )
