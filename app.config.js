@@ -286,7 +286,7 @@ module.exports = function (_config) {
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': branding.code.apple_groups,
+          'com.apple.security.application-groups': [branding.code.apple_groups],
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
