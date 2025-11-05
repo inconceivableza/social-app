@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from 'react'
-import {AppBskyEmbedRecord, AppBskyEmbedRecordWithMedia} from '@atproto/api'
+import { AppBskyEmbedRecord, AppBskyEmbedRecordWithMedia, AppBskyFeedDefs, AppFoodiosFeedDefs, AppFoodiosFeedRecipeRevision } from '@atproto/api'
 import {type QueryClient} from '@tanstack/react-query'
 import EventEmitter from 'eventemitter3'
 
@@ -22,6 +22,7 @@ export interface PostShadow {
   pinned: boolean
   optimisticReplyCount: number | undefined
   bookmarked: boolean | undefined
+  edit?: AppFoodiosFeedDefs.RecipeRevisionView
 }
 
 export const POST_TOMBSTONE = Symbol('PostTombstone')
@@ -49,7 +50,6 @@ export function usePostShadow(
 
   useEffect(() => {
     function onUpdate() {
-      console.log(shadows.get(post))
       setShadow(shadows.get(post))
     }
     emitter.addListener(post.uri, onUpdate)
@@ -128,6 +128,10 @@ function mergeShadow(
     }
   }
 
+  if (shadow.edit) {
+    post = { ...post, record: shadow.edit }
+  }
+
   return castAsShadow({
     ...post,
     embed: embed || post.embed,
@@ -171,7 +175,7 @@ function* findPostsInCache(
     yield post
   }
   for (let node of findAllPostsInThreadQueryData(queryClient, uri)) {
-    if (node.type === 'post' || node.type === 'recipe') {
+    if ('post' in node) {
       yield node.post
     }
   }

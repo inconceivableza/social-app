@@ -52,14 +52,12 @@ export function Post({
   hideTopBorder,
   style,
   onBeforePress,
-  onPostSuccess,
 }: {
   post: AppBskyFeedDefs.PostView
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
-  onBeforePress?: () => void
-  onPostSuccess?: (data: OnPostSuccessData) => void
+    onBeforePress?: () => void
 }) {
   const moderationOpts = useModerationOpts()
   // handle recipe post
@@ -112,7 +110,6 @@ export function Post({
         hideTopBorder={hideTopBorder}
         style={style}
         onBeforePress={onBeforePress}
-        onPostSuccess={onPostSuccess}
       />
     )
   }
@@ -128,7 +125,6 @@ function PostInner({
   hideTopBorder,
   style,
   onBeforePress: outerOnBeforePress,
-  onPostSuccess,
 }: {
   post: Shadow<AppBskyFeedDefs.PostView>
   record:
@@ -139,8 +135,7 @@ function PostInner({
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
-  onBeforePress?: () => void
-  onPostSuccess?: (data: OnPostSuccessData) => void
+    onBeforePress?: () => void
 }) {
   const queryClient = useQueryClient()
   const pal = usePalette('default')
@@ -286,7 +281,6 @@ function PostInner({
             richText={richText}
             onPressReply={onPressReply}
             onPressReviewRate={onPressReviewRate}
-            onPostChanged={onPostSuccess}
             logContext="Post"
           />
         </View>

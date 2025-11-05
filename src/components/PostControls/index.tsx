@@ -1,9 +1,10 @@
-import {memo, useState} from 'react'
+import { memo, useCallback, useState } from 'react'
 import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
+  AppBskyUnspeccedDefs,
   AppFoodiosFeedDefs,
   AppFoodiosFeedReviewRating,
   type RichText as RichTextAPI,
@@ -43,6 +44,9 @@ import {
 import {PostMenuButton} from './PostMenu'
 import {RepostButton} from './RepostButton'
 import {ShareMenuButton} from './ShareMenu'
+import { isRecipePostView } from '#/lib/api/feed/utils'
+import { updatePostShadow } from '#/state/cache/post-shadow'
+import { useQueryClient } from '@tanstack/react-query'
 
 let PostControls = ({
   big,
@@ -55,7 +59,6 @@ let PostControls = ({
   onPressReply,
   onPostReply,
   onPressReviewRate,
-  onPostChanged,
   logContext,
   threadgateRecord,
   onShowLess,
@@ -75,8 +78,7 @@ let PostControls = ({
   onPressReply: () => void
   onPostReply?: (postUri: string | undefined) => void
   onPressReviewRate: () => void
-  onPostReviewRate?: (postUri: string | undefined) => void
-  onPostChanged?: (payload: OnPostSuccessData) => void
+    onPostReviewRate?: (postUri: string | undefined) => void
   logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
@@ -110,6 +112,14 @@ let PostControls = ({
   const replyDisabled = post.viewer?.replyDisabled
   const {gtPhone} = useBreakpoints()
   const formatPostStatCount = useFormatPostStatCount()
+
+  const queryClient = useQueryClient()
+  const onPostChanged = useCallback((data: OnPostSuccessData) => {
+    const threadItem = data?.posts.find((p) => p.uri === post.uri)
+    if (!threadItem || !AppBskyUnspeccedDefs.isThreadItemPost(threadItem.value) ||
+      !isRecipePostView(threadItem.value.post)) return
+    updatePostShadow(queryClient, post.uri, { edit: threadItem.value.post.record })
+  }, [queryClient, post])
 
   const [hasLikeIconBeenToggled, setHasLikeIconBeenToggled] = useState(false)
 

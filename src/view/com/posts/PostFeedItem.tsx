@@ -113,12 +113,10 @@ export function PostFeedItem({
   isParentNotFound,
   rootPost,
   onShowLess,
-  onPostSuccess,
 }: FeedItemProps & {
   post: AnyPostView
   rootPost: AppBskyFeedDefs.PostView
-  onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
-  onPostSuccess?: (data: OnPostSuccessData) => void
+    onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
 }): React.ReactNode {
   const postShadowed = usePostShadow(post)
   const richText = useMemo(
@@ -159,7 +157,6 @@ export function PostFeedItem({
         isParentNotFound={isParentNotFound}
         rootPost={rootPost}
         onShowLess={onShowLess}
-        onPostSuccess={onPostSuccess}
       />
     )
   }

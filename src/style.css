@@ -371,6 +371,13 @@ input[type='range'][orient='vertical']::-moz-range-thumb {
 }
 
 /*
+* #/components/forms/ComboBox.tsx
+*/
+.radix-combobox-content {
+  width: var(--radix-popover-trigger-width);
+  max-height: var(--radix-popover-content-available-height);
+}
+/*
  * #/components/Toast/index.web.tsx
  */
 @keyframes toastFadeIn {
