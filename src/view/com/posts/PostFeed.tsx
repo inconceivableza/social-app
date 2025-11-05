@@ -42,8 +42,7 @@ import {
   usePostFeedQuery,
 } from '#/state/queries/post-feed'
 import {useLiveNowConfig} from '#/state/service-config'
-import {useSession} from '#/state/session'
-import {type OnPostSuccessData} from '#/state/shell/composer'
+import { useSession } from '#/state/session'
 import {useProgressGuide} from '#/state/shell/progress-guide'
 import {useSelectedFeed} from '#/state/shell/selected-feed'
 import {List, type ListRef} from '#/view/com/util/List'
@@ -226,9 +225,6 @@ let PostFeed = ({
   const {gtMobile} = useBreakpoints()
   const {rightNavVisible} = useLayoutBreakpoints()
   const areVideoFeedsEnabled = isNative
-  const [updatedPosts, setUpdatedPosts] = useState<
-    Record<string, AppBskyUnspeccedGetPostThreadV2.ThreadItem>
-  >({})
 
   const [hasPressedShowLessUris, setHasPressedShowLessUris] = useState(
     () => new Set<string>(),
@@ -299,7 +295,7 @@ let PostFeed = ({
     // more than 1 page can trigger some UI freakouts on iOS and android
     // -prf
     if (
-      data?.pages.length === 1 &&
+      data?.pages.filter(p => !!p.slices.length).length === 1 &&
       (feed === 'following' ||
         feed === `author|${myDid}|posts_and_author_threads`)
     ) {
@@ -309,21 +305,6 @@ let PostFeed = ({
   useEffect(() => {
     return listenPostCreated(onPostCreated)
   }, [onPostCreated])
-
-  const onPostSuccess = useCallback(
-    (payload: OnPostSuccessData) => {
-      if (payload) {
-        if (payload.wasEdited) {
-          const reUpdatedPosts = {...updatedPosts}
-          payload.posts.forEach(post => {
-            reUpdatedPosts[post.uri] = post
-          })
-          setUpdatedPosts(reUpdatedPosts)
-        }
-      }
-    },
-    [updatedPosts, setUpdatedPosts],
-  )
 
   useEffect(() => {
     if (enabled && !disablePoll) {
@@ -376,27 +357,7 @@ let PostFeed = ({
   const feedItems: FeedRow[] = useMemo(() => {
     // wraps a slice item, and replaces it with a showLessFollowup item
     // if the user has pressed show less on it
-    const sliceItem = (row: Extract<FeedRow, {type: 'sliceItem'}>) => {
-      if (updatedPosts[row.slice.items[row.indexInSlice]?.uri]) {
-        return {
-          ...row,
-          slice: {
-            ...row.slice,
-            items: row.slice.items.map(item => {
-              const updatedPost = updatedPosts[item.uri]
-              if (updatedPost) {
-                return {
-                  ...item,
-                  post: updatedPost,
-                  record: updatedPost.record,
-                  uri: updatedPost.uri,
-                }
-              }
-              return item
-            }),
-          },
-        }
-      }
+    const sliceItem = (row: Extract<FeedRow, { type: 'sliceItem' }>) => {
       if (hasPressedShowLessUris.has(row.slice.items[row.indexInSlice]?.uri)) {
         return {
           type: 'showLessFollowup',
@@ -666,7 +627,6 @@ let PostFeed = ({
     hasPressedShowLessUris,
     ageAssuranceBannerState,
     isCurrentFeedAtStartupSelected,
-    updatedPosts,
   ])
 
   // events
@@ -793,7 +753,6 @@ let PostFeed = ({
                 hideTopBorder={rowIndex === 0 && indexInSlice === 0}
                 rootPost={slice.items[0].post}
                 onShowLess={onPressShowLess}
-                onPostSuccess={onPostSuccess}
               />
             </PostAuthorDidProvider>
           )
@@ -824,12 +783,11 @@ let PostFeed = ({
             </PostAuthorDidProvider>
           )
         } else if (item.type === 'recipe') {
-          const updatedPost = updatedPosts[item.post.uri] ?? item.post
           return (
-            <PostAuthorDidProvider did={updatedPost.author.did}>
+            <PostAuthorDidProvider did={item.post.author.did}>
               <PostFeedItem
-                post={updatedPost}
-                record={updatedPost.record}
+                post={item.post}
+                record={item.post.record}
                 reason={indexInSlice === 0 ? slice.reason : undefined}
                 feedContext={slice.feedContext}
                 reqId={slice.reqId}
@@ -847,7 +805,6 @@ let PostFeed = ({
                 hideTopBorder={rowIndex === 0 && indexInSlice === 0}
                 rootPost={slice.items[0].post}
                 onShowLess={onPressShowLess}
-                onPostSuccess={onPostSuccess}
               />
             </PostAuthorDidProvider>
           )
@@ -903,8 +860,6 @@ let PostFeed = ({
       feedTab,
       feedCacheKey,
       onPressShowLess,
-      updatedPosts,
-      onPostSuccess,
     ],
   )
 

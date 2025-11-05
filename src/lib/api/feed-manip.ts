@@ -45,6 +45,9 @@ type FeedSliceItem =
       type: 'review'
       post: ReviewRatingView
       record: AppFoodiosFeedReviewRating.Record
+    parentAuthor: AppBskyActorDefs.ProfileViewBasic | undefined
+    isParentBlocked: boolean
+    isParentNotFound: boolean
     }
 
 type AuthorContext = {
@@ -101,21 +104,33 @@ export class FeedViewPostsSlice {
       return
     }
 
-    if (isReviewRatingView(post)) {
-      this.items.push({
-        type: 'review',
-        post,
-        record: post.record,
-      })
-      return
-    }
-
     const parent = reply?.parent
     const isParentBlocked = AppBskyFeedDefs.isBlockedPost(parent)
     const isParentNotFound = AppBskyFeedDefs.isNotFoundPost(parent)
     let parentAuthor: AppBskyActorDefs.ProfileViewBasic | undefined
     if (AppBskyFeedDefs.isPostView(parent)) {
       parentAuthor = parent.author
+    }
+
+    if (isReviewRatingView(post)) {
+      const parent = reply?.parent
+      if (isRecipePostView(parent)) {
+        this.items.push({
+          type: 'recipe',
+          post: parent,
+          record: parent.record,
+        })
+      }
+
+      this.items.push({
+        type: 'review',
+        post,
+        record: post.record,
+        parentAuthor,
+        isParentBlocked,
+        isParentNotFound,
+      })
+      return
     }
 
     if (
@@ -312,7 +327,6 @@ export class FeedTuner {
       dryRun: false,
     },
   ): FeedViewPostsSlice[] {
-    console.log('feed', feed)
     let slices: FeedViewPostsSlice[] = feed
       .map(item => new FeedViewPostsSlice(item))
       .filter(s => s.items.length > 0 || s.isFallbackMarker)

@@ -311,7 +311,9 @@ export async function postRecipeRevision(
 ) {
   const now = new Date()
   const tid = TID.next()
+  const did = agent.assertDid
   const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipeRevision}/${rkey}`
 
   const [rt, embed] = await Promise.all([
     resolveRT(agent, post.text),
@@ -356,6 +358,8 @@ export async function postRecipeRevision(
       writes: writes,
       validate: true,
     })
+
+    return uri
   } catch (e: any) {
     logger.error(`Failed to create recipe post`, {
       safeMessage: e.message,
@@ -565,8 +569,24 @@ async function resolveReply(
   replyTo: ComAtprotoRepoStrongRef.Main,
 ) {
   const replyToUrip = new AtUri(replyTo.uri)
-  // TODO: use a utility function for checking the uri collection
-  const parentPost = await (isRecipeUri(replyTo.uri)
+  if (replyToUrip.collection === ids.AppFoodiosFeedReviewRating) {
+    const parentPost = await agent.getReviewRating({
+      repo: replyToUrip.host,
+      rkey: replyToUrip.rkey,
+    })
+    if (parentPost) {
+      const parentRef: ComAtprotoRepoStrongRef.Main = {
+        uri: parentPost.uri,
+        cid: parentPost.cid,
+        revisionUri: replyTo.revisionUri,
+      }
+      return {
+        root: parentPost.value.subject,
+        parent: parentRef,
+      }
+    }
+  }
+  const parentPost = await (replyToUrip.collection === ids.AppFoodiosFeedRecipePost
     ? agent.getRecipePost({
         repo: replyToUrip.host,
         rkey: replyToUrip.rkey,

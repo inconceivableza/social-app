@@ -114,6 +114,9 @@ interface FeedReviewSliceItem {
   _reactKey: string
   uri: string
   post: ReviewRatingView
+  parentAuthor?: AppBskyActorDefs.ProfileViewBasic
+  isParentBlocked?: boolean
+  isParentNotFound?: boolean
 }
 
 export interface FeedPostSlice {
@@ -428,6 +431,9 @@ export function usePostFeedQuery(
                             uri: item.post.uri,
                             post: item.post,
                             record: item.record,
+                            parentAuthor: item.parentAuthor,
+                            isParentBlocked: item.isParentBlocked,
+                            isParentNotFound: item.isParentNotFound,
                           }
                       }
                     }),

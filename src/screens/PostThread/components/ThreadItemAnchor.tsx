@@ -18,6 +18,7 @@ import {
   isReviewRatingView,
   postHref,
   recipePostSummaryRichText,
+  RecipePostView,
   recordRevisionState,
   recordText,
 } from '#/lib/api/feed/utils'
@@ -77,6 +78,7 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function ThreadItemAnchor({
   item,
@@ -108,8 +110,8 @@ export function ThreadItemAnchor({
       key={postShadow.uri}
       item={item}
       isRoot={isRoot}
-      postShadow={postShadow}
       onPostSuccess={onPostSuccess}
+      postShadow={postShadow}
       onReviewRateSuccess={onReviewRateSuccess}
       threadgateRecord={threadgateRecord}
       postSource={postSource}
@@ -202,16 +204,16 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const t = useTheme()
   const {_} = useLingui()
   const {openComposer} = useOpenComposer()
-  const {currentAccount, hasSession} = useSession()
+  const { currentAccount, hasSession } = useSession()
   const {gtTablet} = useBreakpoints()
   const feedFeedback = useFeedFeedback(postSource?.feedSourceInfo, hasSession)
   const formatPostStatCount = useFormatPostStatCount()
-
   const post = postShadow
   const record = item.value.post.record
   const moderation = item.moderation
   const authorShadow = useProfileShadow(post.author)
   const {isActive: live} = useActorStatus(post.author)
+
   const richText = useMemo(
     () =>
       dangerousIsRecipeView(record)
@@ -467,11 +469,11 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {isRecipePostView(post) ? (
+            {isRecipePostView(postShadow) ? (
               <>
                 <ExpandedRecipePost
                   expanded
-                  revision={post.record}
+                  revision={postShadow.record}
                   titleComponent={
                     <View>
                       <Button
@@ -483,7 +485,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                         onPress={() => {
                           openModal({
                             name: 'recipe-preparation',
-                            recipePost: post,
+                            recipePost: postShadow,
                             onReviewRecipe: onPrepareReview,
                           })
                         }}>
@@ -621,7 +623,6 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 richText={richText}
                 onPressReply={onPressReply}
                 onPressReviewRate={onPressReviewRate}
-                onPostChanged={onPostSuccess}
                 logContext="PostThreadItem"
                 threadgateRecord={threadgateRecord}
                 feedContext={postSource?.post?.feedContext}
