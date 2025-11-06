@@ -336,7 +336,7 @@ export function TextInput({
 
   return (
     <>
-      <View style={[styles.container, hasRightPadding && styles.rightPadding]}>
+      <View style={[styles.container, hasRightPadding && styles.rightPadding, a.w_full]}>
         {/* @ts-ignore inputStyle is fine */}
         <EditorContent editor={editor} style={inputStyle} />
       </View>
