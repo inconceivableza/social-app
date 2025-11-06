@@ -67,7 +67,7 @@ import {
 import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, native, type Theme, useTheme, web} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
-import {ComboBox} from '#/components/forms/ComboBox'
+import { ComboBox, ComboBoxSingleSelect } from '#/components/forms/ComboBox'
 import * as TextField from '#/components/forms/TextField'
 import {CircleInfo_Stroke2_Corner0_Rounded as CircleInfo} from '#/components/icons/CircleInfo'
 import {DotGrid_Stroke2_Corner0_Rounded as Ellipsis} from '#/components/icons/DotGrid'
@@ -92,7 +92,7 @@ import {
   type RecipeReducerOutput,
   useRecipePostReducer,
 } from './state/composerRecipe'
-import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
+import { recipeCategories, recipeCuisines, recipeDiets, recipeUnits } from './state/dataRecipe'
 import {uploadVideoDirect} from './state/video'
 import {isTextInputRef, type TextInputRef} from './text-input/TextInput.types'
 import { AppBskyUnspeccedDefs } from '@atproto/api'
@@ -123,8 +123,6 @@ function errorBorder(t: Theme, err: unknown) {
       }
     : {}
 }
-
-// TODO: NB fix description being focused first
 
 export function ComposerRecipe({
   edit,
@@ -433,8 +431,8 @@ export function ComposerRecipe({
 
             <View
               style={[
-                { backgroundColor: t.palette.contrast_50 },
-                errorBorder(t, errors?.tree?.text),
+                { backgroundColor: t.palette.contrast_25 }, a.rounded_sm,
+                errorBorder(t, errors?.tree?.text)
               ]}>
               {/* TODO fix color, width */}
               <TextInput
@@ -535,7 +533,6 @@ export function ComposerRecipe({
                       onChangeText={value =>
                         dispatch({ type: 'set_prep_time', value })
                       }
-                      autoFocus
                       selectTextOnFocus
                     />
                     <TextField.SuffixText label={_(msg`minutes`)}>
@@ -553,7 +550,6 @@ export function ComposerRecipe({
                       onChangeText={value =>
                         dispatch({ type: 'set_cook_time', value })
                       }
-                      autoFocus
                       selectTextOnFocus
                     />
                     <TextField.SuffixText label={_(msg`minutes`)}>
@@ -960,19 +956,18 @@ function RecipeIngredients({
                 </View>
                 <View style={[a.flex_1]
                 }>
-                  <TextField.Root>
-                    <TextField.Input
-                      label={_(msg`Unit`)}
-                      defaultValue={unit}
-                      onFocus={() => {
+                  <ComboBoxSingleSelect
+                    label={_(msg`Unit`)}
+                    onChange={value => {
+                      dispatch({ type: 'edit_ingredient', prop: 'unit', value, id })
+                    }}
+                    onFocus={() => {
                         setEmojiFocus(undefined, null)
                       }}
-                      onChangeText={value => {
-                        dispatch({ type: 'edit_ingredient', prop: 'unit', value, id })
-                      }}
-                      isInvalid={!!errors?.tree?.ingredients?.[i]?.unit}
-                    />
-                  </TextField.Root>
+                    value={unit}
+                    options={recipeUnits.map(u => u.label)}
+                    isInvalid={!!errors?.tree?.ingredients?.[i]?.unit}
+                  />
                 </View>
                 <View>
                   <Button
