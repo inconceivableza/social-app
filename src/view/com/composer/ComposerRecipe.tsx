@@ -67,7 +67,7 @@ import {
 import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, native, type Theme, useTheme, web} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
-import { ComboBox, ComboBoxSingleSelect } from '#/components/forms/ComboBox'
+import { ComboBox, ComboBoxSingleSelect } from '#/components/forms/ComboBox/'
 import * as TextField from '#/components/forms/TextField'
 import {CircleInfo_Stroke2_Corner0_Rounded as CircleInfo} from '#/components/icons/CircleInfo'
 import {DotGrid_Stroke2_Corner0_Rounded as Ellipsis} from '#/components/icons/DotGrid'
@@ -590,7 +590,7 @@ export function ComposerRecipe({
               </View>
 
 
-              <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center, a.my_sm]}>
+              <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.my_sm]}>
                 <View style={[a.flex_1]}>
                   <ComboBox
                     options={recipeCategories.options}
