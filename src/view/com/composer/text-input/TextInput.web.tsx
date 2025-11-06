@@ -230,7 +230,7 @@ export function TextInput({
       content: generateJSON(richtext.text.toString(), extensions, {
         preserveWhitespace: 'full',
       }),
-      autofocus: 'end',
+      autofocus: isActive && 'end',
       editable: true,
       injectCSS: true,
       shouldRerenderOnTransaction: false,
@@ -240,9 +240,12 @@ export function TextInput({
         // (see Composer.web.tsx in shell)
         // so we wait 200ms (the anim is 150ms) and then focus manually
         // -prf
-        setTimeout(() => {
-          editorProp.chain().focus('end').run()
-        }, 200)
+        if (isActive) {
+          setTimeout(() => {
+            editorProp.chain().focus('end').run()
+          }, 200)
+        }
+
       },
       onUpdate({editor: editorProp}) {
         const json = editorProp.getJSON()
@@ -311,7 +314,7 @@ export function TextInput({
 
   const inputStyle = useMemo(() => {
     const style = normalizeTextStyles(
-      [a.text_lg, a.leading_snug, t.atoms.text],
+      [a.text_lg, a.leading_snug, t.atoms.text, a.w_full],
       {
         fontScale: fonts.scaleMultiplier,
         fontFamily: fonts.family,
