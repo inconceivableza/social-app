@@ -148,13 +148,14 @@ interface ComboBoxSingleSelectProps {
   value: string
   onChange: (value: string) => void
   isInvalid?: boolean
+  onFocus?: () => void
 }
 
 
 /**
  * Combo Box that allows selection of single value. Also accepts the user's input as a value.
  */
-export function ComboBoxSingleSelect({ options, value, onChange, label, isInvalid }: ComboBoxSingleSelectProps) {
+export function ComboBoxSingleSelect({ options, value, onChange, label, isInvalid, onFocus }: ComboBoxSingleSelectProps) {
   const t = useTheme()
   const { _ } = useLingui()
   const [open, setOpen] = useState(false)
@@ -183,6 +184,7 @@ export function ComboBoxSingleSelect({ options, value, onChange, label, isInvali
               value={value}
               onFocus={() => {
                 setOpen(true)
+                onFocus?.()
               }}
               label={label}
               onChangeText={value => {
