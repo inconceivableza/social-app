@@ -69,3 +69,63 @@ export function dedupHierarchyOptions(opts: HierarchyOption[]) {
 export function hierarchyOptionToPaths(opt: HierarchyOption) {
   return opt.paths.map(path => path.join(DELIMITER))
 }
+
+// TODO: provide singular and plural labels
+export const recipeUnits = [
+  {
+    "label": "teaspoons",
+    "unit": "tsp"
+  },
+  {
+    "label": "tablespoons",
+    "unit": "tbsp"
+  },
+  {
+    "label": "cups",
+    "unit": "c"
+  },
+  {
+    "label": "fluid ounces",
+    "unit": "fl oz"
+  },
+  {
+    "label": "pints",
+    "unit": "pt"
+  },
+  {
+    "label": "quarts",
+    "unit": "qt"
+  },
+  {
+    "label": "gallons",
+    "unit": "gal"
+  },
+  {
+    "label": "millilitres",
+    "unit": "ml"
+  },
+  {
+    "label": "litres",
+    "unit": "l"
+  },
+  {
+    "label": "grams",
+    "unit": "g"
+  },
+  {
+    "label": "kilograms",
+    "unit": "kg"
+  },
+  {
+    "label": "ounces",
+    "unit": "oz"
+  },
+  {
+    "label": "pounds",
+    "unit": "lb"
+  },
+  {
+    "label": "milligrams",
+    "unit": "mg"
+  }
+].sort((a, b) => a.label > b.label ? 1 : -1)
