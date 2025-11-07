@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import {type TextInput as NativeTextInput} from 'react-native'
 import {ScrollView, View} from 'react-native'
-import {msg} from '@lingui/macro'
+import { msg, Trans } from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import { atoms as a, select, useTheme } from '#/alf'
@@ -25,6 +25,9 @@ interface ComboBoxProps<T extends BaseOption> {
   onRemove: (value: T) => void
 }
 
+/**
+ * Multi-select combo box, only allowing selection of the given options.
+ */
 export function ComboBox<T extends BaseOption>({
   options,
   selection,
@@ -51,7 +54,6 @@ export function ComboBox<T extends BaseOption>({
     )
 
   const [open, setOpen] = useState(false)
-  // TODO: display "no results found" when applicable
   return (
     <View>
       <Popover.Root open={open}>
@@ -90,7 +92,7 @@ export function ComboBox<T extends BaseOption>({
                 }), {
                   maxHeight: 200,
                 }]}>
-              {filteredOptions.map(opt => (
+              {filteredOptions.length ? filteredOptions.map(opt => (
                 <View key={opt.id}>
                   <Button
                     label={_(opt.label)}
@@ -106,7 +108,7 @@ export function ComboBox<T extends BaseOption>({
                     </ButtonText>
                   </Button>
                 </View>
-              ))}
+              )) : <View style={a.p_md}><Text><Trans>No results found</Trans></Text></View>}
             </ScrollView>
           </Popover.Content>
         </Popover.Portal>
@@ -138,4 +140,96 @@ export function ComboBox<T extends BaseOption>({
       )}
     </View>
   )
+}
+
+interface ComboBoxSingleSelectProps {
+  label: string
+  options: string[]
+  value: string
+  onChange: (value: string) => void
+  isInvalid?: boolean
+  onFocus?: () => void
+}
+
+
+/**
+ * Combo Box that allows selection of single value. Also accepts the user's input as a value.
+ */
+export function ComboBoxSingleSelect({ options, value, onChange, label, isInvalid, onFocus }: ComboBoxSingleSelectProps) {
+  const t = useTheme()
+  const { _ } = useLingui()
+  const [open, setOpen] = useState(false)
+
+  const filteredOptions = useMemo(() => {
+    const filtered = new Array<string>()
+    const valLower = value.toLowerCase()
+    if (value) {
+      filtered.push(value)
+    }
+    options.forEach(opt => {
+      const optLower = opt.toLowerCase()
+      if (optLower !== valLower && optLower.includes(valLower)) {
+        filtered.push(opt)
+      }
+    })
+    return filtered
+  }, [options, value])
+
+  return <View>
+    <Popover.Root open={open}>
+      <Popover.Trigger asChild>
+        <View collapsable={false}>
+          <TextField.Root isInvalid={isInvalid}>
+            <TextField.Input
+              value={value}
+              onFocus={() => {
+                setOpen(true)
+                onFocus?.()
+              }}
+              label={label}
+              onChangeText={value => {
+                onChange(value)
+              }}
+            />
+          </TextField.Root>
+        </View>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content className="radix-combobox-content radix-popover-content" style={{ minWidth: 'max-content' }}
+          onPointerDownOutside={() => {
+            setOpen(false)
+          }} >
+
+          <ScrollView
+            style={[
+              a.rounded_sm,
+              select(t.name, {
+                light: t.atoms.bg,
+                dark: t.atoms.bg_contrast_100,
+                dim: t.atoms.bg_contrast_100,
+              }), {
+                maxHeight: 200,
+              }]}>
+            {filteredOptions.map((opt, i) => (
+              <View key={i}>
+                <Button
+                  label={_(opt)}
+                  size="small"
+                  color='primary_subtle'
+                  style={[a.justify_start]}
+                  onPress={_e => {
+                    onChange(opt)
+                    setOpen(false)
+                  }}>
+                  <ButtonText style={[a.text_left]}>
+                    {_(opt)}
+                  </ButtonText>
+                </Button>
+              </View>
+            ))}
+          </ScrollView>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+  </View>
 }

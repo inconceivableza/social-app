@@ -37,7 +37,7 @@ import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {colors} from '#/lib/styles'
 import {logger} from '#/logger'
-import {isAndroid, isIOS} from '#/platform/detection'
+import { isAndroid, isIOS } from '#/platform/detection'
 import {emitPostCreated} from '#/state/events'
 import {type ComposerImage, createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
@@ -67,7 +67,7 @@ import {
 import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, native, type Theme, useTheme, web} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
-import {ComboBox} from '#/components/forms/ComboBox'
+import { ComboBox, ComboBoxSingleSelect } from '#/components/forms/ComboBox'
 import * as TextField from '#/components/forms/TextField'
 import {CircleInfo_Stroke2_Corner0_Rounded as CircleInfo} from '#/components/icons/CircleInfo'
 import {DotGrid_Stroke2_Corner0_Rounded as Ellipsis} from '#/components/icons/DotGrid'
@@ -92,10 +92,13 @@ import {
   type RecipeReducerOutput,
   useRecipePostReducer,
 } from './state/composerRecipe'
-import {recipeCategories, recipeCuisines, recipeDiets} from './state/dataRecipe'
+import { recipeCategories, recipeCuisines, recipeDiets, recipeUnits } from './state/dataRecipe'
 import {uploadVideoDirect} from './state/video'
 import {isTextInputRef, type TextInputRef} from './text-input/TextInput.types'
 import { AppBskyUnspeccedDefs } from '@atproto/api'
+import { TooltipButton } from "#/components/Tooltip/TooltipButton"
+import { CircleQuestion_Stroke2_Corner2_Rounded as CircleQuestionIcon } from '#/components/icons/CircleQuestion'
+
 
 const msgs = {
   button_add_ingredient: msg({
@@ -120,8 +123,6 @@ function errorBorder(t: Theme, err: unknown) {
       }
     : {}
 }
-
-// TODO: NB fix description being focused first
 
 export function ComposerRecipe({
   edit,
@@ -428,9 +429,45 @@ export function ComposerRecipe({
               />
             </TextField.Root>
 
-            <Accordion heading={_(msg`Recipe Information`)}>
-              <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center]}>
-                <View
+            <View
+              style={[
+                { backgroundColor: t.palette.contrast_25 }, a.rounded_sm,
+                errorBorder(t, errors?.tree?.text)
+              ]}>
+              {/* TODO fix color, width */}
+              <TextInput
+                ref={descriptionInputRef}
+                style={[a.pt_xs, a.w_full, { flexBasis: '100%' }]}
+                richtext={state.text}
+                placeholder={_(msg`Description`)}
+                webForceMinHeight={false}
+                isActive={emojiTarget === 'description'} // TODO: fix
+                setRichText={rt => {
+                  dispatch({ type: 'update_main_text', value: rt })
+                }}
+                onFocus={() => {
+                  setEmojiFocus('description', descriptionInputRef.current)
+                }}
+                onPhotoPasted={() => { }}
+                onNewLink={() => { }}
+                onError={() => { }}
+                onPressPublish={() => { }}
+                accessible={true}
+                accessibilityLabel={_(msg`Write recipe description`)}
+                accessibilityHint={_(
+                  msg`Compose recipe description up to ${plural(
+                    MAX_RECIPE_TITLE_GRAPHEME_LENGTH || 0,
+                    {
+                      other: '# characters',
+                    },
+                  )} in length`,
+                )}
+                hasRightPadding={false}
+              />
+            </View>
+
+            <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center]}>
+              <View
                   style={[
                     a.flex_row,
                     a.gap_xs,
@@ -438,14 +475,14 @@ export function ComposerRecipe({
                     t.atoms.border_contrast_low,
                     a.rounded_sm,
                     a.p_sm,
-                    {width: '40%'},
+                  { width: '50%' },
                   ]}>
-                  <View style={[{width: '65%'}]}>
+                <View style={[a.flex_1]}>
                     <TextField.Root
                       isInvalid={!!errors?.tree?.recipeYield?.quantity}>
                       <TextField.Input
                         inputMode="numeric"
-                        label={_(msg`Yield (How much)`)}
+                      label={_(msg`Yield`)}
                         defaultValue={state.recipeYield?.quantity}
                         onFocus={() => {
                           setEmojiFocus()
@@ -460,11 +497,11 @@ export function ComposerRecipe({
                       />
                     </TextField.Root>
                   </View>
-                  <View style={[{width: '35%'}]}>
+                <View style={[a.flex_1]}>
                     <TextField.Root
                       isInvalid={!!errors?.tree?.recipeYield?.unit}>
                       <TextField.Input
-                        label={_(msg`Unit (servings)`)}
+                      label={_(msg`Unit`)}
                         defaultValue={state.recipeYield?.unit}
                         onFocus={() => {
                           setEmojiFocus(undefined, null)
@@ -474,10 +511,87 @@ export function ComposerRecipe({
                         }
                       />
                     </TextField.Root>
-                  </View>
+                </View>
+                <View>
+                  <TooltipButton label={_(msg`Yield explanation`)} icon={CircleQuestionIcon}>
+                    <Text>
+                      <Trans>Yield is used to indicate how much a recipe will produce. Use the units to indicate whether this is a number of servings, items, or a measurement like grams or litres.</Trans>
+                    </Text>
+                  </TooltipButton>
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View style={[a.flex_row, a.gap_md, a.flex_1, a.flex_wrap]}>
+                <View style={[a.flex_1]}>
+                  <TextField.Root isInvalid={!!errors?.tree?.prepTime}>
+                    <TextField.Input
+                      inputMode="numeric"
+                      label={_(msg`Prep time`)}
+                      defaultValue={state.prepTime}
+                      onChangeText={value =>
+                        dispatch({ type: 'set_prep_time', value })
+                      }
+                      selectTextOnFocus
+                    />
+                    <TextField.SuffixText label={_(msg`minutes`)}>
+                      <Trans>min</Trans>
+                    </TextField.SuffixText>
+                  </TextField.Root>
                 </View>
 
-                <View style={{width: '40%'}}>
+                <View style={[a.flex_1]}>
+                  <TextField.Root isInvalid={!!errors?.tree?.cookTime}>
+                    <TextField.Input
+                      inputMode="numeric"
+                      label={_(msg`Cooking time`)}
+                      defaultValue={state.cookTime}
+                      onChangeText={value =>
+                        dispatch({ type: 'set_cook_time', value })
+                      }
+                      selectTextOnFocus
+                    />
+                    <TextField.SuffixText label={_(msg`minutes`)}>
+                      <Trans>min</Trans>
+                    </TextField.SuffixText>
+                  </TextField.Root>
+                </View>
+              </View>
+
+              {/* Ingredients */}
+              <View style={[a.gap_sm, a.my_sm]}>
+                <View style={[a.align_center]}>
+                  <Text style={[a.text_lg]}>
+                    <Trans context="recipe">Ingredients</Trans>
+                  </Text>
+                </View>
+                <RecipeIngredients
+                  state={state}
+                  dispatch={dispatch}
+                  errors={errors}
+                  setEmojiFocus={setEmojiFocus}
+                />
+              </View>
+
+              {/* Instructions */}
+              <View style={[a.gap_sm]}>
+                <View style={[a.align_center]}>
+                  <Text style={[a.text_lg]}>
+                    <Trans context="recipe">Instructions</Trans>
+                  </Text>
+                </View>
+                <RecipeInstructions
+                  state={state}
+                  dispatch={dispatch}
+                  errors={errors}
+                  setEmojiFocus={setEmojiFocus}
+                />
+              </View>
+
+
+              <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.align_center, a.my_sm]}>
+                <View style={[a.flex_1]}>
                   <ComboBox
                     options={recipeCategories.options}
                     label={_(msg`Categories`)}
@@ -498,30 +612,7 @@ export function ComposerRecipe({
                     }
                   />
                 </View>
-              </View>
-              <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
-                <View style={{width: '40%'}}>
-                  <ComboBox
-                    options={recipeDiets.options}
-                    label={_(msg`Suitable diets`)}
-                    selection={state.recipeDiets ?? []}
-                    onRemove={value =>
-                      dispatch({
-                        type: 'remove_element',
-                        field: 'recipeDiets',
-                        value,
-                      })
-                    }
-                    onSelect={value =>
-                      dispatch({
-                        type: 'add_element',
-                        field: 'recipeDiets',
-                        value,
-                      })
-                    }
-                  />
-                </View>
-                <View style={{width: '40%'}}>
+                <View style={a.flex_1}>
                   <ComboBox
                     options={recipeCuisines.options}
                     label={_(msg`Cuisine type`)}
@@ -543,110 +634,29 @@ export function ComposerRecipe({
                   />
                 </View>
               </View>
-
-              <View style={[a.flex_row, a.gap_md]}>
-                <View style={{flexBasis: '40%'}}>
-                  <TextField.Root isInvalid={!!errors?.tree?.prepTime}>
-                    <TextField.Input
-                      inputMode="numeric"
-                      label={_(msg`Preparation time`)}
-                      defaultValue={state.prepTime}
-                      onChangeText={value =>
-                        dispatch({type: 'set_prep_time', value})
-                      }
-                      autoFocus
-                      selectTextOnFocus
-                    />
-                    <TextField.SuffixText label={_(msg`minutes`)}>
-                      <Trans>minutes</Trans>
-                    </TextField.SuffixText>
-                  </TextField.Root>
-                </View>
-
-                <View style={[{flexBasis: '40%'}]}>
-                  <TextField.Root isInvalid={!!errors?.tree?.cookTime}>
-                    <TextField.Input
-                      inputMode="numeric"
-                      label={_(msg`Cooking time`)}
-                      defaultValue={state.cookTime}
-                      onChangeText={value =>
-                        dispatch({type: 'set_cook_time', value})
-                      }
-                      autoFocus
-                      selectTextOnFocus
-                    />
-                    <TextField.SuffixText label={_(msg`minutes`)}>
-                      <Trans>minutes</Trans>
-                    </TextField.SuffixText>
-                  </TextField.Root>
+              <View style={[a.flex_row, a.flex_wrap, a.gap_md]}>
+                <View style={[a.flex_1]}>
+                  <ComboBox
+                    options={recipeDiets.options}
+                    label={_(msg`Suitable diets`)}
+                    selection={state.recipeDiets ?? []}
+                    onRemove={value =>
+                      dispatch({
+                        type: 'remove_element',
+                        field: 'recipeDiets',
+                        value,
+                      })
+                    }
+                    onSelect={value =>
+                      dispatch({
+                        type: 'add_element',
+                        field: 'recipeDiets',
+                        value,
+                      })
+                    }
+                  />
                 </View>
               </View>
-            </Accordion>
-
-            <View
-              style={[
-                {backgroundColor: t.palette.contrast_50},
-                errorBorder(t, errors?.tree?.text),
-              ]}>
-              {/* TODO fix color, width */}
-              <TextInput
-                ref={descriptionInputRef}
-                style={[a.pt_xs, a.w_full, {flexBasis: '100%'}]}
-                richtext={state.text}
-                placeholder={_(msg`Description`)}
-                webForceMinHeight={false}
-                isActive={emojiTarget === 'description'} // TODO: fix
-                setRichText={rt => {
-                  dispatch({type: 'update_main_text', value: rt})
-                }}
-                onFocus={() => {
-                  setEmojiFocus('description', descriptionInputRef.current)
-                }}
-                onPhotoPasted={() => {}}
-                onNewLink={() => {}}
-                onError={() => {}}
-                onPressPublish={() => {}}
-                accessible={true}
-                accessibilityLabel={_(msg`Write recipe description`)}
-                accessibilityHint={_(
-                  msg`Compose recipe description up to ${plural(
-                    MAX_RECIPE_TITLE_GRAPHEME_LENGTH || 0,
-                    {
-                      other: '# characters',
-                    },
-                  )} in length`,
-                )}
-                hasRightPadding={false}
-              />
-            </View>
-            {/* Ingredients */}
-            <View style={[a.gap_sm]}>
-              <View style={[a.align_center]}>
-                <Text style={[a.text_lg]}>
-                  <Trans context="recipe">Ingredients</Trans>
-                </Text>
-              </View>
-              <RecipeIngredients
-                state={state}
-                dispatch={dispatch}
-                errors={errors}
-                setEmojiFocus={setEmojiFocus}
-              />
-            </View>
-
-            {/* Instructions */}
-            <View style={[a.gap_sm]}>
-              <View style={[a.align_center]}>
-                <Text style={[a.text_lg]}>
-                  <Trans context="recipe">Instructions</Trans>
-                </Text>
-              </View>
-              <RecipeInstructions
-                state={state}
-                dispatch={dispatch}
-                errors={errors}
-                setEmojiFocus={setEmojiFocus}
-              />
             </View>
 
             <Accordion heading={_(msg`Nutritional Information`)}>
@@ -906,10 +916,8 @@ function RecipeIngredients({
       ]}>
       <View style={[a.gap_xs]}>
         {state.ingredients.map(({id, name, quantity, unit}, i) => (
-          <View style={[a.flex_row, a.gap_sm, a.flex_wrap]} key={id}>
-            {/* TODO rather use labels instead of placeholders for small screens */}
-
-            <View style={{flexGrow: 1, flexBasis: '50%'}}>
+          <View style={[a.flex_row, a.gap_sm, a.flex_wrap, a.flex_1]} key={id}>
+            <View style={[a.w_full]}>
               <TextField.Root>
                 <TextField.Input
                   isInvalid={!!errors?.tree?.ingredients?.[i]?.name}
@@ -923,53 +931,57 @@ function RecipeIngredients({
                 />
               </TextField.Root>
             </View>
-
-            <View style={{flexBasis: '17%'}}>
-              <TextField.Root
-                isInvalid={!!errors?.tree?.ingredients?.[i]?.quantity}>
-                <TextField.Input
-                  inputMode="numeric"
-                  label={_(msg`Quantity`)}
-                  defaultValue={quantity}
-                  onFocus={() => {
-                    setEmojiFocus(undefined, null)
-                  }}
-                  onChangeText={value => {
-                    dispatch({
-                      type: 'edit_ingredient',
-                      prop: 'quantity',
-                      value,
-                      id,
-                    })
-                  }}
-                />
-              </TextField.Root>
-            </View>
-            <View style={{flexBasis: '11%'}}>
-              <TextField.Root>
-                <TextField.Input
-                  label={_(msg`Unit`)}
-                  defaultValue={unit}
-                  onFocus={() => {
-                    setEmojiFocus(undefined, null)
-                  }}
-                  onChangeText={value => {
-                    dispatch({type: 'edit_ingredient', prop: 'unit', value, id})
-                  }}
-                  isInvalid={!!errors?.tree?.ingredients?.[i]?.unit}
-                />
-              </TextField.Root>
-            </View>
-            <View style={{justifyContent: 'center'}}>
-              <Button
-                label={_(msg`Remove ingredient`)}
-                size="small"
-                variant="outline"
-                color="negative"
-                shape="round"
-                onPress={() => dispatch({type: 'remove_ingredient', id})}>
-                <ButtonIcon icon={TrashIcon} />
-              </Button>
+            <View style={[a.w_full]}>
+              <View style={[a.flex_row, a.align_center, a.flex_1, a.gap_sm,]}>
+                <View style={[a.flex_1]}>
+                  <TextField.Root
+                    isInvalid={!!errors?.tree?.ingredients?.[i]?.quantity}>
+                    <TextField.Input
+                      inputMode="numeric"
+                      label={_(msg`Quantity`)}
+                      defaultValue={quantity}
+                      onFocus={() => {
+                        setEmojiFocus(undefined, null)
+                      }}
+                      onChangeText={value => {
+                        dispatch({
+                          type: 'edit_ingredient',
+                          prop: 'quantity',
+                          value,
+                          id,
+                        })
+                      }}
+                    />
+                  </TextField.Root>
+                </View>
+                <View style={[a.flex_1]
+                }>
+                  <ComboBoxSingleSelect
+                    label={_(msg`Unit`)}
+                    onChange={value => {
+                      dispatch({ type: 'edit_ingredient', prop: 'unit', value, id })
+                    }}
+                    onFocus={() => {
+                        setEmojiFocus(undefined, null)
+                      }}
+                    value={unit}
+                    options={recipeUnits.map(u => u.label)}
+                    isInvalid={!!errors?.tree?.ingredients?.[i]?.unit}
+                  />
+                </View>
+                <View>
+                  <Button
+                    style={[]}
+                    label={_(msg`Remove ingredient`)}
+                    size="small"
+                    variant="outline"
+                    color="negative"
+                    shape="round"
+                    onPress={() => dispatch({ type: 'remove_ingredient', id })}>
+                    <ButtonIcon icon={TrashIcon} />
+                  </Button>
+                </View>
+              </View>
             </View>
           </View>
         ))}
