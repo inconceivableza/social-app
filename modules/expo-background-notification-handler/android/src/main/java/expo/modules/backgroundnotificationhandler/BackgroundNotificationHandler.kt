@@ -15,6 +15,8 @@ class BackgroundNotificationHandler(
 
     if (remoteMessage.data["reason"] == "chat-message") {
       mutateWithChatMessage(remoteMessage)
+    } else if (remoteMessage.data["reason"] == "timer") {
+      mutateWithTimer(remoteMessage)
     } else {
       mutateWithOtherReason(remoteMessage)
     }
@@ -37,6 +39,26 @@ class BackgroundNotificationHandler(
         remoteMessage.data["sound"] = null
       }
     }
+
+    // TODO - Remove this once we have more backend capability
+    remoteMessage.data["badge"] = null
+  }
+
+  private fun mutateWithTimer(remoteMessage: RemoteMessage) {
+    // if (NotificationPrefs(context).getBoolean("playSoundTimer")) {
+      // If oreo or higher
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        remoteMessage.data["channelId"] = "timer"
+      } else {
+        remoteMessage.data["sound"] = "timer.mp3"
+      }
+    /* { else {
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        remoteMessage.data["channelId"] = "timer"
+      } else {
+        remoteMessage.data["sound"] = null
+      }
+    } */
 
     // TODO - Remove this once we have more backend capability
     remoteMessage.data["badge"] = null

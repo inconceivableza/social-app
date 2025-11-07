@@ -16,12 +16,11 @@ function withMobileBuildConfig(config) {
       const platformProjectName = config.modRequest.projectName
       const mainAppDir = path.join(platformProjectRoot, platformProjectName)
 
-      const aiffPath = path.join(mainAppDir, 'dm.aiff')
-      if (!fs.existsSync(aiffPath)) {
-        const soundFiles = ['dm.aiff', 'dm.mp3']
-        for (const soundFile of soundFiles) {
+      const soundFiles = ['dm.aiff', 'dm.mp3', 'timer.aiff', 'timer.mp3']
+      for (const soundFile of soundFiles) {
+        const targetPath = path.join(mainAppDir, soundFile)
+        if (!fs.existsSync(targetPath)) {
           const sourcePath = path.join(projectRoot, 'assets', soundFile)
-          const targetPath = path.join(mainAppDir, soundFile)
           if (fs.existsSync(sourcePath)) {
             fs.copyFileSync(sourcePath, targetPath)
             console.log(`Fixed missing notification sound: ${soundFile}`)

@@ -35,6 +35,7 @@ export type NotificationReason =
   | 'verified'
   | 'unverified'
   | 'subscribed-post'
+  | 'timer'
 
 /**
  * Manually overridden type, but retains the possibility of
@@ -187,6 +188,15 @@ export function useNotificationsHandler() {
         importance: Notifications.AndroidImportance.HIGH,
       },
     )
+    Notifications.setNotificationChannelAsync(
+      'timer' satisfies NotificationReason,
+      {
+        name: _(msg`Recipe timer finished`),
+        importance: Notifications.AndroidImportance.HIGH,
+        sound: 'timer.mp3',
+        vibrationPattern: [250],
+      },
+    )
   }, [_])
 
   useEffect(() => {
@@ -270,6 +280,14 @@ export function useNotificationsHandler() {
 
         notyLogger.debug('useNotificationsHandler: incoming', {e, payload})
 
+        if (payload.reason === 'timer') {
+          return {
+            shouldShowBanner: true,
+            shouldShowList: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+          } satisfies Notifications.NotificationBehaviour
+        }
         if (
           payload.reason === 'chat-message' &&
           payload.recipientDid === currentAccount?.did
@@ -374,6 +392,16 @@ export function getNotificationPayload(
   e: Notifications.Notification,
 ): NotificationPayload | null {
   if (
+    e.request.content.data?.reason === 'timer' ||
+    e.request.trigger.type === 'timer'
+  ) {
+    return {
+      ...(isIOS ? e.request.trigger.payload : e.request.content.data),
+      reason: 'timer',
+    } as NotificationPayload
+  }
+
+  if (
     e.request.trigger == null ||
     typeof e.request.trigger !== 'object' ||
     !('type' in e.request.trigger) ||
@@ -434,6 +462,14 @@ export function notificationToURL(payload: NotificationPayload): string | null {
     case 'verified':
     case 'unverified':
       return '/notifications'
+    case 'timer': {
+      const urip = new AtUri(payload.uri)
+      if (urip.collection === 'app.foodios.feed.recipePost') {
+        return `/profile/${urip.host}/recipePost/${urip.rkey}`
+      } else {
+        return null
+      }
+    }
     default:
       // do nothing if we don't know what to do with it
       return null

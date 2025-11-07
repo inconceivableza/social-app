@@ -19,6 +19,7 @@ import {Admonition} from '#/components/Admonition'
 import {At_Stroke2_Corner2_Rounded as AtIcon} from '#/components/icons/At'
 import {BellRinging_Stroke2_Corner0_Rounded as BellRingingIcon} from '#/components/icons/BellRinging'
 import {Bubble_Stroke2_Corner2_Rounded as BubbleIcon} from '#/components/icons/Bubble'
+import {Clock_Stroke2_Corner0_Rounded as ClockIcon} from '#/components/icons/Clock'
 import {Haptic_Stroke2_Corner2_Rounded as HapticIcon} from '#/components/icons/Haptic'
 import {
   Heart2_Stroke2_Corner0_Rounded as HeartIcon,
@@ -118,6 +119,17 @@ export function NotificationSettingsScreen({}: Props) {
             </View>
           )}
           <View style={[a.gap_sm]}>
+            <SettingsList.LinkItem
+              label={_(msg`Settings for timer notifications`)}
+              to={{screen: 'TimerNotificationSettings'}}
+              contentContainerStyle={[a.align_start]}>
+              <SettingsList.ItemIcon icon={ClockIcon} />
+              <ItemTextWithSubtitle
+                titleText={<Trans>Timers</Trans>}
+                subtitleText={<SettingPreview preference={settings?.timer} />}
+                showSkeleton={!settings}
+              />
+            </SettingsList.LinkItem>
             <SettingsList.LinkItem
               label={_(msg`Settings for like notifications`)}
               to={{screen: 'LikeNotificationSettings'}}

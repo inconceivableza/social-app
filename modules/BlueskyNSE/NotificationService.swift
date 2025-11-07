@@ -42,6 +42,8 @@ class NotificationService: UNNotificationServiceExtension {
     self.bestAttempt = bestAttempt
     if reason == "chat-message" {
       mutateWithChatMessage(bestAttempt)
+    } else if reason == "timer" {
+      mutateWithTimer(bestAttempt)
     } else {
       mutateWithBadge(bestAttempt)
     }
@@ -80,12 +82,22 @@ class NotificationService: UNNotificationServiceExtension {
     }
   }
 
+  func mutateWithTimer(_ content: UNMutableNotificationContent) {
+    // if NSEUtil.shared.prefs?.bool(forKey: "playSoundTimer") == true {
+    mutateWithTimerSound(content)
+    // }
+  }
+
   func mutateWithDefaultSound(_ content: UNMutableNotificationContent) {
     content.sound = UNNotificationSound.default
   }
 
   func mutateWithDmSound(_ content: UNMutableNotificationContent) {
     content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "dm.aiff"))
+  }
+
+  func mutateWithTimerSound(_ content: UNMutableNotificationContent) {
+    content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "timer.aiff"))
   }
 }
 

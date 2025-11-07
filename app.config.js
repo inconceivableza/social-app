@@ -286,7 +286,7 @@ module.exports = function (_config) {
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': branding.code.apple_groups,
+          'com.apple.security.application-groups': [branding.code.apple_groups],
         },
         privacyManifests: {
           NSPrivacyAccessedAPITypes: [
@@ -412,7 +412,10 @@ module.exports = function (_config) {
               './assets/icon-android-notification.png',
             ),
             color: '#1185fe',
-            sounds: PLATFORM === 'ios' ? ['assets/dm.aiff'] : ['assets/dm.mp3'],
+            sounds:
+              PLATFORM === 'ios'
+                ? ['assets/dm.aiff', 'assets/timer.aiff']
+                : ['assets/dm.mp3', 'assets/timer.mp3'],
           },
         ],
         'react-native-compressor',
