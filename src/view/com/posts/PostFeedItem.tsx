@@ -10,12 +10,12 @@ import {
   type ModerationDecision,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
+import {useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {useActorStatus} from '#/lib/actor-status'
-import {isReasonFeedSource, type ReasonFeedSource} from '#/lib/api/feed/types'
+import {type ReasonFeedSource} from '#/lib/api/feed/types'
 import {
   dangerousIsPostRecord,
   dangerousIsRecipeView,
@@ -28,9 +28,8 @@ import {
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
-import {sanitizeDisplayName} from '#/lib/strings/display-names'
-import {sanitizeHandle} from '#/lib/strings/handles'
+import {type NavigationProp} from '#/lib/routes/types'
+import {useGate} from '#/lib/statsig/statsig'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
@@ -48,16 +47,12 @@ import {
   buildPostSourceKey,
   setUnstablePostSource,
 } from '#/state/unstable-post-source'
-import {FeedNameText} from '#/view/com/util/FeedInfoText'
-import {Link, TextLinkOnWebOnly} from '#/view/com/util/Link'
+import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
-import {Text} from '#/view/com/util/text/Text'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
 import {atoms as a} from '#/alf'
 import {Button, ButtonIcon} from '#/components/Button'
 import {OutdatedIcon} from '#/components/icons/Outdated'
-import {Pin_Stroke2_Corner0_Rounded as PinIcon} from '#/components/icons/Pin'
-import {Repost_Stroke2_Corner2_Rounded as RepostIcon} from '#/components/icons/Repost'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {LabelsOnMyPost} from '#/components/moderation/LabelsOnMe'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
@@ -68,11 +63,11 @@ import {PostRepliedTo} from '#/components/Post/PostRepliedTo'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {DiscoverDebug} from '#/components/PostControls/DiscoverDebug'
-import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import * as bsky from '#/types/bsky'
 import {ExpandableRecipePost} from './ExpandableRecipePost'
+import {PostFeedReason} from './PostFeedReason'
 import {RevisionState} from './RevisionState'
 
 interface FeedItemProps {
@@ -116,7 +111,7 @@ export function PostFeedItem({
 }: FeedItemProps & {
   post: AnyPostView
   rootPost: AppBskyFeedDefs.PostView
-    onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
+  onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
 }): React.ReactNode {
   const postShadowed = usePostShadow(post)
   const richText = useMemo(
@@ -191,13 +186,16 @@ let FeedItemInner = ({
 }): React.ReactNode => {
   const queryClient = useQueryClient()
   const {openComposer} = useOpenComposer()
+  const navigation = useNavigation<NavigationProp>()
   const pal = usePalette('default')
   const {_} = useLingui()
+  const gate = useGate()
   const [hover, setHover] = useState(false)
   const {openModal} = useModalControls()
 
-  const href = useMemo(() => {
-    return postHref(post.author, post.uri)
+  const [href, rkey] = useMemo(() => {
+    const urip = new AtUri(post.uri)
+    return [postHref(post.author, post.uri), urip.rkey]
   }, [post.uri, post.author])
   const {sendInteraction, feedSourceInfo} = useFeedFeedbackContext()
 
@@ -227,33 +225,40 @@ let FeedItemInner = ({
       feedContext,
       reqId,
     })
-    if (dangerousIsRecipeView(record)) {
-      openComposer({
-        type: 'post',
-        replyTo: {
-          uri: post.uri,
-          cid: post.cid,
-          revisionUri: record.selectedRevisionUri,
-          text: recipePostSummaryRichText(record.revisionContent),
-          author: post.author,
-          embed: post.embed,
-          moderation,
-          langs: record.langs,
-        },
+    if (gate('feed_reply_button_open_thread')) {
+      navigation.navigate('PostThread', {
+        name: post.author.did,
+        rkey,
       })
     } else {
-      openComposer({
-        type: 'post',
-        replyTo: {
-          uri: post.uri,
-          cid: post.cid,
-          text: record.text,
-          author: post.author,
-          embed: post.embed,
-          moderation,
-          langs: record.langs,
-        },
-      })
+      if (dangerousIsRecipeView(record)) {
+        openComposer({
+          type: 'post',
+          replyTo: {
+            uri: post.uri,
+            cid: post.cid,
+            revisionUri: record.selectedRevisionUri,
+            text: recipePostSummaryRichText(record.revisionContent),
+            author: post.author,
+            embed: post.embed,
+            moderation,
+            langs: record.langs,
+          },
+        })
+      } else {
+        openComposer({
+          type: 'post',
+          replyTo: {
+            uri: post.uri,
+            cid: post.cid,
+            text: record.text || '',
+            author: post.author,
+            embed: post.embed,
+            moderation,
+            langs: record.langs,
+          },
+        })
+      }
     }
   }
 
@@ -339,11 +344,6 @@ let FeedItemInner = ({
     },
   ]
 
-  const {currentAccount} = useSession()
-  const isOwner =
-    AppBskyFeedDefs.isReasonRepost(reason) &&
-    reason.by.did === currentAccount?.did
-
   /**
    * If `post[0]` in this slice is the actual root post (not an orphan thread),
    * then we may have a threadgate record to reference
@@ -381,7 +381,7 @@ let FeedItemInner = ({
       onPointerLeave={() => {
         setHover(false)
       }}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       <View style={{flexDirection: 'row', gap: 10, paddingLeft: 8}}>
         <View style={{width: 42}}>
           {isThreadChild && (
@@ -398,99 +398,14 @@ let FeedItemInner = ({
           )}
         </View>
 
-        <View style={{paddingTop: 10, flexShrink: 1}}>
-          {isReasonFeedSource(reason) ? (
-            <Link href={reason.href}>
-              <Text
-                type="sm-bold"
-                style={pal.textLight}
-                lineHeight={1.2}
-                numberOfLines={1}>
-                <Trans context="from-feed">
-                  From{' '}
-                  <FeedNameText
-                    type="sm-bold"
-                    uri={reason.uri}
-                    href={reason.href}
-                    lineHeight={1.2}
-                    numberOfLines={1}
-                    style={pal.textLight}
-                  />
-                </Trans>
-              </Text>
-            </Link>
-          ) : AppBskyFeedDefs.isReasonRepost(reason) ? (
-            <Link
-              style={styles.includeReason}
-              href={makeProfileLink(reason.by)}
-              title={
-                isOwner
-                  ? _(msg`Reposted by you`)
-                  : _(
-                      msg`Reposted by ${sanitizeDisplayName(
-                        reason.by.displayName || reason.by.handle,
-                      )}`,
-                    )
-              }
-              onBeforePress={onOpenReposter}>
-              <RepostIcon
-                style={{color: pal.colors.textLight, marginRight: 3}}
-                width={13}
-                height={13}
-              />
-              <Text
-                type="sm-bold"
-                style={pal.textLight}
-                lineHeight={1.2}
-                numberOfLines={1}>
-                {isOwner ? (
-                  <Trans>Reposted by you</Trans>
-                ) : (
-                  <Trans>
-                    Reposted by{' '}
-                    <ProfileHoverCard did={reason.by.did}>
-                      <TextLinkOnWebOnly
-                        type="sm-bold"
-                        style={pal.textLight}
-                        lineHeight={1.2}
-                        numberOfLines={1}
-                        text={
-                          <Text
-                            emoji
-                            type="sm-bold"
-                            style={pal.textLight}
-                            lineHeight={1.2}>
-                            {sanitizeDisplayName(
-                              reason.by.displayName ||
-                                sanitizeHandle(reason.by.handle),
-                              moderation.ui('displayName'),
-                            )}
-                          </Text>
-                        }
-                        href={makeProfileLink(reason.by)}
-                        onBeforePress={onOpenReposter}
-                      />
-                    </ProfileHoverCard>
-                  </Trans>
-                )}
-              </Text>
-            </Link>
-          ) : AppBskyFeedDefs.isReasonPin(reason) ? (
-            <View style={styles.includeReason}>
-              <PinIcon
-                style={{color: pal.colors.textLight, marginRight: 3}}
-                width={13}
-                height={13}
-              />
-              <Text
-                type="sm-bold"
-                style={pal.textLight}
-                lineHeight={1.2}
-                numberOfLines={1}>
-                <Trans>Pinned</Trans>
-              </Text>
-            </View>
-          ) : null}
+        <View style={[a.pt_sm, a.flex_shrink]}>
+          {reason && (
+            <PostFeedReason
+              reason={reason}
+              moderation={moderation}
+              onOpenReposter={onOpenReposter}
+            />
+          )}
         </View>
       </View>
 
@@ -654,7 +569,7 @@ let PostContent = ({
       childContainerStyle={styles.contentHiderChild}>
       <PostAlerts
         modui={moderation.ui('contentList')}
-        style={[a.py_2xs]}
+        style={[a.pb_xs]}
         additionalCauses={additionalPostAlerts}
       />
       {richText.text ? (
@@ -760,12 +675,6 @@ const styles = StyleSheet.create({
     width: 2,
     marginLeft: 'auto',
     marginRight: 'auto',
-  },
-  includeReason: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 2,
-    marginLeft: -16,
   },
   layout: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React, {type ComponentProps} from 'react'
+import React, {type ComponentProps, type JSX} from 'react'
 import {Linking, ScrollView, TouchableOpacity, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {msg, Plural, plural, Trans} from '@lingui/macro'
@@ -93,7 +93,7 @@ let DrawerProfileCard = ({
         <View style={[a.flex_row, a.align_center, a.gap_xs, a.flex_1]}>
           <Text
             emoji
-            style={[a.font_heavy, a.text_xl, a.mt_2xs, a.leading_tight]}
+            style={[a.font_bold, a.text_xl, a.mt_2xs, a.leading_tight]}
             numberOfLines={1}>
             {profile?.displayName || account.handle}
           </Text>
@@ -118,7 +118,7 @@ let DrawerProfileCard = ({
       </View>
       <Text style={[a.text_md, t.atoms.text_contrast_medium]}>
         <Trans>
-          <Text style={[a.text_md, a.font_bold]}>
+          <Text style={[a.text_md, a.font_semi_bold]}>
             {formatCount(i18n, profile?.followersCount ?? 0)}
           </Text>{' '}
           <Plural
@@ -129,7 +129,7 @@ let DrawerProfileCard = ({
         </Trans>{' '}
         &middot;{' '}
         <Trans>
-          <Text style={[a.text_md, a.font_bold]}>
+          <Text style={[a.text_md, a.font_semi_bold]}>
             {formatCount(i18n, profile?.followsCount ?? 0)}
           </Text>{' '}
           <Plural
@@ -705,7 +705,7 @@ function MenuItem({icon, label, count, bold, onPress}: MenuItemProps) {
                     style={[
                       a.text_xs,
                       a.leading_tight,
-                      a.font_bold,
+                      a.font_semi_bold,
                       {
                         fontVariant: ['tabular-nums'],
                         color: colors.white,
@@ -722,7 +722,7 @@ function MenuItem({icon, label, count, bold, onPress}: MenuItemProps) {
             style={[
               a.flex_1,
               a.text_2xl,
-              bold && a.font_heavy,
+              bold && a.font_bold,
               web(a.leading_snug),
             ]}
             numberOfLines={1}>

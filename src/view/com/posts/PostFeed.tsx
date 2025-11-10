@@ -1,4 +1,12 @@
-import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {
+  type JSX,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   ActivityIndicator,
   AppState,
@@ -25,6 +33,7 @@ import {DISCOVER_FEED_URI, KNOWN_SHUTDOWN_FEEDS} from '#/lib/constants'
 import {useInitialNumToRender} from '#/lib/hooks/useInitialNumToRender'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {logEvent} from '#/lib/statsig/statsig'
+import {isNetworkError} from '#/lib/strings/errors'
 import {logger} from '#/logger'
 import {isIOS, isNative, isWeb} from '#/platform/detection'
 import {listenPostCreated} from '#/state/events'
@@ -42,7 +51,7 @@ import {
   usePostFeedQuery,
 } from '#/state/queries/post-feed'
 import {useLiveNowConfig} from '#/state/service-config'
-import { useSession } from '#/state/session'
+import {useSession} from '#/state/session'
 import {useProgressGuide} from '#/state/shell/progress-guide'
 import {useSelectedFeed} from '#/state/shell/selected-feed'
 import {List, type ListRef} from '#/view/com/util/List'
@@ -284,7 +293,9 @@ let PostFeed = ({
         }
       }
     } catch (e) {
-      logger.error('Poll latest failed', {feed, message: String(e)})
+      if (!isNetworkError(e)) {
+        logger.error('Poll latest failed', {feed, message: String(e)})
+      }
     }
   })
 
@@ -357,7 +368,7 @@ let PostFeed = ({
   const feedItems: FeedRow[] = useMemo(() => {
     // wraps a slice item, and replaces it with a showLessFollowup item
     // if the user has pressed show less on it
-    const sliceItem = (row: Extract<FeedRow, { type: 'sliceItem' }>) => {
+    const sliceItem = (row: Extract<FeedRow, {type: 'sliceItem'}>) => {
       if (hasPressedShowLessUris.has(row.slice.items[row.indexInSlice]?.uri)) {
         return {
           type: 'showLessFollowup',

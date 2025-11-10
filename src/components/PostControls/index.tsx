@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import {memo, useCallback, useState} from 'react'
 import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {
   type AppBskyFeedDefs,
@@ -11,12 +11,15 @@ import {
 } from '@atproto/api'
 import {msg, plural} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
+import {useQueryClient} from '@tanstack/react-query'
 import type React from 'react'
 
+import {isRecipePostView} from '#/lib/api/feed/utils'
 import {CountWheel} from '#/lib/custom-animations/CountWheel'
 import {AnimatedLikeIcon} from '#/lib/custom-animations/LikeIcon'
 import {useHaptics} from '#/lib/haptics'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
+import {updatePostShadow} from '#/state/cache/post-shadow'
 import {type Shadow} from '#/state/cache/types'
 import {useFeedFeedbackContext} from '#/state/feed-feedback'
 import {
@@ -44,9 +47,6 @@ import {
 import {PostMenuButton} from './PostMenu'
 import {RepostButton} from './RepostButton'
 import {ShareMenuButton} from './ShareMenu'
-import { isRecipePostView } from '#/lib/api/feed/utils'
-import { updatePostShadow } from '#/state/cache/post-shadow'
-import { useQueryClient } from '@tanstack/react-query'
 
 let PostControls = ({
   big,
@@ -78,7 +78,7 @@ let PostControls = ({
   onPressReply: () => void
   onPostReply?: (postUri: string | undefined) => void
   onPressReviewRate: () => void
-    onPostReviewRate?: (postUri: string | undefined) => void
+  onPostReviewRate?: (postUri: string | undefined) => void
   logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
@@ -114,12 +114,21 @@ let PostControls = ({
   const formatPostStatCount = useFormatPostStatCount()
 
   const queryClient = useQueryClient()
-  const onPostChanged = useCallback((data: OnPostSuccessData) => {
-    const threadItem = data?.posts.find((p) => p.uri === post.uri)
-    if (!threadItem || !AppBskyUnspeccedDefs.isThreadItemPost(threadItem.value) ||
-      !isRecipePostView(threadItem.value.post)) return
-    updatePostShadow(queryClient, post.uri, { edit: threadItem.value.post.record })
-  }, [queryClient, post])
+  const onPostChanged = useCallback(
+    (data: OnPostSuccessData) => {
+      const threadItem = data?.posts.find(p => p.uri === post.uri)
+      if (
+        !threadItem ||
+        !AppBskyUnspeccedDefs.isThreadItemPost(threadItem.value) ||
+        !isRecipePostView(threadItem.value.post)
+      )
+        return
+      updatePostShadow(queryClient, post.uri, {
+        edit: threadItem.value.post.record,
+      })
+    },
+    [queryClient, post],
+  )
 
   const [hasLikeIconBeenToggled, setHasLikeIconBeenToggled] = useState(false)
 
@@ -339,7 +348,7 @@ let PostControls = ({
               a.flex_1,
               a.align_start,
               {marginLeft: big ? -2 : -6},
-              replyDisabled ? {opacity: 0.5} : undefined,
+              replyDisabled ? {opacity: 0.6} : undefined,
             ]}>
             <PostControlButton
               testID="replyBtn"

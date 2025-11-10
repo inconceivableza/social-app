@@ -1,5 +1,4 @@
 import React from 'react'
-import {lexiconIds as ids} from '@atproto/api'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 
@@ -7,8 +6,8 @@ import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
 } from '#/lib/routes/types'
-import {routeParamsToRecordUri } from '#/lib/strings/url-helpers'
-import {usePostThreadQuery} from '#/state/queries/post-thread'
+import {routeParamsToRecordUri} from '#/lib/strings/url-helpers'
+import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostRepostedBy as PostRepostedByComponent} from '#/view/com/post-thread/PostRepostedBy'
 import * as Layout from '#/components/Layout'
@@ -17,11 +16,11 @@ type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostRepostedBy'>
 export const PostRepostedByScreen = ({route}: Props) => {
   const uri = routeParamsToRecordUri(route.params)
   const setMinimalShellMode = useSetMinimalShellMode()
-  const {data: post} = usePostThreadQuery(uri)
+  const {data: post} = usePostQuery(uri)
   console.log(post)
   let quoteCount
-  if (post && 'post' in post.thread) {
-    quoteCount = post?.thread.post.repostCount
+  if (post) {
+    quoteCount = post.repostCount
   }
 
   useFocusEffect(

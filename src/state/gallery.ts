@@ -3,7 +3,7 @@ import {
   deleteAsync,
   makeDirectoryAsync,
   moveAsync,
-} from 'expo-file-system'
+} from 'expo-file-system/legacy'
 import {
   type Action,
   type ActionCrop,
@@ -172,16 +172,22 @@ export async function manipulateImage(
   }
 
   // if this is a previously uploaded image, reconstruct the source
-  const source = img.source.fullsize ? {
-    path: img.source.fullsize,
-    height: img.source.height,
-    width: img.source.width,
-    mime: img.source.mime,
-    id: img.source.id, // id matches so that it replaces the correct image in the embed
-  } : img.source
-  const result = await manipulateAsync(source.fullsize ?? source.path, actions, {
-    format: SaveFormat.PNG,
-  })
+  const source = img.source.fullsize
+    ? {
+        path: img.source.fullsize,
+        height: img.source.height,
+        width: img.source.width,
+        mime: img.source.mime,
+        id: img.source.id, // id matches so that it replaces the correct image in the embed
+      }
+    : img.source
+  const result = await manipulateAsync(
+    source.fullsize ?? source.path,
+    actions,
+    {
+      format: SaveFormat.PNG,
+    },
+  )
 
   return {
     alt: img.alt,

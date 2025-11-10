@@ -8,7 +8,7 @@ import {
   type NativeStackScreenProps,
 } from '#/lib/routes/types'
 import {makeRecordUri} from '#/lib/strings/url-helpers'
-import {usePostThreadQuery} from '#/state/queries/post-thread'
+import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostLikedBy as PostLikedByComponent} from '#/view/com/post-thread/PostLikedBy'
 import * as Layout from '#/components/Layout'
@@ -22,11 +22,11 @@ export const PostLikedByScreen = ({route}: Props) => {
       ? ids.AppFoodiosFeedRecipePost
       : ids.AppBskyFeedPost
   const uri = makeRecordUri(name, collection, rkey)
-  const {data: post} = usePostThreadQuery(uri)
+  const {data: post} = usePostQuery(uri)
 
   let likeCount
-  if (post?.thread.type === 'post' || post?.thread.type === 'recipe') {
-    likeCount = post.thread.post.likeCount
+  if (post) {
+    likeCount = post.likeCount
   }
 
   useFocusEffect(

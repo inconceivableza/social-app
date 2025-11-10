@@ -53,7 +53,7 @@ import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
 
 export type ThreadItemPostProps = {
@@ -123,7 +123,8 @@ function ThreadItemPostDeleted({
           ]}>
           <TrashIcon style={[t.atoms.text_contrast_medium]} />
         </View>
-        <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
+        <Text
+          style={[a.text_md, a.font_semi_bold, t.atoms.text_contrast_medium]}>
           <Trans>Post has been deleted</Trans>
         </Text>
       </View>
@@ -148,9 +149,7 @@ const ThreadItemPostOuterWrapper = memo(function ThreadItemPostOuterWrapper({
     <View
       style={[
         showTopBorder && [a.border_t, t.atoms.border_contrast_low],
-        {
-          paddingHorizontal: OUTER_SPACE,
-        },
+        {paddingHorizontal: OUTER_SPACE},
         // If there's no next child, add a little padding to bottom
         !item.ui.showChildReplyLine &&
           !item.ui.precedesChildReadMore && {
@@ -218,12 +217,12 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
           })
         : isReviewRatingView(post)
           ? new RichTextAPI({
-            text: post.record.text ?? '',
-          })
+              text: post.record.text ?? '',
+            })
           : new RichTextAPI({
-            text: record.text ?? '',
-            facets: record.facets,
-          }),
+              text: record.text ?? '',
+              facets: record.facets,
+            }),
     [record, post],
   )
   const [limitLines, setLimitLines] = useState(
@@ -310,15 +309,16 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const constitutesReview =
     AppFoodiosFeedReviewRating.isRecord(record) && record.text
   return (
-    <SubtleHover>
+    <SubtleHoverWrapper>
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
           href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
+          hiderStyle={[a.pl_0, a.pr_2xs, a.bg_transparent]}
           iconSize={LINEAR_AVI_WIDTH}
-          iconStyles={{marginLeft: 2, marginRight: 2}}
+          iconStyles={[a.mr_xs]}
           profile={post.author}
           interpretFilterAsBlur>
           <ThreadItemPostParentReplyLine item={item} />
@@ -436,11 +436,11 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
           </View>
         </PostHider>
       </ThreadItemPostOuterWrapper>
-    </SubtleHover>
+    </SubtleHoverWrapper>
   )
 })
 
-function SubtleHover({children}: {children: ReactNode}) {
+function SubtleHoverWrapper({children}: {children: ReactNode}) {
   const {
     state: hover,
     onIn: onHoverIn,
@@ -451,7 +451,7 @@ function SubtleHover({children}: {children: ReactNode}) {
       onPointerEnter={onHoverIn}
       onPointerLeave={onHoverOut}
       style={a.pointer}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {children}
     </View>
   )

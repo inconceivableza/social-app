@@ -175,19 +175,24 @@ export type MetricEvents = {
   'feed:suggestion:press': {
     feedUrl: string
   }
-  'discover:showMore': {
+  'feed:showMore': {
+    feed: string
     feedContext: string
   }
-  'discover:showLess': {
+  'feed:showLess': {
+    feed: string
     feedContext: string
   }
-  'discover:clickthrough': {
+  'feed:clickthrough': {
+    feed: string
     count: number
   }
-  'discover:engaged': {
+  'feed:engaged': {
+    feed: string
     count: number
   }
-  'discover:seen': {
+  'feed:seen': {
+    feed: string
     count: number
   }
 
@@ -293,6 +298,14 @@ export type MetricEvents = {
     recId?: number
     position: number
   }
+  'suggestedUser:seeMore': {
+    logContext:
+      | 'Explore'
+      | 'InterstitialDiscover'
+      | 'InterstitialProfile'
+      | 'Profile'
+      | 'Onboarding'
+  }
   'profile:unfollow': {
     logContext:
       | 'RecommendedFollowsItem'
@@ -321,6 +334,12 @@ export type MetricEvents = {
       | 'NewChatDialog'
       | 'ChatsList'
       | 'SendViaChatDialog'
+  }
+  'starterPack:addUser': {
+    starterPack?: string
+  }
+  'starterPack:removeUser': {
+    starterPack?: string
   }
   'starterPack:share': {
     starterPack: string
@@ -353,6 +372,7 @@ export type MetricEvents = {
   'feed:interstitial:feedCard:press': {}
 
   'profile:header:suggestedFollowsCard:press': {}
+  'profile:addToStarterPack': {}
 
   'test:all:always': {}
   'test:all:sometimes': {}
@@ -470,6 +490,8 @@ export type MetricEvents = {
   'share:press:embed': {}
 
   'thread:click:showOtherReplies': {}
+  'thread:click:hideReplyForMe': {}
+  'thread:click:hideReplyForEveryone': {}
   'thread:preferences:load': {
     [key: string]: any
   }

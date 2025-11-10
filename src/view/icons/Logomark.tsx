@@ -1,4 +1,12 @@
-import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg'
+import Svg, {
+  ClipPath,
+  Defs,
+  G,
+  Path,
+  type PathProps,
+  Rect,
+  type SvgProps,
+} from 'react-native-svg'
 
 import {usePalette} from '#/lib/hooks/usePalette'
 

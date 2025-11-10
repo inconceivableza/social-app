@@ -1,6 +1,14 @@
 import React from 'react'
 import {StyleSheet, type TextProps} from 'react-native'
-import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg'
+import Svg, {
+  ClipPath,
+  Defs,
+  G,
+  Path,
+  type PathProps,
+  Rect,
+  type SvgProps,
+} from 'react-native-svg'
 import {Image} from 'expo-image'
 
 import {branding} from '#/lib/constants'

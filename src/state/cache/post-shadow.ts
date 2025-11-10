@@ -1,14 +1,19 @@
 import {useEffect, useMemo, useState} from 'react'
-import { AppBskyEmbedRecord, AppBskyEmbedRecordWithMedia, AppBskyFeedDefs, AppFoodiosFeedDefs, AppFoodiosFeedRecipeRevision } from '@atproto/api'
+import {
+  AppBskyEmbedRecord,
+  AppBskyEmbedRecordWithMedia,
+  type AppBskyFeedDefs,
+  type AppFoodiosFeedDefs,
+} from '@atproto/api'
 import {type QueryClient} from '@tanstack/react-query'
 import EventEmitter from 'eventemitter3'
 
 import {batchedUpdates} from '#/lib/batchedUpdates'
+import {findAllPostsInQueryData as findAllPostsInBookmarksQueryData} from '#/state/queries/bookmarks/useBookmarksQuery'
 import {findAllPostsInQueryData as findAllPostsInExploreFeedPreviewsQueryData} from '#/state/queries/explore-feed-previews'
 import {findAllPostsInQueryData as findAllPostsInNotifsQueryData} from '#/state/queries/notifications/feed'
 import {findAllPostsInQueryData as findAllPostsInFeedQueryData} from '#/state/queries/post-feed'
 import {findAllPostsInQueryData as findAllPostsInQuoteQueryData} from '#/state/queries/post-quotes'
-import {findAllPostsInQueryData as findAllPostsInThreadQueryData} from '#/state/queries/post-thread'
 import {findAllPostsInQueryData as findAllPostsInSearchQueryData} from '#/state/queries/search-posts'
 import {findAllPostsInQueryData as findAllPostsInThreadV2QueryData} from '#/state/queries/usePostThread/queryCache'
 import {type AnyPostView, castAsShadow, type Shadow} from './types'
@@ -129,7 +134,7 @@ function mergeShadow(
   }
 
   if (shadow.edit) {
-    post = { ...post, record: shadow.edit }
+    post = {...post, record: shadow.edit}
   }
 
   return castAsShadow({
@@ -174,11 +179,6 @@ function* findPostsInCache(
   for (let post of findAllPostsInNotifsQueryData(queryClient, uri)) {
     yield post
   }
-  for (let node of findAllPostsInThreadQueryData(queryClient, uri)) {
-    if ('post' in node) {
-      yield node.post
-    }
-  }
   for (let post of findAllPostsInThreadV2QueryData(queryClient, uri)) {
     yield post
   }
@@ -192,6 +192,9 @@ function* findPostsInCache(
     queryClient,
     uri,
   )) {
+    yield post
+  }
+  for (let post of findAllPostsInBookmarksQueryData(queryClient, uri)) {
     yield post
   }
 }

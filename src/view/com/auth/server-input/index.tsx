@@ -126,15 +126,19 @@ function DialogInner({
       accessibilityDescribedBy="dialog-description"
       accessibilityLabelledBy="dialog-title">
       <View style={[a.relative, a.gap_md, a.w_full]}>
-        <Text nativeID="dialog-title" style={[a.text_2xl, a.font_bold]}>
+        <Text nativeID="dialog-title" style={[a.text_2xl, a.font_semi_bold]}>
           <Trans>Choose your account provider</Trans>
         </Text>
         <ToggleButton.Group
           label="Preferences"
           values={[fixedOption]}
           onChange={values => setFixedOption(values[0])}>
-          <ToggleButton.Button name={BSKY_SERVICE} label={_(msg`${branding.naming.app_name}`)}>
-            <ToggleButton.ButtonText>{_(msg`${branding.naming.app_name}`)}</ToggleButton.ButtonText>
+          <ToggleButton.Button
+            name={BSKY_SERVICE}
+            label={_(msg`${branding.naming.app_name}`)}>
+            <ToggleButton.ButtonText>
+              {_(msg`${branding.naming.app_name}`)}
+            </ToggleButton.ButtonText>
           </ToggleButton.Button>
           <ToggleButton.Button
             testID="customSelectBtn"
@@ -147,8 +151,9 @@ function DialogInner({
         {fixedOption === BSKY_SERVICE && isFirstTimeUser && (
           <Admonition type="tip">
             <Trans>
-              {branding.naming.app_name} is an open network where you can choose your own provider.
-              If you're new here, we recommend sticking with the default {branding.naming.app_name}
+              {branding.naming.app_name} is an open network where you can choose
+              your own provider. If you're new here, we recommend sticking with
+              the default {branding.naming.app_name}
               Social option.
             </Trans>
           </Admonition>
@@ -210,8 +215,9 @@ function DialogInner({
               </Trans>
             ) : (
               <Trans>
-                {branding.naming.app_name} is an open network where you can choose your hosting
-                provider. If you're a developer, you can host your own server.
+                {branding.naming.app_name} is an open network where you can
+                choose your hosting provider. If you're a developer, you can
+                host your own server.
               </Trans>
             )}{' '}
             <InlineLinkText

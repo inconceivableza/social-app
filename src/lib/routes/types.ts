@@ -70,7 +70,7 @@ export type CommonNavigatorParams = {
   InterestsSettings: undefined
   AboutSettings: undefined
   AppIconSettings: undefined
-  Search: {q?: string}
+  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
   Hashtag: {tag: string; author?: string}
   Topic: {topic: string}
   MessagesConversation: {conversation: string; embed?: string; accept?: true}
@@ -105,7 +105,7 @@ export type HomeTabNavigatorParams = CommonNavigatorParams & {
 }
 
 export type SearchTabNavigatorParams = CommonNavigatorParams & {
-  Search: {q?: string}
+  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
 }
 
 export type NotificationsTabNavigatorParams = CommonNavigatorParams & {
@@ -122,7 +122,7 @@ export type MessagesTabNavigatorParams = CommonNavigatorParams & {
 
 export type FlatNavigatorParams = CommonNavigatorParams & {
   Home: undefined
-  Search: {q?: string}
+  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
   Feeds: undefined
   Notifications: undefined
   Messages: {pushToConversation?: string; animation?: 'push' | 'pop'}
@@ -132,7 +132,7 @@ export type AllNavigatorParams = CommonNavigatorParams & {
   HomeTab: undefined
   Home: undefined
   SearchTab: undefined
-  Search: {q?: string}
+  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
   Feeds: undefined
   NotificationsTab: undefined
   Notifications: undefined

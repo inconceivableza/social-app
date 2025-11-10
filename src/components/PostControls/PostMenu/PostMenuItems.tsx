@@ -17,7 +17,12 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
-import { dangerousIsPostRecord, isRecipePostView, postHref, recordText } from '#/lib/api/feed/utils'
+import {
+  dangerousIsPostRecord,
+  isRecipePostView,
+  postHref,
+  recordText,
+} from '#/lib/api/feed/utils'
 import {DISCOVER_DEBUG_DIDS} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
@@ -47,7 +52,12 @@ import {
   useProfileBlockMutationQueue,
   useProfileMuteMutationQueue,
 } from '#/state/queries/profile'
-import {useToggleReplyVisibilityMutation} from '#/state/queries/threadgate'
+import {
+  InvalidInteractionSettingsError,
+  MAX_HIDDEN_REPLIES,
+  MaxHiddenRepliesError,
+  useToggleReplyVisibilityMutation,
+} from '#/state/queries/threadgate'
 import {useRequireAuth, useSession} from '#/state/session'
 import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
@@ -100,7 +110,7 @@ let PostMenuItems = ({
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
   postFeedContext: string | undefined
-    postReqId: string | undefined
+  postReqId: string | undefined
   richText: RichTextAPI
   style?: StyleProp<ViewStyle>
   hitSlop?: PressableProps['hitSlop']
@@ -256,6 +266,7 @@ let PostMenuItems = ({
 
   const onHidePost = () => {
     hidePost({uri: postUri})
+    logEvent('thread:click:hideReplyForMe', {})
   }
 
   const hideInPWI = !!postAuthor.labels?.find(
@@ -336,16 +347,42 @@ let PostMenuItems = ({
         replyUri: postUri,
         action,
       })
+
+      // Log metric only when hiding (not when showing)
+      if (isHide) {
+        logEvent('thread:click:hideReplyForEveryone', {})
+      }
+
       Toast.show(
         isHide
           ? _(msg`Reply was successfully hidden`)
           : _(msg({message: 'Reply visibility updated', context: 'toast'})),
       )
     } catch (e: any) {
-      Toast.show(
-        _(msg({message: 'Updating reply visibility failed', context: 'toast'})),
-      )
-      logger.error(`Failed to ${action} reply`, {safeMessage: e.message})
+      if (e instanceof MaxHiddenRepliesError) {
+        Toast.show(
+          _(
+            msg({
+              message: `You can hide a maximum of ${MAX_HIDDEN_REPLIES} replies.`,
+              context: 'toast',
+            }),
+          ),
+        )
+      } else if (e instanceof InvalidInteractionSettingsError) {
+        Toast.show(
+          _(msg({message: 'Invalid interaction settings.', context: 'toast'})),
+        )
+      } else {
+        Toast.show(
+          _(
+            msg({
+              message: 'Updating reply visibility failed',
+              context: 'toast',
+            }),
+          ),
+        )
+        logger.error(`Failed to ${action} reply`, {safeMessage: e.message})
+      }
     }
   }
 
@@ -562,7 +599,8 @@ let PostMenuItems = ({
           </>
         )}
 
-        {hasSession && isBskyPost &&
+        {hasSession &&
+          isBskyPost &&
           (canHideReplyForEveryone || canDetachQuote || canHidePostForMe) && (
             <>
               <Menu.Divider />

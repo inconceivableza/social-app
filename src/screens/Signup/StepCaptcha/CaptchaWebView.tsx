@@ -35,7 +35,7 @@ export function CaptchaWebView({
   onError: (error: unknown) => void
 }) {
   const startedAt = useRef(Date.now())
-  const successTo = useRef<NodeJS.Timeout>()
+  const successTo = useRef<NodeJS.Timeout>(undefined)
 
   useEffect(() => {
     return () => {

@@ -1,4 +1,3 @@
-import {View} from 'react-native'
 import {type AppBskyNotificationDeclaration} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -113,11 +112,12 @@ export function PrivacyAndSecuritySettingsScreen({}: Props) {
             <Admonition.Outer type="tip" style={[a.flex_1]}>
               <Admonition.Row>
                 <Admonition.Icon />
-                <View style={[a.flex_1, a.gap_sm]}>
+                <Admonition.Content>
                   <Admonition.Text>
                     <Trans>
-                      Note: {branding.naming.app_name} is an open and public network. This setting
-                      only limits the visibility of your content on the {branding.naming.app_name}
+                      Note: {branding.naming.app_name} is an open and public
+                      network. This setting only limits the visibility of your
+                      content on the {branding.naming.app_name}
                       app and website, and other apps may not respect this
                       setting. Your content may still be shown to logged-out
                       users by other apps and websites.
@@ -129,10 +129,13 @@ export function PrivacyAndSecuritySettingsScreen({}: Props) {
                         msg`Learn more about what is public on ${branding.naming.app_name}.`,
                       )}
                       to="https://blueskyweb.zendesk.com/hc/en-us/articles/15835264007693-Data-Privacy">
-                      <Trans>Learn more about what is public on {branding.naming.app_name}.</Trans>
+                      <Trans>
+                        Learn more about what is public on{' '}
+                        {branding.naming.app_name}.
+                      </Trans>
                     </InlineLinkText>
                   </Admonition.Text>
-                </View>
+                </Admonition.Content>
               </Admonition.Row>
             </Admonition.Outer>
           </SettingsList.Item>
