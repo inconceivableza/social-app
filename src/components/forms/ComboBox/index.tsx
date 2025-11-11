@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { BaseOption, ComboBoxProps, ComboBoxSingleSelectProps } from "./types";
 import * as Dialog from '#/components/Dialog'
 import { useLingui } from "@lingui/react";
@@ -104,12 +104,6 @@ export function ComboBoxSingleSelect({ onChange, label, options, value, isInvali
         }}>
             <View>
                 <TextField.Input label={label} value={value} readOnly />
-
-
-                {/* TODO provide better label
-                <Button label={props.label} onPress={() => dialog.open()}>
-                    <ButtonIcon icon={PencilIcon}/>
-                </Button> */}
             </View>
 
         </TouchableOpacity>
