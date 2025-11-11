@@ -67,11 +67,7 @@ export function ComboBox<T extends BaseOption>({
  * Combo Box that allows selection of single value. Also accepts the user's input as a value.
  */
 export function ComboBoxSingleSelect({ options, value, onChange, label, isInvalid, onFocus }: ComboBoxSingleSelectProps) {
-  const t = useTheme()
-  const { _ } = useLingui()
   const [open, setOpen] = useState(false)
-
-
 
   return <View>
     <Popover.Root open={open}>
@@ -80,6 +76,7 @@ export function ComboBoxSingleSelect({ options, value, onChange, label, isInvali
           <TextField.Root isInvalid={isInvalid}>
             <TextField.Input
               value={value}
+              selectTextOnFocus
               onFocus={() => {
                 setOpen(true)
                 onFocus?.()

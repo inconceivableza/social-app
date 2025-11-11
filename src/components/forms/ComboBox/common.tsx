@@ -46,7 +46,7 @@ export function ComboBoxOptions<T extends BaseOption>({ options, onSelect, searc
                     </ButtonText>
                 </Button>
             </View>
-        }) : <View style={a.p_md}><Text><Trans>No results found</Trans></Text></View>}
+        }) : <View style={[a.p_md]}><Text style={{ fontStyle: 'italic' }}><Trans>No results found</Trans></Text></View>}
     </ScrollView>
 }
 
@@ -114,12 +114,13 @@ export function ComboBoxSingleSelectOptions({ value, options, onChange }: Pick<C
                 maxHeight: 200,
             }]}>
         {filteredOptions.map((opt, i) => (
-            <View key={i}>
+            <View key={i} style={[a.border_b, t.atoms.border_contrast_low]}>
                 <Button
                     label={_(opt)}
                     size="small"
                     color='primary_subtle'
-                    style={[a.justify_start]}
+
+                    style={[a.justify_start, { borderRadius: 0 }]}
                     onPress={_e => {
                         onChange(opt)
                     }}>

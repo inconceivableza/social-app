@@ -7,32 +7,43 @@ import { useState } from "react";
 import { ComboBoxOptions, ComboBoxSelection, ComboBoxSingleSelectOptions } from "./common";
 import { Button, ButtonIcon, ButtonText } from "#/components/Button"
 import { msg, Trans } from "@lingui/macro";
-import { PencilLine_Stroke2_Corner0_Rounded as PencilIcon } from '#/components/icons/Pencil'
+import { PlusLarge_Stroke2_Corner0_Rounded as PlusIcon } from "#/components/icons/Plus"
 import { Text } from "#/components/Typography";
+import { atoms as a } from "#/alf";
+import { useTheme } from "@bsky.app/alf";
 
 /**
  * Multi-select combo box, only allowing selection of the given options.
  */
 export function ComboBox<T extends BaseOption>(props: ComboBoxProps<T>) {
     const dialog = Dialog.useDialogControl()
-    return <View>
-        <TouchableOpacity onPress={() => {
+    const t = useTheme()
+    return <View style={a.h_full}>
+        <TouchableOpacity style={a.h_full} onPress={() => {
             dialog.open()
         }}>
-            <View>
-                <Text>{props.label}</Text>
-                {props.selection.length ? <ComboBoxSelection selection={props.selection} onRemove={props.onRemove} /> :
-                    <Text><Trans>Nothing selected</Trans></Text>}
+            <View style={a.h_full}>
+                <View style={[a.p_sm, { borderRadius: 8 }, t.atoms.bg_contrast_900, a.flex_row, a.align_center, a.h_full]}>
+                    {props.selection.length ?
+                        <View style={[a.flex_1]}>
+                            <ComboBoxSelection selection={props.selection} onRemove={props.onRemove} />
+                        </View> :
+                        <Text style={[t.atoms.text_contrast_low]}>{props.label}</Text>}
 
-                {/* TODO provide better label
-                <Button label={props.label} onPress={() => dialog.open()}>
-                    <ButtonIcon icon={PencilIcon}/>
-                </Button> */}
+                    {/* TODO provide better label */}
+                    <View style={[a.ml_auto]}>
+                        <Button style={[a.ml_auto]} shape="round" variant="outline" color="primary" size="tiny"
+                            label={props.label} onPress={() => dialog.open()}>
+                            <ButtonIcon icon={PlusIcon} />
+                        </Button>
+                    </View>
+                </View>
             </View>
 
         </TouchableOpacity>
         <Dialog.Outer control={dialog}>
-            <Dialog.Inner label={props.label}>
+            <Dialog.Handle />
+            <Dialog.Inner label={props.label} >
                 <ComboBoxInner {...props} onConfirm={() => dialog.close()} />
             </Dialog.Inner>
         </Dialog.Outer>
@@ -45,22 +56,34 @@ function ComboBoxInner<T extends BaseOption>({
     onRemove,
     onSelect,
     label,
-    onConfirm
+    onConfirm,
+    searchLabel
 }: ComboBoxProps<T> & { onConfirm: () => void }) {
     const [searchText, setSearchText] = useState("")
     const { _ } = useLingui()
-    return <View>
-        <TextField.Root>
-            <TextField.Input
-                value={searchText}
-                label={label}
-                onChangeText={setSearchText}
-            />
-        </TextField.Root>
-        <ComboBoxSelection onRemove={onRemove} selection={selection} />
-        <ComboBoxOptions onSelect={onSelect} options={options} searchText={searchText} selection={selection} />
-        <View>
-            <Button label={_(msg`Confirm selection`)} onPress={onConfirm}>
+    const t = useTheme()
+    return <View style={[a.gap_md]}>
+        <View >
+            <View style={[a.flex_row, a.flex_1, t.atoms.bg_contrast_900, a.align_center, { borderRadius: 8 }]}>
+                <View style={[a.flex_1]}>
+                    <TextField.Root>
+                        <TextField.Input
+                            value={searchText}
+                            label={searchLabel}
+                            onChangeText={setSearchText}
+                        />
+                    </TextField.Root>
+                </View>
+                <View style={[a.p_sm, { maxWidth: '75%' }]}>
+                    <ComboBoxSelection onRemove={onRemove} selection={selection} />
+                </View>
+            </View>
+            <View style={{ height: 200 }}>
+                <ComboBoxOptions onSelect={onSelect} options={options} searchText={searchText} selection={selection} />
+            </View>
+        </View>
+        <View >
+            <Button label={_(msg`Confirm selection`)} onPress={onConfirm} size="small" color="primary">
                 <ButtonText>
                     <Trans>Done</Trans>
                 </ButtonText>
@@ -80,7 +103,7 @@ export function ComboBoxSingleSelect({ onChange, label, options, value, isInvali
             dialog.open()
         }}>
             <View>
-                <Text>{label}</Text>
+                <TextField.Input label={label} value={value} readOnly />
 
 
                 {/* TODO provide better label
@@ -95,16 +118,19 @@ export function ComboBoxSingleSelect({ onChange, label, options, value, isInvali
                 <View>
                     <TextField.Root isInvalid={isInvalid}>
                         <TextField.Input
+                            selectTextOnFocus
                             value={value}
                             onFocus={onFocus}
                             label={label}
                             onChangeText={onChange}
                         />
                     </TextField.Root>
-                    <ComboBoxSingleSelectOptions onChange={(value) => {
-                        onChange(value)
-                        dialog.close()
-                    }} options={options} value={value} />
+                    <View style={{ height: 200 }}>
+                        <ComboBoxSingleSelectOptions onChange={(value) => {
+                            onChange(value)
+                            dialog.close()
+                        }} options={options} value={value} />
+                    </View>
                 </View>
             </Dialog.Inner>
         </Dialog.Outer>
