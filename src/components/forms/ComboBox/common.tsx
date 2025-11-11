@@ -18,8 +18,8 @@ export function ComboBoxOptions<T extends BaseOption>({ options, onSelect, searc
         return options.filter(({ id, label }) => {
             return label.toLowerCase().includes(trimmedSearch) &&
                 !selection.find(opt => opt.id === id)
-        })
-    }, [options, selection, searchText])
+        }).map(opt => ({ ...opt, onClick: () => onSelect(opt) }))
+    }, [options, selection, searchText, onSelect])
 
     return <ScrollView
         style={[
@@ -31,22 +31,22 @@ export function ComboBoxOptions<T extends BaseOption>({ options, onSelect, searc
             }), {
                 maxHeight: 200,
             }]}>
-        {filteredOptions.length ? filteredOptions.map(opt => (
-            <View key={opt.id}>
+        {filteredOptions.length ? filteredOptions.map(opt => {
+
+            return <View key={opt.id} style={[a.border_b, t.atoms.border_contrast_low]}>
                 <Button
                     label={_(opt.label)}
                     size="small"
                     color='primary_subtle'
-                    style={[a.justify_start]}
-                    onPress={_e => {
-                        onSelect(opt)
-                    }}>
+                    style={[a.justify_start, { borderRadius: 0 }]}
+                    onPress={opt.onClick}
+                >
                     <ButtonText style={[a.text_left]}>
                         {_(opt.label)}
                     </ButtonText>
                 </Button>
             </View>
-        )) : <View style={a.p_md}><Text><Trans>No results found</Trans></Text></View>}
+        }) : <View style={a.p_md}><Text><Trans>No results found</Trans></Text></View>}
     </ScrollView>
 }
 

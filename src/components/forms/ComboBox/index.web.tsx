@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react'
-import {ScrollView, View} from 'react-native'
-import {useLingui} from '@lingui/react'
+import { useState } from 'react'
+import { View } from 'react-native'
+import { useLingui } from '@lingui/react'
 
-import { atoms as a, select, useTheme } from '#/alf'
-import {Button, ButtonText} from '#/components/Button'
+import { useTheme } from '#/alf'
 import * as TextField from '#/components/forms/TextField'
 
 import { Popover } from "radix-ui";
@@ -24,42 +23,42 @@ export function ComboBox<T extends BaseOption>({
   const [searchText, setSearchText] = useState('')
 
   const [open, setOpen] = useState(false)
+
+  function reset() {
+    setOpen(false)
+    setSearchText('')
+  }
   return (
     <View>
       <Popover.Root open={open}>
         <Popover.Trigger asChild>
           <View collapsable={false}>
-          <TextField.Root>
-            <TextField.Input
+            <TextField.Root>
+              <TextField.Input
                 value={searchText}
-                onBlur={(e) => {
-                  setSearchText('')
-              }}
-              onFocus={() => {
-                setOpen(true)
-              }}
-              label={label}
-              onChangeText={value => {
-                setSearchText(value)
-              }}
-            />
-          </TextField.Root>
+                onFocus={() => {
+                  setOpen(true)
+                }}
+                label={label}
+                onChangeText={value => {
+                  setSearchText(value)
+                }}
+              />
+            </TextField.Root>
           </View>
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content className="radix-combobox-content radix-popover-content" style={{ minWidth: 'max-content' }}
-            onPointerDownOutside={() => {
-              setOpen(false)
-            }} >
+            onPointerDownOutside={reset} >
             <ComboBoxOptions options={options} searchText={searchText} selection={selection} onSelect={(opt) => {
-                setOpen(false)
-                onSelect(opt)
-            }}/>
-            
+              onSelect(opt)
+              reset()
+            }} />
+
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
-      <ComboBoxSelection selection={selection} onRemove={onRemove}/>
+      <ComboBoxSelection selection={selection} onRemove={onRemove} />
     </View>
   )
 }
@@ -72,7 +71,7 @@ export function ComboBoxSingleSelect({ options, value, onChange, label, isInvali
   const { _ } = useLingui()
   const [open, setOpen] = useState(false)
 
-  
+
 
   return <View>
     <Popover.Root open={open}>
@@ -102,7 +101,7 @@ export function ComboBoxSingleSelect({ options, value, onChange, label, isInvali
           <ComboBoxSingleSelectOptions onChange={opt => {
             onChange(opt)
             setOpen(false)
-          }} options={options} value={value}/>
+          }} options={options} value={value} />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
