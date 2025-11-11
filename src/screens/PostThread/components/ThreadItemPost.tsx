@@ -55,6 +55,7 @@ import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
 import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
+import { ExpandableRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -296,7 +297,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
     : dangerousIsPostRecord(record)
       ? record.reply?.root
       : null
-  const anchorRevision = anchor?.value.post.record.selectedRevisionUri
+  const anchorRevision = isRecipePostView(anchor?.value.post) && anchor?.value.post.record.selectedRevisionUri
   const revisionMismatch =
     anchorRevision &&
     rootReplyRef &&
@@ -362,7 +363,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                     label={_(msg`Show original version`)}
                     onPress={() => {
                       // TODO: add api method for retrieving revision and remove all query param logic from getPosts
-                      openModal({
+                      rootReplyRef.revisionUri && openModal({
                         name: 'recipe-revision-view',
                         uri: `${anchor.uri}?revision=${new AtUri(rootReplyRef.revisionUri).rkey}`,
                       })
@@ -395,7 +396,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 additionalCauses={additionalPostAlerts}
               />
 
-              {richText?.text ? (
+              {isRecipePostView(post) ? <ExpandableRecipePost revision={post.record} />
+                : richText?.text ? (
                 <>
                   <RichText
                     enableTags
@@ -413,6 +415,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                   )}
                 </>
               ) : undefined}
+
+
               {post.embed && (
                 <View style={[a.pb_xs]}>
                   <Embed

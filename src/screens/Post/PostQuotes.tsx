@@ -11,6 +11,7 @@ import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostQuotes as PostQuotesComponent} from '#/view/com/post-thread/PostQuotes'
 import * as Layout from '#/components/Layout'
+import { isRecipePostView } from '#/lib/api/feed/utils'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostQuotes'>
 export const PostQuotesScreen = ({route}: Props) => {
@@ -55,8 +56,8 @@ export const PostQuotesScreen = ({route}: Props) => {
       <PostQuotesComponent
         uri={uri}
         revisionUri={
-          post?.thread.type === 'recipe'
-            ? post.thread.record.selectedRevisionUri
+          isRecipePostView(post)
+            ? post.record.selectedRevisionUri
             : undefined
         }
       />
