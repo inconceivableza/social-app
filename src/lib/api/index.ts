@@ -208,37 +208,28 @@ export async function post(
   return {uris}
 }
 
-interface RecipePostOpts {
-  post: RecipePostDraft
-}
-export async function postRecipe(
-  agent: AtpAgent,
+type PartialRecipeRevision = Pick<AppFoodiosFeedRecipeRevision.Record, "createdAt" | "recipePostRef" | "parentRevisionRef">
+
+async function recipeDraftToRecord(agent: AtpAgent,
   qc: QueryClient,
-  {post}: RecipePostOpts,
-) {
-  // TODO: strip out empty fields
-  const now = new Date()
-  const did = agent.assertDid
-  const tid = TID.next()
-  const rkey = tid.toString()
-  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
-  const recipeRecord: AppFoodiosFeedRecipePost.Record = {
-    $type: 'app.foodios.feed.recipePost',
-    createdAt: now.toISOString(),
+  { createdAt, parentRevisionRef, recipePostRef }: PartialRecipeRevision,
+  post: RecipePostDraft): Promise<AppFoodiosFeedRecipeRevision.Record> {
+
+  // TODO: strip out all empty fields
+  if (!post.recipeYield?.quantity) {
+    delete post.recipeYield
   }
-  const [cid, rt, embed] = await Promise.all([
-    computeCid(recipeRecord),
+
+  const [rt, embed] = await Promise.all([
     resolveRT(agent, post.text),
     resolveEmbed(agent, qc, post, () => {}),
   ])
-  // TODO: factor out a conversion function from draft to record - also used in postRecipeRevision
+
   const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
     $type: 'app.foodios.feed.recipeRevision',
-    recipePostRef: {
-      uri,
-      cid,
-    },
-    createdAt: now.toISOString(),
+    recipePostRef,
+    createdAt,
+    parentRevisionRef,
     ingredients: post.ingredients,
     instructionSections: post.instructionSections,
     text: rt.text,
@@ -254,6 +245,7 @@ export async function postRecipe(
     nutrition: post.nutrition,
     recipeYield: post.recipeYield,
   }
+
   const validationResult =
     AppFoodiosFeedRecipeRevision.validateRecord(revisionRecord)
   if (!validationResult.success) {
@@ -262,7 +254,34 @@ export async function postRecipe(
       'Invalid revision record: ' + validationResult.error.message,
     )
   }
-  // TODO: add recipe label
+
+  return revisionRecord
+}
+
+interface RecipePostOpts {
+  post: RecipePostDraft
+}
+export async function postRecipe(
+  agent: AtpAgent,
+  qc: QueryClient,
+  { post }: RecipePostOpts,
+) {
+  const now = new Date()
+  const did = agent.assertDid
+  const tid = TID.next()
+  const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
+  const recipeRecord: AppFoodiosFeedRecipePost.Record = {
+    $type: 'app.foodios.feed.recipePost',
+    createdAt: now.toISOString(),
+  }
+  const cid = await computeCid(recipeRecord)
+  const revisionRecord = await recipeDraftToRecord(agent, qc, {
+    recipePostRef: { uri, cid },
+    createdAt: now.toISOString(),
+  }, post)
+
+// TODO: add recipe labels
   // TODO: consider whether we need a new rkey for revision
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
     {
@@ -314,34 +333,14 @@ export async function postRecipeRevision(
   const did = agent.assertDid
   const rkey = tid.toString()
   const uri = `at://${did}/${ids.AppFoodiosFeedRecipeRevision}/${rkey}`
-
-  const [rt, embed] = await Promise.all([
-    resolveRT(agent, post.text),
-    resolveEmbed(agent, qc, post, () => {}),
-  ])
-  const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
-    $type: 'app.foodios.feed.recipeRevision',
+  const revisionRecord = await recipeDraftToRecord(agent, qc, {
     recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
+    createdAt: now.toISOString(),
     parentRevisionRef: {
       uri: parentRevisionPost.record.selectedRevisionUri,
       cid: parentRevisionPost.cid, // TODO: This field is currently populated with the selected revision's cid (not the the recipe post's) this may be confusing
-    },
-    createdAt: now.toISOString(),
-    ingredients: post.ingredients,
-    instructionSections: post.instructionSections,
-    text: rt.text,
-    facets: rt.facets,
-    name: post.name,
-    embed,
-    cookingTime: post.cookTime,
-    prepTime: post.prepTime,
-    recipeCategory: post.recipeCategories?.flatMap(hierarchyOptionToPaths),
-    recipeCuisine: post.recipeCuisines?.flatMap(hierarchyOptionToPaths),
-    suitableForDiet: post.recipeDiets?.flatMap(hierarchyOptionToPaths),
-    attribution: post.attribution,
-    nutrition: post.nutrition,
-    recipeYield: post.recipeYield,
   }
+  }, post)
 
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
     {
