@@ -77,7 +77,6 @@ jobs:
 
       - name: ⬇️ Get base stats from cache
         id: get-base-stats
-        working-directory: build/social-app
         uses: actions/cache@v4
         with:
           path: stats-base.json
