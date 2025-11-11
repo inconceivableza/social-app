@@ -24,7 +24,6 @@ import type * as bsky from '#/types/bsky'
 
 export function RecentChats({postUri}: {postUri: string}) {
   const control = useDialogContext()
-  const {_} = useLingui()
   const {currentAccount} = useSession()
   const {data} = useListConvosQuery({status: 'accepted'})
   const convos = data?.pages[0]?.convos?.slice(0, 10)
@@ -203,7 +202,7 @@ function NoConvos() {
           a.text_sm,
           t.atoms.text_contrast_high,
           a.text_center,
-          a.font_bold,
+          a.font_semi_bold,
         ]}>
         <Trans>Start a conversation, and it will appear here.</Trans>
       </Text>

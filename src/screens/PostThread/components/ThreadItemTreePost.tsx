@@ -40,7 +40,7 @@ import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
 
 /**
@@ -327,7 +327,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
   // TODO: update with revision dialog
   return (
     <ThreadItemTreePostOuterWrapper item={item}>
-      <SubtleHover>
+      <SubtleHoverWrapper>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
           href={href}
@@ -399,12 +399,12 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
             </View>
           </ThreadItemTreePostInnerWrapper>
         </PostHider>
-      </SubtleHover>
+      </SubtleHoverWrapper>
     </ThreadItemTreePostOuterWrapper>
   )
 })
 
-function SubtleHover({children}: {children: React.ReactNode}) {
+function SubtleHoverWrapper({children}: {children: React.ReactNode}) {
   const {
     state: hover,
     onIn: onHoverIn,
@@ -415,7 +415,7 @@ function SubtleHover({children}: {children: React.ReactNode}) {
       onPointerEnter={onHoverIn}
       onPointerLeave={onHoverOut}
       style={[a.flex_1, a.pointer]}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {children}
     </View>
   )

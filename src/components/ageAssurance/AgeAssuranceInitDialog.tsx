@@ -179,7 +179,7 @@ function Inner() {
       <View style={[a.align_start]}>
         <AgeAssuranceBadge />
 
-        <Text style={[a.text_xl, a.font_heavy, a.pt_xl, a.pb_md]}>
+        <Text style={[a.text_xl, a.font_bold, a.pt_xl, a.pb_md]}>
           {success ? <Trans>Success!</Trans> : <Trans>Verify your age</Trans>}
         </Text>
 
@@ -279,8 +279,8 @@ function Inner() {
                   <Admonition type="tip" style={[a.mt_sm]}>
                     <Trans>
                       Use your account email address, or another real email
-                      address you control, in case KWS or {branding.naming.app_name} needs to
-                      contact you.
+                      address you control, in case KWS or{' '}
+                      {branding.naming.app_name} needs to contact you.
                     </Trans>
                   </Admonition>
                 )}

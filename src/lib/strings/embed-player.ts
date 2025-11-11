@@ -106,7 +106,7 @@ export function parseEmbedPlayerFromUrl(
     urlp.hostname === 'm.youtube.com' ||
     urlp.hostname === 'music.youtube.com'
   ) {
-    const [_, page, shortOrLiveVideoId] = urlp.pathname.split('/')
+    const [__, page, shortOrLiveVideoId] = urlp.pathname.split('/')
 
     const isShorts = page === 'shorts'
     const isLive = page === 'live'
@@ -138,7 +138,7 @@ export function parseEmbedPlayerFromUrl(
         window.location.hostname
       : 'localhost'
 
-    const [_, channelOrVideo, clipOrId, id] = urlp.pathname.split('/')
+    const [__, channelOrVideo, clipOrId, id] = urlp.pathname.split('/')
 
     if (channelOrVideo === 'videos') {
       return {
@@ -163,7 +163,7 @@ export function parseEmbedPlayerFromUrl(
 
   // spotify
   if (urlp.hostname === 'open.spotify.com') {
-    const [_, typeOrLocale, idOrType, id] = urlp.pathname.split('/')
+    const [__, typeOrLocale, idOrType, id] = urlp.pathname.split('/')
 
     if (idOrType) {
       if (typeOrLocale === 'playlist' || idOrType === 'playlist') {
@@ -211,7 +211,7 @@ export function parseEmbedPlayerFromUrl(
     urlp.hostname === 'soundcloud.com' ||
     urlp.hostname === 'www.soundcloud.com'
   ) {
-    const [_, user, trackOrSets, set] = urlp.pathname.split('/')
+    const [__, user, trackOrSets, set] = urlp.pathname.split('/')
 
     if (user && trackOrSets) {
       if (trackOrSets === 'sets' && set) {
@@ -271,7 +271,7 @@ export function parseEmbedPlayerFromUrl(
   }
 
   if (urlp.hostname === 'vimeo.com' || urlp.hostname === 'www.vimeo.com') {
-    const [_, videoId] = urlp.pathname.split('/')
+    const [__, videoId] = urlp.pathname.split('/')
     if (videoId) {
       return {
         type: 'vimeo_video',
@@ -282,7 +282,7 @@ export function parseEmbedPlayerFromUrl(
   }
 
   if (urlp.hostname === 'giphy.com' || urlp.hostname === 'www.giphy.com') {
-    const [_, gifs, nameAndId] = urlp.pathname.split('/')
+    const [__, gifs, nameAndId] = urlp.pathname.split('/')
 
     /*
      * nameAndId is a string that consists of the name (dash separated) and the id of the gif (the last part of the name)
@@ -310,7 +310,7 @@ export function parseEmbedPlayerFromUrl(
   // These can include (presumably) a tracking id in the path name, so we have to check for that as well
   if (giphyRegex.test(urlp.hostname)) {
     // We can link directly to the gif, if its a proper link
-    const [_, media, trackingOrId, idOrFilename, filename] =
+    const [__, media, trackingOrId, idOrFilename, filename] =
       urlp.pathname.split('/')
 
     if (media === 'media') {
@@ -339,7 +339,7 @@ export function parseEmbedPlayerFromUrl(
   // Finally, we should see if it is a link to i.giphy.com. These links don't necessarily end in .gif but can also
   // be .webp
   if (urlp.hostname === 'i.giphy.com' || urlp.hostname === 'www.i.giphy.com') {
-    const [_, mediaOrFilename, filename] = urlp.pathname.split('/')
+    const [__, mediaOrFilename, filename] = urlp.pathname.split('/')
 
     if (mediaOrFilename === 'media' && filename) {
       const gifId = filename.split('.')[0]
@@ -390,7 +390,7 @@ export function parseEmbedPlayerFromUrl(
     const path_components = urlp.pathname.slice(1, i + 1).split('/')
     if (path_components.length === 4) {
       // discard username - it's not relevant
-      const [photos, _, albums, id] = path_components
+      const [photos, __, albums, id] = path_components
       if (photos === 'photos' && albums === 'albums') {
         // this at least has the shape of a valid photo-album URL!
         return {
@@ -418,7 +418,7 @@ export function parseEmbedPlayerFromUrl(
   // link shortened flickr path
   if (urlp.hostname === 'flic.kr') {
     const b58alph = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ'
-    let [_, type, idBase58Enc] = urlp.pathname.split('/')
+    let [__, type, idBase58Enc] = urlp.pathname.split('/')
     let id = 0n
     for (const char of idBase58Enc) {
       const nextIdx = b58alph.indexOf(char)
@@ -529,7 +529,7 @@ export function parseTenorGif(urlp: URL):
     return {success: false}
   }
 
-  let [_, id, filename] = urlp.pathname.split('/')
+  let [__, id, filename] = urlp.pathname.split('/')
 
   if (!id || !filename) {
     return {success: false}

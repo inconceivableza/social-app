@@ -18,7 +18,6 @@ import {
   isReviewRatingView,
   postHref,
   recipePostSummaryRichText,
-  RecipePostView,
   recordRevisionState,
   recordText,
 } from '#/lib/api/feed/utils'
@@ -55,14 +54,13 @@ import {
   OUTER_SPACE,
   REPLY_LINE_WIDTH,
 } from '#/screens/PostThread/const'
-import {atoms as a, useBreakpoints, useTheme} from '#/alf'
+import {atoms as a, useTheme} from '#/alf'
 import {colors} from '#/components/Admonition'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import {CalendarClock_Stroke2_Corner0_Rounded as CalendarClockIcon} from '#/components/icons/CalendarClock'
 import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {InlineLinkText, Link} from '#/components/Link'
-import {LoggedOutCTA} from '#/components/LoggedOutCTA'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {LabelsOnMyPost} from '#/components/moderation/LabelsOnMe'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
@@ -78,7 +76,6 @@ import {Text} from '#/components/Typography'
 import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
 import {WhoCanReply} from '#/components/WhoCanReply'
 import * as bsky from '#/types/bsky'
-import { useQueryClient } from '@tanstack/react-query'
 
 export function ThreadItemAnchor({
   item,
@@ -153,7 +150,8 @@ function ThreadItemAnchorDeleted({isRoot}: {isRoot: boolean}) {
             ]}>
             <TrashIcon style={[t.atoms.text_contrast_medium]} />
           </View>
-          <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
+          <Text
+            style={[a.text_md, a.font_semi_bold, t.atoms.text_contrast_medium]}>
             <Trans>Post has been deleted</Trans>
           </Text>
         </View>
@@ -204,8 +202,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   const t = useTheme()
   const {_} = useLingui()
   const {openComposer} = useOpenComposer()
-  const { currentAccount, hasSession } = useSession()
-  const {gtTablet} = useBreakpoints()
+  const {currentAccount, hasSession} = useSession()
   const feedFeedback = useFeedFeedback(postSource?.feedSourceInfo, hasSession)
   const formatPostStatCount = useFormatPostStatCount()
   const post = postShadow
@@ -222,10 +219,10 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
           })
         : isReviewRatingView(item.value.post)
           ? new RichTextAPI({
-            text: item.value.post.record.text ?? '',
+              text: item.value.post.record.text ?? '',
             })
           : new RichTextAPI({
-            text: record.text ?? '',
+              text: record.text ?? '',
             }),
     [record, item.value.post],
   )
@@ -394,8 +391,6 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
           },
           isRoot && [a.pt_lg],
         ]}>
-        {/* Show CTA for logged-out visitors - hide on desktop and check gate */}
-        {!gtTablet && <LoggedOutCTA gateName="cta_above_post_heading" />}
         <View style={[a.flex_row, a.gap_md, a.pb_md]}>
           <View collapsable={false}>
             <PreviewableUserAvatar
@@ -423,7 +418,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                     style={[
                       a.flex_shrink,
                       a.text_lg,
-                      a.font_bold,
+                      a.font_semi_bold,
                       a.leading_snug,
                     ]}
                     numberOfLines={1}>
@@ -434,7 +429,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                     )}
                   </Text>
 
-                  <View style={[{paddingLeft: 3, top: -1}]}>
+                  <View style={[a.pl_xs]}>
                     <VerificationCheckButton profile={authorShadow} size="md" />
                   </View>
                 </View>
@@ -503,7 +498,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 enableTags
                 selectable
                 value={richText}
-                style={[a.flex_1, a.text_xl]}
+                style={[a.flex_1, a.text_lg]}
                 authorHandle={post.author.handle}
                 shouldProxyLinks={true}
               />
@@ -548,7 +543,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                   <Text
                     testID="repostCount-expanded"
                     style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
+                    <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
                       {formatPostStatCount(post.repostCount)}
                     </Text>{' '}
                     <Plural
@@ -566,7 +561,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                   <Text
                     testID="quoteCount-expanded"
                     style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
+                    <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
                       {formatPostStatCount(post.quoteCount)}
                     </Text>{' '}
                     <Plural
@@ -582,7 +577,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                   <Text
                     testID="likeCount-expanded"
                     style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
+                    <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
                       {formatPostStatCount(post.likeCount)}
                     </Text>{' '}
                     <Plural value={post.likeCount} one="like" other="likes" />
@@ -590,20 +585,14 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 </Link>
               ) : null}
               {post.bookmarkCount != null && post.bookmarkCount !== 0 ? (
-                <Link to={likesHref} label={_(msg`Saves of this post`)}>
-                  <Text
-                    testID="bookmarkCount-expanded"
-                    style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
-                      {formatPostStatCount(post.bookmarkCount)}
-                    </Text>{' '}
-                    <Plural
-                      value={post.bookmarkCount}
-                      one="save"
-                      other="saves"
-                    />
-                  </Text>
-                </Link>
+                <Text
+                  testID="bookmarkCount-expanded"
+                  style={[a.text_md, t.atoms.text_contrast_medium]}>
+                  <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
+                    {formatPostStatCount(post.bookmarkCount)}
+                  </Text>{' '}
+                  <Plural value={post.bookmarkCount} one="save" other="saves" />
+                </Text>
               ) : null}
             </View>
           ) : null}
@@ -739,7 +728,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
 
   if (!isBackdated) return null
 
-  const orange = t.name === 'light' ? colors.warning.dark : colors.warning.light
+  const orange = colors.warning
 
   return (
     <>
@@ -771,7 +760,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
             <Text
               style={[
                 a.text_xs,
-                a.font_bold,
+                a.font_semi_bold,
                 a.leading_tight,
                 t.atoms.text_contrast_medium,
               ]}>
@@ -788,9 +777,14 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
         <Prompt.DescriptionText>
           <Trans>
             This post claims to have been created on{' '}
-            <RNText style={[a.font_bold]}>{niceDate(i18n, createdAt)}</RNText>,
-            but was first seen by {branding.naming.app_name} on{' '}
-            <RNText style={[a.font_bold]}>{niceDate(i18n, indexedAt)}</RNText>.
+            <RNText style={[a.font_semi_bold]}>
+              {niceDate(i18n, createdAt)}
+            </RNText>
+            , but was first seen by Bluesky on{branding.naming.app_name} on{' '}
+            <RNText style={[a.font_semi_bold]}>
+              {niceDate(i18n, indexedAt)}
+            </RNText>
+            .
           </Trans>
         </Prompt.DescriptionText>
         <Text

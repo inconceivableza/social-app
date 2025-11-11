@@ -31,8 +31,9 @@ import {atoms as a, useTheme} from '#/alf'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {RichText} from '#/components/RichText'
+import {ReadOnlyRatingStars} from '#/components/StarRatings'
 import {Embed as StarterPackCard} from '#/components/StarterPack/StarterPackCard'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import * as bsky from '#/types/bsky'
 import {
   type Embed as TEmbed,
@@ -51,7 +52,6 @@ import {
   QuoteEmbedViewContext,
 } from './types'
 import {VideoEmbed} from './VideoEmbed'
-import { ReadOnlyRatingStars } from '#/components/StarRatings'
 
 export {PostEmbedViewContext, QuoteEmbedViewContext} from './types'
 
@@ -122,7 +122,7 @@ function MediaEmbed({
         <ContentHider
           modui={rest.moderation?.ui('contentMedia')}
           activeStyle={[a.mt_sm]}>
-          <VideoEmbed embed={embed.view} />
+          <VideoEmbed embed={embed.view} crop="constrained" />
         </ContentHider>
       )
     }
@@ -284,15 +284,19 @@ export function QuoteEmbed({
             text: recipePostSummaryRichText(quote.record.revisionContent),
           })
         : undefined
-    } else if (bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
-      quote.record,
-      AppFoodiosFeedReviewRating.isRecord)) {
-      const { text } = quote.record
-      return text ? new RichTextAPI({
-        text
-      }) : undefined
-    }
-    else {
+    } else if (
+      bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+        quote.record,
+        AppFoodiosFeedReviewRating.isRecord,
+      )
+    ) {
+      const {text} = quote.record
+      return text
+        ? new RichTextAPI({
+            text,
+          })
+        : undefined
+    } else {
       return undefined
     }
   }, [quote.record])
@@ -315,7 +319,7 @@ export function QuoteEmbed({
         childContainerStyle={[a.pt_sm]}>
         {({active}) => (
           <>
-            {!active && <SubtleWebHover hover={hover} style={[a.rounded_md]} />}
+            {!active && <SubtleHover hover={hover} style={[a.rounded_md]} />}
             <Link
               style={[!active && a.p_md]}
               hoverStyle={{borderColor: pal.colors.borderLinkHover}}
@@ -357,8 +361,12 @@ export function QuoteEmbed({
                 />
               ) : null}
 
-              {bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(quote.record, AppFoodiosFeedReviewRating.isRecord) ?
-                <ReadOnlyRatingStars record={quote.record} /> : null}
+              {bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+                quote.record,
+                AppFoodiosFeedReviewRating.isRecord,
+              ) ? (
+                <ReadOnlyRatingStars record={quote.record} />
+              ) : null}
 
               {quote.embed && (
                 <PostAuthorDidProvider did={quote.author.did}>

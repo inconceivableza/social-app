@@ -8,7 +8,7 @@ import {logger} from '#/logger'
 import {useAgent, useSessionApi} from '#/state/session'
 import {atoms as a, useBreakpoints, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
-import {DialogOuterProps} from '#/components/Dialog'
+import {type DialogOuterProps} from '#/components/Dialog'
 import {Divider} from '#/components/Divider'
 import {CircleInfo_Stroke2_Corner0_Rounded as CircleInfo} from '#/components/icons/CircleInfo'
 import {Loader} from '#/components/Loader'
@@ -75,8 +75,8 @@ function DeactivateAccountDialogInner({
       <Prompt.DescriptionText>
         <Trans>
           Your profile, posts, feeds, and lists will no longer be visible to
-          other {branding.naming.app_name} users. You can reactivate your account at any time by
-          logging in.
+          other {branding.naming.app_name} users. You can reactivate your
+          account at any time by logging in.
         </Trans>
       </Prompt.DescriptionText>
 

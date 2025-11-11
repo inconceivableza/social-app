@@ -33,6 +33,7 @@ import Animated, {
   runOnUI,
   scrollTo,
   useAnimatedRef,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -44,9 +45,8 @@ import Animated, {
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {type ImagePickerAsset} from 'expo-image-picker'
 import {
-  AppBskyFeedDefs,
-  type AppBskyFeedGetPostThread,
   AppBskyUnspeccedDefs,
+  type AppBskyUnspeccedGetPostThreadV2,
   AtUri,
   type BskyAgent,
   type RichText,
@@ -67,7 +67,6 @@ import {
   SUPPORTED_MIME_TYPES,
   type SupportedMimeTypes,
 } from '#/lib/constants'
-import {useAnimatedScrollHandler} from '#/lib/hooks/useAnimatedScrollHandler_FIXED'
 import {useAppState} from '#/lib/hooks/useAppState'
 import {useIsKeyboardVisible} from '#/lib/hooks/useIsKeyboardVisible'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
@@ -90,6 +89,7 @@ import {
 import {useModalControls} from '#/state/modals'
 import {useRequireAltTextEnabled} from '#/state/preferences'
 import {
+  fromPostLanguages,
   toPostLanguages,
   useLanguagePrefs,
   useLanguagePrefsApi,
@@ -187,7 +187,7 @@ export const ComposePost = ({
   videoUri: initVideoUri,
   cancelRef,
 }: Props & {
-  cancelRef?: React.RefObject<CancelRef>
+  cancelRef?: React.RefObject<CancelRef | null>
 }) => {
   const {currentAccount} = useSession()
   const agent = useAgent()
@@ -210,6 +210,44 @@ export const ComposePost = ({
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishingStage, setPublishingStage] = useState('')
   const [error, setError] = useState('')
+
+  /**
+   * A temporary local reference to a language suggestion that the user has
+   * accepted. This overrides the global post language preference, but is not
+   * stored permanently.
+   */
+  const [acceptedLanguageSuggestion, setAcceptedLanguageSuggestion] = useState<
+    string | null
+  >(null)
+
+  /**
+   * The language(s) of the post being replied to.
+   */
+  const [replyToLanguages, setReplyToLanguages] = useState<string[]>(
+    replyTo?.langs || [],
+  )
+
+  /**
+   * The currently selected languages of the post. Prefer local temporary
+   * language suggestion over global lang prefs, if available.
+   */
+  const currentLanguages = useMemo(
+    () =>
+      acceptedLanguageSuggestion
+        ? [acceptedLanguageSuggestion]
+        : toPostLanguages(langPrefs.postLanguage),
+    [acceptedLanguageSuggestion, langPrefs.postLanguage],
+  )
+
+  /**
+   * When the user selects a language from the composer language selector,
+   * clear any temporary language suggestions they may have selected
+   * previously, and any we might try to suggest to them.
+   */
+  const onSelectLanguage = () => {
+    setAcceptedLanguageSuggestion(null)
+    setReplyToLanguages([])
+  }
 
   const [composerState, composerDispatch] = useReducer(
     composerReducer,
@@ -404,7 +442,7 @@ export const ComposePost = ({
       return
     }
 
-    if (postType === "review-rating" && thread.posts[0].rating === undefined) {
+    if (postType === 'review-rating' && thread.posts[0].rating === undefined) {
       setError(_(msg`Please provide a rating`))
       return
     }
@@ -439,14 +477,14 @@ export const ComposePost = ({
               thread,
               replyTo: replyTo,
               onStateChange: setPublishingStage,
-              langs: toPostLanguages(langPrefs.postLanguage),
+              langs: currentLanguages,
             })
           : postType === 'review-rating'
             ? await apilib.postReviewRating(agent, queryClient, {
                 thread,
                 subject: replyTo!,
                 onStateChange: setPublishingStage,
-                langs: toPostLanguages(langPrefs.postLanguage),
+                langs: currentLanguages,
               })
             : undefined
       )?.uris[0]
@@ -526,7 +564,7 @@ export const ComposePost = ({
             isPartOfThread: thread.posts.length > 1,
             hasLink: !!post.embed.link,
             hasQuote: !!post.embed.quote,
-            langs: langPrefs.postLanguage,
+            langs: fromPostLanguages(currentLanguages),
             logContext: 'Composer',
           })
           index++
@@ -547,10 +585,10 @@ export const ComposePost = ({
       // We want to wait for the quote count to update before we call `onPost`, which will refetch data
       whenAppViewReady(agent, initQuote.uri, res => {
         // TODO: fix
-        const quotedThread = res.data.thread
+        const anchor = res.data.thread.at(0)
         if (
-          AppBskyFeedDefs.isThreadViewPost(quotedThread) &&
-          quotedThread.post.quoteCount !== initQuote.quoteCount
+          AppBskyUnspeccedDefs.isThreadItemPost(anchor?.value) &&
+          anchor.value.post.quoteCount !== initQuote.quoteCount
         ) {
           onPost?.(postUri)
           onPostSuccess?.(postSuccessData)
@@ -563,38 +601,40 @@ export const ComposePost = ({
       onPostSuccess?.(postSuccessData)
     }
     onClose()
-    Toast.show(
-      <Toast.Outer>
-        <Toast.Icon />
-        <Toast.Text>
-          {thread.posts.length > 1
-            ? _(msg`Your posts were sent`)
-            : replyTo
-              ? _(msg`Your reply was sent`)
-              : _(msg`Your post was sent`)}
-        </Toast.Text>
-        {postUri && (
-          <Toast.Action
-            label={_(msg`View post`)}
-            onPress={() => {
-              const {host: name, rkey} = new AtUri(postUri)
-              navigation.navigate('PostThread', {name, rkey})
-            }}>
-            <Trans context="Action to view the post the user just created">
-              View
-            </Trans>
-          </Toast.Action>
-        )}
-      </Toast.Outer>,
-      {type: 'success'},
-    )
+    setTimeout(() => {
+      Toast.show(
+        <Toast.Outer>
+          <Toast.Icon />
+          <Toast.Text>
+            {thread.posts.length > 1
+              ? _(msg`Your posts were sent`)
+              : replyTo
+                ? _(msg`Your reply was sent`)
+                : _(msg`Your post was sent`)}
+          </Toast.Text>
+          {postUri && (
+            <Toast.Action
+              label={_(msg`View post`)}
+              onPress={() => {
+                const {host: name, rkey} = new AtUri(postUri)
+                navigation.navigate('PostThread', {name, rkey})
+              }}>
+              <Trans context="Action to view the post the user just created">
+                View
+              </Trans>
+            </Toast.Action>
+          )}
+        </Toast.Outer>,
+        {type: 'success'},
+      )
+    }, 500)
   }, [
     _,
     agent,
     thread,
     canPost,
     isPublishing,
-    langPrefs.postLanguage,
+    currentLanguages,
     onClose,
     onPost,
     onPostSuccess,
@@ -692,8 +732,9 @@ export const ComposePost = ({
     <>
       <SuggestedLanguage
         text={activePost.richtext.text}
-        // NOTE(@elijaharita): currently just choosing the first language if any exists
-        replyToLanguage={replyTo?.langs?.[0]}
+        replyToLanguages={replyToLanguages}
+        currentLanguages={currentLanguages}
+        onAcceptSuggestedLanguage={setAcceptedLanguageSuggestion}
       />
       <ComposerPills
         isReply={!!replyTo}
@@ -716,6 +757,8 @@ export const ComposePost = ({
             type: 'add_post',
           })
         }}
+        currentLanguages={currentLanguages}
+        onSelectLanguage={onSelectLanguage}
       />
     </>
   )
@@ -973,12 +1016,13 @@ let ComposerPost = React.memo(function ComposerPost({
                           accessibilityHint="Set rating">
                           <ButtonIcon
                             icon={
-                              unrated ? Star_Empty :
-                              i * 2 <= halfStars
-                                ? Star_Filled
-                                : i * 2 - 1 <= halfStars
-                                  ? Star_Half_Filled
-                                  : Star_Empty
+                              unrated
+                                ? Star_Empty
+                                : i * 2 <= halfStars
+                                  ? Star_Filled
+                                  : i * 2 - 1 <= halfStars
+                                    ? Star_Half_Filled
+                                    : Star_Empty
                             }
                           />
                         </Pressable>
@@ -1406,6 +1450,8 @@ function ComposerFooter({
   onEmojiButtonPress,
   onSelectVideo,
   onAddPost,
+  currentLanguages,
+  onSelectLanguage,
 }: {
   post: PostDraft
   dispatch: (action: PostAction) => void
@@ -1414,6 +1460,8 @@ function ComposerFooter({
   onError: (error: string) => void
   onSelectVideo: (postId: string, asset: ImagePickerAsset) => void
   onAddPost: () => void
+  currentLanguages: string[]
+  onSelectLanguage?: (language: string) => void
 }) {
   const t = useTheme()
   const {_} = useLingui()
@@ -1567,7 +1615,10 @@ function ComposerFooter({
             <PlusIcon size="lg" />
           </Button>
         )}
-        <PostLanguageSelect />
+        <PostLanguageSelect
+          currentLanguages={currentLanguages}
+          onSelectLanguage={onSelectLanguage}
+        />
         <CharProgress
           count={post.shortenedGraphemeLength}
           style={{width: 65}}
@@ -1729,7 +1780,7 @@ export function useKeyboardVerticalOffset() {
 async function whenAppViewReady(
   agent: BskyAgent,
   uri: string,
-  fn: (res: AppBskyFeedGetPostThread.Response) => boolean,
+  fn: (res: AppBskyUnspeccedGetPostThreadV2.Response) => boolean,
 ) {
   //
   await until(
@@ -1737,9 +1788,11 @@ async function whenAppViewReady(
     1e3, // 1s delay between tries
     fn,
     () =>
-      agent.app.bsky.feed.getPostThread({
-        uri,
-        depth: 0,
+      agent.app.bsky.unspecced.getPostThreadV2({
+        anchor: uri,
+        above: false,
+        below: 0,
+        branchingFactor: 0,
       }),
   )
 }
@@ -1888,7 +1941,7 @@ function ErrorBanner({
             style={[
               {paddingLeft: 28},
               a.text_xs,
-              a.font_bold,
+              a.font_semi_bold,
               a.leading_snug,
               t.atoms.text_contrast_low,
             ]}>
@@ -1981,7 +2034,7 @@ export function VideoUploadToolbar({state}: {state: VideoState}) {
           progress={wheelProgress}
         />
       </Animated.View>
-      <NewText style={[a.font_bold, a.ml_sm]}>{text}</NewText>
+      <NewText style={[a.font_semi_bold, a.ml_sm]}>{text}</NewText>
     </ToolbarWrapper>
   )
 }

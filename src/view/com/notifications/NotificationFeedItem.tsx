@@ -68,7 +68,7 @@ import {InlineLinkText, Link} from '#/components/Link'
 import * as MediaPreview from '#/components/MediaPreview'
 import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {Notification as StarterPackCard} from '#/components/StarterPack/StarterPackCard'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
 import {useSimpleVerificationState} from '#/components/verification'
 import {VerificationCheck} from '#/components/verification/VerificationCheck'
@@ -218,7 +218,7 @@ let NotificationFeedItem = ({
     <ProfileHoverCard did={firstAuthor.profile.did} inline>
       <InlineLinkText
         key={firstAuthor.href}
-        style={[t.atoms.text, a.font_bold, a.text_md, a.leading_tight]}
+        style={[t.atoms.text, a.font_semi_bold, a.text_md, a.leading_tight]}
         to={firstAuthor.href}
         disableMismatchWarning
         emoji
@@ -252,7 +252,7 @@ let NotificationFeedItem = ({
     : ''
 
   let a11yLabel = ''
-  let notificationContent: ReactElement
+  let notificationContent: ReactElement<any>
   let icon = (
     <HeartIconFilled
       size="xl"
@@ -277,7 +277,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -305,7 +305,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -319,7 +319,7 @@ let NotificationFeedItem = ({
         {firstAuthorLink} reposted your {postType}
       </Trans>
     )
-    icon = <RepostIcon size="xl" style={{color: t.palette.positive_600}} />
+    icon = <RepostIcon size="xl" style={{color: t.palette.positive_500}} />
   } else if (item.type === 'follow') {
     let isFollowBack = false
 
@@ -364,7 +364,7 @@ let NotificationFeedItem = ({
       notificationContent = hasMultipleAuthors ? (
         <Trans>
           {firstAuthorLink} and{' '}
-          <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+          <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
             <Plural
               value={additionalAuthorsCount}
               one={`${formattedAuthorsCount} other`}
@@ -390,7 +390,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -414,7 +414,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -495,7 +495,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -519,7 +519,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -531,7 +531,7 @@ let NotificationFeedItem = ({
     ) : (
       <Trans>{firstAuthorLink} reposted your repost</Trans>
     )
-    icon = <RepostIcon size="xl" style={{color: t.palette.positive_600}} />
+    icon = <RepostIcon size="xl" style={{color: t.palette.positive_500}} />
   } else if (item.type === 'subscribed-post') {
     const postsCount = 1 + (item.additional?.length || 0)
     a11yLabel = hasMultipleAuthors
@@ -553,7 +553,7 @@ let NotificationFeedItem = ({
     notificationContent = hasMultipleAuthors ? (
       <Trans>
         New posts from {firstAuthorLink} and{' '}
-        <Text style={[a.text_md, a.font_bold, a.leading_snug]}>
+        <Text style={[a.text_md, a.font_semi_bold, a.leading_snug]}>
           <Plural
             value={additionalAuthorsCount}
             one={`${formattedAuthorsCount} other`}
@@ -625,7 +625,7 @@ let NotificationFeedItem = ({
       }}>
       {({hovered}) => (
         <>
-          <SubtleWebHover hover={hovered} />
+          <SubtleHover hover={hovered} />
           <View style={[styles.layoutIcon, a.pr_sm]}>
             {/* TODO: Prevent conditional rendering and move toward composable
           notifications for clearer accessibility labeling */}
@@ -860,7 +860,7 @@ function CondensedAuthorsList({
         {authors.length > MAX_AUTHORS ? (
           <Text
             style={[
-              a.font_bold,
+              a.font_semi_bold,
               {paddingLeft: 6},
               t.atoms.text_contrast_medium,
             ]}>
@@ -940,7 +940,7 @@ function ExpandedAuthorCard({author}: {author: Author}) {
             emoji
             style={[
               a.text_md,
-              a.font_bold,
+              a.font_semi_bold,
               a.leading_tight,
               {maxWidth: '70%'},
             ]}>

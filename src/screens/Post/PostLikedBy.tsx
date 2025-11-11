@@ -7,26 +7,22 @@ import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
 } from '#/lib/routes/types'
-import {makeRecordUri} from '#/lib/strings/url-helpers'
-import {usePostThreadQuery} from '#/state/queries/post-thread'
+import { routeParamsToRecordUri } from '#/lib/strings/url-helpers'
+import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostLikedBy as PostLikedByComponent} from '#/view/com/post-thread/PostLikedBy'
 import * as Layout from '#/components/Layout'
+import { isRecipePostView } from '#/lib/api/feed/utils'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostLikedBy'>
 export const PostLikedByScreen = ({route}: Props) => {
   const setMinimalShellMode = useSetMinimalShellMode()
-  const {name, rkey, postType} = route.params
-  const collection =
-    postType === 'recipePost'
-      ? ids.AppFoodiosFeedRecipePost
-      : ids.AppBskyFeedPost
-  const uri = makeRecordUri(name, collection, rkey)
-  const {data: post} = usePostThreadQuery(uri)
+  const uri = routeParamsToRecordUri(route.params)
+  const {data: post} = usePostQuery(uri)
 
   let likeCount
-  if (post?.thread.type === 'post' || post?.thread.type === 'recipe') {
-    likeCount = post.thread.post.likeCount
+  if (post) {
+    likeCount = post.likeCount
   }
 
   useFocusEffect(
@@ -56,8 +52,8 @@ export const PostLikedByScreen = ({route}: Props) => {
       <PostLikedByComponent
         uri={uri}
         revisionUri={
-          post?.thread.type === 'recipe'
-            ? post.thread.record.selectedRevisionUri
+          isRecipePostView(post)
+            ? post.record.selectedRevisionUri
             : undefined
         }
       />

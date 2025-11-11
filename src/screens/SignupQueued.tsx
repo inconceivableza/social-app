@@ -124,13 +124,13 @@ export function SignupQueued() {
               <Logo width={120} />
             </View>
 
-            <Text style={[a.text_4xl, a.font_heavy, a.pb_sm]}>
+            <Text style={[a.text_4xl, a.font_bold, a.pb_sm]}>
               <Trans>You're in line</Trans>
             </Text>
             <P style={[t.atoms.text_contrast_medium]}>
               <Trans>
-                There's been a rush of new users to {branding.naming.app_name}! We'll activate your
-                account as soon as we can.
+                There's been a rush of new users to {branding.naming.app_name}!
+                We'll activate your account as soon as we can.
               </Trans>
             </P>
 
@@ -147,7 +147,7 @@ export function SignupQueued() {
               ]}>
               {typeof placeInQueue === 'number' && (
                 <Text
-                  style={[a.text_5xl, a.text_center, a.font_heavy, a.mb_2xl]}>
+                  style={[a.text_5xl, a.text_center, a.font_bold, a.mb_2xl]}>
                   {placeInQueue}
                 </Text>
               )}

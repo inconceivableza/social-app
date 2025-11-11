@@ -1,11 +1,12 @@
 import React from 'react'
 import {Alert} from 'react-native'
 import * as Linking from 'expo-linking'
+import * as WebBrowser from 'expo-web-browser'
 
 import {branding, envConfig} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {logger} from '#/logger'
-import {isNative} from '#/platform/detection'
+import {isIOS, isNative} from '#/platform/detection'
 import {useSession} from '#/state/session'
 import {useCloseAllActiveElements} from '#/state/util'
 import {
@@ -34,7 +35,15 @@ export function useIntentHandler() {
   const {tryApplyUpdate} = useApplyPullRequestOTAUpdate()
 
   React.useEffect(() => {
-    const handleIncomingURL = (url: string) => {
+    const handleIncomingURL = async (url: string) => {
+      if (isIOS) {
+        // Close in-app browser if it's open (iOS only)
+        // TEMP: promise never resolves if the browser is not open, so don't await
+        // https://github.com/expo/expo/issues/40710
+        // add the await back when possible since it's needed to fix the IAB share bug -sfn
+        /* await */ WebBrowser.dismissBrowser().catch(() => {})
+      }
+
       const referrerInfo = Referrer.getReferrerInfo()
       if (referrerInfo && referrerInfo.hostname !== envConfig.SOCIAL_APP_HOST) {
         logger.metric('deepLink:referrerReceived', {
@@ -56,7 +65,7 @@ export function useIntentHandler() {
       }
 
       const urlp = new URL(url)
-      const [_, intent, intentType] = urlp.pathname.split('/')
+      const [__, intent, intentType] = urlp.pathname.split('/')
 
       // On native, our links look like bluesky://intent/SomeIntent, so we have to check the hostname for the
       // intent check. On web, we have to check the first part of the path since we have an actual hostname

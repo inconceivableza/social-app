@@ -34,6 +34,7 @@ export const EMBED_SCRIPT = usingBlueskyEmbed
   : `${EMBED_SERVICE}/embed.js`
 export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
+export const CARD_ASPECT_RATIO = 1200 / 630
 export const CHAT_DISABLED = true
 
 export const branding = (Constants?.expoConfig?.extra || {}).branding

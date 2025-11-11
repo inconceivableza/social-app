@@ -1,15 +1,15 @@
 import React from 'react'
 import {
-  AppBskyActorDefs,
-  AppBskyFeedDefs,
-  AppBskyFeedSearchPosts,
+  type AppBskyActorDefs,
+  type AppBskyFeedDefs,
+  type AppBskyFeedSearchPosts,
   AtUri,
   moderatePost,
 } from '@atproto/api'
 import {
-  InfiniteData,
-  QueryClient,
-  QueryKey,
+  type InfiniteData,
+  type QueryClient,
+  type QueryKey,
   useInfiniteQuery,
 } from '@tanstack/react-query'
 
@@ -33,7 +33,7 @@ export function useSearchPostsQuery({
   sort,
   enabled,
 }: {
-    query: string
+  query: string
   sort?: 'top' | 'latest'
   enabled?: boolean
 }) {
@@ -65,7 +65,7 @@ export function useSearchPostsQuery({
         q: query,
         limit: 25,
         cursor: pageParam,
-        sort
+        sort,
       })
       return res.data
     },

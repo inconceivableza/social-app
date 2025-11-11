@@ -1,6 +1,6 @@
 import React from 'react'
 import {View} from 'react-native'
-import {$Typed, ComAtprotoLabelDefs} from '@atproto/api'
+import {type $Typed, ComAtprotoLabelDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -98,9 +98,9 @@ export function PwiOptOut() {
 
       <Text style={[a.leading_snug, t.atoms.text_contrast_high]}>
         <Trans>
-          {branding.naming.app_name} will not show your profile and posts to logged-out users.
-          Other apps may not honor this request. This does not make your account
-          private.
+          {branding.naming.app_name} will not show your profile and posts to
+          logged-out users. Other apps may not honor this request. This does not
+          make your account private.
         </Trans>
       </Text>
     </View>
