@@ -23,7 +23,7 @@ import * as FeedCard from '#/components/FeedCard'
 import * as Layout from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {SearchError} from '#/components/SearchError'
-import { Text } from '#/components/Typography'
+import {Text} from '#/components/Typography'
 
 let SearchResults = ({
   query,
@@ -31,12 +31,14 @@ let SearchResults = ({
   activeTab,
   onPageSelected,
   headerHeight,
+  initialPage = 0,
 }: {
   query: string
-    queryWithParams: string
+  queryWithParams: string
   activeTab: number
   onPageSelected: (page: number) => void
   headerHeight: number
+  initialPage?: number
 }): React.ReactNode => {
   const {_} = useLingui()
 
@@ -90,7 +92,7 @@ let SearchResults = ({
           <TabBar items={sections.map(section => section.title)} {...props} />
         </Layout.Center>
       )}
-      initialPage={0}>
+      initialPage={initialPage}>
       {sections.map((section, i) => (
         <View key={i}>{section.component}</View>
       ))}
@@ -170,7 +172,7 @@ let SearchScreenPostResults = ({
   sort,
   active,
 }: {
-    query: string
+  query: string
   sort?: 'top' | 'latest'
   active: boolean
 }): React.ReactNode => {
@@ -193,7 +195,7 @@ let SearchScreenPostResults = ({
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useSearchPostsQuery({ query: augmentedQuery, sort, enabled: active })
+  } = useSearchPostsQuery({query: augmentedQuery, sort, enabled: active})
 
   const pal = usePalette('default')
   const t = useTheme()
@@ -310,7 +312,7 @@ let SearchScreenPostResults = ({
               contentContainerStyle={{paddingBottom: 100}}
             />
           ) : (
-                <EmptyState message={_(msg`No results found`)} />
+            <EmptyState message={_(msg`No results found`)} />
           )}
         </>
       ) : (

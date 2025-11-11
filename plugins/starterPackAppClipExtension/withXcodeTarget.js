@@ -42,6 +42,8 @@ const withXcodeTarget = (config, {targetName}) => {
       config.extra?.branding?.code?.apple_team_id || 'B3LX46C5HS'
 
     pbxProject.addFile(`${targetName}/Info.plist`, pbxGroup.uuid)
+    const clipBundleIdSuffix =
+      config.extra?.branding?.code?.ios_clip_name || 'BlueskyClip'
     const configurations = pbxProject.pbxXCBuildConfigurationSection()
     for (const key in configurations) {
       if (typeof configurations[key].buildSettings !== 'undefined') {
@@ -55,11 +57,11 @@ const withXcodeTarget = (config, {targetName}) => {
           buildSettingsObj.CODE_SIGN_ENTITLEMENTS = `"${targetName}/${targetName}.entitlements"`
           buildSettingsObj.CODE_SIGN_STYLE = 'Automatic'
           buildSettingsObj.CURRENT_PROJECT_VERSION = `"${
-            process.env.BSKY_IOS_BUILD_NUMBER ?? '1'
+            process.env.BSKY_IOS_BUILD_NUMBER ?? '$(CURRENT_PROJECT_VERSION)'
           }"`
           buildSettingsObj.GENERATE_INFOPLIST_FILE = 'YES'
           buildSettingsObj.MARKETING_VERSION = `"${config.version}"`
-          buildSettingsObj.PRODUCT_BUNDLE_IDENTIFIER = `"${config.ios?.bundleIdentifier}.AppClip"`
+          buildSettingsObj.PRODUCT_BUNDLE_IDENTIFIER = `"${config.ios?.bundleIdentifier}.${clipBundleIdSuffix}"`
           buildSettingsObj.SWIFT_EMIT_LOC_STRINGS = 'YES'
           buildSettingsObj.SWIFT_VERSION = '5.0'
           buildSettingsObj.TARGETED_DEVICE_FAMILY = `"1"`

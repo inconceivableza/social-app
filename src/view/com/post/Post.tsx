@@ -29,7 +29,6 @@ import {
 } from '#/state/cache/post-shadow'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
-import {type OnPostSuccessData} from '#/state/shell/composer'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
@@ -42,7 +41,7 @@ import {PostRepliedTo} from '#/components/Post/PostRepliedTo'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import * as bsky from '#/types/bsky'
 import {ExpandableRecipePost} from '../posts/ExpandableRecipePost'
 
@@ -57,7 +56,7 @@ export function Post({
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
-    onBeforePress?: () => void
+  onBeforePress?: () => void
 }) {
   const moderationOpts = useModerationOpts()
   // handle recipe post
@@ -135,7 +134,7 @@ function PostInner({
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
-    onBeforePress?: () => void
+  onBeforePress?: () => void
 }) {
   const queryClient = useQueryClient()
   const pal = usePalette('default')
@@ -216,7 +215,7 @@ function PostInner({
       onPointerLeave={() => {
         setHover(false)
       }}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {showReplyLine && <View style={styles.replyLine} />}
       <View style={styles.layout}>
         <View style={styles.layoutAvi}>
@@ -244,7 +243,7 @@ function PostInner({
             childContainerStyle={styles.contentHiderChild}>
             <PostAlerts
               modui={moderation.ui('contentView')}
-              style={[a.py_xs]}
+              style={[a.pb_xs]}
             />
             {isRecipePostView(post) ? (
               <ExpandableRecipePost revision={post.record} />

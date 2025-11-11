@@ -55,7 +55,7 @@ export function InitialVerificationAnnouncement() {
             <SparkleIcon fill={t.palette.primary_700} size="sm" />
             <Text
               style={[
-                a.font_bold,
+                a.font_semi_bold,
                 {
                   color: t.palette.primary_700,
                 },
@@ -87,13 +87,13 @@ export function InitialVerificationAnnouncement() {
           </View>
 
           <View style={[a.gap_xs]}>
-            <Text style={[a.text_2xl, a.font_bold, a.leading_snug]}>
+            <Text style={[a.text_2xl, a.font_semi_bold, a.leading_snug]}>
               <Trans>A new form of verification</Trans>
             </Text>
             <Text style={[a.leading_snug, a.text_md]}>
               <Trans>
-                We’re introducing a new layer of verification on {branding.naming.app_name} — an
-                easy-to-see checkmark.
+                We’re introducing a new layer of verification on{' '}
+                {branding.naming.app_name} — an easy-to-see checkmark.
               </Trans>
             </Text>
           </View>
@@ -123,22 +123,22 @@ export function InitialVerificationAnnouncement() {
           <View style={[a.gap_sm]}>
             <View style={[a.flex_row, a.align_center, a.gap_xs]}>
               <VerifierCheck width={14} />
-              <Text style={[a.text_lg, a.font_bold, a.leading_snug]}>
+              <Text style={[a.text_lg, a.font_semi_bold, a.leading_snug]}>
                 <Trans>Who can verify?</Trans>
               </Text>
             </View>
             <View style={[a.gap_sm]}>
               <Text style={[a.leading_snug, a.text_md]}>
                 <Trans>
-                  {branding.naming.app_name} will proactively verify notable and authentic
-                  accounts.
+                  {branding.naming.app_name} will proactively verify notable and
+                  authentic accounts.
                 </Trans>
               </Text>
               <Text style={[a.leading_snug, a.text_md]}>
                 <Trans>
                   Trust emerges from relationships, communities, and shared
                   context, so we’re also enabling{' '}
-                  <Span style={[a.font_bold]}>trusted verifiers</Span>:
+                  <Span style={[a.font_semi_bold]}>trusted verifiers</Span>:
                   organizations that can directly issue verification.
                 </Trans>
               </Text>

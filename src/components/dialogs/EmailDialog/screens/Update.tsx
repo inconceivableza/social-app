@@ -200,7 +200,7 @@ export function Update(_props: ScreenProps<ScreenID.Update>) {
 
   return (
     <View style={[a.gap_lg]}>
-      <Text style={[a.text_xl, a.font_heavy]}>
+      <Text style={[a.text_xl, a.font_bold]}>
         <Trans>Update your email</Trans>
       </Text>
 
@@ -240,7 +240,7 @@ export function Update(_props: ScreenProps<ScreenID.Update>) {
           <>
             <Divider />
             <View>
-              <Text style={[a.text_md, a.pb_sm, a.font_bold]}>
+              <Text style={[a.text_md, a.pb_sm, a.font_semi_bold]}>
                 <Trans>Security step required</Trans>
               </Text>
               <Text
@@ -282,8 +282,8 @@ export function Update(_props: ScreenProps<ScreenID.Update>) {
           <Divider />
           <View style={[a.gap_sm]}>
             <View style={[a.flex_row, a.gap_sm, a.align_center]}>
-              <Check fill={t.palette.positive_600} size="xs" />
-              <Text style={[a.text_md, a.font_heavy]}>
+              <Check fill={t.palette.positive_500} size="xs" />
+              <Text style={[a.text_md, a.font_bold]}>
                 <Trans>Success!</Trans>
               </Text>
             </View>
@@ -291,7 +291,8 @@ export function Update(_props: ScreenProps<ScreenID.Update>) {
               <Trans>
                 Please click on the link in the email we just sent you to verify
                 your new email address. This is an important step to allow you
-                to continue enjoying all the features of {branding.naming.app_name}.
+                to continue enjoying all the features of{' '}
+                {branding.naming.app_name}.
               </Trans>
             </Text>
           </View>

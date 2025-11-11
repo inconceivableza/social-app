@@ -218,10 +218,11 @@ module.exports = function (_config) {
         policy: 'appVersion',
       },
       icon: getVariantIconFilename(
-        './assets/app-icons/ios_icon_default_light.png',
+        './assets/app-icons/ios_icon_default_next.png',
       ),
       userInterfaceStyle: 'automatic',
       primaryColor: '#1083fe',
+      newArchEnabled: false,
       ios: {
         supportsTablet: false,
         bundleIdentifier: basePackageName,
@@ -281,14 +282,43 @@ module.exports = function (_config) {
             'zh-Hans',
             'zh-Hant',
           ],
+          UIDesignRequiresCompatibility: true,
         },
         associatedDomains: ASSOCIATED_DOMAINS,
         entitlements: {
           'com.apple.developer.kernel.increased-memory-limit': true,
           'com.apple.developer.kernel.extended-virtual-addressing': true,
-          'com.apple.security.application-groups': branding.code.apple_groups,
+          'com.apple.security.application-groups': [branding.code.apple_groups],
         },
         privacyManifests: {
+          NSPrivacyCollectedDataTypes: [
+            {
+              NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeCrashData',
+              NSPrivacyCollectedDataTypeLinked: false,
+              NSPrivacyCollectedDataTypeTracking: false,
+              NSPrivacyCollectedDataTypePurposes: [
+                'NSPrivacyCollectedDataTypePurposeAppFunctionality',
+              ],
+            },
+            {
+              NSPrivacyCollectedDataType:
+                'NSPrivacyCollectedDataTypePerformanceData',
+              NSPrivacyCollectedDataTypeLinked: false,
+              NSPrivacyCollectedDataTypeTracking: false,
+              NSPrivacyCollectedDataTypePurposes: [
+                'NSPrivacyCollectedDataTypePurposeAppFunctionality',
+              ],
+            },
+            {
+              NSPrivacyCollectedDataType:
+                'NSPrivacyCollectedDataTypeOtherDiagnosticData',
+              NSPrivacyCollectedDataTypeLinked: false,
+              NSPrivacyCollectedDataTypeTracking: false,
+              NSPrivacyCollectedDataTypePurposes: [
+                'NSPrivacyCollectedDataTypePurposeAppFunctionality',
+              ],
+            },
+          ],
           NSPrivacyAccessedAPITypes: [
             {
               NSPrivacyAccessedAPIType:
@@ -321,7 +351,7 @@ module.exports = function (_config) {
       },
       android: {
         icon: getVariantIconFilename(
-          './assets/app-icons/android_icon_default_light.png',
+          './assets/app-icons/android_icon_default_next.png',
         ),
         adaptiveIcon: {
           foregroundImage: getVariantIconFilename(
@@ -395,13 +425,12 @@ module.exports = function (_config) {
           {
             ios: {
               deploymentTarget: '15.1',
-              newArchEnabled: false,
+              buildReactNativeFromSource: true,
             },
             android: {
               compileSdkVersion: 35,
               targetSdkVersion: 35,
               buildToolsVersion: '35.0.0',
-              newArchEnabled: false,
             },
           },
         ],
@@ -412,7 +441,10 @@ module.exports = function (_config) {
               './assets/icon-android-notification.png',
             ),
             color: '#1185fe',
-            sounds: PLATFORM === 'ios' ? ['assets/dm.aiff'] : ['assets/dm.mp3'],
+            sounds:
+              PLATFORM === 'ios'
+                ? ['assets/dm.aiff', 'assets/timer.aiff']
+                : ['assets/dm.mp3', 'assets/timer.mp3'],
           },
         ],
         'react-native-compressor',
@@ -510,10 +542,10 @@ module.exports = function (_config) {
             },
             next: {
               ios: getVariantIconFilename(
-                './assets/app-icons/icon_default_next.png',
+                './assets/app-icons/ios_icon_default_next.png',
               ),
               android: getVariantIconFilename(
-                './assets/app-icons/icon_default_next.png',
+                './assets/app-icons/android_icon_default_next.png',
               ),
               prerendered: true,
             },

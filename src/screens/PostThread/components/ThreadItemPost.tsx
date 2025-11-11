@@ -53,8 +53,9 @@ import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
+import { ExpandableRecipePost } from '#/view/com/posts/ExpandableRecipePost'
 
 export type ThreadItemPostProps = {
   item: Extract<ThreadItem, {type: 'threadPost'}>
@@ -123,7 +124,8 @@ function ThreadItemPostDeleted({
           ]}>
           <TrashIcon style={[t.atoms.text_contrast_medium]} />
         </View>
-        <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
+        <Text
+          style={[a.text_md, a.font_semi_bold, t.atoms.text_contrast_medium]}>
           <Trans>Post has been deleted</Trans>
         </Text>
       </View>
@@ -148,9 +150,7 @@ const ThreadItemPostOuterWrapper = memo(function ThreadItemPostOuterWrapper({
     <View
       style={[
         showTopBorder && [a.border_t, t.atoms.border_contrast_low],
-        {
-          paddingHorizontal: OUTER_SPACE,
-        },
+        {paddingHorizontal: OUTER_SPACE},
         // If there's no next child, add a little padding to bottom
         !item.ui.showChildReplyLine &&
           !item.ui.precedesChildReadMore && {
@@ -218,12 +218,12 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
           })
         : isReviewRatingView(post)
           ? new RichTextAPI({
-            text: post.record.text ?? '',
-          })
+              text: post.record.text ?? '',
+            })
           : new RichTextAPI({
-            text: record.text ?? '',
-            facets: record.facets,
-          }),
+              text: record.text ?? '',
+              facets: record.facets,
+            }),
     [record, post],
   )
   const [limitLines, setLimitLines] = useState(
@@ -297,7 +297,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
     : dangerousIsPostRecord(record)
       ? record.reply?.root
       : null
-  const anchorRevision = anchor?.value.post.record.selectedRevisionUri
+  const anchorRevision = isRecipePostView(anchor?.value.post) && anchor?.value.post.record.selectedRevisionUri
   const revisionMismatch =
     anchorRevision &&
     rootReplyRef &&
@@ -310,15 +310,16 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const constitutesReview =
     AppFoodiosFeedReviewRating.isRecord(record) && record.text
   return (
-    <SubtleHover>
+    <SubtleHoverWrapper>
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
           href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
+          hiderStyle={[a.pl_0, a.pr_2xs, a.bg_transparent]}
           iconSize={LINEAR_AVI_WIDTH}
-          iconStyles={{marginLeft: 2, marginRight: 2}}
+          iconStyles={[a.mr_xs]}
           profile={post.author}
           interpretFilterAsBlur>
           <ThreadItemPostParentReplyLine item={item} />
@@ -362,7 +363,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                     label={_(msg`Show original version`)}
                     onPress={() => {
                       // TODO: add api method for retrieving revision and remove all query param logic from getPosts
-                      openModal({
+                      rootReplyRef.revisionUri && openModal({
                         name: 'recipe-revision-view',
                         uri: `${anchor.uri}?revision=${new AtUri(rootReplyRef.revisionUri).rkey}`,
                       })
@@ -395,7 +396,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 additionalCauses={additionalPostAlerts}
               />
 
-              {richText?.text ? (
+              {isRecipePostView(post) ? <ExpandableRecipePost revision={post.record} />
+                : richText?.text ? (
                 <>
                   <RichText
                     enableTags
@@ -413,6 +415,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                   )}
                 </>
               ) : undefined}
+
+
               {post.embed && (
                 <View style={[a.pb_xs]}>
                   <Embed
@@ -436,11 +440,11 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
           </View>
         </PostHider>
       </ThreadItemPostOuterWrapper>
-    </SubtleHover>
+    </SubtleHoverWrapper>
   )
 })
 
-function SubtleHover({children}: {children: ReactNode}) {
+function SubtleHoverWrapper({children}: {children: ReactNode}) {
   const {
     state: hover,
     onIn: onHoverIn,
@@ -451,7 +455,7 @@ function SubtleHover({children}: {children: ReactNode}) {
       onPointerEnter={onHoverIn}
       onPointerLeave={onHoverOut}
       style={a.pointer}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {children}
     </View>
   )

@@ -1,20 +1,25 @@
 import {useEffect, useMemo, useState} from 'react'
 import {ScrollView, View} from 'react-native'
+import {runOnJS} from 'react-native-reanimated'
 import {UITextView} from 'react-native-uitextview'
+import * as Notifications from 'expo-notifications'
 import {RichText as RichTextAPI} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {padStart} from 'lodash'
 
 import {type RecipePostView} from '#/lib/api/feed/utils'
+import {useHaptics} from '#/lib/haptics'
 import {countLines} from '#/lib/strings/helpers'
-import {isAndroid} from '#/platform/detection'
+import {isAndroid, isNative} from '#/platform/detection'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
 import * as Toggle from '#/components/forms/Toggle'
 import {Clock_Stroke2_Corner0_Rounded as ClockIcon} from '#/components/icons/Clock'
+import {Pause_Filled_Corner0_Rounded as PauseIcon} from '#/components/icons/Pause'
 import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
+import {PlusLarge_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {RichText} from '#/components/RichText'
@@ -36,6 +41,7 @@ export function Component({
   const revisionContent = revision.revisionContent
   const t = useTheme()
   const {_} = useLingui()
+  const playHaptic = useHaptics()
   const [state, dispatch] = usePreparationState(revision)
   const richText = useMemo(
     () =>
@@ -51,6 +57,38 @@ export function Component({
   const [timers, setTimers] = useState(
     {} as Record<`${number}-${number}`, boolean>,
   )
+  const scheduleLocalNotification = async (instructionKey: string) => {
+    if (isNative) {
+      console.log('Notification being scheduled')
+      const instructionSection =
+        revisionContent.instructionSections[
+          Number(instructionKey.split('-')[0])
+        ]
+      const sectionName = instructionSection?.name
+        ? `${instructionSection.name} - `
+        : ''
+      const instructionNumber = Number(instructionKey.split('-')[1]) + 1
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: _(msg`Recipe timer finished`),
+          body: _(
+            msg`The countdown for instruction ${sectionName}${instructionNumber} in recipe ${revisionContent.name} has finished.`,
+          ),
+          data: {reason: 'timer', subject: recipePost.uri, instructionKey},
+          sound: 'timer.aiff',
+        },
+        trigger: {
+          seconds: 1,
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          channelId: 'timer',
+        },
+      })
+      console.log('Notification scheduled')
+    } else {
+      console.log('No notifications on web')
+    }
+    runOnJS(playHaptic)('Heavy')
+  }
 
   return (
     <ScrollView style={[a.gap_sm, a.m_md]}>
@@ -165,6 +203,9 @@ export function Component({
                                 return {...ts}
                               })
                             }
+                            onNotify={() =>
+                              scheduleLocalNotification(instructionKey)
+                            }
                           />
                         ) : (
                           <Button
@@ -172,7 +213,7 @@ export function Component({
                             color="secondary"
                             variant="solid"
                             shape="round"
-                            style={[a.flex_grow_0, a.p_2xs]}
+                            style={[a.flex_grow_0, a.py_2xs, a.px_sm]}
                             onPress={() =>
                               setTimers(ts => ({...ts, [instructionKey]: true}))
                             }>
@@ -222,10 +263,17 @@ function displayTime(seconds: number) {
 
 // TODO: play sound when time's up
 // TODO: replace buttons with icons
-function InstructionTimer({onDelete}: {onDelete: () => void}) {
+function InstructionTimer({
+  onDelete,
+  onNotify,
+}: {
+  onDelete: () => void
+  onNotify: () => void
+}) {
   const [seconds, setSeconds] = useState(0)
+  const [startTime, setStartTime] = useState<number | null>(null)
   const [timingState, setTimingState] = useState<
-    'inactive' | 'active' | 'complete'
+    'inactive' | 'active' | 'paused' | 'complete'
   >('inactive')
   const [duration, setDuration] = useState({hours: 0, minutes: 0, seconds: 0}) // Duration in seconds
   const {_} = useLingui()
@@ -244,12 +292,24 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
     }
   }
 
-  useEffect(() => {
-    if (timingState !== 'active') return
+  function onAnotherMinute() {
+    setDuration({
+      hours: duration.hours,
+      minutes: duration.minutes + 1,
+      seconds: duration.seconds,
+    })
+    if (timingState === 'active' || timingState === 'paused') {
+      setSeconds(seconds + 60)
+    } else if (timingState === 'complete') {
+      setSeconds(seconds + 60)
+      setTimingState('paused')
+    }
+  }
 
-    const durationSeconds =
-      duration.hours * 60 * 60 + duration.minutes * 60 + duration.seconds
-    const endTime = Date.now() + durationSeconds * 1000
+  useEffect(() => {
+    if (timingState !== 'active' || startTime === null) return
+
+    const endTime = startTime + durationSeconds * 1000
 
     const id = setInterval(() => {
       const diff = endTime - Date.now()
@@ -260,20 +320,22 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
 
       if (diff <= 0) {
         clearInterval(id)
+        setDuration({hours: 0, minutes: 0, seconds: 0})
         setSeconds(0)
         setTimingState('complete')
-        // TODO: play sound - there's already /assets/dm.mp3, vibrate, visual indicator
-        // and test that alert occurs when in background
+        onNotify()
         return
       }
       setSeconds(Math.round(diff / 1000))
-    }, 1000)
+    }, 250)
     return () => clearInterval(id)
-  }, [timingState, duration])
+  }, [timingState, startTime, durationSeconds, onNotify])
   // TODO: used controlled inputs (prevents non numerical values)
+  const timerButtonSize = isAndroid ? 'sm' : 'xs'
   return timingState === 'inactive' ? (
-    <View style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_baseline]}>
-      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
+    <View
+      style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_center, {width: '100%'}]}>
+      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
         <TextField.Root>
           <TextField.Input
             style={[a.p_0, a.m_0, {height: 40}]}
@@ -288,7 +350,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1]}>
+      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
             style={[a.p_0, a.m_0, {height: 40}]}
@@ -303,7 +365,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_0, a.m_0, a.flex_col, a.flex_1]}>
+      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
             style={[a.p_0, a.m_0, {height: 40}]}
@@ -318,21 +380,36 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.flex_col, a.flex_1, {maxHeight: 24}]}>
+      <View
+        style={[
+          a.p_xs,
+          a.m_0,
+          a.flex_row,
+          a.flex_0,
+          a.align_start,
+          {alignItems: 'center', columnGap: 4},
+        ]}>
         <Button
           disabled={durationSeconds <= 0}
           label={_(msg`Start timing`)}
-          style={{height: 28}}
           variant="solid"
           color="primary"
           size="small"
-          shape="round"
           onPress={() => {
             if (durationSeconds <= 0) return
             setSeconds(durationSeconds)
+            setStartTime(Date.now())
             setTimingState('active')
           }}>
           <ButtonIcon icon={PlayIcon} />
+        </Button>
+        <Button
+          label={_(msg`Cancel timer setup`)}
+          onPress={onDelete}
+          variant="solid"
+          color="primary"
+          size="small">
+          <ButtonIcon icon={TrashIcon} />
         </Button>
       </View>
     </View>
@@ -340,7 +417,7 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
     <View
       style={[
         a.flex_row,
-        a.align_baseline,
+        a.align_center,
         a.gap_sm,
         a.p_sm,
         {borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400},
@@ -348,15 +425,54 @@ function InstructionTimer({onDelete}: {onDelete: () => void}) {
       <View>
         <UITextView
           style={[
-            a.font_bold,
-            timingState === 'complete' ? {color: t.palette.negative_300} : {},
-            {fontFamily: 'monospace'},
+            timingState === 'complete'
+              ? {color: t.palette.negative_300}
+              : timingState === 'paused'
+                ? {color: t.palette.contrast_700}
+                : {color: t.palette.primary_700},
+            {
+              fontFamily: 'monospace, ui-monospace',
+              fontVariant: 'tabular-nums',
+            },
           ]}>
           {displayTime(seconds)}
         </UITextView>
       </View>
-      <Button label={_(msg`Stop timer`)} onPress={onDelete}>
-        <ButtonIcon icon={TrashIcon} />
+      {(timingState === 'active' || timingState === 'complete') && (
+        <Button
+          label={_(msg`Pause timer`)}
+          disabled={timingState === 'complete'}
+          variant="ghost"
+          color={timingState === 'complete' ? 'secondary' : 'primary'}
+          onPress={() => {
+            const hours = Math.trunc(seconds / 3600)
+            const minuteSeconds = seconds - hours * 3600
+            setDuration({
+              hours,
+              minutes: Math.trunc(minuteSeconds / 60),
+              seconds: minuteSeconds % 60,
+            })
+            setStartTime(Date.now())
+            setTimingState('paused')
+          }}>
+          <ButtonIcon icon={PauseIcon} size={timerButtonSize} />
+        </Button>
+      )}
+      {timingState === 'paused' && (
+        <Button
+          label={_(msg`Play timer`)}
+          onPress={() => {
+            setStartTime(Date.now())
+            setTimingState('active')
+          }}>
+          <ButtonIcon icon={PlayIcon} size={timerButtonSize} />
+        </Button>
+      )}
+      <Button label={_(msg`Quit timer`)} onPress={onDelete}>
+        <ButtonIcon icon={TrashIcon} size={timerButtonSize} />
+      </Button>
+      <Button label={_(msg`Add another minute`)} onPress={onAnotherMinute}>
+        <ButtonIcon icon={PlusIcon} size={timerButtonSize} />
       </Button>
     </View>
   )
