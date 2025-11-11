@@ -27,7 +27,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          path: build/social-app
 
       - name: 🔧 Setup Node
         uses: actions/setup-node@v4
@@ -39,28 +38,24 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: inconceivableza/atproto
-          path: build/atproto
+          path: ../atproto
 
       - name: 🔧 Build atproto packages
-        working-directory: build/atproto/api
+        working-directory: ../atproto/api
         run: |
           yarn install --frozen-lockfile
           yarn build
 
       - name: Ensure tracking relevant branches and checkout base
-        working-directory: build/social-app
         run: |
           git checkout ${{ github.head_ref }}
           git checkout ${{ github.base_ref }}
-        
 
       - name: Get the base commit
         id: base-commit
-        working-directory: build/social-app
         run: echo base-commit=$(git log -n 1 ${{ github.base_ref }} --pretty=format:'%H') >> "$GITHUB_OUTPUT"
 
       - name: Merge PR commit
-        working-directory: build/social-app
         run: |
           # Have to set a git config for the merge to work
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -70,7 +65,6 @@ jobs:
           yarn intl:build
 
       - name: 🔦 Generate stats file for PR
-        working-directory: build/social-app
         run: |
           yarn generate-webpack-stats-file
           mv stats.json ../stats-new.json
@@ -84,14 +78,12 @@ jobs:
 
       - name: Restore to base commit
         if: ${{ !steps.get-base-stats.outputs.cache-hit }}
-        working-directory: build/social-app
         run: |
           git reset HEAD~
           git restore .
 
       - name: 🔦 Generate stats file from base commit
         if: ${{ !steps.get-base-stats.outputs.cache-hit }}
-        working-directory: build/social-app
         run: |
           yarn install
           yarn intl:build
