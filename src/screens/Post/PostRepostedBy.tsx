@@ -11,6 +11,7 @@ import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostRepostedBy as PostRepostedByComponent} from '#/view/com/post-thread/PostRepostedBy'
 import * as Layout from '#/components/Layout'
+import { isRecipePostView } from '#/lib/api/feed/utils'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostRepostedBy'>
 export const PostRepostedByScreen = ({route}: Props) => {
@@ -54,8 +55,8 @@ export const PostRepostedByScreen = ({route}: Props) => {
       <PostRepostedByComponent
         uri={uri}
         revisionUri={
-          post?.thread.type === 'recipe'
-            ? post.thread.record.selectedRevisionUri
+          isRecipePostView(post)
+            ? post.record.selectedRevisionUri
             : undefined
         }
       />
