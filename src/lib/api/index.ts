@@ -49,7 +49,6 @@ import {
 import {type RecipePostDraft} from '#/view/com/composer/state/composerRecipe'
 import {hierarchyOptionToPaths} from '#/view/com/composer/state/dataRecipe'
 import {createGIFDescription} from '../gif-alt-text'
-import {isRecipeUri} from '../strings/url-helpers'
 import {type RecipePostView} from './feed/utils'
 import {uploadBlob} from './upload-blob'
 
@@ -586,7 +585,8 @@ async function resolveReply(
       }
     }
   }
-  const parentPost = await (replyToUrip.collection === ids.AppFoodiosFeedRecipePost
+  const parentPost = await (replyToUrip.collection ===
+  ids.AppFoodiosFeedRecipePost
     ? agent.getRecipePost({
         repo: replyToUrip.host,
         rkey: replyToUrip.rkey,

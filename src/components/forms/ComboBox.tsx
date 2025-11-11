@@ -1,16 +1,14 @@
-import { useMemo, useRef, useState } from 'react'
-import {type TextInput as NativeTextInput} from 'react-native'
+import {useMemo, useState} from 'react'
 import {ScrollView, View} from 'react-native'
-import { msg, Trans } from '@lingui/macro'
+import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
+import {Popover} from 'radix-ui'
 
-import { atoms as a, select, useTheme } from '#/alf'
+import {atoms as a, select, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
-import { CircleX_Stroke2_Corner0_Rounded as CircleXIcon } from '#/components/icons/CircleX'
+import {CircleX_Stroke2_Corner0_Rounded as CircleXIcon} from '#/components/icons/CircleX'
 import {Text} from '#/components/Typography'
-
-import { Popover } from "radix-ui";
 
 interface BaseOption {
   id: string
@@ -40,9 +38,11 @@ export function ComboBox<T extends BaseOption>({
   const [searchText, setSearchText] = useState('')
   const filteredOptions = useMemo(() => {
     const trimmedSearch = searchText.trim().toLowerCase()
-    return options.filter(({ id, label }) => {
-      return label.toLowerCase().includes(trimmedSearch) &&
+    return options.filter(({id, label}) => {
+      return (
+        label.toLowerCase().includes(trimmedSearch) &&
         !selection.find(opt => opt.id === id)
+      )
     })
   }, [options, selection, searchText])
 
@@ -59,29 +59,30 @@ export function ComboBox<T extends BaseOption>({
       <Popover.Root open={open}>
         <Popover.Trigger asChild>
           <View collapsable={false}>
-          <TextField.Root>
-            <TextField.Input
+            <TextField.Root>
+              <TextField.Input
                 value={searchText}
-                onBlur={(e) => {
+                onBlur={() => {
                   setSearchText('')
-              }}
-              onFocus={() => {
-                setOpen(true)
-              }}
-              label={label}
-              onChangeText={value => {
-                setSearchText(value)
-              }}
-            />
-          </TextField.Root>
+                }}
+                onFocus={() => {
+                  setOpen(true)
+                }}
+                label={label}
+                onChangeText={value => {
+                  setSearchText(value)
+                }}
+              />
+            </TextField.Root>
           </View>
         </Popover.Trigger>
         <Popover.Portal>
-          <Popover.Content className="radix-combobox-content radix-popover-content" style={{ minWidth: 'max-content' }}
+          <Popover.Content
+            className="radix-combobox-content radix-popover-content"
+            style={{minWidth: 'max-content'}}
             onPointerDownOutside={() => {
               setOpen(false)
-            }} >
-
+            }}>
             <ScrollView
               style={[
                 a.rounded_sm,
@@ -89,26 +90,36 @@ export function ComboBox<T extends BaseOption>({
                   light: t.atoms.bg,
                   dark: t.atoms.bg_contrast_100,
                   dim: t.atoms.bg_contrast_100,
-                }), {
+                }),
+                {
                   maxHeight: 200,
-                }]}>
-              {filteredOptions.length ? filteredOptions.map(opt => (
-                <View key={opt.id}>
-                  <Button
-                    label={_(opt.label)}
-                    size="small"
-                    color='primary_subtle'
-                    style={[a.justify_start]}
-                    onPress={_e => {
-                      onSelect(opt)
-                      setOpen(false)
-                    }}>
-                    <ButtonText style={[a.text_left]}>
-                      {_(opt.label)}
-                    </ButtonText>
-                  </Button>
+                },
+              ]}>
+              {filteredOptions.length ? (
+                filteredOptions.map(opt => (
+                  <View key={opt.id}>
+                    <Button
+                      label={_(opt.label)}
+                      size="small"
+                      color="primary_subtle"
+                      style={[a.justify_start]}
+                      onPress={_e => {
+                        onSelect(opt)
+                        setOpen(false)
+                      }}>
+                      <ButtonText style={[a.text_left]}>
+                        {_(opt.label)}
+                      </ButtonText>
+                    </Button>
+                  </View>
+                ))
+              ) : (
+                <View style={a.p_md}>
+                  <Text>
+                    <Trans>No results found</Trans>
+                  </Text>
                 </View>
-              )) : <View style={a.p_md}><Text><Trans>No results found</Trans></Text></View>}
+              )}
             </ScrollView>
           </Popover.Content>
         </Popover.Portal>
@@ -151,13 +162,19 @@ interface ComboBoxSingleSelectProps {
   onFocus?: () => void
 }
 
-
 /**
  * Combo Box that allows selection of single value. Also accepts the user's input as a value.
  */
-export function ComboBoxSingleSelect({ options, value, onChange, label, isInvalid, onFocus }: ComboBoxSingleSelectProps) {
+export function ComboBoxSingleSelect({
+  options,
+  value,
+  onChange,
+  label,
+  isInvalid,
+  onFocus,
+}: ComboBoxSingleSelectProps) {
   const t = useTheme()
-  const { _ } = useLingui()
+  const {_} = useLingui()
   const [open, setOpen] = useState(false)
 
   const filteredOptions = useMemo(() => {
@@ -175,61 +192,64 @@ export function ComboBoxSingleSelect({ options, value, onChange, label, isInvali
     return filtered
   }, [options, value])
 
-  return <View>
-    <Popover.Root open={open}>
-      <Popover.Trigger asChild>
-        <View collapsable={false}>
-          <TextField.Root isInvalid={isInvalid}>
-            <TextField.Input
-              value={value}
-              onFocus={() => {
-                setOpen(true)
-                onFocus?.()
-              }}
-              label={label}
-              onChangeText={value => {
-                onChange(value)
-              }}
-            />
-          </TextField.Root>
-        </View>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content className="radix-combobox-content radix-popover-content" style={{ minWidth: 'max-content' }}
-          onPointerDownOutside={() => {
-            setOpen(false)
-          }} >
-
-          <ScrollView
-            style={[
-              a.rounded_sm,
-              select(t.name, {
-                light: t.atoms.bg,
-                dark: t.atoms.bg_contrast_100,
-                dim: t.atoms.bg_contrast_100,
-              }), {
-                maxHeight: 200,
-              }]}>
-            {filteredOptions.map((opt, i) => (
-              <View key={i}>
-                <Button
-                  label={_(opt)}
-                  size="small"
-                  color='primary_subtle'
-                  style={[a.justify_start]}
-                  onPress={_e => {
-                    onChange(opt)
-                    setOpen(false)
-                  }}>
-                  <ButtonText style={[a.text_left]}>
-                    {_(opt)}
-                  </ButtonText>
-                </Button>
-              </View>
-            ))}
-          </ScrollView>
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
-  </View>
+  return (
+    <View>
+      <Popover.Root open={open}>
+        <Popover.Trigger asChild>
+          <View collapsable={false}>
+            <TextField.Root isInvalid={isInvalid}>
+              <TextField.Input
+                value={value}
+                onFocus={() => {
+                  setOpen(true)
+                  onFocus?.()
+                }}
+                label={label}
+                onChangeText={value => {
+                  onChange(value)
+                }}
+              />
+            </TextField.Root>
+          </View>
+        </Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Content
+            className="radix-combobox-content radix-popover-content"
+            style={{minWidth: 'max-content'}}
+            onPointerDownOutside={() => {
+              setOpen(false)
+            }}>
+            <ScrollView
+              style={[
+                a.rounded_sm,
+                select(t.name, {
+                  light: t.atoms.bg,
+                  dark: t.atoms.bg_contrast_100,
+                  dim: t.atoms.bg_contrast_100,
+                }),
+                {
+                  maxHeight: 200,
+                },
+              ]}>
+              {filteredOptions.map((opt, i) => (
+                <View key={i}>
+                  <Button
+                    label={_(opt)}
+                    size="small"
+                    color="primary_subtle"
+                    style={[a.justify_start]}
+                    onPress={_e => {
+                      onChange(opt)
+                      setOpen(false)
+                    }}>
+                    <ButtonText style={[a.text_left]}>{_(opt)}</ButtonText>
+                  </Button>
+                </View>
+              ))}
+            </ScrollView>
+          </Popover.Content>
+        </Popover.Portal>
+      </Popover.Root>
+    </View>
+  )
 }
