@@ -69,6 +69,7 @@ import * as bsky from '#/types/bsky'
 import {ExpandableRecipePost} from './ExpandableRecipePost'
 import {PostFeedReason} from './PostFeedReason'
 import {RevisionState} from './RevisionState'
+import { msg } from '@lingui/macro'
 
 interface FeedItemProps {
   record: AppBskyFeedPost.Record | AppFoodiosFeedDefs.RecipeRevisionView
