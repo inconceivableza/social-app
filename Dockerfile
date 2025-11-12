@@ -4,7 +4,7 @@ RUN corepack enable
 
 WORKDIR /usr/src/social-app/submodules/atproto
 
-COPY submodules/atproto/package.json ./package.json 
+COPY submodules/atproto/package.json ./package.json
 RUN corepack prepare --activate
 
 COPY submodules/atproto/tsconfig ./tsconfig

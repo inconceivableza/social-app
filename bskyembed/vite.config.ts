@@ -49,20 +49,26 @@ const config: UserConfig = {
   ],
   resolve: {
     alias: {
-      '@atproto/api': resolve(__dirname, '../../atproto/packages/api/dist'),
+      '@atproto/api': resolve(
+        __dirname,
+        '../submodules/atproto/packages/api/dist',
+      ),
       '@atproto/lexicon': resolve(
         __dirname,
-        '../../atproto/packages/lexicon/dist',
+        '../submodules/atproto/packages/lexicon/dist',
       ),
       '@atproto/syntax': resolve(
         __dirname,
-        '../../atproto/packages/syntax/dist',
+        '../submodules/atproto/packages/syntax/dist',
       ),
       '@atproto/common-web': resolve(
         __dirname,
-        '../../atproto/packages/common-web/dist',
+        '../submodules/atproto/packages/common-web/dist',
       ),
-      '@atproto/xrpc': resolve(__dirname, '../../atproto/packages/xrpc/dist'),
+      '@atproto/xrpc': resolve(
+        __dirname,
+        '../submodules/atproto/packages/xrpc/dist',
+      ),
     },
     preserveSymlinks: true,
   },
