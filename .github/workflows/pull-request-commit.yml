@@ -34,16 +34,16 @@ jobs:
           node-version-file: .nvmrc
           cache: yarn
 
+      - name: Ensure tracking relevant branches and checkout base
+        run: |
+          git checkout ${{ github.head_ref }}
+          git checkout ${{ github.base_ref }}
+
       - name: 🔧 Build atproto packages
         working-directory: atproto/api
         run: |
           pnpm install --frozen-lockfile
           pnpm build
-
-      - name: Ensure tracking relevant branches and checkout base
-        run: |
-          git checkout ${{ github.head_ref }}
-          git checkout ${{ github.base_ref }}
 
       - name: Get the base commit
         id: base-commit
