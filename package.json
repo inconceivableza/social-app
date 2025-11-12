@@ -77,11 +77,11 @@
     "atproto:build": "cd atproto && pnpm build"
   },
   "dependencies": {
-    "@atproto/api": "link:./atproto/packages/api",
-    "@atproto/common-web": "link:./atproto/packages/common-web",
-    "@atproto/lexicon": "link:./atproto/packages/lexicon",
-    "@atproto/syntax": "link:./atproto/packages/syntax",
-    "@atproto/xrpc": "link:./atproto/packages/xrpc",
+    "@atproto/api": "link:./deps/atproto/packages/api",
+    "@atproto/common-web": "link:./deps/atproto/packages/common-web",
+    "@atproto/lexicon": "link:./deps/atproto/packages/lexicon",
+    "@atproto/syntax": "link:./deps/atproto/packages/syntax",
+    "@atproto/xrpc": "link:./deps/atproto/packages/xrpc",
     "@bitdrift/react-native": "^0.6.8",
     "@braintree/sanitize-url": "^6.0.2",
     "@bsky.app/alf": "^0.1.5",
@@ -287,11 +287,11 @@
     "webpack-bundle-analyzer": "^4.10.1"
   },
   "resolutions": {
-    "@atproto/api": "link:./atproto/packages/api",
-    "@atproto/common-web": "link:./atproto/packages/common-web",
-    "@atproto/lexicon": "link:./atproto/packages/lexicon",
-    "@atproto/syntax": "link:./atproto/packages/syntax",
-    "@atproto/xrpc": "link:./atproto/packages/xrpc",
+    "@atproto/api": "link:./deps/atproto/packages/api",
+    "@atproto/common-web": "link:./deps/atproto/packages/common-web",
+    "@atproto/lexicon": "link:./deps/atproto/packages/lexicon",
+    "@atproto/syntax": "link:./deps/atproto/packages/syntax",
+    "@atproto/xrpc": "link:./deps/atproto/packages/xrpc",
     "@react-native/babel-preset": "0.81.4",
     "@react-native/normalize-colors": "0.81.4",
     "**/@expo/image-utils": "0.8.7",
