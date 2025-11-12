@@ -1,3 +1,6 @@
 [submodule "atproto"]
 	path = atproto
 	url = git@github.com:inconceivableza/atproto.git
+[submodule "deps/atproto"]
+	path = deps/atproto
+	url = git@github.com:inconceivableza/atproto
