@@ -57,7 +57,7 @@ jobs:
       - name: Build atproto
         working-directory: deps/atproto
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --ignore-workspace
           pnpm build
   
       - name: Build social app
