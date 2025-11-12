@@ -34,6 +34,11 @@ jobs:
           node-version-file: .nvmrc
           cache: yarn
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3 # Use the official pnpm setup action
+        with:
+        version: 8.15.9 # Or your desired pnpm version 
+
       - name: Ensure tracking relevant branches and checkout base
         run: |
           git checkout ${{ github.head_ref }}
