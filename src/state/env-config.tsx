@@ -11,7 +11,7 @@ Allows configuration of domains, branding and server-specific contents within th
   - Mobile builds must target one of these environments
   - Mobile builds and the web server bundle all configured profile's environments
 
-* Configuration of custom content within the app is down in env-content*.json files
+* Configuration of custom content within the app is in conf/env-content*.json files
   - Configured profiles have separate env-content.${profile}.json files
 
 * Except for production builds, this supports switching between environments

@@ -71,7 +71,7 @@ module.exports = function (_config) {
       : null
   }
 
-  const brandingPath = findExisting('branding.json')
+  const brandingPath = findExisting(path.join('conf', 'branding.json'))
   const branding = brandingPath
     ? JSON.parse(fs.readFileSync(brandingPath).toString('utf-8'))
     : blueskyBranding
@@ -102,7 +102,7 @@ module.exports = function (_config) {
   const envContentConfigs = Object.fromEntries(
     Object.entries(envContentFilenames).map(
       ([profileName, contentBasename]) => {
-        const contentFilename = findExisting(contentBasename)
+        const contentFilename = findExisting(path.join('conf', contentBasename))
         const contentSource = contentFilename
           ? fs.readFileSync(contentFilename).toString('utf-8')
           : '{}'

@@ -1,0 +1,58 @@
+{
+  "code": {
+    "app_slug_scheme": "foodios",
+    "apple_groups": "group.app.foodios",
+    "apple_appstore_path": "foodios-social/idNNNNNNNNNN",
+    "apple_team_id": "BU4RC7696P",
+    "chat_api_did": "did:web:api.foodios.chat#bsky_chat",
+    "ios_clip_name": "BlueskyClip",
+    "ios_nse_name": "BlueskyNSE",
+    "ios_share_with_name": "Share-with-Bluesky",
+    "expo_project_name": "foodios.app",
+    "expo_project_owner": "inconceivable",
+    "expo_project_id": "87ab4766-b66c-489c-98ca-65e740fa205b",
+    "google_service_project_name": "foodiosweb",
+    "sentry_project_organization": "foodiosweb",
+    "updates_url": "https://updates.foodios.app/manifest",
+    "web_package_id": "xyz.foodios.app"
+  },
+  "naming": {
+    "app_name": "Foodios",
+    "full_app_name": "Foodios Social",
+    "spoken_name": "Foody OS"
+  },
+  "styling": {
+    "additional_color_defs": [
+      "orange1: '#e88627'",
+      "orange2: '#d04304'"
+    ],
+    "android_splash_background_color_dark": "#402911",
+    "android_splash_background_color_light": "#e88627",
+    "background_color": "#E88627",
+    "ios_splash_background_color_dark": "#371f06",
+    "map_color_names": [
+      {
+        "search": "blue0",
+        "replace": "orange2"
+      },
+      {
+        "search": "blue2",
+        "replace": "orange2"
+      },
+      {
+        "search": "blue3",
+        "replace": "orange1"
+      },
+      {
+        "search": "blue4",
+        "replace": "orange1"
+      }
+    ]
+  },
+  "verbage": {
+    "app_description": "the cooking social internet",
+    "app_emoji": "🫕",
+    "profile_description_placeholder": "e.g. Cooking for my kids and my friends, love anything with custard, recipe sharing.",
+    "post_prompt": "What's cooking?"
+  }
+}
