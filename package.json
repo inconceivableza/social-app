@@ -294,20 +294,11 @@
     "@atproto/xrpc": "link:./deps/atproto/packages/xrpc",
     "@react-native/babel-preset": "0.81.4",
     "@react-native/normalize-colors": "0.81.4",
-    "**/@expo/image-utils": "0.8.7",
-    "**/expo-constants": "18.0.8",
-    "**/expo-device": "7.1.4",
-    "**/zod": "3.23.8",
-    "**/multiformats": "9.9.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "@expo/image-utils": "0.8.7",
-      "expo-constants": "18.0.8",
-      "expo-device": "7.1.4",
-      "zod": "3.23.8",
-      "multiformats": "9.9.0"
-    }
+    "@expo/image-utils": "0.8.7",
+    "expo-constants": "18.0.8",
+    "expo-device": "7.1.4",
+    "zod": "3.23.8",
+    "multiformats": "9.9.0"
   },
   "jest": {
     "preset": "jest-expo/ios",
