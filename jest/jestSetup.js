@@ -83,6 +83,46 @@ jest.mock('expo-application', () => ({
   nativeBuildVersion: '1',
 }))
 
+// jest.mock('expo-constants', () => ({
+//   expoConfig: {
+//     extra: {
+//       'env-config': {
+//         production: {
+//           APPVIEW_DID: '',
+//           APPVIEW_URL: '',
+//           BSKY_PROXY_DID: '',
+//           BSKY_SERVICE: 'https://public.api.bsky.app',
+//           BSKY_SERVICE_DID: '',
+//           DM_PROXY_DID: '',
+//           DM_SERVICE_DID: '',
+//           GEOLOCATION_CONFIG_URL: '',
+//           GIF_HOST: '',
+//           HELP_DESK_URL: '',
+//           LINK_HOST: '',
+//           OGCARD_URL: '',
+//           POLICY_BASE_URL: '',
+//           PREVIEW_LINK_META_PROXY: '',
+//           PUBLIC_BSKY_SERVICE: 'https://public.api.bsky.app',
+//           SOCIAL_APP_HOST: '',
+//           SOCIAL_APP_URL: '',
+//           SOCIAL_EMBED_SERVICE: '',
+//           STATSIG_CLIENT_KEY: '',
+//           STATSIG_API_URL: '',
+//           STATUS_PAGE_URL: '',
+//           VIDEO_SERVICE: '',
+//           VIDEO_SERVICE_DID: '',
+//         },
+//         staging: {},
+//         development: {
+//           BSKY_SERVICE: 'https://public.api.bsky.app',
+//           PUBLIC_BSKY_SERVICE: 'https://public.api.bsky.app',
+//         },
+//       },
+//       'env-content': {},
+//     },
+//   },
+// }))
+
 jest.mock('expo-modules-core', () => ({
   requireNativeModule: jest.fn().mockImplementation(moduleName => {
     if (moduleName === 'ExpoPlatformInfo') {
@@ -95,6 +135,15 @@ jest.mock('expo-modules-core', () => ({
         dismissAll: () => {},
       }
     }
+  }),
+  requireOptionalNativeModule: jest.fn().mockImplementation(moduleName => {
+    if (moduleName === 'ExpoConstants') {
+      return {
+        executionEnvironment: 'storeClient',
+        getWebViewUserAgentAsync: jest.fn(),
+      }
+    }
+    return null
   }),
   requireNativeViewManager: jest.fn().mockImplementation(_ => {
     return () => null

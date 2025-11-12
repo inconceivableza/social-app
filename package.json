@@ -40,7 +40,7 @@
     "build-embed": "cd bskyembed && yarn go-build && yarn go-build-snippet && cd .. && node ./scripts/post-embed-build.js",
     "start": "expo start --dev-client --tunnel",
     "start:prod": "expo start --dev-client --no-dev --minify",
-    "test": "NODE_ENV=test jest --forceExit --testTimeout=20000 --bail",
+    "test": "NODE_ENV=test jest --forceExit --testTimeout=20000 --bail --detectOpenHandles",
     "test-watch": "NODE_ENV=test jest --watchAll",
     "test-ci": "NODE_ENV=test jest --ci --forceExit --reporters=default --reporters=jest-junit",
     "test-coverage": "NODE_ENV=test jest --coverage",
@@ -302,6 +302,9 @@
   },
   "jest": {
     "preset": "jest-expo/ios",
+    "setupFiles": [
+      "./jest/setEnvVars.js"
+    ],
     "setupFilesAfterEnv": [
       "./jest/jestSetup.js"
     ],
@@ -323,13 +326,18 @@
       "__tests__/.*/__mocks__",
       "__e2e__/.*"
     ],
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "submodules"
+    ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/src/platform",
       "<rootDir>/src/third-party",
       "<rootDir>/src/view/com/util",
       "<rootDir>/src/state/lib",
-      "<rootDir>/__tests__/test-utils.js"
+      "<rootDir>/__tests__/test-utils.js",
+      "<rootDir>/submodules"
     ],
     "reporters": [
       "default",
