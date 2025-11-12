@@ -73,15 +73,15 @@
     "generate-webpack-stats-file": "EXPO_PUBLIC_GENERATE_STATS=1 yarn build-web",
     "open-analyzer": "EXPO_PUBLIC_OPEN_ANALYZER=1 yarn build-web",
     "icons:optimize": "svgo -f ./assets/icons",
-    "atproto:install": "cd atproto && pnpm install --frozen-lockfile",
-    "atproto:build": "cd atproto && pnpm build"
+    "atproto:install": "cd submodules/atproto && pnpm install --frozen-lockfile",
+    "atproto:build": "cd submodules/atproto && pnpm -F api -F common-web -F lexicon -F syntax -F xrpc build"
   },
   "dependencies": {
-    "@atproto/api": "link:./deps/atproto/packages/api",
-    "@atproto/common-web": "link:./deps/atproto/packages/common-web",
-    "@atproto/lexicon": "link:./deps/atproto/packages/lexicon",
-    "@atproto/syntax": "link:./deps/atproto/packages/syntax",
-    "@atproto/xrpc": "link:./deps/atproto/packages/xrpc",
+    "@atproto/api": "link:./submodules/atproto/packages/api",
+    "@atproto/common-web": "link:./submodules/atproto/packages/common-web",
+    "@atproto/lexicon": "link:./submodules/atproto/packages/lexicon",
+    "@atproto/syntax": "link:./submodules/atproto/packages/syntax",
+    "@atproto/xrpc": "link:./submodules/atproto/packages/xrpc",
     "@bitdrift/react-native": "^0.6.8",
     "@braintree/sanitize-url": "^6.0.2",
     "@bsky.app/alf": "^0.1.5",
@@ -287,18 +287,18 @@
     "webpack-bundle-analyzer": "^4.10.1"
   },
   "resolutions": {
-    "@atproto/api": "link:./deps/atproto/packages/api",
-    "@atproto/common-web": "link:./deps/atproto/packages/common-web",
-    "@atproto/lexicon": "link:./deps/atproto/packages/lexicon",
-    "@atproto/syntax": "link:./deps/atproto/packages/syntax",
-    "@atproto/xrpc": "link:./deps/atproto/packages/xrpc",
+    "@atproto/api": "link:./submodules/atproto/packages/api",
+    "@atproto/common-web": "link:./submodules/atproto/packages/common-web",
+    "@atproto/lexicon": "link:./submodules/atproto/packages/lexicon",
+    "@atproto/syntax": "link:./submodules/atproto/packages/syntax",
+    "@atproto/xrpc": "link:./submodules/atproto/packages/xrpc",
     "@react-native/babel-preset": "0.81.4",
     "@react-native/normalize-colors": "0.81.4",
-    "@expo/image-utils": "0.8.7",
-    "expo-constants": "18.0.8",
-    "expo-device": "7.1.4",
-    "zod": "3.23.8",
-    "multiformats": "9.9.0"
+    "**/@expo/image-utils": "0.8.7",
+    "**/expo-constants": "18.0.8",
+    "**/expo-device": "7.1.4",
+    "**/zod": "3.23.8",
+    "**/multiformats": "9.9.0"
   },
   "jest": {
     "preset": "jest-expo/ios",
