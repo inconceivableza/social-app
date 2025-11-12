@@ -20,11 +20,11 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@atproto/api@link:../atproto/packages/api":
+"@atproto/api@link:./atproto/packages/api":
   version "0.0.0"
   uid ""
 
-"@atproto/common-web@link:../atproto/packages/common-web":
+"@atproto/common-web@link:./atproto/packages/common-web":
   version "0.0.0"
   uid ""
 
@@ -32,7 +32,7 @@
   version "0.0.0"
   uid ""
 
-"@atproto/lexicon@link:../atproto/packages/lexicon":
+"@atproto/lexicon@link:./atproto/packages/lexicon":
   version "0.0.0"
   uid ""
 
@@ -40,7 +40,7 @@
   version "0.0.0"
   uid ""
 
-"@atproto/syntax@link:../atproto/packages/syntax":
+"@atproto/syntax@link:./atproto/packages/syntax":
   version "0.0.0"
   uid ""
 
@@ -48,7 +48,7 @@
   version "0.0.0"
   uid ""
 
-"@atproto/xrpc@link:../atproto/packages/xrpc":
+"@atproto/xrpc@link:./atproto/packages/xrpc":
   version "0.0.0"
   uid ""
 
