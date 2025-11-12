@@ -54,6 +54,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git merge --no-edit ${{ github.head_ref }}
+      - name: Build atproto
+        working-directory: deps/atproto
+        run: |
+          pnpm install --frozen-lockfile --ignore-workspace
+          pnpm build
   
       - name: Build social app
         run: |
