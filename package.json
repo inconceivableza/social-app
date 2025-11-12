@@ -20,7 +20,7 @@
   },
   "scripts": {
     "prepare": "is-ci || husky install",
-    "prepare-eas-build": "yarn atproto:install && yarn atproto:build",
+    "eas-build-pre-install": "yarn atproto:install && yarn atproto:build",
     "postinstall": "patch-package && yarn intl:compile-if-needed",
     "prebuild": "EXPO_NO_GIT_STATUS=1 expo prebuild --clean",
     "android": "expo run:android",
