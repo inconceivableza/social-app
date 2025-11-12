@@ -34,6 +34,11 @@ jobs:
           node-version-file: .nvmrc
           cache: yarn
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3 
+        with:
+          version: 8.15.9 
+
       - name: Ensure tracking relevant branches and checkout base
         run: |
           git checkout ${{ github.head_ref }}
@@ -49,15 +54,12 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git merge --no-edit ${{ github.head_ref }}
-      - name: Install atproto
-        uses: pnpm/action-setup@v3
-        working-directory: atproto
-        with:
-          version: 8.15.9
-          run_install: true
       - name: Build atproto
-        working-directory: atproto
-        run: pnpm build
+        working-directory: deps/atproto
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+  
       - name: Build social app
         run: |
           yarn install
