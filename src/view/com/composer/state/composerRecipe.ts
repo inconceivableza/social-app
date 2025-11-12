@@ -389,6 +389,7 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         media: undefined,
         link: undefined,
       },
+      recipeYield: {unit: 'servings', quantity: ''},
     }
 
   const {
