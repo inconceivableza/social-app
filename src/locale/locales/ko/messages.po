@@ -55,7 +55,7 @@ msgstr "이 계정에 {0, plural, other {#개}}의 라벨이 지정됨"
 msgid "{0, plural, one {# label has} other {# labels have}} been placed on this content"
 msgstr "이 콘텐츠에 {0, plural, other {#개}}의 라벨이 지정됨"
 
-#: src/screens/Post/PostLikedBy.tsx:49
+#: src/screens/Post/PostLikedBy.tsx:45
 msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, other {# 좋아요}}"
 
@@ -68,11 +68,11 @@ msgstr "{0, plural, other {#분}}"
 msgid "{0, plural, one {# month} other {# months}}"
 msgstr "{0, plural, other {#개월}}"
 
-#: src/screens/Post/PostQuotes.tsx:44
+#: src/screens/Post/PostQuotes.tsx:45
 msgid "{0, plural, one {# quote} other {# quotes}}"
 msgstr "{0, plural, other {# 인용}}"
 
-#: src/screens/Post/PostRepostedBy.tsx:43
+#: src/screens/Post/PostRepostedBy.tsx:44
 msgid "{0, plural, one {# repost} other {# reposts}}"
 msgstr "{0, plural, other {# 재게시}}"
 
@@ -854,11 +854,11 @@ msgid "Add emoji reaction"
 msgstr "이모티콘 반응 추가"
 
 #. Accessibility label for adding an ingredient to a recipe
-#: src/view/com/composer/ComposerRecipe.tsx:104
+#: src/view/com/composer/ComposerRecipe.tsx:108
 msgid "Add ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1167
+#: src/view/com/composer/ComposerRecipe.tsx:1185
 msgid "Add instruction"
 msgstr ""
 
@@ -897,11 +897,11 @@ msgstr "반응 추가"
 msgid "Add recommended feeds"
 msgstr "추천 피드 추가"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1182
+#: src/view/com/composer/ComposerRecipe.tsx:1200
 msgid "Add section"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1184
+#: src/view/com/composer/ComposerRecipe.tsx:1202
 msgid "Add Section"
 msgstr ""
 
@@ -910,7 +910,7 @@ msgid "Add some feeds to your starter pack!"
 msgstr "스타터 팩에 피드를 추가해 보세요!"
 
 #. Accessibility label for adding a step to a recipe
-#: src/view/com/composer/ComposerRecipe.tsx:108
+#: src/view/com/composer/ComposerRecipe.tsx:112
 msgid "Add step"
 msgstr ""
 
@@ -1413,11 +1413,11 @@ msgstr "알고리즘에 주제 지정"
 msgid "At least 8 characters"
 msgstr "8자 이상"
 
-#: src/view/com/composer/state/composerRecipe.ts:721
+#: src/view/com/composer/state/composerRecipe.ts:722
 msgid "At least one ingredient required"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:671
+#: src/view/com/composer/ComposerRecipe.tsx:685
 #: src/view/com/posts/ExpandableRecipePost.tsx:251
 msgid "Attribution"
 msgstr ""
@@ -1769,8 +1769,8 @@ msgstr "카메라"
 #: src/screens/Takendown.tsx:113
 #: src/view/com/composer/Composer.tsx:1160
 #: src/view/com/composer/Composer.tsx:1171
-#: src/view/com/composer/ComposerRecipe.tsx:1280
-#: src/view/com/composer/ComposerRecipe.tsx:1291
+#: src/view/com/composer/ComposerRecipe.tsx:1298
+#: src/view/com/composer/ComposerRecipe.tsx:1309
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:43
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:52
 #: src/view/com/modals/UserFeedback.tsx:268
@@ -1826,15 +1826,15 @@ msgstr "자막(.vtt)"
 msgid "Captions & alt text"
 msgstr "자막 및 대체 텍스트"
 
-#: src/view/com/composer/state/composerRecipe.ts:528
+#: src/view/com/composer/state/composerRecipe.ts:529
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:597
+#: src/view/com/composer/ComposerRecipe.tsx:608
 msgid "Categories"
 msgstr ""
 
-#: src/screens/Search/components/RecipeSearchFields.tsx:20
+#: src/screens/Search/components/RecipeSearchFields.tsx:22
 msgid "Category"
 msgstr ""
 
@@ -1976,7 +1976,7 @@ msgstr "받은 편지함에서 아래에 입력할 인증 코드가 포함된 �
 msgid "Cholesterol"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:560
+#: src/view/com/composer/state/composerRecipe.ts:561
 msgid "Cholesterol content must be a number"
 msgstr ""
 
@@ -2024,7 +2024,7 @@ msgstr "비밀번호를 입력하세요"
 msgid "Choose your username"
 msgstr "사용자 이름 선택"
 
-#: src/view/com/composer/ComposerRecipe.tsx:871
+#: src/view/com/composer/ComposerRecipe.tsx:885
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:218
 msgid "Clear"
 msgstr ""
@@ -2046,7 +2046,7 @@ msgstr ""
 msgid "Clear image cache"
 msgstr "이미지 캐시 지우기"
 
-#: src/view/com/composer/ComposerRecipe.tsx:865
+#: src/view/com/composer/ComposerRecipe.tsx:879
 msgid "Clear nutrition"
 msgstr ""
 
@@ -2185,7 +2185,7 @@ msgstr "매뉴 닫기"
 msgid "Close this dialog"
 msgstr "이 대화 상자 닫기"
 
-#: src/components/Tooltip/TooltipButton.tsx:28
+#: src/components/Tooltip/TooltipButton.tsx:34
 msgid "Close tooltip"
 msgstr ""
 
@@ -2198,7 +2198,7 @@ msgid "Closes password update alert"
 msgstr "비밀번호 변경 알림을 닫습니다"
 
 #: src/view/com/composer/Composer.tsx:1168
-#: src/view/com/composer/ComposerRecipe.tsx:1288
+#: src/view/com/composer/ComposerRecipe.tsx:1306
 msgid "Closes post composer and discards post draft"
 msgstr "게시물 작성기를 닫고 게시물 초안을 삭제합니다"
 
@@ -2281,7 +2281,7 @@ msgstr "게시물을 최대 {0, plural, other {#자}}까지 작성할 수 있습
 msgid "Compose recipe"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:458
+#: src/view/com/composer/ComposerRecipe.tsx:464
 msgid "Compose recipe description up to {0, plural, other {# characters}} in length"
 msgstr ""
 
@@ -2315,6 +2315,10 @@ msgstr "콘텐츠 언어 설정 확인"
 #: src/view/com/modals/DeleteAccount.tsx:264
 msgid "Confirm delete account"
 msgstr "계정 삭제 확인"
+
+#: src/components/forms/ComboBox/index.tsx:131
+msgid "Confirm selection"
+msgstr ""
 
 #: src/screens/Moderation/index.tsx:359
 msgid "Confirm your age:"
@@ -2471,15 +2475,15 @@ msgstr ""
 msgid "Cooking"
 msgstr "요리"
 
-#: src/view/com/composer/ComposerRecipe.tsx:548
+#: src/view/com/composer/ComposerRecipe.tsx:560
 msgid "Cooking time"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:734
+#: src/view/com/composer/state/composerRecipe.ts:735
 msgid "Cooking time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:736
+#: src/view/com/composer/state/composerRecipe.ts:737
 msgid "Cooking time must be greater than zero"
 msgstr ""
 
@@ -2740,11 +2744,11 @@ msgstr "{0}에 생성됨"
 msgid "Creator has been blocked"
 msgstr "작성자 차단됨"
 
-#: src/screens/Search/components/RecipeSearchFields.tsx:21
+#: src/screens/Search/components/RecipeSearchFields.tsx:28
 msgid "Cuisine"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:618
+#: src/view/com/composer/ComposerRecipe.tsx:630
 msgid "Cuisine type"
 msgstr ""
 
@@ -2899,7 +2903,7 @@ msgstr "내 계정 삭제"
 msgid "Delete post"
 msgstr "게시물 삭제"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1100
+#: src/view/com/composer/ComposerRecipe.tsx:1118
 msgid "Delete Section"
 msgstr ""
 
@@ -2939,7 +2943,7 @@ msgstr "삭제된 리스트"
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:436
 #: src/screens/Profile/Header/EditProfileDialog.tsx:363
 #: src/screens/Profile/Header/EditProfileDialog.tsx:370
-#: src/view/com/composer/ComposerRecipe.tsx:442
+#: src/view/com/composer/ComposerRecipe.tsx:448
 msgid "Description"
 msgstr "설명"
 
@@ -3051,7 +3055,7 @@ msgid "Dismiss"
 msgstr "닫기"
 
 #: src/view/com/composer/Composer.tsx:1929
-#: src/view/com/composer/ComposerRecipe.tsx:745
+#: src/view/com/composer/ComposerRecipe.tsx:759
 msgid "Dismiss error"
 msgstr "오류 무시"
 
@@ -3122,6 +3126,7 @@ msgstr "걱정 마세요! 모든 기존 메시지와 설정은 저장되며 성�
 #: src/components/dialogs/BirthDateSettings.tsx:149
 #: src/components/dialogs/BirthDateSettings.tsx:156
 #: src/components/dms/ReportDialog.tsx:321
+#: src/components/forms/ComboBox/index.tsx:136
 #: src/components/forms/DateField/index.tsx:103
 #: src/components/forms/DateField/index.tsx:109
 #: src/components/Select/index.tsx:185
@@ -3458,7 +3463,7 @@ msgstr "피드 끝"
 msgid "Energy"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:522
+#: src/view/com/composer/state/composerRecipe.ts:523
 msgid "Energy value must be a number"
 msgstr ""
 
@@ -3641,7 +3646,7 @@ msgstr "게시물 텍스트 확장"
 msgid "Expands or collapses post text"
 msgstr "게시물 텍스트를 펼치거나 접습니다"
 
-#: src/lib/api/index.ts:820
+#: src/lib/api/index.ts:833
 msgid "Expected uri to resolve to a record"
 msgstr "레코드로 확인될 것으로 예상되는 URI"
 
@@ -3920,7 +3925,7 @@ msgstr "이메일을 인증하지 못했습니다. 다시 시도해 주세요."
 msgid "Failed to verify handle. Please try again."
 msgstr "핸들을 인증하지 못했습니다. 다시 시도해 주세요."
 
-#: src/view/com/composer/state/composerRecipe.ts:539
+#: src/view/com/composer/state/composerRecipe.ts:540
 msgid "Fat content must be a number"
 msgstr ""
 
@@ -4002,7 +4007,7 @@ msgstr "좋아할 만한 피드를 모았습니다."
 msgid "Fetch update"
 msgstr "업데이트 확인"
 
-#: src/view/com/composer/state/composerRecipe.ts:544
+#: src/view/com/composer/state/composerRecipe.ts:545
 msgid "Fiber content must be a number"
 msgstr ""
 
@@ -4916,15 +4921,15 @@ msgstr "수신함 제로!"
 msgid "Incorrect username or password"
 msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
 
-#: src/view/com/composer/state/composerRecipe.ts:486
+#: src/view/com/composer/state/composerRecipe.ts:487
 msgid "Ingredient name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:490
+#: src/view/com/composer/state/composerRecipe.ts:491
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:566
+#: src/view/com/composer/ComposerRecipe.tsx:578
 #: src/view/com/modals/RecipePreparation.tsx:118
 #: src/view/com/posts/ExpandableRecipePost.tsx:202
 msgctxt "recipe"
@@ -4951,19 +4956,19 @@ msgstr "계정을 삭제하기 위해 비밀번호를 입력합니다"
 msgid "Input the code which has been emailed to you"
 msgstr "이메일로 전송된 코드를 입력합니다"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1113
+#: src/view/com/composer/ComposerRecipe.tsx:1131
 msgid "Instruction"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1072
+#: src/view/com/composer/ComposerRecipe.tsx:1090
 msgid "Instruction section options"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:498
+#: src/view/com/composer/state/composerRecipe.ts:499
 msgid "Instruction text cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:581
+#: src/view/com/composer/ComposerRecipe.tsx:593
 #: src/view/com/modals/RecipePreparation.tsx:147
 #: src/view/com/posts/ExpandableRecipePost.tsx:217
 msgctxt "recipe"
@@ -5004,12 +5009,12 @@ msgstr "잘못된 상호작용 설정입니다"
 msgid "Invalid report subject"
 msgstr "잘못된 신고 항목"
 
-#: src/view/com/composer/state/composerRecipe.ts:637
-#: src/view/com/composer/state/composerRecipe.ts:647
-#: src/view/com/composer/state/composerRecipe.ts:665
-#: src/view/com/composer/state/composerRecipe.ts:674
-#: src/view/com/composer/state/composerRecipe.ts:687
-#: src/view/com/composer/state/composerRecipe.ts:700
+#: src/view/com/composer/state/composerRecipe.ts:638
+#: src/view/com/composer/state/composerRecipe.ts:648
+#: src/view/com/composer/state/composerRecipe.ts:666
+#: src/view/com/composer/state/composerRecipe.ts:675
+#: src/view/com/composer/state/composerRecipe.ts:688
+#: src/view/com/composer/state/composerRecipe.ts:701
 msgid "Invalid URL (must include protocol e.g. http://)"
 msgstr ""
 
@@ -5080,7 +5085,7 @@ msgstr "지금은 <0>{0}</0>밖에 없습니다! 위에서 검색하여 스타�
 msgid "It's just you right now! Add more people to your starter pack by searching above."
 msgstr "아직은 나밖에 없습니다! 위에서 검색하여 스타터 팩에 더 많은 사용자를 추가해 보세요."
 
-#: src/view/com/composer/ComposerRecipe.tsx:924
+#: src/view/com/composer/ComposerRecipe.tsx:938
 msgid "Item"
 msgstr ""
 
@@ -5354,7 +5359,7 @@ msgstr "이 라벨러에 좋아요 표시"
 msgid "Liked by"
 msgstr "좋아요 표시한 사용자"
 
-#: src/screens/Post/PostLikedBy.tsx:46
+#: src/screens/Post/PostLikedBy.tsx:42
 #: src/screens/Profile/ProfileLabelerLikedBy.tsx:32
 #: src/view/screens/ProfileFeedLikedBy.tsx:32
 msgid "Liked By"
@@ -5697,13 +5702,13 @@ msgctxt "Name of app icon variant"
 msgid "Midnight"
 msgstr "심야"
 
-#: src/view/com/composer/ComposerRecipe.tsx:539
-#: src/view/com/composer/ComposerRecipe.tsx:556
+#: src/view/com/composer/ComposerRecipe.tsx:551
+#: src/view/com/composer/ComposerRecipe.tsx:568
 msgid "min"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:538
-#: src/view/com/composer/ComposerRecipe.tsx:555
+#: src/view/com/composer/ComposerRecipe.tsx:550
+#: src/view/com/composer/ComposerRecipe.tsx:567
 #: src/view/com/posts/ExpandableRecipePost.tsx:186
 msgid "minutes"
 msgstr ""
@@ -5798,7 +5803,7 @@ msgid "More languages..."
 msgstr "모든 언어..."
 
 #: src/screens/ProfileList/components/MoreOptionsMenu.tsx:149
-#: src/view/com/composer/ComposerRecipe.tsx:1078
+#: src/view/com/composer/ComposerRecipe.tsx:1096
 #: src/view/com/profile/ProfileMenu.tsx:228
 #: src/view/com/profile/ProfileMenu.tsx:234
 msgid "More options"
@@ -5929,12 +5934,12 @@ msgid "My Feeds"
 msgstr "내 피드"
 
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:399
-#: src/view/com/composer/ComposerRecipe.tsx:428
+#: src/view/com/composer/ComposerRecipe.tsx:433
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:339
 msgid "Name"
 msgstr "이름"
 
-#: src/view/com/composer/state/composerRecipe.ts:717
+#: src/view/com/composer/state/composerRecipe.ts:718
 msgid "Name cannot be empty"
 msgstr ""
 
@@ -6223,7 +6228,7 @@ msgstr "결과 없음"
 msgid "No results for \"{0}\"."
 msgstr "\"{0}\"에 대한 결과가 없습니다."
 
-#: src/components/forms/ComboBox.tsx:111
+#: src/components/forms/ComboBox/common.tsx:72
 #: src/components/Lists.tsx:189
 #: src/screens/Search/SearchResults.tsx:315
 msgid "No results found"
@@ -6381,7 +6386,7 @@ msgstr "나체"
 msgid "Nudity or adult content not labeled as such"
 msgstr "나체 또는 성인 콘텐츠로 설정되지 않은 콘텐츠"
 
-#: src/view/com/composer/ComposerRecipe.tsx:662
+#: src/view/com/composer/ComposerRecipe.tsx:676
 #: src/view/com/posts/ExpandableRecipePost.tsx:245
 msgid "Nutritional Information"
 msgstr ""
@@ -6499,7 +6504,7 @@ msgstr "서랍 메뉴 열기"
 
 #: src/screens/Messages/components/MessageInput.web.tsx:181
 #: src/view/com/composer/Composer.tsx:1594
-#: src/view/com/composer/ComposerRecipe.tsx:1470
+#: src/view/com/composer/ComposerRecipe.tsx:1488
 msgid "Open emoji picker"
 msgstr "이모티콘 선택기 열기"
 
@@ -6600,7 +6605,7 @@ msgid "Opens device gallery to select up to {MAX_IMAGES, plural, other {# images
 msgstr "기기 갤러리를 열어 이미지를 최대 {MAX_IMAGES, plural, other {#개}}까지 또는 동영상, GIF를 1개 선택합니다."
 
 #: src/view/com/composer/Composer.tsx:1595
-#: src/view/com/composer/ComposerRecipe.tsx:1471
+#: src/view/com/composer/ComposerRecipe.tsx:1489
 msgid "Opens emoji picker"
 msgstr "이모티콘 선택기를 엽니다"
 
@@ -7075,7 +7080,7 @@ msgid "Post"
 msgstr ""
 
 #: src/view/com/composer/Composer.tsx:1237
-#: src/view/com/composer/ComposerRecipe.tsx:1318
+#: src/view/com/composer/ComposerRecipe.tsx:1336
 msgctxt "action"
 msgid "Post"
 msgstr "게시하기"
@@ -7101,14 +7106,14 @@ msgctxt "toast"
 msgid "Post deleted"
 msgstr "게시물을 삭제했습니다"
 
-#: src/lib/api/index.ts:201
-#: src/lib/api/index.ts:294
-#: src/lib/api/index.ts:369
+#: src/lib/api/index.ts:200
+#: src/lib/api/index.ts:321
+#: src/lib/api/index.ts:381
 msgid "Post failed to upload. Please check your Internet connection and try again."
 msgstr "게시물을 업로드하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요."
 
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:155
-#: src/screens/PostThread/components/ThreadItemPost.tsx:128
+#: src/screens/PostThread/components/ThreadItemPost.tsx:129
 #: src/screens/PostThread/components/ThreadItemTreePost.tsx:107
 #: src/screens/VideoFeed/index.tsx:534
 msgid "Post has been deleted"
@@ -7186,7 +7191,7 @@ msgstr "오해의 소지가 있는 링크"
 msgid "Potentially misleading link warning"
 msgstr "오해의 소지가 있는 링크 경고"
 
-#: src/view/com/composer/ComposerRecipe.tsx:531
+#: src/view/com/composer/ComposerRecipe.tsx:543
 msgid "Prep time"
 msgstr ""
 
@@ -7194,11 +7199,11 @@ msgstr ""
 msgid "Prep:"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:728
+#: src/view/com/composer/state/composerRecipe.ts:729
 msgid "Preparation time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:730
+#: src/view/com/composer/state/composerRecipe.ts:731
 msgid "Preparation time must be greater than zero"
 msgstr ""
 
@@ -7271,17 +7276,17 @@ msgstr "개인정보 처리방침"
 msgid "Processing video..."
 msgstr "동영상 처리 중…"
 
-#: src/lib/api/index.ts:75
-#: src/lib/api/index.ts:390
+#: src/lib/api/index.ts:74
+#: src/lib/api/index.ts:402
 #: src/screens/Login/ForgotPasswordForm.tsx:153
 msgid "Processing..."
 msgstr "처리 중…"
 
-#: src/view/com/composer/state/composerRecipe.ts:695
+#: src/view/com/composer/state/composerRecipe.ts:696
 msgid "Product attribution brand cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:696
+#: src/view/com/composer/state/composerRecipe.ts:697
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
@@ -7310,7 +7315,7 @@ msgstr "프로필을 업데이트했습니다"
 msgid "Protein"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:534
+#: src/view/com/composer/state/composerRecipe.ts:535
 msgid "Protein content must be a number"
 msgstr ""
 
@@ -7326,11 +7331,11 @@ msgstr "일괄 뮤트하거나 차단할 수 있는 공개적이고 공유 가�
 msgid "Public, sharable lists which can be used to drive feeds."
 msgstr "피드를 탐색하는 데 사용할 수 있는 공개적이고 공유 가능한 목록입니다."
 
-#: src/view/com/composer/state/composerRecipe.ts:659
+#: src/view/com/composer/state/composerRecipe.ts:660
 msgid "Publication attribution author cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:656
+#: src/view/com/composer/state/composerRecipe.ts:657
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
@@ -7342,7 +7347,7 @@ msgstr ""
 #. Accessibility label for button to publish a single post
 #. Accessibility label for button to publish a single post
 #: src/view/com/composer/Composer.tsx:1213
-#: src/view/com/composer/ComposerRecipe.tsx:112
+#: src/view/com/composer/ComposerRecipe.tsx:116
 msgid "Publish post"
 msgstr "게시물 등록하기"
 
@@ -7352,7 +7357,7 @@ msgid "Publish posts"
 msgstr "게시물 등록하기"
 
 #. Accessibility label for button to publish a recipe
-#: src/view/com/composer/ComposerRecipe.tsx:1303
+#: src/view/com/composer/ComposerRecipe.tsx:1321
 msgid "Publish recipe"
 msgstr ""
 
@@ -7406,7 +7411,7 @@ msgstr "QR 코드를 다운로드했습니다."
 msgid "QR code saved to your camera roll!"
 msgstr "QR 코드를 사진 보관함에 저장했습니다."
 
-#: src/view/com/composer/ComposerRecipe.tsx:941
+#: src/view/com/composer/ComposerRecipe.tsx:955
 msgid "Quantity"
 msgstr ""
 
@@ -7445,7 +7450,7 @@ msgid "Quote settings"
 msgstr "인용 설정"
 
 #: src/lib/hooks/useNotificationHandler.ts:159
-#: src/screens/Post/PostQuotes.tsx:41
+#: src/screens/Post/PostQuotes.tsx:42
 #: src/screens/Settings/NotificationSettings/index.tsx:183
 #: src/screens/Settings/NotificationSettings/QuoteNotificationSettings.tsx:41
 msgid "Quotes"
@@ -7468,7 +7473,7 @@ msgstr ""
 msgid "Rating ({0, plural, one {# rating} other {# ratings}})"
 msgstr ""
 
-#: src/components/StarRatings.tsx:104
+#: src/components/StarRatings.tsx:109
 msgid "Rating stars"
 msgstr ""
 
@@ -7576,7 +7581,7 @@ msgstr ""
 msgid "Recipe timer finished"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:587
+#: src/view/com/composer/state/composerRecipe.ts:588
 msgid "Recipe yield quantity must be a number"
 msgstr ""
 
@@ -7691,11 +7696,11 @@ msgstr "내 피드에서 제거하시겠습니까?"
 msgid "Remove image"
 msgstr "이미지 제거"
 
-#: src/view/com/composer/ComposerRecipe.tsx:975
+#: src/view/com/composer/ComposerRecipe.tsx:993
 msgid "Remove ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1139
+#: src/view/com/composer/ComposerRecipe.tsx:1157
 msgid "Remove instruction"
 msgstr ""
 
@@ -7717,11 +7722,11 @@ msgstr "프로필 제거"
 msgid "Remove repost"
 msgstr "재게시 취소"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1092
+#: src/view/com/composer/ComposerRecipe.tsx:1110
 msgid "Remove section"
 msgstr ""
 
-#: src/components/forms/ComboBox.tsx:131
+#: src/components/forms/ComboBox/common.tsx:113
 msgid "Remove selection"
 msgstr ""
 
@@ -7985,7 +7990,7 @@ msgstr "재게시 알림"
 msgid "Repost or quote post"
 msgstr "재게시 또는 게시물 인용"
 
-#: src/screens/Post/PostRepostedBy.tsx:40
+#: src/screens/Post/PostRepostedBy.tsx:41
 msgid "Reposted By"
 msgstr "재게시한 사용자"
 
@@ -8150,7 +8155,7 @@ msgstr "이전 단계로 돌아갑니다"
 msgid "Review Recipe"
 msgstr ""
 
-#: src/lib/api/index.ts:543
+#: src/lib/api/index.ts:555
 msgid "Review-rating post failed to upload. Please check your Internet connection and try again."
 msgstr ""
 
@@ -8166,7 +8171,7 @@ msgstr ""
 msgid "Saturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:566
+#: src/view/com/composer/state/composerRecipe.ts:567
 msgid "Saturated fat content must be a number"
 msgstr ""
 
@@ -8207,7 +8212,7 @@ msgstr "생년월일 저장"
 msgid "Save changes"
 msgstr "변경 사항 저장"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1316
+#: src/view/com/composer/ComposerRecipe.tsx:1334
 msgctxt "action"
 msgid "Save Changes"
 msgstr ""
@@ -8293,6 +8298,16 @@ msgstr "@{0} 님의 게시물 검색"
 msgid "Search by name or interest"
 msgstr "이름 또는 관심 주제로 검색"
 
+#: src/screens/Search/components/RecipeSearchFields.tsx:23
+#: src/view/com/composer/ComposerRecipe.tsx:609
+msgid "Search categories..."
+msgstr ""
+
+#: src/screens/Search/components/RecipeSearchFields.tsx:29
+#: src/view/com/composer/ComposerRecipe.tsx:631
+msgid "Search cuisines..."
+msgstr ""
+
 #: src/view/screens/Feeds.tsx:443
 msgid "Search feeds"
 msgstr "피드 검색"
@@ -8359,6 +8374,11 @@ msgstr "게시물 검색"
 msgid "Search profiles"
 msgstr "프로필 검색"
 
+#: src/screens/Search/components/RecipeSearchFields.tsx:35
+#: src/view/com/composer/ComposerRecipe.tsx:655
+msgid "Search suitable diets..."
+msgstr ""
+
 #: src/components/dialogs/GifSelect.tsx:168
 msgid "Search Tenor"
 msgstr "Tenor 검색"
@@ -8380,7 +8400,7 @@ msgstr "프로필을 검색합니다"
 msgid "Seconds"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1067
+#: src/view/com/composer/ComposerRecipe.tsx:1085
 msgid "Section title"
 msgstr ""
 
@@ -8649,11 +8669,11 @@ msgstr ""
 msgid "Server address"
 msgstr "서버 주소"
 
-#: src/view/com/composer/ComposerRecipe.tsx:832
+#: src/view/com/composer/ComposerRecipe.tsx:846
 msgid "Serving size"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:513
+#: src/view/com/composer/state/composerRecipe.ts:514
 msgid "Serving size quantity must be a number"
 msgstr ""
 
@@ -8844,11 +8864,11 @@ msgstr "대체 텍스트 표시"
 msgid "Show anyway"
 msgstr "무시하고 표시"
 
-#: src/view/com/composer/state/composerRecipe.ts:683
+#: src/view/com/composer/state/composerRecipe.ts:684
 msgid "Show attribution network cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:681
+#: src/view/com/composer/state/composerRecipe.ts:682
 msgid "Show attribution title cannot be empty"
 msgstr ""
 
@@ -8892,7 +8912,8 @@ msgstr "이런 항목 더 보기"
 msgid "Show more replies"
 msgstr "답글 더 보기"
 
-#: src/screens/PostThread/components/ThreadItemPost.tsx:362
+#: src/screens/PostThread/components/ThreadItemPost.tsx:363
+#: src/view/com/posts/PostFeedItem.tsx:447
 msgid "Show original version"
 msgstr ""
 
@@ -9079,7 +9100,7 @@ msgstr "내가 제어하는 소셜 미디어."
 msgid "Sodium"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:554
+#: src/view/com/composer/state/composerRecipe.ts:555
 msgid "Sodium content must be a number"
 msgstr ""
 
@@ -9342,7 +9363,7 @@ msgstr "성공적으로 인증했습니다"
 msgid "Sugar"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:549
+#: src/view/com/composer/state/composerRecipe.ts:550
 msgid "Sugar content must be a number"
 msgstr ""
 
@@ -9363,8 +9384,8 @@ msgstr "나를 위한 추천"
 msgid "Suggestive"
 msgstr "외설적"
 
-#: src/screens/Search/components/RecipeSearchFields.tsx:22
-#: src/view/com/composer/ComposerRecipe.tsx:641
+#: src/screens/Search/components/RecipeSearchFields.tsx:34
+#: src/view/com/composer/ComposerRecipe.tsx:654
 msgid "Suitable diets"
 msgstr ""
 
@@ -9682,7 +9703,7 @@ msgstr "테마"
 msgid "There is no time limit for account deactivation, come back any time."
 msgstr "계정 비활성화에는 시간 제한이 없으므로 언제든지 다시 돌아올 수 있습니다."
 
-#: src/view/com/composer/ComposerRecipe.tsx:231
+#: src/view/com/composer/ComposerRecipe.tsx:236
 msgid "There was an error publishing your recipe"
 msgstr ""
 
@@ -10105,15 +10126,15 @@ msgstr "성인 콘텐츠 활성화 또는 비활성화 전환"
 msgid "Toggles the sound"
 msgstr "소리를 켜거나 끕니다"
 
-#: src/view/com/composer/state/composerRecipe.ts:744
+#: src/view/com/composer/state/composerRecipe.ts:745
 msgid "Too many categories selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:740
+#: src/view/com/composer/state/composerRecipe.ts:741
 msgid "Too many cuisines selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:748
+#: src/view/com/composer/state/composerRecipe.ts:749
 msgid "Too many diets selected"
 msgstr ""
 
@@ -10142,7 +10163,7 @@ msgstr ""
 msgid "Trans fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:572
+#: src/view/com/composer/state/composerRecipe.ts:573
 msgid "Trans fat content must be a number"
 msgstr ""
 
@@ -10314,9 +10335,9 @@ msgstr ""
 msgid "Unfortunately, none of your subscribed labelers supports this report type."
 msgstr "안타깝게도 구독하는 라벨러 중 이 신고 유형을 지원하는 라벨러가 없습니다."
 
-#: src/view/com/composer/ComposerRecipe.tsx:504
-#: src/view/com/composer/ComposerRecipe.tsx:852
-#: src/view/com/composer/ComposerRecipe.tsx:960
+#: src/view/com/composer/ComposerRecipe.tsx:509
+#: src/view/com/composer/ComposerRecipe.tsx:866
+#: src/view/com/composer/ComposerRecipe.tsx:973
 msgid "Unit"
 msgstr ""
 
@@ -10425,7 +10446,7 @@ msgstr "리스트를 고정 해제했습니다"
 msgid "Unsaturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:578
+#: src/view/com/composer/state/composerRecipe.ts:579
 msgid "Unsaturated fat content must be a number"
 msgstr ""
 
@@ -10536,12 +10557,12 @@ msgstr "파일에서 업로드"
 msgid "Upload from Library"
 msgstr "보관함에서 업로드"
 
-#: src/lib/api/index.ts:686
+#: src/lib/api/index.ts:699
 msgid "Uploading images..."
 msgstr "이미지 업로드 중…"
 
-#: src/lib/api/index.ts:770
-#: src/lib/api/index.ts:794
+#: src/lib/api/index.ts:783
+#: src/lib/api/index.ts:807
 msgid "Uploading link thumbnail..."
 msgstr "링크 미리보기 업로드 중…"
 
@@ -11169,7 +11190,7 @@ msgstr "2025년 9월 15일부터 서비스 이용약관, 개인정보 처리방�
 msgid "We've confirmed your age assurance status. You can now close this dialog."
 msgstr "내 연령 확인 상태를 확인했습니다. 이제 이 대화 상자를 닫을 수 있습니다."
 
-#: src/view/com/composer/state/composerRecipe.ts:673
+#: src/view/com/composer/state/composerRecipe.ts:674
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
@@ -11271,7 +11292,7 @@ msgstr "메시지를 입력하세요"
 msgid "Write post"
 msgstr "게시물 작성"
 
-#: src/view/com/composer/ComposerRecipe.tsx:456
+#: src/view/com/composer/ComposerRecipe.tsx:462
 msgid "Write recipe description"
 msgstr ""
 
@@ -11327,15 +11348,15 @@ msgstr "내 계정 재활성화"
 msgid "Yesterday"
 msgstr "어제"
 
-#: src/view/com/composer/ComposerRecipe.tsx:485
+#: src/view/com/composer/ComposerRecipe.tsx:491
 msgid "Yield"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:516
+#: src/view/com/composer/ComposerRecipe.tsx:522
 msgid "Yield explanation"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:518
+#: src/view/com/composer/ComposerRecipe.tsx:525
 msgid "Yield is used to indicate how much a recipe will produce. Use the units to indicate whether this is a number of servings, items, or a measurement like grams or litres."
 msgstr ""
 
@@ -11913,11 +11934,11 @@ msgstr "여러 사용자들의 프로필 사진이 동심원 형태로 내 프�
 msgid "Your profile, posts, feeds, and lists will no longer be visible to other {0} users. You can reactivate your account at any time by logging in."
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:225
+#: src/view/com/composer/ComposerRecipe.tsx:230
 msgid "Your recipe has been published"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:198
+#: src/view/com/composer/ComposerRecipe.tsx:203
 msgid "Your recipe has been updated"
 msgstr ""
 
