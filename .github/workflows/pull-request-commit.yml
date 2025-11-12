@@ -35,7 +35,7 @@ jobs:
           cache: yarn
 
       - name: 🔧 Build atproto packages
-        working-directory: ./atproto/api
+        working-directory: atproto/api
         run: |
           pnpm install --frozen-lockfile
           pnpm build
