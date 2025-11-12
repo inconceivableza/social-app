@@ -2,39 +2,37 @@ FROM node:20-alpine3.22 as build-node
 
 RUN corepack enable
 
-WORKDIR /usr/src/atproto
+WORKDIR /usr/src/social-app/submodules/atproto
 
-COPY --from=atproto /package.json ./
+COPY submodules/atproto/package.json ./package.json 
 RUN corepack prepare --activate
 
-COPY --from=atproto ./tsconfig ./tsconfig
-COPY --from=atproto ./packages/api/package.json ./packages/api/package.json
-COPY --from=atproto ./packages/common-web/package.json ./packages/common-web/package.json
-COPY --from=atproto ./packages/syntax/package.json ./packages/syntax/package.json
-COPY --from=atproto ./packages/lexicon/package.json ./packages/lexicon/package.json
-COPY --from=atproto ./packages/xrpc/package.json ./packages/xrpc/package.json
-COPY --from=atproto ./package.json ./package.json
-COPY --from=atproto ./pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=atproto ./pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY submodules/atproto/tsconfig ./tsconfig
+COPY submodules/atproto/packages/api/package.json ./packages/api/package.json
+COPY submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
+COPY submodules/atproto/packages/lexicon/package.json ./packages/lexicon/package.json
+COPY submodules/atproto/packages/xrpc/package.json ./packages/xrpc/package.json
+COPY submodules/atproto/package.json ./package.json
+COPY submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY submodules/atproto/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 RUN pnpm install --frozen-lockfile
 
-# COPY --from=atproto / .
-
-COPY --from=atproto ./*.js* ./
+COPY submodules/atproto/*.js* ./
 # NOTE api's transitive dependencies go here: if that changes, this needs to be updated.
-COPY --from=atproto ./tsconfig ./tsconfig
-COPY --from=atproto ./packages/api ./packages/api
-COPY --from=atproto ./packages/common-web ./packages/common-web
-COPY --from=atproto ./packages/syntax ./packages/syntax
-COPY --from=atproto ./packages/lexicon ./packages/lexicon
-COPY --from=atproto ./packages/xrpc ./packages/xrpc
+COPY submodules/atproto/tsconfig ./tsconfig
+COPY submodules/atproto/packages/api ./packages/api
+COPY submodules/atproto/packages/common-web ./packages/common-web
+COPY submodules/atproto/packages/syntax ./packages/syntax
+COPY submodules/atproto/packages/lexicon ./packages/lexicon
+COPY submodules/atproto/packages/xrpc ./packages/xrpc
 # build all packages with external node_modules
 RUN pnpm build
 # clean up
-# RUN rm -rf node_modules
+RUN rm -rf node_modules
 # install only prod deps, hoisted to root node_modules dir
-# RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
+RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
 
 WORKDIR /usr/src/social-app
 
@@ -97,7 +95,7 @@ COPY ./scripts/ ./scripts
 
 RUN corepack prepare --activate
 
-RUN yarn
+RUN yarn --frozen-lockfile
 #
 # Copy everything into the container
 #
