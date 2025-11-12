@@ -56,13 +56,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git merge --no-edit ${{ github.head_ref }}
 
-      - name: ls
-        run: ls -la
       - name: Build atproto
-        working-directory: deps/atproto
         run: |
-          pnpm install --frozen-lockfile
-          pnpm build
+          yarn run atproto:install
+          yarn run atproto:build
   
       - name: Build social app
         run: |
