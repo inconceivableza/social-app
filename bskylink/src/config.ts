@@ -3,9 +3,10 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from 'url'
 
-// default path for branding.json is parent directory of the src/dist directory
-const defaultEnvPath = path.dirname(
-  path.dirname(fileURLToPath(import.meta.url)),
+// default path for branding.json is ../../conf from src/dist
+const defaultEnvPath = path.join(
+  path.dirname(path.dirname(fileURLToPath(import.meta.url))),
+  'conf',
 )
 
 function ifExists(pathname: string): string | null {

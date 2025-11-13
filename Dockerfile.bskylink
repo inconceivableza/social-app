@@ -36,6 +36,11 @@ RUN pnpm build
 # install only prod deps, hoisted to root node_modules dir
 # RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
 
+# Copy conf files
+WORKDIR /app/conf
+
+COPY ./conf ./
+
 # Move files into the image and install
 WORKDIR /app/bskylink
 
