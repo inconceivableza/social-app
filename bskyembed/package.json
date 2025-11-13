@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@atproto/api": "link:../../atproto/packages/api",
-    "@atproto/lexicon": "link:../../atproto/packages/lexicon",
+    "@atproto/api": "link:../submodules/atproto/packages/api",
+    "@atproto/lexicon": "link:../submodules/atproto/packages/lexicon",
     "preact": "^10.4.8"
   },
   "devDependencies": {
@@ -34,9 +34,9 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "resolutions": {
-    "@atproto/common-web": "link:../../atproto/packages/common-web",
-    "@atproto/lexicon": "link:../../atproto/packages/lexicon",
-    "@atproto/syntax": "link:../../atproto/packages/syntax",
-    "@atproto/xrpc": "link:../../atproto/packages/xrpc"
+    "@atproto/common-web": "link:../submodules/atproto/packages/common-web",
+    "@atproto/lexicon": "link:../submodules/atproto/packages/lexicon",
+    "@atproto/syntax": "link:../submodules/atproto/packages/syntax",
+    "@atproto/xrpc": "link:../submodules/atproto/packages/xrpc"
   }
 }

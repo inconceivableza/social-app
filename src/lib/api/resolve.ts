@@ -28,7 +28,12 @@ import {createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {createGIFDescription} from '../gif-alt-text'
 import {convertBskyAppUrlIfNeeded, makeRecordUri} from '../strings/url-helpers'
-import { isRecipePostView, isReviewRatingView, ReviewRatingView, type RecipePostView } from './feed/utils'
+import {
+  isRecipePostView,
+  isReviewRatingView,
+  type RecipePostView,
+  type ReviewRatingView,
+} from './feed/utils'
 
 type ResolvedExternalLink = {
   type: 'external'
@@ -138,7 +143,7 @@ export async function resolveLink(
           uri: post.uri,
         },
         kind: 'review',
-        view: post
+        view: post,
       }
     }
     return {

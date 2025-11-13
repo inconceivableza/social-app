@@ -17,9 +17,24 @@ import {atoms} from '#/alf'
 import {ComboBox} from '#/components/forms/ComboBox'
 
 const searchFields = [
-  { field: 'recipeCategories', label: msg`Category`, searchLabel: msg`Search categories...`, options: recipeCategories },
-  { field: 'recipeCuisines', label: msg`Cuisine`, searchLabel: msg`Search cuisines...`, options: recipeCuisines },
-  { field: 'recipeDiets', label: msg`Suitable diets`, searchLabel: msg`Search suitable diets...`, options: recipeDiets },
+  {
+    field: 'recipeCategories',
+    label: msg`Category`,
+    searchLabel: msg`Search categories...`,
+    options: recipeCategories,
+  },
+  {
+    field: 'recipeCuisines',
+    label: msg`Cuisine`,
+    searchLabel: msg`Search cuisines...`,
+    options: recipeCuisines,
+  },
+  {
+    field: 'recipeDiets',
+    label: msg`Suitable diets`,
+    searchLabel: msg`Search suitable diets...`,
+    options: recipeDiets,
+  },
 ] as const
 
 export function RecipeSearchFields({
@@ -33,7 +48,7 @@ export function RecipeSearchFields({
 
   return (
     <View style={[atoms.flex_row, atoms.gap_sm]}>
-      {searchFields.map(({ field, label, options, searchLabel }) => (
+      {searchFields.map(({field, label, options, searchLabel}) => (
         <View style={{flex: 1}} key={field}>
           <ComboBox
             label={_(label)}

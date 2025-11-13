@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import { View } from 'react-native'
-import { useLingui } from '@lingui/react'
+import {useState} from 'react'
+import {View} from 'react-native'
+import {Popover} from 'radix-ui'
 
-import { useTheme } from '#/alf'
 import * as TextField from '#/components/forms/TextField'
-
-import { Popover } from "radix-ui";
-import { BaseOption, ComboBoxProps, ComboBoxSingleSelectProps } from './types'
-import { ComboBoxOptions, ComboBoxSelection, ComboBoxSingleSelectOptions } from './common'
-
+import {
+  ComboBoxOptions,
+  ComboBoxSelection,
+  ComboBoxSingleSelectOptions,
+} from './common'
+import {
+  type BaseOption,
+  type ComboBoxProps,
+  type ComboBoxSingleSelectProps,
+} from './types'
 
 /**
  * Multi-select combo box, only allowing selection of the given options.
@@ -48,13 +52,19 @@ export function ComboBox<T extends BaseOption>({
           </View>
         </Popover.Trigger>
         <Popover.Portal>
-          <Popover.Content className="radix-combobox-content radix-popover-content" style={{ minWidth: 'max-content' }}
-            onPointerDownOutside={reset} >
-            <ComboBoxOptions options={options} searchText={searchText} selection={selection} onSelect={(opt) => {
-              onSelect(opt)
-              reset()
-            }} />
-
+          <Popover.Content
+            className="radix-combobox-content radix-popover-content"
+            style={{minWidth: 'max-content'}}
+            onPointerDownOutside={reset}>
+            <ComboBoxOptions
+              options={options}
+              searchText={searchText}
+              selection={selection}
+              onSelect={opt => {
+                onSelect(opt)
+                reset()
+              }}
+            />
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
@@ -66,41 +76,55 @@ export function ComboBox<T extends BaseOption>({
 /**
  * Combo Box that allows selection of single value. Also accepts the user's input as a value.
  */
-export function ComboBoxSingleSelect({ options, value, onChange, label, isInvalid, onFocus }: ComboBoxSingleSelectProps) {
+export function ComboBoxSingleSelect({
+  options,
+  value,
+  onChange,
+  label,
+  isInvalid,
+  onFocus,
+}: ComboBoxSingleSelectProps) {
   const [open, setOpen] = useState(false)
 
-  return <View>
-    <Popover.Root open={open}>
-      <Popover.Trigger asChild>
-        <View collapsable={false}>
-          <TextField.Root isInvalid={isInvalid}>
-            <TextField.Input
+  return (
+    <View>
+      <Popover.Root open={open}>
+        <Popover.Trigger asChild>
+          <View collapsable={false}>
+            <TextField.Root isInvalid={isInvalid}>
+              <TextField.Input
+                value={value}
+                selectTextOnFocus
+                onFocus={() => {
+                  setOpen(true)
+                  onFocus?.()
+                }}
+                label={label}
+                onChangeText={value => {
+                  onChange(value)
+                }}
+              />
+            </TextField.Root>
+          </View>
+        </Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Content
+            className="radix-combobox-content radix-popover-content"
+            style={{minWidth: 'max-content'}}
+            onPointerDownOutside={() => {
+              setOpen(false)
+            }}>
+            <ComboBoxSingleSelectOptions
+              onChange={opt => {
+                onChange(opt)
+                setOpen(false)
+              }}
+              options={options}
               value={value}
-              selectTextOnFocus
-              onFocus={() => {
-                setOpen(true)
-                onFocus?.()
-              }}
-              label={label}
-              onChangeText={value => {
-                onChange(value)
-              }}
             />
-          </TextField.Root>
-        </View>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content className="radix-combobox-content radix-popover-content" style={{ minWidth: 'max-content' }}
-          onPointerDownOutside={() => {
-            setOpen(false)
-          }} >
-
-          <ComboBoxSingleSelectOptions onChange={opt => {
-            onChange(opt)
-            setOpen(false)
-          }} options={options} value={value} />
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
-  </View>
+          </Popover.Content>
+        </Popover.Portal>
+      </Popover.Root>
+    </View>
+  )
 }

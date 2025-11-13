@@ -4,7 +4,7 @@ RUN corepack enable
 
 WORKDIR /usr/src/social-app/submodules/atproto
 
-COPY submodules/atproto/package.json ./package.json 
+COPY submodules/atproto/package.json ./package.json
 RUN corepack prepare --activate
 
 COPY submodules/atproto/tsconfig ./tsconfig
@@ -121,6 +121,7 @@ WORKDIR /usr/src/social-app
 
 COPY --from=build-node /usr/src/social-app/web-build /usr/src/social-app/web-build
 COPY --from=build-node /usr/src/social-app/bskyweb /usr/src/social-app/bskyweb
+COPY --from=build-node /usr/src/social-app/conf /usr/src/social-app/conf
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -136,6 +137,8 @@ ENV GOEXPERIMENT="loopvar"
 #
 # Generate the bskyweb Go binary.
 #
+RUN cp conf/branding.json bskyweb/
+
 RUN cd bskyweb/ && \
   go mod download && \
   go mod verify

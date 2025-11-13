@@ -49,7 +49,6 @@ import {
 import {type RecipePostDraft} from '#/view/com/composer/state/composerRecipe'
 import {hierarchyOptionToPaths} from '#/view/com/composer/state/dataRecipe'
 import {createGIFDescription} from '../gif-alt-text'
-import {isRecipeUri} from '../strings/url-helpers'
 import {type RecipePostView} from './feed/utils'
 import {uploadBlob} from './upload-blob'
 
@@ -208,13 +207,17 @@ export async function post(
   return {uris}
 }
 
-type PartialRecipeRevision = Pick<AppFoodiosFeedRecipeRevision.Record, "createdAt" | "recipePostRef" | "parentRevisionRef">
+type PartialRecipeRevision = Pick<
+  AppFoodiosFeedRecipeRevision.Record,
+  'createdAt' | 'recipePostRef' | 'parentRevisionRef'
+>
 
-async function recipeDraftToRecord(agent: AtpAgent,
+async function recipeDraftToRecord(
+  agent: AtpAgent,
   qc: QueryClient,
-  { createdAt, parentRevisionRef, recipePostRef }: PartialRecipeRevision,
-  post: RecipePostDraft): Promise<AppFoodiosFeedRecipeRevision.Record> {
-
+  {createdAt, parentRevisionRef, recipePostRef}: PartialRecipeRevision,
+  post: RecipePostDraft,
+): Promise<AppFoodiosFeedRecipeRevision.Record> {
   // TODO: strip out all empty fields
   if (!post.recipeYield?.quantity) {
     delete post.recipeYield
@@ -264,7 +267,7 @@ interface RecipePostOpts {
 export async function postRecipe(
   agent: AtpAgent,
   qc: QueryClient,
-  { post }: RecipePostOpts,
+  {post}: RecipePostOpts,
 ) {
   const now = new Date()
   const did = agent.assertDid
@@ -276,12 +279,17 @@ export async function postRecipe(
     createdAt: now.toISOString(),
   }
   const cid = await computeCid(recipeRecord)
-  const revisionRecord = await recipeDraftToRecord(agent, qc, {
-    recipePostRef: { uri, cid },
-    createdAt: now.toISOString(),
-  }, post)
+  const revisionRecord = await recipeDraftToRecord(
+    agent,
+    qc,
+    {
+      recipePostRef: {uri, cid},
+      createdAt: now.toISOString(),
+    },
+    post,
+  )
 
-// TODO: add recipe labels
+  // TODO: add recipe labels
   // TODO: consider whether we need a new rkey for revision
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
     {
@@ -333,14 +341,19 @@ export async function postRecipeRevision(
   const did = agent.assertDid
   const rkey = tid.toString()
   const uri = `at://${did}/${ids.AppFoodiosFeedRecipeRevision}/${rkey}`
-  const revisionRecord = await recipeDraftToRecord(agent, qc, {
-    recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
-    createdAt: now.toISOString(),
-    parentRevisionRef: {
-      uri: parentRevisionPost.record.selectedRevisionUri,
-      cid: parentRevisionPost.cid, // TODO: This field is currently populated with the selected revision's cid (not the the recipe post's) this may be confusing
-  }
-  }, post)
+  const revisionRecord = await recipeDraftToRecord(
+    agent,
+    qc,
+    {
+      recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
+      createdAt: now.toISOString(),
+      parentRevisionRef: {
+        uri: parentRevisionPost.record.selectedRevisionUri,
+        cid: parentRevisionPost.cid, // TODO: This field is currently populated with the selected revision's cid (not the the recipe post's) this may be confusing
+      },
+    },
+    post,
+  )
 
   const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
     {
@@ -585,7 +598,8 @@ async function resolveReply(
       }
     }
   }
-  const parentPost = await (replyToUrip.collection === ids.AppFoodiosFeedRecipePost
+  const parentPost = await (replyToUrip.collection ===
+  ids.AppFoodiosFeedRecipePost
     ? agent.getRecipePost({
         repo: replyToUrip.host,
         rkey: replyToUrip.rkey,
