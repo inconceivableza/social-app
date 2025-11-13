@@ -1,18 +1,17 @@
 import React from 'react'
-import {lexiconIds as ids} from '@atproto/api'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 
+import {isRecipePostView} from '#/lib/api/feed/utils'
 import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
 } from '#/lib/routes/types'
-import { routeParamsToRecordUri } from '#/lib/strings/url-helpers'
+import {routeParamsToRecordUri} from '#/lib/strings/url-helpers'
 import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostLikedBy as PostLikedByComponent} from '#/view/com/post-thread/PostLikedBy'
 import * as Layout from '#/components/Layout'
-import { isRecipePostView } from '#/lib/api/feed/utils'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostLikedBy'>
 export const PostLikedByScreen = ({route}: Props) => {
@@ -52,9 +51,7 @@ export const PostLikedByScreen = ({route}: Props) => {
       <PostLikedByComponent
         uri={uri}
         revisionUri={
-          isRecipePostView(post)
-            ? post.record.selectedRevisionUri
-            : undefined
+          isRecipePostView(post) ? post.record.selectedRevisionUri : undefined
         }
       />
     </Layout.Screen>

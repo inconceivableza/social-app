@@ -2,6 +2,7 @@ import React from 'react'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 
+import {isRecipePostView} from '#/lib/api/feed/utils'
 import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
@@ -11,7 +12,6 @@ import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostRepostedBy as PostRepostedByComponent} from '#/view/com/post-thread/PostRepostedBy'
 import * as Layout from '#/components/Layout'
-import { isRecipePostView } from '#/lib/api/feed/utils'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostRepostedBy'>
 export const PostRepostedByScreen = ({route}: Props) => {
@@ -55,9 +55,7 @@ export const PostRepostedByScreen = ({route}: Props) => {
       <PostRepostedByComponent
         uri={uri}
         revisionUri={
-          isRecipePostView(post)
-            ? post.record.selectedRevisionUri
-            : undefined
+          isRecipePostView(post) ? post.record.selectedRevisionUri : undefined
         }
       />
     </Layout.Screen>
