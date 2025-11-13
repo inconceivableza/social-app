@@ -198,7 +198,13 @@ function jsonToEnvConfig(
   return envConfig
 }
 
-const systemEnvs = (Constants?.expoConfig?.extra || {})['env-config']
+const systemEnvs = (Constants?.expoConfig?.extra ?? {
+  ['env-config']: {
+    production: { ...EMPTY_CONFIG },
+    staging: { ...EMPTY_CONFIG },
+    development: { ...EMPTY_CONFIG }
+  }
+})['env-config']
 const systemEnvContents = (Constants?.expoConfig?.extra || {})['env-content']
 
 // The defaults as bluesky originally ships them in social-app
@@ -411,7 +417,7 @@ const BLUESKY_STAGING_CONFIG: EnvConfig = {
 }
 
 // what was passed into EXPO_PUBLIC_ variables in dev runtime or at build time
-const PROCESS_ENV_CONFIG = envToConfig(processEnvConfigValues)
+const PROCESS_ENV_CONFIG = envToConfig(process.env)
 // reading from .env.production in this directory or grandparent
 const PRODUCTION_CONFIG = envToConfig(systemEnvs.production)
 // reading from .env.testing in this directory or grandparent

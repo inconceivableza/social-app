@@ -129,7 +129,7 @@ export function isTrustedUrl(url: string): boolean {
   if (TRUSTED_REGEX === undefined) {
     const BSKY_TRUSTED_HOSTS = getTrustedHosts()
     TRUSTED_REGEX = new RegExp(
-      `^(http(s)?://(([\\w-]+\\.)?${BSKY_TRUSTED_HOSTS}.join(
+      `^(http(s)?://(([\\w-]+\\.)?${BSKY_TRUSTED_HOSTS.join(
         '|([\\w-]+\\.)?',
       )})|/|#)`,
     )

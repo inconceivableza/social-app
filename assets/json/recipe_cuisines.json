@@ -1412,8 +1412,8 @@
             ]
           },
           {
-            "id": "CuisineChineseReligiouss",
-            "label": "Chinese religiouss",
+            "id": "CuisineChineseReligious",
+            "label": "Chinese Religious",
             "children": [
               {
                 "id": "CuisineChineseBuddhist",
@@ -2773,7 +2773,7 @@
               },
               {
                 "id": "CuisineTheIonianIslands",
-                "label": "the Ionian Islands"
+                "label": "The Ionian Islands"
               },
               {
                 "id": "CuisineEpirotic",
@@ -3258,58 +3258,52 @@
     ]
   },
   {
-    "id": "CuisineCuisineStyles",
-    "label": "Cuisine Styles",
+    "id": "CuisineFastFood",
+    "label": "Fast food"
+  },
+  {
+    "id": "CuisineFusion",
+    "label": "Fusion"
+  },
+  {
+    "id": "CuisineHaute",
+    "label": "Haute"
+  },
+  {
+    "id": "CuisineMolecularGastronomy",
+    "label": "Molecular gastronomy",
     "children": [
       {
-        "id": "CuisineFastFood",
-        "label": "Fast food"
-      },
-      {
-        "id": "CuisineFusion",
-        "label": "Fusion"
-      },
-      {
-        "id": "CuisineHaute",
-        "label": "Haute"
-      },
-      {
-        "id": "CuisineMolecularGastronomy",
-        "label": "Molecular gastronomy",
-        "children": [
-          {
-            "id": "CuisineNoteByNote",
-            "label": "Note by Note"
-          }
-        ]
-      },
-      {
-        "id": "CuisineNouvelle",
-        "label": "Nouvelle"
-      },
-      {
-        "id": "CuisineVegan",
-        "label": "Vegan"
-      },
-      {
-        "id": "CuisineVegetarian",
-        "label": "Vegetarian",
-        "children": [
-          {
-            "id": "CuisineIndianVegetarian",
-            "label": "Indian vegetarian"
-          }
-        ]
-      },
-      {
-        "id": "CuisineStreetFood",
-        "label": "Street food"
+        "id": "CuisineNoteByNote",
+        "label": "Note by Note"
       }
     ]
   },
   {
-    "id": "CuisineReligiouss",
-    "label": "Religiouss",
+    "id": "CuisineNouvelle",
+    "label": "Nouvelle"
+  },
+  {
+    "id": "CuisineVegan",
+    "label": "Vegan"
+  },
+  {
+    "id": "CuisineVegetarian",
+    "label": "Vegetarian",
+    "children": [
+      {
+        "id": "CuisineIndianVegetarian",
+        "label": "Indian vegetarian"
+      }
+    ]
+  },
+  {
+    "id": "CuisineStreetFood",
+    "label": "Street food"
+  },
+  {
+    "id": "CuisineReligious",
+    "label": "Religious",
     "children": [
       {
         "id": "CuisineBuddhist",
@@ -3326,8 +3320,8 @@
         ]
       },
       {
-        "id": "CuisineChineseReligiouss",
-        "label": "Chinese religiouss",
+        "id": "CuisineChineseReligious",
+        "label": "Chinese Religious",
         "children": [
           {
             "id": "CuisineChineseBuddhist",
