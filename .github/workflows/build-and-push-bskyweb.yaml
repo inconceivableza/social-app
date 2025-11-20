@@ -7,11 +7,11 @@ on:
 
 env:
   DOCKERHUB_REPO: ${{ vars.DOCKERHUB_REPO }}
-  IMAGE_NAME: foodios-atproto-bsky
+  IMAGE_NAME: foodios-social-app
 
 jobs:
-  bskyweb-container-aws:
-    if: github.repository == 'bluesky-social/social-app'
+  build-and-push-social-app:
+    if: github.repository == 'inconceivableza/social-app'
     runs-on: ubuntu-latest
     permissions:
       contents: read
