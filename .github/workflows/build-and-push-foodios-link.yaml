@@ -1,4 +1,4 @@
-name: build-and-push-link-aws
+name: Build and push foodios-social-link
 on:
   workflow_dispatch:
 

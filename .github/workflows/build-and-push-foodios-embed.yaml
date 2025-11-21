@@ -1,16 +1,13 @@
-name: Build and push foodios-social-app
+name: Build and push foodios-social-embed
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
 
 env:
   DOCKERHUB_REPO: ${{ vars.DOCKERHUB_REPO }}
-  IMAGE_NAME: foodios-social-app
+  IMAGE_NAME: foodios-social-embed
 
 jobs:
-  build-and-push-social-app:
+  ogcard-container-aws:
     if: github.repository == 'inconceivableza/social-app'
     runs-on: ubuntu-latest
     permissions:
@@ -40,26 +37,14 @@ jobs:
           tags: |
             type=sha,enable=true,priority=100,prefix=,suffix=,format=long
 
-      - name: Env
-        id: env
-        run: |
-          echo "EXPO_PUBLIC_RELEASE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
-          echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          file: ./Dockerfile
+          file: ./Dockerfile.embedr
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            EXPO_PUBLIC_ENV=production
-            EXPO_PUBLIC_RELEASE_VERSION=${{ steps.env.outputs.EXPO_PUBLIC_RELEASE_VERSION }}
-            EXPO_PUBLIC_BUNDLE_IDENTIFIER=${{ steps.env.outputs.EXPO_PUBLIC_BUNDLE_IDENTIFIER }}
-            EXPO_PUBLIC_SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
