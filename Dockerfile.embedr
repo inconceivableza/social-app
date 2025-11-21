@@ -80,6 +80,8 @@ ENV GOEXPERIMENT="loopvar"
 #
 # Generate the embedr Go binary.
 #
+RUN cp conf/branding.json bskyweb/
+
 RUN cd bskyweb/ && \
   go mod download && \
   go mod verify
