@@ -49,6 +49,7 @@ RUN corepack prepare --activate
 
 COPY ./bskyembed ./bskyembed
 COPY ./bskyweb ./bskyweb
+COPY ./conf/branding.json ./bskyweb/branding.json
 #
 # Generate the JavaScript webpack. NOTE: this will change
 #
@@ -80,7 +81,6 @@ ENV GOEXPERIMENT="loopvar"
 #
 # Generate the embedr Go binary.
 #
-RUN cp conf/branding.json bskyweb/
 
 RUN cd bskyweb/ && \
   go mod download && \
