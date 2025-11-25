@@ -481,7 +481,7 @@ const {protocol, host, hostname} = location || {
   host: undefined,
   hostname: undefined,
 }
-const isWeb = protocol === 'http' || protocol === 'https'
+const isWeb = protocol === 'http:' || protocol === 'https:'
 const isProductionWeb = isWeb && hostname === PRODUCTION_DOMAIN
 const isStagingWeb = isWeb && hostname === STAGING_DOMAIN
 export const buildProfileName = process.env.EXPO_PUBLIC_ENV || 'development'
