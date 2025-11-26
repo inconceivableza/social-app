@@ -429,9 +429,8 @@ const DEVELOPMENT_CONFIG = fallbackConfig(
   envToConfig(systemEnvs.development),
 )
 
-export const PRODUCTION_DOMAIN =
-  systemEnvs.production?.SOCIAL_APP_HOST || 'bsky.app'
-export const STAGING_DOMAIN = systemEnvs.staging?.SOCIAL_APP_HOST || null
+export const PRODUCTION_DOMAIN = PRODUCTION_CONFIG.SOCIAL_APP_HOST || 'bsky.app'
+export const STAGING_DOMAIN = STAGING_CONFIG.SOCIAL_APP_HOST || null
 
 export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
   // the original bluesky defaults. This is not currently used (?)
