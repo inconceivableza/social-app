@@ -84,6 +84,9 @@ module.exports = function (_config) {
   const envConfigs = Object.fromEntries(
     Object.entries(envFilenames).map(([profileName, envBasename]) => {
       const envFilename = findExisting(envBasename)
+      if (envFilename === null) {
+        console.warn(envBasename, 'not found')
+      }
       const envSource = envFilename
         ? fs.readFileSync(envFilename).toString('utf-8')
         : ''

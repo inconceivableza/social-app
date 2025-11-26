@@ -19,6 +19,70 @@ jobs:
         with:
           submodules: true
 
+      - name: Create .env.test file
+        run: |
+          cat > .env.test << 'EOF'
+          # Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          EXPO_PUBLIC_ATP_APPVIEW_DID=did:web:${{ vars.APIFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_APPVIEW_URL=https://${{ vars.APIFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PDS_DID=did:web:${{ vars.PDSFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PDS_URL=https://${{ vars.PDSFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL=https://public.api.${{ vars.DOMAIN_STAGING }}
+          EXPO_PUBLIC_BLUESKY_PROXY_DID=did:web:${{ vars.BSKYFQDN_STAGING }}
+          EXPO_PUBLIC_CHAT_PROXY_DID=${{ vars.DMSERVICEDID_STAGING }}
+          EXPO_PUBLIC_CORS_ALLOWED_ORIGINS=https://${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_DM_SERVICE_DID=${{ vars.DMSERVICEDID_STAGING }}
+          EXPO_PUBLIC_GIF_HOST=${{ vars.GIFFQDN_STAGING }}
+          EXPO_PUBLIC_GEOLOCATION_CONFIG_URL=${{ vars.GEOLOCATION_CONFIG_URL_STAGING }}
+          EXPO_PUBLIC_LINK_HOST=${{ vars.LINKFQDN_STAGING }}
+          EXPO_PUBLIC_OGCARD_URL=https://${{ vars.CARDFQDN_STAGING }}
+          EXPO_PUBLIC_PREVIEW_LINK_META_PROXY=
+          EXPO_PUBLIC_SOCIAL_APP_HOST=${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_APP_URL=https://${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_EMBED_SERVICE=https://${{ vars.EMBEDFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_HELP_DESK_URL=${{ vars.SOCIAL_HELP_DESK_URL_STAGING }}
+          EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL=${{ vars.SOCIAL_POLICY_BASE_URL_STAGING }}
+          EXPO_PUBLIC_STATSIG_CLIENT_KEY=${{ vars.STATSIG_CLIENT_KEY_STAGING }}
+          EXPO_PUBLIC_STATSIG_API_URL=${{ vars.STATSIG_API_URL_STAGING }}
+          EXPO_PUBLIC_STATUS_PAGE_URL=${{ vars.STATUS_PAGE_URL_STAGING }}
+          EXPO_PUBLIC_VIDEO_SERVICE=https://video.${{ vars.DOMAIN_STAGING }}
+          EXPO_PUBLIC_VIDEO_SERVICE_DID=did:web:video.${{ vars.DOMAIN_STAGING }}
+
+          EOF
+
+      - name: Create .env.production file
+        run: |
+          cat > .env.production << 'EOF'
+          # Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          EXPO_PUBLIC_ATP_APPVIEW_DID=did:web:${{ vars.APIFQDN_PROD }}
+          EXPO_PUBLIC_ATP_APPVIEW_URL=https://${{ vars.APIFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PDS_DID=did:web:${{ vars.PDSFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PDS_URL=https://${{ vars.PDSFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL=https://public.api.${{ vars.DOMAIN_PROD }}
+          EXPO_PUBLIC_BLUESKY_PROXY_DID=did:web:${{ vars.BSKYFQDN_PROD }}
+          EXPO_PUBLIC_CHAT_PROXY_DID=${{ vars.DMSERVICEDID_PROD }}
+          EXPO_PUBLIC_CORS_ALLOWED_ORIGINS=https://${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_DM_SERVICE_DID=${{ vars.DMSERVICEDID_PROD }}
+          EXPO_PUBLIC_GIF_HOST=${{ vars.GIFFQDN_PROD }}
+          EXPO_PUBLIC_GEOLOCATION_CONFIG_URL=${{ vars.GEOLOCATION_CONFIG_URL_PROD }}
+          EXPO_PUBLIC_LINK_HOST=${{ vars.LINKFQDN_PROD }}
+          EXPO_PUBLIC_OGCARD_URL=https://${{ vars.CARDFQDN_PROD }}
+          EXPO_PUBLIC_PREVIEW_LINK_META_PROXY=
+          EXPO_PUBLIC_SOCIAL_APP_HOST=${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_APP_URL=https://${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_EMBED_SERVICE=https://${{ vars.EMBEDFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_HELP_DESK_URL=${{ vars.SOCIAL_HELP_DESK_URL_PROD }}
+          EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL=${{ vars.SOCIAL_POLICY_BASE_URL_PROD }}
+          EXPO_PUBLIC_STATSIG_CLIENT_KEY=${{ vars.STATSIG_CLIENT_KEY_PROD }}
+          EXPO_PUBLIC_STATSIG_API_URL=${{ vars.STATSIG_API_URL_PROD }}
+          EXPO_PUBLIC_STATUS_PAGE_URL=${{ vars.STATUS_PAGE_URL_PROD }}
+          EXPO_PUBLIC_VIDEO_SERVICE=https://video.${{ vars.DOMAIN_PROD }}
+          EXPO_PUBLIC_VIDEO_SERVICE_DID=did:web:video.${{ vars.DOMAIN_PROD }}
+
+          EOF
+
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v1
 
