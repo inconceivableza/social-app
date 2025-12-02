@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.4
+
 FROM node:20-alpine3.22 as build-node
 
 RUN corepack enable
@@ -17,7 +19,8 @@ COPY submodules/atproto/package.json ./package.json
 COPY submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY submodules/atproto/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+  pnpm install --frozen-lockfile
 
 COPY submodules/atproto/*.js* ./
 # NOTE api's transitive dependencies go here: if that changes, this needs to be updated.
@@ -32,7 +35,8 @@ RUN pnpm build
 # clean up
 RUN rm -rf node_modules
 # install only prod deps, hoisted to root node_modules dir
-RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+  pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
 
 WORKDIR /usr/src/social-app
 
@@ -95,7 +99,8 @@ COPY ./scripts/ ./scripts
 
 RUN corepack prepare --activate
 
-RUN yarn --frozen-lockfile
+RUN --mount=type=cache,id=yarn,target=/usr/local/share/.cache/yarn \
+  yarn --frozen-lockfile --network-timeout 300000 --network-concurrency 1
 #
 # Copy everything into the container
 #
@@ -130,7 +135,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 #
 ENV GODEBUG="netdns=go"
 ENV GOOS="linux"
-ENV GOARCH="amd64"
 ENV CGO_ENABLED=1
 ENV GOEXPERIMENT="loopvar"
 
