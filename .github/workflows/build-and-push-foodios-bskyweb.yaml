@@ -19,6 +19,9 @@ jobs:
         with:
           submodules: true
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Create .env.test file
         run: |
           cat > .env.test << 'EOF'
@@ -112,6 +115,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           file: ./Dockerfile
           tags: ${{ steps.meta.outputs.tags }}

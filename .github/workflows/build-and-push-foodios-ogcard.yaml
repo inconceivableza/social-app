@@ -21,6 +21,9 @@ jobs:
         with:
           submodules: true
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v1
 
@@ -44,6 +47,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
           file: ./Dockerfile.bskyogcard
           tags: ${{ steps.meta.outputs.tags }}
