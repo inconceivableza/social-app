@@ -12,7 +12,7 @@ env:
 jobs:
   build:
     if: github.repository == 'inconceivableza/social-app'
-    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm64' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     strategy:
       matrix:
         platform:
