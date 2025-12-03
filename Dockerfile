@@ -136,12 +136,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV GODEBUG="netdns=go"
 ENV GOOS="linux"
 ENV CGO_ENABLED=1
-ENV GOEXPERIMENT="loopvar"
 
 #
 # Generate the bskyweb Go binary.
 #
-RUN cp conf/branding.json bskyweb/
+COPY ./conf/branding-bluesky.json ./bskyweb/branding-bluesky.json
+COPY ./conf/branding.json ./bskyweb/branding.json
 
 RUN cd bskyweb/ && \
   go mod download && \

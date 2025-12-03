@@ -6,6 +6,7 @@ type EnvContent = {
     default_post: {
       profile_name: string
       did: string
+      record_type?: string
       post_id: string
     }
   }
@@ -203,7 +204,12 @@ export function getDefaultPost(): string {
     throw new Error('Content not loaded yet')
   }
   const post = contentCache.embed.default_post
-  return `${getSocialAppUrl()}/profile/${post.profile_name}/post/${post.post_id}`
+  return `${getSocialAppUrl()}/profile/${post.profile_name}/${post.record_type || 'post'}/${post.post_id}`
+}
+
+const componentTypeMap = {
+  post: 'app.bsky.feed.post',
+  recipePost: 'app.foodios.feed.recipePost',
 }
 
 export function getDefaultPostUri(): string {
@@ -211,5 +217,14 @@ export function getDefaultPostUri(): string {
     throw new Error('Content not loaded yet')
   }
   const post = contentCache.embed.default_post
-  return `at://${post.did}/app.bsky.feed.post/${post.post_id}`
+  const componentType =
+    !post.record_type || post.record_type === 'post'
+      ? componentTypeMap.post
+      : post.record_type == 'recipePost'
+        ? componentTypeMap.recipePost
+        : null
+  if (componentType === null) {
+    throw new Error('Unknown record type')
+  }
+  return `at://${post.did}/${componentType}/${post.post_id}`
 }

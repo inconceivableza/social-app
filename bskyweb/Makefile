@@ -2,9 +2,6 @@
 SHELL = /bin/bash
 .SHELLFLAGS = -o pipefail -c
 
-# https://github.com/golang/go/wiki/LoopvarExperiment
-export GOEXPERIMENT := loopvar
-
 .PHONY: help
 help: ## Print info about all commands
 	@echo "Commands:"

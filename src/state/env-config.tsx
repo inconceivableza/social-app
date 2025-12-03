@@ -114,6 +114,7 @@ const InternalToEnvName: EnvConfig & Record<string, string> = {
   VIDEO_SERVICE_DID: 'EXPO_PUBLIC_VIDEO_SERVICE_DID',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const processEnvConfigValues: Record<string, string> = {
   ATP_APPVIEW_DID: process.env.EXPO_PUBLIC_ATP_APPVIEW_DID,
   ATP_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_APPVIEW_URL,
@@ -200,10 +201,10 @@ function jsonToEnvConfig(
 
 const systemEnvs = (Constants?.expoConfig?.extra ?? {
   ['env-config']: {
-    production: { ...EMPTY_CONFIG },
-    staging: { ...EMPTY_CONFIG },
-    development: { ...EMPTY_CONFIG }
-  }
+    production: {...EMPTY_CONFIG},
+    staging: {...EMPTY_CONFIG},
+    development: {...EMPTY_CONFIG},
+  },
 })['env-config']
 const systemEnvContents = (Constants?.expoConfig?.extra || {})['env-content']
 
@@ -308,6 +309,7 @@ const BLUESKY_CONTENT: EnvContent = {
     default_post: {
       profile_name: 'emilyliu.me',
       did: 'did:plc:vjug55kidv6sye7ykr5faxxn',
+      record_type: 'post',
       post_id: '3jzn6g7ixgq2y',
     },
   },

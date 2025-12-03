@@ -119,6 +119,7 @@ export type EnvContent = {
     default_post: {
       profile_name: string
       did: string
+      record_type?: string
       post_id: string
     }
   }

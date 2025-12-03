@@ -4,7 +4,7 @@ import {useWindowDimensions} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {branding, BSKY_SERVICE} from '#/lib/constants'
+import {branding, BSKY_SERVICE, CUSTOM_HOSTING_DISABLED} from '#/lib/constants'
 import {logEvent} from '#/lib/statsig/statsig'
 import * as persisted from '#/state/persisted'
 import {useSession} from '#/state/session'
@@ -17,6 +17,8 @@ import * as ToggleButton from '#/components/forms/ToggleButton'
 import {Globe_Stroke2_Corner0_Rounded as Globe} from '#/components/icons/Globe'
 import {InlineLinkText} from '#/components/Link'
 import {P, Text} from '#/components/Typography'
+
+const supportsCustomHosting = !CUSTOM_HOSTING_DISABLED
 
 export function ServerInputDialog({
   control,
@@ -140,24 +142,30 @@ function DialogInner({
               {_(msg`${branding.naming.app_name}`)}
             </ToggleButton.ButtonText>
           </ToggleButton.Button>
-          <ToggleButton.Button
-            testID="customSelectBtn"
-            name="custom"
-            label={_(msg`Custom`)}>
-            <ToggleButton.ButtonText>{_(msg`Custom`)}</ToggleButton.ButtonText>
-          </ToggleButton.Button>
+          {supportsCustomHosting && (
+            <ToggleButton.Button
+              testID="customSelectBtn"
+              name="custom"
+              label={_(msg`Custom`)}>
+              <ToggleButton.ButtonText>
+                {_(msg`Custom`)}
+              </ToggleButton.ButtonText>
+            </ToggleButton.Button>
+          )}
         </ToggleButton.Group>
 
-        {fixedOption === BSKY_SERVICE && isFirstTimeUser && (
-          <Admonition type="tip">
-            <Trans>
-              {branding.naming.app_name} is an open network where you can choose
-              your own provider. If you're new here, we recommend sticking with
-              the default {branding.naming.app_name}
-              Social option.
-            </Trans>
-          </Admonition>
-        )}
+        {fixedOption === BSKY_SERVICE &&
+          isFirstTimeUser &&
+          supportsCustomHosting && (
+            <Admonition type="tip">
+              <Trans>
+                {branding.naming.app_name} is an open network where you can
+                choose your own provider. If you're new here, we recommend
+                sticking with the default {branding.naming.app_name} Social
+                option.
+              </Trans>
+            </Admonition>
+          )}
 
         {fixedOption === 'custom' && (
           <View
@@ -209,22 +217,32 @@ function DialogInner({
               a.leading_snug,
               a.flex_1,
             ]}>
-            {isFirstTimeUser ? (
-              <Trans>
-                If you're a developer, you can host your own server.
-              </Trans>
+            {supportsCustomHosting ? (
+              <>
+                {!isFirstTimeUser ? (
+                  <Trans>
+                    If you're a developer, you can host your own server.
+                  </Trans>
+                ) : (
+                  <Trans>
+                    {branding.naming.app_name} is an open network where you can
+                    choose your hosting provider. If you're a developer, you can
+                    host your own server.
+                  </Trans>
+                )}{' '}
+                <InlineLinkText
+                  label={_(msg`Learn more about self hosting your PDS.`)}
+                  to="https://atproto.com/guides/self-hosting">
+                  <Trans>Learn more.</Trans>
+                </InlineLinkText>
+              </>
             ) : (
               <Trans>
-                {branding.naming.app_name} is an open network where you can
-                choose your hosting provider. If you're a developer, you can
-                host your own server.
+                {branding.naming.app_name} doesn't currently support custom
+                hosting for accounts. You can sign up with the default{' '}
+                {branding.naming.app_name} Social option.
               </Trans>
-            )}{' '}
-            <InlineLinkText
-              label={_(msg`Learn more about self hosting your PDS.`)}
-              to="https://atproto.com/guides/self-hosting">
-              <Trans>Learn more.</Trans>
-            </InlineLinkText>
+            )}
           </P>
         </View>
 

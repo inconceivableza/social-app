@@ -105,7 +105,9 @@ module.exports = function (_config) {
   const envContentConfigs = Object.fromEntries(
     Object.entries(envContentFilenames).map(
       ([profileName, contentBasename]) => {
-        const contentFilename = findExisting(path.join('conf', contentBasename))
+        const contentFilename = findExisting(
+          path.join(defaultEnvPath, 'submodules', 'atproto', contentBasename),
+        )
         const contentSource = contentFilename
           ? fs.readFileSync(contentFilename).toString('utf-8')
           : '{}'
@@ -434,6 +436,7 @@ module.exports = function (_config) {
               compileSdkVersion: 35,
               targetSdkVersion: 35,
               buildToolsVersion: '35.0.0',
+              enableMinifyInReleaseBuilds: true,
             },
           },
         ],

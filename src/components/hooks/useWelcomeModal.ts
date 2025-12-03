@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 
+import {WELCOME_MODAL_DISABLED} from '#/lib/constants'
 import {isWeb} from '#/platform/detection'
 import {useSession} from '#/state/session'
 
@@ -22,7 +23,12 @@ export function useWelcomeModal() {
     // 2. We're on the web (this is a web-only feature)
     // 3. We're on the homepage (path is '/' or '/home')
     // 4. User hasn't actively closed the modal in this session
-    if (isWeb && !hasSession && typeof window !== 'undefined') {
+    if (
+      isWeb &&
+      !hasSession &&
+      typeof window !== 'undefined' &&
+      !WELCOME_MODAL_DISABLED
+    ) {
       const currentPath = window.location.pathname
       const isHomePage = currentPath === '/'
       const hasUserClosedModal =
