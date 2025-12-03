@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM node:20-alpine3.22 as build-node
+FROM --platform=$BUILDPLATFORM node:20-alpine3.22 as build-node
 
 RUN corepack enable
 
@@ -120,7 +120,12 @@ RUN echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
   if grep -q "invalid syntax" "i18n.log"; then echo "\n\nFound compilation errors!\n\n" && exit 1; else echo "\n\nNo compile errors!\n\n"; fi && \
   SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$EXPO_PUBLIC_RELEASE_VERSION SENTRY_DIST=$EXPO_PUBLIC_BUNDLE_IDENTIFIER yarn build-web
 
-FROM golang:1.24-bullseye AS build-env
+FROM --platform=$BUILDPLATFORM golang:1.24-bullseye AS build-env
+
+# Cross-compilation arguments
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /usr/src/social-app
 
@@ -135,6 +140,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 #
 ENV GODEBUG="netdns=go"
 ENV GOOS="linux"
+ENV GOARCH=$TARGETARCH
 ENV CGO_ENABLED=1
 ENV GOEXPERIMENT="loopvar"
 
