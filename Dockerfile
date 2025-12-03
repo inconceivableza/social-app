@@ -141,7 +141,8 @@ ENV GOEXPERIMENT="loopvar"
 #
 # Generate the bskyweb Go binary.
 #
-RUN cp conf/branding.json bskyweb/
+COPY ./conf/branding-bluesky.json ./bskyweb/branding-bluesky.json
+COPY ./conf/branding.json ./bskyweb/branding.json
 
 RUN cd bskyweb/ && \
   go mod download && \
