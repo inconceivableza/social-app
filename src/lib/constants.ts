@@ -36,13 +36,19 @@ export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
 export const CARD_ASPECT_RATIO = 1200 / 630
 export const CHAT_DISABLED = true
-export const branding = (Constants?.expoConfig?.extra || {
-  branding: {
-    naming: {
-      app_name: ''
-    }
+export const ONBOARDING_DISABLE_INTERESTS = true
+export const ONBOARDING_DISABLE_SUGGESTED_ACCOUNTS = true
+export const ONBOARDING_DISABLE_SUGGESTED_STARTERPACKS = true
+export const ONBOARDING_DISABLE_VALUE_PROP = true
+export const branding = (
+  Constants?.expoConfig?.extra || {
+    branding: {
+      naming: {
+        app_name: '',
+      },
+    },
   }
-}).branding
+).branding
 
 // HACK
 // Yes, this is exactly what it looks like. It's a hard-coded constant

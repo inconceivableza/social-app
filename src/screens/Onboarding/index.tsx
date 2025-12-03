@@ -3,6 +3,12 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import * as bcp47Match from 'bcp-47-match'
 
+import {
+  ONBOARDING_DISABLE_INTERESTS,
+  ONBOARDING_DISABLE_SUGGESTED_ACCOUNTS,
+  ONBOARDING_DISABLE_SUGGESTED_STARTERPACKS,
+  ONBOARDING_DISABLE_VALUE_PROP,
+} from '#/lib/constants'
 import {useGate} from '#/lib/statsig/statsig'
 import {useLanguagePrefs} from '#/state/preferences'
 import {
@@ -30,18 +36,30 @@ export function Onboarding() {
     return bcp47Match.basicFilter('en', contentLanguages).length > 0
   }, [contentLanguages])
 
+  const showInterests = ONBOARDING_DISABLE_INTERESTS !== true
+  const showSuggestedAccounts = ONBOARDING_DISABLE_SUGGESTED_ACCOUNTS !== true
+
   // starter packs screen is currently geared towards english-speaking accounts
   const showSuggestedStarterpacks =
     ENV !== 'e2e' &&
     probablySpeaksEnglish &&
-    gate('onboarding_suggested_starterpacks')
+    gate('onboarding_suggested_starterpacks') &&
+    ONBOARDING_DISABLE_SUGGESTED_STARTERPACKS !== true
+
+  const showValueProp = ONBOARDING_DISABLE_VALUE_PROP !== true
 
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    totalSteps: 4 + (showSuggestedStarterpacks ? 1 : 0),
+    totalSteps:
+      1 +
+      (showValueProp ? 1 : 0) +
+      (showInterests ? 1 : 0) +
+      (showSuggestedAccounts ? 1 : 0) +
+      (showSuggestedStarterpacks ? 1 : 0),
     experiments: {
-      onboarding_suggested_accounts: true,
-      onboarding_value_prop: true,
+      onboarding_interests: showInterests,
+      onboarding_suggested_accounts: showSuggestedAccounts,
+      onboarding_value_prop: showValueProp,
       onboarding_suggested_starterpacks: showSuggestedStarterpacks,
     },
   })
@@ -87,11 +105,11 @@ export function Onboarding() {
                 key={state.activeStep}
                 direction={state.stepTransitionDirection}>
                 {state.activeStep === 'profile' && <StepProfile />}
-                {state.activeStep === 'interests' && <StepInterests />}
-                {state.activeStep === 'suggested-accounts' && (
+                {state.activeStep + '' === 'interests' && <StepInterests />}
+                {state.activeStep + '' === 'suggested-accounts' && (
                   <StepSuggestedAccounts />
                 )}
-                {state.activeStep === 'suggested-starterpacks' && (
+                {state.activeStep + '' === 'suggested-starterpacks' && (
                   <StepSuggestedStarterpacks />
                 )}
                 {state.activeStep === 'finished' && <StepFinished />}

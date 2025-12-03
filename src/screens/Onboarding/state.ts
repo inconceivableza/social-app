@@ -39,6 +39,7 @@ export type OnboardingState = {
   }
 
   experiments?: {
+    onboarding_interests?: boolean
     onboarding_suggested_accounts?: boolean
     onboarding_value_prop?: boolean
     onboarding_suggested_starterpacks?: boolean
@@ -108,7 +109,7 @@ export function reducer(
 
   const stepOrder: OnboardingState['activeStep'][] = [
     'profile',
-    'interests',
+    ...(s.experiments?.onboarding_interests ? (['interests'] as const) : []),
     ...(s.experiments?.onboarding_suggested_accounts
       ? (['suggested-accounts'] as const)
       : []),
