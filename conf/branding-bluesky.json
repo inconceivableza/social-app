@@ -24,8 +24,16 @@
       "varname": "BSKY_APP_ACCOUNT_DID"
     }
   },
+  "content": {
+    "feeds": null,
+    "dids": {
+      "feedgen": "did:plc:z72i7hdynmk6r22z27h6tvur",
+      "discover_debug": {}
+    }
+  },
   "naming": {
     "app_name": "Bluesky",
+    "full_app_name": "Bluesky Social",
     "spoken_name": "Blue Sky"
   },
   "styling": {
