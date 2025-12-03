@@ -136,7 +136,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV GODEBUG="netdns=go"
 ENV GOOS="linux"
 ENV CGO_ENABLED=1
-ENV GOEXPERIMENT="loopvar"
 
 #
 # Generate the bskyweb Go binary.
