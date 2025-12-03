@@ -1,4 +1,4 @@
-FROM node:20-alpine3.22 as build-node
+FROM --platform=$BUILDPLATFORM node:20-alpine3.22 as build-node
 
 RUN corepack enable
 
@@ -62,7 +62,12 @@ RUN touch bskyweb/static/js/empty.txt
 RUN touch bskyweb/static/css/empty.txt
 RUN touch bskyweb/static/media/empty.txt
 
-FROM golang:1.24.5-bullseye AS build-env
+FROM --platform=$BUILDPLATFORM golang:1.24.5-bullseye AS build-env
+
+# Cross-compilation arguments
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /usr/src/social-app
 
