@@ -5,6 +5,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import * as EmailValidator from 'email-validator'
 
+import {CUSTOM_HOSTING_DISABLED} from '#/lib/constants'
 import {isNetworkError} from '#/lib/strings/errors'
 import {cleanError} from '#/lib/strings/errors'
 import {logger} from '#/logger'
@@ -20,7 +21,7 @@ import {FormContainer} from './FormContainer'
 
 type ServiceDescription = ComAtprotoServerDescribeServer.OutputSchema
 
-const ALLOW_CUSTOM_HOSTING = false
+const supportsCustomHosting = !CUSTOM_HOSTING_DISABLED
 
 export const ForgotPasswordForm = ({
   error,
@@ -80,7 +81,7 @@ export const ForgotPasswordForm = ({
     <FormContainer
       testID="forgotPasswordForm"
       titleText={<Trans>Reset password</Trans>}>
-      {ALLOW_CUSTOM_HOSTING && (
+      {supportsCustomHosting && (
         <View>
           <TextField.LabelText>
             <Trans>Hosting provider</Trans>

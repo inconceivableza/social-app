@@ -36,6 +36,7 @@ export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
 export const CARD_ASPECT_RATIO = 1200 / 630
 export const CHAT_DISABLED = true
+export const CUSTOM_HOSTING_DISABLED = true
 export const WELCOME_MODAL_DISABLED = true
 export const ONBOARDING_DISABLE_INTERESTS = true
 export const ONBOARDING_DISABLE_SUGGESTED_ACCOUNTS = true

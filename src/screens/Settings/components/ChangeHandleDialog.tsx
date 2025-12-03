@@ -15,7 +15,12 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
-import {envConfig, HITSLOP_10, urls} from '#/lib/constants'
+import {
+  CUSTOM_HOSTING_DISABLED,
+  envConfig,
+  HITSLOP_10,
+  urls,
+} from '#/lib/constants'
 import {cleanError} from '#/lib/strings/errors'
 import {createFullHandle, validateServiceHandle} from '#/lib/strings/handles'
 import {sanitizeHandle} from '#/lib/strings/handles'
@@ -44,7 +49,7 @@ import {Text} from '#/components/Typography'
 import {useSimpleVerificationState} from '#/components/verification'
 import {CopyButton} from './CopyButton'
 
-const ALLOW_CUSTOM_HOSTING = false
+const supportsCustomHosting = !CUSTOM_HOSTING_DISABLED
 
 export function ChangeHandleDialog({
   control,
@@ -270,7 +275,7 @@ function ProvidedHandlePage({
               </ButtonText>
             )}
           </Button>
-          {ALLOW_CUSTOM_HOSTING && (
+          {supportsCustomHosting && (
             <>
               <Text style={[a.leading_snug]}>
                 <Trans>

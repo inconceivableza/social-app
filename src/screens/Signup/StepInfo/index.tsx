@@ -5,6 +5,7 @@ import {useLingui} from '@lingui/react'
 import * as EmailValidator from 'email-validator'
 import type tldts from 'tldts'
 
+import {CUSTOM_HOSTING_DISABLED} from '#/lib/constants'
 import {isEmailMaybeInvalid} from '#/lib/strings/email'
 import {logger} from '#/logger'
 import {is13, is18, useSignupContext} from '#/screens/Signup/state'
@@ -22,7 +23,7 @@ import {Loader} from '#/components/Loader'
 import {usePreemptivelyCompleteActivePolicyUpdate} from '#/components/PolicyUpdateOverlay/usePreemptivelyCompleteActivePolicyUpdate'
 import {BackNextButtons} from '../BackNextButtons'
 
-const ALLOW_CUSTOM_HOSTING = true
+const supportsCustomHosting = !CUSTOM_HOSTING_DISABLED
 
 function sanitizeDate(date: Date): Date {
   if (!date || date.toString() === 'Invalid Date') {
@@ -151,7 +152,7 @@ export function StepInfo({
     <>
       <View style={[a.gap_md, a.pt_lg]}>
         <FormError error={state.error} />
-        {ALLOW_CUSTOM_HOSTING && (
+        {supportsCustomHosting && (
           <HostingProvider
             minimal
             serviceUrl={state.serviceUrl}

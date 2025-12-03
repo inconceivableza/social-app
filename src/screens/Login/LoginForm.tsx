@@ -13,6 +13,7 @@ import {
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {CUSTOM_HOSTING_DISABLED} from '#/lib/constants'
 import {useRequestNotificationsPermission} from '#/lib/notifications/notifications'
 import {isNetworkError} from '#/lib/strings/errors'
 import {cleanError} from '#/lib/strings/errors'
@@ -34,6 +35,8 @@ import {Text} from '#/components/Typography'
 import {FormContainer} from './FormContainer'
 
 type ServiceDescription = ComAtprotoServerDescribeServer.OutputSchema
+
+const supportsCustomHosting = !CUSTOM_HOSTING_DISABLED
 
 export const LoginForm = ({
   error,
@@ -179,7 +182,7 @@ export const LoginForm = ({
 
   return (
     <FormContainer testID="loginForm" titleText={<Trans>Sign in</Trans>}>
-      {false && (
+      {supportsCustomHosting && (
         <View>
           <TextField.LabelText>
             <Trans>Hosting provider</Trans>
