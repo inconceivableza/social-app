@@ -88,30 +88,32 @@ const EMPTY_CONFIG: EnvConfig = {
   VIDEO_SERVICE_DID: '',
 }
 
+// map from the EnvConfig key name to the (non-EXPO_PUBLIC_-prefaced) environment name passed into social-app
+// these environment names are also what bskyweb serves on the /env-config url
 const InternalToEnvName: EnvConfig & Record<string, string> = {
-  APPVIEW_DID: 'EXPO_PUBLIC_ATP_APPVIEW_DID',
-  APPVIEW_URL: 'EXPO_PUBLIC_ATP_APPVIEW_URL',
-  BSKY_PROXY_DID: 'EXPO_PUBLIC_BLUESKY_PROXY_DID',
-  BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PDS_URL',
-  BSKY_SERVICE_DID: 'EXPO_PUBLIC_ATP_PDS_DID',
-  DM_PROXY_DID: 'EXPO_PUBLIC_CHAT_PROXY_DID',
-  DM_SERVICE_DID: 'EXPO_PUBLIC_DM_SERVICE_DID',
-  GEOLOCATION_CONFIG_URL: 'EXPO_PUBLIC_GEOLOCATION_CONFIG_URL',
-  GIF_HOST: 'EXPO_PUBLIC_GIF_HOST',
-  HELP_DESK_URL: 'EXPO_PUBLIC_SOCIAL_HELP_DESK_URL',
-  LINK_HOST: 'EXPO_PUBLIC_LINK_HOST',
-  OGCARD_URL: 'EXPO_PUBLIC_OGCARD_URL',
-  POLICY_BASE_URL: 'EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL',
-  PREVIEW_LINK_META_PROXY: 'EXPO_PUBLIC_PREVIEW_LINK_META_PROXY',
-  PUBLIC_BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL',
-  SOCIAL_APP_HOST: 'EXPO_PUBLIC_SOCIAL_APP_HOST', // plan to use to detect host match with env
-  SOCIAL_APP_URL: 'EXPO_PUBLIC_SOCIAL_APP_URL',
-  SOCIAL_EMBED_SERVICE: 'EXPO_PUBLIC_SOCIAL_EMBED_SERVICE',
-  STATSIG_CLIENT_KEY: 'EXPO_PUBLIC_STATSIG_CLIENT_KEY',
-  STATSIG_API_URL: 'EXPO_PUBLIC_STATSIG_API_URL',
-  STATUS_PAGE_URL: 'EXPO_PUBLIC_STATUS_PAGE_URL',
-  VIDEO_SERVICE: 'EXPO_PUBLIC_VIDEO_SERVICE',
-  VIDEO_SERVICE_DID: 'EXPO_PUBLIC_VIDEO_SERVICE_DID',
+  APPVIEW_DID: 'ATP_APPVIEW_DID',
+  APPVIEW_URL: 'ATP_APPVIEW_URL',
+  BSKY_PROXY_DID: 'BLUESKY_PROXY_DID',
+  BSKY_SERVICE: 'ATP_PDS_URL',
+  BSKY_SERVICE_DID: 'ATP_PDS_DID',
+  DM_PROXY_DID: 'CHAT_PROXY_DID',
+  DM_SERVICE_DID: 'DM_SERVICE_DID',
+  GEOLOCATION_CONFIG_URL: 'GEOLOCATION_CONFIG_URL',
+  GIF_HOST: 'GIF_HOST',
+  HELP_DESK_URL: 'SOCIAL_HELP_DESK_URL',
+  LINK_HOST: 'LINK_HOST',
+  OGCARD_URL: 'OGCARD_URL',
+  POLICY_BASE_URL: 'SOCIAL_POLICY_BASE_URL',
+  PREVIEW_LINK_META_PROXY: 'PREVIEW_LINK_META_PROXY',
+  PUBLIC_BSKY_SERVICE: 'ATP_PUBLIC_APPVIEW_URL',
+  SOCIAL_APP_HOST: 'SOCIAL_APP_HOST', // plan to use to detect host match with env
+  SOCIAL_APP_URL: 'SOCIAL_APP_URL',
+  SOCIAL_EMBED_SERVICE: 'SOCIAL_EMBED_SERVICE',
+  STATSIG_CLIENT_KEY: 'STATSIG_CLIENT_KEY',
+  STATSIG_API_URL: 'STATSIG_API_URL',
+  STATUS_PAGE_URL: 'STATUS_PAGE_URL',
+  VIDEO_SERVICE: 'VIDEO_SERVICE',
+  VIDEO_SERVICE_DID: 'VIDEO_SERVICE_DID',
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -145,7 +147,7 @@ function envToConfig(configValues: Record<string, string>): EnvConfig {
   const resultConfig: EnvConfig = {...EMPTY_CONFIG}
   for (const key in EMPTY_CONFIG) {
     const typedKey = key as keyof EnvConfig
-    const envKeyName = InternalToEnvName[key]
+    const envKeyName = `EXPO_PUBLIC_${InternalToEnvName[key]}`
     const resultValue = configValues[envKeyName]
     resultConfig[typedKey] = resultValue
   }
@@ -180,7 +182,8 @@ function jsonToEnvConfig(
   const envConfig: EnvConfig = {...DOMAIN_ENVCONFIGS.empty}
   for (const key in DEFAULT_ENVCONFIG) {
     const typedKey = key as keyof EnvConfig
-    const jsonValue = json[key]
+    const jsonKey = InternalToEnvName[key]
+    const jsonValue = json[jsonKey]
     if (jsonValue === undefined) {
       for (const config of configs) {
         const defaultValue = config[typedKey]
@@ -571,9 +574,6 @@ export async function fetchEnvConfig(server: string) {
       logger.info(`Loaded json for environment config: ${JSON.stringify(json)}`)
       const envConfig: EnvConfig = jsonToEnvConfig(
         json,
-        DOMAIN_ENVCONFIGS.development,
-        DOMAIN_ENVCONFIGS.production,
-        DOMAIN_ENVCONFIGS.bluesky,
       )
       logger.info(
         `Loaded environment config from json with fallback: ${envConfig}`,
