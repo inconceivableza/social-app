@@ -88,15 +88,20 @@ jobs:
             ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,enable=true,priority=100,prefix=,suffix=,format=long
+            type=raw,value=latest
 
       - name: Create and push multi-platform manifest
         run: |
-          # Get the tag without platform suffix
-          TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
+          COMMIT_HASH=$(git rev-parse HEAD)
 
-          # Create manifest from platform-specific images
-          docker buildx imagetools create -t ${TAG} \
-            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:$(git rev-parse HEAD)-linux-amd64 \
-            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:$(git rev-parse HEAD)-linux-arm64
+          # Create manifest with commit hash tag
+          docker buildx imagetools create -t ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:${COMMIT_HASH} \
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:${COMMIT_HASH}-linux-amd64 \
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:${COMMIT_HASH}-linux-arm64
 
-          echo "Created multi-platform manifest: ${TAG}"
+          # Create manifest with latest tag
+          docker buildx imagetools create -t ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:latest \
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:latest-linux-amd64 \
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:latest-linux-arm64
+
+          echo "Created multi-platform manifests: ${COMMIT_HASH} and latest"
