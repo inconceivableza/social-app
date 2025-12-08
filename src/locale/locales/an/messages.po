@@ -55,7 +55,7 @@ msgstr "S'ha meso {0, plural, one {# etiqueta} other {# etiquetas}} a esta cuent
 msgid "{0, plural, one {# label has} other {# labels have}} been placed on this content"
 msgstr "S'ha meso {0, plural, one {# etiqueta} other {# etiquetas}} en este conteniu"
 
-#: src/screens/Post/PostLikedBy.tsx:45
+#: src/screens/Post/PostLikedBy.tsx:44
 msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, one {# me-fa-goyo} other {# me-fa-goyos}}"
 
@@ -150,8 +150,8 @@ msgstr ""
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
-#: src/view/com/auth/server-input/index.tsx:138
 #: src/view/com/auth/server-input/index.tsx:140
+#: src/view/com/auth/server-input/index.tsx:142
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
 #: src/view/com/composer/Composer.tsx:901
@@ -186,16 +186,20 @@ msgctxt "Name of app icon variant"
 msgid "{0} Classic™"
 msgstr ""
 
+#: src/view/com/auth/server-input/index.tsx:240
+msgid "{0} doesn't currently support custom hosting for accounts. You can sign up with the default {1} Social option."
+msgstr ""
+
 #: src/screens/Profile/Header/Metrics.tsx:49
 msgid "{0} following"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:217
+#: src/view/com/auth/server-input/index.tsx:227
 msgid "{0} is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:153
-msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1}Social option."
+#: src/view/com/auth/server-input/index.tsx:161
+msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1} Social option."
 msgstr ""
 
 #: src/components/ProgressGuide/List.tsx:55
@@ -624,7 +628,7 @@ msgstr "⚠Identificador no valido"
 msgid "24 hours"
 msgstr "24 horas"
 
-#: src/screens/Login/LoginForm.tsx:270
+#: src/screens/Login/LoginForm.tsx:273
 msgid "2FA Confirmation"
 msgstr "Confirmación 2FA"
 
@@ -698,7 +702,7 @@ msgid "Accessibility Settings"
 msgstr "Achustes d'accesibilidat"
 
 #: src/Navigation.tsx:417
-#: src/screens/Login/LoginForm.tsx:196
+#: src/screens/Login/LoginForm.tsx:199
 #: src/screens/Settings/AccountSettings.tsx:51
 #: src/screens/Settings/Settings.tsx:201
 #: src/screens/Settings/Settings.tsx:204
@@ -918,7 +922,7 @@ msgstr ""
 msgid "Add the default feed of only people you follow"
 msgstr "Anyade la canal predeterminada de solo personas que sigue"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:422
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:427
 msgid "Add the following DNS record to your domain:"
 msgstr "Anyade lo siguient rechistro DNS a lo tuyo dominio:"
 
@@ -1074,7 +1078,7 @@ msgstr "Permitir respuestas de:"
 msgid "Allows access to direct messages"
 msgstr "Permitir acceso a mensaches directos"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:175
+#: src/screens/Login/ForgotPasswordForm.tsx:176
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:237
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:243
 msgid "Already have a code?"
@@ -1215,7 +1219,7 @@ msgid "and"
 msgstr "y"
 
 #: src/lib/interests.ts:52
-#: src/screens/Onboarding/index.tsx:60
+#: src/screens/Onboarding/index.tsx:78
 msgid "Animals"
 msgstr "Animals"
 
@@ -1392,7 +1396,7 @@ msgid "Are you writing in <0>{suggestedLanguageName}</0>?"
 msgstr "Yes escribindo en <0>{suggestedLanguageName}</0>?"
 
 #: src/lib/interests.ts:53
-#: src/screens/Onboarding/index.tsx:54
+#: src/screens/Onboarding/index.tsx:72
 msgid "Art"
 msgstr "Arte"
 
@@ -1464,10 +1468,10 @@ msgstr ""
 #: src/components/moderation/LabelsOnMeDialog.tsx:318
 #: src/screens/Login/ChooseAccountForm.tsx:90
 #: src/screens/Login/ChooseAccountForm.tsx:95
-#: src/screens/Login/ForgotPasswordForm.tsx:127
-#: src/screens/Login/ForgotPasswordForm.tsx:133
-#: src/screens/Login/LoginForm.tsx:312
-#: src/screens/Login/LoginForm.tsx:318
+#: src/screens/Login/ForgotPasswordForm.tsx:128
+#: src/screens/Login/ForgotPasswordForm.tsx:134
+#: src/screens/Login/LoginForm.tsx:315
+#: src/screens/Login/LoginForm.tsx:321
 #: src/screens/Login/SetNewPasswordForm.tsx:168
 #: src/screens/Login/SetNewPasswordForm.tsx:174
 #: src/screens/Messages/components/ChatDisabled.tsx:148
@@ -1644,7 +1648,7 @@ msgid "Blur images and filter from feeds"
 msgstr "Desenfocar imáchens y filtrar dende las canals"
 
 #: src/lib/interests.ts:54
-#: src/screens/Onboarding/index.tsx:61
+#: src/screens/Onboarding/index.tsx:79
 msgid "Books"
 msgstr "Libros"
 
@@ -1760,8 +1764,8 @@ msgstr "Camera"
 #: src/screens/Search/Shell.tsx:430
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:80
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:87
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:85
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:92
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:248
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:254
 #: src/screens/Settings/Settings.tsx:334
@@ -1855,8 +1859,8 @@ msgstr "Cambiar l'icono de l'aplicación a \"{0}\""
 msgid "Change app language"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:96
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:100
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:101
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:105
 msgid "Change Handle"
 msgstr "Cambiar identificador"
 
@@ -1877,7 +1881,7 @@ msgstr ""
 msgid "Change report reason"
 msgstr "Cambiar la razón d'o reporte"
 
-#: src/components/EnvConfigIndicator.tsx:201
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1964,7 +1968,7 @@ msgstr ""
 msgid "Check my status"
 msgstr "Verificar lo mío estau"
 
-#: src/screens/Login/LoginForm.tsx:303
+#: src/screens/Login/LoginForm.tsx:306
 msgid "Check your email for a sign in code and enter it here."
 msgstr "Compreba lo tuyo correu electronico pa obtener un codigo d'inicio de sesión y escrebi-lo aquí."
 
@@ -1980,7 +1984,7 @@ msgstr ""
 msgid "Cholesterol content must be a number"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:405
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
 msgid "Choose domain verification method"
 msgstr "Triar un metodo de verificación de dominio"
 
@@ -2008,7 +2012,7 @@ msgstr "Triar los algorismos pa usar en as tuyas canals."
 msgid "Choose this color as your avatar"
 msgstr "Tría esta color como lo tuyo avatar"
 
-#: src/view/com/auth/server-input/index.tsx:130
+#: src/view/com/auth/server-input/index.tsx:132
 msgid "Choose your account provider"
 msgstr "Tría lo tuyo proveyedor de cuenta"
 
@@ -2016,7 +2020,7 @@ msgstr "Tría lo tuyo proveyedor de cuenta"
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "Tría la tuya propia linia temporal! Las canals creadas per la comunidat t'adjuyan a trobar lo conteniu que te fa goyo."
 
-#: src/screens/Signup/StepInfo/index.tsx:250
+#: src/screens/Signup/StepInfo/index.tsx:251
 msgid "Choose your password"
 msgstr "Tría la tuya clau"
 
@@ -2086,7 +2090,7 @@ msgstr "Fe clic pa ubrir lo menu de {tag}"
 msgid "Click to retry failed message"
 msgstr "Fe clic pa reintentar mensache fallido"
 
-#: src/screens/Onboarding/index.tsx:63
+#: src/screens/Onboarding/index.tsx:81
 msgid "Climate"
 msgstr "Clima"
 
@@ -2229,12 +2233,12 @@ msgid "Color theme"
 msgstr ""
 
 #: src/lib/interests.ts:55
-#: src/screens/Onboarding/index.tsx:69
+#: src/screens/Onboarding/index.tsx:87
 msgid "Comedy"
 msgstr "Comedia"
 
 #: src/lib/interests.ts:56
-#: src/screens/Onboarding/index.tsx:55
+#: src/screens/Onboarding/index.tsx:73
 msgid "Comics"
 msgstr "Historietas"
 
@@ -2341,7 +2345,7 @@ msgid "Confirm your location with GPS. Your location data is not tracked and doe
 msgstr ""
 
 #: src/components/dialogs/EmailDialog/components/TokenField.tsx:36
-#: src/screens/Login/LoginForm.tsx:276
+#: src/screens/Login/LoginForm.tsx:279
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:188
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:192
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:144
@@ -2351,7 +2355,11 @@ msgstr ""
 msgid "Confirmation code"
 msgstr "Codigo de confirmación"
 
-#: src/screens/Login/LoginForm.tsx:339
+#: src/components/EnvConfigIndicator.tsx:176
+msgid "Connect"
+msgstr ""
+
+#: src/screens/Login/LoginForm.tsx:342
 msgid "Connecting..."
 msgstr "Connectando..."
 
@@ -2471,7 +2479,7 @@ msgstr "Conversa eliminada"
 msgid "Cook:"
 msgstr ""
 
-#: src/screens/Onboarding/index.tsx:72
+#: src/screens/Onboarding/index.tsx:90
 msgid "Cooking"
 msgstr "Cocinando"
 
@@ -2537,13 +2545,13 @@ msgstr "Copiar DID de l'autor"
 msgid "Copy code"
 msgstr "Copiar codigo"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:507
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:512
 #: src/view/com/profile/ProfileMenu.tsx:447
 #: src/view/com/profile/ProfileMenu.tsx:450
 msgid "Copy DID"
 msgstr "Copiar DID"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:439
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:444
 msgid "Copy host"
 msgstr "Copiar host"
 
@@ -2596,7 +2604,7 @@ msgstr "Copiar texto d'a publicación"
 msgid "Copy QR code"
 msgstr "Copiar codigo QR"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:460
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:465
 msgid "Copy TXT record value"
 msgstr "Copiar valor de rechistro TXT"
 
@@ -2753,12 +2761,12 @@ msgid "Cuisine type"
 msgstr ""
 
 #: src/lib/interests.ts:57
-#: src/screens/Onboarding/index.tsx:57
+#: src/screens/Onboarding/index.tsx:75
 msgid "Culture"
 msgstr "Cultura"
 
-#: src/view/com/auth/server-input/index.tsx:146
-#: src/view/com/auth/server-input/index.tsx:147
+#: src/view/com/auth/server-input/index.tsx:149
+#: src/view/com/auth/server-input/index.tsx:151
 msgid "Custom"
 msgstr "Personalizau"
 
@@ -2802,7 +2810,7 @@ msgstr "Modo Fosco"
 msgid "Dark theme"
 msgstr "Tema fosco"
 
-#: src/screens/Signup/StepInfo/index.tsx:278
+#: src/screens/Signup/StepInfo/index.tsx:279
 msgid "Date of birth"
 msgstr "Data de naixencia"
 
@@ -3085,8 +3093,8 @@ msgstr "Amostrar lo nombre"
 msgid "Ditch the trolls and clickbait. Find real people and conversations that matter to you."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:408
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
 msgid "DNS Panel"
 msgstr "Con panel de DNS"
 
@@ -3102,7 +3110,7 @@ msgstr "No incluye desnudez."
 msgid "Doesn't include your account data with the feedback"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:523
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:528
 msgid "Domain verified!"
 msgstr "Dominio verificau!"
 
@@ -3135,8 +3143,8 @@ msgstr ""
 #: src/screens/Onboarding/StepProfile/index.tsx:336
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:214
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:221
-#: src/view/com/auth/server-input/index.tsx:238
-#: src/view/com/auth/server-input/index.tsx:239
+#: src/view/com/auth/server-input/index.tsx:256
+#: src/view/com/auth/server-input/index.tsx:257
 #: src/view/com/composer/labels/LabelsBtn.tsx:223
 #: src/view/com/composer/labels/LabelsBtn.tsx:230
 #: src/view/com/composer/select-language/PostLanguageSelectDialog.tsx:303
@@ -3190,7 +3198,7 @@ msgstr "Duración:"
 msgid "e.g. {defaultCustomDomain} or http://localhost:8100"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:237
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:242
 msgid "e.g. alice"
 msgstr "p. eix. alicia"
 
@@ -3198,7 +3206,7 @@ msgstr "p. eix. alicia"
 msgid "e.g. Alice Lastname"
 msgstr "p. eix. Alicia Apelliu"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:392
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:397
 msgid "e.g. alice.com"
 msgstr "p. eix. alicia.com"
 
@@ -3333,7 +3341,7 @@ msgid "Edited"
 msgstr ""
 
 #: src/lib/interests.ts:59
-#: src/screens/Onboarding/index.tsx:62
+#: src/screens/Onboarding/index.tsx:80
 msgid "Education"
 msgstr "Educación"
 
@@ -3342,7 +3350,7 @@ msgid "Either the creator of this list has blocked you or you have blocked the c
 msgstr "Lo creador d'esta lista t'ha blocau u l'has blocau tu."
 
 #: src/screens/Settings/AccountSettings.tsx:66
-#: src/screens/Signup/StepInfo/index.tsx:202
+#: src/screens/Signup/StepInfo/index.tsx:203
 msgid "Email"
 msgstr "Correu electronico"
 
@@ -3355,7 +3363,7 @@ msgstr "Correu 2FA deshabilitau"
 msgid "Email 2FA enabled"
 msgstr "Activar correu 2FA"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:97
+#: src/screens/Login/ForgotPasswordForm.tsx:98
 msgid "Email address"
 msgstr "Adreza de correu electronico"
 
@@ -3490,15 +3498,15 @@ msgstr ""
 msgid "Enter fullscreen"
 msgstr "Dentrar en pantalla completa"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:386
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
 msgid "Enter the domain you want to use"
 msgstr "Escribe lo dominio que quiers utilizar"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:117
+#: src/screens/Login/ForgotPasswordForm.tsx:118
 msgid "Enter the email you used to create your account. We'll send you a \"reset code\" so you can set a new password."
 msgstr "Escribe lo correu electronico que utilicés pa crear la tuya cuenta. Te ninviaremos un \"codigo de restablimiento\" pa que puedas establir una nueva clau."
 
-#: src/screens/Login/LoginForm.tsx:220
+#: src/screens/Login/LoginForm.tsx:223
 msgid "Enter the username or email address you used when you created your account"
 msgstr ""
 
@@ -3506,12 +3514,12 @@ msgstr ""
 msgid "Enter your birth date"
 msgstr "Escribe la tuya data de naixencia"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:103
-#: src/screens/Signup/StepInfo/index.tsx:222
+#: src/screens/Login/ForgotPasswordForm.tsx:104
+#: src/screens/Signup/StepInfo/index.tsx:223
 msgid "Enter your email address"
 msgstr "Escribe l'adreza de correu electronico"
 
-#: src/screens/Login/LoginForm.tsx:245
+#: src/screens/Login/LoginForm.tsx:248
 msgid "Enter your password"
 msgstr "Escribe la tuya clau"
 
@@ -3735,7 +3743,7 @@ msgstr ""
 msgid "Failed to add to starter pack"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:605
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:610
 msgid "Failed to change handle. Please try again."
 msgstr "No s'ha puesto cambiar l'identificador. Torna-lo a intentar."
 
@@ -3921,7 +3929,7 @@ msgstr "Error en puyar video"
 msgid "Failed to verify email, please try again."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:376
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:381
 msgid "Failed to verify handle. Please try again."
 msgstr "No s'ha puesto verificar la identificación. Torna-lo a intentar."
 
@@ -4072,7 +4080,7 @@ msgstr ""
 msgid "Finish"
 msgstr "Rematar"
 
-#: src/screens/Onboarding/index.tsx:66
+#: src/screens/Onboarding/index.tsx:84
 msgid "Fitness"
 msgstr "Exercicio"
 
@@ -4238,7 +4246,7 @@ msgid "Font size"
 msgstr "Grandaria de fuent"
 
 #: src/lib/interests.ts:61
-#: src/screens/Onboarding/index.tsx:71
+#: src/screens/Onboarding/index.tsx:89
 msgid "Food"
 msgstr "Minchar"
 
@@ -4280,11 +4288,11 @@ msgstr ""
 msgid "Forgot Password"
 msgstr "He olbidau la mía clau"
 
-#: src/screens/Login/LoginForm.tsx:250
+#: src/screens/Login/LoginForm.tsx:253
 msgid "Forgot password?"
 msgstr "Has olbidau la tuya clau?"
 
-#: src/screens/Login/LoginForm.tsx:261
+#: src/screens/Login/LoginForm.tsx:264
 msgid "Forgot?"
 msgstr "La has olbidada?"
 
@@ -4524,7 +4532,7 @@ msgstr "Ir ta la conversiación con {0}"
 msgid "Go to feed"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:169
+#: src/screens/Login/ForgotPasswordForm.tsx:170
 msgid "Go to next"
 msgstr "Ir ta lo siguient"
 
@@ -4564,16 +4572,16 @@ msgstr "Ya yes a metat camín!"
 msgid "Handle"
 msgstr "Identificador"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:609
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:614
 msgid "Handle already taken. Please try a different one."
 msgstr "Identificador ya emplegau. Tría-ne un atro diferent."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:197
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:360
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:202
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:365
 msgid "Handle changed!"
 msgstr "L'identificador ha cambiau!"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:613
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
 msgid "Handle too long. Please try a shorter one."
 msgstr "Identificador masiau largo. Intenta-lo con uno mas curto."
 
@@ -4756,12 +4764,12 @@ msgstr "Aguarte! Somos dando acceso a videos gradualment, y encara yes en a list
 msgid "Home"
 msgstr "Inicio"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:433
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:438
 msgid "Host:"
 msgstr "Aloch:"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:86
-#: src/screens/Login/LoginForm.tsx:185
+#: src/screens/Login/ForgotPasswordForm.tsx:87
+#: src/screens/Login/LoginForm.tsx:188
 msgid "Hosting provider"
 msgstr "Furnidor d'aloch"
 
@@ -4787,8 +4795,8 @@ msgstr ""
 msgid "I have a code"
 msgstr "Tiengo un codigo"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:294
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:300
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:299
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:305
 msgid "I have my own domain"
 msgstr "Tiengo lo mío propio dominio"
 
@@ -4809,7 +4817,7 @@ msgstr "Si encara no yes un adulto seguntes las leis d'o tuyo país, lo tuyo pai
 msgid "If you delete this list, you won't be able to recover it."
 msgstr "Si eliminas esta lista, no podrás recuperar-la."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:276
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
 msgid "If you have your own domain, you can use that as your handle. This lets you self-verify your identity. <0>Learn more here.</0>"
 msgstr "Si tiens lo tuyo propio dominio, puez fer-lo servir como identificador. Ixo te permite autoverificar la tuya identidat – <0>mas información</0>."
 
@@ -4834,7 +4842,7 @@ msgstr "Si deseyas cambiar la tuya clau, te ninviaremos un codigo pa verificar q
 msgid "If you want to restrict who can receive notifications for your account's activity, you can change this in <0>Settings → Privacy and Security</0>."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:213
+#: src/view/com/auth/server-input/index.tsx:223
 msgid "If you're a developer, you can host your own server."
 msgstr "Si yes un desenrollador/a, puez alochar lo tuyo propio servidor."
 
@@ -4917,7 +4925,7 @@ msgstr "Mensaches inadecuaus u vinclos explicitos"
 msgid "Inbox zero!"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:164
+#: src/screens/Login/LoginForm.tsx:167
 msgid "Incorrect username or password"
 msgstr "Nombre d'usuario u clau no validos"
 
@@ -4952,7 +4960,7 @@ msgstr "Escribe una nueva clau"
 msgid "Input password for account deletion"
 msgstr "Escribe la clau pa la eliminación d'a cuenta"
 
-#: src/screens/Login/LoginForm.tsx:291
+#: src/screens/Login/LoginForm.tsx:294
 msgid "Input the code which has been emailed to you"
 msgstr "Escribe lo codigo que se t'ha ninviau per correu electronico"
 
@@ -4991,12 +4999,12 @@ msgstr ""
 msgid "Introducing saved posts AKA bookmarks"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:156
+#: src/screens/Login/LoginForm.tsx:159
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:70
 msgid "Invalid 2FA confirmation code."
 msgstr "Codigo de confirmación 2FA no ye valido."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:615
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:620
 msgid "Invalid handle. Please try a different one."
 msgstr "Identificador no valido. Intenta-lo con un atro."
 
@@ -5028,7 +5036,7 @@ msgstr "Codigo de Verificación no valido"
 msgid "Invite a Friend"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:172
+#: src/screens/Signup/StepInfo/index.tsx:173
 msgid "Invite code"
 msgstr "Codigo d'invitación"
 
@@ -5073,7 +5081,7 @@ msgstr ""
 msgid "ISBN (optional)"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:298
+#: src/screens/Signup/StepInfo/index.tsx:299
 msgid "It's correct"
 msgstr "Ye correcta"
 
@@ -5110,7 +5118,7 @@ msgid "Join the conversation"
 msgstr "Une-te a la conversa"
 
 #: src/lib/interests.ts:63
-#: src/screens/Onboarding/index.tsx:52
+#: src/screens/Onboarding/index.tsx:70
 msgid "Journalism"
 msgstr "Periodismo"
 
@@ -5200,8 +5208,8 @@ msgstr "Zaguero"
 #: src/components/verification/VerifierDialog.tsx:138
 #: src/screens/Moderation/VerificationSettings.tsx:48
 #: src/screens/Profile/Header/EditProfileDialog.tsx:349
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:220
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:286
 msgctxt "english-only-resource"
 msgid "Learn more"
 msgstr ""
@@ -5218,7 +5226,7 @@ msgstr ""
 msgid "Learn more about age assurance"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:224
+#: src/view/com/auth/server-input/index.tsx:234
 msgid "Learn more about self hosting your PDS."
 msgstr "Obtiene mas información sobre cómo autoalochar la tuya PDS."
 
@@ -5256,7 +5264,7 @@ msgid "Learn more in your <0>account settings.</0>"
 msgstr ""
 
 #: src/components/moderation/ContentHider.tsx:247
-#: src/view/com/auth/server-input/index.tsx:226
+#: src/view/com/auth/server-input/index.tsx:236
 msgid "Learn more."
 msgstr "Aprender-ne mas."
 
@@ -5359,7 +5367,7 @@ msgstr "Como este etiquetador"
 msgid "Liked by"
 msgstr "Le ha feito goyo a"
 
-#: src/screens/Post/PostLikedBy.tsx:42
+#: src/screens/Post/PostLikedBy.tsx:41
 #: src/screens/Profile/ProfileLabelerLikedBy.tsx:32
 #: src/view/screens/ProfileFeedLikedBy.tsx:32
 msgid "Liked By"
@@ -5955,7 +5963,7 @@ msgid "Name or Description Violates Community Standards"
 msgstr "Nombre u descripción que violan los estándard d'a comunidat"
 
 #: src/lib/interests.ts:66
-#: src/screens/Onboarding/index.tsx:53
+#: src/screens/Onboarding/index.tsx:71
 msgid "Nature"
 msgstr "Naturaleza"
 
@@ -5968,8 +5976,8 @@ msgstr "Navegar a {0}"
 msgid "Navigate to starter pack"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:170
-#: src/screens/Login/LoginForm.tsx:346
+#: src/screens/Login/ForgotPasswordForm.tsx:171
+#: src/screens/Login/LoginForm.tsx:349
 msgid "Navigates to the next screen"
 msgstr "Navega a la siguient pantalla"
 
@@ -5995,7 +6003,7 @@ msgstr ""
 msgid "Never lose access to your followers or data."
 msgstr "Nunca no pierdas acceso d'os tuyos seguidors u los tuyos datos."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:585
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:590
 msgid "Nevermind, create a handle for me"
 msgstr "No importa, crea un identificador per yo"
 
@@ -6043,9 +6051,9 @@ msgstr ""
 msgid "New followers"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:228
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:236
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:233
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:241
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:396
 msgid "New handle"
 msgstr "Nuevo identificador"
 
@@ -6103,15 +6111,15 @@ msgid "Newest replies first"
 msgstr "Respuestas nuevas primer"
 
 #: src/lib/interests.ts:67
-#: src/screens/Onboarding/index.tsx:51
+#: src/screens/Onboarding/index.tsx:69
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:238
 msgid "News"
 msgstr "Noticias"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:141
-#: src/screens/Login/ForgotPasswordForm.tsx:147
-#: src/screens/Login/LoginForm.tsx:345
-#: src/screens/Login/LoginForm.tsx:352
+#: src/screens/Login/ForgotPasswordForm.tsx:142
+#: src/screens/Login/ForgotPasswordForm.tsx:148
+#: src/screens/Login/LoginForm.tsx:348
+#: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
 #: src/screens/Onboarding/StepFinished/index.tsx:344
@@ -6143,8 +6151,8 @@ msgstr ""
 msgid "No app passwords yet"
 msgstr "Encara sin claus de l'aplicación"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:418
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:420
 msgid "No DNS Panel"
 msgstr "Sin panel de DNS"
 
@@ -6480,7 +6488,7 @@ msgstr "Ups, bella cosa ha saliu mal!"
 #: src/components/StarterPack/ProfileStarterPacks.tsx:329
 #: src/components/StarterPack/ProfileStarterPacks.tsx:338
 #: src/screens/Settings/AppPasswords.tsx:60
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:108
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:113
 #: src/view/screens/Profile.tsx:122
 msgid "Oops!"
 msgstr "Ui!"
@@ -6645,7 +6653,7 @@ msgstr ""
 msgid "Opens live status dialog"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:251
+#: src/screens/Login/LoginForm.tsx:254
 msgid "Opens password reset form"
 msgstr "Ubre lo formulario de restablimiento de clau"
 
@@ -6748,10 +6756,10 @@ msgstr "Pachina no trobada"
 msgid "Page Not Found"
 msgstr "Pachina no trobada"
 
-#: src/screens/Login/LoginForm.tsx:230
+#: src/screens/Login/LoginForm.tsx:233
 #: src/screens/Settings/AccountSettings.tsx:121
 #: src/screens/Settings/AccountSettings.tsx:125
-#: src/screens/Signup/StepInfo/index.tsx:237
+#: src/screens/Signup/StepInfo/index.tsx:238
 #: src/view/com/modals/DeleteAccount.tsx:239
 #: src/view/com/modals/DeleteAccount.tsx:246
 msgid "Password"
@@ -6815,7 +6823,7 @@ msgid "Person toggle"
 msgstr "Alternar persona"
 
 #: src/lib/interests.ts:68
-#: src/screens/Onboarding/index.tsx:59
+#: src/screens/Onboarding/index.tsx:77
 msgid "Pets"
 msgstr "Mascotas"
 
@@ -6920,7 +6928,7 @@ msgid "Please choose your handle."
 msgstr "Per favor, tría lo tuyo identificador."
 
 #: src/screens/Signup/state.ts:281
-#: src/screens/Signup/StepInfo/index.tsx:124
+#: src/screens/Signup/StepInfo/index.tsx:125
 msgid "Please choose your password."
 msgstr "Per favor, tría la tuya clau."
 
@@ -6933,7 +6941,7 @@ msgid "Please complete the verification captcha."
 msgstr "Per favor, completa la verificación CAPTCHA."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:102
-#: src/screens/Signup/StepInfo/index.tsx:113
+#: src/screens/Signup/StepInfo/index.tsx:114
 msgid "Please double-check that you have entered your email address correctly."
 msgstr "Compreba que has escrito bien la tuya adreza de correu."
 
@@ -6981,11 +6989,11 @@ msgid "Please enter the security code we sent to your previous email address."
 msgstr ""
 
 #: src/screens/Signup/state.ts:265
-#: src/screens/Signup/StepInfo/index.tsx:95
+#: src/screens/Signup/StepInfo/index.tsx:96
 msgid "Please enter your email."
 msgstr "Escribe lo tuyo correu electronico."
 
-#: src/screens/Signup/StepInfo/index.tsx:88
+#: src/screens/Signup/StepInfo/index.tsx:89
 msgid "Please enter your invite code."
 msgstr "Escribe lo tuyo codigo d'invitación."
 
@@ -6993,7 +7001,7 @@ msgstr "Escribe lo tuyo codigo d'invitación."
 msgid "Please enter your new email address."
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:99
+#: src/screens/Login/LoginForm.tsx:102
 msgid "Please enter your password"
 msgstr "Escribe la tuya clau"
 
@@ -7001,7 +7009,7 @@ msgstr "Escribe la tuya clau"
 msgid "Please enter your password as well:"
 msgstr "Escribe la tuya clau, tamién:"
 
-#: src/screens/Login/LoginForm.tsx:94
+#: src/screens/Login/LoginForm.tsx:97
 msgid "Please enter your username"
 msgstr "Escribe la tuya clau"
 
@@ -7061,7 +7069,7 @@ msgid "Please write your message below:"
 msgstr ""
 
 #: src/lib/interests.ts:70
-#: src/screens/Onboarding/index.tsx:65
+#: src/screens/Onboarding/index.tsx:83
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:232
 msgid "Politics"
 msgstr "Politica"
@@ -7278,7 +7286,7 @@ msgstr "Procesando video..."
 
 #: src/lib/api/index.ts:74
 #: src/lib/api/index.ts:402
-#: src/screens/Login/ForgotPasswordForm.tsx:153
+#: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr "Procesando..."
 
@@ -7460,7 +7468,7 @@ msgstr "Citas"
 msgid "Quotes of this post"
 msgstr "Citas d'esta publicación"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:623
 msgid "Rate limit exceeded – you've tried to change your handle too many times in a short period. Please wait a minute before trying again."
 msgstr "S'ha excediu lo limite de frecuencia - has mirau de cambiar lo tuyo identificador masiadas vegadas en un curto tiempo. Per favor, aguarda un minuto antes de tornar-lo a intentar."
 
@@ -8041,7 +8049,7 @@ msgstr "Requerir texto alternativo antes de publicar"
 msgid "Require an email code to sign in to your account."
 msgstr "Demanda una adreza de correu pa dentrar con la tuya cuenta."
 
-#: src/screens/Signup/StepInfo/index.tsx:186
+#: src/screens/Signup/StepInfo/index.tsx:187
 msgid "Required for this provider"
 msgstr "Requeriu pa este furnidor"
 
@@ -8080,7 +8088,7 @@ msgstr "Codigo de restablimiento"
 msgid "Reset onboarding state"
 msgstr "Restablir l'estau d'incorporación"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:82
+#: src/screens/Login/ForgotPasswordForm.tsx:83
 msgid "Reset password"
 msgstr "Restablir clau"
 
@@ -8089,7 +8097,7 @@ msgstr "Restablir clau"
 msgid "Reset Stored Environment Config"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:326
+#: src/screens/Login/LoginForm.tsx:329
 msgid "Retries signing in"
 msgstr "Torna a intentar iniciar sesión"
 
@@ -8105,8 +8113,8 @@ msgstr "Reintenta la zaguera acción, que presentó una error"
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:55
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:58
 #: src/components/StarterPack/ProfileStarterPacks.tsx:343
-#: src/screens/Login/LoginForm.tsx:325
-#: src/screens/Login/LoginForm.tsx:332
+#: src/screens/Login/LoginForm.tsx:328
+#: src/screens/Login/LoginForm.tsx:335
 #: src/screens/Messages/ChatList.tsx:292
 #: src/screens/Messages/components/MessageListError.tsx:25
 #: src/screens/Messages/Inbox.tsx:219
@@ -8140,7 +8148,7 @@ msgstr "Tornar ta la pachina d'inicio"
 
 #: src/screens/Profile/ProfileFeed/index.tsx:91
 #: src/screens/ProfileList/components/ErrorScreen.tsx:35
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:577
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:582
 #: src/screens/VideoFeed/index.tsx:1150
 #: src/view/screens/NotFound.tsx:60
 msgid "Returns to previous page"
@@ -8186,7 +8194,7 @@ msgstr ""
 #: src/screens/Profile/Header/EditProfileDialog.tsx:236
 #: src/screens/Profile/Header/EditProfileDialog.tsx:250
 #: src/screens/SavedFeeds.tsx:120
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:269
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:274
 #: src/view/com/composer/GifAltText.tsx:193
 #: src/view/com/composer/GifAltText.tsx:202
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:62
@@ -8222,7 +8230,7 @@ msgstr ""
 msgid "Save image"
 msgstr "Alzar imachen"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:255
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:260
 msgid "Save new handle"
 msgstr "Alzar nuevo identificador"
 
@@ -8264,7 +8272,7 @@ msgid "Say hello!"
 msgstr "Di ola!"
 
 #: src/lib/interests.ts:71
-#: src/screens/Onboarding/index.tsx:64
+#: src/screens/Onboarding/index.tsx:82
 msgid "Science"
 msgstr "Ciencia"
 
@@ -8463,7 +8471,7 @@ msgstr ""
 msgid "Select a color"
 msgstr "Tría una color"
 
-#: src/components/EnvConfigIndicator.tsx:221
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8574,7 +8582,7 @@ msgstr "Triar qué idioma usar en la interfaz d'usuario de l'aplicación."
 msgid "Select which languages you want your subscribed feeds to include. If none are selected, all languages will be shown."
 msgstr "Tría en qué idiomas deseyas que sían las publicacions d'as tuyas canals. Si no'n trías garra, s'amostrarán en toz los idiomas."
 
-#: src/screens/Signup/StepInfo/index.tsx:279
+#: src/screens/Signup/StepInfo/index.tsx:280
 msgid "Select your date of birth"
 msgstr "Tría la tuya data de naixencia"
 
@@ -8665,7 +8673,7 @@ msgstr "Ninvia un correu con o codigo de confirmación pa la eliminación d'a cu
 msgid "Sends the feedback about the application"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:172
+#: src/view/com/auth/server-input/index.tsx:180
 msgid "Server address"
 msgstr "Adreza d'o servidor"
 
@@ -8693,7 +8701,7 @@ msgstr "Establir la clau nueva"
 msgid "Set up your account"
 msgstr "Configura la tuya cuenta"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:111
+#: src/screens/Login/ForgotPasswordForm.tsx:112
 msgid "Sets email for password reset"
 msgstr "Estableix lo correu electronico pa restablir la clau"
 
@@ -8912,7 +8920,7 @@ msgstr "Amostrar-ne mas como este"
 msgid "Show more replies"
 msgstr ""
 
-#: src/screens/PostThread/components/ThreadItemPost.tsx:363
+#: src/screens/PostThread/components/ThreadItemPost.tsx:365
 #: src/view/com/posts/PostFeedItem.tsx:447
 msgid "Show original version"
 msgstr ""
@@ -8986,7 +8994,7 @@ msgstr "Amuestra lo conteniu"
 #: src/screens/Hashtag.tsx:225
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
-#: src/screens/Login/LoginForm.tsx:181
+#: src/screens/Login/LoginForm.tsx:184
 #: src/screens/Search/SearchResults.tsx:262
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
@@ -9105,7 +9113,7 @@ msgid "Sodium content must be a number"
 msgstr ""
 
 #: src/lib/interests.ts:58
-#: src/screens/Onboarding/index.tsx:68
+#: src/screens/Onboarding/index.tsx:86
 msgid "Software Dev"
 msgstr "Programación"
 
@@ -9206,7 +9214,7 @@ msgid "Spam; excessive mentions or replies"
 msgstr "Spam; mencions u respuestas excesivas"
 
 #: src/lib/interests.ts:72
-#: src/screens/Onboarding/index.tsx:58
+#: src/screens/Onboarding/index.tsx:76
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:230
 msgid "Sports"
 msgstr "Esportes"
@@ -9487,7 +9495,7 @@ msgid "Teach our algorithm what you like"
 msgstr "Amuestra a lo nuestro algorismo lo que te fa goyo"
 
 #: src/lib/interests.ts:73
-#: src/screens/Onboarding/index.tsx:67
+#: src/screens/Onboarding/index.tsx:85
 msgid "Tech"
 msgstr "Tecnolochía"
 
@@ -9561,7 +9569,7 @@ msgstr "Gracias, has verificau la tuya adreza de correu electronico con exito. P
 msgid "Thanks! You're all set."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:503
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:508
 msgid "That contains the following:"
 msgstr "Ixo contiene lo siguient:"
 
@@ -9745,7 +9753,7 @@ msgstr "I ha habiu un problema trayendo las tuyas claus de l'aplicación"
 msgid "There was an issue fetching your lists. Tap here to try again."
 msgstr "I ha habiu un problema en obtener las tuyas listas. Toca aquí pa intentar de nuevo."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:109
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:114
 msgid "There was an issue fetching your service info"
 msgstr "I ha habiu un problema trayendo la tuya información de servicio"
 
@@ -9911,7 +9919,7 @@ msgstr "Esta canal ye vueda."
 msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:611
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:616
 msgid "This handle is reserved. Please try a different one."
 msgstr "Este identificador ye reservau. Intenta-lo con una diferent."
 
@@ -9992,7 +10000,7 @@ msgstr "Esta respuesta será clasificada en una sección amagada a la fin d'o tu
 msgid "This service has not provided terms of service or a privacy policy."
 msgstr "Este servicio no ha proporcionau termins de servicio ni una politica de privacidat."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:472
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:477
 msgid "This should create a domain record at:"
 msgstr "Esto habría de crear un rechistro de dominio en:"
 
@@ -10214,7 +10222,7 @@ msgstr ""
 msgid "Type your message here"
 msgstr "Escribe lo tuyo mensache aquí"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:448
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:453
 msgid "Type:"
 msgstr "Tipo:"
 
@@ -10232,9 +10240,9 @@ msgstr "No s'ha puesto connectar. Compreba la tuya connexión d'internet y torna
 msgid "Unable to contact your service. Please check your internet connection and try again."
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:70
+#: src/screens/Login/ForgotPasswordForm.tsx:71
 #: src/screens/Login/index.tsx:93
-#: src/screens/Login/LoginForm.tsx:169
+#: src/screens/Login/LoginForm.tsx:172
 #: src/screens/Login/SetNewPasswordForm.tsx:81
 #: src/screens/Signup/index.tsx:78
 msgid "Unable to contact your service. Please check your Internet connection."
@@ -10507,8 +10515,8 @@ msgstr "Actualizar <0>{displayName}</0> en Listas"
 msgid "Update email"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:544
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:565
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:549
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:570
 msgid "Update to {domain}"
 msgstr "Actualizar a {domain}"
 
@@ -10534,7 +10542,7 @@ msgstr "Actualizando..."
 msgid "Upload a photo instead"
 msgstr "Puya una foto en cuenta"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:488
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:493
 msgid "Upload a text file to:"
 msgstr "Carga un fichero de texto en:"
 
@@ -10582,8 +10590,6 @@ msgstr ""
 msgid "URL (optional)"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:176
-#: src/components/EnvConfigIndicator.tsx:184
 #: src/screens/Settings/Settings.tsx:772
 msgid "Use"
 msgstr ""
@@ -10597,11 +10603,11 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:178
-msgid "Use custom domain to retrieve server domains"
+#: src/components/EnvConfigIndicator.tsx:179
+msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:576
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:581
 msgid "Use default provider"
 msgstr "Utilizar lo furnidor predeterminau"
 
@@ -10696,7 +10702,7 @@ msgstr ""
 msgid "Username must only contain letters (a-z), numbers, and hyphens"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:203
+#: src/screens/Login/LoginForm.tsx:206
 msgid "Username or email address"
 msgstr "Nombre d'usuario u adreza de correu electronico"
 
@@ -10721,7 +10727,7 @@ msgstr "Usuarios en \"{0}\""
 msgid "Users you follow"
 msgstr "Usuarios que sigues"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:454
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:459
 msgid "Value:"
 msgstr "Valor:"
 
@@ -10765,8 +10771,8 @@ msgctxt "action"
 msgid "Verify code"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:546
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:567
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:551
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:572
 msgid "Verify DNS Record"
 msgstr "Verificar rechistro DNS"
 
@@ -10784,8 +10790,8 @@ msgstr "Finestra de verificación de correu electronico"
 msgid "Verify now"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:547
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:569
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:552
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:574
 msgid "Verify Text File"
 msgstr "Verificar fichero de texto"
 
@@ -10834,7 +10840,7 @@ msgid "Video from {0}: {text}"
 msgstr "Video de {0}: {text}"
 
 #: src/lib/interests.ts:62
-#: src/screens/Onboarding/index.tsx:70
+#: src/screens/Onboarding/index.tsx:88
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:234
 msgid "Video Games"
 msgstr "Videojuegos"
@@ -11306,11 +11312,11 @@ msgid "Write your review"
 msgstr ""
 
 #: src/lib/interests.ts:75
-#: src/screens/Onboarding/index.tsx:56
+#: src/screens/Onboarding/index.tsx:74
 msgid "Writers"
 msgstr "Escritors"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:372
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:377
 msgid "Wrong DID returned from server. Received: {0}"
 msgstr "Lo servidor ha tornau un DID incorrecto. Recibiu: {0}"
 
@@ -11413,7 +11419,7 @@ msgstr ""
 msgid "You are verified. You will lose your verification status if you change your display name. <0>Learn more.</0>"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:210
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
 msgid "You are verified. You will lose your verification status if you change your handle. <0>Learn more.</0>"
 msgstr ""
 
@@ -11810,7 +11816,7 @@ msgstr ""
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr "Hemos recibiu lo tuyo recurso. Si s'acepta, t'avisaremos per correu electronico."
 
-#: src/screens/Signup/StepInfo/index.tsx:266
+#: src/screens/Signup/StepInfo/index.tsx:267
 msgid "Your birth date"
 msgstr "La tuya data de naixencia"
 
@@ -11826,7 +11832,7 @@ msgstr "Los tuyos chats son estau deshabilitaus"
 msgid "Your choice will be remembered for future links. You can change it at any time in settings."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:531
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:536
 msgid "Your current handle <0>{0}</0> will automatically remain reserved for you. You can switch back to it at any time from this account."
 msgstr "Lo tuyo identificador actual <0>{0}</0> quedará automaticament reservau pa tu. Puez tornar-ie en cualsequier momento dende esta cuenta."
 
@@ -11840,10 +11846,10 @@ msgstr ""
 msgid "Your email"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:53
+#: src/screens/Login/ForgotPasswordForm.tsx:54
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:83
 #: src/screens/Signup/state.ts:273
-#: src/screens/Signup/StepInfo/index.tsx:102
+#: src/screens/Signup/StepInfo/index.tsx:103
 msgid "Your email appears to be invalid."
 msgstr "Lo tuyo correu electronico pareixe no estar valido."
 
@@ -11863,7 +11869,7 @@ msgstr "Los tuyos seguidors"
 msgid "Your following feed is empty! Follow more users to see what's happening."
 msgstr "La tuya canal de Seguindo ye vueda! Sigue a mas usuarios pa veyer las suyas publicacions aquí."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:247
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:252
 msgid "Your full handle will be <0>@{0}</0>"
 msgstr "Lo tuyo identificador completo será <0>@{0}</0>"
 
@@ -11901,7 +11907,7 @@ msgstr "Las tuyas parolas silenciadas"
 msgid "Your password has been changed successfully! Please use your new password when you sign in to {appName} from now on."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:131
+#: src/screens/Signup/StepInfo/index.tsx:132
 msgid "Your password must be at least 8 characters long."
 msgstr "La tuya ha de tener a lo menos 8 carácters."
 

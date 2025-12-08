@@ -55,7 +55,7 @@ msgstr "{0, plural, one {etiketa #} other {# etiketa}} kontu honetan jarrita"
 msgid "{0, plural, one {# label has} other {# labels have}} been placed on this content"
 msgstr "{0, plural, one {etiketa #} other {# etiketa}} eduki honetan jarrita"
 
-#: src/screens/Post/PostLikedBy.tsx:45
+#: src/screens/Post/PostLikedBy.tsx:44
 msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, one {gogoko #} other {# gogoko}}"
 
@@ -150,8 +150,8 @@ msgstr "{0, plural, other {+# gehiago}}"
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
-#: src/view/com/auth/server-input/index.tsx:138
 #: src/view/com/auth/server-input/index.tsx:140
+#: src/view/com/auth/server-input/index.tsx:142
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
 #: src/view/com/composer/Composer.tsx:901
@@ -186,16 +186,20 @@ msgctxt "Name of app icon variant"
 msgid "{0} Classic™"
 msgstr ""
 
+#: src/view/com/auth/server-input/index.tsx:240
+msgid "{0} doesn't currently support custom hosting for accounts. You can sign up with the default {1} Social option."
+msgstr ""
+
 #: src/screens/Profile/Header/Metrics.tsx:49
 msgid "{0} following"
 msgstr "{0} jarraitzen"
 
-#: src/view/com/auth/server-input/index.tsx:217
+#: src/view/com/auth/server-input/index.tsx:227
 msgid "{0} is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:153
-msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1}Social option."
+#: src/view/com/auth/server-input/index.tsx:161
+msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1} Social option."
 msgstr ""
 
 #: src/components/ProgressGuide/List.tsx:55
@@ -624,7 +628,7 @@ msgstr "⚠Erabiltzaile Baliogabea"
 msgid "24 hours"
 msgstr "24 ordu"
 
-#: src/screens/Login/LoginForm.tsx:270
+#: src/screens/Login/LoginForm.tsx:273
 msgid "2FA Confirmation"
 msgstr "2FA Baieztapena"
 
@@ -698,7 +702,7 @@ msgid "Accessibility Settings"
 msgstr "Erabilerraztasun Doikuntzak"
 
 #: src/Navigation.tsx:417
-#: src/screens/Login/LoginForm.tsx:196
+#: src/screens/Login/LoginForm.tsx:199
 #: src/screens/Settings/AccountSettings.tsx:51
 #: src/screens/Settings/Settings.tsx:201
 #: src/screens/Settings/Settings.tsx:204
@@ -918,7 +922,7 @@ msgstr ""
 msgid "Add the default feed of only people you follow"
 msgstr "Gehitu zuk bakarrik jarraitzen duzun jendearen lehenetsitako feeda"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:422
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:427
 msgid "Add the following DNS record to your domain:"
 msgstr "Gehitu honako DNS agiria zure domeinuan:"
 
@@ -1074,7 +1078,7 @@ msgstr "Baimendu erantzunak bertatik:"
 msgid "Allows access to direct messages"
 msgstr "Mezu zuzenetara sarrera baimentzen da"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:175
+#: src/screens/Login/ForgotPasswordForm.tsx:176
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:237
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:243
 msgid "Already have a code?"
@@ -1215,7 +1219,7 @@ msgid "and"
 msgstr "eta"
 
 #: src/lib/interests.ts:52
-#: src/screens/Onboarding/index.tsx:60
+#: src/screens/Onboarding/index.tsx:78
 msgid "Animals"
 msgstr "Animaliak"
 
@@ -1392,7 +1396,7 @@ msgid "Are you writing in <0>{suggestedLanguageName}</0>?"
 msgstr "<0>{suggestedLanguageName}</0>-z idazten ari zara?"
 
 #: src/lib/interests.ts:53
-#: src/screens/Onboarding/index.tsx:54
+#: src/screens/Onboarding/index.tsx:72
 msgid "Art"
 msgstr "Artea"
 
@@ -1464,10 +1468,10 @@ msgstr "Eskuragarri"
 #: src/components/moderation/LabelsOnMeDialog.tsx:318
 #: src/screens/Login/ChooseAccountForm.tsx:90
 #: src/screens/Login/ChooseAccountForm.tsx:95
-#: src/screens/Login/ForgotPasswordForm.tsx:127
-#: src/screens/Login/ForgotPasswordForm.tsx:133
-#: src/screens/Login/LoginForm.tsx:312
-#: src/screens/Login/LoginForm.tsx:318
+#: src/screens/Login/ForgotPasswordForm.tsx:128
+#: src/screens/Login/ForgotPasswordForm.tsx:134
+#: src/screens/Login/LoginForm.tsx:315
+#: src/screens/Login/LoginForm.tsx:321
 #: src/screens/Login/SetNewPasswordForm.tsx:168
 #: src/screens/Login/SetNewPasswordForm.tsx:174
 #: src/screens/Messages/components/ChatDisabled.tsx:148
@@ -1644,7 +1648,7 @@ msgid "Blur images and filter from feeds"
 msgstr "Irudiak lausotu eta iragazi feedetatik"
 
 #: src/lib/interests.ts:54
-#: src/screens/Onboarding/index.tsx:61
+#: src/screens/Onboarding/index.tsx:79
 msgid "Books"
 msgstr "Liburuak"
 
@@ -1760,8 +1764,8 @@ msgstr "Kamera"
 #: src/screens/Search/Shell.tsx:430
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:80
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:87
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:85
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:92
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:248
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:254
 #: src/screens/Settings/Settings.tsx:334
@@ -1855,8 +1859,8 @@ msgstr "Aldatu aplikazioaren ikonoa \"{0}\"-ra"
 msgid "Change app language"
 msgstr "Aldatu aplikazioaren hizkuntza"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:96
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:100
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:101
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:105
 msgid "Change Handle"
 msgstr "Aldatu Erabiltzailea"
 
@@ -1877,7 +1881,7 @@ msgstr "Pasahitza aldatzeko elkarrizketa-koadroa"
 msgid "Change report reason"
 msgstr "Aldatu salaketa arrazoia"
 
-#: src/components/EnvConfigIndicator.tsx:201
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1964,7 +1968,7 @@ msgstr "Txatak"
 msgid "Check my status"
 msgstr "Egiaztatu nire egoera"
 
-#: src/screens/Login/LoginForm.tsx:303
+#: src/screens/Login/LoginForm.tsx:306
 msgid "Check your email for a sign in code and enter it here."
 msgstr "Egiaztatu zure e-posta, saioa hasteko kodea hartu eta sartu hemen."
 
@@ -1980,7 +1984,7 @@ msgstr ""
 msgid "Cholesterol content must be a number"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:405
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
 msgid "Choose domain verification method"
 msgstr "Aukeratu domeinua egiaztatzeko metodoa"
 
@@ -2008,7 +2012,7 @@ msgstr "Aukeratu zure feed pertsonalizatuak bultzatzen dituzten algoritmoak."
 msgid "Choose this color as your avatar"
 msgstr "Aukeratu kolore hau zure abatar gisa"
 
-#: src/view/com/auth/server-input/index.tsx:130
+#: src/view/com/auth/server-input/index.tsx:132
 msgid "Choose your account provider"
 msgstr "Aukeratu zure kontu hornitzailea"
 
@@ -2016,7 +2020,7 @@ msgstr "Aukeratu zure kontu hornitzailea"
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "Aukeratu zure denbora-lerroa! Komunitateak sortutako feedek maite duzun edukia aurkitzen laguntzen dizu."
 
-#: src/screens/Signup/StepInfo/index.tsx:250
+#: src/screens/Signup/StepInfo/index.tsx:251
 msgid "Choose your password"
 msgstr "Aukeratu zure pasahitza"
 
@@ -2086,7 +2090,7 @@ msgstr "Egin klik hemen {tag}-ren etiketa-menua irekitzeko"
 msgid "Click to retry failed message"
 msgstr "Egin klik huts egindako mezua berriro bidaltzen saiatzeko"
 
-#: src/screens/Onboarding/index.tsx:63
+#: src/screens/Onboarding/index.tsx:81
 msgid "Climate"
 msgstr "Giroa"
 
@@ -2229,12 +2233,12 @@ msgid "Color theme"
 msgstr "Kolore-gaia"
 
 #: src/lib/interests.ts:55
-#: src/screens/Onboarding/index.tsx:69
+#: src/screens/Onboarding/index.tsx:87
 msgid "Comedy"
 msgstr "Komedia"
 
 #: src/lib/interests.ts:56
-#: src/screens/Onboarding/index.tsx:55
+#: src/screens/Onboarding/index.tsx:73
 msgid "Comics"
 msgstr "Komikiak"
 
@@ -2341,7 +2345,7 @@ msgid "Confirm your location with GPS. Your location data is not tracked and doe
 msgstr "Berretsi zure kokapena GPSarekin. Zure kokapen-datuak ez dira jarraitzen eta ez dira zure gailutik ateratzen."
 
 #: src/components/dialogs/EmailDialog/components/TokenField.tsx:36
-#: src/screens/Login/LoginForm.tsx:276
+#: src/screens/Login/LoginForm.tsx:279
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:188
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:192
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:144
@@ -2351,7 +2355,11 @@ msgstr "Berretsi zure kokapena GPSarekin. Zure kokapen-datuak ez dira jarraitzen
 msgid "Confirmation code"
 msgstr "Baieztapen kodea"
 
-#: src/screens/Login/LoginForm.tsx:339
+#: src/components/EnvConfigIndicator.tsx:176
+msgid "Connect"
+msgstr ""
+
+#: src/screens/Login/LoginForm.tsx:342
 msgid "Connecting..."
 msgstr "Konektatzen..."
 
@@ -2471,7 +2479,7 @@ msgstr "Elkarrizketa ezabatuta"
 msgid "Cook:"
 msgstr ""
 
-#: src/screens/Onboarding/index.tsx:72
+#: src/screens/Onboarding/index.tsx:90
 msgid "Cooking"
 msgstr "Sukaldatzen"
 
@@ -2537,13 +2545,13 @@ msgstr "Kopiatu egilearen DID"
 msgid "Copy code"
 msgstr "Kopiatu kodea"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:507
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:512
 #: src/view/com/profile/ProfileMenu.tsx:447
 #: src/view/com/profile/ProfileMenu.tsx:450
 msgid "Copy DID"
 msgstr "Kopiatu DID"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:439
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:444
 msgid "Copy host"
 msgstr "Kopiatu ostalaria"
 
@@ -2596,7 +2604,7 @@ msgstr "Kopiatu postaren testua"
 msgid "Copy QR code"
 msgstr "Kopiatu QR kodea"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:460
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:465
 msgid "Copy TXT record value"
 msgstr "Kopiatu TXT erregistroaren balioa"
 
@@ -2753,12 +2761,12 @@ msgid "Cuisine type"
 msgstr ""
 
 #: src/lib/interests.ts:57
-#: src/screens/Onboarding/index.tsx:57
+#: src/screens/Onboarding/index.tsx:75
 msgid "Culture"
 msgstr "Kultura"
 
-#: src/view/com/auth/server-input/index.tsx:146
-#: src/view/com/auth/server-input/index.tsx:147
+#: src/view/com/auth/server-input/index.tsx:149
+#: src/view/com/auth/server-input/index.tsx:151
 msgid "Custom"
 msgstr "Pertsonalizatua"
 
@@ -2802,7 +2810,7 @@ msgstr "Modu iluna"
 msgid "Dark theme"
 msgstr "Gai iluna"
 
-#: src/screens/Signup/StepInfo/index.tsx:278
+#: src/screens/Signup/StepInfo/index.tsx:279
 msgid "Date of birth"
 msgstr "Jaiotze data"
 
@@ -3085,8 +3093,8 @@ msgstr "Bistaratzeko izena"
 msgid "Ditch the trolls and clickbait. Find real people and conversations that matter to you."
 msgstr "Utzi troll-ak eta klik egiteko amua. Aurkitu zuretzat garrantzitsuak diren benetako pertsonak eta elkarrizketak."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:408
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
 msgid "DNS Panel"
 msgstr "DNS Panela"
 
@@ -3102,7 +3110,7 @@ msgstr "Ez du biluztasunik."
 msgid "Doesn't include your account data with the feedback"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:523
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:528
 msgid "Domain verified!"
 msgstr "Domeinua egiaztatu da!"
 
@@ -3135,8 +3143,8 @@ msgstr "Ez kezkatu! Mezu eta ezarpen guztiak gordeta daude eta heldua zarela egi
 #: src/screens/Onboarding/StepProfile/index.tsx:336
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:214
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:221
-#: src/view/com/auth/server-input/index.tsx:238
-#: src/view/com/auth/server-input/index.tsx:239
+#: src/view/com/auth/server-input/index.tsx:256
+#: src/view/com/auth/server-input/index.tsx:257
 #: src/view/com/composer/labels/LabelsBtn.tsx:223
 #: src/view/com/composer/labels/LabelsBtn.tsx:230
 #: src/view/com/composer/select-language/PostLanguageSelectDialog.tsx:303
@@ -3190,7 +3198,7 @@ msgstr "Iraupena:"
 msgid "e.g. {defaultCustomDomain} or http://localhost:8100"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:237
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:242
 msgid "e.g. alice"
 msgstr "adib. alice"
 
@@ -3198,7 +3206,7 @@ msgstr "adib. alice"
 msgid "e.g. Alice Lastname"
 msgstr "adib. Alice Abizena"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:392
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:397
 msgid "e.g. alice.com"
 msgstr "adib. alice.com"
 
@@ -3333,7 +3341,7 @@ msgid "Edited"
 msgstr ""
 
 #: src/lib/interests.ts:59
-#: src/screens/Onboarding/index.tsx:62
+#: src/screens/Onboarding/index.tsx:80
 msgid "Education"
 msgstr "Hezkuntza"
 
@@ -3342,7 +3350,7 @@ msgid "Either the creator of this list has blocked you or you have blocked the c
 msgstr "Edo zerrenda honen sortzaileak blokeatu zaitu edo zuk blokeatu duzu sortzailea."
 
 #: src/screens/Settings/AccountSettings.tsx:66
-#: src/screens/Signup/StepInfo/index.tsx:202
+#: src/screens/Signup/StepInfo/index.tsx:203
 msgid "Email"
 msgstr "Posta elektronikoa"
 
@@ -3355,7 +3363,7 @@ msgstr "E-posta bidezko 2FA desgaituta"
 msgid "Email 2FA enabled"
 msgstr "2FA posta elektronikoa gaituta"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:97
+#: src/screens/Login/ForgotPasswordForm.tsx:98
 msgid "Email address"
 msgstr "Email helbidea"
 
@@ -3490,15 +3498,15 @@ msgstr "Sartu kodea"
 msgid "Enter fullscreen"
 msgstr "Sartu pantaila osoan"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:386
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
 msgid "Enter the domain you want to use"
 msgstr "Sartu erabili nahi duzun domeinua"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:117
+#: src/screens/Login/ForgotPasswordForm.tsx:118
 msgid "Enter the email you used to create your account. We'll send you a \"reset code\" so you can set a new password."
 msgstr "Sartu zure kontua sortzeko erabili duzun posta elektronikoa. \"Berrezarri kodea\" bidaliko dizugu pasahitz berri bat ezar dezazun."
 
-#: src/screens/Login/LoginForm.tsx:220
+#: src/screens/Login/LoginForm.tsx:223
 msgid "Enter the username or email address you used when you created your account"
 msgstr "Sartu kontua sortu zenuenean erabili zenuen erabiltzaile-izena edo helbide elektronikoa"
 
@@ -3506,12 +3514,12 @@ msgstr "Sartu kontua sortu zenuenean erabili zenuen erabiltzaile-izena edo helbi
 msgid "Enter your birth date"
 msgstr "Sartu zure jaiotze data"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:103
-#: src/screens/Signup/StepInfo/index.tsx:222
+#: src/screens/Login/ForgotPasswordForm.tsx:104
+#: src/screens/Signup/StepInfo/index.tsx:223
 msgid "Enter your email address"
 msgstr "Sartu zure posta elektroniko helbidea"
 
-#: src/screens/Login/LoginForm.tsx:245
+#: src/screens/Login/LoginForm.tsx:248
 msgid "Enter your password"
 msgstr "Sartu zure pasahitza"
 
@@ -3735,7 +3743,7 @@ msgstr "Errorea emoji erreakzioa gehitzean"
 msgid "Failed to add to starter pack"
 msgstr "Ezin izan da abio multzora gehitu"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:605
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:610
 msgid "Failed to change handle. Please try again."
 msgstr "Ezin izan da handle-a aldatu. Mesedez, saiatu berriro."
 
@@ -3921,7 +3929,7 @@ msgstr "Ezin izan da bideoa kargatu"
 msgid "Failed to verify email, please try again."
 msgstr "Ezin izan da posta elektronikoa egiaztatu. Mesedez, saiatu berriro."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:376
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:381
 msgid "Failed to verify handle. Please try again."
 msgstr "Ezin izan da handle-a egiaztatu. Mesedez, saiatu berriro."
 
@@ -4072,7 +4080,7 @@ msgstr "Aurkitu zure jendea"
 msgid "Finish"
 msgstr "Amaitu"
 
-#: src/screens/Onboarding/index.tsx:66
+#: src/screens/Onboarding/index.tsx:84
 msgid "Fitness"
 msgstr "Sasoia"
 
@@ -4238,7 +4246,7 @@ msgid "Font size"
 msgstr "Letra-tipo tamaina"
 
 #: src/lib/interests.ts:61
-#: src/screens/Onboarding/index.tsx:71
+#: src/screens/Onboarding/index.tsx:89
 msgid "Food"
 msgstr "Elikagaia"
 
@@ -4280,11 +4288,11 @@ msgstr "Ahaztu zarata"
 msgid "Forgot Password"
 msgstr "Pasahitza Ahaztua"
 
-#: src/screens/Login/LoginForm.tsx:250
+#: src/screens/Login/LoginForm.tsx:253
 msgid "Forgot password?"
 msgstr "Pasahitza ahaztu duzu?"
 
-#: src/screens/Login/LoginForm.tsx:261
+#: src/screens/Login/LoginForm.tsx:264
 msgid "Forgot?"
 msgstr "Ahaztuta?"
 
@@ -4524,7 +4532,7 @@ msgstr "Joan {0}rekin elkarrizketara"
 msgid "Go to feed"
 msgstr "Joan feedera"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:169
+#: src/screens/Login/ForgotPasswordForm.tsx:170
 msgid "Go to next"
 msgstr "Joan hurrengora"
 
@@ -4564,16 +4572,16 @@ msgstr "Bide erdia!"
 msgid "Handle"
 msgstr "Handle-a"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:609
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:614
 msgid "Handle already taken. Please try a different one."
 msgstr "Handle-a dagoeneko hartua. Mesedez, saiatu beste bat."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:197
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:360
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:202
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:365
 msgid "Handle changed!"
 msgstr "Handle aldatua!"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:613
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
 msgid "Handle too long. Please try a shorter one."
 msgstr "Handle luzeegia. Mesedez, saiatu laburrago batekin."
 
@@ -4756,12 +4764,12 @@ msgstr "Eutsi! Pixkanaka bideorako sarbidea ematen ari gara, eta ilaran zain zau
 msgid "Home"
 msgstr "Hasiera"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:433
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:438
 msgid "Host:"
 msgstr "Hostalaria:"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:86
-#: src/screens/Login/LoginForm.tsx:185
+#: src/screens/Login/ForgotPasswordForm.tsx:87
+#: src/screens/Login/LoginForm.tsx:188
 msgid "Hosting provider"
 msgstr "Hostatze hornitzailea"
 
@@ -4787,8 +4795,8 @@ msgstr ""
 msgid "I have a code"
 msgstr "Kode bat daukat"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:294
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:300
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:299
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:305
 msgid "I have my own domain"
 msgstr "Nire domeinua daukat"
 
@@ -4809,7 +4817,7 @@ msgstr "Zure herrialdeko legeen arabera oraindik heldua ez bazara, zure gurasoek
 msgid "If you delete this list, you won't be able to recover it."
 msgstr "Zerrenda hau ezabatzen baduzu, ezin izango duzu berreskuratu."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:276
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
 msgid "If you have your own domain, you can use that as your handle. This lets you self-verify your identity. <0>Learn more here.</0>"
 msgstr "Zure domeinua baduzu, hori erabil dezakezu handle gisa. Honek zure nortasuna egiaztatzeko aukera ematen dizu. <0>Lortu informazio gehiago hemen.</0>"
 
@@ -4834,7 +4842,7 @@ msgstr "Pasahitza aldatu nahi baduzu, kode bat bidaliko dizugu zure kontua dela 
 msgid "If you want to restrict who can receive notifications for your account's activity, you can change this in <0>Settings → Privacy and Security</0>."
 msgstr "Zure kontuaren jardueraren jakinarazpenak nork jaso ditzakeen mugatu nahi baduzu, hau alda dezakezu <0>Ezarpenak → Pribatutasuna eta Segurtasuna</0> atalean."
 
-#: src/view/com/auth/server-input/index.tsx:213
+#: src/view/com/auth/server-input/index.tsx:223
 msgid "If you're a developer, you can host your own server."
 msgstr "Garatzailea bazara, zure zerbitzari propioa osta dezakezu."
 
@@ -4917,7 +4925,7 @@ msgstr "Mezu desegokiak edo esteka esplizituak"
 msgid "Inbox zero!"
 msgstr "Sarrera-ontzia hutsik!"
 
-#: src/screens/Login/LoginForm.tsx:164
+#: src/screens/Login/LoginForm.tsx:167
 msgid "Incorrect username or password"
 msgstr "Erabiltzaile-izen edo pasahitz baliogabea"
 
@@ -4952,7 +4960,7 @@ msgstr "Idatzi pasahitz berria"
 msgid "Input password for account deletion"
 msgstr "Sartu pasahitza kontua ezabatzeko"
 
-#: src/screens/Login/LoginForm.tsx:291
+#: src/screens/Login/LoginForm.tsx:294
 msgid "Input the code which has been emailed to you"
 msgstr "Sartu posta elektronikoz bidali zaizun kodea"
 
@@ -4991,12 +4999,12 @@ msgstr "Jarduera-jakinarazpenak aurkeztea"
 msgid "Introducing saved posts AKA bookmarks"
 msgstr "Gordetako postak, hau da, laster-markak, aurkeztea"
 
-#: src/screens/Login/LoginForm.tsx:156
+#: src/screens/Login/LoginForm.tsx:159
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:70
 msgid "Invalid 2FA confirmation code."
 msgstr "2FA baieztapen kode baliogabea."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:615
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:620
 msgid "Invalid handle. Please try a different one."
 msgstr "Handle baliogabea. Mesedez, saiatu beste bat."
 
@@ -5028,7 +5036,7 @@ msgstr "Egiaztapen-kode baliogabea"
 msgid "Invite a Friend"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:172
+#: src/screens/Signup/StepInfo/index.tsx:173
 msgid "Invite code"
 msgstr "Gonbidapen kodea"
 
@@ -5073,7 +5081,7 @@ msgstr ""
 msgid "ISBN (optional)"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:298
+#: src/screens/Signup/StepInfo/index.tsx:299
 msgid "It's correct"
 msgstr "Zuzena da"
 
@@ -5110,7 +5118,7 @@ msgid "Join the conversation"
 msgstr "Bat egin elkarrizketan"
 
 #: src/lib/interests.ts:63
-#: src/screens/Onboarding/index.tsx:52
+#: src/screens/Onboarding/index.tsx:70
 msgid "Journalism"
 msgstr "Kazetaritza"
 
@@ -5200,8 +5208,8 @@ msgstr "Azkena"
 #: src/components/verification/VerifierDialog.tsx:138
 #: src/screens/Moderation/VerificationSettings.tsx:48
 #: src/screens/Profile/Header/EditProfileDialog.tsx:349
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:220
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:286
 msgctxt "english-only-resource"
 msgid "Learn more"
 msgstr "Ikasi gehiago (ingelesez)"
@@ -5218,7 +5226,7 @@ msgstr ""
 msgid "Learn more about age assurance"
 msgstr "Adinaren bermeari buruz gehiago ikasi"
 
-#: src/view/com/auth/server-input/index.tsx:224
+#: src/view/com/auth/server-input/index.tsx:234
 msgid "Learn more about self hosting your PDS."
 msgstr "Gehiago ikasi zure PDS auto-hostatzeari buruz."
 
@@ -5256,7 +5264,7 @@ msgid "Learn more in your <0>account settings.</0>"
 msgstr "Informazio gehiago zure <0>kontuaren ezarpenetan.</0>"
 
 #: src/components/moderation/ContentHider.tsx:247
-#: src/view/com/auth/server-input/index.tsx:226
+#: src/view/com/auth/server-input/index.tsx:236
 msgid "Learn more."
 msgstr "Ikasi gehiago."
 
@@ -5359,7 +5367,7 @@ msgstr "Etiketatzaile hau gogoko dut"
 msgid "Liked by"
 msgstr "Gogoko du"
 
-#: src/screens/Post/PostLikedBy.tsx:42
+#: src/screens/Post/PostLikedBy.tsx:41
 #: src/screens/Profile/ProfileLabelerLikedBy.tsx:32
 #: src/view/screens/ProfileFeedLikedBy.tsx:32
 msgid "Liked By"
@@ -5955,7 +5963,7 @@ msgid "Name or Description Violates Community Standards"
 msgstr "Izenak edo Deskribapenak Komunitatearen Arauak Urratzen ditu"
 
 #: src/lib/interests.ts:66
-#: src/screens/Onboarding/index.tsx:53
+#: src/screens/Onboarding/index.tsx:71
 msgid "Nature"
 msgstr "Natura"
 
@@ -5968,8 +5976,8 @@ msgstr "Nabigatu {0}-ra"
 msgid "Navigate to starter pack"
 msgstr "Joan abio multzora"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:170
-#: src/screens/Login/LoginForm.tsx:346
+#: src/screens/Login/ForgotPasswordForm.tsx:171
+#: src/screens/Login/LoginForm.tsx:349
 msgid "Navigates to the next screen"
 msgstr "Hurrengo pantailara nabigatzen da"
 
@@ -5995,7 +6003,7 @@ msgstr ""
 msgid "Never lose access to your followers or data."
 msgstr "Ez galdu inoiz zure jarraitzaile edo datuetarako sarbidea."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:585
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:590
 msgid "Nevermind, create a handle for me"
 msgstr "Ez dio axola, sortu handle bat niretzako"
 
@@ -6043,9 +6051,9 @@ msgstr "Jarraitzaile berrien jakinarazpenak"
 msgid "New followers"
 msgstr "Jarraitzaile berriak"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:228
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:236
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:233
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:241
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:396
 msgid "New handle"
 msgstr "Handle berria"
 
@@ -6103,15 +6111,15 @@ msgid "Newest replies first"
 msgstr "Erantzun berrienak lehenengo"
 
 #: src/lib/interests.ts:67
-#: src/screens/Onboarding/index.tsx:51
+#: src/screens/Onboarding/index.tsx:69
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:238
 msgid "News"
 msgstr "Berriak"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:141
-#: src/screens/Login/ForgotPasswordForm.tsx:147
-#: src/screens/Login/LoginForm.tsx:345
-#: src/screens/Login/LoginForm.tsx:352
+#: src/screens/Login/ForgotPasswordForm.tsx:142
+#: src/screens/Login/ForgotPasswordForm.tsx:148
+#: src/screens/Login/LoginForm.tsx:348
+#: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
 #: src/screens/Onboarding/StepFinished/index.tsx:344
@@ -6143,8 +6151,8 @@ msgstr "Iragarkirik ez, jarraipen inbaditzailerik ez, parte-hartze tranparik ez.
 msgid "No app passwords yet"
 msgstr "Oraindik ez dago aplikazioen pasahitzik"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:418
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:420
 msgid "No DNS Panel"
 msgstr "DNS Panelik gabe"
 
@@ -6480,7 +6488,7 @@ msgstr "Arazoren bat izan da!"
 #: src/components/StarterPack/ProfileStarterPacks.tsx:329
 #: src/components/StarterPack/ProfileStarterPacks.tsx:338
 #: src/screens/Settings/AppPasswords.tsx:60
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:108
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:113
 #: src/view/screens/Profile.tsx:122
 msgid "Oops!"
 msgstr "Ups!"
@@ -6645,7 +6653,7 @@ msgstr ""
 msgid "Opens live status dialog"
 msgstr "Zuzeneko egoeraren elkarrizketa-koadroa irekitzen du"
 
-#: src/screens/Login/LoginForm.tsx:251
+#: src/screens/Login/LoginForm.tsx:254
 msgid "Opens password reset form"
 msgstr "Pasahitza berrezartzeko formularioa irekitzen du"
 
@@ -6748,10 +6756,10 @@ msgstr "Orria ez da aurkitu"
 msgid "Page Not Found"
 msgstr "Orria Ez da Aurkitu"
 
-#: src/screens/Login/LoginForm.tsx:230
+#: src/screens/Login/LoginForm.tsx:233
 #: src/screens/Settings/AccountSettings.tsx:121
 #: src/screens/Settings/AccountSettings.tsx:125
-#: src/screens/Signup/StepInfo/index.tsx:237
+#: src/screens/Signup/StepInfo/index.tsx:238
 #: src/view/com/modals/DeleteAccount.tsx:239
 #: src/view/com/modals/DeleteAccount.tsx:246
 msgid "Password"
@@ -6815,7 +6823,7 @@ msgid "Person toggle"
 msgstr "Pertsona txandakatzea"
 
 #: src/lib/interests.ts:68
-#: src/screens/Onboarding/index.tsx:59
+#: src/screens/Onboarding/index.tsx:77
 msgid "Pets"
 msgstr "Etxe-animaliak"
 
@@ -6920,7 +6928,7 @@ msgid "Please choose your handle."
 msgstr "Mesedez, zure handle-a aukeratu"
 
 #: src/screens/Signup/state.ts:281
-#: src/screens/Signup/StepInfo/index.tsx:124
+#: src/screens/Signup/StepInfo/index.tsx:125
 msgid "Please choose your password."
 msgstr "Mesedez, zure pasahitza aukeratu"
 
@@ -6933,7 +6941,7 @@ msgid "Please complete the verification captcha."
 msgstr "Mesedez, bete egiaztapen-captcha."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:102
-#: src/screens/Signup/StepInfo/index.tsx:113
+#: src/screens/Signup/StepInfo/index.tsx:114
 msgid "Please double-check that you have entered your email address correctly."
 msgstr "Egiaztatu zure e-posta helbidea zuzen idatzi duzula."
 
@@ -6981,11 +6989,11 @@ msgid "Please enter the security code we sent to your previous email address."
 msgstr "Mesedez, sartu zure aurreko helbide elektronikora bidali dizugun segurtasun-kodea."
 
 #: src/screens/Signup/state.ts:265
-#: src/screens/Signup/StepInfo/index.tsx:95
+#: src/screens/Signup/StepInfo/index.tsx:96
 msgid "Please enter your email."
 msgstr "Mesedez, sartu zure helbide elektronikoa."
 
-#: src/screens/Signup/StepInfo/index.tsx:88
+#: src/screens/Signup/StepInfo/index.tsx:89
 msgid "Please enter your invite code."
 msgstr "Mesedez, sartu zure gonbidapen kodea."
 
@@ -6993,7 +7001,7 @@ msgstr "Mesedez, sartu zure gonbidapen kodea."
 msgid "Please enter your new email address."
 msgstr "Mesedez, sartu zure helbide elektroniko berria."
 
-#: src/screens/Login/LoginForm.tsx:99
+#: src/screens/Login/LoginForm.tsx:102
 msgid "Please enter your password"
 msgstr "Mesedez, sartu zure pasahitza"
 
@@ -7001,7 +7009,7 @@ msgstr "Mesedez, sartu zure pasahitza"
 msgid "Please enter your password as well:"
 msgstr "Mesedez, sartu zure pasahitza ere:"
 
-#: src/screens/Login/LoginForm.tsx:94
+#: src/screens/Login/LoginForm.tsx:97
 msgid "Please enter your username"
 msgstr "Mesedez, sartu zure erabiltzaile-izena"
 
@@ -7061,7 +7069,7 @@ msgid "Please write your message below:"
 msgstr "Mesedez, idatzi zure mezua jarraian:"
 
 #: src/lib/interests.ts:70
-#: src/screens/Onboarding/index.tsx:65
+#: src/screens/Onboarding/index.tsx:83
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:232
 msgid "Politics"
 msgstr "Politika"
@@ -7278,7 +7286,7 @@ msgstr "Bideoa prozesatzen..."
 
 #: src/lib/api/index.ts:74
 #: src/lib/api/index.ts:402
-#: src/screens/Login/ForgotPasswordForm.tsx:153
+#: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr "Prozesatzen..."
 
@@ -7460,7 +7468,7 @@ msgstr "Aipamenak"
 msgid "Quotes of this post"
 msgstr "Post honen aipamenak"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:623
 msgid "Rate limit exceeded – you've tried to change your handle too many times in a short period. Please wait a minute before trying again."
 msgstr "Saiakera muga gainditu da. Gehiegitan saiatu zara handle-a aldatzen denbora laburrean. Mesedez, itxaron minutu bat berriro saiatu aurretik."
 
@@ -8041,7 +8049,7 @@ msgstr "Eskatu aukerazko testua argitaratu aurretik"
 msgid "Require an email code to sign in to your account."
 msgstr "Eskatu posta-kode bat zure kontuan saioa hasteko."
 
-#: src/screens/Signup/StepInfo/index.tsx:186
+#: src/screens/Signup/StepInfo/index.tsx:187
 msgid "Required for this provider"
 msgstr "Beharrezkoa hornitzaile honetarako"
 
@@ -8080,7 +8088,7 @@ msgstr "Berrezarri kodea"
 msgid "Reset onboarding state"
 msgstr "Berrezarri sartze-egoera"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:82
+#: src/screens/Login/ForgotPasswordForm.tsx:83
 msgid "Reset password"
 msgstr "Berrezarri pasahitza"
 
@@ -8089,7 +8097,7 @@ msgstr "Berrezarri pasahitza"
 msgid "Reset Stored Environment Config"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:326
+#: src/screens/Login/LoginForm.tsx:329
 msgid "Retries signing in"
 msgstr "Saioa hasi berriro"
 
@@ -8105,8 +8113,8 @@ msgstr "Azken ekintza berriro saiatzen da, errorea izan duena"
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:55
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:58
 #: src/components/StarterPack/ProfileStarterPacks.tsx:343
-#: src/screens/Login/LoginForm.tsx:325
-#: src/screens/Login/LoginForm.tsx:332
+#: src/screens/Login/LoginForm.tsx:328
+#: src/screens/Login/LoginForm.tsx:335
 #: src/screens/Messages/ChatList.tsx:292
 #: src/screens/Messages/components/MessageListError.tsx:25
 #: src/screens/Messages/Inbox.tsx:219
@@ -8140,7 +8148,7 @@ msgstr "Hasierako orrira itzultzen da"
 
 #: src/screens/Profile/ProfileFeed/index.tsx:91
 #: src/screens/ProfileList/components/ErrorScreen.tsx:35
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:577
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:582
 #: src/screens/VideoFeed/index.tsx:1150
 #: src/view/screens/NotFound.tsx:60
 msgid "Returns to previous page"
@@ -8186,7 +8194,7 @@ msgstr ""
 #: src/screens/Profile/Header/EditProfileDialog.tsx:236
 #: src/screens/Profile/Header/EditProfileDialog.tsx:250
 #: src/screens/SavedFeeds.tsx:120
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:269
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:274
 #: src/view/com/composer/GifAltText.tsx:193
 #: src/view/com/composer/GifAltText.tsx:202
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:62
@@ -8222,7 +8230,7 @@ msgstr ""
 msgid "Save image"
 msgstr "Gorde irudia"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:255
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:260
 msgid "Save new handle"
 msgstr "Gorde handle berria"
 
@@ -8264,7 +8272,7 @@ msgid "Say hello!"
 msgstr "Esan kaixo!"
 
 #: src/lib/interests.ts:71
-#: src/screens/Onboarding/index.tsx:64
+#: src/screens/Onboarding/index.tsx:82
 msgid "Science"
 msgstr "Zientzia"
 
@@ -8463,7 +8471,7 @@ msgstr "Aukeratu {langName}"
 msgid "Select a color"
 msgstr "Aukeratu kolore bat"
 
-#: src/components/EnvConfigIndicator.tsx:221
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8574,7 +8582,7 @@ msgstr "Aukeratu zein hizkuntza erabili aplikazioaren interfazerako."
 msgid "Select which languages you want your subscribed feeds to include. If none are selected, all languages will be shown."
 msgstr "Aukeratu harpidetutako feedak zein hizkuntzatan nahi dituzun. Bat ere ez bada aukeratzen, hizkuntza guztiak erakutsiko dira."
 
-#: src/screens/Signup/StepInfo/index.tsx:279
+#: src/screens/Signup/StepInfo/index.tsx:280
 msgid "Select your date of birth"
 msgstr "Aukeratu zure jaioteguna"
 
@@ -8665,7 +8673,7 @@ msgstr "Kontua ezabatzeko baieztapen-kodea duen mezu elektronikoa bidaltzen du"
 msgid "Sends the feedback about the application"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:172
+#: src/view/com/auth/server-input/index.tsx:180
 msgid "Server address"
 msgstr "Zerbitzariaren helbidea"
 
@@ -8693,7 +8701,7 @@ msgstr "Ezarri pasahitz berria"
 msgid "Set up your account"
 msgstr "Konfiguratu zure kontua"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:111
+#: src/screens/Login/ForgotPasswordForm.tsx:112
 msgid "Sets email for password reset"
 msgstr "Pasahitza berrezartzeko posta elektronikoa ezartzen du"
 
@@ -8912,7 +8920,7 @@ msgstr "Erakutsi horrelako gehiago"
 msgid "Show more replies"
 msgstr "Erakutsi erantzun gehiago"
 
-#: src/screens/PostThread/components/ThreadItemPost.tsx:363
+#: src/screens/PostThread/components/ThreadItemPost.tsx:365
 #: src/view/com/posts/PostFeedItem.tsx:447
 msgid "Show original version"
 msgstr ""
@@ -8986,7 +8994,7 @@ msgstr "Edukia erakusten du"
 #: src/screens/Hashtag.tsx:225
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
-#: src/screens/Login/LoginForm.tsx:181
+#: src/screens/Login/LoginForm.tsx:184
 #: src/screens/Search/SearchResults.tsx:262
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
@@ -9105,7 +9113,7 @@ msgid "Sodium content must be a number"
 msgstr ""
 
 #: src/lib/interests.ts:58
-#: src/screens/Onboarding/index.tsx:68
+#: src/screens/Onboarding/index.tsx:86
 msgid "Software Dev"
 msgstr "Software Garatzailea"
 
@@ -9206,7 +9214,7 @@ msgid "Spam; excessive mentions or replies"
 msgstr "Spama; gehiegizko aipamen edo erantzunak"
 
 #: src/lib/interests.ts:72
-#: src/screens/Onboarding/index.tsx:58
+#: src/screens/Onboarding/index.tsx:76
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:230
 msgid "Sports"
 msgstr "Kirolak"
@@ -9487,7 +9495,7 @@ msgid "Teach our algorithm what you like"
 msgstr "Irakatsi gure algoritmoari gustatzen zaizuna"
 
 #: src/lib/interests.ts:73
-#: src/screens/Onboarding/index.tsx:67
+#: src/screens/Onboarding/index.tsx:85
 msgid "Tech"
 msgstr "Teknologia"
 
@@ -9561,7 +9569,7 @@ msgstr "Eskerrik asko, zure helbide elektronikoa behar bezala egiaztatu duzu. Le
 msgid "Thanks! You're all set."
 msgstr "Eskerrik asko! Dena prest duzu."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:503
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:508
 msgid "That contains the following:"
 msgstr "Horrek honako hauek ditu:"
 
@@ -9745,7 +9753,7 @@ msgstr "Arazo bat izan da aplikazio pasahitzak eskuratzean"
 msgid "There was an issue fetching your lists. Tap here to try again."
 msgstr "Arazo bat izan da zure zerrendak eskuratzean. Sakatu hemen berriro saiatzeko."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:109
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:114
 msgid "There was an issue fetching your service info"
 msgstr "Arazo bat izan da zure zerbitzu informazioa eskuratzean"
 
@@ -9911,7 +9919,7 @@ msgstr "Feed hau hutsik dago."
 msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:611
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:616
 msgid "This handle is reserved. Please try a different one."
 msgstr "Handle hau erreserbatuta dago. Mesedez, saiatu beste bat."
 
@@ -9992,7 +10000,7 @@ msgstr "Erantzun hau zure hariaren beheko aldean ezkutuko atal batean ordenatuko
 msgid "This service has not provided terms of service or a privacy policy."
 msgstr "Zerbitzu honek ez du zerbitzu-baldintzarik edo pribatutasun-politikarik eman."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:472
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:477
 msgid "This should create a domain record at:"
 msgstr "Honek domeinu-erregistro bat sortu beharko luke hemen:"
 
@@ -10214,7 +10222,7 @@ msgstr ""
 msgid "Type your message here"
 msgstr "Idatzi zure mezua hemen"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:448
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:453
 msgid "Type:"
 msgstr "Mota:"
 
@@ -10232,9 +10240,9 @@ msgstr "Ezin da konektatu. Mesedez, egiaztatu Interneteko konexioa eta saiatu be
 msgid "Unable to contact your service. Please check your internet connection and try again."
 msgstr "Ezin da zure zerbitzuarekin harremanetan jarri. Mesedez, egiaztatu zure interneteko konexioa eta saiatu berriro."
 
-#: src/screens/Login/ForgotPasswordForm.tsx:70
+#: src/screens/Login/ForgotPasswordForm.tsx:71
 #: src/screens/Login/index.tsx:93
-#: src/screens/Login/LoginForm.tsx:169
+#: src/screens/Login/LoginForm.tsx:172
 #: src/screens/Login/SetNewPasswordForm.tsx:81
 #: src/screens/Signup/index.tsx:78
 msgid "Unable to contact your service. Please check your Internet connection."
@@ -10507,8 +10515,8 @@ msgstr "Eguneratu <0>{displayName}</0> Zerrendetan"
 msgid "Update email"
 msgstr "Eguneratu posta elektronikoa"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:544
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:565
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:549
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:570
 msgid "Update to {domain}"
 msgstr "Eguneratu {domain}ra"
 
@@ -10534,7 +10542,7 @@ msgstr "Eguneratzen..."
 msgid "Upload a photo instead"
 msgstr "Kargatu argazki bat ordez"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:488
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:493
 msgid "Upload a text file to:"
 msgstr "Kargatu testu-fitxategi bat hona:"
 
@@ -10582,8 +10590,6 @@ msgstr ""
 msgid "URL (optional)"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:176
-#: src/components/EnvConfigIndicator.tsx:184
 #: src/screens/Settings/Settings.tsx:772
 msgid "Use"
 msgstr ""
@@ -10597,11 +10603,11 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:178
-msgid "Use custom domain to retrieve server domains"
+#: src/components/EnvConfigIndicator.tsx:179
+msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:576
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:581
 msgid "Use default provider"
 msgstr "Erabili hornitzaile lehenetsia"
 
@@ -10696,7 +10702,7 @@ msgstr "Erabiltzaile-izenak ezin du marratxo batekin hasi edo amaitu"
 msgid "Username must only contain letters (a-z), numbers, and hyphens"
 msgstr "Erabiltzaile-izenak letrak (a-z), zenbakiak eta marratxoak bakarrik izan behar ditu"
 
-#: src/screens/Login/LoginForm.tsx:203
+#: src/screens/Login/LoginForm.tsx:206
 msgid "Username or email address"
 msgstr "Erabiltzaile-izena edo helbide elektronikoa"
 
@@ -10721,7 +10727,7 @@ msgstr "\"{0}\"-n dauden erabiltzaileak"
 msgid "Users you follow"
 msgstr "Nik jarraitzen ditudan erabiltzaileak"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:454
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:459
 msgid "Value:"
 msgstr "Balioa:"
 
@@ -10765,8 +10771,8 @@ msgctxt "action"
 msgid "Verify code"
 msgstr "Egiaztatu kodea"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:546
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:567
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:551
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:572
 msgid "Verify DNS Record"
 msgstr "Egiaztatu DNS erregistroa"
 
@@ -10784,8 +10790,8 @@ msgstr "Egiaztatu posta elektronikoko elkarrizketa-koadroa"
 msgid "Verify now"
 msgstr "Egiaztatu orain"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:547
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:569
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:552
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:574
 msgid "Verify Text File"
 msgstr "Egiaztatu testu-fitxategia"
 
@@ -10834,7 +10840,7 @@ msgid "Video from {0}: {text}"
 msgstr "{0}-ren bideoa: {text}"
 
 #: src/lib/interests.ts:62
-#: src/screens/Onboarding/index.tsx:70
+#: src/screens/Onboarding/index.tsx:88
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:234
 msgid "Video Games"
 msgstr "Bideo-jokoak"
@@ -11306,11 +11312,11 @@ msgid "Write your review"
 msgstr ""
 
 #: src/lib/interests.ts:75
-#: src/screens/Onboarding/index.tsx:56
+#: src/screens/Onboarding/index.tsx:74
 msgid "Writers"
 msgstr "Idazleak"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:372
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:377
 msgid "Wrong DID returned from server. Received: {0}"
 msgstr "Zerbitzariak DID ez zuzena erantzun du. Jasotakoa: {0}"
 
@@ -11413,7 +11419,7 @@ msgstr "Egiaztatuta zaude"
 msgid "You are verified. You will lose your verification status if you change your display name. <0>Learn more.</0>"
 msgstr "Egiaztatuta zaude. Zure egiaztapen-egoera galduko duzu bistaratzeko izena aldatzen baduzu. <0>Ikasi gehiago.</0>"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:210
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
 msgid "You are verified. You will lose your verification status if you change your handle. <0>Learn more.</0>"
 msgstr "Egiaztatuta zaude. Zure egiaztapen-egoera galduko duzu erabiltzaile izena aldatzen baduzu. <0>Ikasi gehiago.</0>"
 
@@ -11810,7 +11816,7 @@ msgstr ""
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr "Zure apelazioa bidali da. Zure apelazioa onartzen bada, mezu elektroniko bat jasoko duzu."
 
-#: src/screens/Signup/StepInfo/index.tsx:266
+#: src/screens/Signup/StepInfo/index.tsx:267
 msgid "Your birth date"
 msgstr "Zure jaiotze-data"
 
@@ -11826,7 +11832,7 @@ msgstr "Zure txatak desaktibatu dira"
 msgid "Your choice will be remembered for future links. You can change it at any time in settings."
 msgstr "Zure aukera etorkizuneko esteketarako gogoratuko da. Edozein unetan alda dezakezu ezarpenetan."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:531
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:536
 msgid "Your current handle <0>{0}</0> will automatically remain reserved for you. You can switch back to it at any time from this account."
 msgstr "Zure oraingo handlea <0>{0}</0> zuretzako automatikoki erreserbatuko da. Edozein momentutan berriro aukeratu dezakezu kontu honetatik."
 
@@ -11840,10 +11846,10 @@ msgstr "Zure adin deklaratua 18 urtetik beherakoa da. Beheko ezarpen batzuk desg
 msgid "Your email"
 msgstr "Zure helbide elektronikoa"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:53
+#: src/screens/Login/ForgotPasswordForm.tsx:54
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:83
 #: src/screens/Signup/state.ts:273
-#: src/screens/Signup/StepInfo/index.tsx:102
+#: src/screens/Signup/StepInfo/index.tsx:103
 msgid "Your email appears to be invalid."
 msgstr "Zure helbide elektronikoa ez dirudi zuzena denik."
 
@@ -11863,7 +11869,7 @@ msgstr "Zure jarraitzaileak"
 msgid "Your following feed is empty! Follow more users to see what's happening."
 msgstr "Zure jarraitzen feeda hutsik dago! Jarraitu erabiltzaile gehiago zer gertatzen ari den ikusteko."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:247
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:252
 msgid "Your full handle will be <0>@{0}</0>"
 msgstr "Zure handle osoa <0>@{0}</0> da"
 
@@ -11901,7 +11907,7 @@ msgstr "Zure mutututako hitzak"
 msgid "Your password has been changed successfully! Please use your new password when you sign in to {appName} from now on."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:131
+#: src/screens/Signup/StepInfo/index.tsx:132
 msgid "Your password must be at least 8 characters long."
 msgstr "Pasahitzak 8 karaktereko luzera izan behar du gutxienez."
 

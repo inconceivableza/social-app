@@ -55,7 +55,7 @@ msgstr "이 계정에 {0, plural, other {#개}}의 라벨이 지정됨"
 msgid "{0, plural, one {# label has} other {# labels have}} been placed on this content"
 msgstr "이 콘텐츠에 {0, plural, other {#개}}의 라벨이 지정됨"
 
-#: src/screens/Post/PostLikedBy.tsx:45
+#: src/screens/Post/PostLikedBy.tsx:44
 msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, other {# 좋아요}}"
 
@@ -150,8 +150,8 @@ msgstr "{0, plural, other {+#명}}"
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
-#: src/view/com/auth/server-input/index.tsx:138
 #: src/view/com/auth/server-input/index.tsx:140
+#: src/view/com/auth/server-input/index.tsx:142
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
 #: src/view/com/composer/Composer.tsx:901
@@ -186,16 +186,20 @@ msgctxt "Name of app icon variant"
 msgid "{0} Classic™"
 msgstr ""
 
+#: src/view/com/auth/server-input/index.tsx:240
+msgid "{0} doesn't currently support custom hosting for accounts. You can sign up with the default {1} Social option."
+msgstr ""
+
 #: src/screens/Profile/Header/Metrics.tsx:49
 msgid "{0} following"
 msgstr "{0} 팔로우 중"
 
-#: src/view/com/auth/server-input/index.tsx:217
+#: src/view/com/auth/server-input/index.tsx:227
 msgid "{0} is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:153
-msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1}Social option."
+#: src/view/com/auth/server-input/index.tsx:161
+msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1} Social option."
 msgstr ""
 
 #: src/components/ProgressGuide/List.tsx:55
@@ -624,7 +628,7 @@ msgstr "⚠잘못된 핸들"
 msgid "24 hours"
 msgstr "24시간"
 
-#: src/screens/Login/LoginForm.tsx:270
+#: src/screens/Login/LoginForm.tsx:273
 msgid "2FA Confirmation"
 msgstr "2단계 인증"
 
@@ -698,7 +702,7 @@ msgid "Accessibility Settings"
 msgstr "접근성 설정"
 
 #: src/Navigation.tsx:417
-#: src/screens/Login/LoginForm.tsx:196
+#: src/screens/Login/LoginForm.tsx:199
 #: src/screens/Settings/AccountSettings.tsx:51
 #: src/screens/Settings/Settings.tsx:201
 #: src/screens/Settings/Settings.tsx:204
@@ -918,7 +922,7 @@ msgstr ""
 msgid "Add the default feed of only people you follow"
 msgstr "내가 팔로우하는 사용자의 기본 피드만 추가하기"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:422
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:427
 msgid "Add the following DNS record to your domain:"
 msgstr "도메인에 다음 DNS 레코드를 추가하세요:"
 
@@ -1074,7 +1078,7 @@ msgstr "답글을 허용할 대상"
 msgid "Allows access to direct messages"
 msgstr "다이렉트 메시지 접근 허용"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:175
+#: src/screens/Login/ForgotPasswordForm.tsx:176
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:237
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:243
 msgid "Already have a code?"
@@ -1215,7 +1219,7 @@ msgid "and"
 msgstr "및"
 
 #: src/lib/interests.ts:52
-#: src/screens/Onboarding/index.tsx:60
+#: src/screens/Onboarding/index.tsx:78
 msgid "Animals"
 msgstr "동물"
 
@@ -1392,7 +1396,7 @@ msgid "Are you writing in <0>{suggestedLanguageName}</0>?"
 msgstr "<0>{suggestedLanguageName}</0>(으)로 쓰고 있나요?"
 
 #: src/lib/interests.ts:53
-#: src/screens/Onboarding/index.tsx:54
+#: src/screens/Onboarding/index.tsx:72
 msgid "Art"
 msgstr "예술"
 
@@ -1464,10 +1468,10 @@ msgstr "사용 가능"
 #: src/components/moderation/LabelsOnMeDialog.tsx:318
 #: src/screens/Login/ChooseAccountForm.tsx:90
 #: src/screens/Login/ChooseAccountForm.tsx:95
-#: src/screens/Login/ForgotPasswordForm.tsx:127
-#: src/screens/Login/ForgotPasswordForm.tsx:133
-#: src/screens/Login/LoginForm.tsx:312
-#: src/screens/Login/LoginForm.tsx:318
+#: src/screens/Login/ForgotPasswordForm.tsx:128
+#: src/screens/Login/ForgotPasswordForm.tsx:134
+#: src/screens/Login/LoginForm.tsx:315
+#: src/screens/Login/LoginForm.tsx:321
 #: src/screens/Login/SetNewPasswordForm.tsx:168
 #: src/screens/Login/SetNewPasswordForm.tsx:174
 #: src/screens/Messages/components/ChatDisabled.tsx:148
@@ -1644,7 +1648,7 @@ msgid "Blur images and filter from feeds"
 msgstr "이미지 블러 및 피드에서 필터링"
 
 #: src/lib/interests.ts:54
-#: src/screens/Onboarding/index.tsx:61
+#: src/screens/Onboarding/index.tsx:79
 msgid "Books"
 msgstr "책"
 
@@ -1760,8 +1764,8 @@ msgstr "카메라"
 #: src/screens/Search/Shell.tsx:430
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:80
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:87
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:85
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:92
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:248
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:254
 #: src/screens/Settings/Settings.tsx:334
@@ -1855,8 +1859,8 @@ msgstr "앱 아이콘을 \"{0}\"(으)로 변경합니다"
 msgid "Change app language"
 msgstr "앱 언어 변경"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:96
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:100
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:101
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:105
 msgid "Change Handle"
 msgstr "핸들 변경"
 
@@ -1877,7 +1881,7 @@ msgstr "비밀번호 변경 대화 상자"
 msgid "Change report reason"
 msgstr "신고 이유 변경"
 
-#: src/components/EnvConfigIndicator.tsx:201
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1964,7 +1968,7 @@ msgstr "대화"
 msgid "Check my status"
 msgstr "내 상태 확인"
 
-#: src/screens/Login/LoginForm.tsx:303
+#: src/screens/Login/LoginForm.tsx:306
 msgid "Check your email for a sign in code and enter it here."
 msgstr "이메일에서 로그인 코드를 확인한 후 여기에 입력하세요."
 
@@ -1980,7 +1984,7 @@ msgstr ""
 msgid "Cholesterol content must be a number"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:405
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
 msgid "Choose domain verification method"
 msgstr "도메인 인증 방법 선택"
 
@@ -2008,7 +2012,7 @@ msgstr "맞춤 피드를 구동할 알고리즘을 선택하세요."
 msgid "Choose this color as your avatar"
 msgstr "이 색상을 아바타로 선택"
 
-#: src/view/com/auth/server-input/index.tsx:130
+#: src/view/com/auth/server-input/index.tsx:132
 msgid "Choose your account provider"
 msgstr "계정 제공자 선택"
 
@@ -2016,7 +2020,7 @@ msgstr "계정 제공자 선택"
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "나만의 타임라인을 선택하세요! 커뮤니티에서 만든 피드를 통해 마음에 드는 콘텐츠를 찾을 수 있습니다."
 
-#: src/screens/Signup/StepInfo/index.tsx:250
+#: src/screens/Signup/StepInfo/index.tsx:251
 msgid "Choose your password"
 msgstr "비밀번호를 입력하세요"
 
@@ -2086,7 +2090,7 @@ msgstr "클릭하여 {tag}에 대한 태그 메뉴를 엽니다"
 msgid "Click to retry failed message"
 msgstr "클릭하여 메시지 다시 보내기"
 
-#: src/screens/Onboarding/index.tsx:63
+#: src/screens/Onboarding/index.tsx:81
 msgid "Climate"
 msgstr "기후"
 
@@ -2229,12 +2233,12 @@ msgid "Color theme"
 msgstr "색상 테마"
 
 #: src/lib/interests.ts:55
-#: src/screens/Onboarding/index.tsx:69
+#: src/screens/Onboarding/index.tsx:87
 msgid "Comedy"
 msgstr "코미디"
 
 #: src/lib/interests.ts:56
-#: src/screens/Onboarding/index.tsx:55
+#: src/screens/Onboarding/index.tsx:73
 msgid "Comics"
 msgstr "만화"
 
@@ -2341,7 +2345,7 @@ msgid "Confirm your location with GPS. Your location data is not tracked and doe
 msgstr "GPS로 위치를 확인하세요. 위치 데이터는 추적되지 않으며 기기 외부로 전송되지 않습니다."
 
 #: src/components/dialogs/EmailDialog/components/TokenField.tsx:36
-#: src/screens/Login/LoginForm.tsx:276
+#: src/screens/Login/LoginForm.tsx:279
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:188
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:192
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:144
@@ -2351,7 +2355,11 @@ msgstr "GPS로 위치를 확인하세요. 위치 데이터는 추적되지 않�
 msgid "Confirmation code"
 msgstr "인증 코드"
 
-#: src/screens/Login/LoginForm.tsx:339
+#: src/components/EnvConfigIndicator.tsx:176
+msgid "Connect"
+msgstr ""
+
+#: src/screens/Login/LoginForm.tsx:342
 msgid "Connecting..."
 msgstr "연결 중…"
 
@@ -2471,7 +2479,7 @@ msgstr "대화 삭제됨"
 msgid "Cook:"
 msgstr ""
 
-#: src/screens/Onboarding/index.tsx:72
+#: src/screens/Onboarding/index.tsx:90
 msgid "Cooking"
 msgstr "요리"
 
@@ -2537,13 +2545,13 @@ msgstr "작성자 DID 복사"
 msgid "Copy code"
 msgstr "코드 복사"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:507
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:512
 #: src/view/com/profile/ProfileMenu.tsx:447
 #: src/view/com/profile/ProfileMenu.tsx:450
 msgid "Copy DID"
 msgstr "DID 복사"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:439
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:444
 msgid "Copy host"
 msgstr "호스트 복사"
 
@@ -2596,7 +2604,7 @@ msgstr "게시물 텍스트 복사"
 msgid "Copy QR code"
 msgstr "QR 코드 복사"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:460
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:465
 msgid "Copy TXT record value"
 msgstr "TXT 레코드 값 복사"
 
@@ -2753,12 +2761,12 @@ msgid "Cuisine type"
 msgstr ""
 
 #: src/lib/interests.ts:57
-#: src/screens/Onboarding/index.tsx:57
+#: src/screens/Onboarding/index.tsx:75
 msgid "Culture"
 msgstr "문화"
 
-#: src/view/com/auth/server-input/index.tsx:146
-#: src/view/com/auth/server-input/index.tsx:147
+#: src/view/com/auth/server-input/index.tsx:149
+#: src/view/com/auth/server-input/index.tsx:151
 msgid "Custom"
 msgstr "사용자 지정"
 
@@ -2802,7 +2810,7 @@ msgstr "어두운 모드"
 msgid "Dark theme"
 msgstr "어두운 테마"
 
-#: src/screens/Signup/StepInfo/index.tsx:278
+#: src/screens/Signup/StepInfo/index.tsx:279
 msgid "Date of birth"
 msgstr "생년월일"
 
@@ -3085,8 +3093,8 @@ msgstr "표시 이름"
 msgid "Ditch the trolls and clickbait. Find real people and conversations that matter to you."
 msgstr "어그로와 섬네일 낚시는 이제 그만. 당신에게 의미 있는 진짜 사람들과 대화를 찾으세요."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:408
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
 msgid "DNS Panel"
 msgstr "DNS 패널"
 
@@ -3102,7 +3110,7 @@ msgstr "나체를 포함하지 않습니다."
 msgid "Doesn't include your account data with the feedback"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:523
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:528
 msgid "Domain verified!"
 msgstr "도메인을 확인했습니다."
 
@@ -3135,8 +3143,8 @@ msgstr "걱정 마세요! 모든 기존 메시지와 설정은 저장되며 성�
 #: src/screens/Onboarding/StepProfile/index.tsx:336
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:214
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:221
-#: src/view/com/auth/server-input/index.tsx:238
-#: src/view/com/auth/server-input/index.tsx:239
+#: src/view/com/auth/server-input/index.tsx:256
+#: src/view/com/auth/server-input/index.tsx:257
 #: src/view/com/composer/labels/LabelsBtn.tsx:223
 #: src/view/com/composer/labels/LabelsBtn.tsx:230
 #: src/view/com/composer/select-language/PostLanguageSelectDialog.tsx:303
@@ -3190,7 +3198,7 @@ msgstr "기간:"
 msgid "e.g. {defaultCustomDomain} or http://localhost:8100"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:237
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:242
 msgid "e.g. alice"
 msgstr "예: alice"
 
@@ -3198,7 +3206,7 @@ msgstr "예: alice"
 msgid "e.g. Alice Lastname"
 msgstr "예: 앨리스 라스트네임"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:392
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:397
 msgid "e.g. alice.com"
 msgstr "예: alice.com"
 
@@ -3333,7 +3341,7 @@ msgid "Edited"
 msgstr ""
 
 #: src/lib/interests.ts:59
-#: src/screens/Onboarding/index.tsx:62
+#: src/screens/Onboarding/index.tsx:80
 msgid "Education"
 msgstr "교육"
 
@@ -3342,7 +3350,7 @@ msgid "Either the creator of this list has blocked you or you have blocked the c
 msgstr "이 리스트의 작성자가 나를 차단했거나 내가 작성자를 차단했습니다."
 
 #: src/screens/Settings/AccountSettings.tsx:66
-#: src/screens/Signup/StepInfo/index.tsx:202
+#: src/screens/Signup/StepInfo/index.tsx:203
 msgid "Email"
 msgstr "이메일"
 
@@ -3355,7 +3363,7 @@ msgstr "이메일 2단계 인증을 비활성화했습니다"
 msgid "Email 2FA enabled"
 msgstr "이메일 2단계 인증 활성화됨"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:97
+#: src/screens/Login/ForgotPasswordForm.tsx:98
 msgid "Email address"
 msgstr "이메일 주소"
 
@@ -3490,15 +3498,15 @@ msgstr "코드 입력"
 msgid "Enter fullscreen"
 msgstr "전체화면으로 보기"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:386
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
 msgid "Enter the domain you want to use"
 msgstr "사용할 도메인 입력"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:117
+#: src/screens/Login/ForgotPasswordForm.tsx:118
 msgid "Enter the email you used to create your account. We'll send you a \"reset code\" so you can set a new password."
 msgstr "계정을 만들 때 사용한 이메일을 입력하세요. 새 비밀번호를 설정할 수 있도록 \"재설정 코드\"를 보내 드립니다."
 
-#: src/screens/Login/LoginForm.tsx:220
+#: src/screens/Login/LoginForm.tsx:223
 msgid "Enter the username or email address you used when you created your account"
 msgstr "계정을 만들 때 사용한 사용자 이름 또는 이메일 주소를 입력하세요"
 
@@ -3506,12 +3514,12 @@ msgstr "계정을 만들 때 사용한 사용자 이름 또는 이메일 주소�
 msgid "Enter your birth date"
 msgstr "생년월일을 입력하세요"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:103
-#: src/screens/Signup/StepInfo/index.tsx:222
+#: src/screens/Login/ForgotPasswordForm.tsx:104
+#: src/screens/Signup/StepInfo/index.tsx:223
 msgid "Enter your email address"
 msgstr "이메일 주소를 입력하세요"
 
-#: src/screens/Login/LoginForm.tsx:245
+#: src/screens/Login/LoginForm.tsx:248
 msgid "Enter your password"
 msgstr "비밀번호를 입력합니다"
 
@@ -3735,7 +3743,7 @@ msgstr "이모티콘 반응을 추가하지 못했습니다"
 msgid "Failed to add to starter pack"
 msgstr "스타터 팩에 추가하지 못했습니다"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:605
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:610
 msgid "Failed to change handle. Please try again."
 msgstr "핸들을 변경하지 못했습니다. 다시 시도해 주세요."
 
@@ -3921,7 +3929,7 @@ msgstr "동영상을 업로드하지 못했습니다"
 msgid "Failed to verify email, please try again."
 msgstr "이메일을 인증하지 못했습니다. 다시 시도해 주세요."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:376
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:381
 msgid "Failed to verify handle. Please try again."
 msgstr "핸들을 인증하지 못했습니다. 다시 시도해 주세요."
 
@@ -4072,7 +4080,7 @@ msgstr "마음 맞는 사람 찾기"
 msgid "Finish"
 msgstr "완료"
 
-#: src/screens/Onboarding/index.tsx:66
+#: src/screens/Onboarding/index.tsx:84
 msgid "Fitness"
 msgstr "건강"
 
@@ -4238,7 +4246,7 @@ msgid "Font size"
 msgstr "글꼴 크기"
 
 #: src/lib/interests.ts:61
-#: src/screens/Onboarding/index.tsx:71
+#: src/screens/Onboarding/index.tsx:89
 msgid "Food"
 msgstr "음식"
 
@@ -4280,11 +4288,11 @@ msgstr "잡음은 잊어라"
 msgid "Forgot Password"
 msgstr "비밀번호 분실"
 
-#: src/screens/Login/LoginForm.tsx:250
+#: src/screens/Login/LoginForm.tsx:253
 msgid "Forgot password?"
 msgstr "비밀번호를 잊으셨나요?"
 
-#: src/screens/Login/LoginForm.tsx:261
+#: src/screens/Login/LoginForm.tsx:264
 msgid "Forgot?"
 msgstr "분실"
 
@@ -4524,7 +4532,7 @@ msgstr "{0} 님과의 대화로 이동합니다"
 msgid "Go to feed"
 msgstr "피드로 이동"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:169
+#: src/screens/Login/ForgotPasswordForm.tsx:170
 msgid "Go to next"
 msgstr "다음"
 
@@ -4564,16 +4572,16 @@ msgstr "절반은 완료!"
 msgid "Handle"
 msgstr "핸들"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:609
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:614
 msgid "Handle already taken. Please try a different one."
 msgstr "이미 사용 중인 핸들입니다. 다른 핸들을 사용하세요."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:197
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:360
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:202
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:365
 msgid "Handle changed!"
 msgstr "핸들을 변경했습니다!"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:613
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
 msgid "Handle too long. Please try a shorter one."
 msgstr "핸들이 너무 깁니다. 더 짧은 핸들을 사용하세요."
 
@@ -4756,12 +4764,12 @@ msgstr "잠깐! 동영상에 대한 접근 권한이 점차적으로 제공되�
 msgid "Home"
 msgstr "홈"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:433
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:438
 msgid "Host:"
 msgstr "호스트:"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:86
-#: src/screens/Login/LoginForm.tsx:185
+#: src/screens/Login/ForgotPasswordForm.tsx:87
+#: src/screens/Login/LoginForm.tsx:188
 msgid "Hosting provider"
 msgstr "호스팅 제공자"
 
@@ -4787,8 +4795,8 @@ msgstr ""
 msgid "I have a code"
 msgstr "코드를 가지고 있습니다"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:294
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:300
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:299
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:305
 msgid "I have my own domain"
 msgstr "내 도메인을 가지고 있습니다"
 
@@ -4809,7 +4817,7 @@ msgstr "해당 국가의 법률에 따라 아직 성인이 아닌 경우 부모 
 msgid "If you delete this list, you won't be able to recover it."
 msgstr "이 리스트를 삭제하면 다시 복구할 수 없습니다."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:276
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
 msgid "If you have your own domain, you can use that as your handle. This lets you self-verify your identity. <0>Learn more here.</0>"
 msgstr "자체 도메인이 있는 경우 이를 핸들로 사용할 수 있으며, 이를 통해 본인임을 다른 사용자에게 알릴 수 있습니다. <0>더 알아보기</0>"
 
@@ -4834,7 +4842,7 @@ msgstr "비밀번호를 변경하려면 본인 계정 확인을 위해 인증 �
 msgid "If you want to restrict who can receive notifications for your account's activity, you can change this in <0>Settings → Privacy and Security</0>."
 msgstr "내 계정의 활동에 대한 알림을 받을 수 있는 사용자를 제한하려면 <0>설정 → 개인정보 및 보안</0>에서 변경할 수 있습니다."
 
-#: src/view/com/auth/server-input/index.tsx:213
+#: src/view/com/auth/server-input/index.tsx:223
 msgid "If you're a developer, you can host your own server."
 msgstr "개발자라면 직접 서버를 호스팅할 수 있습니다."
 
@@ -4917,7 +4925,7 @@ msgstr "부적절한 메시지 또는 노골적인 링크"
 msgid "Inbox zero!"
 msgstr "수신함 제로!"
 
-#: src/screens/Login/LoginForm.tsx:164
+#: src/screens/Login/LoginForm.tsx:167
 msgid "Incorrect username or password"
 msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
 
@@ -4952,7 +4960,7 @@ msgstr "새 비밀번호를 입력합니다"
 msgid "Input password for account deletion"
 msgstr "계정을 삭제하기 위해 비밀번호를 입력합니다"
 
-#: src/screens/Login/LoginForm.tsx:291
+#: src/screens/Login/LoginForm.tsx:294
 msgid "Input the code which has been emailed to you"
 msgstr "이메일로 전송된 코드를 입력합니다"
 
@@ -4991,12 +4999,12 @@ msgstr "활동 알림 소개"
 msgid "Introducing saved posts AKA bookmarks"
 msgstr "새로운 저장된 게시물(일명 '북마크')을 만나보세요"
 
-#: src/screens/Login/LoginForm.tsx:156
+#: src/screens/Login/LoginForm.tsx:159
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:70
 msgid "Invalid 2FA confirmation code."
 msgstr "잘못된 2단계 인증 코드입니다."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:615
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:620
 msgid "Invalid handle. Please try a different one."
 msgstr "잘못된 핸들입니다. 다른 핸들을 사용하세요."
 
@@ -5028,7 +5036,7 @@ msgstr "잘못된 인증 코드"
 msgid "Invite a Friend"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:172
+#: src/screens/Signup/StepInfo/index.tsx:173
 msgid "Invite code"
 msgstr "초대 코드"
 
@@ -5073,7 +5081,7 @@ msgstr ""
 msgid "ISBN (optional)"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:298
+#: src/screens/Signup/StepInfo/index.tsx:299
 msgid "It's correct"
 msgstr "올바른 주소입니다"
 
@@ -5110,7 +5118,7 @@ msgid "Join the conversation"
 msgstr "대화에 참여하기"
 
 #: src/lib/interests.ts:63
-#: src/screens/Onboarding/index.tsx:52
+#: src/screens/Onboarding/index.tsx:70
 msgid "Journalism"
 msgstr "저널리즘"
 
@@ -5200,8 +5208,8 @@ msgstr "최신"
 #: src/components/verification/VerifierDialog.tsx:138
 #: src/screens/Moderation/VerificationSettings.tsx:48
 #: src/screens/Profile/Header/EditProfileDialog.tsx:349
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:220
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:286
 msgctxt "english-only-resource"
 msgid "Learn more"
 msgstr "더 알아보기"
@@ -5218,7 +5226,7 @@ msgstr ""
 msgid "Learn more about age assurance"
 msgstr "연령 확인에 대해 자세히 알아보기"
 
-#: src/view/com/auth/server-input/index.tsx:224
+#: src/view/com/auth/server-input/index.tsx:234
 msgid "Learn more about self hosting your PDS."
 msgstr "PDS 셀프 호스팅에 대해 자세히 알아보세요."
 
@@ -5256,7 +5264,7 @@ msgid "Learn more in your <0>account settings.</0>"
 msgstr "<0>계정 설정</0>에서 자세히 알아보세요."
 
 #: src/components/moderation/ContentHider.tsx:247
-#: src/view/com/auth/server-input/index.tsx:226
+#: src/view/com/auth/server-input/index.tsx:236
 msgid "Learn more."
 msgstr "더 알아보기"
 
@@ -5359,7 +5367,7 @@ msgstr "이 라벨러에 좋아요 표시"
 msgid "Liked by"
 msgstr "좋아요 표시한 사용자"
 
-#: src/screens/Post/PostLikedBy.tsx:42
+#: src/screens/Post/PostLikedBy.tsx:41
 #: src/screens/Profile/ProfileLabelerLikedBy.tsx:32
 #: src/view/screens/ProfileFeedLikedBy.tsx:32
 msgid "Liked By"
@@ -5955,7 +5963,7 @@ msgid "Name or Description Violates Community Standards"
 msgstr "이름 또는 설명이 커뮤니티 기준을 위반함"
 
 #: src/lib/interests.ts:66
-#: src/screens/Onboarding/index.tsx:53
+#: src/screens/Onboarding/index.tsx:71
 msgid "Nature"
 msgstr "자연"
 
@@ -5968,8 +5976,8 @@ msgstr "{0}(으)로 이동"
 msgid "Navigate to starter pack"
 msgstr "스타터 팩으로 이동하기"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:170
-#: src/screens/Login/LoginForm.tsx:346
+#: src/screens/Login/ForgotPasswordForm.tsx:171
+#: src/screens/Login/LoginForm.tsx:349
 msgid "Navigates to the next screen"
 msgstr "다음 화면으로 이동합니다"
 
@@ -5995,7 +6003,7 @@ msgstr ""
 msgid "Never lose access to your followers or data."
 msgstr "팔로워 또는 데이터에 대한 접근 권한을 잃지 않습니다."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:585
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:590
 msgid "Nevermind, create a handle for me"
 msgstr "취소하고 내 핸들 만들기"
 
@@ -6043,9 +6051,9 @@ msgstr "새 팔로워 알림"
 msgid "New followers"
 msgstr "새 팔로워"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:228
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:236
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:233
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:241
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:396
 msgid "New handle"
 msgstr "새 핸들"
 
@@ -6103,15 +6111,15 @@ msgid "Newest replies first"
 msgstr "새로운 순"
 
 #: src/lib/interests.ts:67
-#: src/screens/Onboarding/index.tsx:51
+#: src/screens/Onboarding/index.tsx:69
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:238
 msgid "News"
 msgstr "뉴스"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:141
-#: src/screens/Login/ForgotPasswordForm.tsx:147
-#: src/screens/Login/LoginForm.tsx:345
-#: src/screens/Login/LoginForm.tsx:352
+#: src/screens/Login/ForgotPasswordForm.tsx:142
+#: src/screens/Login/ForgotPasswordForm.tsx:148
+#: src/screens/Login/LoginForm.tsx:348
+#: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
 #: src/screens/Onboarding/StepFinished/index.tsx:344
@@ -6143,8 +6151,8 @@ msgstr "광고, 사생활 침해 트래킹, 참여 유도 함정이 없습니다
 msgid "No app passwords yet"
 msgstr "앱 비밀번호 없음"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:418
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:420
 msgid "No DNS Panel"
 msgstr "DNS 패널 없음"
 
@@ -6480,7 +6488,7 @@ msgstr "문제가 발생했습니다!"
 #: src/components/StarterPack/ProfileStarterPacks.tsx:329
 #: src/components/StarterPack/ProfileStarterPacks.tsx:338
 #: src/screens/Settings/AppPasswords.tsx:60
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:108
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:113
 #: src/view/screens/Profile.tsx:122
 msgid "Oops!"
 msgstr "이런!"
@@ -6645,7 +6653,7 @@ msgstr ""
 msgid "Opens live status dialog"
 msgstr "라이브 상태 대화 상자를 엽니다"
 
-#: src/screens/Login/LoginForm.tsx:251
+#: src/screens/Login/LoginForm.tsx:254
 msgid "Opens password reset form"
 msgstr "비밀번호 재설정 양식을 엽니다"
 
@@ -6748,10 +6756,10 @@ msgstr "페이지를 찾을 수 없음"
 msgid "Page Not Found"
 msgstr "페이지를 찾을 수 없음"
 
-#: src/screens/Login/LoginForm.tsx:230
+#: src/screens/Login/LoginForm.tsx:233
 #: src/screens/Settings/AccountSettings.tsx:121
 #: src/screens/Settings/AccountSettings.tsx:125
-#: src/screens/Signup/StepInfo/index.tsx:237
+#: src/screens/Signup/StepInfo/index.tsx:238
 #: src/view/com/modals/DeleteAccount.tsx:239
 #: src/view/com/modals/DeleteAccount.tsx:246
 msgid "Password"
@@ -6815,7 +6823,7 @@ msgid "Person toggle"
 msgstr "사용자 켜기/끄기"
 
 #: src/lib/interests.ts:68
-#: src/screens/Onboarding/index.tsx:59
+#: src/screens/Onboarding/index.tsx:77
 msgid "Pets"
 msgstr "반려동물"
 
@@ -6920,7 +6928,7 @@ msgid "Please choose your handle."
 msgstr "핸들을 입력하세요."
 
 #: src/screens/Signup/state.ts:281
-#: src/screens/Signup/StepInfo/index.tsx:124
+#: src/screens/Signup/StepInfo/index.tsx:125
 msgid "Please choose your password."
 msgstr "비밀번호를 입력하세요."
 
@@ -6933,7 +6941,7 @@ msgid "Please complete the verification captcha."
 msgstr "인증 캡차를 완료해 주세요."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:102
-#: src/screens/Signup/StepInfo/index.tsx:113
+#: src/screens/Signup/StepInfo/index.tsx:114
 msgid "Please double-check that you have entered your email address correctly."
 msgstr "이메일 주소를 정확하게 입력했는지 다시 한 번 확인해 주세요."
 
@@ -6981,11 +6989,11 @@ msgid "Please enter the security code we sent to your previous email address."
 msgstr "기존 이메일 주소로 전송된 보안 코드를 입력하세요."
 
 #: src/screens/Signup/state.ts:265
-#: src/screens/Signup/StepInfo/index.tsx:95
+#: src/screens/Signup/StepInfo/index.tsx:96
 msgid "Please enter your email."
 msgstr "이메일을 입력하세요."
 
-#: src/screens/Signup/StepInfo/index.tsx:88
+#: src/screens/Signup/StepInfo/index.tsx:89
 msgid "Please enter your invite code."
 msgstr "초대 코드를 입력하세요."
 
@@ -6993,7 +7001,7 @@ msgstr "초대 코드를 입력하세요."
 msgid "Please enter your new email address."
 msgstr "새 이메일 주소를 입력하세요."
 
-#: src/screens/Login/LoginForm.tsx:99
+#: src/screens/Login/LoginForm.tsx:102
 msgid "Please enter your password"
 msgstr "비밀번호를 입력하세요"
 
@@ -7001,7 +7009,7 @@ msgstr "비밀번호를 입력하세요"
 msgid "Please enter your password as well:"
 msgstr "비밀번호를 입력하세요."
 
-#: src/screens/Login/LoginForm.tsx:94
+#: src/screens/Login/LoginForm.tsx:97
 msgid "Please enter your username"
 msgstr "사용자 이름을 입력하세요"
 
@@ -7061,7 +7069,7 @@ msgid "Please write your message below:"
 msgstr "아래에 메시지를 작성하세요:"
 
 #: src/lib/interests.ts:70
-#: src/screens/Onboarding/index.tsx:65
+#: src/screens/Onboarding/index.tsx:83
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:232
 msgid "Politics"
 msgstr "정치"
@@ -7278,7 +7286,7 @@ msgstr "동영상 처리 중…"
 
 #: src/lib/api/index.ts:74
 #: src/lib/api/index.ts:402
-#: src/screens/Login/ForgotPasswordForm.tsx:153
+#: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr "처리 중…"
 
@@ -7460,7 +7468,7 @@ msgstr "인용"
 msgid "Quotes of this post"
 msgstr "이 게시물의 인용"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:623
 msgid "Rate limit exceeded – you've tried to change your handle too many times in a short period. Please wait a minute before trying again."
 msgstr "짧은 시간에 핸들 변경을 너무 많이 시도했습니다. 잠시 기다렸다가 다시 시도해 주세요."
 
@@ -8041,7 +8049,7 @@ msgstr "게시하기 전 대체 텍스트 필수"
 msgid "Require an email code to sign in to your account."
 msgstr "계정에 로그인할 때 이메일 코드를 요구합니다."
 
-#: src/screens/Signup/StepInfo/index.tsx:186
+#: src/screens/Signup/StepInfo/index.tsx:187
 msgid "Required for this provider"
 msgstr "이 제공자에서 필수"
 
@@ -8080,7 +8088,7 @@ msgstr "재설정 코드"
 msgid "Reset onboarding state"
 msgstr "온보딩 상태 초기화"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:82
+#: src/screens/Login/ForgotPasswordForm.tsx:83
 msgid "Reset password"
 msgstr "비밀번호 재설정"
 
@@ -8089,7 +8097,7 @@ msgstr "비밀번호 재설정"
 msgid "Reset Stored Environment Config"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:326
+#: src/screens/Login/LoginForm.tsx:329
 msgid "Retries signing in"
 msgstr "로그인을 다시 시도합니다"
 
@@ -8105,8 +8113,8 @@ msgstr "오류가 발생한 마지막 작업을 다시 시도합니다"
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:55
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:58
 #: src/components/StarterPack/ProfileStarterPacks.tsx:343
-#: src/screens/Login/LoginForm.tsx:325
-#: src/screens/Login/LoginForm.tsx:332
+#: src/screens/Login/LoginForm.tsx:328
+#: src/screens/Login/LoginForm.tsx:335
 #: src/screens/Messages/ChatList.tsx:292
 #: src/screens/Messages/components/MessageListError.tsx:25
 #: src/screens/Messages/Inbox.tsx:219
@@ -8140,7 +8148,7 @@ msgstr "홈 페이지로 돌아갑니다"
 
 #: src/screens/Profile/ProfileFeed/index.tsx:91
 #: src/screens/ProfileList/components/ErrorScreen.tsx:35
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:577
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:582
 #: src/screens/VideoFeed/index.tsx:1150
 #: src/view/screens/NotFound.tsx:60
 msgid "Returns to previous page"
@@ -8186,7 +8194,7 @@ msgstr ""
 #: src/screens/Profile/Header/EditProfileDialog.tsx:236
 #: src/screens/Profile/Header/EditProfileDialog.tsx:250
 #: src/screens/SavedFeeds.tsx:120
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:269
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:274
 #: src/view/com/composer/GifAltText.tsx:193
 #: src/view/com/composer/GifAltText.tsx:202
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:62
@@ -8222,7 +8230,7 @@ msgstr ""
 msgid "Save image"
 msgstr "이미지 저장"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:255
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:260
 msgid "Save new handle"
 msgstr "새 핸들 저장"
 
@@ -8264,7 +8272,7 @@ msgid "Say hello!"
 msgstr "인사해 보세요!"
 
 #: src/lib/interests.ts:71
-#: src/screens/Onboarding/index.tsx:64
+#: src/screens/Onboarding/index.tsx:82
 msgid "Science"
 msgstr "과학"
 
@@ -8463,7 +8471,7 @@ msgstr "{langName} 선택"
 msgid "Select a color"
 msgstr "색상 선택"
 
-#: src/components/EnvConfigIndicator.tsx:221
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8574,7 +8582,7 @@ msgstr "앱의 사용자 인터페이스에 사용할 언어를 선택합니다.
 msgid "Select which languages you want your subscribed feeds to include. If none are selected, all languages will be shown."
 msgstr "구독하는 피드에 포함할 언어를 선택합니다. 선택하지 않으면 모든 언어가 표시됩니다."
 
-#: src/screens/Signup/StepInfo/index.tsx:279
+#: src/screens/Signup/StepInfo/index.tsx:280
 msgid "Select your date of birth"
 msgstr "생년월일을 선택하세요"
 
@@ -8665,7 +8673,7 @@ msgstr "계정 삭제를 위한 확인 코드가 포함된 이메일을 전송�
 msgid "Sends the feedback about the application"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:172
+#: src/view/com/auth/server-input/index.tsx:180
 msgid "Server address"
 msgstr "서버 주소"
 
@@ -8693,7 +8701,7 @@ msgstr "새 비밀번호 설정"
 msgid "Set up your account"
 msgstr "계정 설정하기"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:111
+#: src/screens/Login/ForgotPasswordForm.tsx:112
 msgid "Sets email for password reset"
 msgstr "비밀번호 재설정을 위한 이메일을 설정합니다"
 
@@ -8912,7 +8920,7 @@ msgstr "이런 항목 더 보기"
 msgid "Show more replies"
 msgstr "답글 더 보기"
 
-#: src/screens/PostThread/components/ThreadItemPost.tsx:363
+#: src/screens/PostThread/components/ThreadItemPost.tsx:365
 #: src/view/com/posts/PostFeedItem.tsx:447
 msgid "Show original version"
 msgstr ""
@@ -8986,7 +8994,7 @@ msgstr "콘텐츠를 표시합니다"
 #: src/screens/Hashtag.tsx:225
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
-#: src/screens/Login/LoginForm.tsx:181
+#: src/screens/Login/LoginForm.tsx:184
 #: src/screens/Search/SearchResults.tsx:262
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
@@ -9105,7 +9113,7 @@ msgid "Sodium content must be a number"
 msgstr ""
 
 #: src/lib/interests.ts:58
-#: src/screens/Onboarding/index.tsx:68
+#: src/screens/Onboarding/index.tsx:86
 msgid "Software Dev"
 msgstr "소프트웨어 개발"
 
@@ -9206,7 +9214,7 @@ msgid "Spam; excessive mentions or replies"
 msgstr "스팸, 과도한 멘션 또는 답글"
 
 #: src/lib/interests.ts:72
-#: src/screens/Onboarding/index.tsx:58
+#: src/screens/Onboarding/index.tsx:76
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:230
 msgid "Sports"
 msgstr "스포츠"
@@ -9487,7 +9495,7 @@ msgid "Teach our algorithm what you like"
 msgstr "무엇을 좋아하는지 알고리즘에게 알려주세요"
 
 #: src/lib/interests.ts:73
-#: src/screens/Onboarding/index.tsx:67
+#: src/screens/Onboarding/index.tsx:85
 msgid "Tech"
 msgstr "기술"
 
@@ -9561,7 +9569,7 @@ msgstr "이메일 주소를 성공적으로 인증했습니다. 이 대화 상�
 msgid "Thanks! You're all set."
 msgstr "감사합니다! 모든 준비가 완료되었습니다."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:503
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:508
 msgid "That contains the following:"
 msgstr "텍스트 파일 내용:"
 
@@ -9745,7 +9753,7 @@ msgstr "앱 비밀번호를 가져오는 동안 문제가 발생했습니다"
 msgid "There was an issue fetching your lists. Tap here to try again."
 msgstr "리스트를 가져오는 동안 문제가 발생했습니다. 다시 시도하려면 이곳을 탭하세요."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:109
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:114
 msgid "There was an issue fetching your service info"
 msgstr "내 서비스 정보를 가져오는 동안 문제가 발생했습니다"
 
@@ -9911,7 +9919,7 @@ msgstr "이 피드는 비어 있습니다."
 msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:611
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:616
 msgid "This handle is reserved. Please try a different one."
 msgstr "이 핸들은 예약되었습니다. 다른 핸들을 사용하세요."
 
@@ -9992,7 +10000,7 @@ msgstr "이 답글은 스레드 하단의 숨겨진 위치에 정렬되며 자�
 msgid "This service has not provided terms of service or a privacy policy."
 msgstr "이 서비스는 서비스 이용약관이나 개인정보 처리방침을 제공하지 않습니다."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:472
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:477
 msgid "This should create a domain record at:"
 msgstr "이 도메인에 레코드가 추가됩니다:"
 
@@ -10214,7 +10222,7 @@ msgstr ""
 msgid "Type your message here"
 msgstr "메시지를 입력하세요"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:448
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:453
 msgid "Type:"
 msgstr "유형:"
 
@@ -10232,9 +10240,9 @@ msgstr "연결할 수 없습니다. 인터넷 연결을 확인한 후 다시 시
 msgid "Unable to contact your service. Please check your internet connection and try again."
 msgstr "서비스에 연결할 수 없습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요."
 
-#: src/screens/Login/ForgotPasswordForm.tsx:70
+#: src/screens/Login/ForgotPasswordForm.tsx:71
 #: src/screens/Login/index.tsx:93
-#: src/screens/Login/LoginForm.tsx:169
+#: src/screens/Login/LoginForm.tsx:172
 #: src/screens/Login/SetNewPasswordForm.tsx:81
 #: src/screens/Signup/index.tsx:78
 msgid "Unable to contact your service. Please check your Internet connection."
@@ -10507,8 +10515,8 @@ msgstr "리스트에서 <0>{displayName}</0> 업데이트"
 msgid "Update email"
 msgstr "이메일 변경"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:544
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:565
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:549
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:570
 msgid "Update to {domain}"
 msgstr "{domain}(으)로 변경"
 
@@ -10534,7 +10542,7 @@ msgstr "업데이트 중…"
 msgid "Upload a photo instead"
 msgstr "대신 사진 업로드하기"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:488
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:493
 msgid "Upload a text file to:"
 msgstr "텍스트 파일 업로드 경로:"
 
@@ -10582,8 +10590,6 @@ msgstr ""
 msgid "URL (optional)"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:176
-#: src/components/EnvConfigIndicator.tsx:184
 #: src/screens/Settings/Settings.tsx:772
 msgid "Use"
 msgstr ""
@@ -10597,11 +10603,11 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:178
-msgid "Use custom domain to retrieve server domains"
+#: src/components/EnvConfigIndicator.tsx:179
+msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:576
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:581
 msgid "Use default provider"
 msgstr "기본 제공자 사용"
 
@@ -10696,7 +10702,7 @@ msgstr "사용자 이름은 하이픈으로 시작하거나 끝날 수 없습니
 msgid "Username must only contain letters (a-z), numbers, and hyphens"
 msgstr "사용자 이름에는 영문자(a-z), 숫자, 하이픈만 사용할 수 있습니다"
 
-#: src/screens/Login/LoginForm.tsx:203
+#: src/screens/Login/LoginForm.tsx:206
 msgid "Username or email address"
 msgstr "사용자 이름 또는 이메일 주소"
 
@@ -10721,7 +10727,7 @@ msgstr "\"{0}\"에 있는 사용자"
 msgid "Users you follow"
 msgstr "내가 팔로우하는 사용자"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:454
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:459
 msgid "Value:"
 msgstr "값:"
 
@@ -10765,8 +10771,8 @@ msgctxt "action"
 msgid "Verify code"
 msgstr "코드 인증"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:546
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:567
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:551
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:572
 msgid "Verify DNS Record"
 msgstr "DNS 레코드 인증"
 
@@ -10784,8 +10790,8 @@ msgstr "이메일 인증 대화 상자"
 msgid "Verify now"
 msgstr "지금 인증하기"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:547
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:569
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:552
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:574
 msgid "Verify Text File"
 msgstr "텍스트 파일 인증"
 
@@ -10834,7 +10840,7 @@ msgid "Video from {0}: {text}"
 msgstr "{0} 님의 동영상: {text}"
 
 #: src/lib/interests.ts:62
-#: src/screens/Onboarding/index.tsx:70
+#: src/screens/Onboarding/index.tsx:88
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:234
 msgid "Video Games"
 msgstr "비디오 게임"
@@ -11306,11 +11312,11 @@ msgid "Write your review"
 msgstr ""
 
 #: src/lib/interests.ts:75
-#: src/screens/Onboarding/index.tsx:56
+#: src/screens/Onboarding/index.tsx:74
 msgid "Writers"
 msgstr "작가"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:372
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:377
 msgid "Wrong DID returned from server. Received: {0}"
 msgstr "서버에서 잘못된 DID를 반환했습니다. 수신됨: {0}"
 
@@ -11413,7 +11419,7 @@ msgstr "내 계정은 인증되었습니다"
 msgid "You are verified. You will lose your verification status if you change your display name. <0>Learn more.</0>"
 msgstr "현재 인증된 상태입니다. 표시 이름을 변경하면 인증이 해제될 수 있습니다. <0>더 알아보기</0>"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:210
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
 msgid "You are verified. You will lose your verification status if you change your handle. <0>Learn more.</0>"
 msgstr "현재 인증된 상태입니다. 핸들을 변경하면 인증이 해제될 수 있습니다. <0>더 알아보기</0>"
 
@@ -11810,7 +11816,7 @@ msgstr ""
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr "이의신청을 제출했습니다. 이의신청이 받아들여지면 이메일을 보내 드립니다."
 
-#: src/screens/Signup/StepInfo/index.tsx:266
+#: src/screens/Signup/StepInfo/index.tsx:267
 msgid "Your birth date"
 msgstr "생년월일"
 
@@ -11826,7 +11832,7 @@ msgstr "대화가 사용 중지되었습니다"
 msgid "Your choice will be remembered for future links. You can change it at any time in settings."
 msgstr "선택한 항목은 앞으로 클릭할 링크에도 적용되며 설정에서 언제든지 변경할 수 있습니다."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:531
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:536
 msgid "Your current handle <0>{0}</0> will automatically remain reserved for you. You can switch back to it at any time from this account."
 msgstr "현재 핸들 <0>{0}</0>은 자동으로 예약된 상태로 유지됩니다. 이 계정에서 언제든지 다시 전환할 수 있습니다."
 
@@ -11840,10 +11846,10 @@ msgstr "신고된 연령이 18세 미만이므로 아래의 일부 설정이 비
 msgid "Your email"
 msgstr "이메일"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:53
+#: src/screens/Login/ForgotPasswordForm.tsx:54
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:83
 #: src/screens/Signup/state.ts:273
-#: src/screens/Signup/StepInfo/index.tsx:102
+#: src/screens/Signup/StepInfo/index.tsx:103
 msgid "Your email appears to be invalid."
 msgstr "이메일이 잘못된 것 같습니다."
 
@@ -11863,7 +11869,7 @@ msgstr "내 팔로워"
 msgid "Your following feed is empty! Follow more users to see what's happening."
 msgstr "팔로우 중 피드가 비어 있습니다. 더 많은 사용자를 팔로우하여 무슨 일이 일어나고 있는지 확인하세요."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:247
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:252
 msgid "Your full handle will be <0>@{0}</0>"
 msgstr "내 전체 핸들: <0>@{0}</0>"
 
@@ -11901,7 +11907,7 @@ msgstr "뮤트한 단어"
 msgid "Your password has been changed successfully! Please use your new password when you sign in to {appName} from now on."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:131
+#: src/screens/Signup/StepInfo/index.tsx:132
 msgid "Your password must be at least 8 characters long."
 msgstr "비밀번호는 8자 이상이어야 합니다."
 

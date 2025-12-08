@@ -55,7 +55,7 @@ msgstr "{0, plural, other {# label}} terpasang pada akun ini"
 msgid "{0, plural, one {# label has} other {# labels have}} been placed on this content"
 msgstr "{0, plural, other {# label}} terpasang pada konten ini"
 
-#: src/screens/Post/PostLikedBy.tsx:45
+#: src/screens/Post/PostLikedBy.tsx:44
 msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, other {# menyukai}}"
 
@@ -150,8 +150,8 @@ msgstr ""
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
-#: src/view/com/auth/server-input/index.tsx:138
 #: src/view/com/auth/server-input/index.tsx:140
+#: src/view/com/auth/server-input/index.tsx:142
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
 #: src/view/com/composer/Composer.tsx:901
@@ -186,16 +186,20 @@ msgctxt "Name of app icon variant"
 msgid "{0} Classic™"
 msgstr ""
 
+#: src/view/com/auth/server-input/index.tsx:240
+msgid "{0} doesn't currently support custom hosting for accounts. You can sign up with the default {1} Social option."
+msgstr ""
+
 #: src/screens/Profile/Header/Metrics.tsx:49
 msgid "{0} following"
 msgstr "{0} mengikuti"
 
-#: src/view/com/auth/server-input/index.tsx:217
+#: src/view/com/auth/server-input/index.tsx:227
 msgid "{0} is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:153
-msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1}Social option."
+#: src/view/com/auth/server-input/index.tsx:161
+msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1} Social option."
 msgstr ""
 
 #: src/components/ProgressGuide/List.tsx:55
@@ -624,7 +628,7 @@ msgstr "⚠Panggilan Tidak Valid"
 msgid "24 hours"
 msgstr "24 jam"
 
-#: src/screens/Login/LoginForm.tsx:270
+#: src/screens/Login/LoginForm.tsx:273
 msgid "2FA Confirmation"
 msgstr "Konfirmasi 2FA"
 
@@ -698,7 +702,7 @@ msgid "Accessibility Settings"
 msgstr "Pengaturan Aksesibilitas"
 
 #: src/Navigation.tsx:417
-#: src/screens/Login/LoginForm.tsx:196
+#: src/screens/Login/LoginForm.tsx:199
 #: src/screens/Settings/AccountSettings.tsx:51
 #: src/screens/Settings/Settings.tsx:201
 #: src/screens/Settings/Settings.tsx:204
@@ -918,7 +922,7 @@ msgstr ""
 msgid "Add the default feed of only people you follow"
 msgstr "Tambahkan feed bawaan hanya untuk orang yang Anda ikuti"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:422
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:427
 msgid "Add the following DNS record to your domain:"
 msgstr "Tambahkan catatan DNS berikut ke domain Anda:"
 
@@ -1074,7 +1078,7 @@ msgstr "Izinkan balasan dari:"
 msgid "Allows access to direct messages"
 msgstr "Mengizinkan akses ke pesan langsung"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:175
+#: src/screens/Login/ForgotPasswordForm.tsx:176
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:237
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:243
 msgid "Already have a code?"
@@ -1215,7 +1219,7 @@ msgid "and"
 msgstr "dan"
 
 #: src/lib/interests.ts:52
-#: src/screens/Onboarding/index.tsx:60
+#: src/screens/Onboarding/index.tsx:78
 msgid "Animals"
 msgstr "Hewan"
 
@@ -1392,7 +1396,7 @@ msgid "Are you writing in <0>{suggestedLanguageName}</0>?"
 msgstr "Apakah Anda menulis dalam <0>{suggestedLanguageName}</0>?"
 
 #: src/lib/interests.ts:53
-#: src/screens/Onboarding/index.tsx:54
+#: src/screens/Onboarding/index.tsx:72
 msgid "Art"
 msgstr "Seni"
 
@@ -1464,10 +1468,10 @@ msgstr ""
 #: src/components/moderation/LabelsOnMeDialog.tsx:318
 #: src/screens/Login/ChooseAccountForm.tsx:90
 #: src/screens/Login/ChooseAccountForm.tsx:95
-#: src/screens/Login/ForgotPasswordForm.tsx:127
-#: src/screens/Login/ForgotPasswordForm.tsx:133
-#: src/screens/Login/LoginForm.tsx:312
-#: src/screens/Login/LoginForm.tsx:318
+#: src/screens/Login/ForgotPasswordForm.tsx:128
+#: src/screens/Login/ForgotPasswordForm.tsx:134
+#: src/screens/Login/LoginForm.tsx:315
+#: src/screens/Login/LoginForm.tsx:321
 #: src/screens/Login/SetNewPasswordForm.tsx:168
 #: src/screens/Login/SetNewPasswordForm.tsx:174
 #: src/screens/Messages/components/ChatDisabled.tsx:148
@@ -1644,7 +1648,7 @@ msgid "Blur images and filter from feeds"
 msgstr "Buramkan gambar dan saring dari feed"
 
 #: src/lib/interests.ts:54
-#: src/screens/Onboarding/index.tsx:61
+#: src/screens/Onboarding/index.tsx:79
 msgid "Books"
 msgstr "Buku"
 
@@ -1760,8 +1764,8 @@ msgstr "Kamera"
 #: src/screens/Search/Shell.tsx:430
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:80
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:87
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:85
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:92
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:248
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:254
 #: src/screens/Settings/Settings.tsx:334
@@ -1855,8 +1859,8 @@ msgstr "Ganti ikon aplikasi ke \"{0}\""
 msgid "Change app language"
 msgstr "Ganti bahasa aplikasi"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:96
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:100
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:101
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:105
 msgid "Change Handle"
 msgstr "Ubah Panggilan"
 
@@ -1877,7 +1881,7 @@ msgstr ""
 msgid "Change report reason"
 msgstr "Ubah alasan melapor"
 
-#: src/components/EnvConfigIndicator.tsx:201
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1964,7 +1968,7 @@ msgstr "Obrolan"
 msgid "Check my status"
 msgstr "Periksa status saya"
 
-#: src/screens/Login/LoginForm.tsx:303
+#: src/screens/Login/LoginForm.tsx:306
 msgid "Check your email for a sign in code and enter it here."
 msgstr "Periksa email Anda untuk mendapatkan kode login dan masukkan di sini."
 
@@ -1980,7 +1984,7 @@ msgstr ""
 msgid "Cholesterol content must be a number"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:405
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
 msgid "Choose domain verification method"
 msgstr "Pilih metode verifikasi domain"
 
@@ -2008,7 +2012,7 @@ msgstr "Pilih algoritma yang akan digunakan untuk feed kustom Anda."
 msgid "Choose this color as your avatar"
 msgstr "Pilih warna ini sebagai avatar Anda"
 
-#: src/view/com/auth/server-input/index.tsx:130
+#: src/view/com/auth/server-input/index.tsx:132
 msgid "Choose your account provider"
 msgstr "Pilih penyedia akun Anda"
 
@@ -2016,7 +2020,7 @@ msgstr "Pilih penyedia akun Anda"
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "Pilih sendiri linimasa Anda! Feed buatan komunitas dapat membantu menemukan konten yang Anda sukai."
 
-#: src/screens/Signup/StepInfo/index.tsx:250
+#: src/screens/Signup/StepInfo/index.tsx:251
 msgid "Choose your password"
 msgstr "Pilih kata sandi Anda"
 
@@ -2086,7 +2090,7 @@ msgstr "Klik untuk membuka menu tagar {tag}"
 msgid "Click to retry failed message"
 msgstr "Ketuk untuk mengirim ulang pesan yang gagal"
 
-#: src/screens/Onboarding/index.tsx:63
+#: src/screens/Onboarding/index.tsx:81
 msgid "Climate"
 msgstr "Iklim"
 
@@ -2229,12 +2233,12 @@ msgid "Color theme"
 msgstr "Tema warna"
 
 #: src/lib/interests.ts:55
-#: src/screens/Onboarding/index.tsx:69
+#: src/screens/Onboarding/index.tsx:87
 msgid "Comedy"
 msgstr "Komedi"
 
 #: src/lib/interests.ts:56
-#: src/screens/Onboarding/index.tsx:55
+#: src/screens/Onboarding/index.tsx:73
 msgid "Comics"
 msgstr "Komik"
 
@@ -2341,7 +2345,7 @@ msgid "Confirm your location with GPS. Your location data is not tracked and doe
 msgstr ""
 
 #: src/components/dialogs/EmailDialog/components/TokenField.tsx:36
-#: src/screens/Login/LoginForm.tsx:276
+#: src/screens/Login/LoginForm.tsx:279
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:188
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:192
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:144
@@ -2351,7 +2355,11 @@ msgstr ""
 msgid "Confirmation code"
 msgstr "Kode konfirmasi"
 
-#: src/screens/Login/LoginForm.tsx:339
+#: src/components/EnvConfigIndicator.tsx:176
+msgid "Connect"
+msgstr ""
+
+#: src/screens/Login/LoginForm.tsx:342
 msgid "Connecting..."
 msgstr "Menghubungkan..."
 
@@ -2471,7 +2479,7 @@ msgstr "Percakapan dihapus"
 msgid "Cook:"
 msgstr ""
 
-#: src/screens/Onboarding/index.tsx:72
+#: src/screens/Onboarding/index.tsx:90
 msgid "Cooking"
 msgstr "Memasak"
 
@@ -2537,13 +2545,13 @@ msgstr "Salin DID pemosting"
 msgid "Copy code"
 msgstr "Salin kode"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:507
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:512
 #: src/view/com/profile/ProfileMenu.tsx:447
 #: src/view/com/profile/ProfileMenu.tsx:450
 msgid "Copy DID"
 msgstr "Salin DID"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:439
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:444
 msgid "Copy host"
 msgstr "Salin host"
 
@@ -2596,7 +2604,7 @@ msgstr "Salin teks postingan"
 msgid "Copy QR code"
 msgstr "Salin kode QR"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:460
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:465
 msgid "Copy TXT record value"
 msgstr "Salin nilai data TXT"
 
@@ -2753,12 +2761,12 @@ msgid "Cuisine type"
 msgstr ""
 
 #: src/lib/interests.ts:57
-#: src/screens/Onboarding/index.tsx:57
+#: src/screens/Onboarding/index.tsx:75
 msgid "Culture"
 msgstr "Budaya"
 
-#: src/view/com/auth/server-input/index.tsx:146
-#: src/view/com/auth/server-input/index.tsx:147
+#: src/view/com/auth/server-input/index.tsx:149
+#: src/view/com/auth/server-input/index.tsx:151
 msgid "Custom"
 msgstr "Kustom"
 
@@ -2802,7 +2810,7 @@ msgstr "Mode gelap"
 msgid "Dark theme"
 msgstr "Tema gelap"
 
-#: src/screens/Signup/StepInfo/index.tsx:278
+#: src/screens/Signup/StepInfo/index.tsx:279
 msgid "Date of birth"
 msgstr "Tanggal lahir"
 
@@ -3085,8 +3093,8 @@ msgstr "Nama tampilan"
 msgid "Ditch the trolls and clickbait. Find real people and conversations that matter to you."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:408
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
 msgid "DNS Panel"
 msgstr "Panel DNS"
 
@@ -3102,7 +3110,7 @@ msgstr "Tidak termasuk ketelanjangan."
 msgid "Doesn't include your account data with the feedback"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:523
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:528
 msgid "Domain verified!"
 msgstr "Domain terverifikasi!"
 
@@ -3135,8 +3143,8 @@ msgstr ""
 #: src/screens/Onboarding/StepProfile/index.tsx:336
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:214
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:221
-#: src/view/com/auth/server-input/index.tsx:238
-#: src/view/com/auth/server-input/index.tsx:239
+#: src/view/com/auth/server-input/index.tsx:256
+#: src/view/com/auth/server-input/index.tsx:257
 #: src/view/com/composer/labels/LabelsBtn.tsx:223
 #: src/view/com/composer/labels/LabelsBtn.tsx:230
 #: src/view/com/composer/select-language/PostLanguageSelectDialog.tsx:303
@@ -3190,7 +3198,7 @@ msgstr "Durasi:"
 msgid "e.g. {defaultCustomDomain} or http://localhost:8100"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:237
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:242
 msgid "e.g. alice"
 msgstr "contoh: kresna"
 
@@ -3198,7 +3206,7 @@ msgstr "contoh: kresna"
 msgid "e.g. Alice Lastname"
 msgstr "contoh: Langit Kresna"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:392
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:397
 msgid "e.g. alice.com"
 msgstr "contoh: kresna.com"
 
@@ -3333,7 +3341,7 @@ msgid "Edited"
 msgstr ""
 
 #: src/lib/interests.ts:59
-#: src/screens/Onboarding/index.tsx:62
+#: src/screens/Onboarding/index.tsx:80
 msgid "Education"
 msgstr "Pendidikan"
 
@@ -3342,7 +3350,7 @@ msgid "Either the creator of this list has blocked you or you have blocked the c
 msgstr "Pembuat daftar ini mungkin telah memblokir Anda atau Anda telah memblokirnya."
 
 #: src/screens/Settings/AccountSettings.tsx:66
-#: src/screens/Signup/StepInfo/index.tsx:202
+#: src/screens/Signup/StepInfo/index.tsx:203
 msgid "Email"
 msgstr "Email"
 
@@ -3355,7 +3363,7 @@ msgstr "Email 2FA dinonaktifkan"
 msgid "Email 2FA enabled"
 msgstr "Email 2FA diaktifkan"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:97
+#: src/screens/Login/ForgotPasswordForm.tsx:98
 msgid "Email address"
 msgstr "Alamat email"
 
@@ -3490,15 +3498,15 @@ msgstr "Masukkan kode"
 msgid "Enter fullscreen"
 msgstr "Masuk ke layar penuh"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:386
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
 msgid "Enter the domain you want to use"
 msgstr "Masukkan domain yang ingin Anda gunakan"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:117
+#: src/screens/Login/ForgotPasswordForm.tsx:118
 msgid "Enter the email you used to create your account. We'll send you a \"reset code\" so you can set a new password."
 msgstr "Masukkan email yang Anda gunakan untuk membuat akun. Kami akan mengirimkan \"kode reset\" untuk mengatur kata sandi baru."
 
-#: src/screens/Login/LoginForm.tsx:220
+#: src/screens/Login/LoginForm.tsx:223
 msgid "Enter the username or email address you used when you created your account"
 msgstr "Masukkan nama pengguna atau alamat email yang Anda gunakan saat membuat akun Anda"
 
@@ -3506,12 +3514,12 @@ msgstr "Masukkan nama pengguna atau alamat email yang Anda gunakan saat membuat 
 msgid "Enter your birth date"
 msgstr "Masukkan tanggal lahir Anda"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:103
-#: src/screens/Signup/StepInfo/index.tsx:222
+#: src/screens/Login/ForgotPasswordForm.tsx:104
+#: src/screens/Signup/StepInfo/index.tsx:223
 msgid "Enter your email address"
 msgstr "Masukkan alamat email Anda"
 
-#: src/screens/Login/LoginForm.tsx:245
+#: src/screens/Login/LoginForm.tsx:248
 msgid "Enter your password"
 msgstr "Masukkan kata sandi"
 
@@ -3735,7 +3743,7 @@ msgstr "Gagal menambahkan emoji reaksi"
 msgid "Failed to add to starter pack"
 msgstr "Gagal menambahkan paket pemula"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:605
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:610
 msgid "Failed to change handle. Please try again."
 msgstr "Gagal mengubah panggilan. Silakan coba lagi."
 
@@ -3921,7 +3929,7 @@ msgstr "Gagal menggunggah video"
 msgid "Failed to verify email, please try again."
 msgstr "Gagal memverifikasi email, silakan coba lagi."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:376
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:381
 msgid "Failed to verify handle. Please try again."
 msgstr "Gagal verifikasi panggilan. Silakan coba lagi."
 
@@ -4072,7 +4080,7 @@ msgstr ""
 msgid "Finish"
 msgstr "Selesai"
 
-#: src/screens/Onboarding/index.tsx:66
+#: src/screens/Onboarding/index.tsx:84
 msgid "Fitness"
 msgstr "Kebugaran"
 
@@ -4238,7 +4246,7 @@ msgid "Font size"
 msgstr "Ukuran font"
 
 #: src/lib/interests.ts:61
-#: src/screens/Onboarding/index.tsx:71
+#: src/screens/Onboarding/index.tsx:89
 msgid "Food"
 msgstr "Makanan"
 
@@ -4280,11 +4288,11 @@ msgstr ""
 msgid "Forgot Password"
 msgstr "Lupa Kata Sandi"
 
-#: src/screens/Login/LoginForm.tsx:250
+#: src/screens/Login/LoginForm.tsx:253
 msgid "Forgot password?"
 msgstr "Lupa kata sandi?"
 
-#: src/screens/Login/LoginForm.tsx:261
+#: src/screens/Login/LoginForm.tsx:264
 msgid "Forgot?"
 msgstr "Lupa?"
 
@@ -4524,7 +4532,7 @@ msgstr "Buka percakapan dengan {0}"
 msgid "Go to feed"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:169
+#: src/screens/Login/ForgotPasswordForm.tsx:170
 msgid "Go to next"
 msgstr "Berikutnya"
 
@@ -4564,16 +4572,16 @@ msgstr "Setengah jalan lagi!"
 msgid "Handle"
 msgstr "Panggilan"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:609
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:614
 msgid "Handle already taken. Please try a different one."
 msgstr "Panggilan sudah digunakan. Silakan coba yang lain."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:197
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:360
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:202
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:365
 msgid "Handle changed!"
 msgstr "Panggilan diubah!"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:613
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
 msgid "Handle too long. Please try a shorter one."
 msgstr "Panggilan terlalu panjang. Silakan coba yang lebih pendek."
 
@@ -4756,12 +4764,12 @@ msgstr "Harap tunggu! Kami secara bertahap memberikan akses video, dan Anda masi
 msgid "Home"
 msgstr "Beranda"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:433
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:438
 msgid "Host:"
 msgstr "Host:"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:86
-#: src/screens/Login/LoginForm.tsx:185
+#: src/screens/Login/ForgotPasswordForm.tsx:87
+#: src/screens/Login/LoginForm.tsx:188
 msgid "Hosting provider"
 msgstr "Penyedia hosting"
 
@@ -4787,8 +4795,8 @@ msgstr ""
 msgid "I have a code"
 msgstr "Saya punya kode"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:294
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:300
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:299
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:305
 msgid "I have my own domain"
 msgstr "Saya punya domain sendiri"
 
@@ -4809,7 +4817,7 @@ msgstr "Jika Anda belum berusia dewasa menurut hukum negara Anda, orang tua atau
 msgid "If you delete this list, you won't be able to recover it."
 msgstr "Jika Anda menghapus daftar ini, Anda tidak dapat memulihkannya lagi."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:276
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
 msgid "If you have your own domain, you can use that as your handle. This lets you self-verify your identity. <0>Learn more here.</0>"
 msgstr "Jika Anda memiliki domain sendiri, Anda dapat menggunakannya sebagai panggilan. Ini memungkinkan Anda untuk memverifikasi identitas secara mandiri. <0>Pelajari selengkapnya di sini.</0>"
 
@@ -4834,7 +4842,7 @@ msgstr "Jika Anda ingin mengubah kata sandi, kami akan mengirimkan kode untuk me
 msgid "If you want to restrict who can receive notifications for your account's activity, you can change this in <0>Settings → Privacy and Security</0>."
 msgstr "Jika Anda ingin membatasi siapa saja yang dapat menerima notifikasi untuk aktivitas akun Anda, Anda dapat mengubahnya di <0>Pengaturan → Privasi dan Keamanan</0>."
 
-#: src/view/com/auth/server-input/index.tsx:213
+#: src/view/com/auth/server-input/index.tsx:223
 msgid "If you're a developer, you can host your own server."
 msgstr "Jika Anda merupakan pengembang, Anda bisa menghosting peladen Anda sendiri."
 
@@ -4917,7 +4925,7 @@ msgstr "Pesan tidak pantas atau tautan eksplisit"
 msgid "Inbox zero!"
 msgstr "Kotak masuk kosong!"
 
-#: src/screens/Login/LoginForm.tsx:164
+#: src/screens/Login/LoginForm.tsx:167
 msgid "Incorrect username or password"
 msgstr "Nama pengguna atau kata sandi salah"
 
@@ -4952,7 +4960,7 @@ msgstr "Masukkan kata sandi baru"
 msgid "Input password for account deletion"
 msgstr "Masukkan kata sandi untuk penghapusan akun"
 
-#: src/screens/Login/LoginForm.tsx:291
+#: src/screens/Login/LoginForm.tsx:294
 msgid "Input the code which has been emailed to you"
 msgstr "Masukkan kode yang telah dikirim ke email Anda"
 
@@ -4991,12 +4999,12 @@ msgstr "Memperkenalkan notifikasi aktivitas"
 msgid "Introducing saved posts AKA bookmarks"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:156
+#: src/screens/Login/LoginForm.tsx:159
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:70
 msgid "Invalid 2FA confirmation code."
 msgstr "Kode konfirmasi 2FA tidak valid."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:615
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:620
 msgid "Invalid handle. Please try a different one."
 msgstr "Panggilan tidak valid. Silakan coba yang lain."
 
@@ -5028,7 +5036,7 @@ msgstr "Kode Verifikasi Tidak Valid"
 msgid "Invite a Friend"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:172
+#: src/screens/Signup/StepInfo/index.tsx:173
 msgid "Invite code"
 msgstr "Kode Undangan"
 
@@ -5073,7 +5081,7 @@ msgstr ""
 msgid "ISBN (optional)"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:298
+#: src/screens/Signup/StepInfo/index.tsx:299
 msgid "It's correct"
 msgstr "Sudah benar"
 
@@ -5110,7 +5118,7 @@ msgid "Join the conversation"
 msgstr "Bergabunglah dengan kami"
 
 #: src/lib/interests.ts:63
-#: src/screens/Onboarding/index.tsx:52
+#: src/screens/Onboarding/index.tsx:70
 msgid "Journalism"
 msgstr "Jurnalisme"
 
@@ -5200,8 +5208,8 @@ msgstr "Terbaru"
 #: src/components/verification/VerifierDialog.tsx:138
 #: src/screens/Moderation/VerificationSettings.tsx:48
 #: src/screens/Profile/Header/EditProfileDialog.tsx:349
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:220
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:286
 msgctxt "english-only-resource"
 msgid "Learn more"
 msgstr ""
@@ -5218,7 +5226,7 @@ msgstr ""
 msgid "Learn more about age assurance"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:224
+#: src/view/com/auth/server-input/index.tsx:234
 msgid "Learn more about self hosting your PDS."
 msgstr "Pelajari lebih lanjut mengenai hosting mandiri PDS Anda."
 
@@ -5256,7 +5264,7 @@ msgid "Learn more in your <0>account settings.</0>"
 msgstr ""
 
 #: src/components/moderation/ContentHider.tsx:247
-#: src/view/com/auth/server-input/index.tsx:226
+#: src/view/com/auth/server-input/index.tsx:236
 msgid "Learn more."
 msgstr "Pelajari lebih lanjut."
 
@@ -5359,7 +5367,7 @@ msgstr "Sukai labeler ini"
 msgid "Liked by"
 msgstr "Disukai oleh"
 
-#: src/screens/Post/PostLikedBy.tsx:42
+#: src/screens/Post/PostLikedBy.tsx:41
 #: src/screens/Profile/ProfileLabelerLikedBy.tsx:32
 #: src/view/screens/ProfileFeedLikedBy.tsx:32
 msgid "Liked By"
@@ -5955,7 +5963,7 @@ msgid "Name or Description Violates Community Standards"
 msgstr "Nama atau Deskripsi Melanggar Standar Komunitas"
 
 #: src/lib/interests.ts:66
-#: src/screens/Onboarding/index.tsx:53
+#: src/screens/Onboarding/index.tsx:71
 msgid "Nature"
 msgstr "Alam"
 
@@ -5968,8 +5976,8 @@ msgstr "Menuju ke {0}"
 msgid "Navigate to starter pack"
 msgstr "Menuju ke paket pemula"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:170
-#: src/screens/Login/LoginForm.tsx:346
+#: src/screens/Login/ForgotPasswordForm.tsx:171
+#: src/screens/Login/LoginForm.tsx:349
 msgid "Navigates to the next screen"
 msgstr "Menuju ke layar berikutnya"
 
@@ -5995,7 +6003,7 @@ msgstr ""
 msgid "Never lose access to your followers or data."
 msgstr "Tidak akan lagi kehilangan akses ke data dan pengikut Anda."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:585
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:590
 msgid "Nevermind, create a handle for me"
 msgstr "Tidak usah, buatkan panggilan untuk saya"
 
@@ -6043,9 +6051,9 @@ msgstr ""
 msgid "New followers"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:228
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:236
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:233
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:241
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:396
 msgid "New handle"
 msgstr "Panggilan baru"
 
@@ -6103,15 +6111,15 @@ msgid "Newest replies first"
 msgstr "Balasan terbaru lebih dulu"
 
 #: src/lib/interests.ts:67
-#: src/screens/Onboarding/index.tsx:51
+#: src/screens/Onboarding/index.tsx:69
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:238
 msgid "News"
 msgstr "Berita"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:141
-#: src/screens/Login/ForgotPasswordForm.tsx:147
-#: src/screens/Login/LoginForm.tsx:345
-#: src/screens/Login/LoginForm.tsx:352
+#: src/screens/Login/ForgotPasswordForm.tsx:142
+#: src/screens/Login/ForgotPasswordForm.tsx:148
+#: src/screens/Login/LoginForm.tsx:348
+#: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
 #: src/screens/Onboarding/StepFinished/index.tsx:344
@@ -6143,8 +6151,8 @@ msgstr ""
 msgid "No app passwords yet"
 msgstr "Tidak ada sandi aplikasi"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:418
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:420
 msgid "No DNS Panel"
 msgstr "Tanpa Panel DNS"
 
@@ -6480,7 +6488,7 @@ msgstr "Ups, ada yang tidak beres!"
 #: src/components/StarterPack/ProfileStarterPacks.tsx:329
 #: src/components/StarterPack/ProfileStarterPacks.tsx:338
 #: src/screens/Settings/AppPasswords.tsx:60
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:108
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:113
 #: src/view/screens/Profile.tsx:122
 msgid "Oops!"
 msgstr "Ups!"
@@ -6645,7 +6653,7 @@ msgstr ""
 msgid "Opens live status dialog"
 msgstr "Membuka dialog status siaran langsung"
 
-#: src/screens/Login/LoginForm.tsx:251
+#: src/screens/Login/LoginForm.tsx:254
 msgid "Opens password reset form"
 msgstr "Membuka formulir pengaturan ulang kata sandi"
 
@@ -6748,10 +6756,10 @@ msgstr "Halaman tidak ditemukan"
 msgid "Page Not Found"
 msgstr "Halaman Tidak Ditemukan"
 
-#: src/screens/Login/LoginForm.tsx:230
+#: src/screens/Login/LoginForm.tsx:233
 #: src/screens/Settings/AccountSettings.tsx:121
 #: src/screens/Settings/AccountSettings.tsx:125
-#: src/screens/Signup/StepInfo/index.tsx:237
+#: src/screens/Signup/StepInfo/index.tsx:238
 #: src/view/com/modals/DeleteAccount.tsx:239
 #: src/view/com/modals/DeleteAccount.tsx:246
 msgid "Password"
@@ -6815,7 +6823,7 @@ msgid "Person toggle"
 msgstr "Tombol alih pengguna"
 
 #: src/lib/interests.ts:68
-#: src/screens/Onboarding/index.tsx:59
+#: src/screens/Onboarding/index.tsx:77
 msgid "Pets"
 msgstr "Hewan Peliharaan"
 
@@ -6920,7 +6928,7 @@ msgid "Please choose your handle."
 msgstr "Silakan tentukan panggilan Anda."
 
 #: src/screens/Signup/state.ts:281
-#: src/screens/Signup/StepInfo/index.tsx:124
+#: src/screens/Signup/StepInfo/index.tsx:125
 msgid "Please choose your password."
 msgstr "Masukkan kata sandi Anda."
 
@@ -6933,7 +6941,7 @@ msgid "Please complete the verification captcha."
 msgstr "Mohon selesaikan verifikasi captcha."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:102
-#: src/screens/Signup/StepInfo/index.tsx:113
+#: src/screens/Signup/StepInfo/index.tsx:114
 msgid "Please double-check that you have entered your email address correctly."
 msgstr "Mohon periksa kembali apakah Anda telah memasukkan alamat email dengan benar."
 
@@ -6981,11 +6989,11 @@ msgid "Please enter the security code we sent to your previous email address."
 msgstr "Silakan masukkan kode keamanan yang kami kirimkan pada alamat email Anda sebelumnya."
 
 #: src/screens/Signup/state.ts:265
-#: src/screens/Signup/StepInfo/index.tsx:95
+#: src/screens/Signup/StepInfo/index.tsx:96
 msgid "Please enter your email."
 msgstr "Masukkan email Anda."
 
-#: src/screens/Signup/StepInfo/index.tsx:88
+#: src/screens/Signup/StepInfo/index.tsx:89
 msgid "Please enter your invite code."
 msgstr "Silakan masukkan kode undangan Anda."
 
@@ -6993,7 +7001,7 @@ msgstr "Silakan masukkan kode undangan Anda."
 msgid "Please enter your new email address."
 msgstr "Silakan masukkan alamat email baru Anda."
 
-#: src/screens/Login/LoginForm.tsx:99
+#: src/screens/Login/LoginForm.tsx:102
 msgid "Please enter your password"
 msgstr "Silakan masukkan kata sandi"
 
@@ -7001,7 +7009,7 @@ msgstr "Silakan masukkan kata sandi"
 msgid "Please enter your password as well:"
 msgstr "Masukkan juga kata sandi Anda:"
 
-#: src/screens/Login/LoginForm.tsx:94
+#: src/screens/Login/LoginForm.tsx:97
 msgid "Please enter your username"
 msgstr "Silakan masukkan nama pengguna Anda"
 
@@ -7061,7 +7069,7 @@ msgid "Please write your message below:"
 msgstr ""
 
 #: src/lib/interests.ts:70
-#: src/screens/Onboarding/index.tsx:65
+#: src/screens/Onboarding/index.tsx:83
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:232
 msgid "Politics"
 msgstr "Politik"
@@ -7278,7 +7286,7 @@ msgstr "Memproses video..."
 
 #: src/lib/api/index.ts:74
 #: src/lib/api/index.ts:402
-#: src/screens/Login/ForgotPasswordForm.tsx:153
+#: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr "Memproses..."
 
@@ -7460,7 +7468,7 @@ msgstr "Kutipan"
 msgid "Quotes of this post"
 msgstr "Kutipan postingan ini"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:623
 msgid "Rate limit exceeded – you've tried to change your handle too many times in a short period. Please wait a minute before trying again."
 msgstr "Melebihi batas perubahan – Anda terlalu sering mengubah panggilan dalam waktu singkat. Harap tunggu beberapa saat sebelum mencoba kembali."
 
@@ -8041,7 +8049,7 @@ msgstr "Wajibkan teks alt sebelum memposting"
 msgid "Require an email code to sign in to your account."
 msgstr "Gunakan kode email untuk masuk ke akun Anda."
 
-#: src/screens/Signup/StepInfo/index.tsx:186
+#: src/screens/Signup/StepInfo/index.tsx:187
 msgid "Required for this provider"
 msgstr "Diwajibkan untuk provider ini"
 
@@ -8080,7 +8088,7 @@ msgstr "Kode reset"
 msgid "Reset onboarding state"
 msgstr "Reset status orientasi"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:82
+#: src/screens/Login/ForgotPasswordForm.tsx:83
 msgid "Reset password"
 msgstr "Reset kata sandi"
 
@@ -8089,7 +8097,7 @@ msgstr "Reset kata sandi"
 msgid "Reset Stored Environment Config"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:326
+#: src/screens/Login/LoginForm.tsx:329
 msgid "Retries signing in"
 msgstr "Mencoba masuk kembali"
 
@@ -8105,8 +8113,8 @@ msgstr "Mencoba kembali tindakan terakhir yang gagal"
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:55
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:58
 #: src/components/StarterPack/ProfileStarterPacks.tsx:343
-#: src/screens/Login/LoginForm.tsx:325
-#: src/screens/Login/LoginForm.tsx:332
+#: src/screens/Login/LoginForm.tsx:328
+#: src/screens/Login/LoginForm.tsx:335
 #: src/screens/Messages/ChatList.tsx:292
 #: src/screens/Messages/components/MessageListError.tsx:25
 #: src/screens/Messages/Inbox.tsx:219
@@ -8140,7 +8148,7 @@ msgstr "Kembali ke beranda"
 
 #: src/screens/Profile/ProfileFeed/index.tsx:91
 #: src/screens/ProfileList/components/ErrorScreen.tsx:35
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:577
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:582
 #: src/screens/VideoFeed/index.tsx:1150
 #: src/view/screens/NotFound.tsx:60
 msgid "Returns to previous page"
@@ -8186,7 +8194,7 @@ msgstr ""
 #: src/screens/Profile/Header/EditProfileDialog.tsx:236
 #: src/screens/Profile/Header/EditProfileDialog.tsx:250
 #: src/screens/SavedFeeds.tsx:120
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:269
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:274
 #: src/view/com/composer/GifAltText.tsx:193
 #: src/view/com/composer/GifAltText.tsx:202
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:62
@@ -8222,7 +8230,7 @@ msgstr ""
 msgid "Save image"
 msgstr "Simpan gambar"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:255
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:260
 msgid "Save new handle"
 msgstr "Simpan panggilan baru"
 
@@ -8264,7 +8272,7 @@ msgid "Say hello!"
 msgstr "Katakan halo!"
 
 #: src/lib/interests.ts:71
-#: src/screens/Onboarding/index.tsx:64
+#: src/screens/Onboarding/index.tsx:82
 msgid "Science"
 msgstr "Sains"
 
@@ -8463,7 +8471,7 @@ msgstr ""
 msgid "Select a color"
 msgstr "Pilih warna"
 
-#: src/components/EnvConfigIndicator.tsx:221
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8574,7 +8582,7 @@ msgstr "Pilih bahasa apa yang digunakan untuk antarmuka pengguna."
 msgid "Select which languages you want your subscribed feeds to include. If none are selected, all languages will be shown."
 msgstr "Pilih bahasa yang ingin Anda sertakan dalam feed langganan Anda. Jika tidak memilih, maka semua bahasa akan ditampilkan."
 
-#: src/screens/Signup/StepInfo/index.tsx:279
+#: src/screens/Signup/StepInfo/index.tsx:280
 msgid "Select your date of birth"
 msgstr "Pilih tanggal lahir Anda"
 
@@ -8665,7 +8673,7 @@ msgstr "Kirim email dengan kode konfirmasi untuk penghapusan akun"
 msgid "Sends the feedback about the application"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:172
+#: src/view/com/auth/server-input/index.tsx:180
 msgid "Server address"
 msgstr "Alamat server"
 
@@ -8693,7 +8701,7 @@ msgstr "Buat kata sandi baru"
 msgid "Set up your account"
 msgstr "Siapkan akun Anda"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:111
+#: src/screens/Login/ForgotPasswordForm.tsx:112
 msgid "Sets email for password reset"
 msgstr "Atur email untuk pengaturan ulang kata sandi"
 
@@ -8912,7 +8920,7 @@ msgstr "Perbanyak postingan serupa"
 msgid "Show more replies"
 msgstr ""
 
-#: src/screens/PostThread/components/ThreadItemPost.tsx:363
+#: src/screens/PostThread/components/ThreadItemPost.tsx:365
 #: src/view/com/posts/PostFeedItem.tsx:447
 msgid "Show original version"
 msgstr ""
@@ -8986,7 +8994,7 @@ msgstr "Menampilkan konten"
 #: src/screens/Hashtag.tsx:225
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
-#: src/screens/Login/LoginForm.tsx:181
+#: src/screens/Login/LoginForm.tsx:184
 #: src/screens/Search/SearchResults.tsx:262
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
@@ -9105,7 +9113,7 @@ msgid "Sodium content must be a number"
 msgstr ""
 
 #: src/lib/interests.ts:58
-#: src/screens/Onboarding/index.tsx:68
+#: src/screens/Onboarding/index.tsx:86
 msgid "Software Dev"
 msgstr "Pengembang Perangkat Lunak"
 
@@ -9206,7 +9214,7 @@ msgid "Spam; excessive mentions or replies"
 msgstr "Spam; menyebut atau membalas secara berlebihan"
 
 #: src/lib/interests.ts:72
-#: src/screens/Onboarding/index.tsx:58
+#: src/screens/Onboarding/index.tsx:76
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:230
 msgid "Sports"
 msgstr "Olahraga"
@@ -9487,7 +9495,7 @@ msgid "Teach our algorithm what you like"
 msgstr "Latih algoritma kami dengan apa yang Anda sukai"
 
 #: src/lib/interests.ts:73
-#: src/screens/Onboarding/index.tsx:67
+#: src/screens/Onboarding/index.tsx:85
 msgid "Tech"
 msgstr "Teknologi"
 
@@ -9561,7 +9569,7 @@ msgstr "Terima kasih, Anda telah berhasil memverifikasi alamat email Anda. Anda 
 msgid "Thanks! You're all set."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:503
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:508
 msgid "That contains the following:"
 msgstr "Berisi hal berikut:"
 
@@ -9745,7 +9753,7 @@ msgstr "Ada masalah saat mengambil sandi aplikasi Anda"
 msgid "There was an issue fetching your lists. Tap here to try again."
 msgstr "Ada masalah saat mengambil daftar Anda. Ketuk di sini untuk mencoba lagi."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:109
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:114
 msgid "There was an issue fetching your service info"
 msgstr "Ada masalah saat mengambil info layanan Anda"
 
@@ -9911,7 +9919,7 @@ msgstr "Feed ini kosong."
 msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:611
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:616
 msgid "This handle is reserved. Please try a different one."
 msgstr "Panggilan ini sudah digunakan. Silakan coba yang lain."
 
@@ -9992,7 +10000,7 @@ msgstr "Balasan ini akan disortir ke bagian tersembunyi di bawah utas Anda dan a
 msgid "This service has not provided terms of service or a privacy policy."
 msgstr "Layanan ini tidak menyediakan ketentuan layanan atau kebijakan privasi."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:472
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:477
 msgid "This should create a domain record at:"
 msgstr "Ini akan membuat catatan domain di:"
 
@@ -10214,7 +10222,7 @@ msgstr ""
 msgid "Type your message here"
 msgstr "Ketik pesan Anda di sini"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:448
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:453
 msgid "Type:"
 msgstr "Tipe:"
 
@@ -10232,9 +10240,9 @@ msgstr "Tidak dapat tersambung. Silakan periksa koneksi internet Anda dan coba l
 msgid "Unable to contact your service. Please check your internet connection and try again."
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:70
+#: src/screens/Login/ForgotPasswordForm.tsx:71
 #: src/screens/Login/index.tsx:93
-#: src/screens/Login/LoginForm.tsx:169
+#: src/screens/Login/LoginForm.tsx:172
 #: src/screens/Login/SetNewPasswordForm.tsx:81
 #: src/screens/Signup/index.tsx:78
 msgid "Unable to contact your service. Please check your Internet connection."
@@ -10507,8 +10515,8 @@ msgstr "Perbarui <0>{displayName}</0> dalam Daftar"
 msgid "Update email"
 msgstr "Perbarui email"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:544
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:565
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:549
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:570
 msgid "Update to {domain}"
 msgstr "Perbarui ke {domain}"
 
@@ -10534,7 +10542,7 @@ msgstr "Memperbarui..."
 msgid "Upload a photo instead"
 msgstr "Unggah foto saja"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:488
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:493
 msgid "Upload a text file to:"
 msgstr "Unggah berkas teks ke:"
 
@@ -10582,8 +10590,6 @@ msgstr ""
 msgid "URL (optional)"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:176
-#: src/components/EnvConfigIndicator.tsx:184
 #: src/screens/Settings/Settings.tsx:772
 msgid "Use"
 msgstr ""
@@ -10597,11 +10603,11 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:178
-msgid "Use custom domain to retrieve server domains"
+#: src/components/EnvConfigIndicator.tsx:179
+msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:576
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:581
 msgid "Use default provider"
 msgstr "Gunakan penyedia panggilan bawaan"
 
@@ -10696,7 +10702,7 @@ msgstr ""
 msgid "Username must only contain letters (a-z), numbers, and hyphens"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:203
+#: src/screens/Login/LoginForm.tsx:206
 msgid "Username or email address"
 msgstr "Nama pengguna atau alamat email"
 
@@ -10721,7 +10727,7 @@ msgstr "Pengguna di \"{0}\""
 msgid "Users you follow"
 msgstr "Pengguna yang saya ikuti"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:454
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:459
 msgid "Value:"
 msgstr "Nilai:"
 
@@ -10765,8 +10771,8 @@ msgctxt "action"
 msgid "Verify code"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:546
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:567
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:551
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:572
 msgid "Verify DNS Record"
 msgstr "Verifikasi DNS"
 
@@ -10784,8 +10790,8 @@ msgstr "Dialog verifikasi email"
 msgid "Verify now"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:547
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:569
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:552
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:574
 msgid "Verify Text File"
 msgstr "Verifikasi Berkas"
 
@@ -10834,7 +10840,7 @@ msgid "Video from {0}: {text}"
 msgstr "Video dari {0}: {text}"
 
 #: src/lib/interests.ts:62
-#: src/screens/Onboarding/index.tsx:70
+#: src/screens/Onboarding/index.tsx:88
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:234
 msgid "Video Games"
 msgstr "Permainan Video"
@@ -11306,11 +11312,11 @@ msgid "Write your review"
 msgstr ""
 
 #: src/lib/interests.ts:75
-#: src/screens/Onboarding/index.tsx:56
+#: src/screens/Onboarding/index.tsx:74
 msgid "Writers"
 msgstr "Penulis"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:372
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:377
 msgid "Wrong DID returned from server. Received: {0}"
 msgstr "DID yang dikembalikan dari server salah: {0}"
 
@@ -11413,7 +11419,7 @@ msgstr "Anda telah diverifikasi"
 msgid "You are verified. You will lose your verification status if you change your display name. <0>Learn more.</0>"
 msgstr "Anda telah diverfikasi. Status verifikasi Anda akan hilang jika Anda mengganti nama tampilan Anda. <0>Pelajari selengkapnya. (dalam bahasa Inggris)</0>"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:210
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
 msgid "You are verified. You will lose your verification status if you change your handle. <0>Learn more.</0>"
 msgstr "Anda telah diverfikasi. Status verifikasi Anda akan hilang jika Anda mengganti nama panggilan Anda. <0>Pelajari selengkapnya.</0>"
 
@@ -11810,7 +11816,7 @@ msgstr ""
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr "Banding Anda telah diajukan. Jika banding Anda berhasil, Anda akan menerima email."
 
-#: src/screens/Signup/StepInfo/index.tsx:266
+#: src/screens/Signup/StepInfo/index.tsx:267
 msgid "Your birth date"
 msgstr "Tanggal lahir Anda"
 
@@ -11826,7 +11832,7 @@ msgstr "Obrolan Anda telah dinonaktifkan"
 msgid "Your choice will be remembered for future links. You can change it at any time in settings."
 msgstr "Pilihan Anda akan diingat untuk tautan selanjutnya. Anda dapat mengubahnya kapan saja di pengaturan."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:531
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:536
 msgid "Your current handle <0>{0}</0> will automatically remain reserved for you. You can switch back to it at any time from this account."
 msgstr "Nama panggilan Anda <0>{0}</0> akan otomatis dicadangkan untuk Anda. Anda bisa kembali menggantinya kapan saja dari akun ini."
 
@@ -11840,10 +11846,10 @@ msgstr ""
 msgid "Your email"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:53
+#: src/screens/Login/ForgotPasswordForm.tsx:54
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:83
 #: src/screens/Signup/state.ts:273
-#: src/screens/Signup/StepInfo/index.tsx:102
+#: src/screens/Signup/StepInfo/index.tsx:103
 msgid "Your email appears to be invalid."
 msgstr "Email Anda tidak valid."
 
@@ -11863,7 +11869,7 @@ msgstr "Pengikut Anda"
 msgid "Your following feed is empty! Follow more users to see what's happening."
 msgstr "Feed mengikuti Anda kosong! Ikuti lebih banyak pengguna untuk melihat apa yang terjadi."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:247
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:252
 msgid "Your full handle will be <0>@{0}</0>"
 msgstr "Panggilan lengkap Anda akan menjadi <0>@{0}</0>"
 
@@ -11901,7 +11907,7 @@ msgstr "Kata yang Anda bisukan"
 msgid "Your password has been changed successfully! Please use your new password when you sign in to {appName} from now on."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:131
+#: src/screens/Signup/StepInfo/index.tsx:132
 msgid "Your password must be at least 8 characters long."
 msgstr "Kata sandi Anda harus terdiri dari setidaknya 8 karakter."
 
