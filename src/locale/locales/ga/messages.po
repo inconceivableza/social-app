@@ -55,7 +55,7 @@ msgstr "Cuireadh {0, plural, one {lipéad amháin} two {# lipéad} few {# lipéa
 msgid "{0, plural, one {# label has} other {# labels have}} been placed on this content"
 msgstr "Cuireadh {0, plural, one {lipéad amháin} two {# lipéad} few {# lipéad} many {# lipéad} other {# lipéad}} ar an ábhar seo"
 
-#: src/screens/Post/PostLikedBy.tsx:45
+#: src/screens/Post/PostLikedBy.tsx:44
 msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, one {# mholadh} two {# mholadh} few {# mholadh} many {# moladh} other {# moladh}}"
 
@@ -150,8 +150,8 @@ msgstr ""
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
-#: src/view/com/auth/server-input/index.tsx:138
 #: src/view/com/auth/server-input/index.tsx:140
+#: src/view/com/auth/server-input/index.tsx:142
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
 #: src/view/com/composer/Composer.tsx:901
@@ -186,16 +186,20 @@ msgctxt "Name of app icon variant"
 msgid "{0} Classic™"
 msgstr ""
 
+#: src/view/com/auth/server-input/index.tsx:240
+msgid "{0} doesn't currently support custom hosting for accounts. You can sign up with the default {1} Social option."
+msgstr ""
+
 #: src/screens/Profile/Header/Metrics.tsx:49
 msgid "{0} following"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:217
+#: src/view/com/auth/server-input/index.tsx:227
 msgid "{0} is an open network where you can choose your hosting provider. If you're a developer, you can host your own server."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:153
-msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1}Social option."
+#: src/view/com/auth/server-input/index.tsx:161
+msgid "{0} is an open network where you can choose your own provider. If you're new here, we recommend sticking with the default {1} Social option."
 msgstr ""
 
 #: src/components/ProgressGuide/List.tsx:55
@@ -624,7 +628,7 @@ msgstr "⚠Leasainm Neamhbhailí"
 msgid "24 hours"
 msgstr "24 uair an chloig"
 
-#: src/screens/Login/LoginForm.tsx:270
+#: src/screens/Login/LoginForm.tsx:273
 msgid "2FA Confirmation"
 msgstr "Dearbhú 2FA"
 
@@ -698,7 +702,7 @@ msgid "Accessibility Settings"
 msgstr "Socruithe Inrochtaineachta"
 
 #: src/Navigation.tsx:417
-#: src/screens/Login/LoginForm.tsx:196
+#: src/screens/Login/LoginForm.tsx:199
 #: src/screens/Settings/AccountSettings.tsx:51
 #: src/screens/Settings/Settings.tsx:201
 #: src/screens/Settings/Settings.tsx:204
@@ -918,7 +922,7 @@ msgstr ""
 msgid "Add the default feed of only people you follow"
 msgstr "Ná cuir ach fotha réamhshocraithe de na daoine a leanann tú leis seo"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:422
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:427
 msgid "Add the following DNS record to your domain:"
 msgstr "Cuir an taifead DNS seo a leanas le d'fhearann:"
 
@@ -1074,7 +1078,7 @@ msgstr "Ceadaigh freagraí ó:"
 msgid "Allows access to direct messages"
 msgstr "Ceadaíonn sé seo fáil ar do chuid teachtaireachtaí díreacha"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:175
+#: src/screens/Login/ForgotPasswordForm.tsx:176
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:237
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:243
 msgid "Already have a code?"
@@ -1215,7 +1219,7 @@ msgid "and"
 msgstr "agus"
 
 #: src/lib/interests.ts:52
-#: src/screens/Onboarding/index.tsx:60
+#: src/screens/Onboarding/index.tsx:78
 msgid "Animals"
 msgstr "Ainmhithe"
 
@@ -1392,7 +1396,7 @@ msgid "Are you writing in <0>{suggestedLanguageName}</0>?"
 msgstr ""
 
 #: src/lib/interests.ts:53
-#: src/screens/Onboarding/index.tsx:54
+#: src/screens/Onboarding/index.tsx:72
 msgid "Art"
 msgstr "Ealaín"
 
@@ -1464,10 +1468,10 @@ msgstr ""
 #: src/components/moderation/LabelsOnMeDialog.tsx:318
 #: src/screens/Login/ChooseAccountForm.tsx:90
 #: src/screens/Login/ChooseAccountForm.tsx:95
-#: src/screens/Login/ForgotPasswordForm.tsx:127
-#: src/screens/Login/ForgotPasswordForm.tsx:133
-#: src/screens/Login/LoginForm.tsx:312
-#: src/screens/Login/LoginForm.tsx:318
+#: src/screens/Login/ForgotPasswordForm.tsx:128
+#: src/screens/Login/ForgotPasswordForm.tsx:134
+#: src/screens/Login/LoginForm.tsx:315
+#: src/screens/Login/LoginForm.tsx:321
 #: src/screens/Login/SetNewPasswordForm.tsx:168
 #: src/screens/Login/SetNewPasswordForm.tsx:174
 #: src/screens/Messages/components/ChatDisabled.tsx:148
@@ -1644,7 +1648,7 @@ msgid "Blur images and filter from feeds"
 msgstr "Déan íomhánna doiléir agus scag ó fhothaí iad"
 
 #: src/lib/interests.ts:54
-#: src/screens/Onboarding/index.tsx:61
+#: src/screens/Onboarding/index.tsx:79
 msgid "Books"
 msgstr "Leabhair"
 
@@ -1760,8 +1764,8 @@ msgstr "Ceamara"
 #: src/screens/Search/Shell.tsx:430
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:80
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:87
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:85
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:92
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:248
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:254
 #: src/screens/Settings/Settings.tsx:334
@@ -1855,8 +1859,8 @@ msgstr "Athraigh deilbhín na haipe go \"{0}\""
 msgid "Change app language"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:96
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:100
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:101
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:105
 msgid "Change Handle"
 msgstr "Athraigh mo leasainm"
 
@@ -1877,7 +1881,7 @@ msgstr ""
 msgid "Change report reason"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:201
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1964,7 +1968,7 @@ msgstr ""
 msgid "Check my status"
 msgstr "Seiceáil mo stádas"
 
-#: src/screens/Login/LoginForm.tsx:303
+#: src/screens/Login/LoginForm.tsx:306
 msgid "Check your email for a sign in code and enter it here."
 msgstr ""
 
@@ -1980,7 +1984,7 @@ msgstr ""
 msgid "Cholesterol content must be a number"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:405
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
 msgid "Choose domain verification method"
 msgstr "Roghnaigh modh deimhnithe fearainn"
 
@@ -2008,7 +2012,7 @@ msgstr "Roghnaigh na halgartaim le haghaidh do chuid sainfhothaí."
 msgid "Choose this color as your avatar"
 msgstr "Roghnaigh an dath seo mar abhatár duit"
 
-#: src/view/com/auth/server-input/index.tsx:130
+#: src/view/com/auth/server-input/index.tsx:132
 msgid "Choose your account provider"
 msgstr ""
 
@@ -2016,7 +2020,7 @@ msgstr ""
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "Tóg d'amlíne féin! Is féidir teacht ar ábhar a thaitneoidh leat le fothaí a thógann an pobal."
 
-#: src/screens/Signup/StepInfo/index.tsx:250
+#: src/screens/Signup/StepInfo/index.tsx:251
 msgid "Choose your password"
 msgstr "Roghnaigh do phasfhocal"
 
@@ -2086,7 +2090,7 @@ msgstr ""
 msgid "Click to retry failed message"
 msgstr "Cliceáil le triail eile a bhaint as teachtaireacht ar theip uirthi"
 
-#: src/screens/Onboarding/index.tsx:63
+#: src/screens/Onboarding/index.tsx:81
 msgid "Climate"
 msgstr "Aeráid"
 
@@ -2229,12 +2233,12 @@ msgid "Color theme"
 msgstr ""
 
 #: src/lib/interests.ts:55
-#: src/screens/Onboarding/index.tsx:69
+#: src/screens/Onboarding/index.tsx:87
 msgid "Comedy"
 msgstr "Greann"
 
 #: src/lib/interests.ts:56
-#: src/screens/Onboarding/index.tsx:55
+#: src/screens/Onboarding/index.tsx:73
 msgid "Comics"
 msgstr "Greannáin"
 
@@ -2341,7 +2345,7 @@ msgid "Confirm your location with GPS. Your location data is not tracked and doe
 msgstr ""
 
 #: src/components/dialogs/EmailDialog/components/TokenField.tsx:36
-#: src/screens/Login/LoginForm.tsx:276
+#: src/screens/Login/LoginForm.tsx:279
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:188
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:192
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:144
@@ -2351,7 +2355,11 @@ msgstr ""
 msgid "Confirmation code"
 msgstr "Cód dearbhaithe"
 
-#: src/screens/Login/LoginForm.tsx:339
+#: src/components/EnvConfigIndicator.tsx:176
+msgid "Connect"
+msgstr ""
+
+#: src/screens/Login/LoginForm.tsx:342
 msgid "Connecting..."
 msgstr "Ag nascadh…"
 
@@ -2471,7 +2479,7 @@ msgstr "Scriosadh an comhrá"
 msgid "Cook:"
 msgstr ""
 
-#: src/screens/Onboarding/index.tsx:72
+#: src/screens/Onboarding/index.tsx:90
 msgid "Cooking"
 msgstr "Cócaireacht"
 
@@ -2537,13 +2545,13 @@ msgstr ""
 msgid "Copy code"
 msgstr "Cóipeáil an cód"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:507
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:512
 #: src/view/com/profile/ProfileMenu.tsx:447
 #: src/view/com/profile/ProfileMenu.tsx:450
 msgid "Copy DID"
 msgstr "Cóipeáil an DID"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:439
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:444
 msgid "Copy host"
 msgstr "Cóipeáil an t-óstainm"
 
@@ -2596,7 +2604,7 @@ msgstr "Cóipeáil téacs na postála"
 msgid "Copy QR code"
 msgstr "Cóipeáil an cód QR"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:460
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:465
 msgid "Copy TXT record value"
 msgstr "Cóipeáil an taifead TXT"
 
@@ -2753,12 +2761,12 @@ msgid "Cuisine type"
 msgstr ""
 
 #: src/lib/interests.ts:57
-#: src/screens/Onboarding/index.tsx:57
+#: src/screens/Onboarding/index.tsx:75
 msgid "Culture"
 msgstr "Cultúr"
 
-#: src/view/com/auth/server-input/index.tsx:146
-#: src/view/com/auth/server-input/index.tsx:147
+#: src/view/com/auth/server-input/index.tsx:149
+#: src/view/com/auth/server-input/index.tsx:151
 msgid "Custom"
 msgstr "Saincheaptha"
 
@@ -2802,7 +2810,7 @@ msgstr "Modh dorcha"
 msgid "Dark theme"
 msgstr "Téama dorcha"
 
-#: src/screens/Signup/StepInfo/index.tsx:278
+#: src/screens/Signup/StepInfo/index.tsx:279
 msgid "Date of birth"
 msgstr "Dáta breithe"
 
@@ -3085,8 +3093,8 @@ msgstr "Ainm taispeána"
 msgid "Ditch the trolls and clickbait. Find real people and conversations that matter to you."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:408
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:410
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
 msgid "DNS Panel"
 msgstr "Painéal DNS"
 
@@ -3102,7 +3110,7 @@ msgstr "Níl lomnochtacht ann."
 msgid "Doesn't include your account data with the feedback"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:523
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:528
 msgid "Domain verified!"
 msgstr "Fearann dearbhaithe!"
 
@@ -3135,8 +3143,8 @@ msgstr ""
 #: src/screens/Onboarding/StepProfile/index.tsx:336
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:214
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:221
-#: src/view/com/auth/server-input/index.tsx:238
-#: src/view/com/auth/server-input/index.tsx:239
+#: src/view/com/auth/server-input/index.tsx:256
+#: src/view/com/auth/server-input/index.tsx:257
 #: src/view/com/composer/labels/LabelsBtn.tsx:223
 #: src/view/com/composer/labels/LabelsBtn.tsx:230
 #: src/view/com/composer/select-language/PostLanguageSelectDialog.tsx:303
@@ -3190,7 +3198,7 @@ msgstr "Fad:"
 msgid "e.g. {defaultCustomDomain} or http://localhost:8100"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:237
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:242
 msgid "e.g. alice"
 msgstr "m.sh. cáit"
 
@@ -3198,7 +3206,7 @@ msgstr "m.sh. cáit"
 msgid "e.g. Alice Lastname"
 msgstr "m.sh. Cáit Ní Dhuibhir"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:392
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:397
 msgid "e.g. alice.com"
 msgstr "m.sh. cait.com"
 
@@ -3333,7 +3341,7 @@ msgid "Edited"
 msgstr ""
 
 #: src/lib/interests.ts:59
-#: src/screens/Onboarding/index.tsx:62
+#: src/screens/Onboarding/index.tsx:80
 msgid "Education"
 msgstr "Oideachas"
 
@@ -3342,7 +3350,7 @@ msgid "Either the creator of this list has blocked you or you have blocked the c
 msgstr "Cuireadh cruthaitheoir an liosta seo cosc ortsa, nó chuir tusa cosc ar an gcruthaitheoir."
 
 #: src/screens/Settings/AccountSettings.tsx:66
-#: src/screens/Signup/StepInfo/index.tsx:202
+#: src/screens/Signup/StepInfo/index.tsx:203
 msgid "Email"
 msgstr "Ríomhphost"
 
@@ -3355,7 +3363,7 @@ msgstr "Níl 2FA trí ríomhphost ar fáil a thuilleadh"
 msgid "Email 2FA enabled"
 msgstr "Cuireadh 2FA ríomhphoist ar siúl"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:97
+#: src/screens/Login/ForgotPasswordForm.tsx:98
 msgid "Email address"
 msgstr "Seoladh ríomhphoist"
 
@@ -3490,15 +3498,15 @@ msgstr ""
 msgid "Enter fullscreen"
 msgstr "Mód lánscáileáin"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:386
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
 msgid "Enter the domain you want to use"
 msgstr "Cuir isteach an fearann is maith leat a úsáid"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:117
+#: src/screens/Login/ForgotPasswordForm.tsx:118
 msgid "Enter the email you used to create your account. We'll send you a \"reset code\" so you can set a new password."
 msgstr "Cuir isteach an seoladh ríomhphoist a d’úsáid tú le do chuntas a chruthú. Cuirfidh muid “cód athshocraithe” chugat le go mbeidh tú in ann do phasfhocal a athrú."
 
-#: src/screens/Login/LoginForm.tsx:220
+#: src/screens/Login/LoginForm.tsx:223
 msgid "Enter the username or email address you used when you created your account"
 msgstr ""
 
@@ -3506,12 +3514,12 @@ msgstr ""
 msgid "Enter your birth date"
 msgstr "Cuir isteach do bhreithlá"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:103
-#: src/screens/Signup/StepInfo/index.tsx:222
+#: src/screens/Login/ForgotPasswordForm.tsx:104
+#: src/screens/Signup/StepInfo/index.tsx:223
 msgid "Enter your email address"
 msgstr "Cuir isteach do sheoladh ríomhphoist"
 
-#: src/screens/Login/LoginForm.tsx:245
+#: src/screens/Login/LoginForm.tsx:248
 msgid "Enter your password"
 msgstr ""
 
@@ -3735,7 +3743,7 @@ msgstr ""
 msgid "Failed to add to starter pack"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:605
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:610
 msgid "Failed to change handle. Please try again."
 msgstr "Theip ar athrú an leasainm. Bain triail eile as."
 
@@ -3921,7 +3929,7 @@ msgstr "Theip ar uaslódáil an fhíseáin"
 msgid "Failed to verify email, please try again."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:376
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:381
 msgid "Failed to verify handle. Please try again."
 msgstr "Theip ar dhearbhú an leasainm. Bain triail eile as."
 
@@ -4072,7 +4080,7 @@ msgstr ""
 msgid "Finish"
 msgstr "Críochnaigh"
 
-#: src/screens/Onboarding/index.tsx:66
+#: src/screens/Onboarding/index.tsx:84
 msgid "Fitness"
 msgstr "Folláine"
 
@@ -4238,7 +4246,7 @@ msgid "Font size"
 msgstr "Clómhéid"
 
 #: src/lib/interests.ts:61
-#: src/screens/Onboarding/index.tsx:71
+#: src/screens/Onboarding/index.tsx:89
 msgid "Food"
 msgstr "Bia"
 
@@ -4280,11 +4288,11 @@ msgstr ""
 msgid "Forgot Password"
 msgstr "Pasfhocal dearmadta"
 
-#: src/screens/Login/LoginForm.tsx:250
+#: src/screens/Login/LoginForm.tsx:253
 msgid "Forgot password?"
 msgstr "Pasfhocal dearmadta?"
 
-#: src/screens/Login/LoginForm.tsx:261
+#: src/screens/Login/LoginForm.tsx:264
 msgid "Forgot?"
 msgstr "Dearmadta?"
 
@@ -4524,7 +4532,7 @@ msgstr "Téigh go comhrá le {0}"
 msgid "Go to feed"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:169
+#: src/screens/Login/ForgotPasswordForm.tsx:170
 msgid "Go to next"
 msgstr "Téigh go dtí an chéad rud eile"
 
@@ -4564,16 +4572,16 @@ msgstr "Leath bealaigh ann!"
 msgid "Handle"
 msgstr "Leasainm"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:609
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:614
 msgid "Handle already taken. Please try a different one."
 msgstr "Tá an leasainm seo in úsáid cheana. Bain triail as ceann eile."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:197
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:360
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:202
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:365
 msgid "Handle changed!"
 msgstr "Athraíodh an leasainm!"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:613
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
 msgid "Handle too long. Please try a shorter one."
 msgstr "Tá an leasainm seo rófhada. Bain triail as ceann níos giorra."
 
@@ -4756,12 +4764,12 @@ msgstr "Foighne ort! Tá físeáin á seoladh de réir a chéile, agus tá tú f
 msgid "Home"
 msgstr "Baile"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:433
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:438
 msgid "Host:"
 msgstr "Óstach:"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:86
-#: src/screens/Login/LoginForm.tsx:185
+#: src/screens/Login/ForgotPasswordForm.tsx:87
+#: src/screens/Login/LoginForm.tsx:188
 msgid "Hosting provider"
 msgstr "Soláthraí óstála"
 
@@ -4787,8 +4795,8 @@ msgstr ""
 msgid "I have a code"
 msgstr "Tá cód agam"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:294
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:300
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:299
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:305
 msgid "I have my own domain"
 msgstr "Tá fearann de mo chuid féin agam"
 
@@ -4809,7 +4817,7 @@ msgstr "Ní duine fásta thú de réir dhlí do thíre, tá ar do thuismitheoir 
 msgid "If you delete this list, you won't be able to recover it."
 msgstr "Má scriosann tú an liosta seo, ní bheidh tú in ann é a fháil ar ais."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:276
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
 msgid "If you have your own domain, you can use that as your handle. This lets you self-verify your identity. <0>Learn more here.</0>"
 msgstr "Má tá fearann de do chuid féin agat, is féidir é sin a úsáid mar leasainm, agus sa chaoi sin, d'aitheantas féin a dhearbhú. <0>Tuilleadh eolais.</0>"
 
@@ -4834,7 +4842,7 @@ msgstr "Más mian leat do phasfhocal a athrú, seolfaimid cód duit chun dearbh�
 msgid "If you want to restrict who can receive notifications for your account's activity, you can change this in <0>Settings → Privacy and Security</0>."
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:213
+#: src/view/com/auth/server-input/index.tsx:223
 msgid "If you're a developer, you can host your own server."
 msgstr ""
 
@@ -4917,7 +4925,7 @@ msgstr "Teachtaireachtaí míchuí nó nascanna graosta"
 msgid "Inbox zero!"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:164
+#: src/screens/Login/LoginForm.tsx:167
 msgid "Incorrect username or password"
 msgstr "Leasainm nó pasfhocal míchruinn"
 
@@ -4952,7 +4960,7 @@ msgstr "Cuir isteach an pasfhocal nua"
 msgid "Input password for account deletion"
 msgstr "Cuir isteach an pasfhocal chun an cuntas a scriosadh"
 
-#: src/screens/Login/LoginForm.tsx:291
+#: src/screens/Login/LoginForm.tsx:294
 msgid "Input the code which has been emailed to you"
 msgstr "Cuir isteach an cód a chuir muid chugat i dteachtaireacht r-phoist"
 
@@ -4991,12 +4999,12 @@ msgstr ""
 msgid "Introducing saved posts AKA bookmarks"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:156
+#: src/screens/Login/LoginForm.tsx:159
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:70
 msgid "Invalid 2FA confirmation code."
 msgstr "Tá an cód 2FA seo neamhbhailí."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:615
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:620
 msgid "Invalid handle. Please try a different one."
 msgstr "Leasainm neamhbhailí. Bain triail as ceann eile."
 
@@ -5028,7 +5036,7 @@ msgstr "Cód Deimhnithe Neamhbhailí"
 msgid "Invite a Friend"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:172
+#: src/screens/Signup/StepInfo/index.tsx:173
 msgid "Invite code"
 msgstr "Cód cuiridh"
 
@@ -5073,7 +5081,7 @@ msgstr ""
 msgid "ISBN (optional)"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:298
+#: src/screens/Signup/StepInfo/index.tsx:299
 msgid "It's correct"
 msgstr "Tá. Tá sé ceart"
 
@@ -5110,7 +5118,7 @@ msgid "Join the conversation"
 msgstr "Glac páirt sa chomhrá"
 
 #: src/lib/interests.ts:63
-#: src/screens/Onboarding/index.tsx:52
+#: src/screens/Onboarding/index.tsx:70
 msgid "Journalism"
 msgstr "Iriseoireacht"
 
@@ -5200,8 +5208,8 @@ msgstr "Is Déanaí"
 #: src/components/verification/VerifierDialog.tsx:138
 #: src/screens/Moderation/VerificationSettings.tsx:48
 #: src/screens/Profile/Header/EditProfileDialog.tsx:349
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:281
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:220
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:286
 msgctxt "english-only-resource"
 msgid "Learn more"
 msgstr ""
@@ -5218,7 +5226,7 @@ msgstr ""
 msgid "Learn more about age assurance"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:224
+#: src/view/com/auth/server-input/index.tsx:234
 msgid "Learn more about self hosting your PDS."
 msgstr "Tuilleadh eolais faoi do fhreastalaí pearsanta féin a óstáil."
 
@@ -5256,7 +5264,7 @@ msgid "Learn more in your <0>account settings.</0>"
 msgstr ""
 
 #: src/components/moderation/ContentHider.tsx:247
-#: src/view/com/auth/server-input/index.tsx:226
+#: src/view/com/auth/server-input/index.tsx:236
 msgid "Learn more."
 msgstr "Tuilleadh eolais."
 
@@ -5359,7 +5367,7 @@ msgstr ""
 msgid "Liked by"
 msgstr "Molta ag"
 
-#: src/screens/Post/PostLikedBy.tsx:42
+#: src/screens/Post/PostLikedBy.tsx:41
 #: src/screens/Profile/ProfileLabelerLikedBy.tsx:32
 #: src/view/screens/ProfileFeedLikedBy.tsx:32
 msgid "Liked By"
@@ -5955,7 +5963,7 @@ msgid "Name or Description Violates Community Standards"
 msgstr "Sáraíonn an tAinm nó an Cur Síos Caighdeáin an Phobail"
 
 #: src/lib/interests.ts:66
-#: src/screens/Onboarding/index.tsx:53
+#: src/screens/Onboarding/index.tsx:71
 msgid "Nature"
 msgstr "Nádúr"
 
@@ -5968,8 +5976,8 @@ msgstr "Téigh go {0}"
 msgid "Navigate to starter pack"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:170
-#: src/screens/Login/LoginForm.tsx:346
+#: src/screens/Login/ForgotPasswordForm.tsx:171
+#: src/screens/Login/LoginForm.tsx:349
 msgid "Navigates to the next screen"
 msgstr "Téann sé seo chuig an gcéad scáileán eile"
 
@@ -5995,7 +6003,7 @@ msgstr ""
 msgid "Never lose access to your followers or data."
 msgstr "Ná bíodh gan fáil ar do chuid leantóirí ná ar do chuid dáta go deo."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:585
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:590
 msgid "Nevermind, create a handle for me"
 msgstr "Is cuma, cruthaigh leasainm dom"
 
@@ -6043,9 +6051,9 @@ msgstr ""
 msgid "New followers"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:228
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:236
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:391
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:233
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:241
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:396
 msgid "New handle"
 msgstr "Leasainm nua"
 
@@ -6103,15 +6111,15 @@ msgid "Newest replies first"
 msgstr "Na freagraí is déanaí ar dtús"
 
 #: src/lib/interests.ts:67
-#: src/screens/Onboarding/index.tsx:51
+#: src/screens/Onboarding/index.tsx:69
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:238
 msgid "News"
 msgstr "Nuacht"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:141
-#: src/screens/Login/ForgotPasswordForm.tsx:147
-#: src/screens/Login/LoginForm.tsx:345
-#: src/screens/Login/LoginForm.tsx:352
+#: src/screens/Login/ForgotPasswordForm.tsx:142
+#: src/screens/Login/ForgotPasswordForm.tsx:148
+#: src/screens/Login/LoginForm.tsx:348
+#: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
 #: src/screens/Onboarding/StepFinished/index.tsx:344
@@ -6143,8 +6151,8 @@ msgstr ""
 msgid "No app passwords yet"
 msgstr "Níl aon phasfhocal aipe ann fós"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:413
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:415
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:418
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:420
 msgid "No DNS Panel"
 msgstr "Gan Phainéal DNS"
 
@@ -6480,7 +6488,7 @@ msgstr "Úps! Theip ar rud éigin!"
 #: src/components/StarterPack/ProfileStarterPacks.tsx:329
 #: src/components/StarterPack/ProfileStarterPacks.tsx:338
 #: src/screens/Settings/AppPasswords.tsx:60
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:108
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:113
 #: src/view/screens/Profile.tsx:122
 msgid "Oops!"
 msgstr "Úps!"
@@ -6645,7 +6653,7 @@ msgstr ""
 msgid "Opens live status dialog"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:251
+#: src/screens/Login/LoginForm.tsx:254
 msgid "Opens password reset form"
 msgstr "Osclaíonn sé seo an fhoirm leis an bpasfhocal a athrú"
 
@@ -6748,10 +6756,10 @@ msgstr "Leathanach gan aimsiú"
 msgid "Page Not Found"
 msgstr "Leathanach gan aimsiú"
 
-#: src/screens/Login/LoginForm.tsx:230
+#: src/screens/Login/LoginForm.tsx:233
 #: src/screens/Settings/AccountSettings.tsx:121
 #: src/screens/Settings/AccountSettings.tsx:125
-#: src/screens/Signup/StepInfo/index.tsx:237
+#: src/screens/Signup/StepInfo/index.tsx:238
 #: src/view/com/modals/DeleteAccount.tsx:239
 #: src/view/com/modals/DeleteAccount.tsx:246
 msgid "Password"
@@ -6815,7 +6823,7 @@ msgid "Person toggle"
 msgstr "Scoránú duine"
 
 #: src/lib/interests.ts:68
-#: src/screens/Onboarding/index.tsx:59
+#: src/screens/Onboarding/index.tsx:77
 msgid "Pets"
 msgstr "Peataí"
 
@@ -6920,7 +6928,7 @@ msgid "Please choose your handle."
 msgstr "Roghnaigh do leasainm, le do thoil."
 
 #: src/screens/Signup/state.ts:281
-#: src/screens/Signup/StepInfo/index.tsx:124
+#: src/screens/Signup/StepInfo/index.tsx:125
 msgid "Please choose your password."
 msgstr "Roghnaigh do phasfhocal, le do thoil."
 
@@ -6933,7 +6941,7 @@ msgid "Please complete the verification captcha."
 msgstr "Déan an captcha, le do thoil."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:102
-#: src/screens/Signup/StepInfo/index.tsx:113
+#: src/screens/Signup/StepInfo/index.tsx:114
 msgid "Please double-check that you have entered your email address correctly."
 msgstr ""
 
@@ -6981,11 +6989,11 @@ msgid "Please enter the security code we sent to your previous email address."
 msgstr ""
 
 #: src/screens/Signup/state.ts:265
-#: src/screens/Signup/StepInfo/index.tsx:95
+#: src/screens/Signup/StepInfo/index.tsx:96
 msgid "Please enter your email."
 msgstr "Cuir isteach do sheoladh ríomhphoist, le do thoil."
 
-#: src/screens/Signup/StepInfo/index.tsx:88
+#: src/screens/Signup/StepInfo/index.tsx:89
 msgid "Please enter your invite code."
 msgstr "Cuir isteach do chód cuiridh."
 
@@ -6993,7 +7001,7 @@ msgstr "Cuir isteach do chód cuiridh."
 msgid "Please enter your new email address."
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:99
+#: src/screens/Login/LoginForm.tsx:102
 msgid "Please enter your password"
 msgstr ""
 
@@ -7001,7 +7009,7 @@ msgstr ""
 msgid "Please enter your password as well:"
 msgstr "Cuir isteach do phasfhocal freisin, le do thoil."
 
-#: src/screens/Login/LoginForm.tsx:94
+#: src/screens/Login/LoginForm.tsx:97
 msgid "Please enter your username"
 msgstr ""
 
@@ -7061,7 +7069,7 @@ msgid "Please write your message below:"
 msgstr ""
 
 #: src/lib/interests.ts:70
-#: src/screens/Onboarding/index.tsx:65
+#: src/screens/Onboarding/index.tsx:83
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:232
 msgid "Politics"
 msgstr "Polaitíocht"
@@ -7278,7 +7286,7 @@ msgstr "Físeán á phróiseáil..."
 
 #: src/lib/api/index.ts:74
 #: src/lib/api/index.ts:402
-#: src/screens/Login/ForgotPasswordForm.tsx:153
+#: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr "Á phróiseáil..."
 
@@ -7460,7 +7468,7 @@ msgstr "Postálacha athluaite"
 msgid "Quotes of this post"
 msgstr "Postálacha athluaite den phostáil seo"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:618
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:623
 msgid "Rate limit exceeded – you've tried to change your handle too many times in a short period. Please wait a minute before trying again."
 msgstr "Rinne tú an iomarca iarrachtaí do leasainm a athrú taobh istigh de thréimhse ghearr. Fan cúpla nóiméad sula ndéanann tú iarracht eile."
 
@@ -8041,7 +8049,7 @@ msgstr "Bíodh téacs malartach ann roimh phostáil i gcónaí"
 msgid "Require an email code to sign in to your account."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:186
+#: src/screens/Signup/StepInfo/index.tsx:187
 msgid "Required for this provider"
 msgstr "Riachtanach don soláthraí seo"
 
@@ -8080,7 +8088,7 @@ msgstr "Cód athshocraithe"
 msgid "Reset onboarding state"
 msgstr "Athshocraigh an próiseas cláraithe"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:82
+#: src/screens/Login/ForgotPasswordForm.tsx:83
 msgid "Reset password"
 msgstr "Athshocraigh an pasfhocal"
 
@@ -8089,7 +8097,7 @@ msgstr "Athshocraigh an pasfhocal"
 msgid "Reset Stored Environment Config"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:326
+#: src/screens/Login/LoginForm.tsx:329
 msgid "Retries signing in"
 msgstr ""
 
@@ -8105,8 +8113,8 @@ msgstr "Baineann sé seo triail eile as an ngníomh is déanaí, ar theip air"
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:55
 #: src/components/Post/Embed/VideoEmbed/VideoEmbedInner/VideoFallback.tsx:58
 #: src/components/StarterPack/ProfileStarterPacks.tsx:343
-#: src/screens/Login/LoginForm.tsx:325
-#: src/screens/Login/LoginForm.tsx:332
+#: src/screens/Login/LoginForm.tsx:328
+#: src/screens/Login/LoginForm.tsx:335
 #: src/screens/Messages/ChatList.tsx:292
 #: src/screens/Messages/components/MessageListError.tsx:25
 #: src/screens/Messages/Inbox.tsx:219
@@ -8140,7 +8148,7 @@ msgstr "Filleann sé seo abhaile"
 
 #: src/screens/Profile/ProfileFeed/index.tsx:91
 #: src/screens/ProfileList/components/ErrorScreen.tsx:35
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:577
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:582
 #: src/screens/VideoFeed/index.tsx:1150
 #: src/view/screens/NotFound.tsx:60
 msgid "Returns to previous page"
@@ -8186,7 +8194,7 @@ msgstr ""
 #: src/screens/Profile/Header/EditProfileDialog.tsx:236
 #: src/screens/Profile/Header/EditProfileDialog.tsx:250
 #: src/screens/SavedFeeds.tsx:120
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:269
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:274
 #: src/view/com/composer/GifAltText.tsx:193
 #: src/view/com/composer/GifAltText.tsx:202
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:62
@@ -8222,7 +8230,7 @@ msgstr ""
 msgid "Save image"
 msgstr "Sábháil an íomhá"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:255
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:260
 msgid "Save new handle"
 msgstr "Sábháil an leasainm nua"
 
@@ -8264,7 +8272,7 @@ msgid "Say hello!"
 msgstr "Abair heileo!"
 
 #: src/lib/interests.ts:71
-#: src/screens/Onboarding/index.tsx:64
+#: src/screens/Onboarding/index.tsx:82
 msgid "Science"
 msgstr "Eolaíocht"
 
@@ -8463,7 +8471,7 @@ msgstr ""
 msgid "Select a color"
 msgstr "Roghnaigh dath"
 
-#: src/components/EnvConfigIndicator.tsx:221
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8574,7 +8582,7 @@ msgstr ""
 msgid "Select which languages you want your subscribed feeds to include. If none are selected, all languages will be shown."
 msgstr "Roghnaigh na teangacha ba mhaith leat a fheiceáil i do chuid fothaí. Mura roghnaíonn tú, taispeánfar ábhar i ngach teanga duit."
 
-#: src/screens/Signup/StepInfo/index.tsx:279
+#: src/screens/Signup/StepInfo/index.tsx:280
 msgid "Select your date of birth"
 msgstr "Roghnaigh do dháta breithe"
 
@@ -8665,7 +8673,7 @@ msgstr "Seolann sé seo ríomhphost ina bhfuil cód dearbhaithe chun an cuntas a
 msgid "Sends the feedback about the application"
 msgstr ""
 
-#: src/view/com/auth/server-input/index.tsx:172
+#: src/view/com/auth/server-input/index.tsx:180
 msgid "Server address"
 msgstr "Seoladh an fhreastalaí"
 
@@ -8693,7 +8701,7 @@ msgstr "Socraigh pasfhocal nua"
 msgid "Set up your account"
 msgstr "Socraigh do chuntas"
 
-#: src/screens/Login/ForgotPasswordForm.tsx:111
+#: src/screens/Login/ForgotPasswordForm.tsx:112
 msgid "Sets email for password reset"
 msgstr "Socraíonn sé seo an seoladh ríomhphoist le haghaidh athshocrú an phasfhocail"
 
@@ -8912,7 +8920,7 @@ msgstr "Níos mó den sórt seo"
 msgid "Show more replies"
 msgstr ""
 
-#: src/screens/PostThread/components/ThreadItemPost.tsx:363
+#: src/screens/PostThread/components/ThreadItemPost.tsx:365
 #: src/view/com/posts/PostFeedItem.tsx:447
 msgid "Show original version"
 msgstr ""
@@ -8986,7 +8994,7 @@ msgstr ""
 #: src/screens/Hashtag.tsx:225
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
-#: src/screens/Login/LoginForm.tsx:181
+#: src/screens/Login/LoginForm.tsx:184
 #: src/screens/Search/SearchResults.tsx:262
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
@@ -9105,7 +9113,7 @@ msgid "Sodium content must be a number"
 msgstr ""
 
 #: src/lib/interests.ts:58
-#: src/screens/Onboarding/index.tsx:68
+#: src/screens/Onboarding/index.tsx:86
 msgid "Software Dev"
 msgstr "Forbairt Bogearraí"
 
@@ -9206,7 +9214,7 @@ msgid "Spam; excessive mentions or replies"
 msgstr "Turscar; an iomarca tagairtí nó freagraí"
 
 #: src/lib/interests.ts:72
-#: src/screens/Onboarding/index.tsx:58
+#: src/screens/Onboarding/index.tsx:76
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:230
 msgid "Sports"
 msgstr "Spórt"
@@ -9487,7 +9495,7 @@ msgid "Teach our algorithm what you like"
 msgstr "Abair linn na rudaí a thaitníonn leat"
 
 #: src/lib/interests.ts:73
-#: src/screens/Onboarding/index.tsx:67
+#: src/screens/Onboarding/index.tsx:85
 msgid "Tech"
 msgstr "Teic"
 
@@ -9561,7 +9569,7 @@ msgstr "Go raibh maith agat! D'éirigh linn do sheoladh ríomhphoist a dheimhni�
 msgid "Thanks! You're all set."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:503
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:508
 msgid "That contains the following:"
 msgstr "Ina bhfuil an méid seo a leanas:"
 
@@ -9745,7 +9753,7 @@ msgstr "Bhí fadhb ann agus do chuid pasfhocal aipe á n-íoslódáil"
 msgid "There was an issue fetching your lists. Tap here to try again."
 msgstr "Bhí fadhb ann maidir le do chuid liostaí a fháil. Tapáil anseo le triail eile a bhaint as."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:109
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:114
 msgid "There was an issue fetching your service info"
 msgstr "Bhí fadhb ann agus d'fhaisnéis seirbhíse á híoslódáil"
 
@@ -9911,7 +9919,7 @@ msgstr "Tá an fotha seo folamh."
 msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:611
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:616
 msgid "This handle is reserved. Please try a different one."
 msgstr "Tá an leasainm seo coimeádta. Bain triail as ceann eile."
 
@@ -9992,7 +10000,7 @@ msgstr "Cuirfear an freagra seo i rannán speisialta a bheidh i bhfolach ag bun 
 msgid "This service has not provided terms of service or a privacy policy."
 msgstr "Níor chuir an tseirbhís seo téarmaí seirbhíse ná polasaí príobháideachta ar fáil."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:472
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:477
 msgid "This should create a domain record at:"
 msgstr "Ba cheart dó seo taifead fearainn a chruthú ag:"
 
@@ -10214,7 +10222,7 @@ msgstr ""
 msgid "Type your message here"
 msgstr "Scríobh do theachtaireacht anseo"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:448
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:453
 msgid "Type:"
 msgstr "Clóscríobh:"
 
@@ -10232,9 +10240,9 @@ msgstr "Ní féidir ceangal a bhunú. Seiceáil do cheangal leis an idirlíon ag
 msgid "Unable to contact your service. Please check your internet connection and try again."
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:70
+#: src/screens/Login/ForgotPasswordForm.tsx:71
 #: src/screens/Login/index.tsx:93
-#: src/screens/Login/LoginForm.tsx:169
+#: src/screens/Login/LoginForm.tsx:172
 #: src/screens/Login/SetNewPasswordForm.tsx:81
 #: src/screens/Signup/index.tsx:78
 msgid "Unable to contact your service. Please check your Internet connection."
@@ -10507,8 +10515,8 @@ msgstr "Nuashonraigh <0>{displayName}</0> i Liostaí"
 msgid "Update email"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:544
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:565
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:549
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:570
 msgid "Update to {domain}"
 msgstr "Uasdátú chuig {domain}"
 
@@ -10534,7 +10542,7 @@ msgstr "Á uasdátú…"
 msgid "Upload a photo instead"
 msgstr "Uaslódáil grianghraf in ionad"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:488
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:493
 msgid "Upload a text file to:"
 msgstr "Uaslódáil comhad téacs chuig:"
 
@@ -10582,8 +10590,6 @@ msgstr ""
 msgid "URL (optional)"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:176
-#: src/components/EnvConfigIndicator.tsx:184
 #: src/screens/Settings/Settings.tsx:772
 msgid "Use"
 msgstr ""
@@ -10597,11 +10603,11 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:178
-msgid "Use custom domain to retrieve server domains"
+#: src/components/EnvConfigIndicator.tsx:179
+msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:576
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:581
 msgid "Use default provider"
 msgstr "Úsáid an soláthraí réamhshocraithe"
 
@@ -10696,7 +10702,7 @@ msgstr ""
 msgid "Username must only contain letters (a-z), numbers, and hyphens"
 msgstr ""
 
-#: src/screens/Login/LoginForm.tsx:203
+#: src/screens/Login/LoginForm.tsx:206
 msgid "Username or email address"
 msgstr "Ainm úsáideora nó ríomhphost"
 
@@ -10721,7 +10727,7 @@ msgstr "Úsáideoirí in ”{0}“"
 msgid "Users you follow"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:454
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:459
 msgid "Value:"
 msgstr "Luach:"
 
@@ -10765,8 +10771,8 @@ msgctxt "action"
 msgid "Verify code"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:546
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:567
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:551
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:572
 msgid "Verify DNS Record"
 msgstr "Dearbhaigh taifead DNS"
 
@@ -10784,8 +10790,8 @@ msgstr "Dialóg: dearbhú ríomhphoist"
 msgid "Verify now"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:547
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:569
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:552
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:574
 msgid "Verify Text File"
 msgstr "Dearbhaigh comhad téacs"
 
@@ -10834,7 +10840,7 @@ msgid "Video from {0}: {text}"
 msgstr ""
 
 #: src/lib/interests.ts:62
-#: src/screens/Onboarding/index.tsx:70
+#: src/screens/Onboarding/index.tsx:88
 #: src/screens/Search/modules/ExploreTrendingTopics.tsx:234
 msgid "Video Games"
 msgstr "Físchluichí"
@@ -11306,11 +11312,11 @@ msgid "Write your review"
 msgstr ""
 
 #: src/lib/interests.ts:75
-#: src/screens/Onboarding/index.tsx:56
+#: src/screens/Onboarding/index.tsx:74
 msgid "Writers"
 msgstr "Scríbhneoirí"
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:372
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:377
 msgid "Wrong DID returned from server. Received: {0}"
 msgstr "Tháinig DID mícheart ón fhreastalaí. Fuarthas: {0}"
 
@@ -11413,7 +11419,7 @@ msgstr ""
 msgid "You are verified. You will lose your verification status if you change your display name. <0>Learn more.</0>"
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:210
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:215
 msgid "You are verified. You will lose your verification status if you change your handle. <0>Learn more.</0>"
 msgstr ""
 
@@ -11810,7 +11816,7 @@ msgstr ""
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:266
+#: src/screens/Signup/StepInfo/index.tsx:267
 msgid "Your birth date"
 msgstr "Do bhreithlá"
 
@@ -11826,7 +11832,7 @@ msgstr "Cuireadh do chuid comhráite ar ceal"
 msgid "Your choice will be remembered for future links. You can change it at any time in settings."
 msgstr ""
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:531
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:536
 msgid "Your current handle <0>{0}</0> will automatically remain reserved for you. You can switch back to it at any time from this account."
 msgstr "Coimeádfar an leasainm atá agat faoi láthair, <0>{0}</0>, in áirithe duitse. Beidh tú in ann athrú ar ais ón gcuntas seo am ar bith."
 
@@ -11840,10 +11846,10 @@ msgstr ""
 msgid "Your email"
 msgstr ""
 
-#: src/screens/Login/ForgotPasswordForm.tsx:53
+#: src/screens/Login/ForgotPasswordForm.tsx:54
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:83
 #: src/screens/Signup/state.ts:273
-#: src/screens/Signup/StepInfo/index.tsx:102
+#: src/screens/Signup/StepInfo/index.tsx:103
 msgid "Your email appears to be invalid."
 msgstr "Is cosúil go bhfuil do ríomhphost neamhbhailí."
 
@@ -11863,7 +11869,7 @@ msgstr ""
 msgid "Your following feed is empty! Follow more users to see what's happening."
 msgstr "Tá an fotha de na daoine a leanann tú folamh! Lean tuilleadh úsáideoirí le feiceáil céard atá ar siúl."
 
-#: src/screens/Settings/components/ChangeHandleDialog.tsx:247
+#: src/screens/Settings/components/ChangeHandleDialog.tsx:252
 msgid "Your full handle will be <0>@{0}</0>"
 msgstr "Do leasainm iomlán anseo: <0>@{0}</0>"
 
@@ -11901,7 +11907,7 @@ msgstr "Na focail a bhalbhaigh tú"
 msgid "Your password has been changed successfully! Please use your new password when you sign in to {appName} from now on."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:131
+#: src/screens/Signup/StepInfo/index.tsx:132
 msgid "Your password must be at least 8 characters long."
 msgstr ""
 
