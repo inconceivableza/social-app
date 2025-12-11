@@ -1,7 +1,7 @@
 import type AtpAgent from '@atproto/api'
 import {
   type AppFoodiosFeedRecipePost,
-  AppFoodiosFeedRecipeRevision,
+  type AppFoodiosFeedRecipeRevision,
   type AppFoodiosFeedReviewRating,
 } from '@atproto/api'
 import {
@@ -247,15 +247,6 @@ async function recipeDraftToRecord(
     attribution: post.attribution,
     nutrition: post.nutrition,
     recipeYield: post.recipeYield,
-  }
-
-  const validationResult =
-    AppFoodiosFeedRecipeRevision.validateRecord(revisionRecord)
-  if (!validationResult.success) {
-    // TODO catch
-    throw new Error(
-      'Invalid revision record: ' + validationResult.error.message,
-    )
   }
 
   return revisionRecord
@@ -709,7 +700,7 @@ async function resolveMedia(
             dynamicSource.size ?? 0,
           )
           return {
-            image: newRef.toJSON(),
+            image: newRef.toJSON(), // typechecker would prefer if this was just `newRef` but that breaks at runtime
             alt: image.alt,
             aspectRatio: {
               width: dynamicSource.width,
