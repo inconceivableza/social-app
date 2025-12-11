@@ -728,34 +728,34 @@ let PostMenuItems = ({
               )}
 
               {isAuthor && isBskyPost && (
-                <>
-                  <Menu.Item
-                    testID="postDropdownEditPostInteractions"
-                    label={_(msg`Edit interaction settings`)}
-                    onPress={() => postInteractionSettingsDialogControl.open()}
-                    {...(isAuthor
-                      ? Platform.select({
-                          web: {
-                            onHoverIn: prefetchPostInteractionSettings,
-                          },
-                          native: {
-                            onPressIn: prefetchPostInteractionSettings,
-                          },
-                        })
-                      : {})}>
-                    <Menu.ItemText>
-                      {_(msg`Edit interaction settings`)}
-                    </Menu.ItemText>
-                    <Menu.ItemIcon icon={Gear} position="right" />
-                  </Menu.Item>
-                  <Menu.Item
-                    testID="postDropdownDeleteBtn"
-                    label={_(msg`Delete post`)}
-                    onPress={() => deletePromptControl.open()}>
-                    <Menu.ItemText>{_(msg`Delete post`)}</Menu.ItemText>
-                    <Menu.ItemIcon icon={Trash} position="right" />
-                  </Menu.Item>
-                </>
+                <Menu.Item
+                  testID="postDropdownEditPostInteractions"
+                  label={_(msg`Edit interaction settings`)}
+                  onPress={() => postInteractionSettingsDialogControl.open()}
+                  {...(isAuthor
+                    ? Platform.select({
+                        web: {
+                          onHoverIn: prefetchPostInteractionSettings,
+                        },
+                        native: {
+                          onPressIn: prefetchPostInteractionSettings,
+                        },
+                      })
+                    : {})}>
+                  <Menu.ItemText>
+                    {_(msg`Edit interaction settings`)}
+                  </Menu.ItemText>
+                  <Menu.ItemIcon icon={Gear} position="right" />
+                </Menu.Item>
+              )}
+              {isAuthor && (
+                <Menu.Item
+                  testID="postDropdownDeleteBtn"
+                  label={_(msg`Delete post`)}
+                  onPress={() => deletePromptControl.open()}>
+                  <Menu.ItemText>{_(msg`Delete post`)}</Menu.ItemText>
+                  <Menu.ItemIcon icon={Trash} position="right" />
+                </Menu.Item>
               )}
             </Menu.Group>
           </>
