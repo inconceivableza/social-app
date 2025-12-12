@@ -35,6 +35,8 @@
   },
   "resolutions": {
     "@atproto/common-web": "link:../submodules/atproto/packages/common-web",
+    "@atproto/lex-data": "link:./submodules/atproto/packages/lex/lex-data",
+    "@atproto/lex-json": "link:./submodules/atproto/packages/lex/lex-json",
     "@atproto/lexicon": "link:../submodules/atproto/packages/lexicon",
     "@atproto/syntax": "link:../submodules/atproto/packages/syntax",
     "@atproto/xrpc": "link:../submodules/atproto/packages/xrpc"
