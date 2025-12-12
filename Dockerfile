@@ -10,10 +10,13 @@ COPY submodules/atproto/package.json ./package.json
 RUN corepack prepare --activate
 
 COPY submodules/atproto/tsconfig ./tsconfig
+# pnpm ls --only-projects --parseable -F api... -F common-web... -F lexicon... -F syntax... -F xrpc... | sed 's#^.*atproto/##'
 COPY submodules/atproto/packages/api/package.json ./packages/api/package.json
 COPY submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
-COPY submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
+COPY submodules/atproto/packages/lex/lex-data/package.json ./packages/lex/lex-data/package.json
+COPY submodules/atproto/packages/lex/lex-json/package.json ./packages/lex/lex-json/package.json
 COPY submodules/atproto/packages/lexicon/package.json ./packages/lexicon/package.json
+COPY submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
 COPY submodules/atproto/packages/xrpc/package.json ./packages/xrpc/package.json
 COPY submodules/atproto/package.json ./package.json
 COPY submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
@@ -27,8 +30,10 @@ COPY submodules/atproto/*.js* ./
 COPY submodules/atproto/tsconfig ./tsconfig
 COPY submodules/atproto/packages/api ./packages/api
 COPY submodules/atproto/packages/common-web ./packages/common-web
-COPY submodules/atproto/packages/syntax ./packages/syntax
+COPY submodules/atproto/packages/lex/lex-data ./packages/lex/lex-data
+COPY submodules/atproto/packages/lex/lex-json ./packages/lex/lex-json
 COPY submodules/atproto/packages/lexicon ./packages/lexicon
+COPY submodules/atproto/packages/syntax ./packages/syntax
 COPY submodules/atproto/packages/xrpc ./packages/xrpc
 # build all packages with external node_modules
 RUN pnpm build
