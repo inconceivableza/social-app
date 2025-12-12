@@ -6,30 +6,41 @@ RUN corepack enable
 
 WORKDIR /usr/src/social-app/submodules/atproto
 
-COPY submodules/atproto/package.json ./package.json
+COPY ./submodules/atproto/package.json ./package.json
 RUN corepack prepare --activate
 
-COPY submodules/atproto/tsconfig ./tsconfig
-COPY submodules/atproto/packages/api/package.json ./packages/api/package.json
-COPY submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
-COPY submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
-COPY submodules/atproto/packages/lexicon/package.json ./packages/lexicon/package.json
-COPY submodules/atproto/packages/xrpc/package.json ./packages/xrpc/package.json
-COPY submodules/atproto/package.json ./package.json
-COPY submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY submodules/atproto/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY ./submodules/atproto/tsconfig ./tsconfig
+# NOTE social-app's transitive dependencies go here: if that changes, this needs to be updated.
+# pnpm ls --only-projects --parseable -F api... -F common-web... -F lexicon... -F syntax... -F xrpc... | sed 's#^.*atproto/##'
+COPY ./submodules/atproto/packages/api/package.json ./packages/api/package.json
+COPY ./submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY ./submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY ./submodules/atproto/packages/lex-cli/package.json ./packages/lex-cli/package.json
+COPY ./submodules/atproto/packages/lex/lex-data/package.json ./packages/lex/lex-data/package.json
+COPY ./submodules/atproto/packages/lex/lex-json/package.json ./packages/lex/lex-json/package.json
+COPY ./submodules/atproto/packages/lexicon/package.json ./packages/lexicon/package.json
+COPY ./submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
+COPY ./submodules/atproto/packages/xrpc/package.json ./packages/xrpc/package.json
+
+COPY ./submodules/atproto/package.json ./package.json
+COPY ./submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY ./submodules/atproto/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
   pnpm install --frozen-lockfile
 
-COPY submodules/atproto/*.js* ./
-# NOTE api's transitive dependencies go here: if that changes, this needs to be updated.
-COPY submodules/atproto/tsconfig ./tsconfig
-COPY submodules/atproto/packages/api ./packages/api
-COPY submodules/atproto/packages/common-web ./packages/common-web
-COPY submodules/atproto/packages/syntax ./packages/syntax
-COPY submodules/atproto/packages/lexicon ./packages/lexicon
-COPY submodules/atproto/packages/xrpc ./packages/xrpc
+COPY ./submodules/atproto/*.js* ./
+# NOTE matching transitive dependencies from above
+COPY ./submodules/atproto/packages/api ./packages/api
+COPY ./submodules/atproto/packages/common-web ./packages/common-web
+COPY ./submodules/atproto/packages/common-web ./packages/common-web
+COPY ./submodules/atproto/packages/lex-cli ./packages/lex-cli
+COPY ./submodules/atproto/packages/lex/lex-data ./packages/lex/lex-data
+COPY ./submodules/atproto/packages/lex/lex-json ./packages/lex/lex-json
+COPY ./submodules/atproto/packages/lexicon ./packages/lexicon
+COPY ./submodules/atproto/packages/syntax ./packages/syntax
+COPY ./submodules/atproto/packages/xrpc ./packages/xrpc
+
 # build all packages with external node_modules
 RUN pnpm build
 # clean up
@@ -181,5 +192,3 @@ CMD ["/usr/bin/bskyweb"]
 LABEL org.opencontainers.image.source=https://github.com/bluesky-social/social-app
 LABEL org.opencontainers.image.description="bsky.app Web App"
 LABEL org.opencontainers.image.licenses=MIT
-
-# NOOP
