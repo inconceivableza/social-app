@@ -72,7 +72,7 @@
     "generate-webpack-stats-file": "EXPO_PUBLIC_GENERATE_STATS=1 yarn build-web",
     "open-analyzer": "EXPO_PUBLIC_OPEN_ANALYZER=1 yarn build-web",
     "icons:optimize": "svgo -f ./assets/icons",
-    "atproto:install": "cd submodules/atproto && pnpm  -F api... -F common-web... -F lexicon... -F syntax... -F xrpc... install --frozen-lockfile",
+    "atproto:install": "cd submodules/atproto && pnpm  -F api... -F common-web... -F lexicon... -F syntax... -F xrpc... install --frozen-lockfile --dev",
     "atproto:build": "cd submodules/atproto && pnpm -F api... -F common-web... -F lexicon... -F syntax... -F xrpc... build"
   },
   "dependencies": {
