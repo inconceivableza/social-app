@@ -1737,7 +1737,7 @@ msgstr "Le bhith a’ cruthachadh cunntas, bidh tu ag aontachadh ri <0>teirmiche
 msgid "By you"
 msgstr "Leat-sa"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "An camara"
 
@@ -3858,7 +3858,7 @@ msgstr "Cha b’ urrainn dhuinn an dearbhadh a thoirt air falbh"
 msgid "Failed to resolve location. Please try again."
 msgstr "Cha d’fhuair sinn lorg air an ionad. Feuch ris a-rithist."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Cha b’ urrainn dhuinn an dealbh a shàbhaladh: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Chaidh tasgadan nan dealbhan fhalamhachadh"
 msgid "Image cache cleared, freed {0}"
 msgstr "Chaidh tasgadan nan dealbhan fhalamhachadh, shaor sinn {0}"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Chaidh an dealbh a shàbhaladh"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Chan urrainn dhut dealbhan a shàbhaladh ach ma thug thu cead-inntrigidh dhuinn do leabhar-lann nan dealbhan agad."
 
@@ -6591,7 +6591,7 @@ msgstr "Fosglaidh seo mion-fhiosrachadh a bharrachd mu innteart dì-bhugachaidh"
 msgid "Opens alt text dialog"
 msgstr "Fosglaidh seo còmhradh na roghainn teacsa"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Fosglaidh seo an camara air an uidheam"
 
@@ -6814,7 +6814,7 @@ msgstr "Daoine a leanas ri @{0}"
 msgid "People I follow"
 msgstr "Daoine a tha mi gan leantainn"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Chaidh cead-inntrigidh do leabhar-lann nan dealbhan agad a dhiùltadh. Cuir an comas e ann an roghainnean an t-siostaim agad."
 

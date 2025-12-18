@@ -1737,7 +1737,7 @@ msgstr "Mei it oanmeitsjen fan in account giesto akkoard mei de <0>Tsjinstbeting
 msgid "By you"
 msgstr "Troch dy"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Kamera"
 
@@ -3858,7 +3858,7 @@ msgstr "Fuortsmiten fan ferifikaasje mislearre"
 msgid "Failed to resolve location. Please try again."
 msgstr ""
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "It bewarjen fan de ôfbylding is mislearre: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Ofbyldingsbuffer wiske"
 msgid "Image cache cleared, freed {0}"
 msgstr "Ofbyldingsbuffer wiske, {0} frijmakke"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Ofbylding bewarre"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Ofbyldingen kinne net bewarre wurden, útsein as der tastimming is foar tagong ta dyn fotobiblioteek."
 
@@ -6591,7 +6591,7 @@ msgstr "Iepenet oanfoljende details foar in debug-item"
 msgid "Opens alt text dialog"
 msgstr "Iepenet Alt-tekstfinster"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Iepenet kamera op apparaat"
 
@@ -6814,7 +6814,7 @@ msgstr "Persoanen dy’t @{0} folgje"
 msgid "People I follow"
 msgstr "Minsken dy’t ik folgje"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Tagong ta dyn fotobiblioteek is wegere. Skeakelje dit yn dyn systeemynstellingen yn."
 

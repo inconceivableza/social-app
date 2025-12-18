@@ -1737,7 +1737,7 @@ msgstr "Al crear una cuenta, aceptas los <0>Términos de servicio</0>."
 msgid "By you"
 msgstr "Tuyos"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Cámara"
 
@@ -3858,7 +3858,7 @@ msgstr "Error al eliminar la verificación"
 msgid "Failed to resolve location. Please try again."
 msgstr ""
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Error al guardar la imagen: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Caché de imágenes limpiado"
 msgid "Image cache cleared, freed {0}"
 msgstr "Caché de imágenes limpiado, {0} liberado"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Imagen guardada"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr ""
 
@@ -6591,7 +6591,7 @@ msgstr "Abre detalles adicionales para una entrada de depuración."
 msgid "Opens alt text dialog"
 msgstr "Abre el diálogo de texto alternativo"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Abrir cámara del dispositivo"
 
@@ -6814,7 +6814,7 @@ msgstr "Personas siguiendo a @{0}"
 msgid "People I follow"
 msgstr "Personas a las que sigo"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr ""
 

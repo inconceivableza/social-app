@@ -1737,7 +1737,7 @@ msgstr "建立帳號即係表示你同意<0>服務條款</0>。"
 msgid "By you"
 msgstr "你所建立"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "相機"
 
@@ -3858,7 +3858,7 @@ msgstr "撤回唔到認證"
 msgid "Failed to resolve location. Please try again."
 msgstr "取用唔到位置資訊，唔該試多次。"
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "儲存唔到圖片：{0}"
 
@@ -4868,11 +4868,11 @@ msgstr "圖片快取經已剷走"
 msgid "Image cache cleared, freed {0}"
 msgstr "圖片快取經已剷走，釋放咗 {0}"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "圖片經已儲存"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "儲存唔到圖片，需要授予相片圖庫取用權限。"
 
@@ -6591,7 +6591,7 @@ msgstr "打開調試條目嘅額外詳細資訊"
 msgid "Opens alt text dialog"
 msgstr "打開替代文字對話框"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "打開你嘅裝置上嘅相機"
 
@@ -6814,7 +6814,7 @@ msgstr "跟緊 @{0} 嘅人"
 msgid "People I follow"
 msgstr "我跟嘅人"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "相片圖庫取用權限被拒絕，請喺系統設定度授予權限。"
 

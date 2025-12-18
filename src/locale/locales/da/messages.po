@@ -1737,7 +1737,7 @@ msgstr "Ved at oprette en konto accepterer du <0>tjenestevilkårene</0>."
 msgid "By you"
 msgstr "Af dig"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Kamera"
 
@@ -3858,7 +3858,7 @@ msgstr "Kunne ikke fjerne verifikation"
 msgid "Failed to resolve location. Please try again."
 msgstr "Kunne ikke bestemme din lokation. Prøv igen senere."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Fejl ved lagring af billede: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Billedcache blev tømt"
 msgid "Image cache cleared, freed {0}"
 msgstr "Billedcache tømt, frigjorde {0}"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Billede blev gemt"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Billeder kan ikke gemmes, medmindre du giver adgang til dit fotobibliotek."
 
@@ -6591,7 +6591,7 @@ msgstr "Åbner yderligere oplysninger om en loghændelse"
 msgid "Opens alt text dialog"
 msgstr "Åbner alt-tekstdialog"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Åbner enhedens kamera"
 
@@ -6814,7 +6814,7 @@ msgstr "Personer, som @{0} følger"
 msgid "People I follow"
 msgstr "Personer jeg følger"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Adgang til dit fotobibliotek blev nægtet. Tillad adgang fra dine systemindstillinger."
 

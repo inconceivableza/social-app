@@ -1737,7 +1737,7 @@ msgstr "Bir hesap oluşturarak <0>Hizmet Şartları</0>'nı kabul etmiş sayıl�
 msgid "By you"
 msgstr "Size ait"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Kamera"
 
@@ -3858,7 +3858,7 @@ msgstr "Doğrulama kaldırılamadı"
 msgid "Failed to resolve location. Please try again."
 msgstr "Konum çözümlenemedi. Lütfen tekrar deneyin."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Görsel kaydedilemedi: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Görsel önbelleği temizlendi"
 msgid "Image cache cleared, freed {0}"
 msgstr "Görsel önbelleği temizlendi, {0} yer açıldı"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Görsel kaydedildi"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Fotoğraf galerinize erişim izni verilmedikçe görseller kaydedilemez."
 
@@ -6591,7 +6591,7 @@ msgstr "Hata ayıklama girişi için ek ayrıntıları açar"
 msgid "Opens alt text dialog"
 msgstr "Alt metin diyaloğunu açar"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Cihazdaki kamerayı açar"
 
@@ -6814,7 +6814,7 @@ msgstr "@{0} tarafından takip edilenler"
 msgid "People I follow"
 msgstr "Takip ettiklerim"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Fotoğraf galerinize erişim izni reddedildi. Lütfen sistem ayarlarınızdan etkinleştirin."
 

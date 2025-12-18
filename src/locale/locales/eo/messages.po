@@ -1737,7 +1737,7 @@ msgstr "Kreante konton vi konsentas pri la <0>Uzokondiĉoj</0>."
 msgid "By you"
 msgstr "De vi"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Fotilo"
 
@@ -3858,7 +3858,7 @@ msgstr "Malsukcesis forigi konfirmon"
 msgid "Failed to resolve location. Please try again."
 msgstr "Malsukcesis trovi la lokon. Bonvolu reprovi."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Malsukcesis konservi bildon: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Bilda kaŝmemoro viŝita"
 msgid "Image cache cleared, freed {0}"
 msgstr "Bilda kaŝmemoro viŝita, {0} liberita(j)"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Bildo konservita"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Bildoj ne povas esti konservitaj sen permeso por aliro al via bildbiblioteko."
 
@@ -6591,7 +6591,7 @@ msgstr "Malfermas pliajn detalojn por sencimigo"
 msgid "Opens alt text dialog"
 msgstr "Malfermas dialogujon de alternativa teksto"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Malfermas fotilon de aparato"
 
@@ -6814,7 +6814,7 @@ msgstr "Homoj sekvantaj @{0}"
 msgid "People I follow"
 msgstr "Homoj kiujn mi sekvas"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Permeso por aliro al via bildbiblioteko estis neita. Bonvolu doni ĝin en viaj sistemagordoj."
 
