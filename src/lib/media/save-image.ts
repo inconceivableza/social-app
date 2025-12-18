@@ -13,6 +13,7 @@ export function useSaveImageToMediaLibrary() {
   const [permissionResponse, requestPermission, getPermission] =
     MediaLibrary.usePermissions({
       granularPermissions: ['photo'],
+      writeOnly: true,
     })
   return useCallback(
     async (uri: string) => {
