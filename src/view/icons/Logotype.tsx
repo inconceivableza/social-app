@@ -1,14 +1,4 @@
-import Svg, {
-  ClipPath,
-  Defs,
-  G,
-  Path,
-  type PathProps,
-  Rect,
-  type SvgProps,
-  Text,
-  TSpan,
-} from 'react-native-svg'
+import Svg, {ClipPath, Defs, G, Path, Rect, Text, TSpan} from 'react-native-svg'
 
 import {usePalette} from '#/lib/hooks/usePalette'
 
@@ -24,7 +14,7 @@ export function Logotype({
 
   return (
     <Svg
-      fill="none"
+      fill={fill || pal.text?.color}
       viewBox="0 0 700 190"
       {...rest}
       width={size}
@@ -33,7 +23,7 @@ export function Logotype({
         <ClipPath clipPathUnits="userSpaceOnUse" id="clipPath1">
           <Rect
             opacity="0.5"
-            fill={fill || pal.text.color}
+            fill={fill || pal.text?.color}
             strokeWidth="1.79104"
             id="rect2"
             width="1200"
@@ -96,7 +86,7 @@ export function Logotype({
             fontFamily="Merriweather"
             display="none"
             opacity="1"
-            fill={fill || pal.text.color}
+            fill={fill || pal.text?.color}
             fillOpacity="1"
             stroke="#000000"
             strokeOpacity="1"
@@ -113,7 +103,7 @@ export function Logotype({
               fontStretch="normal"
               fontSize="204.978px"
               fontFamily="Segoe Print"
-              fill={fill || pal.text.color}
+              fill={fill || pal.text?.color}
               fillOpacity="1"
               stroke="#000000"
               strokeOpacity="1">
@@ -123,7 +113,7 @@ export function Logotype({
           <Rect
             display="inline"
             opacity="0"
-            fill={fill || pal.text.color}
+            fill={fill || pal.text?.color}
             id="LogoTextPadding"
             width="733.55518"
             height="212.12567"
