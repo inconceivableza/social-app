@@ -9,7 +9,7 @@ env:
 jobs:
   build-and-push-social-link:
     if: github.repository == 'inconceivableza/social-app'
-    runs-on: ${{ matrix.platform == 'linux/arm64' && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
