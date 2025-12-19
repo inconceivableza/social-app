@@ -37,15 +37,23 @@ export function isValidDomain(str: string): boolean {
 }
 
 const postTypeMap: Record<string, string> = {
-  "post": ids.AppBskyFeedPost,
-  "recipePost": ids.AppFoodiosFeedRecipePost,
-  "reviewRating": ids.AppFoodiosFeedReviewRating
+  post: ids.AppBskyFeedPost,
+  recipePost: ids.AppFoodiosFeedRecipePost,
+  reviewRating: ids.AppFoodiosFeedReviewRating,
 }
 
-export function routeParamsToRecordUri({ postType, rkey, name }: { postType: string, rkey: string, name: string }) {
+export function routeParamsToRecordUri({
+  postType,
+  rkey,
+  name,
+}: {
+  postType: string
+  rkey: string
+  name: string
+}) {
   const collection = postTypeMap[postType]
   if (!collection) {
-    throw new Error("unknown post type " + postType)
+    throw new Error('unknown post type ' + postType)
   }
   return makeRecordUri(name, collection, rkey)
 }
@@ -55,10 +63,7 @@ export function makeRecordUri(
   collection: string,
   rkey: string,
 ) {
-  const urip = new AtUri('at://host/')
-  urip.host = didOrName
-  urip.collection = collection
-  urip.rkey = rkey
+  const urip = new AtUri(`at://${didOrName}/${collection}/${rkey}`)
   return urip.toString()
 }
 
