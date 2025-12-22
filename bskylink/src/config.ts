@@ -14,7 +14,8 @@ function ifExists(pathname: string): string | null {
 }
 
 function findExisting(filename: string): string | null {
-  return ifExists(path.join(defaultEnvPath, filename)) ? filename : null
+  const expectedFilename = path.join(defaultEnvPath, filename)
+  return ifExists(expectedFilename) ? expectedFilename : null
 }
 
 interface Branding {
@@ -34,6 +35,7 @@ interface Branding {
 
 function readBranding(): Branding {
   const brandingPath = findExisting('branding.json')
+  console.log(`Loading branding from ${brandingPath}`)
   return brandingPath
     ? JSON.parse(fs.readFileSync(brandingPath).toString('utf-8'))
     : {code: {}, naming: {}, styling: {}, verbage: {}}
