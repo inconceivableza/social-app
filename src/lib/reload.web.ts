@@ -11,8 +11,6 @@ export function checkCanReload(): Boolean {
   return Boolean(window.location)
 }
 
-export const canReload = checkCanReload()
-
 export async function doDelayedReload(
   reason: string,
   infoMessage: string,
@@ -20,7 +18,7 @@ export async function doDelayedReload(
 ): Promise<void> {
   const reloadDelay = 3
   await clearStorage()
-  if (canReload) {
+  if (checkCanReload()) {
     logger.info(`${infoMessage} in ${reloadDelay}...`)
     await timeout(reloadDelay * 1000)
     reload(reason)
