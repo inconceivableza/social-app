@@ -6,6 +6,7 @@ import {
   RichText,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 import _ from 'lodash'
 import {nanoid} from 'nanoid/non-secure'
 import z from 'zod'
@@ -466,9 +467,13 @@ function preprocessState(state: RecipePostDraft) {
 }
 
 export function useRecipePostReducer({edit}: {edit?: RecipePostView}) {
+  const { _ } = useLingui()
   const [state, dispatch] = useReducer(recipePostReducer, initState(edit))
+
+  const schema = useMemo(() => createRecipePostDraftSchema(_), [_])
+
   const errors = useMemo(() => {
-    const validationResult = recipePostDraftSchema.safeParse(
+    const validationResult = schema.safeParse(
       preprocessState(state),
     )
     const flat = validationResult.error?.errors
@@ -477,7 +482,7 @@ export function useRecipePostReducer({edit}: {edit?: RecipePostView}) {
       flat,
       tree: validationResult.error?.format(),
     }
-  }, [state])
+  }, [state, schema])
 
   return {state, dispatch, errors} as const
 }
@@ -486,276 +491,300 @@ export type RecipeReducerOutput = ReturnType<typeof useRecipePostReducer>
 
 // TODO: Provide localizable errors for all
 
-const ingredientDraftSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1, msg`Ingredient name cannot be empty`),
-  quantity: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Ingredient quantity must be a number` as {message: string},
-    })
-    .optional(),
-  unit: z.string(),
-})
+function createRecipePostDraftSchema(_: (descriptor: { id: string; message?: string }) => string) {
+  const ingredientDraftSchema = z.object({
+    id: z.string(),
+    name: z.string().min(1, _(msg`Ingredient name cannot be empty`)),
+    quantity: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Ingredient quantity must be a number`),
+        }),
+      })
+      .optional(),
+    unit: z.string(),
+  })
 
-const instructionDraftSchema = z.object({
-  id: z.string(),
-  text: z.string().min(1, msg`Instruction text cannot be empty`),
-  embed: z.any().optional(), // EmbedDraft - using any for simplicity, can be refined
-})
+  const instructionDraftSchema = z.object({
+    id: z.string(),
+    text: z.string().min(1, _(msg`Instruction text cannot be empty`)),
+    embed: z.any().optional(), // EmbedDraft - using any for simplicity, can be refined
+  })
 
-const instructionSectionDraftSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  instructions: z
-    .array(instructionDraftSchema)
-    .min(1, msg`At least one instruction required`),
-})
+  const instructionSectionDraftSchema = z.object({
+    id: z.string(),
+    name: z.string().optional(),
+    instructions: z
+      .array(instructionDraftSchema)
+      .min(1, _(msg`At least one instruction required`)),
+  })
 
-const nutritionServingSizeSchema = z.object({
-  quantity: z.coerce.number({
-    errorMap: () =>
-      msg`Serving size quantity must be a number` as {message: string},
-  }),
-  unit: z.string(),
-})
+  const nutritionServingSizeSchema = z.object({
+    quantity: z.coerce.number({
+      errorMap: () => ({
+        message: _(msg`Serving size quantity must be a number`),
+      }),
+    }),
+    unit: z.string(),
+  })
 
-const nutritionDraftSchema = z.object({
-  servingSize: nutritionServingSizeSchema,
-  energy: z.coerce
-    .number({
-      errorMap: () => msg`Energy value must be a number` as {message: string},
-    })
-    .min(1, `Energy value must be greater than zero`),
-  carbohydrateContent: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Carbohydrate content must be a number` as {message: string},
-    })
-    .optional(),
-  proteinContent: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Protein content must be a number` as {message: string},
-    })
-    .optional(),
-  fatContent: z.coerce
-    .number({
-      errorMap: () => msg`Fat content must be a number` as {message: string},
-    })
-    .optional(),
-  fiberContent: z.coerce
-    .number({
-      errorMap: () => msg`Fiber content must be a number` as {message: string},
-    })
-    .optional(),
-  sugarContent: z.coerce
-    .number({
-      errorMap: () => msg`Sugar content must be a number` as {message: string},
-    })
-    .optional(),
-  sodiumContent: z.coerce
-    .number({
-      errorMap: () => msg`Sodium content must be a number` as {message: string},
-    })
-    .optional(),
-  cholesterolContent: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Cholesterol content must be a number` as {message: string},
-    })
-    .optional(),
-  saturatedFatContent: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Saturated fat content must be a number` as {message: string},
-    })
-    .optional(),
-  transFatContent: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Trans fat content must be a number` as {message: string},
-    })
-    .optional(),
-  unsaturatedFatContent: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Unsaturated fat content must be a number` as {message: string},
-    })
-    .optional(),
-})
+  const nutritionDraftSchema = z.object({
+    servingSize: nutritionServingSizeSchema,
+    energy: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Energy value must be a number`),
+        }),
+      })
+      .min(1, _(msg`Energy value must be greater than zero`)),
+    carbohydrateContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Carbohydrate content must be a number`),
+        }),
+      })
+      .optional(),
+    proteinContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Protein content must be a number`),
+        }),
+      })
+      .optional(),
+    fatContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Fat content must be a number`),
+        }),
+      })
+      .optional(),
+    fiberContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Fiber content must be a number`),
+        }),
+      })
+      .optional(),
+    sugarContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Sugar content must be a number`),
+        }),
+      })
+      .optional(),
+    sodiumContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Sodium content must be a number`),
+        }),
+      })
+      .optional(),
+    cholesterolContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Cholesterol content must be a number`),
+        }),
+      })
+      .optional(),
+    saturatedFatContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Saturated fat content must be a number`),
+        }),
+      })
+      .optional(),
+    transFatContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Trans fat content must be a number`),
+        }),
+      })
+      .optional(),
+    unsaturatedFatContent: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Unsaturated fat content must be a number`),
+        }),
+      })
+      .optional(),
+  })
 
-const recipeYieldSchema = z.object({
-  quantity: z.undefined().or(z.coerce
-    .number({
-      errorMap: () =>
-        msg`Recipe yield quantity must be a number` as {message: string},
-    })
-    .positive(msg`Recipe yield quantity must be greater than zero`)),
-  unit: z.string().optional(), // .min(1, msg`Recipe yield unit cannot be empty`),
-})
+  const recipeYieldSchema = z.object({
+    quantity: z.undefined().or(z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Recipe yield quantity must be a number`),
+        }),
+      })
+      .positive(_(msg`Recipe yield quantity must be greater than zero`))),
+    unit: z.string().optional(), // .min(1, _(msg`Recipe yield unit cannot be empty`)),
+  })
 
-const licenseSchema = z.discriminatedUnion('$type', [
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#licenseAllRights'),
-    licenseType: z.literal('licenseAllRights'),
-  }),
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsBy'),
-    licenseType: z.literal('licenseCreativeCommonsBy'),
-  }),
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsBySa'),
-    licenseType: z.literal('licenseCreativeCommonsBySa'),
-  }),
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsByNc'),
-    licenseType: z.literal('licenseCreativeCommonsByNc'),
-  }),
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsByNcSa'),
-    licenseType: z.literal('licenseCreativeCommonsByNcSa'),
-  }),
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#licensePublicDomain'),
-    licenseType: z.literal('licensePublicDomain'),
-  }),
-])
+  const licenseSchema = z.discriminatedUnion('$type', [
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#licenseAllRights'),
+      licenseType: z.literal('licenseAllRights'),
+    }),
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsBy'),
+      licenseType: z.literal('licenseCreativeCommonsBy'),
+    }),
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsBySa'),
+      licenseType: z.literal('licenseCreativeCommonsBySa'),
+    }),
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsByNc'),
+      licenseType: z.literal('licenseCreativeCommonsByNc'),
+    }),
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#licenseCreativeCommonsByNcSa'),
+      licenseType: z.literal('licenseCreativeCommonsByNcSa'),
+    }),
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#licensePublicDomain'),
+      licenseType: z.literal('licensePublicDomain'),
+    }),
+  ])
 
-const publicationTypeSchema = z.discriminatedUnion('$type', [
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#publicationTypeBook'),
-    publicationType: z.literal('publicationTypeBook'),
-  }),
-  z.object({
-    $type: z.literal('app.foodios.feed.defs#publicationTypeMagazine'),
-    publicationType: z.literal('publicationTypeMagazine'),
-  }),
-])
+  const publicationTypeSchema = z.discriminatedUnion('$type', [
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#publicationTypeBook'),
+      publicationType: z.literal('publicationTypeBook'),
+    }),
+    z.object({
+      $type: z.literal('app.foodios.feed.defs#publicationTypeMagazine'),
+      publicationType: z.literal('publicationTypeMagazine'),
+    }),
+  ])
 
-const originalAttributionSchema = z.object({
-  $type: z.literal('app.foodios.feed.recipeRevision#originalAttribution'),
-  type: z.literal('original'),
-  license: licenseSchema,
-  url: z
-    .string()
-    .url(msg`Invalid URL (must include protocol e.g. http://)`)
-    .optional(),
-})
+  const originalAttributionSchema = z.object({
+    $type: z.literal('app.foodios.feed.recipeRevision#originalAttribution'),
+    type: z.literal('original'),
+    license: licenseSchema,
+    url: z
+      .string()
+      .url(_(msg`Invalid URL (must include protocol e.g. http://)`))
+      .optional(),
+  })
 
-const personAttributionSchema = z.object({
-  $type: z.literal('app.foodios.feed.recipeRevision#personAttribution'),
-  type: z.literal('person'),
-  name: z.string().min(1, `Person attribution name cannot be empty`),
-  url: z
-    .string()
-    .url(msg`Invalid URL (must include protocol e.g. http://)`)
-    .optional(),
-  notes: z.string().optional(),
-})
+  const personAttributionSchema = z.object({
+    $type: z.literal('app.foodios.feed.recipeRevision#personAttribution'),
+    type: z.literal('person'),
+    name: z.string().min(1, _(msg`Person attribution name cannot be empty`)),
+    url: z
+      .string()
+      .url(_(msg`Invalid URL (must include protocol e.g. http://)`))
+      .optional(),
+    notes: z.string().optional(),
+  })
 
-const publicationAttributionSchema = z.object({
-  $type: z.literal('app.foodios.feed.recipeRevision#publicationAttribution'),
-  type: z.literal('publication'),
-  publicationType: publicationTypeSchema,
-  title: z.string().min(1, msg`Publication attribution title cannot be empty`),
-  author: z
-    .string()
-    .min(1, msg`Publication attribution author cannot be empty`),
-  publisher: z.string().optional(),
-  isbn: z.string().optional(),
-  page: z.number().optional(),
-  url: z
-    .string()
-    .url(msg`Invalid URL (must include protocol e.g. http://)`)
-    .optional(),
-  notes: z.string().optional(),
-})
+  const publicationAttributionSchema = z.object({
+    $type: z.literal('app.foodios.feed.recipeRevision#publicationAttribution'),
+    type: z.literal('publication'),
+    publicationType: publicationTypeSchema,
+    title: z.string().min(1, _(msg`Publication attribution title cannot be empty`)),
+    author: z
+      .string()
+      .min(1, _(msg`Publication attribution author cannot be empty`)),
+    publisher: z.string().optional(),
+    isbn: z.string().optional(),
+    page: z.number().optional(),
+    url: z
+      .string()
+      .url(_(msg`Invalid URL (must include protocol e.g. http://)`))
+      .optional(),
+    notes: z.string().optional(),
+  })
 
-const websiteAttributionSchema = z.object({
-  $type: z.literal('app.foodios.feed.recipeRevision#websiteAttribution'),
-  type: z.literal('website'),
-  name: z.string().min(1, msg`Website attribution name cannot be empty`),
-  url: z.string().url(msg`Invalid URL (must include protocol e.g. http://)`),
-  notes: z.string().optional(),
-})
+  const websiteAttributionSchema = z.object({
+    $type: z.literal('app.foodios.feed.recipeRevision#websiteAttribution'),
+    type: z.literal('website'),
+    name: z.string().min(1, _(msg`Website attribution name cannot be empty`)),
+    url: z.string().url(_(msg`Invalid URL (must include protocol e.g. http://)`)),
+    notes: z.string().optional(),
+  })
 
-const showAttributionSchema = z.object({
-  $type: z.literal('app.foodios.feed.recipeRevision#showAttribution'),
-  type: z.literal('show'),
-  title: z.string().min(1, msg`Show attribution title cannot be empty`),
-  episode: z.string().optional(),
-  network: z.string().min(1, msg`Show attribution network cannot be empty`),
-  airDate: z.string().optional(),
-  url: z
-    .string()
-    .url(msg`Invalid URL (must include protocol e.g. http://)`)
-    .optional(),
-  notes: z.string().optional(),
-})
+  const showAttributionSchema = z.object({
+    $type: z.literal('app.foodios.feed.recipeRevision#showAttribution'),
+    type: z.literal('show'),
+    title: z.string().min(1, _(msg`Show attribution title cannot be empty`)),
+    episode: z.string().optional(),
+    network: z.string().min(1, _(msg`Show attribution network cannot be empty`)),
+    airDate: z.string().optional(),
+    url: z
+      .string()
+      .url(_(msg`Invalid URL (must include protocol e.g. http://)`))
+      .optional(),
+    notes: z.string().optional(),
+  })
 
-const productAttributionSchema = z.object({
-  $type: z.literal('app.foodios.feed.recipeRevision#productAttribution'),
-  type: z.literal('product'),
-  brand: z.string().min(1, msg`Product attribution brand cannot be empty`),
-  name: z.string().min(1, msg`Product attribution name cannot be empty`),
-  upc: z.string().optional(),
-  url: z
-    .string()
-    .url(msg`Invalid URL (must include protocol e.g. http://)`)
-    .optional(),
-  notes: z.string().optional(),
-})
+  const productAttributionSchema = z.object({
+    $type: z.literal('app.foodios.feed.recipeRevision#productAttribution'),
+    type: z.literal('product'),
+    brand: z.string().min(1, _(msg`Product attribution brand cannot be empty`)),
+    name: z.string().min(1, _(msg`Product attribution name cannot be empty`)),
+    upc: z.string().optional(),
+    url: z
+      .string()
+      .url(_(msg`Invalid URL (must include protocol e.g. http://)`))
+      .optional(),
+    notes: z.string().optional(),
+  })
 
-const attributionSchema = z.discriminatedUnion('type', [
-  originalAttributionSchema,
-  personAttributionSchema,
-  publicationAttributionSchema,
-  websiteAttributionSchema,
-  showAttributionSchema,
-  productAttributionSchema,
-])
+  const attributionSchema = z.discriminatedUnion('type', [
+    originalAttributionSchema,
+    personAttributionSchema,
+    publicationAttributionSchema,
+    websiteAttributionSchema,
+    showAttributionSchema,
+    productAttributionSchema,
+  ])
 
-const selfLabelSchema = z.enum(['sexual', 'nudity', 'porn', 'graphic-media'])
+  const selfLabelSchema = z.enum(['sexual', 'nudity', 'porn', 'graphic-media'])
 
-const recipePostDraftSchema = z.object({
-  name: z.string().min(1, msg`Name cannot be empty`),
-  text: z.instanceof(RichText).optional(),
-  ingredients: z
-    .array(ingredientDraftSchema)
-    .min(1, msg`At least one ingredient required`),
-  instructionSections: z
-    .array(instructionSectionDraftSchema)
-    .min(1, `At least one instruction required`),
-  prepTime: z.coerce
-    .number({
-      errorMap: () =>
-        msg`Preparation time must be a number` as {message: string},
-    })
-    .min(1, msg`Preparation time must be greater than zero`)
-    .optional(),
-  cookTime: z.coerce
-    .number({
-      errorMap: () => msg`Cooking time must be a number` as {message: string},
-    })
-    .min(1, msg`Cooking time must be greater than zero`)
-    .optional(), // TODO: cookTime, prepTime and quantity error messages are displayed as empty in prod - possible translation issue?
-  cuisines: z
-    .array(recipeCuisines.schema)
-    .max(10, msg`Too many cuisines selected`)
-    .optional(),
-  categories: z
-    .array(recipeCategories.schema)
-    .max(10, msg`Too many categories selected`)
-    .optional(),
-  suitableForDiet: z
-    .array(recipeDiets.schema)
-    .max(10, msg`Too many diets selected`)
-    .optional(),
-  recipeYield: recipeYieldSchema.optional(),
-  nutrition: nutritionDraftSchema.optional(),
-  attribution: attributionSchema.optional(),
-  //embed: embedDraftSchema,
-  labels: z.array(selfLabelSchema),
-  tags: z.array(z.string()).optional(),
-})
+  return z.object({
+    name: z.string().min(1, _(msg`Name cannot be empty`)),
+    text: z.instanceof(RichText).optional(),
+    ingredients: z
+      .array(ingredientDraftSchema)
+      .min(1, _(msg`At least one ingredient required`)),
+    instructionSections: z
+      .array(instructionSectionDraftSchema)
+      .min(1, _(msg`At least one instruction required`)),
+    prepTime: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Preparation time must be a number`),
+        }),
+      })
+      .min(1, _(msg`Preparation time must be greater than zero`))
+      .optional(),
+    cookTime: z.coerce
+      .number({
+        errorMap: () => ({
+          message: _(msg`Cooking time must be a number`),
+        }),
+      })
+      .min(1, _(msg`Cooking time must be greater than zero`))
+      .optional(),
+    cuisines: z
+      .array(recipeCuisines.schema)
+      .max(10, _(msg`Too many cuisines selected`))
+      .optional(),
+    categories: z
+      .array(recipeCategories.schema)
+      .max(10, _(msg`Too many categories selected`))
+      .optional(),
+    suitableForDiet: z
+      .array(recipeDiets.schema)
+      .max(10, _(msg`Too many diets selected`))
+      .optional(),
+    recipeYield: recipeYieldSchema.optional(),
+    nutrition: nutritionDraftSchema.optional(),
+    attribution: attributionSchema.optional(),
+    //embed: embedDraftSchema,
+    labels: z.array(selfLabelSchema),
+    tags: z.array(z.string()).optional(),
+  })
+}
