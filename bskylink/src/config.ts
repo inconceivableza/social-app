@@ -22,7 +22,7 @@ function findExisting(filename: string): string | null {
     return expectedFilename
   } else {
     httpLogger.info(
-      `File not found at ${expectedFilename}: will revert to default branding`,
+      `File not found at ${expectedFilename}: will use default branding`,
     )
     return null
   }
