@@ -166,7 +166,7 @@ export function TextInput({
 
   const inputTextStyle = useMemo(() => {
     const style = normalizeTextStyles(
-      [a.text_lg, a.leading_snug, t.atoms.text],
+      [a.text_md, a.leading_snug, t.atoms.text],
       {
         fontScale: fonts.scaleMultiplier,
         fontFamily: fonts.family,
@@ -222,7 +222,7 @@ export function TextInput({
         onPaste={onPaste}
         onSelectionChange={onSelectionChange}
         placeholder={placeholder}
-        placeholderTextColor={t.atoms.text_contrast_medium.color}
+        placeholderTextColor={t.palette.contrast_500}
         keyboardAppearance={theme.colorScheme}
         autoFocus={true}
         allowFontScaling
