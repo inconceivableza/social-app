@@ -13,6 +13,7 @@ import {
   type ComboBoxProps,
   type ComboBoxSingleSelectProps,
 } from './types'
+import { atoms } from '@bsky.app/alf'
 
 /**
  * Multi-select combo box, only allowing selection of the given options.
@@ -64,11 +65,14 @@ export function ComboBox<T extends BaseOption>({
                 onSelect(opt)
                 reset()
               }}
+              containerStyle={{ maxHeight: 200 }}
             />
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
+      <View style={[atoms.mt_xs]}>
       <ComboBoxSelection selection={selection} onRemove={onRemove} />
+      </View>
     </View>
   )
 }
@@ -121,6 +125,9 @@ export function ComboBoxSingleSelect({
               }}
               options={options}
               value={value}
+              containerStyle={{
+                maxHeight: 200,
+              }}
             />
           </Popover.Content>
         </Popover.Portal>
