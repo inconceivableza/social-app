@@ -12,7 +12,7 @@ import {useActorStatus} from '#/lib/actor-status'
 import {HELP_DESK_URL} from '#/lib/constants'
 import {useAccountSwitcher} from '#/lib/hooks/useAccountSwitcher'
 import {useApplyPullRequestOTAUpdate} from '#/lib/hooks/useOTAUpdates'
-import {canReload, doDelayedReload} from '#/lib/reload'
+import { checkCanReload, doDelayedReload } from '#/lib/reload'
 import {
   type CommonNavigatorParams,
   type NavigationProp,
@@ -602,7 +602,7 @@ function ServerDomains() {
   const [customDomain, setCustomDomain] = useState(defaultCustomDomain)
   const {envConfig, setEnvConfig} = useEnvConfig()
   const {envContent, setEnvContent} = useEnvContent()
-  const reloadMessage = canReload
+  const reloadMessage = checkCanReload()
     ? _(msg`Going to reload app...`)
     : _(msg`Please exit and reload app manually...`)
 
