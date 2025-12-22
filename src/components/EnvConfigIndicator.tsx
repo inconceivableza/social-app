@@ -3,7 +3,7 @@ import {type StyleProp, TextInput, View, type ViewStyle} from 'react-native'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import { checkCanReload, doDelayedReload } from '#/lib/reload'
+import {canReload, doDelayedReload} from '#/lib/reload'
 import {logger} from '#/logger'
 import {
   builtinConfigNames,
@@ -47,7 +47,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
-  const reloadMessage = checkCanReload()
+  const reloadMessage = canReload
     ? _(msg`Going to reload app...`)
     : _(msg`Please exit and reload app manually...`)
 

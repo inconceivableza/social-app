@@ -14,6 +14,8 @@ export function checkCanReload(): Boolean {
   return Boolean(DevSettings) && Boolean(DevSettings.reload) && __DEV__
 }
 
+export const canReload = checkCanReload()
+
 export async function doDelayedReload(
   reason: string,
   infoMessage: string,
@@ -21,7 +23,7 @@ export async function doDelayedReload(
 ): Promise<void> {
   const reloadDelay = 3
   await clearStorage()
-  if (checkCanReload()) {
+  if (canReload) {
     logger.info(`${infoMessage} in ${reloadDelay}...`)
     await timeout(reloadDelay * 1000)
     reload(reason)
