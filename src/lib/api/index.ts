@@ -246,7 +246,14 @@ async function recipeDraftToRecord(
     suitableForDiet: post.recipeDiets?.flatMap(hierarchyOptionToPaths),
     attribution: post.attribution,
     nutrition: post.nutrition,
-    recipeYield: post.recipeYield,
+  }
+
+  const recipeYield = post.recipeYield
+  if (recipeYield && recipeYield.quantity) {
+    revisionRecord.recipeYield = {
+      quantity: recipeYield.quantity ?? '',
+      unit: recipeYield.unit
+    }
   }
 
   return revisionRecord

@@ -57,7 +57,7 @@ export interface RecipePostDraft {
   recipeCuisines?: HierarchyOption[]
   recipeCategories?: HierarchyOption[]
   recipeDiets?: HierarchyOption[]
-  recipeYield?: {quantity: string; unit: string}
+  recipeYield?: { quantity?: string; unit: string }
   nutrition?: NutritionDraft
   attribution?: Attribution
   embed: EmbedDraft
@@ -236,7 +236,11 @@ function recipePostReducer(
       return state
     }
     case 'set_yield': {
-      const recipeYield = (state.recipeYield ??= {quantity: '0', unit: ''})
+      if (action.field === "quantity" && !action.value) {
+        delete state.recipeYield?.quantity
+        return state
+      }
+      const recipeYield = (state.recipeYield ??= { quantity: '0', unit: '' })
       recipeYield[action.field] = action.value
       return state
     }
@@ -389,7 +393,7 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
         media: undefined,
         link: undefined,
       },
-      recipeYield: {unit: 'servings', quantity: ''},
+      recipeYield: { unit: 'servings' },
     }
 
   const {
@@ -582,12 +586,12 @@ const nutritionDraftSchema = z.object({
 })
 
 const recipeYieldSchema = z.object({
-  quantity: z.coerce
+  quantity: z.undefined().or(z.coerce
     .number({
       errorMap: () =>
         msg`Recipe yield quantity must be a number` as {message: string},
     })
-    .optional(), // min(1, msg`Recipe yield quantity must be greater than zero`),
+    .positive(msg`Recipe yield quantity must be greater than zero`)),
   unit: z.string().optional(), // .min(1, msg`Recipe yield unit cannot be empty`),
 })
 
