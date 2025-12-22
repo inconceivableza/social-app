@@ -3,9 +3,11 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from 'url'
 
+import {httpLogger} from './logger.js'
+
 // default path for branding.json is ../../conf from src/dist
 const defaultEnvPath = path.join(
-  path.dirname(path.dirname(fileURLToPath(import.meta.url))),
+  path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url)))),
   'conf',
 )
 
@@ -15,7 +17,15 @@ function ifExists(pathname: string): string | null {
 
 function findExisting(filename: string): string | null {
   const expectedFilename = path.join(defaultEnvPath, filename)
-  return ifExists(expectedFilename) ? expectedFilename : null
+  if (ifExists(expectedFilename)) {
+    httpLogger.info(`Loading branding information from ${expectedFilename}`)
+    return expectedFilename
+  } else {
+    httpLogger.info(
+      `File not found at ${expectedFilename}: will revert to default branding`,
+    )
+    return null
+  }
 }
 
 interface Branding {
@@ -35,7 +45,6 @@ interface Branding {
 
 function readBranding(): Branding {
   const brandingPath = findExisting('branding.json')
-  console.log(`Loading branding from ${brandingPath}`)
   return brandingPath
     ? JSON.parse(fs.readFileSync(brandingPath).toString('utf-8'))
     : {code: {}, naming: {}, styling: {}, verbage: {}}
