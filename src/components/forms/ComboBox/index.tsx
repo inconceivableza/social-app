@@ -1,15 +1,15 @@
-import {useState} from 'react'
-import {TouchableOpacity, View} from 'react-native'
-import {useTheme} from '@bsky.app/alf'
-import {msg, Trans} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
+import { useMemo, useState } from 'react'
+import { TouchableOpacity, View, ScrollView } from 'react-native'
+import { useTheme } from '@bsky.app/alf'
+import { msg, Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
-import {atoms as a} from '#/alf'
-import {Button, ButtonIcon, ButtonText} from '#/components/Button'
+import { atoms as a } from '#/alf'
+import { Button, ButtonIcon, ButtonText } from '#/components/Button'
 import * as Dialog from '#/components/Dialog'
 import * as TextField from '#/components/forms/TextField'
-import {PlusLarge_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
-import {Text} from '#/components/Typography'
+import { PlusLarge_Stroke2_Corner0_Rounded as PlusIcon } from '#/components/icons/Plus'
+import { Text } from '#/components/Typography'
 import {
   ComboBoxOptions,
   ComboBoxSelection,
@@ -28,34 +28,43 @@ export function ComboBox<T extends BaseOption>(props: ComboBoxProps<T>) {
   const dialog = Dialog.useDialogControl()
   const t = useTheme()
   return (
-    <View style={a.h_full}>
+    <View>
       <TouchableOpacity
         accessibilityRole="button"
-        style={a.h_full}
+        disabled={!!props.selection.length}
         onPress={() => {
           dialog.open()
         }}>
-        <View style={a.h_full}>
+        <View >
           <View
             style={[
               a.p_sm,
-              {borderRadius: 8},
-              t.atoms.bg_contrast_900,
+              { borderRadius: 8 },
+              t.atoms.bg_contrast_50,
               a.flex_row,
               a.align_center,
-              a.h_full,
             ]}>
-            {props.selection.length ? (
-              <View style={[a.flex_1]}>
+            <View style={[a.flex_1]}>
+              {props.selection.length ? (
+
                 <ComboBoxSelection
                   selection={props.selection}
                   onRemove={props.onRemove}
                 />
-              </View>
-            ) : (
-              <Text style={[t.atoms.text_contrast_low]}>{props.label}</Text>
-            )}
 
+              ) :
+
+                <Text style={[
+                  a.text_md,
+                  {
+                    color: t.palette.contrast_500,
+                    lineHeight: a.text_md.fontSize * 1.2
+                  },
+                ]}><Trans>{props.label}</Trans></Text>
+
+
+              }
+            </View>
             {/* TODO provide better label */}
             <View style={[a.ml_auto]}>
               <Button
@@ -89,53 +98,45 @@ function ComboBoxInner<T extends BaseOption>({
   onSelect,
   onConfirm,
   searchLabel,
-}: ComboBoxProps<T> & {onConfirm: () => void}) {
+}: ComboBoxProps<T> & { onConfirm: () => void }) {
   const [searchText, setSearchText] = useState('')
-  const {_} = useLingui()
-  const t = useTheme()
+  const { _ } = useLingui()
   return (
-    <View style={[a.gap_md]}>
-      <View>
-        <View
-          style={[
-            a.flex_row,
-            a.flex_1,
-            t.atoms.bg_contrast_900,
-            a.align_center,
-            {borderRadius: 8},
-          ]}>
-          <View style={[a.flex_1]}>
-            <TextField.Root>
-              <TextField.Input
-                value={searchText}
-                label={searchLabel}
-                onChangeText={setSearchText}
-              />
-            </TextField.Root>
-          </View>
-          <View style={[a.p_sm, {maxWidth: '75%'}]}>
-            <ComboBoxSelection onRemove={onRemove} selection={selection} />
-          </View>
+    <View>
+      <View style={[a.gap_sm]}>
+        <View>
+          <Button
+            label={_(msg`Confirm selection`)}
+            onPress={onConfirm}
+            size="small"
+            color="primary"
+            style={[a.ml_auto]}>
+            <ButtonText>
+              <Trans>Done</Trans>
+            </ButtonText>
+          </Button>
         </View>
-        <View style={{height: 200}}>
+        <View>
+          <TextField.Root>
+            <TextField.Input
+              value={searchText}
+              label={searchLabel}
+              onChangeText={setSearchText}
+            />
+          </TextField.Root>
+        </View>
+        <View>
+          <ComboBoxSelection onRemove={onRemove} selection={selection} />
+        </View>
+        <View>
           <ComboBoxOptions
             onSelect={onSelect}
             options={options}
             searchText={searchText}
             selection={selection}
+            containerStyle={{ height: '100%' }}
           />
         </View>
-      </View>
-      <View>
-        <Button
-          label={_(msg`Confirm selection`)}
-          onPress={onConfirm}
-          size="small"
-          color="primary">
-          <ButtonText>
-            <Trans>Done</Trans>
-          </ButtonText>
-        </Button>
       </View>
     </View>
   )
@@ -152,8 +153,9 @@ export function ComboBoxSingleSelect({
   isInvalid,
   onFocus,
 }: ComboBoxSingleSelectProps) {
+  const t = useTheme()
   const dialog = Dialog.useDialogControl()
-
+  const { _ } = useLingui()
   return (
     <View>
       <TouchableOpacity
@@ -162,22 +164,58 @@ export function ComboBoxSingleSelect({
           dialog.open()
         }}>
         <View>
-          <TextField.Input label={label} value={value} readOnly />
+          <View style={[
+            a.p_md,
+            { borderRadius: 8 },
+            t.atoms.bg_contrast_50,
+            a.flex_row,
+            a.align_center,
+            a.h_full
+          ]}>
+            <View style={[a.flex_1]}>
+              {value ? <Text style={[a.text_md]}>{value}</Text> : <Text style={[
+                a.text_md,
+                {
+                  color: t.palette.contrast_500,
+                },
+              ]}>
+
+                <Trans>
+                  {label}
+                </Trans>
+              </Text>}
+
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
+
       <Dialog.Outer control={dialog}>
         <Dialog.Inner label={label}>
-          <View>
-            <TextField.Root isInvalid={isInvalid}>
-              <TextField.Input
-                selectTextOnFocus
-                value={value}
-                onFocus={onFocus}
-                label={label}
-                onChangeText={onChange}
-              />
-            </TextField.Root>
-            <View style={{height: 200}}>
+          <View style={[a.gap_sm]}>
+            <View style={[a.flex_row, a.ml_auto]}>
+              <Button onPress={() => dialog.close()} label={_(msg`Done`)}
+                size='small'
+                color="primary"
+              >
+                <ButtonText>
+                  <Trans>Done</Trans>
+                </ButtonText>
+              </Button>
+            </View>
+            <View>
+
+              <TextField.Root isInvalid={isInvalid}>
+                <TextField.Input
+                  selectTextOnFocus
+                  value={value}
+                  onFocus={onFocus}
+                  label={label}
+                  onChangeText={onChange}
+                />
+              </TextField.Root>
+            </View>
+            <View >
               <ComboBoxSingleSelectOptions
                 onChange={value => {
                   onChange(value)
@@ -185,6 +223,7 @@ export function ComboBoxSingleSelect({
                 }}
                 options={options}
                 value={value}
+                containerStyle={{ height: '100%' }}
               />
             </View>
           </View>
