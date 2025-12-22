@@ -505,7 +505,7 @@ const instructionSectionDraftSchema = z.object({
   name: z.string().optional(),
   instructions: z
     .array(instructionDraftSchema)
-    .min(1, `At least one instruction required`),
+    .min(1, msg`At least one instruction required`),
 })
 
 const nutritionServingSizeSchema = z.object({
@@ -735,7 +735,7 @@ const recipePostDraftSchema = z.object({
       errorMap: () => msg`Cooking time must be a number` as {message: string},
     })
     .min(1, msg`Cooking time must be greater than zero`)
-    .optional(),
+    .optional(), // TODO: cookTime, prepTime and quantity error messages are displayed as empty in prod - possible translation issue?
   cuisines: z
     .array(recipeCuisines.schema)
     .max(10, msg`Too many cuisines selected`)

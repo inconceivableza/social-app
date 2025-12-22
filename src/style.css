@@ -102,12 +102,19 @@ a[role='link'][data-no-underline='1']:hover {
   margin: 0;
 }
 .ProseMirror p.is-editor-empty:first-child::before {
-  color: #8d8e96;
   content: attr(data-placeholder);
   float: left;
   height: 0;
   pointer-events: none;
 }
+.ProseMirror-light p.is-editor-empty:first-child::before {
+  color: #6F839F;
+}
+
+.ProseMirror-dark p.is-editor-empty:first-child:before {
+  color: #6F839F;
+};
+
 .ProseMirror .mention {
   color: #0085ff;
 }

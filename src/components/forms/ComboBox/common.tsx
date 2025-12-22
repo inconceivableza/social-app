@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {ScrollView, View} from 'react-native'
+import { ScrollView, StyleProp, View, ViewStyle } from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -19,8 +19,10 @@ export function ComboBoxOptions<T extends BaseOption>({
   onSelect,
   searchText,
   selection,
+  containerStyle
 }: Pick<ComboBoxProps<T>, 'options' | 'onSelect' | 'selection'> & {
-  searchText: string
+    searchText: string,
+    containerStyle?: StyleProp<ViewStyle>
 }) {
   const {_} = useLingui()
   const t = useTheme()
@@ -45,9 +47,7 @@ export function ComboBoxOptions<T extends BaseOption>({
           dark: t.atoms.bg_contrast_100,
           dim: t.atoms.bg_contrast_100,
         }),
-        {
-          maxHeight: 200,
-        },
+        containerStyle
       ]}>
       {filteredOptions.length ? (
         filteredOptions.map(opt => {
@@ -96,7 +96,7 @@ export function ComboBoxSelection<T extends BaseOption>({
   const {_} = useLingui()
   if (!uniqSelection.length) return null
   return (
-    <View style={[a.flex_row, a.mt_xs, a.gap_xs, a.flex_wrap]}>
+    <View style={[a.flex_row, a.gap_xs, a.flex_wrap]}>
       {uniqSelection.map((opt, _i) => (
         <View
           key={opt.id}
@@ -111,6 +111,8 @@ export function ComboBoxSelection<T extends BaseOption>({
           <Text>{opt.label}</Text>
           <Button
             label={_(msg`Remove selection`)}
+            size='small'
+            shape='round'
             onPress={() => {
               onRemove(opt)
             }}>
@@ -126,7 +128,10 @@ export function ComboBoxSingleSelectOptions({
   value,
   options,
   onChange,
-}: Pick<ComboBoxSingleSelectProps, 'value' | 'options' | 'onChange'>) {
+  containerStyle
+}: Pick<ComboBoxSingleSelectProps, 'value' | 'options' | 'onChange'> & {
+  containerStyle?: StyleProp<ViewStyle>
+}) {
   const t = useTheme()
   const {_} = useLingui()
   const filteredOptions = useMemo(() => {
@@ -153,9 +158,7 @@ export function ComboBoxSingleSelectOptions({
           dark: t.atoms.bg_contrast_100,
           dim: t.atoms.bg_contrast_100,
         }),
-        {
-          maxHeight: 200,
-        },
+        containerStyle,
       ]}>
       {filteredOptions.map((opt, i) => (
         <View key={i} style={[a.border_b, t.atoms.border_contrast_low]}>

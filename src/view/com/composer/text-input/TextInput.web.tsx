@@ -327,7 +327,7 @@ export function TextInput({
 
   const inputStyle = useMemo(() => {
     const style = normalizeTextStyles(
-      [a.text_lg, a.leading_snug, t.atoms.text, a.w_full],
+      [a.text_md, a.leading_snug, t.atoms.text, a.w_full],
       {
         fontScale: fonts.scaleMultiplier,
         fontFamily: fonts.family,
@@ -375,7 +375,8 @@ export function TextInput({
                 style={[
                   a.text_lg,
                   a.font_semi_bold,
-                  t.atoms.text_contrast_medium,
+                  {color:t.palette.contrast_500},
+                  //t.atoms.text_contrast_medium,
                   t.atoms.border_contrast_high,
                   styles.dropText,
                 ]}>
