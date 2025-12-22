@@ -1737,7 +1737,7 @@ msgstr "In crear un conto, tu accepta le <0>conditiones de servicio</0>."
 msgid "By you"
 msgstr "Per te"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Camera"
 
@@ -3858,7 +3858,7 @@ msgstr "Non ha essite possibile remover le verification"
 msgid "Failed to resolve location. Please try again."
 msgstr ""
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Non ha essite possibile salvar le imagine: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Cache de imagines radite"
 msgid "Image cache cleared, freed {0}"
 msgstr "Cache de imagines radite, {0} liberate"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Imagine salvate"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Imagines non pote esser salvate a minus que tu concede permission de accesso a tu bibliotheca de photos."
 
@@ -6591,7 +6591,7 @@ msgstr "Aperi detalios additional pro un entrata de depuration"
 msgid "Opens alt text dialog"
 msgstr "Aperi dialogo de texto alternative"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Aperi le camera super le dispositivo"
 
@@ -6814,7 +6814,7 @@ msgstr "Personas qui seque @{0}"
 msgid "People I follow"
 msgstr "Personas que io seque"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Le permission pro acceder a tu bibliotheca de photos ha essite negate. Activa lo in le parametros de tu systema."
 

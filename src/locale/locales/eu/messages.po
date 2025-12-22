@@ -1737,7 +1737,7 @@ msgstr "Kontua sortzean <0>Zerbitzu Baldintzak</0> onartzen dituzu."
 msgid "By you"
 msgstr "Zugatik"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Kamera"
 
@@ -3858,7 +3858,7 @@ msgstr "Ezin izan da egiaztapena kendu"
 msgid "Failed to resolve location. Please try again."
 msgstr "Ezin izan da kokapena ebatzi. Mesedez, saiatu berriro."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Ezin izan da irudia gorde: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Irudien cachea garbituta"
 msgid "Image cache cleared, freed {0}"
 msgstr "Irudien cachea garbituta, {0} askatuta"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Irudia gordeta"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Ezin dira irudiak gorde zure argazki liburutegian sartzeko baimena eman ezean."
 
@@ -6591,7 +6591,7 @@ msgstr "Arazketa-sarrera baten xehetasun gehigarriak irekitzen ditu"
 msgid "Opens alt text dialog"
 msgstr "Aukerazko testuaren elkarrizketa-koadroa irekitzen du"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Kamera irekitzen du gailuan"
 
@@ -6814,7 +6814,7 @@ msgstr "@{0}-ri jarraitzen dion jendea"
 msgid "People I follow"
 msgstr "Jarraitzen ditudan pertsonak"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Ukatu egin da zure argazki liburutegira sartzeko baimena. Mesedez, gaitu zure sistemaren ezarpenetan."
 

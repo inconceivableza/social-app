@@ -1,12 +1,4 @@
-import Svg, {
-  ClipPath,
-  Defs,
-  G,
-  Path,
-  type PathProps,
-  Rect,
-  type SvgProps,
-} from 'react-native-svg'
+import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg'
 
 import {usePalette} from '#/lib/hooks/usePalette'
 
@@ -31,7 +23,7 @@ export function Logomark({
         <ClipPath clipPathUnits="userSpaceOnUse" id="clipPath1">
           <Rect
             opacity="0.5"
-            fill={fill || pal.text.color}
+            fill={fill || pal.text?.color}
             strokeWidth="1.79104"
             id="rect2"
             width="1200"
@@ -45,7 +37,7 @@ export function Logomark({
         <Path
           id="logo"
           display="inline"
-          fill={fill || pal.text.color}
+          fill={fill || pal.text?.color}
           fillOpacity="1"
           stroke="none"
           strokeWidth="30.575"

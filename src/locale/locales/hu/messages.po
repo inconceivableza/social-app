@@ -1737,7 +1737,7 @@ msgstr "A fiók létrehozásával elfogadod a <0>felhasználási feltételeket</
 msgid "By you"
 msgstr "Saját"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Kamera"
 
@@ -3858,7 +3858,7 @@ msgstr "A hitelesítés eltávolítása meghiúsult"
 msgid "Failed to resolve location. Please try again."
 msgstr "A tartózkodási hely megállapítása meghiúsult. Próbáld újra."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "A kép mentése meghiúsult: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Képgyorsítótár kiürítve"
 msgid "Image cache cleared, freed {0}"
 msgstr "Képgyorsítótár kiürítve. {0} hely felszabadult."
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Kép elmentve"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Fényképek mentéséhez a galériához való hozzáférés szükséges."
 
@@ -6591,7 +6591,7 @@ msgstr "Hibakeresési bejegyzés részleteinek megnyitása"
 msgid "Opens alt text dialog"
 msgstr "Helyettesítő szöveget tartalmazó ablak megnyitása"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Az eszköz kamerájának megnyitása"
 
@@ -6814,7 +6814,7 @@ msgstr "Az őt követő személyek: @{0}"
 msgid "People I follow"
 msgstr "Követett személyektől"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "A galéria hozzáférését megtagadták. Engedélyezd a rendszerbeállításokban."
 

@@ -15,14 +15,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import Svg, {
-  ClipPath,
-  Defs,
-  G,
-  Path,
-  Rect,
-  type SvgProps,
-} from 'react-native-svg'
+import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg'
 import {Image} from 'expo-image'
 import * as SplashScreen from 'expo-splash-screen'
 

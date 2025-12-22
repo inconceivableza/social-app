@@ -1737,7 +1737,7 @@ msgstr "Prin crearea unui cont sunteți de acord cu <0>Termenii de Serviciu</0>.
 msgid "By you"
 msgstr "De dvs."
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Cameră"
 
@@ -3858,7 +3858,7 @@ msgstr "Eliminarea verificării a eșuat"
 msgid "Failed to resolve location. Please try again."
 msgstr "Nu s-a putut determina locația. Vă rugăm să încercați din nou."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Salvarea imaginii a eșuat: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Cache-ul imaginilor a fost golit"
 msgid "Image cache cleared, freed {0}"
 msgstr "Cache-ul imaginilor a fost golit, s-au eliberat {0}"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Imagine salvată"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Imaginile nu pot fi salvate decât dacă se acordă permisiunea de a accesa biblioteca dvs. de fotografii."
 
@@ -6591,7 +6591,7 @@ msgstr "Deschide detalii suplimentare pentru o intrare de depanare"
 msgid "Opens alt text dialog"
 msgstr "Deschide dialogul de text alternativ"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Deschide camera pe dispozitiv"
 
@@ -6814,7 +6814,7 @@ msgstr "Persoane care urmăresc @{0}"
 msgid "People I follow"
 msgstr "Persoane pe care le urmăriți"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Permisiunea de a vă accesa biblioteca de fotografii a fost refuzată. Vă rugăm să o activați în setările sistemului."
 
