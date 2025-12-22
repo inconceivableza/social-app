@@ -13,70 +13,6 @@ import {
   type ComboBoxSingleSelectProps,
 } from './types'
 
-// TODO: may want to pass function for rendering option
-export function ComboBoxOptions<T extends BaseOption>({
-  options,
-  onSelect,
-  searchText,
-  selection,
-  containerStyle
-}: Pick<ComboBoxProps<T>, 'options' | 'onSelect' | 'selection'> & {
-    searchText: string,
-    containerStyle?: StyleProp<ViewStyle>
-}) {
-  const {_} = useLingui()
-  const t = useTheme()
-  const filteredOptions = useMemo(() => {
-    const trimmedSearch = searchText.trim().toLowerCase()
-    return options
-      .filter(({id, label}) => {
-        return (
-          label.toLowerCase().includes(trimmedSearch) &&
-          !selection.find(opt => opt.id === id)
-        )
-      })
-      .map(opt => ({...opt, onClick: () => onSelect(opt)}))
-  }, [options, selection, searchText, onSelect])
-
-  return (
-    <ScrollView
-      style={[
-        a.rounded_sm,
-        select(t.name, {
-          light: t.atoms.bg,
-          dark: t.atoms.bg_contrast_100,
-          dim: t.atoms.bg_contrast_100,
-        }),
-        containerStyle
-      ]}>
-      {filteredOptions.length ? (
-        filteredOptions.map(opt => {
-          return (
-            <View
-              key={opt.id}
-              style={[a.border_b, t.atoms.border_contrast_low]}>
-              <Button
-                label={_(opt.label)}
-                size="small"
-                color="primary_subtle"
-                style={[a.justify_start, {borderRadius: 0}]}
-                onPress={opt.onClick}>
-                <ButtonText style={[a.text_left]}>{_(opt.label)}</ButtonText>
-              </Button>
-            </View>
-          )
-        })
-      ) : (
-        <View style={[a.p_md]}>
-          <Text style={{fontStyle: 'italic'}}>
-            <Trans>No results found</Trans>
-          </Text>
-        </View>
-      )}
-    </ScrollView>
-  )
-}
-
 export function ComboBoxSelection<T extends BaseOption>({
   selection,
   onRemove,
@@ -107,8 +43,12 @@ export function ComboBoxSelection<T extends BaseOption>({
             a.flex_row,
             a.gap_xs,
             a.align_center,
+            a.flex_wrap
           ]}>
-          <Text>{opt.label}</Text>
+          <View >
+            <Text>{opt.label}</Text>
+          </View>
+          <View>
           <Button
             label={_(msg`Remove selection`)}
             size='small'
@@ -118,6 +58,7 @@ export function ComboBoxSelection<T extends BaseOption>({
             }}>
             <ButtonIcon icon={CircleXIcon} />
           </Button>
+          </View>
         </View>
       ))}
     </View>
@@ -128,9 +69,11 @@ export function ComboBoxSingleSelectOptions({
   value,
   options,
   onChange,
-  containerStyle
+  containerStyle,
+  optionStyle
 }: Pick<ComboBoxSingleSelectProps, 'value' | 'options' | 'onChange'> & {
   containerStyle?: StyleProp<ViewStyle>
+    optionStyle?: StyleProp<ViewStyle>
 }) {
   const t = useTheme()
   const {_} = useLingui()
@@ -161,7 +104,7 @@ export function ComboBoxSingleSelectOptions({
         containerStyle,
       ]}>
       {filteredOptions.map((opt, i) => (
-        <View key={i} style={[a.border_b, t.atoms.border_contrast_low]}>
+        <View key={i} style={[a.border_b, t.atoms.border_contrast_low, optionStyle]}>
           <Button
             label={_(opt)}
             size="small"

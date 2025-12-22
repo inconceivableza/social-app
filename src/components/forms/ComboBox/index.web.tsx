@@ -4,10 +4,11 @@ import {Popover} from 'radix-ui'
 
 import * as TextField from '#/components/forms/TextField'
 import {
-  ComboBoxOptions,
   ComboBoxSelection,
   ComboBoxSingleSelectOptions,
 } from './common'
+import { ComboBoxOptions } from "./ComboBoxOptions"
+
 import {
   type BaseOption,
   type ComboBoxProps,
