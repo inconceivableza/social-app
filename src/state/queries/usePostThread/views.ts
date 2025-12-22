@@ -9,7 +9,7 @@ import {
   type ModerationOpts,
 } from '@atproto/api'
 
-import {makeProfileLink} from '#/lib/routes/links'
+import {postHref} from '#/lib/api/feed/utils'
 import {
   type ApiThreadItem,
   type ThreadItem,
@@ -78,7 +78,8 @@ export function threadPost({
   const blurred = modui.blur || modui.filter
   const muted = (modui.blurs[0] || modui.filters[0])?.type === 'muted'
   const hiddenByThreadgate = threadgateHiddenReplies.has(uri)
-  const isBlurred = hiddenByThreadgate || blurred || muted
+  const isOwnPost = value.post.author.did === moderationOpts.userDid
+  const isBlurred = (hiddenByThreadgate || blurred || muted) && !isOwnPost
   return {
     type: 'threadPost',
     key: uri,
@@ -108,14 +109,14 @@ export function readMore({
   postData,
 }: TraversalMetadata): Extract<ThreadItem, {type: 'readMore'}> {
   const urip = new AtUri(postData.uri)
-  const href = makeProfileLink(
+  const href = postHref(
     {
       did: urip.host,
       handle: postData.authorHandle,
     },
-    'post',
-    urip.rkey,
+    postData.uri,
   )
+
   return {
     type: 'readMore' as const,
     key: `readMore:${postData.uri}`,
@@ -130,13 +131,12 @@ export function readMoreUp({
   postData,
 }: TraversalMetadata): Extract<ThreadItem, {type: 'readMoreUp'}> {
   const urip = new AtUri(postData.uri)
-  const href = makeProfileLink(
+  const href = postHref(
     {
       did: urip.host,
       handle: postData.authorHandle,
     },
-    'post',
-    urip.rkey,
+    postData.uri,
   )
   return {
     type: 'readMoreUp' as const,

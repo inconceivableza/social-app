@@ -33,7 +33,7 @@ jest.mock('react-native-safe-area-context', () => {
   }
 })
 
-jest.mock('expo-file-system', () => ({
+jest.mock('expo-file-system/legacy', () => ({
   getInfoAsync: jest.fn().mockResolvedValue({exists: true, size: 100}),
   deleteAsync: jest.fn(),
   createDownloadResumable: jest.fn(),
@@ -96,6 +96,13 @@ jest.mock('expo-modules-core', () => ({
       }
     }
   }),
+  requireOptionalNativeModule: jest.fn().mockImplementation(moduleName => {
+    if (moduleName === 'ExponentConstants') {
+      return {
+      }
+    }
+    return null
+  }),
   requireNativeViewManager: jest.fn().mockImplementation(_ => {
     return () => null
   }),
@@ -116,3 +123,5 @@ jest.mock('statsig-react-native-expo', () => ({
 
 jest.mock('../src/logger/bitdrift/lib', () => ({}))
 jest.mock('../src/lib/statsig/statsig', () => ({}))
+
+global.__DEV__ = false

@@ -27,6 +27,7 @@ const Context = React.createContext<{
   titleId: '',
   descriptionId: '',
 })
+Context.displayName = 'PromptContext'
 
 export function Outer({
   children,
@@ -76,7 +77,7 @@ export function TitleText({
       style={[
         a.flex_1,
         a.text_2xl,
-        a.font_bold,
+        a.font_semi_bold,
         a.pb_sm,
         a.leading_snug,
         style,

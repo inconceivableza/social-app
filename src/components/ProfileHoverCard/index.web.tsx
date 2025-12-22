@@ -74,7 +74,9 @@ export function ProfileHoverCard(props: ProfileHoverCardProps) {
     return props.children
   } else {
     return (
-      <View onPointerMove={onPointerMove} style={[a.flex_shrink, props.style]}>
+      <View
+        onPointerMove={onPointerMove}
+        style={[a.flex_shrink, props.inline && a.inline, props.style]}>
         <ProfileHoverCardInner {...props} />
       </View>
     )
@@ -326,7 +328,7 @@ export function ProfileHoverCardInner(props: ProfileHoverCardProps) {
       onPointerLeave={onPointerLeaveTarget}
       // @ts-ignore web only prop
       onMouseUp={onPress}
-      style={{flexShrink: 1}}>
+      style={[a.flex_shrink, props.inline && a.inline]}>
       {props.children}
       {isVisible && (
         <Portal>
@@ -513,7 +515,7 @@ function Inner({
           <View style={[a.flex_row, a.align_center, a.pt_md, a.pb_xs]}>
             <Text
               numberOfLines={1}
-              style={[a.text_lg, a.font_bold, a.self_start]}>
+              style={[a.text_lg, a.font_semi_bold, a.self_start]}>
               {sanitizeDisplayName(
                 profile.displayName || sanitizeHandle(profile.handle),
                 moderation.ui('displayName'),
@@ -560,7 +562,7 @@ function Inner({
               label={`${followers} ${pluralizedFollowers}`}
               style={[t.atoms.text]}
               onPress={hide}>
-              <Text style={[a.text_md, a.font_bold]}>{followers} </Text>
+              <Text style={[a.text_md, a.font_semi_bold]}>{followers} </Text>
               <Text style={[t.atoms.text_contrast_medium]}>
                 {pluralizedFollowers}
               </Text>
@@ -570,7 +572,7 @@ function Inner({
               label={_(msg`${following} following`)}
               style={[t.atoms.text]}
               onPress={hide}>
-              <Text style={[a.text_md, a.font_bold]}>{following} </Text>
+              <Text style={[a.text_md, a.font_semi_bold]}>{following} </Text>
               <Text style={[t.atoms.text_contrast_medium]}>
                 {pluralizedFollowings}
               </Text>

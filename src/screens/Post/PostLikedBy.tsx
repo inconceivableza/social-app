@@ -2,9 +2,13 @@ import React from 'react'
 import {Plural, Trans} from '@lingui/macro'
 import {useFocusEffect} from '@react-navigation/native'
 
-import {CommonNavigatorParams, NativeStackScreenProps} from '#/lib/routes/types'
-import {makeRecordUri} from '#/lib/strings/url-helpers'
-import {usePostThreadQuery} from '#/state/queries/post-thread'
+import {isRecipePostView} from '#/lib/api/feed/utils'
+import {
+  type CommonNavigatorParams,
+  type NativeStackScreenProps,
+} from '#/lib/routes/types'
+import {routeParamsToRecordUri} from '#/lib/strings/url-helpers'
+import {usePostQuery} from '#/state/queries/post'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {PostLikedBy as PostLikedByComponent} from '#/view/com/post-thread/PostLikedBy'
 import * as Layout from '#/components/Layout'
@@ -12,13 +16,12 @@ import * as Layout from '#/components/Layout'
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'PostLikedBy'>
 export const PostLikedByScreen = ({route}: Props) => {
   const setMinimalShellMode = useSetMinimalShellMode()
-  const {name, rkey} = route.params
-  const uri = makeRecordUri(name, 'app.bsky.feed.post', rkey)
-  const {data: post} = usePostThreadQuery(uri)
+  const uri = routeParamsToRecordUri(route.params)
+  const {data: post} = usePostQuery(uri)
 
   let likeCount
-  if (post?.thread.type === 'post') {
-    likeCount = post.thread.post.likeCount
+  if (post) {
+    likeCount = post.likeCount
   }
 
   useFocusEffect(
@@ -45,7 +48,12 @@ export const PostLikedByScreen = ({route}: Props) => {
         </Layout.Header.Content>
         <Layout.Header.Slot />
       </Layout.Header.Outer>
-      <PostLikedByComponent uri={uri} />
+      <PostLikedByComponent
+        uri={uri}
+        revisionUri={
+          isRecipePostView(post) ? post.record.selectedRevisionUri : undefined
+        }
+      />
     </Layout.Screen>
   )
 }

@@ -4,7 +4,6 @@ import {type AppBskyActorDefs, type ModerationDecision} from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
-import type React from 'react'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {makeProfileLink} from '#/lib/routes/links'
@@ -36,7 +35,9 @@ interface PostMetaOpts {
   style?: StyleProp<ViewStyle>
 }
 
-let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
+let PostMeta = (
+  opts: React.PropsWithChildren<PostMetaOpts>,
+): React.ReactNode => {
   const t = useTheme()
   const {i18n, _} = useLingui()
 
@@ -93,7 +94,7 @@ let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
               onPress={onBeforePressAuthor}
               style={[
                 a.text_md,
-                a.font_bold,
+                a.font_semi_bold,
                 t.atoms.text,
                 a.leading_tight,
                 a.flex_shrink_0,
@@ -175,6 +176,7 @@ let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
             </WebOnlyInlineLinkText>
           )}
         </TimeElapsed>
+        {opts.children}
       </View>
     </View>
   )

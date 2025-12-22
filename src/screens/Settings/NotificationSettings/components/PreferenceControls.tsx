@@ -1,7 +1,6 @@
 import {useMemo} from 'react'
 import {View} from 'react-native'
 import {type AppBskyNotificationDefs} from '@atproto/api'
-import {type FilterablePreference} from '@atproto/api/client/types/app/bsky/notification/defs'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -19,7 +18,7 @@ export function PreferenceControls({
   preference,
   allowDisableInApp = true,
 }: {
-  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>
+  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'> | 'timer'
   /**
    * Keep other prefs in sync with `name`. For use in the "everything else" category
    * which groups starterpack joins + verified + unverified notifications into a single toggle.
@@ -51,9 +50,11 @@ export function Inner({
   preference,
   allowDisableInApp,
 }: {
-  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>
+  name: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'> | 'timer'
   syncOthers?: Exclude<keyof AppBskyNotificationDefs.Preferences, '$type'>[]
-  preference: AppBskyNotificationDefs.Preference | FilterablePreference
+  preference:
+    | AppBskyNotificationDefs.Preference
+    | AppBskyNotificationDefs.FilterablePreference
   allowDisableInApp: boolean
 }) {
   const t = useTheme()
@@ -150,7 +151,7 @@ export function Inner({
       {'include' in preference && (
         <>
           <Divider />
-          <Text style={[a.font_bold, a.text_md]}>
+          <Text style={[a.font_semi_bold, a.text_md]}>
             <Trans>From</Trans>
           </Text>
           <Toggle.Group

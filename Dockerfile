@@ -1,46 +1,82 @@
-FROM golang:1.23-bullseye AS build-env
+# syntax=docker/dockerfile:1.4
+
+FROM --platform=$BUILDPLATFORM node:20-alpine3.22 as build-node
+
+RUN corepack enable
+
+WORKDIR /usr/src/social-app/submodules/atproto
+
+COPY ./submodules/atproto/package.json ./package.json
+RUN corepack prepare --activate
+
+COPY ./submodules/atproto/tsconfig ./tsconfig
+# NOTE social-app's transitive dependencies go here: if that changes, this needs to be updated.
+# pnpm ls --only-projects --parseable -F api... -F common-web... -F lexicon... -F syntax... -F xrpc... | sed 's#^.*atproto/##'
+COPY ./submodules/atproto/packages/api/package.json ./packages/api/package.json
+COPY ./submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY ./submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY ./submodules/atproto/packages/lex-cli/package.json ./packages/lex-cli/package.json
+COPY ./submodules/atproto/packages/lex/lex-data/package.json ./packages/lex/lex-data/package.json
+COPY ./submodules/atproto/packages/lex/lex-json/package.json ./packages/lex/lex-json/package.json
+COPY ./submodules/atproto/packages/lexicon/package.json ./packages/lexicon/package.json
+COPY ./submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
+COPY ./submodules/atproto/packages/xrpc/package.json ./packages/xrpc/package.json
+
+COPY ./submodules/atproto/package.json ./package.json
+COPY ./submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY ./submodules/atproto/pnpm-workspace.yaml ./pnpm-workspace.yaml
+
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+  pnpm install --frozen-lockfile
+
+COPY ./submodules/atproto/*.js* ./
+# NOTE matching transitive dependencies from above
+COPY ./submodules/atproto/packages/api ./packages/api
+COPY ./submodules/atproto/packages/common-web ./packages/common-web
+COPY ./submodules/atproto/packages/common-web ./packages/common-web
+COPY ./submodules/atproto/packages/lex-cli ./packages/lex-cli
+COPY ./submodules/atproto/packages/lex/lex-data ./packages/lex/lex-data
+COPY ./submodules/atproto/packages/lex/lex-json ./packages/lex/lex-json
+COPY ./submodules/atproto/packages/lexicon ./packages/lexicon
+COPY ./submodules/atproto/packages/syntax ./packages/syntax
+COPY ./submodules/atproto/packages/xrpc ./packages/xrpc
+
+# build all packages with external node_modules
+RUN pnpm build
+# clean up
+RUN rm -rf node_modules
+# install only prod deps, hoisted to root node_modules dir
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+  pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
 
 WORKDIR /usr/src/social-app
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-#
-# Node
-#
-ENV NODE_VERSION=20
-ENV NVM_DIR=/usr/share/nvm
-
-#
-# Go
-#
-ENV GODEBUG="netdns=go"
-ENV GOOS="linux"
-ENV GOARCH="amd64"
-ENV CGO_ENABLED=1
-ENV GOEXPERIMENT="loopvar"
+# The latest git hash of the preview branch on render.com
+# https://render.com/docs/docker-secrets#environment-variables-in-docker-builds
+ARG RENDER_GIT_COMMIT
 
 #
 # Expo
 #
+ARG EXPO_PUBLIC_ENV
+ENV EXPO_PUBLIC_ENV=${EXPO_PUBLIC_ENV:-development}
+ARG EXPO_PUBLIC_RELEASE_VERSION
+ENV EXPO_PUBLIC_RELEASE_VERSION=$EXPO_PUBLIC_RELEASE_VERSION
 ARG EXPO_PUBLIC_BUNDLE_IDENTIFIER
-ENV EXPO_PUBLIC_BUNDLE_IDENTIFIER=${EXPO_PUBLIC_BUNDLE_IDENTIFIER:-dev}
-
-# The latest git hash of the preview branch on render.com
-ARG RENDER_GIT_COMMIT
+# If not set by GitHub workflows, we're probably in Render
+ENV EXPO_PUBLIC_BUNDLE_IDENTIFIER=${EXPO_PUBLIC_BUNDLE_IDENTIFIER:-$RENDER_GIT_COMMIT}
 
 #
 # Sentry
 #
 ARG SENTRY_AUTH_TOKEN
 ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN:-unknown}
+ARG EXPO_PUBLIC_SENTRY_DSN
+ENV EXPO_PUBLIC_SENTRY_DSN=$EXPO_PUBLIC_SENTRY_DSN
+# MERGE TODO: SENTRY parameter passing
 # Will fall back to package.json#version, but this is handled elsewhere
 ARG SENTRY_RELEASE
 ENV SENTRY_RELEASE=$SENTRY_RELEASE
-ARG SENTRY_DIST
-# Default to RENDER_GIT_COMMIT if not set by GitHub workflows
-ENV SENTRY_DIST=${SENTRY_DIST:-$RENDER_GIT_COMMIT}
-ARG EXPO_PUBLIC_SENTRY_DSN
-ENV EXPO_PUBLIC_SENTRY_DSN=$EXPO_PUBLIC_SENTRY_DSN
 # sentry org and project for webpack source maps
 ARG SENTRY_ORG
 ENV SENTRY_ORG=$SENTRY_ORG
@@ -56,41 +92,26 @@ ARG EXPO_PUBLIC_STATSIG_CLIENT_KEY=$EXPO_PUBLIC_STATSIG_CLIENT_KEY
 ARG EXPO_PUBLIC_STATSIG_API_URL
 ARG EXPO_PUBLIC_STATSIG_API_URL=$EXPO_PUBLIC_STATSIG_API_URL
 
-RUN mkdir --parents $NVM_DIR && \
-  wget \
-    --output-document=/tmp/nvm-install.sh \
-    https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh && \
-  bash /tmp/nvm-install.sh
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm install $NODE_VERSION
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
+RUN echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
   echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER" >> .env && \
-  echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env && \
-  npm install --global yarn && \
-  npm install --global pnpm
+  echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env
+
+#
+# Node
+#
+ENV NODE_VERSION=20
+ENV NVM_DIR=/usr/share/nvm
 
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 COPY ./lingui.config.js ./lingui.config.js
+COPY ./patches/ ./patches
+COPY ./scripts/ ./scripts
 
-WORKDIR /usr/src/atproto
+RUN corepack prepare --activate
 
-COPY --from=atproto / .
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  pnpm install && \
-  pnpm build
-
-WORKDIR /usr/src/social-app
-
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  yarn
+RUN --mount=type=cache,id=yarn,target=/usr/local/share/.cache/yarn \
+  yarn --frozen-lockfile --network-timeout 300000 --network-concurrency 1
 #
 # Copy everything into the container
 #
@@ -100,21 +121,44 @@ COPY . .
 # Generate the JavaScript webpack.
 #
 
-RUN \. "$NVM_DIR/nvm.sh" && \
-  nvm use $NODE_VERSION && \
-  echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
+RUN echo "Using bundle identifier: $EXPO_PUBLIC_BUNDLE_IDENTIFIER" && \
+  echo "EXPO_PUBLIC_ENV=$EXPO_PUBLIC_ENV" >> .env && \
+  echo "EXPO_PUBLIC_RELEASE_VERSION=$EXPO_PUBLIC_RELEASE_VERSION" >> .env && \
   echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER" >> .env && \
   echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env && \
+  echo "EXPO_PUBLIC_SENTRY_DSN=$EXPO_PUBLIC_SENTRY_DSN" >> .env && \
   yarn intl:build 2>&1 | tee i18n.log && \
   if grep -q "invalid syntax" "i18n.log"; then echo "\n\nFound compilation errors!\n\n" && exit 1; else echo "\n\nNo compile errors!\n\n"; fi && \
-  EXPO_PUBLIC_BUNDLE_IDENTIFIER=$EXPO_PUBLIC_BUNDLE_IDENTIFIER EXPO_PUBLIC_BUNDLE_DATE=$() SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$SENTRY_RELEASE SENTRY_DIST=$SENTRY_DIST EXPO_PUBLIC_SENTRY_DSN=$EXPO_PUBLIC_SENTRY_DSN yarn build-web
+  SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_RELEASE=$EXPO_PUBLIC_RELEASE_VERSION SENTRY_DIST=$EXPO_PUBLIC_BUNDLE_IDENTIFIER yarn build-web
 
-# DEBUG
-RUN find ./bskyweb/static && find ./web-build/static
+FROM --platform=$BUILDPLATFORM golang:1.24-bullseye AS build-env
+
+# Cross-compilation arguments
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+
+WORKDIR /usr/src/social-app
+
+COPY --from=build-node /usr/src/social-app/web-build /usr/src/social-app/web-build
+COPY --from=build-node /usr/src/social-app/bskyweb /usr/src/social-app/bskyweb
+COPY --from=build-node /usr/src/social-app/conf /usr/src/social-app/conf
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+#
+# Go
+#
+ENV GODEBUG="netdns=go"
+ENV GOOS="linux"
+ENV CGO_ENABLED=1
 
 #
 # Generate the bskyweb Go binary.
 #
+COPY ./conf/branding-bluesky.json ./bskyweb/branding-bluesky.json
+COPY ./conf/branding.json ./bskyweb/branding.json
+
 RUN cd bskyweb/ && \
   go mod download && \
   go mod verify
@@ -148,5 +192,3 @@ CMD ["/usr/bin/bskyweb"]
 LABEL org.opencontainers.image.source=https://github.com/bluesky-social/social-app
 LABEL org.opencontainers.image.description="bsky.app Web App"
 LABEL org.opencontainers.image.licenses=MIT
-
-# NOOP

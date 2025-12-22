@@ -1,0 +1,181 @@
+name: Build and push foodios-social-app
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+env:
+  DOCKERHUB_REPO: ${{ vars.DOCKERHUB_REPO }}
+  IMAGE_NAME: foodios-social-app
+
+jobs:
+  build:
+    if: github.repository == 'inconceivableza/social-app'
+    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+    strategy:
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Create .env.test file
+        run: |
+          cat > .env.test << 'EOF'
+          # Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          EXPO_PUBLIC_ATP_APPVIEW_DID=did:web:${{ vars.APIFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_APPVIEW_URL=https://${{ vars.APIFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PDS_DID=did:web:${{ vars.PDSFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PDS_URL=https://${{ vars.PDSFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL=https://public.api.${{ vars.DOMAIN_STAGING }}
+          EXPO_PUBLIC_BLUESKY_PROXY_DID=did:web:${{ vars.BSKYFQDN_STAGING }}
+          EXPO_PUBLIC_CHAT_PROXY_DID=${{ vars.DMSERVICEDID_STAGING }}
+          EXPO_PUBLIC_CORS_ALLOWED_ORIGINS=https://${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_DM_SERVICE_DID=${{ vars.DMSERVICEDID_STAGING }}
+          EXPO_PUBLIC_GIF_HOST=${{ vars.GIFFQDN_STAGING }}
+          EXPO_PUBLIC_GEOLOCATION_CONFIG_URL=${{ vars.GEOLOCATION_CONFIG_URL_STAGING }}
+          EXPO_PUBLIC_LINK_HOST=${{ vars.LINKFQDN_STAGING }}
+          EXPO_PUBLIC_OGCARD_URL=https://${{ vars.CARDFQDN_STAGING }}
+          EXPO_PUBLIC_PREVIEW_LINK_META_PROXY=
+          EXPO_PUBLIC_SOCIAL_APP_HOST=${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_APP_URL=https://${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_EMBED_SERVICE=https://${{ vars.EMBEDFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_HELP_DESK_URL=${{ vars.SOCIAL_HELP_DESK_URL_STAGING }}
+          EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL=${{ vars.SOCIAL_POLICY_BASE_URL_STAGING }}
+          EXPO_PUBLIC_STATSIG_CLIENT_KEY=${{ vars.STATSIG_CLIENT_KEY_STAGING }}
+          EXPO_PUBLIC_STATSIG_API_URL=${{ vars.STATSIG_API_URL_STAGING }}
+          EXPO_PUBLIC_STATUS_PAGE_URL=${{ vars.STATUS_PAGE_URL_STAGING }}
+          EXPO_PUBLIC_VIDEO_SERVICE=https://video.${{ vars.DOMAIN_STAGING }}
+          EXPO_PUBLIC_VIDEO_SERVICE_DID=did:web:video.${{ vars.DOMAIN_STAGING }}
+
+          EOF
+
+      - name: Create .env.production file
+        run: |
+          cat > .env.production << 'EOF'
+          # Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          EXPO_PUBLIC_ATP_APPVIEW_DID=did:web:${{ vars.APIFQDN_PROD }}
+          EXPO_PUBLIC_ATP_APPVIEW_URL=https://${{ vars.APIFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PDS_DID=did:web:${{ vars.PDSFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PDS_URL=https://${{ vars.PDSFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL=https://public.api.${{ vars.DOMAIN_PROD }}
+          EXPO_PUBLIC_BLUESKY_PROXY_DID=did:web:${{ vars.BSKYFQDN_PROD }}
+          EXPO_PUBLIC_CHAT_PROXY_DID=${{ vars.DMSERVICEDID_PROD }}
+          EXPO_PUBLIC_CORS_ALLOWED_ORIGINS=https://${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_DM_SERVICE_DID=${{ vars.DMSERVICEDID_PROD }}
+          EXPO_PUBLIC_GIF_HOST=${{ vars.GIFFQDN_PROD }}
+          EXPO_PUBLIC_GEOLOCATION_CONFIG_URL=${{ vars.GEOLOCATION_CONFIG_URL_PROD }}
+          EXPO_PUBLIC_LINK_HOST=${{ vars.LINKFQDN_PROD }}
+          EXPO_PUBLIC_OGCARD_URL=https://${{ vars.CARDFQDN_PROD }}
+          EXPO_PUBLIC_PREVIEW_LINK_META_PROXY=
+          EXPO_PUBLIC_SOCIAL_APP_HOST=${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_APP_URL=https://${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_EMBED_SERVICE=https://${{ vars.EMBEDFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_HELP_DESK_URL=${{ vars.SOCIAL_HELP_DESK_URL_PROD }}
+          EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL=${{ vars.SOCIAL_POLICY_BASE_URL_PROD }}
+          EXPO_PUBLIC_STATSIG_CLIENT_KEY=${{ vars.STATSIG_CLIENT_KEY_PROD }}
+          EXPO_PUBLIC_STATSIG_API_URL=${{ vars.STATSIG_API_URL_PROD }}
+          EXPO_PUBLIC_STATUS_PAGE_URL=${{ vars.STATUS_PAGE_URL_PROD }}
+          EXPO_PUBLIC_VIDEO_SERVICE=https://video.${{ vars.DOMAIN_PROD }}
+          EXPO_PUBLIC_VIDEO_SERVICE_DID=did:web:video.${{ vars.DOMAIN_PROD }}
+
+          EOF
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Prepare platform tag
+        id: platform
+        run: |
+          platform=${{ matrix.platform }}
+          echo "tag=${platform//\//-}" >> $GITHUB_OUTPUT
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,enable=true,priority=100,prefix=,suffix=-${{ steps.platform.outputs.tag }},format=long
+
+      - name: Env
+        id: env
+        run: |
+          echo "EXPO_PUBLIC_RELEASE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+          echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: ${{ matrix.platform }}
+          push: ${{ github.event_name != 'pull_request' }}
+          file: ./Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            type=registry,ref=${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:buildcache-${{ steps.platform.outputs.tag }}
+            type=registry,ref=${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:buildcache-${{ steps.platform.outputs.tag }},mode=max
+          build-args: |
+            EXPO_PUBLIC_ENV=production
+            EXPO_PUBLIC_RELEASE_VERSION=${{ steps.env.outputs.EXPO_PUBLIC_RELEASE_VERSION }}
+            EXPO_PUBLIC_BUNDLE_IDENTIFIER=${{ steps.env.outputs.EXPO_PUBLIC_BUNDLE_IDENTIFIER }}
+            EXPO_PUBLIC_SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+    outputs:
+      digest-amd64: ${{ matrix.platform == 'linux/amd64' && steps.build-and-push.outputs.digest || '' }}
+      digest-arm64: ${{ matrix.platform == 'linux/arm64' && steps.build-and-push.outputs.digest || '' }}
+
+  create-manifest:
+    if: github.repository == 'inconceivableza/social-app' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,enable=true,priority=100,prefix=,suffix=,format=long
+
+      - name: Create and push multi-platform manifest
+        run: |
+          # Get the tag without platform suffix
+          TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
+
+          # Create manifest from platform-specific images
+          docker buildx imagetools create -t ${TAG} \
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:$(git rev-parse HEAD)-linux-amd64 \
+            ${{ env.DOCKERHUB_REPO }}/${{ env.IMAGE_NAME }}:$(git rev-parse HEAD)-linux-arm64
+
+          echo "Created multi-platform manifest: ${TAG}"

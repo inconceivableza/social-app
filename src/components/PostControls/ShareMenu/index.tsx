@@ -1,16 +1,15 @@
 import {memo, useMemo, useState} from 'react'
+import {type Insets} from 'react-native'
 import {
   type AppBskyFeedDefs,
   type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
-  AtUri,
   type RichText as RichTextAPI,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
-import type React from 'react'
 
-import {makeProfileLink} from '#/lib/routes/links'
+import {postHref} from '#/lib/api/feed/utils'
 import {shareUrl} from '#/lib/sharing'
 import {useGate} from '#/lib/statsig/statsig'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -34,6 +33,7 @@ let ShareMenuButton = ({
   timestamp,
   threadgateRecord,
   onShare,
+  hitSlop,
 }: {
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
@@ -43,7 +43,9 @@ let ShareMenuButton = ({
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShare: () => void
+  hitSlop?: Insets
 }): React.ReactNode => {
+  // TODO: test recipe share
   const {_} = useLingui()
   const gate = useGate()
 
@@ -74,8 +76,7 @@ let ShareMenuButton = ({
 
   const onNativeLongPress = () => {
     logger.metric('share:press:nativeShare', {}, {statsig: true})
-    const urip = new AtUri(post.uri)
-    const href = makeProfileLink(post.author, 'post', urip.rkey)
+    const href = postHref(post.author, post.uri)
     const url = toShareUrl(href)
     shareUrl(url)
     onShare()
@@ -92,7 +93,8 @@ let ShareMenuButton = ({
                 big={big}
                 label={props.accessibilityLabel}
                 {...props}
-                onLongPress={native(onNativeLongPress)}>
+                onLongPress={native(onNativeLongPress)}
+                hitSlop={hitSlop}>
                 <PostControlButtonIcon icon={ShareIcon} />
               </PostControlButton>
             )

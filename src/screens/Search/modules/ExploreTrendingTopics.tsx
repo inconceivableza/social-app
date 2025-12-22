@@ -104,7 +104,7 @@ export function TrendRow({
                 <Text
                   style={[
                     a.text_md,
-                    a.font_bold,
+                    a.font_semi_bold,
                     a.leading_tight,
                     {width: 20},
                   ]}>
@@ -113,7 +113,7 @@ export function TrendRow({
                   </Trans>
                 </Text>
                 <Text
-                  style={[a.text_md, a.font_bold, a.leading_tight]}
+                  style={[a.text_md, a.font_semi_bold, a.leading_tight]}
                   numberOfLines={1}>
                   {trend.displayName}
                 </Text>
@@ -163,10 +163,7 @@ function TrendingIndicator({type}: {type: TrendingIndicatorType | 'skeleton'}) {
     a.align_center,
     a.gap_xs,
     a.rounded_full,
-    a.px_sm,
-    {
-      height: 28,
-    },
+    {height: 28, paddingHorizontal: 10},
   ]
 
   let Icon: React.ComponentType<SVGIconProps> | null = null
@@ -197,7 +194,7 @@ function TrendingIndicator({type}: {type: TrendingIndicatorType | 'skeleton'}) {
     case 'new': {
       Icon = TrendingIcon
       text = _(msg`New`)
-      color = t.palette.positive_700
+      color = t.palette.positive_600
       backgroundColor = t.palette.positive_50
       break
     }
@@ -218,7 +215,7 @@ function TrendingIndicator({type}: {type: TrendingIndicatorType | 'skeleton'}) {
   return (
     <View style={[pillStyles, {backgroundColor}]}>
       {Icon && <Icon size="sm" style={{color}} />}
-      <Text style={[a.text_sm, {color}]}>{text}</Text>
+      <Text style={[a.text_sm, a.font_medium, {color}]}>{text}</Text>
     </View>
   )
 }

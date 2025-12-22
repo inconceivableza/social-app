@@ -34,9 +34,11 @@ module.exports = {
           'P',
           'Admonition',
           'Admonition.Admonition',
+          'Toast.Action',
           'AgeAssuranceAdmonition',
           'Span',
           'TSpan',
+          'StackedButton',
         ],
         impliedTextProps: [],
         suggestedTextWrappers: {
@@ -88,7 +90,7 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
-      {argsIgnorePattern: '^_', varsIgnorePattern: '^_'},
+      {argsIgnorePattern: '^_', varsIgnorePattern: '^_.+'},
     ],
     '@typescript-eslint/consistent-type-imports': [
       'warn',
@@ -111,6 +113,8 @@ module.exports = {
     'bskyembed',
     'src/locale/locales/_build/',
     'src/locale/locales/**/*.js',
+    '*.e2e.ts',
+    '*.e2e.tsx',
   ],
   settings: {
     componentWrapperFunctions: ['observer'],

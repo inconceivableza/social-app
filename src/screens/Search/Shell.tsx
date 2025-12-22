@@ -16,6 +16,7 @@ import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
+import {mapValues, pickBy} from 'lodash'
 
 import {branding, HITSLOP_10, HITSLOP_20} from '#/lib/constants'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
@@ -38,11 +39,17 @@ import {
 import {atoms as a, tokens, useBreakpoints, useTheme, web} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {SearchInput} from '#/components/forms/SearchInput'
+import * as ToggleButton from '#/components/forms/ToggleButton'
 import * as Layout from '#/components/Layout'
 import {Text} from '#/components/Typography'
 import {account, useStorage} from '#/storage'
 import type * as bsky from '#/types/bsky'
 import {AutocompleteResults} from './components/AutocompleteResults'
+import {
+  recipeParamsSchema,
+  RecipeSearchFields,
+  useRecipeSearchState,
+} from './components/RecipeSearchFields'
 import {SearchHistory} from './components/SearchHistory'
 import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
@@ -129,11 +136,37 @@ export function SearchScreenShell({
     },
     [accountHistory, setAccountHistory],
   )
-
-  const {params, query, queryWithParams} = useQueryManager({
+  // TODO: rethink query manager so that query construction doesn't happen in two steps
+  let {
+    params: incompleteParams,
+    query,
+    handlers,
+  } = useQueryManager({
     initialQuery: queryParam,
     fixedParams,
   })
+
+  const parsedParams = useMemo(() => {
+    return recipeParamsSchema.parse(route.params)
+  }, [route.params])
+
+  const [recipeSearchFields, dispatchRecipeSearch] =
+    useRecipeSearchState(parsedParams)
+
+  const [searchType, setSearchType] = useState<'all' | 'recipes'>(
+    parsedParams.searchType,
+  )
+
+  const {queryWithParams, params} = useMemo(() => {
+    const recipeParams = mapValues(recipeSearchFields, opts =>
+      // Certain options have multiple paths i.e. multiple parents. We want results from all of them.
+      opts.flatMap(opt => opt.paths.map(path => path.join('/'))).join(','),
+    )
+    const params = {...incompleteParams, ...recipeParams, searchType}
+    const queryWithParams = makeSearchQuery(query, params)
+    return {queryWithParams, params}
+  }, [query, incompleteParams, recipeSearchFields, searchType])
+
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
 
   // web only - measure header height for sticky positioning
@@ -174,13 +207,13 @@ export function SearchScreenShell({
 
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, {...route.params, q: item})
+        navigation.push(route.name, {q: item, ...pickBy(params)})
       } else {
         textInput.current?.blur()
         navigation.setParams({q: item})
       }
     },
-    [updateSearchHistory, navigation, route],
+    [updateSearchHistory, navigation, route, params],
   )
 
   const onPressCancelSearch = useCallback(() => {
@@ -189,15 +222,19 @@ export function SearchScreenShell({
     setShowAutocomplete(false)
     if (isWeb) {
       // Empty params resets the URL to be /search rather than /search?q=
-
-      const {q: _q, ...parameters} = (route.params ?? {}) as {
+      // Also clear the tab parameter
+      const {
+        q: _q,
+        tab: _tab,
+        ...parameters
+      } = (route.params ?? {}) as {
         [key: string]: string
       }
       // @ts-expect-error route is not typesafe
       navigation.replace(route.name, parameters)
     } else {
       setSearchText('')
-      navigation.setParams({q: ''})
+      navigation.setParams({q: '', tab: undefined})
     }
   }, [setShowAutocomplete, setSearchText, navigation, route.params, route.name])
 
@@ -235,15 +272,19 @@ export function SearchScreenShell({
   const onSoftReset = useCallback(() => {
     if (isWeb) {
       // Empty params resets the URL to be /search rather than /search?q=
-
-      const {q: _q, ...parameters} = (route.params ?? {}) as {
+      // Also clear the tab parameter when soft resetting
+      const {
+        q: _q,
+        tab: _tab,
+        ...parameters
+      } = (route.params ?? {}) as {
         [key: string]: string
       }
       // @ts-expect-error route is not typesafe
       navigation.replace(route.name, parameters)
     } else {
       setSearchText('')
-      navigation.setParams({q: ''})
+      navigation.setParams({q: '', tab: undefined})
       textInput.current?.focus()
     }
   }, [navigation, route])
@@ -256,6 +297,7 @@ export function SearchScreenShell({
   )
 
   const onSearchInputFocus = useCallback(() => {
+    if (searchType === 'recipes') return
     if (isWeb) {
       // Prevent a jump on iPad by ensuring that
       // the initial focused render has no result list.
@@ -265,14 +307,25 @@ export function SearchScreenShell({
     } else {
       setShowAutocomplete(true)
     }
-  }, [setShowAutocomplete])
+  }, [setShowAutocomplete, searchType])
 
-  const focusSearchInput = useCallback(() => {
-    textInput.current?.focus()
-  }, [])
+  const focusSearchInput = useCallback(
+    (tab?: 'user' | 'profile' | 'feed') => {
+      textInput.current?.focus()
+
+      // If a tab is specified, set the tab parameter
+      if (tab) {
+        if (isWeb) {
+          navigation.setParams({...route.params, tab})
+        } else {
+          navigation.setParams({tab})
+        }
+      }
+    },
+    [navigation, route],
+  )
 
   const showHeader = !gtMobile || navButton !== 'menu'
-
   return (
     <Layout.Screen testID={testID}>
       <View
@@ -309,7 +362,7 @@ export function SearchScreenShell({
                 {showFilters ? (
                   <SearchLanguageDropdown
                     value={params.lang}
-                    onChange={params.setLang}
+                    onChange={handlers.setLang}
                   />
                 ) : (
                   <Layout.Header.Slot />
@@ -319,8 +372,37 @@ export function SearchScreenShell({
           )}
           <View style={[a.px_lg, a.pt_sm, a.pb_sm, a.overflow_hidden]}>
             <View style={[a.gap_sm]}>
-              <View style={[a.w_full, a.flex_row, a.align_stretch, a.gap_xs]}>
-                <View style={[a.flex_1]}>
+              <View
+                style={[
+                  a.w_full,
+                  a.flex_row,
+                  a.align_stretch,
+                  a.gap_xs,
+                  a.align_center,
+                ]}>
+                <View style={{width: '25%'}}>
+                  <ToggleButton.Group
+                    label={_(msg`Search type`)}
+                    onChange={values => {
+                      const found = searchTypeOptions.find(
+                        ({value}) => value === values[0],
+                      )
+                      setSearchType(found?.value ?? 'all')
+                    }}
+                    values={[searchType]}>
+                    {searchTypeOptions.map(({label, value}) => (
+                      <ToggleButton.Button
+                        label={_(label)}
+                        name={value}
+                        key={`searchtype-${value}`}>
+                        <ToggleButton.ButtonText>
+                          {_(label)}
+                        </ToggleButton.ButtonText>
+                      </ToggleButton.Button>
+                    ))}
+                  </ToggleButton.Group>
+                </View>
+                <View style={{flexGrow: 1}}>
                   <SearchInput
                     ref={textInput}
                     value={searchText}
@@ -350,7 +432,14 @@ export function SearchScreenShell({
                   </Button>
                 )}
               </View>
-
+              {searchType === 'recipes' && (
+                <View>
+                  <RecipeSearchFields
+                    state={recipeSearchFields}
+                    dispatch={dispatchRecipeSearch}
+                  />
+                </View>
+              )}
               {showFilters && !showHeader && (
                 <View
                   style={[
@@ -361,7 +450,7 @@ export function SearchScreenShell({
                   ]}>
                   <SearchLanguageDropdown
                     value={params.lang}
-                    onChange={params.setLang}
+                    onChange={handlers.setLang}
                   />
                 </View>
               )}
@@ -375,11 +464,11 @@ export function SearchScreenShell({
           display: showAutocomplete && !fixedParams ? 'flex' : 'none',
           flex: 1,
         }}>
-        {searchText.length > 0 ? (
+        {query.trim() ? (
           <AutocompleteResults
             isAutocompleteFetching={isAutocompleteFetching}
             autocompleteData={autocompleteData}
-            searchText={searchText}
+            queryType={searchType}
             onSubmit={onSubmit}
             onResultPress={onAutocompleteResultPress}
             onProfileClick={handleProfileClick}
@@ -420,14 +509,42 @@ let SearchScreenInner = ({
   query: string
   queryWithParams: string
   headerHeight: number
-  focusSearchInput: () => void
+  focusSearchInput: (tab?: 'user' | 'profile' | 'feed') => void
 }): React.ReactNode => {
   const t = useTheme()
   const setMinimalShellMode = useSetMinimalShellMode()
   const {hasSession} = useSession()
   const {gtTablet} = useBreakpoints()
-  const [activeTab, setActiveTab] = useState(0)
-  const {_} = useLingui()
+  const route = useRoute()
+
+  // Get tab parameter from route params
+  const tabParam = (
+    route.params as {q?: string; tab?: 'user' | 'profile' | 'feed'}
+  )?.tab
+
+  // Map tab parameter to tab index
+  const getInitialTabIndex = useCallback(() => {
+    if (!tabParam) return 0
+    switch (tabParam) {
+      case 'user':
+      case 'profile':
+        return 2 // People tab
+      case 'feed':
+        return 3 // Feeds tab
+      default:
+        return 0
+    }
+  }, [tabParam])
+
+  const [activeTab, setActiveTab] = useState(getInitialTabIndex())
+
+  // Update activeTab when tabParam changes
+  useLayoutEffect(() => {
+    const newTabIndex = getInitialTabIndex()
+    if (newTabIndex !== activeTab) {
+      setActiveTab(newTabIndex)
+    }
+  }, [tabParam, activeTab, getInitialTabIndex])
 
   const onPageSelected = useCallback(
     (index: number) => {
@@ -436,7 +553,6 @@ let SearchScreenInner = ({
     },
     [setMinimalShellMode],
   )
-
   return queryWithParams ? (
     <SearchResults
       query={query}
@@ -444,6 +560,7 @@ let SearchScreenInner = ({
       activeTab={activeTab}
       headerHeight={headerHeight}
       onPageSelected={onPageSelected}
+      initialPage={activeTab}
     />
   ) : hasSession ? (
     <Explore focusSearchInput={focusSearchInput} headerHeight={headerHeight} />
@@ -459,7 +576,7 @@ let SearchScreenInner = ({
               a.pt_sm,
               a.pb_lg,
             ]}>
-            <Text style={[a.text_2xl, a.font_heavy]}>
+            <Text style={[a.text_2xl, a.font_bold]}>
               <Trans>Search</Trans>
             </Text>
           </View>
@@ -472,7 +589,9 @@ let SearchScreenInner = ({
             style={t.atoms.text_contrast_medium as StyleProp<ViewStyle>}
           />
           <Text style={[t.atoms.text_contrast_medium, a.text_md]}>
-            <Trans>Find posts, users, and feeds on {branding.naming.app_name}</Trans>
+            <Trans>
+              Find posts, users, and feeds on {branding.naming.app_name}
+            </Trans>
           </Text>
         </View>
       </View>
@@ -500,16 +619,16 @@ function useQueryManager({
     setLang(initialParams.lang || '')
   }
 
-  const params = useMemo(
-    () => ({
+  const params = useMemo(() => {
+    return {
       // default stuff
       ...initialParams,
       // managed stuff
       lang,
       ...fixedParams,
-    }),
-    [lang, initialParams, fixedParams],
-  )
+      // ...recipeParams
+    }
+  }, [lang, initialParams, fixedParams])
   const handlers = useMemo(
     () => ({
       setLang,
@@ -520,11 +639,10 @@ function useQueryManager({
   return useMemo(() => {
     return {
       query,
-      queryWithParams: makeSearchQuery(query, params),
       params: {
         ...params,
-        ...handlers,
       },
+      handlers,
     }
   }, [query, params, handlers])
 }
@@ -534,3 +652,14 @@ function scrollToTopWeb() {
     window.scrollTo(0, 0)
   }
 }
+
+const searchTypeOptions = [
+  {
+    value: 'all',
+    label: msg`All`,
+  },
+  {
+    value: 'recipes',
+    label: msg`Recipes`,
+  },
+] as const

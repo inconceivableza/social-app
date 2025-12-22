@@ -9,10 +9,8 @@ import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {VIDEO_FEED_URIS} from '#/lib/constants'
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useSetTitle} from '#/lib/hooks/useSetTitle'
-import {ComposeIcon2} from '#/lib/icons'
 import {type CommonNavigatorParams} from '#/lib/routes/types'
 import {type NavigationProp} from '#/lib/routes/types'
 import {makeRecordUri} from '#/lib/strings/url-helpers'
@@ -33,9 +31,9 @@ import {
 import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {truncateAndInvalidate} from '#/state/queries/util'
 import {useSession} from '#/state/session'
+import {ComposeFAB} from '#/view/com/composer/ComposeFAB'
 import {PostFeed} from '#/view/com/posts/PostFeed'
 import {EmptyState} from '#/view/com/util/EmptyState'
-import {FAB} from '#/view/com/util/fab/FAB'
 import {Button} from '#/view/com/util/forms/Button'
 import {type ListRef} from '#/view/com/util/List'
 import {LoadLatestBtn} from '#/view/com/util/load-latest/LoadLatestBtn'
@@ -159,7 +157,6 @@ export function ProfileFeedScreenInner({
 }) {
   const {_} = useLingui()
   const {hasSession} = useSession()
-  const {openComposer} = useOpenComposer()
   const isScreenFocused = useIsFocused()
 
   useSetTitle(feedInfo?.displayName)
@@ -169,7 +166,7 @@ export function ProfileFeedScreenInner({
   const [hasNew, setHasNew] = React.useState(false)
   const [isScrolledDown, setIsScrolledDown] = React.useState(false)
   const queryClient = useQueryClient()
-  const feedFeedback = useFeedFeedback(feed, hasSession)
+  const feedFeedback = useFeedFeedback(feedInfo, hasSession)
   const scrollElRef = useAnimatedRef() as ListRef
 
   const onScrollToTop = useCallback(() => {
@@ -226,22 +223,7 @@ export function ProfileFeedScreenInner({
         />
       )}
 
-      {hasSession && (
-        <FAB
-          testID="composeFAB"
-          onPress={() => openComposer({})}
-          icon={
-            <ComposeIcon2
-              strokeWidth={1.5}
-              size={29}
-              style={{color: 'white'}}
-            />
-          }
-          accessibilityRole="button"
-          accessibilityLabel={_(msg`New post`)}
-          accessibilityHint=""
-        />
-      )}
+      {hasSession && <ComposeFAB />}
     </>
   )
 }

@@ -5,10 +5,10 @@ import {AtUri} from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {postHref} from '#/lib/api/feed/utils'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Link} from '../util/Link'
 import {Text} from '../util/text/Text'
 
@@ -21,7 +21,7 @@ export function ViewFullThread({uri}: {uri: string}) {
   const pal = usePalette('default')
   const itemHref = React.useMemo(() => {
     const urip = new AtUri(uri)
-    return makeProfileLink({did: urip.hostname, handle: ''}, 'post', urip.rkey)
+    return postHref({did: urip.hostname, handle: ''}, uri, urip.rkey)
   }, [uri])
   const {_} = useLingui()
 
@@ -33,7 +33,7 @@ export function ViewFullThread({uri}: {uri: string}) {
       noFeedback
       onPointerEnter={onHoverIn}
       onPointerLeave={onHoverOut}>
-      <SubtleWebHover
+      <SubtleHover
         hover={hover}
         // adjust position for visual alignment - the actual box has lots of top padding and not much bottom padding -sfn
         style={{top: 8, bottom: -5}}

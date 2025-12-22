@@ -305,7 +305,7 @@ func serve(cctx *cli.Context) error {
 		e.GET("/robots.txt", echo.WrapHandler(staticHandler))
 	}
 
-	e.GET("/iframe/youtube.html", echo.WrapHandler(staticHandler))
+	e.GET("/iframe/*", echo.WrapHandler(staticHandler))
 	e.GET("/.well-known/apple-app-site-association", func(c echo.Context) error {
 		return server.WebWellKnown(c, "apple-app-site-association")
 	})
@@ -382,6 +382,7 @@ func serve(cctx *cli.Context) error {
 	e.GET("/settings/notifications/reposts-on-reposts", server.WebGeneric)
 	e.GET("/settings/notifications/activity", server.WebGeneric)
 	e.GET("/settings/notifications/miscellaneous", server.WebGeneric)
+	e.GET("/settings/notifications/timers", server.WebGeneric)
 	e.GET("/settings/app-icon", server.WebGeneric)
 	e.GET("/sys/debug", server.WebGeneric)
 	e.GET("/sys/debug-mod", server.WebGeneric)
@@ -404,7 +405,7 @@ func serve(cctx *cli.Context) error {
 	e.GET("/profile/:handleOrDID/known-followers", server.WebGeneric)
 	e.GET("/profile/:handleOrDID/search", server.WebGeneric)
 	e.GET("/profile/:handleOrDID/lists/:rkey", server.WebGeneric)
-	e.GET("/profile/:handleOrDID/feed/:rkey", server.WebGeneric)
+	e.GET("/profile/:handleOrDID/feed/:rkey", server.WebFeed)
 	e.GET("/profile/:handleOrDID/feed/:rkey/liked-by", server.WebGeneric)
 	e.GET("/profile/:handleOrDID/labeler/liked-by", server.WebGeneric)
 
@@ -421,6 +422,9 @@ func serve(cctx *cli.Context) error {
 	e.GET("/starter-pack/:handleOrDID/:rkey", server.WebStarterPack)
 	e.GET("/starter-pack-short/:code", server.WebGeneric)
 	e.GET("/start/:handleOrDID/:rkey", server.WebStarterPack)
+
+	// bookmarks
+	e.GET("/saved", server.WebGeneric)
 
 	// ipcc
 	e.GET("/ipcc", server.WebIpCC)
@@ -497,6 +501,7 @@ func (srv *Server) NewTemplateContext() pongo2.Context {
 		"socialappUrl":       srv.cfg.socialappUrl,
 		"embedUrl":           srv.cfg.embedUrl,
 		"statuspageUrl":      srv.cfg.statuspageUrl,
+		"favicon":            fmt.Sprintf("%s/static/favicon.png", srv.cfg.staticCDNHost),
 	}
 }
 
@@ -567,6 +572,18 @@ func (srv *Server) WebHome(c echo.Context) error {
 	return c.Render(http.StatusOK, "home.html", data)
 }
 
+// Posts that include these labels will not have embeds passed to the metadata
+// template.
+var hideEmbedLabels = map[string]bool{
+	"nudity":            true,
+	"porn":              true,
+	"sexual":            true,
+	"sexual-figurative": true,
+	"graphic-media":     true,
+	"self-harm":         true,
+	"sensitive":         true,
+}
+
 func (srv *Server) WebPost(c echo.Context) error {
 	ctx := c.Request().Context()
 	data := srv.NewTemplateContext()
@@ -598,36 +615,38 @@ func (srv *Server) WebPost(c echo.Context) error {
 		}
 	}
 
+	req := c.Request()
 	if !unauthedViewingOkay {
+		// Provide minimal OpenGraph data for auth-required posts
+		data["requestURI"] = fmt.Sprintf("https://%s%s", req.Host, req.URL.Path)
+		data["requiresAuth"] = true
+		data["profileHandle"] = pv.Handle
+		if pv.DisplayName != nil {
+			data["profileDisplayName"] = *pv.DisplayName
+		}
 		return c.Render(http.StatusOK, "post.html", data)
 	}
-	did := pv.Did
-	data["did"] = did
 
 	// then fetch the post thread (with extra context)
-	uri := fmt.Sprintf("at://%s/app.bsky.feed.post/%s", did, rkey)
+	uri := fmt.Sprintf("at://%s/app.bsky.feed.post/%s", pv.Did, rkey)
 	tpv, err := appbsky.FeedGetPostThread(ctx, srv.xrpcc, 1, 0, uri)
 	if err != nil {
 		log.Warnf("failed to fetch post: %s\t%v", uri, err)
 		return c.Render(http.StatusOK, "post.html", data)
 	}
-	req := c.Request()
+
 	postView := tpv.Thread.FeedDefs_ThreadViewPost.Post
 	data["postView"] = postView
 	data["requestURI"] = fmt.Sprintf("https://%s%s", req.Host, req.URL.Path)
-	if postView.Embed != nil {
-		if postView.Embed.EmbedImages_View != nil {
-			var thumbUrls []string
-			for i := range postView.Embed.EmbedImages_View.Images {
-				thumbUrls = append(thumbUrls, postView.Embed.EmbedImages_View.Images[i].Thumb)
-			}
-			data["imgThumbUrls"] = thumbUrls
-		} else if postView.Embed.EmbedRecordWithMedia_View != nil && postView.Embed.EmbedRecordWithMedia_View.Media != nil && postView.Embed.EmbedRecordWithMedia_View.Media.EmbedImages_View != nil {
-			var thumbUrls []string
-			for i := range postView.Embed.EmbedRecordWithMedia_View.Media.EmbedImages_View.Images {
-				thumbUrls = append(thumbUrls, postView.Embed.EmbedRecordWithMedia_View.Media.EmbedImages_View.Images[i].Thumb)
-			}
-			data["imgThumbUrls"] = thumbUrls
+
+	// If any undesirable labels are set, the embed will not be included in
+	// metadata
+	isEmbedHidden := false
+	for _, label := range postView.Labels {
+		isNeg := label.Neg != nil && *label.Neg
+		if hideEmbedLabels[label.Val] && !isNeg {
+			isEmbedHidden = true
+			break
 		}
 	}
 
@@ -635,6 +654,34 @@ func (srv *Server) WebPost(c echo.Context) error {
 		postRecord, ok := postView.Record.Val.(*appbsky.FeedPost)
 		if ok {
 			data["postText"] = ExpandPostText(postRecord)
+
+			if !isEmbedHidden && postRecord.Labels != nil && postRecord.Labels.LabelDefs_SelfLabels != nil {
+				for _, label := range postRecord.Labels.LabelDefs_SelfLabels.Values {
+					if hideEmbedLabels[label.Val] {
+						isEmbedHidden = true
+						break
+					}
+				}
+			}
+		}
+	}
+
+	if postView.Embed != nil && !isEmbedHidden {
+		hasImages := postView.Embed.EmbedImages_View != nil
+		hasMedia := postView.Embed.EmbedRecordWithMedia_View != nil && postView.Embed.EmbedRecordWithMedia_View.Media != nil && postView.Embed.EmbedRecordWithMedia_View.Media.EmbedImages_View != nil
+
+		if hasImages {
+			var thumbUrls []string
+			for i := range postView.Embed.EmbedImages_View.Images {
+				thumbUrls = append(thumbUrls, postView.Embed.EmbedImages_View.Images[i].Thumb)
+			}
+			data["imgThumbUrls"] = thumbUrls
+		} else if hasMedia {
+			var thumbUrls []string
+			for i := range postView.Embed.EmbedRecordWithMedia_View.Media.EmbedImages_View.Images {
+				thumbUrls = append(thumbUrls, postView.Embed.EmbedRecordWithMedia_View.Media.EmbedImages_View.Images[i].Thumb)
+			}
+			data["imgThumbUrls"] = thumbUrls
 		}
 	}
 
@@ -704,14 +751,68 @@ func (srv *Server) WebProfile(c echo.Context) error {
 			unauthedViewingOkay = false
 		}
 	}
-	if !unauthedViewingOkay {
-		return c.Render(http.StatusOK, "profile.html", data)
-	}
+
 	req := c.Request()
 	data["profileView"] = pv
 	data["requestURI"] = fmt.Sprintf("https://%s%s", req.Host, req.URL.Path)
 	data["requestHost"] = req.Host
+
+	if !unauthedViewingOkay {
+		data["requiresAuth"] = true
+	}
+
 	return c.Render(http.StatusOK, "profile.html", data)
+}
+
+func (srv *Server) WebFeed(c echo.Context) error {
+	ctx := c.Request().Context()
+	data := srv.NewTemplateContext()
+
+	// sanity check arguments. don't 4xx, just let app handle if not expected format
+	rkeyParam := c.Param("rkey")
+	rkey, err := syntax.ParseRecordKey(rkeyParam)
+	if err != nil {
+		return c.Render(http.StatusOK, "feed.html", data)
+	}
+	handleOrDIDParam := c.Param("handleOrDID")
+	handleOrDID, err := syntax.ParseAtIdentifier(handleOrDIDParam)
+	if err != nil {
+		return c.Render(http.StatusOK, "feed.html", data)
+	}
+
+	identifier := handleOrDID.Normalize().String()
+
+	// requires two fetches: first fetch profile to get DID
+	pv, err := appbsky.ActorGetProfile(ctx, srv.xrpcc, identifier)
+	if err != nil {
+		log.Warnf("failed to fetch profile for: %s\t%v", identifier, err)
+		return c.Render(http.StatusOK, "feed.html", data)
+	}
+	unauthedViewingOkay := true
+	for _, label := range pv.Labels {
+		if label.Src == pv.Did && label.Val == "!no-unauthenticated" {
+			unauthedViewingOkay = false
+		}
+	}
+
+	if !unauthedViewingOkay {
+		return c.Render(http.StatusOK, "feed.html", data)
+	}
+	did := pv.Did
+	data["did"] = did
+
+	// then fetch the feed generator
+	feedURI := fmt.Sprintf("at://%s/app.bsky.feed.generator/%s", did, rkey)
+	fgv, err := appbsky.FeedGetFeedGenerator(ctx, srv.xrpcc, feedURI)
+	if err != nil {
+		log.Warnf("failed to fetch feed generator: %s\t%v", feedURI, err)
+		return c.Render(http.StatusOK, "feed.html", data)
+	}
+	req := c.Request()
+	data["feedView"] = fgv.View
+	data["requestURI"] = fmt.Sprintf("https://%s%s", req.Host, req.URL.Path)
+
+	return c.Render(http.StatusOK, "feed.html", data)
 }
 
 type IPCCRequest struct {
@@ -720,8 +821,10 @@ type IPCCRequest struct {
 type IPCCResponse struct {
 	CC               string `json:"countryCode"`
 	AgeRestrictedGeo bool   `json:"isAgeRestrictedGeo,omitempty"`
+	AgeBlockedGeo    bool   `json:"isAgeBlockedGeo,omitempty"`
 }
 
+// This product includes GeoLite2 Data created by MaxMind, available from https://www.maxmind.com.
 func (srv *Server) WebIpCC(c echo.Context) error {
 	realIP := c.RealIP()
 	addr, err := netip.ParseAddr(realIP)
@@ -767,17 +870,23 @@ func (srv *Server) WebIpCC(c echo.Context) error {
 }
 
 type EnvConfigResponse struct {
+	ATP_APPVIEW_DID         string `json:"ATP_APPVIEW_DID"`
 	ATP_APPVIEW_URL         string `json:"ATP_APPVIEW_URL"`
+	ATP_PDS_DID             string `json:"ATP_PDS_DID"`
 	ATP_PDS_URL             string `json:"ATP_PDS_URL"`
 	ATP_PUBLIC_APPVIEW_URL  string `json:"ATP_PUBLIC_APPVIEW_URL"`
+	BLUESKY_PROXY_DID       string `json:"BLUESKY_PROXY_DID"`
+	CHAT_PROXY_DID          string `json:"CHAT_PROXY_DID"`
 	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
+	DM_SERVICE_DID          string `json:"DM_SERVICE_DID"`
 	GIF_SERVICE             string `json:"GIF_SERVICE"`
+	GEOLOCATION_CONFIG_URL  string `json:"GEOLOCATION_CONFIG_URL"`
 	LINK_HOST               string `json:"LINK_HOST"`
 	OGCARD_URL              string `json:"OGCARD_URL"`
 	PREVIEW_LINK_META_PROXY string `json:"PREVIEW_LINK_META_PROXY"`
-	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"`
+	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"` // not currently used by main social-app's env-config
 	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
-	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"`
+	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"` // not currently used by main social-app's env-config
 	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
 	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
 	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
@@ -789,11 +898,17 @@ type EnvConfigResponse struct {
 
 func (srv *Server) WebEnvConfig(c echo.Context) error {
 	var outResponse = EnvConfigResponse{
+		ATP_APPVIEW_DID:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_DID"),
 		ATP_APPVIEW_URL:         os.Getenv("EXPO_PUBLIC_ATP_APPVIEW_URL"),
+		ATP_PDS_DID:             os.Getenv("EXPO_PUBLIC_ATP_PDS_DID"),
 		ATP_PDS_URL:             os.Getenv("EXPO_PUBLIC_ATP_PDS_URL"),
 		ATP_PUBLIC_APPVIEW_URL:  os.Getenv("EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL"),
+		BLUESKY_PROXY_DID:       os.Getenv("EXPO_PUBLIC_BLUESKY_PROXY_DID"),
+		CHAT_PROXY_DID:          os.Getenv("EXPO_PUBLIC_CHAT_PROXY_DID"),
 		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
+		DM_SERVICE_DID:          os.Getenv("EXPO_PUBLIC_DM_SERVICE_DID"),
 		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
+		GEOLOCATION_CONFIG_URL:  os.Getenv("EXPO_PUBLIC_GEOLOCATION_CONFIG_URL"),
 		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),
 		OGCARD_URL:              os.Getenv("EXPO_PUBLIC_OGCARD_URL"),
 		PREVIEW_LINK_META_PROXY: os.Getenv("EXPO_PUBLIC_PREVIEW_LINK_META_PROXY"),

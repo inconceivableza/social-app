@@ -19,6 +19,25 @@ import {
   toShortUrl,
 } from '../../src/lib/strings/url-helpers'
 
+
+jest.mock('#/lib/constants', () => ({
+  branding: {
+    naming: {
+      full_app_name: 'Bluesky Social'
+    },
+    code: {
+      web_package_id: 'xyz.blueskyweb.app',
+      app_slug_scheme: 'bluesky'
+    }
+  },
+  BSKY_SERVICE: 'https://bsky.social',
+  envConfig: {
+    SOCIAL_APP_URL: 'https://bsky.app',
+    GIF_HOST: 't.gifs.bsky.app',
+    IFRAME_HOST: ''
+  }
+}))
+
 describe('detectLinkables', () => {
   const inputs = [
     'no linkable',

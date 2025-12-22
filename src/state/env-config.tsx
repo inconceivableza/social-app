@@ -11,7 +11,7 @@ Allows configuration of domains, branding and server-specific contents within th
   - Mobile builds must target one of these environments
   - Mobile builds and the web server bundle all configured profile's environments
 
-* Configuration of custom content within the app is down in env-content*.json files
+* Configuration of custom content within the app is in conf/env-content*.json files
   - Configured profiles have separate env-content.${profile}.json files
 
 * Except for production builds, this supports switching between environments
@@ -63,9 +63,14 @@ export type {EnvConfig, EnvContent}
 const HELP_DESK_LANG = 'en-us'
 
 const EMPTY_CONFIG: EnvConfig = {
+  APPVIEW_DID: '',
   APPVIEW_URL: '',
+  BSKY_PROXY_DID: '',
   BSKY_SERVICE: '',
+  BSKY_SERVICE_DID: '',
+  DM_PROXY_DID: '',
   DM_SERVICE_DID: '',
+  GEOLOCATION_CONFIG_URL: '',
   GIF_HOST: '',
   HELP_DESK_URL: '',
   LINK_HOST: '',
@@ -83,31 +88,43 @@ const EMPTY_CONFIG: EnvConfig = {
   VIDEO_SERVICE_DID: '',
 }
 
-const InternalToEnvName: Record<string, string> = {
-  APPVIEW_URL: 'EXPO_PUBLIC_ATP_APPVIEW_URL',
-  BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PDS_URL',
-  DM_SERVICE_DID: 'EXPO_PUBLIC_DM_SERVICE_DID',
-  GIF_HOST: 'EXPO_PUBLIC_GIF_HOST',
-  HELP_DESK_URL: 'EXPO_PUBLIC_SOCIAL_HELP_DESK_URL',
-  LINK_HOST: 'EXPO_PUBLIC_LINK_HOST',
-  OGCARD_URL: 'EXPO_PUBLIC_OGCARD_URL',
-  POLICY_BASE_URL: 'EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL',
-  PREVIEW_LINK_META_PROXY: 'EXPO_PUBLIC_PREVIEW_LINK_META_PROXY',
-  PUBLIC_BSKY_SERVICE: 'EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL',
-  SOCIAL_APP_HOST: 'EXPO_PUBLIC_SOCIAL_APP_HOST', // plan to use to detect host match with env
-  SOCIAL_APP_URL: 'EXPO_PUBLIC_SOCIAL_APP_URL',
-  SOCIAL_EMBED_SERVICE: 'EXPO_PUBLIC_SOCIAL_EMBED_SERVICE',
-  STATSIG_CLIENT_KEY: 'EXPO_PUBLIC_STATSIG_CLIENT_KEY',
-  STATSIG_API_URL: 'EXPO_PUBLIC_STATSIG_API_URL',
-  STATUS_PAGE_URL: 'EXPO_PUBLIC_STATUS_PAGE_URL',
-  VIDEO_SERVICE: 'EXPO_PUBLIC_VIDEO_SERVICE',
-  VIDEO_SERVICE_DID: 'EXPO_PUBLIC_VIDEO_SERVICE_DID',
+// map from the EnvConfig key name to the (non-EXPO_PUBLIC_-prefaced) environment name passed into social-app
+// these environment names are also what bskyweb serves on the /env-config url
+const InternalToEnvName: EnvConfig & Record<string, string> = {
+  APPVIEW_DID: 'ATP_APPVIEW_DID',
+  APPVIEW_URL: 'ATP_APPVIEW_URL',
+  BSKY_PROXY_DID: 'BLUESKY_PROXY_DID',
+  BSKY_SERVICE: 'ATP_PDS_URL',
+  BSKY_SERVICE_DID: 'ATP_PDS_DID',
+  DM_PROXY_DID: 'CHAT_PROXY_DID',
+  DM_SERVICE_DID: 'DM_SERVICE_DID',
+  GEOLOCATION_CONFIG_URL: 'GEOLOCATION_CONFIG_URL',
+  GIF_HOST: 'GIF_HOST',
+  HELP_DESK_URL: 'SOCIAL_HELP_DESK_URL',
+  LINK_HOST: 'LINK_HOST',
+  OGCARD_URL: 'OGCARD_URL',
+  POLICY_BASE_URL: 'SOCIAL_POLICY_BASE_URL',
+  PREVIEW_LINK_META_PROXY: 'PREVIEW_LINK_META_PROXY',
+  PUBLIC_BSKY_SERVICE: 'ATP_PUBLIC_APPVIEW_URL',
+  SOCIAL_APP_HOST: 'SOCIAL_APP_HOST', // plan to use to detect host match with env
+  SOCIAL_APP_URL: 'SOCIAL_APP_URL',
+  SOCIAL_EMBED_SERVICE: 'SOCIAL_EMBED_SERVICE',
+  STATSIG_CLIENT_KEY: 'STATSIG_CLIENT_KEY',
+  STATSIG_API_URL: 'STATSIG_API_URL',
+  STATUS_PAGE_URL: 'STATUS_PAGE_URL',
+  VIDEO_SERVICE: 'VIDEO_SERVICE',
+  VIDEO_SERVICE_DID: 'VIDEO_SERVICE_DID',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const processEnvConfigValues: Record<string, string> = {
+  ATP_APPVIEW_DID: process.env.EXPO_PUBLIC_ATP_APPVIEW_DID,
   ATP_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_APPVIEW_URL,
-  ATP_PDS_HOST: process.env.EXPO_PUBLIC_ATP_PDS_HOST,
+  ATP_PDS_DID: process.env.EXPO_PUBLIC_ATP_PDS_DID,
+  ATP_PDS_URL: process.env.EXPO_PUBLIC_ATP_PDS_URL,
   ATP_PUBLIC_APPVIEW_URL: process.env.EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL,
+  BLUESKY_PROXY_DID: process.env.EXPO_PUBLIC_BLUESKY_PROXY_DID,
+  CHAT_PROXY_DID: process.env.EXPO_PUBLIC_CHAT_PROXY_DID,
   CORS_ALLOWED_ORIGINS: process.env.EXPO_PUBLIC_CORS_ALLOWED_ORIGINS,
   DM_SERVICE_DID: process.env.EXPO_PUBLIC_DM_SERVICE_DID,
   GIF_HOST: process.env.EXPO_PUBLIC_GIF_HOST,
@@ -130,7 +147,7 @@ function envToConfig(configValues: Record<string, string>): EnvConfig {
   const resultConfig: EnvConfig = {...EMPTY_CONFIG}
   for (const key in EMPTY_CONFIG) {
     const typedKey = key as keyof EnvConfig
-    const envKeyName = InternalToEnvName[key]
+    const envKeyName = `EXPO_PUBLIC_${InternalToEnvName[key]}`
     const resultValue = configValues[envKeyName]
     resultConfig[typedKey] = resultValue
   }
@@ -165,7 +182,8 @@ function jsonToEnvConfig(
   const envConfig: EnvConfig = {...DOMAIN_ENVCONFIGS.empty}
   for (const key in DEFAULT_ENVCONFIG) {
     const typedKey = key as keyof EnvConfig
-    const jsonValue = json[key]
+    const jsonKey = InternalToEnvName[key]
+    const jsonValue = json[jsonKey]
     if (jsonValue === undefined) {
       for (const config of configs) {
         const defaultValue = config[typedKey]
@@ -184,14 +202,25 @@ function jsonToEnvConfig(
   return envConfig
 }
 
-const systemEnvs = (Constants?.expoConfig?.extra || {})['env-config']
+const systemEnvs = (Constants?.expoConfig?.extra ?? {
+  ['env-config']: {
+    production: {...EMPTY_CONFIG},
+    staging: {...EMPTY_CONFIG},
+    development: {...EMPTY_CONFIG},
+  },
+})['env-config']
 const systemEnvContents = (Constants?.expoConfig?.extra || {})['env-content']
 
 // The defaults as bluesky originally ships them in social-app
 const BLUESKY_CONFIG: EnvConfig = {
+  APPVIEW_DID: 'did:web:api.bsky.app',
   APPVIEW_URL: 'https://api.bsky.app',
+  BSKY_PROXY_DID: 'did:web:api.bsky.app',
   BSKY_SERVICE: 'https://bsky.social',
+  BSKY_SERVICE_DID: 'did:web:bsky.social',
+  DM_PROXY_DID: 'did:web:api.bsky.chat',
   DM_SERVICE_DID: 'did:web:api.bsky.chat',
+  GEOLOCATION_CONFIG_URL: 'https://ip.bsky.app/config',
   GIF_HOST: 't.gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
   LINK_HOST: 'https://go.bsky.app',
@@ -283,6 +312,7 @@ const BLUESKY_CONTENT: EnvContent = {
     default_post: {
       profile_name: 'emilyliu.me',
       did: 'did:plc:vjug55kidv6sye7ykr5faxxn',
+      record_type: 'post',
       post_id: '3jzn6g7ixgq2y',
     },
   },
@@ -366,9 +396,14 @@ const EMPTY_CONTENT: EnvContent = {
 
 // The defaults are only different for some items on staging
 const BLUESKY_STAGING_CONFIG: EnvConfig = {
+  APPVIEW_DID: BLUESKY_CONFIG.APPVIEW_DID,
   APPVIEW_URL: BLUESKY_CONFIG.APPVIEW_URL,
+  BSKY_PROXY_DID: 'did:web:staging.bsky.dev', // use the same proxy as the service
   BSKY_SERVICE: 'https://staging.bsky.dev',
+  BSKY_SERVICE_DID: 'did:web:staging.bsky.dev',
+  DM_PROXY_DID: BLUESKY_CONFIG.DM_SERVICE_DID, // use the same proxy as the service
   DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
+  GEOLOCATION_CONFIG_URL: 'https://bsky.app/ipcc', // not sure if staging actually uses this or the bsky one
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
   LINK_HOST: BLUESKY_CONFIG.LINK_HOST,
@@ -387,7 +422,7 @@ const BLUESKY_STAGING_CONFIG: EnvConfig = {
 }
 
 // what was passed into EXPO_PUBLIC_ variables in dev runtime or at build time
-const PROCESS_ENV_CONFIG = envToConfig(processEnvConfigValues)
+const PROCESS_ENV_CONFIG = envToConfig(process.env)
 // reading from .env.production in this directory or grandparent
 const PRODUCTION_CONFIG = envToConfig(systemEnvs.production)
 // reading from .env.testing in this directory or grandparent
@@ -399,9 +434,8 @@ const DEVELOPMENT_CONFIG = fallbackConfig(
   envToConfig(systemEnvs.development),
 )
 
-export const PRODUCTION_DOMAIN =
-  systemEnvs.production?.SOCIAL_APP_HOST || 'bsky.app'
-export const STAGING_DOMAIN = systemEnvs.staging?.SOCIAL_APP_HOST || null
+export const PRODUCTION_DOMAIN = PRODUCTION_CONFIG.SOCIAL_APP_HOST || 'bsky.app'
+export const STAGING_DOMAIN = STAGING_CONFIG.SOCIAL_APP_HOST || null
 
 export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
   // the original bluesky defaults. This is not currently used (?)
@@ -451,7 +485,7 @@ const {protocol, host, hostname} = location || {
   host: undefined,
   hostname: undefined,
 }
-const isWeb = protocol === 'http' || protocol === 'https'
+const isWeb = protocol === 'http:' || protocol === 'https:'
 const isProductionWeb = isWeb && hostname === PRODUCTION_DOMAIN
 const isStagingWeb = isWeb && hostname === STAGING_DOMAIN
 export const buildProfileName = process.env.EXPO_PUBLIC_ENV || 'development'
@@ -540,9 +574,6 @@ export async function fetchEnvConfig(server: string) {
       logger.info(`Loaded json for environment config: ${JSON.stringify(json)}`)
       const envConfig: EnvConfig = jsonToEnvConfig(
         json,
-        DOMAIN_ENVCONFIGS.development,
-        DOMAIN_ENVCONFIGS.production,
-        DOMAIN_ENVCONFIGS.bluesky,
       )
       logger.info(
         `Loaded environment config from json with fallback: ${envConfig}`,

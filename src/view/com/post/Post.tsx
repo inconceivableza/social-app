@@ -3,76 +3,94 @@ import {type StyleProp, StyleSheet, View, type ViewStyle} from 'react-native'
 import {
   type AppBskyFeedDefs,
   AppBskyFeedPost,
+  type AppFoodiosFeedDefs,
   AtUri,
   moderatePost,
   type ModerationDecision,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {
+  dangerousIsRecipeView,
+  isRecipePostView,
+  postHref,
+  recipePostSummaryRichText,
+} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
 import {countLines} from '#/lib/strings/helpers'
-import {colors, s} from '#/lib/styles'
+import {colors} from '#/lib/styles'
 import {
   POST_TOMBSTONE,
   type Shadow,
   usePostShadow,
 } from '#/state/cache/post-shadow'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
-import {precacheProfile} from '#/state/queries/profile'
-import {useSession} from '#/state/session'
+import {unstableCacheProfileView} from '#/state/queries/profile'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
-import {Text} from '#/view/com/util/text/Text'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
-import {UserInfoText} from '#/view/com/util/UserInfoText'
 import {atoms as a} from '#/alf'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {LabelsOnMyPost} from '#/components/moderation/LabelsOnMe'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {Embed, PostEmbedViewContext} from '#/components/Post/Embed'
+import {PostRepliedTo} from '#/components/Post/PostRepliedTo'
 import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
-import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {RichText} from '#/components/RichText'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import * as bsky from '#/types/bsky'
+import {ExpandableRecipePost} from '../posts/ExpandableRecipePost'
 
 export function Post({
   post,
   showReplyLine,
   hideTopBorder,
   style,
+  onBeforePress,
 }: {
   post: AppBskyFeedDefs.PostView
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
+  onBeforePress?: () => void
 }) {
   const moderationOpts = useModerationOpts()
-  const record = useMemo<AppBskyFeedPost.Record | undefined>(
-    () =>
-      bsky.validate(post.record, AppBskyFeedPost.validateRecord)
-        ? post.record
-        : undefined,
-    [post],
-  )
+  // handle recipe post
+
   const postShadowed = usePostShadow(post)
-  const richText = useMemo(
-    () =>
-      record
-        ? new RichTextAPI({
-            text: record.text,
-            facets: record.facets,
-          })
-        : undefined,
-    [record],
-  )
+  const postContent = useMemo<
+    | {
+        record: AppBskyFeedPost.Record
+        richText: RichTextAPI
+      }
+    | {
+        record: AppFoodiosFeedDefs.RecipeRevisionView
+        richText: RichTextAPI
+      }
+    | undefined
+  >(() => {
+    if (isRecipePostView(post)) {
+      return {
+        record: post.record,
+        richText: new RichTextAPI({
+          text: recipePostSummaryRichText(post.record.revisionContent),
+          facets: [],
+        }),
+      }
+    } else if (bsky.validate(post.record, AppBskyFeedPost.validateRecord)) {
+      return {
+        record: post.record,
+        richText: new RichTextAPI({
+          text: post.record.text,
+          facets: post.record.facets,
+        }),
+      }
+    }
+  }, [post])
   const moderation = useMemo(
     () => (moderationOpts ? moderatePost(post, moderationOpts) : undefined),
     [moderationOpts, post],
@@ -80,16 +98,17 @@ export function Post({
   if (postShadowed === POST_TOMBSTONE) {
     return null
   }
-  if (record && richText && moderation) {
+  if (postContent && moderation) {
     return (
       <PostInner
         post={postShadowed}
-        record={record}
-        richText={richText}
+        record={postContent.record}
+        richText={postContent.richText}
         moderation={moderation}
         showReplyLine={showReplyLine}
         hideTopBorder={hideTopBorder}
         style={style}
+        onBeforePress={onBeforePress}
       />
     )
   }
@@ -104,52 +123,80 @@ function PostInner({
   showReplyLine,
   hideTopBorder,
   style,
+  onBeforePress: outerOnBeforePress,
 }: {
   post: Shadow<AppBskyFeedDefs.PostView>
-  record: AppBskyFeedPost.Record
+  record:
+    | AppBskyFeedPost.Record
+    | (AppFoodiosFeedDefs.RecipeRevisionView & {reply?: undefined})
   richText: RichTextAPI
   moderation: ModerationDecision
   showReplyLine?: boolean
   hideTopBorder?: boolean
   style?: StyleProp<ViewStyle>
+  onBeforePress?: () => void
 }) {
   const queryClient = useQueryClient()
   const pal = usePalette('default')
   const {openComposer} = useOpenComposer()
+
   const [limitLines, setLimitLines] = useState(
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
-  const itemUrip = new AtUri(post.uri)
-  const itemHref = makeProfileLink(post.author, 'post', itemUrip.rkey)
+
+  const itemHref = postHref(post.author, post.uri)
   let replyAuthorDid = ''
   if (record.reply) {
     const urip = new AtUri(record.reply.parent?.uri || record.reply.root.uri)
     replyAuthorDid = urip.hostname
   }
+  // TODO: check where this is used, implement for recipes
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        text: record.text,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
+        text: richText.text,
         author: post.author,
         embed: post.embed,
         moderation,
+        langs: record.langs,
       },
     })
-  }, [openComposer, post, record, moderation])
+  }, [openComposer, post, richText, moderation, record.langs])
+
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(post)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          revisionUri: isRecipePostView(post)
+            ? post.record.selectedRevisionUri
+            : undefined,
+          text: richText.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+      })
+    }
+  }, [openComposer, post, richText, moderation])
 
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
 
   const onBeforePress = useCallback(() => {
-    precacheProfile(queryClient, post.author)
-  }, [queryClient, post.author])
-
-  const {currentAccount} = useSession()
-  const isMe = replyAuthorDid === currentAccount?.did
+    unstableCacheProfileView(queryClient, post.author)
+    outerOnBeforePress?.()
+  }, [queryClient, post.author, outerOnBeforePress])
 
   const [hover, setHover] = useState(false)
   return (
@@ -168,7 +215,7 @@ function PostInner({
       onPointerLeave={() => {
         setHover(false)
       }}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {showReplyLine && <View style={styles.replyLine} />}
       <View style={styles.layout}>
         <View style={styles.layoutAvi}>
@@ -187,34 +234,7 @@ function PostInner({
             postHref={itemHref}
           />
           {replyAuthorDid !== '' && (
-            <View style={[s.flexRow, s.mb2, s.alignCenter]}>
-              <FontAwesomeIcon
-                icon="reply"
-                size={9}
-                style={[pal.textLight, s.mr5]}
-              />
-              <Text
-                type="sm"
-                style={[pal.textLight, s.mr2]}
-                lineHeight={1.2}
-                numberOfLines={1}>
-                {isMe ? (
-                  <Trans context="description">Reply to you</Trans>
-                ) : (
-                  <Trans context="description">
-                    Reply to{' '}
-                    <ProfileHoverCard did={replyAuthorDid}>
-                      <UserInfoText
-                        type="sm"
-                        did={replyAuthorDid}
-                        attr="displayName"
-                        style={[pal.textLight]}
-                      />
-                    </ProfileHoverCard>
-                  </Trans>
-                )}
-              </Text>
-            </View>
+            <PostRepliedTo parentAuthor={replyAuthorDid} />
           )}
           <LabelsOnMyPost post={post} />
           <ContentHider
@@ -223,9 +243,11 @@ function PostInner({
             childContainerStyle={styles.contentHiderChild}>
             <PostAlerts
               modui={moderation.ui('contentView')}
-              style={[a.py_xs]}
+              style={[a.pb_xs]}
             />
-            {richText.text ? (
+            {isRecipePostView(post) ? (
+              <ExpandableRecipePost revision={post.record} />
+            ) : richText.text ? (
               <View>
                 <RichText
                   enableTags
@@ -254,9 +276,10 @@ function PostInner({
           </ContentHider>
           <PostControls
             post={post}
-            record={record}
+            record={post.record}
             richText={richText}
             onPressReply={onPressReply}
+            onPressReviewRate={onPressReviewRate}
             logContext="Post"
           />
         </View>

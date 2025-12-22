@@ -3,19 +3,20 @@ import {
   AppBskyEmbedRecord,
   AppBskyEmbedRecordWithMedia,
   type AppBskyFeedDefs,
+  type AppFoodiosFeedDefs,
 } from '@atproto/api'
 import {type QueryClient} from '@tanstack/react-query'
 import EventEmitter from 'eventemitter3'
 
 import {batchedUpdates} from '#/lib/batchedUpdates'
+import {findAllPostsInQueryData as findAllPostsInBookmarksQueryData} from '#/state/queries/bookmarks/useBookmarksQuery'
 import {findAllPostsInQueryData as findAllPostsInExploreFeedPreviewsQueryData} from '#/state/queries/explore-feed-previews'
 import {findAllPostsInQueryData as findAllPostsInNotifsQueryData} from '#/state/queries/notifications/feed'
 import {findAllPostsInQueryData as findAllPostsInFeedQueryData} from '#/state/queries/post-feed'
 import {findAllPostsInQueryData as findAllPostsInQuoteQueryData} from '#/state/queries/post-quotes'
-import {findAllPostsInQueryData as findAllPostsInThreadQueryData} from '#/state/queries/post-thread'
 import {findAllPostsInQueryData as findAllPostsInSearchQueryData} from '#/state/queries/search-posts'
 import {findAllPostsInQueryData as findAllPostsInThreadV2QueryData} from '#/state/queries/usePostThread/queryCache'
-import {castAsShadow, type Shadow} from './types'
+import {type AnyPostView, castAsShadow, type Shadow} from './types'
 export type {Shadow} from './types'
 
 export interface PostShadow {
@@ -24,19 +25,27 @@ export interface PostShadow {
   isDeleted: boolean
   embed: AppBskyEmbedRecord.View | AppBskyEmbedRecordWithMedia.View | undefined
   pinned: boolean
+  optimisticReplyCount: number | undefined
+  bookmarked: boolean | undefined
+  edit?: AppFoodiosFeedDefs.RecipeRevisionView
 }
 
 export const POST_TOMBSTONE = Symbol('PostTombstone')
 
 const emitter = new EventEmitter()
-const shadows: WeakMap<
-  AppBskyFeedDefs.PostView,
-  Partial<PostShadow>
-> = new WeakMap()
+const shadows: WeakMap<AnyPostView, Partial<PostShadow>> = new WeakMap()
+
+/**
+ * Use with caution! This function returns the raw shadow data for a post.
+ * Prefer using `usePostShadow`.
+ */
+export function dangerousGetPostShadow(post: AppBskyFeedDefs.PostView) {
+  return shadows.get(post)
+}
 
 export function usePostShadow(
-  post: AppBskyFeedDefs.PostView,
-): Shadow<AppBskyFeedDefs.PostView> | typeof POST_TOMBSTONE {
+  post: AnyPostView,
+): Shadow<AnyPostView> | typeof POST_TOMBSTONE {
   const [shadow, setShadow] = useState(() => shadows.get(post))
   const [prevPost, setPrevPost] = useState(post)
   if (post !== prevPost) {
@@ -64,14 +73,14 @@ export function usePostShadow(
 }
 
 function mergeShadow(
-  post: AppBskyFeedDefs.PostView,
+  post: AnyPostView,
   shadow: Partial<PostShadow>,
-): Shadow<AppBskyFeedDefs.PostView> | typeof POST_TOMBSTONE {
+): Shadow<AnyPostView> | typeof POST_TOMBSTONE {
   if (shadow.isDeleted) {
     return POST_TOMBSTONE
   }
-
   let likeCount = post.likeCount ?? 0
+
   if ('likeUri' in shadow) {
     const wasLiked = !!post.viewer?.like
     const isLiked = !!shadow.likeUri
@@ -81,6 +90,18 @@ function mergeShadow(
       likeCount++
     }
     likeCount = Math.max(0, likeCount)
+  }
+
+  let bookmarkCount = post.bookmarkCount ?? 0
+  if ('bookmarked' in shadow) {
+    const wasBookmarked = !!post.viewer?.bookmarked
+    const isBookmarked = !!shadow.bookmarked
+    if (wasBookmarked && !isBookmarked) {
+      bookmarkCount--
+    } else if (!wasBookmarked && isBookmarked) {
+      bookmarkCount++
+    }
+    bookmarkCount = Math.max(0, bookmarkCount)
   }
 
   let repostCount = post.repostCount ?? 0
@@ -95,6 +116,11 @@ function mergeShadow(
     repostCount = Math.max(0, repostCount)
   }
 
+  let replyCount = post.replyCount ?? 0
+  if ('optimisticReplyCount' in shadow) {
+    replyCount = shadow.optimisticReplyCount ?? replyCount
+  }
+
   let embed: typeof post.embed
   if ('embed' in shadow) {
     if (
@@ -107,16 +133,24 @@ function mergeShadow(
     }
   }
 
+  if (shadow.edit) {
+    post = {...post, record: shadow.edit}
+  }
+
   return castAsShadow({
     ...post,
     embed: embed || post.embed,
     likeCount: likeCount,
     repostCount: repostCount,
+    replyCount: replyCount,
+    bookmarkCount: bookmarkCount,
     viewer: {
       ...(post.viewer || {}),
       like: 'likeUri' in shadow ? shadow.likeUri : post.viewer?.like,
       repost: 'repostUri' in shadow ? shadow.repostUri : post.viewer?.repost,
       pinned: 'pinned' in shadow ? shadow.pinned : post.viewer?.pinned,
+      bookmarked:
+        'bookmarked' in shadow ? shadow.bookmarked : post.viewer?.bookmarked,
     },
   })
 }
@@ -138,17 +172,12 @@ export function updatePostShadow(
 function* findPostsInCache(
   queryClient: QueryClient,
   uri: string,
-): Generator<AppBskyFeedDefs.PostView, void> {
+): Generator<AnyPostView, void> {
   for (let post of findAllPostsInFeedQueryData(queryClient, uri)) {
     yield post
   }
   for (let post of findAllPostsInNotifsQueryData(queryClient, uri)) {
     yield post
-  }
-  for (let node of findAllPostsInThreadQueryData(queryClient, uri)) {
-    if (node.type === 'post') {
-      yield node.post
-    }
   }
   for (let post of findAllPostsInThreadV2QueryData(queryClient, uri)) {
     yield post
@@ -163,6 +192,9 @@ function* findPostsInCache(
     queryClient,
     uri,
   )) {
+    yield post
+  }
+  for (let post of findAllPostsInBookmarksQueryData(queryClient, uri)) {
     yield post
   }
 }

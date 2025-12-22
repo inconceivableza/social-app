@@ -1,0 +1,46 @@
+{
+  "onboarding": {
+    "auto_follow_accounts": [
+      "did:plc:xsnwmclri5rwvputq42mrxow"
+    ]
+  },
+  "feeds": {
+    "named": {
+      "timeline": {
+        "title": "Following",
+        "uri": "following",
+        "type": "timeline",
+        "pinned": true
+      }
+    },
+    "log_for_owner_dids": [],
+    "extra_headers_for_owner_dids": [],
+    "known_shutdown_feeds": [],
+    "feedback_proxy_did": "did:web:discover.foodios.app",
+    "authed_only": [],
+    "fallback_to": "timeline"
+  },
+  "links": {
+    "about": "https://ghost.foodios.social",
+    "blog": "https://ghost.foodios.social/blog"
+  },
+  "sample_content": {
+    "profile": {
+      "name": "welcome-aboard.foodios.social"
+    },
+    "images": {
+      "default_avatar": "https://ghost.foodios.social/content/images/2025/05/email_logo_default.png",
+      "default_banner": "https://ghost.foodios.social/content/images/size/w2000/2025/05/ghost-about-cover-1.png"
+    }
+  },
+  "embed": {
+    "default_post": {
+      "profile_name": "davidfrasergo.foodios.social",
+      "did": "did:plc:ngmlqlsmgmyqqiufdxkihzs6",
+      "post_id": "3lk2ccqkpdk2b"
+    }
+  },
+  "debug": {
+    "discover_debug_dids": []
+  }
+}

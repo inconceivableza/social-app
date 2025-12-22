@@ -1,14 +1,22 @@
-import {AppBskyFeedDefs, AppBskyFeedGetTimeline, BskyAgent} from '@atproto/api'
+import {
+  type AppBskyFeedDefs,
+  type AppFoodiosFeedGetTimeline,
+  type BskyAgent,
+} from '@atproto/api'
 import shuffle from 'lodash.shuffle'
 
 import {bundleAsync} from '#/lib/async/bundle'
 import {timeout} from '#/lib/async/timeout'
 import {feedUriToHref} from '#/lib/strings/url-helpers'
 import {getContentLanguages} from '#/state/preferences/languages'
-import {FeedParams} from '#/state/queries/post-feed'
+import {type FeedParams} from '#/state/queries/post-feed'
 import {FeedTuner} from '../feed-manip'
-import {FeedTunerFn} from '../feed-manip'
-import {FeedAPI, FeedAPIResponse, ReasonFeedSource} from './types'
+import {type FeedTunerFn} from '../feed-manip'
+import {
+  type FeedAPI,
+  type FeedAPIResponse,
+  type ReasonFeedSource,
+} from './types'
 import {createBskyTopicsHeader, isBlueskyOwnedFeed} from './utils'
 
 const REQUEST_WAIT_MS = 500 // 500ms
@@ -218,7 +226,7 @@ class MergeFeedSource {
   protected _getFeed(
     _cursor: string | undefined,
     _limit: number,
-  ): Promise<AppBskyFeedGetTimeline.Response> {
+  ): Promise<AppFoodiosFeedGetTimeline.Response> {
     throw new Error('Must be overridden')
   }
 }
@@ -233,7 +241,7 @@ class MergeFeedSource_Following extends MergeFeedSource {
   protected async _getFeed(
     cursor: string | undefined,
     limit: number,
-  ): Promise<AppBskyFeedGetTimeline.Response> {
+  ): Promise<AppFoodiosFeedGetTimeline.Response> {
     const res = await this.agent.getTimeline({cursor, limit})
     // run the tuner pre-emptively to ensure better mixing
     const slices = this.tuner.tune(res.data.feed, {
@@ -279,7 +287,7 @@ class MergeFeedSource_Custom extends MergeFeedSource {
   protected async _getFeed(
     cursor: string | undefined,
     limit: number,
-  ): Promise<AppBskyFeedGetTimeline.Response> {
+  ): Promise<AppFoodiosFeedGetTimeline.Response> {
     try {
       const contentLangs = getContentLanguages().join(',')
       const isBlueskyOwned = isBlueskyOwnedFeed(this.feedUri)

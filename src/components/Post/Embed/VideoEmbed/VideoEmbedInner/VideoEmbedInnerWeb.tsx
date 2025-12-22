@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef, useState} from 'react'
+import {useContext, useEffect, useId, useRef, useState} from 'react'
 import {View} from 'react-native'
 import {type AppBskyEmbedVideo} from '@atproto/api'
 import {msg} from '@lingui/macro'
@@ -6,10 +6,14 @@ import {useLingui} from '@lingui/react'
 import type * as HlsTypes from 'hls.js'
 
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
+import {useAgent} from '#/state/session'
+import {PostAuthorDidContext} from '#/view/com/posts/PostContext'
 import {atoms as a} from '#/alf'
 import {MediaInsetBorder} from '#/components/MediaInsetBorder'
 import * as BandwidthEstimate from './bandwidth-estimate'
 import {Controls} from './web-controls/VideoControls'
+
+const PLAY_BLOBS_DIRECTLY = true
 
 export function VideoEmbedInnerWeb({
   embed,
@@ -51,7 +55,13 @@ export function VideoEmbedInnerWeb({
       videoRef.current.currentTime = lastKnownTime.current
     }
   }, [lastKnownTime])
-
+  const authorDid = useContext(PostAuthorDidContext)
+  if (!authorDid) {
+    throw new Error('post not found')
+  }
+  // TODO: pass this url down as a prop
+  const agent = useAgent()
+  const url = `${agent.pdsUrl}xrpc/com.atproto.sync.getBlob?did=${authorDid}&cid=${embed.cid}`
   return (
     <View
       style={[a.flex_1, a.rounded_md, a.overflow_hidden]}
@@ -60,11 +70,13 @@ export function VideoEmbedInnerWeb({
       <div ref={containerRef} style={{height: '100%', width: '100%'}}>
         <figure style={{margin: 0, position: 'absolute', inset: 0}}>
           <video
-            ref={videoRef}
-            poster={embed.thumbnail}
+            //ref={videoRef}
+            src={url}
+            // poster={embed.thumbnail}
             style={{width: '100%', height: '100%', objectFit: 'contain'}}
             playsInline
-            preload="none"
+            // preload="none"
+            controls
             muted={!focused}
             aria-labelledby={embed.alt ? figId : undefined}
             onTimeUpdate={e => {
@@ -89,18 +101,21 @@ export function VideoEmbedInnerWeb({
             </figcaption>
           )}
         </figure>
-        <Controls
-          videoRef={videoRef}
-          hlsRef={hlsRef}
-          active={active}
-          setActive={setActive}
-          focused={focused}
-          setFocused={setFocused}
-          hlsLoading={hlsLoading}
-          onScreen={onScreen}
-          fullscreenRef={containerRef}
-          hasSubtitleTrack={hasSubtitleTrack}
-        />
+        {PLAY_BLOBS_DIRECTLY ||
+          (hlsRef && (
+            <Controls
+              videoRef={videoRef}
+              hlsRef={hlsRef}
+              active={active}
+              setActive={setActive}
+              focused={focused}
+              setFocused={setFocused}
+              hlsLoading={hlsLoading}
+              onScreen={onScreen}
+              fullscreenRef={containerRef}
+              hasSubtitleTrack={hasSubtitleTrack}
+            />
+          ))}
       </div>
       <MediaInsetBorder />
     </View>
@@ -139,14 +154,14 @@ function useHLS({
   playlist: string
   setHasSubtitleTrack: (v: boolean) => void
   setError: (v: Error | null) => void
-  videoRef: React.RefObject<HTMLVideoElement>
+  videoRef: React.RefObject<HTMLVideoElement | null>
   setHlsLoading: (v: boolean) => void
 }) {
   const [Hls, setHls] = useState<typeof HlsTypes.default | undefined>(
     () => promiseForHls.value,
   )
   useEffect(() => {
-    if (!Hls) {
+    if (!PLAY_BLOBS_DIRECTLY && !Hls) {
       setHlsLoading(true)
       promiseForHls.then(loadedHls => {
         setHls(() => loadedHls)
@@ -166,6 +181,7 @@ function useHLS({
       _event: HlsTypes.Events.FRAG_CHANGED,
       {frag}: HlsTypes.FragChangedData,
     ) => {
+      if (PLAY_BLOBS_DIRECTLY) return
       if (!Hls) return
       if (!hlsRef.current) return
       const hls = hlsRef.current
@@ -195,6 +211,7 @@ function useHLS({
   )
 
   const flushOnLoop = useNonReactiveCallback(() => {
+    if (PLAY_BLOBS_DIRECTLY) return
     if (!Hls) return
     if (!hlsRef.current) return
     const hls = hlsRef.current
@@ -218,21 +235,26 @@ function useHLS({
   })
 
   useEffect(() => {
+    if (PLAY_BLOBS_DIRECTLY) return
     if (!videoRef.current) return
     if (!Hls) return
     if (!Hls.isSupported()) {
       throw new HLSUnsupportedError()
     }
 
+    const latestEstimate = BandwidthEstimate.get()
     const hls = new Hls({
       maxMaxBufferLength: 10, // only load 10s ahead
       // note: the amount buffered is affected by both maxBufferLength and maxBufferSize
       // it will buffer until it is greater than *both* of those values
       // so we use maxMaxBufferLength to set the actual maximum amount of buffering instead
+      startLevel:
+        latestEstimate === undefined ? -1 : Hls.DefaultConfig.startLevel,
+      // the '-1' value makes a test request to estimate bandwidth and quality level
+      // before showing the first fragment
     })
     hlsRef.current = hls
 
-    const latestEstimate = BandwidthEstimate.get()
     if (latestEstimate !== undefined) {
       hls.bandwidthEstimate = latestEstimate
     }

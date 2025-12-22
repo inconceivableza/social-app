@@ -8,9 +8,9 @@ import {
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 
+import {dangerousIsRecipeView, postHref} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {makeProfileLink} from '#/lib/routes/links'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
@@ -40,7 +40,7 @@ import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
 
 /**
@@ -267,9 +267,8 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
   const threadRootUri = record.reply?.root?.uri || post.uri
-  const postHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+  const href = useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
     threadgateRecord,
@@ -291,6 +290,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
@@ -298,21 +298,39 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
         author: post.author,
         embed: post.embed,
         moderation,
+        langs: post.record.langs,
       },
       onPostSuccess: onPostSuccess,
     })
   }, [openComposer, post, record, onPostSuccess, moderation])
 
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(post)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          text: record.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+        onPostSuccess: onPostSuccess,
+      })
+    }
+  }, [openComposer, post, record, onPostSuccess, moderation])
+
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
-
+  // TODO: update with revision dialog
   return (
     <ThreadItemTreePostOuterWrapper item={item}>
-      <SubtleHover>
+      <SubtleHoverWrapper>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
-          href={postHref}
+          href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
           iconSize={42}
@@ -325,7 +343,7 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
                 author={post.author}
                 moderation={moderation}
                 timestamp={post.indexedAt}
-                postHref={postHref}
+                postHref={href}
                 avatarSize={TREE_AVI_WIDTH}
                 style={[a.pb_0]}
                 showAvatar
@@ -367,10 +385,12 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
                     </View>
                   )}
                   <PostControls
+                    variant="compact"
                     post={postShadow}
                     record={record}
                     richText={richText}
                     onPressReply={onPressReply}
+                    onPressReviewRate={onPressReviewRate}
                     logContext="PostThreadItem"
                     threadgateRecord={threadgateRecord}
                   />
@@ -379,12 +399,12 @@ const ThreadItemTreePostInner = memo(function ThreadItemTreePostInner({
             </View>
           </ThreadItemTreePostInnerWrapper>
         </PostHider>
-      </SubtleHover>
+      </SubtleHoverWrapper>
     </ThreadItemTreePostOuterWrapper>
   )
 })
 
-function SubtleHover({children}: {children: React.ReactNode}) {
+function SubtleHoverWrapper({children}: {children: React.ReactNode}) {
   const {
     state: hover,
     onIn: onHoverIn,
@@ -395,7 +415,7 @@ function SubtleHover({children}: {children: React.ReactNode}) {
       onPointerEnter={onHoverIn}
       onPointerLeave={onHoverOut}
       style={[a.flex_1, a.pointer]}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {children}
     </View>
   )

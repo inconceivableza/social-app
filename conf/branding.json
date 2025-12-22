@@ -1,0 +1,64 @@
+{
+  "code": {
+    "android_sha256_cert_fingerprints": {
+      "development": "71:4C:0A:D7:85:0D:C2:A3:91:56:F2:44:9D:A0:29:93:D3:95:40:D0:BA:2C:2F:06:45:72:16:33:B6:7E:9E:6E",
+      "preview": "38:8E:8E:28:8D:A8:53:AA:79:89:D6:35:72:24:FB:30:AE:13:33:68:DD:4C:1F:BF:D3:58:D6:E8:D7:EB:8B:B0",
+      "production": "7B:36:7D:62:9F:B1:A1:26:8C:E7:D5:7C:A1:1B:00:04:6F:76:47:59:80:22:76:EA:CE:32:8B:F1:BF:4B:15:73",
+      "testflight": "19:BC:B9:21:CC:61:F6:20:BA:97:4E:55:46:9C:83:C6:B3:B7:39:3F:A7:77:69:B4:FB:A1:DC:17:EC:F7:62:A8"
+    },
+    "app_slug_scheme": "foodios",
+    "apple_groups": "group.app.foodios",
+    "apple_appstore_path": "foodios-social/idNNNNNNNNNN",
+    "apple_team_id": "BU4RC7696P",
+    "chat_api_did": "did:web:api.foodios.chat#bsky_chat",
+    "ios_clip_name": "BlueskyClip",
+    "ios_nse_name": "BlueskyNSE",
+    "ios_share_with_name": "Share-with-Bluesky",
+    "expo_project_name": "foodios.app",
+    "expo_project_owner": "inconceivable",
+    "expo_project_id": "87ab4766-b66c-489c-98ca-65e740fa205b",
+    "google_service_project_name": "foodiosweb",
+    "sentry_project_organization": "foodiosweb",
+    "updates_url": "https://updates.foodios.app/manifest",
+    "web_package_id": "xyz.foodios.app"
+  },
+  "naming": {
+    "app_name": "Foodios",
+    "full_app_name": "Foodios Social",
+    "spoken_name": "Foody OS"
+  },
+  "styling": {
+    "additional_color_defs": [
+      "orange1: '#e88627'",
+      "orange2: '#d04304'"
+    ],
+    "android_splash_background_color_dark": "#402911",
+    "android_splash_background_color_light": "#e88627",
+    "background_color": "#E88627",
+    "ios_splash_background_color_dark": "#371f06",
+    "map_color_names": [
+      {
+        "search": "blue0",
+        "replace": "orange2"
+      },
+      {
+        "search": "blue2",
+        "replace": "orange2"
+      },
+      {
+        "search": "blue3",
+        "replace": "orange1"
+      },
+      {
+        "search": "blue4",
+        "replace": "orange1"
+      }
+    ]
+  },
+  "verbage": {
+    "app_description": "the cooking social internet",
+    "app_emoji": "🫕",
+    "profile_description_placeholder": "e.g. Cooking for my kids and my friends, love anything with custard, recipe sharing.",
+    "post_prompt": "What's cooking?"
+  }
+}

@@ -3,11 +3,11 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {useLoggedOutViewControls} from '#/state/shell/logged-out'
 import {useCloseAllActiveElements} from '#/state/util'
 import {Logo} from '#/view/icons/Logo'
 import {atoms as a} from '#/alf'
-import {branding} from '#/lib/constants'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
 import {EnvConfigIndicator} from '#/components/EnvConfigIndicator'
@@ -38,7 +38,7 @@ let NavSignupCard = ({}: {}): React.ReactNode => {
 
       <View style={[a.pt_lg]}>
         <Text
-          style={[a.text_3xl, a.font_heavy, {lineHeight: a.text_3xl.fontSize}]}>
+          style={[a.text_3xl, a.font_bold, {lineHeight: a.text_3xl.fontSize}]}>
           <Trans>Join the conversation</Trans>
         </Text>
       </View>

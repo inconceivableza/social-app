@@ -1,6 +1,5 @@
 import {type ImagePickerAsset} from 'expo-image-picker'
 import {type AppBskyVideoDefs, type BlobRef, type BskyAgent} from '@atproto/api'
-import {type JobStatus} from '@atproto/api/client/types/app/bsky/video/defs'
 import {type I18n} from '@lingui/core'
 import {msg} from '@lingui/macro'
 
@@ -228,7 +227,7 @@ export function videoReducer(
       }
     }
   } else if (action.type === 'to_done') {
-    if (state.status === 'processing') {
+    if (state.status === 'processing' || state.status === 'uploading') {
       return {
         status: 'done',
         progress: 100,
@@ -255,6 +254,57 @@ export function videoReducer(
 
 function trunc2dp(num: number) {
   return Math.trunc(num * 100) / 100
+}
+
+export async function uploadVideoDirect(
+  asset: ImagePickerAsset,
+  dispatch: (action: VideoAction) => void,
+  agent: BskyAgent,
+  did: string,
+  signal: AbortSignal,
+  _: I18n['_'],
+) {
+  let video: CompressedVideo | undefined
+  try {
+    video = await compressVideo(asset, {
+      onProgress: num => {
+        dispatch({type: 'update_progress', progress: trunc2dp(num), signal})
+      },
+      signal,
+    })
+  } catch (e) {
+    const message = getCompressErrorMessage(e, _)
+    if (message !== null) {
+      dispatch({
+        type: 'to_error',
+        error: message,
+        signal,
+      })
+    }
+    return
+  }
+  dispatch({
+    type: 'compressing_to_uploading',
+    video,
+    signal,
+  })
+
+  try {
+    const {data} = await agent.uploadBlob(
+      new Blob([video!.bytes!], {type: video.mimeType}),
+    )
+    dispatch({type: 'to_done', blobRef: data.blob, signal})
+  } catch (e) {
+    const message = getUploadErrorMessage(e, _)
+    if (message !== null) {
+      dispatch({
+        type: 'to_error',
+        error: message,
+        signal,
+      })
+    }
+    return
+  }
 }
 
 export async function processVideo(
@@ -328,7 +378,7 @@ export async function processVideo(
     }
 
     const videoAgent = createVideoAgent()
-    let status: JobStatus | undefined
+    let status: AppBskyVideoDefs.JobStatus | undefined
     let blob: BlobRef | undefined
     try {
       const response = await videoAgent.app.bsky.video.getJobStatus({jobId})

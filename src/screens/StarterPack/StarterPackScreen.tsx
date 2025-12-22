@@ -445,7 +445,7 @@ function Header({
                 <ButtonText>
                   <Trans>Follow all</Trans>
                 </ButtonText>
-                {isProcessing && <Loader size="xs" />}
+                {isProcessing && <ButtonIcon icon={Loader} />}
               </Button>
             )}
             <OverflowMenu
@@ -486,8 +486,13 @@ function Header({
                 color={t.atoms.text_contrast_medium.color}
               />
               <Text
-                style={[a.font_bold, a.text_sm, t.atoms.text_contrast_medium]}>
-                <Trans comment={`Number of users (always at least 25) who have joined ${branding.naming.app_name} using a specific starter pack`}>
+                style={[
+                  a.font_semi_bold,
+                  a.text_sm,
+                  t.atoms.text_contrast_medium,
+                ]}>
+                <Trans
+                  comment={`Number of users (always at least 25) who have joined ${branding.naming.app_name} using a specific starter pack`}>
                   <Plural
                     value={starterPack.joinedAllTimeCount || 0}
                     other="# people have"
@@ -669,7 +674,7 @@ function OverflowMenu({
               t.atoms.bg_contrast_25,
             ]}>
             <View style={[a.flex_1, a.gap_2xs]}>
-              <Text style={[a.font_bold]}>
+              <Text style={[a.font_semi_bold]}>
                 <Trans>Unable to delete</Trans>
               </Text>
               <Text style={[a.leading_snug]}>{cleanError(deleteError)}</Text>
@@ -727,7 +732,7 @@ function InvalidStarterPack({rkey}: {rkey: string}) {
     <Layout.Content centerContent>
       <View style={[a.py_4xl, a.px_xl, a.align_center, a.gap_5xl]}>
         <View style={[a.w_full, a.align_center, a.gap_lg]}>
-          <Text style={[a.font_bold, a.text_3xl]}>
+          <Text style={[a.font_semi_bold, a.text_3xl]}>
             <Trans>Starter pack is invalid</Trans>
           </Text>
           <Text

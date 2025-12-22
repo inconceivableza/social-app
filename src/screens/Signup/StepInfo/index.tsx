@@ -5,9 +5,9 @@ import {useLingui} from '@lingui/react'
 import * as EmailValidator from 'email-validator'
 import type tldts from 'tldts'
 
+import {CUSTOM_HOSTING_DISABLED} from '#/lib/constants'
 import {isEmailMaybeInvalid} from '#/lib/strings/email'
 import {logger} from '#/logger'
-import {ScreenTransition} from '#/screens/Login/ScreenTransition'
 import {is13, is18, useSignupContext} from '#/screens/Signup/state'
 import {Policies} from '#/screens/Signup/StepInfo/Policies'
 import {atoms as a, native} from '#/alf'
@@ -20,7 +20,10 @@ import {Envelope_Stroke2_Corner0_Rounded as Envelope} from '#/components/icons/E
 import {Lock_Stroke2_Corner0_Rounded as Lock} from '#/components/icons/Lock'
 import {Ticket_Stroke2_Corner0_Rounded as Ticket} from '#/components/icons/Ticket'
 import {Loader} from '#/components/Loader'
+import {usePreemptivelyCompleteActivePolicyUpdate} from '#/components/PolicyUpdateOverlay/usePreemptivelyCompleteActivePolicyUpdate'
 import {BackNextButtons} from '../BackNextButtons'
+
+const supportsCustomHosting = !CUSTOM_HOSTING_DISABLED
 
 function sanitizeDate(date: Date): Date {
   if (!date || date.toString() === 'Invalid Date') {
@@ -45,6 +48,8 @@ export function StepInfo({
 }) {
   const {_} = useLingui()
   const {state, dispatch} = useSignupContext()
+  const preemptivelyCompleteActivePolicyUpdate =
+    usePreemptivelyCompleteActivePolicyUpdate()
 
   const inviteCodeValueRef = useRef<string>(state.inviteCode)
   const emailValueRef = useRef<string>(state.email)
@@ -57,7 +62,7 @@ export function StepInfo({
 
   const [hasWarnedEmail, setHasWarnedEmail] = React.useState<boolean>(false)
 
-  const tldtsRef = React.useRef<typeof tldts>()
+  const tldtsRef = React.useRef<typeof tldts>(undefined)
   React.useEffect(() => {
     // @ts-expect-error - valid path
     import('tldts/dist/index.cjs.min.js').then(tldts => {
@@ -129,6 +134,7 @@ export function StepInfo({
       })
     }
 
+    preemptivelyCompleteActivePolicyUpdate()
     dispatch({type: 'setInviteCode', value: inviteCode})
     dispatch({type: 'setEmail', value: email})
     dispatch({type: 'setPassword', value: password})
@@ -143,16 +149,18 @@ export function StepInfo({
   }
 
   return (
-    <ScreenTransition>
-      <View style={[a.gap_md]}>
+    <>
+      <View style={[a.gap_md, a.pt_lg]}>
         <FormError error={state.error} />
-        {/*
-        <HostingProvider
-          minimal
-          serviceUrl={state.serviceUrl}
-          onSelectServiceUrl={v => dispatch({type: 'setServiceUrl', value: v})}
-        />
-        */}
+        {supportsCustomHosting && (
+          <HostingProvider
+            minimal
+            serviceUrl={state.serviceUrl}
+            onSelectServiceUrl={v =>
+              dispatch({type: 'setServiceUrl', value: v})
+            }
+          />
+        )}
         {state.isLoading || isLoadingStarterPack ? (
           <View style={[a.align_center]}>
             <Loader size="xl" />
@@ -290,6 +298,6 @@ export function StepInfo({
         onRetryPress={refetchServer}
         overrideNextText={hasWarnedEmail ? _(msg`It's correct`) : undefined}
       />
-    </ScreenTransition>
+    </>
   )
 }

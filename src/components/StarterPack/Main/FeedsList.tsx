@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react'
 import {type ListRenderItemInfo, View} from 'react-native'
 import {type AppBskyFeedDefs} from '@atproto/api'
-import {type GeneratorView} from '@atproto/api/client/types/app/bsky/feed/defs'
 
 import {useBottomBarOffset} from '#/lib/hooks/useBottomBarOffset'
 import {isNative, isWeb} from '#/platform/detection'
@@ -37,7 +36,10 @@ export const FeedsList = React.forwardRef<SectionRef, ProfilesListProps>(
       scrollToTop: onScrollToTop,
     }))
 
-    const renderItem = ({item, index}: ListRenderItemInfo<GeneratorView>) => {
+    const renderItem = ({
+      item,
+      index,
+    }: ListRenderItemInfo<AppBskyFeedDefs.GeneratorView>) => {
       return (
         <View
           style={[

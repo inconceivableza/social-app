@@ -8,7 +8,6 @@ import {
   type BskyAgent,
   RichText,
 } from '@atproto/api'
-import {type StarterPackView} from '@atproto/api/client/types/app/bsky/graph/defs'
 import {
   type QueryClient,
   useMutation,
@@ -59,7 +58,7 @@ export function useStarterPackQuery({
 }) {
   const agent = useAgent()
 
-  return useQuery<StarterPackView>({
+  return useQuery<AppBskyGraphDefs.StarterPackView>({
     queryKey: RQKEY(uri ? {uri} : {did, rkey}),
     queryFn: async () => {
       if (!uri) {

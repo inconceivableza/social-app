@@ -34,10 +34,12 @@ type ContextType = {
 } & Pick<RootProps, 'value' | 'onValueChange' | 'disabled'>
 
 const Context = createContext<ContextType | null>(null)
+Context.displayName = 'SelectContext'
 
 const ValueTextContext = createContext<
   [any, React.Dispatch<React.SetStateAction<any>>]
 >([undefined, () => {}])
+ValueTextContext.displayName = 'ValueTextContext'
 
 function useSelectContext() {
   const ctx = useContext(Context)
@@ -229,6 +231,7 @@ const ItemContext = createContext<{
   focused: false,
   pressed: false,
 })
+ItemContext.displayName = 'SelectItemContext'
 
 export function useItemContext() {
   return useContext(ItemContext)
@@ -277,7 +280,7 @@ export function ItemText({children}: ItemTextProps) {
   // eslint-disable-next-line bsky-internal/avoid-unwrapped-text
   return (
     <View style={[a.flex_1, a.py_md, a.border_b, t.atoms.border_contrast_low]}>
-      <Text style={[a.text_md, selected && a.font_bold]}>{children}</Text>
+      <Text style={[a.text_md, selected && a.font_semi_bold]}>{children}</Text>
     </View>
   )
 }

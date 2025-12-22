@@ -92,7 +92,7 @@ and run the action.
 >   clients in the wild will be able to receive the update.
 
 **For web,** head to [Actions >
-build-and-push-foodiosweb-aws](https://github.com/bluesky-social/social-app/actions/workflows/build-and-push-foodiosweb-aws.yaml)
+build-and-push-bskyweb-aws](https://github.com/bluesky-social/social-app/actions/workflows/build-and-push-bskyweb-aws.yaml)
 and run the action.
 
 | Steps |     |

@@ -11,9 +11,19 @@ import {msg, Plural, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
+import {
+  dangerousIsPostRecord,
+  dangerousIsRecipeView,
+  isRecipePostView,
+  isReviewRatingView,
+  postHref,
+  recipePostSummaryRichText,
+  recordRevisionState,
+  recordText,
+} from '#/lib/api/feed/utils'
 import {branding} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {useOpenLink} from '#/lib/hooks/useOpenLink'
+import {useTranslate} from '#/lib/hooks/useTranslate'
 import {makeProfileLink} from '#/lib/routes/links'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
@@ -26,16 +36,19 @@ import {
   usePostShadow,
 } from '#/state/cache/post-shadow'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
+import {type AnyPostView} from '#/state/cache/types'
 import {FeedFeedbackProvider, useFeedFeedback} from '#/state/feed-feedback'
+import {useModalControls} from '#/state/modals'
 import {useLanguagePrefs} from '#/state/preferences'
 import {type ThreadItem} from '#/state/queries/usePostThread/types'
 import {useSession} from '#/state/session'
 import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import {type PostSource} from '#/state/unstable-post-source'
-import {PostThreadFollowBtn} from '#/view/com/post-thread/PostThreadFollowBtn'
-import {formatCount} from '#/view/com/util/numeric/format'
+import {ExpandedRecipePost} from '#/view/com/posts/ExpandableRecipePost'
+import {RevisionState} from '#/view/com/posts/RevisionState'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
+import {ThreadItemAnchorFollowButton} from '#/screens/PostThread/components/ThreadItemAnchorFollowButton'
 import {
   LINEAR_AVI_WIDTH,
   OUTER_SPACE,
@@ -43,8 +56,9 @@ import {
 } from '#/screens/PostThread/const'
 import {atoms as a, useTheme} from '#/alf'
 import {colors} from '#/components/Admonition'
-import {Button} from '#/components/Button'
+import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import {CalendarClock_Stroke2_Corner0_Rounded as CalendarClockIcon} from '#/components/icons/CalendarClock'
+import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {InlineLinkText, Link} from '#/components/Link'
 import {ContentHider} from '#/components/moderation/ContentHider'
@@ -53,6 +67,7 @@ import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {type AppModerationCause} from '#/components/Pills'
 import {Embed, PostEmbedViewContext} from '#/components/Post/Embed'
 import {PostControls} from '#/components/PostControls'
+import {useFormatPostStatCount} from '#/components/PostControls/util'
 import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
@@ -65,16 +80,21 @@ import * as bsky from '#/types/bsky'
 export function ThreadItemAnchor({
   item,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
   postSource,
 }: {
   item: Extract<ThreadItem, {type: 'threadPost'}>
   onPostSuccess?: (data: OnPostSuccessData) => void
+  onReviewRateSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
 }) {
   const postShadow = usePostShadow(item.value.post)
-  const threadRootUri = item.value.post.record.reply?.root?.uri || item.uri
+  const record = item.value.post.record
+  const threadRootUri = dangerousIsPostRecord(record)
+    ? record.reply?.root?.uri || item.uri
+    : item.uri
   const isRoot = threadRootUri === item.uri
 
   if (postShadow === POST_TOMBSTONE) {
@@ -87,8 +107,9 @@ export function ThreadItemAnchor({
       key={postShadow.uri}
       item={item}
       isRoot={isRoot}
-      postShadow={postShadow}
       onPostSuccess={onPostSuccess}
+      postShadow={postShadow}
+      onReviewRateSuccess={onReviewRateSuccess}
       threadgateRecord={threadgateRecord}
       postSource={postSource}
     />
@@ -129,7 +150,8 @@ function ThreadItemAnchorDeleted({isRoot}: {isRoot: boolean}) {
             ]}>
             <TrashIcon style={[t.atoms.text_contrast_medium]} />
           </View>
-          <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
+          <Text
+            style={[a.text_md, a.font_semi_bold, t.atoms.text_contrast_medium]}>
             <Trans>Post has been deleted</Trans>
           </Text>
         </View>
@@ -165,51 +187,61 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   isRoot,
   postShadow,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
   postSource,
 }: {
   item: Extract<ThreadItem, {type: 'threadPost'}>
   isRoot: boolean
-  postShadow: Shadow<AppBskyFeedDefs.PostView>
+  postShadow: Shadow<AnyPostView>
   onPostSuccess?: (data: OnPostSuccessData) => void
+  onReviewRateSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
   postSource?: PostSource
 }) {
   const t = useTheme()
-  const {_, i18n} = useLingui()
+  const {_} = useLingui()
   const {openComposer} = useOpenComposer()
   const {currentAccount, hasSession} = useSession()
-  const feedFeedback = useFeedFeedback(postSource?.feed, hasSession)
-
+  const feedFeedback = useFeedFeedback(postSource?.feedSourceInfo, hasSession)
+  const formatPostStatCount = useFormatPostStatCount()
   const post = postShadow
   const record = item.value.post.record
   const moderation = item.moderation
   const authorShadow = useProfileShadow(post.author)
   const {isActive: live} = useActorStatus(post.author)
+
   const richText = useMemo(
     () =>
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
-      }),
-    [record],
+      dangerousIsRecipeView(record)
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(record.revisionContent),
+          })
+        : isReviewRatingView(item.value.post)
+          ? new RichTextAPI({
+              text: item.value.post.record.text ?? '',
+            })
+          : new RichTextAPI({
+              text: record.text ?? '',
+            }),
+    [record, item.value.post],
   )
 
-  const threadRootUri = record.reply?.root?.uri || post.uri
+  const threadRootUri = dangerousIsPostRecord(record)
+    ? record.reply?.root?.uri || post.uri
+    : post.uri
   const authorHref = makeProfileLink(post.author)
-  const isThreadAuthor = getThreadAuthor(post, record) === currentAccount?.did
+  const isThreadAuthor = getThreadAuthor(post) === currentAccount?.did
+  const {openModal, closeModal} = useModalControls()
 
   const likesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'liked-by')
+    return postHref(post.author, post.uri, 'liked-by')
   }, [post.uri, post.author])
   const repostsHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'reposted-by')
+    return postHref(post.author, post.uri, 'reposted-by')
   }, [post.uri, post.author])
   const quotesHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey, 'quotes')
+    return postHref(post.author, post.uri, 'quotes')
   }, [post.uri, post.author])
 
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
@@ -247,14 +279,20 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
   }, [postSource])
 
   const onPressReply = useCallback(() => {
+    const text = recordText(post)
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
-        text: record.text,
+        revisionUri: isRecipePostView(post)
+          ? post.record.selectedRevisionUri
+          : undefined,
+        text,
         author: post.author,
         embed: post.embed,
         moderation,
+        langs: record.langs,
       },
       onPostSuccess: onPostSuccess,
     })
@@ -276,6 +314,48 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
     postSource,
     feedFeedback,
   ])
+
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(record)) {
+      const text = recipePostSummaryRichText(post.record.revisionContent)
+      openComposer({
+        type: 'review-rating',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          revisionUri: isRecipePostView(post)
+            ? post.record.selectedRevisionUri
+            : undefined,
+          text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+        onPostSuccess: onReviewRateSuccess,
+      })
+      if (postSource) {
+        feedFeedback.sendInteraction({
+          item: post.uri,
+          event: 'app.bsky.feed.defs#interactionReply',
+          feedContext: postSource.post.feedContext,
+          reqId: postSource.post.reqId,
+        })
+      }
+    }
+  }, [
+    openComposer,
+    post,
+    record,
+    onReviewRateSuccess,
+    moderation,
+    postSource,
+    feedFeedback,
+  ])
+
+  const onPrepareReview = useCallback(() => {
+    closeModal()
+    onPressReviewRate()
+  }, [onPressReviewRate, closeModal])
 
   const onOpenAuthor = () => {
     if (postSource) {
@@ -338,7 +418,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                     style={[
                       a.flex_shrink,
                       a.text_lg,
-                      a.font_bold,
+                      a.font_semi_bold,
                       a.leading_snug,
                     ]}
                     numberOfLines={1}>
@@ -349,7 +429,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                     )}
                   </Text>
 
-                  <View style={[{paddingLeft: 3, top: -1}]}>
+                  <View style={[a.pl_xs]}>
                     <VerificationCheckButton profile={authorShadow} size="md" />
                   </View>
                 </View>
@@ -367,7 +447,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
           </Link>
           {showFollowButton && (
             <View collapsable={false}>
-              <PostThreadFollowBtn did={post.author.did} />
+              <ThreadItemAnchorFollowButton did={post.author.did} />
             </View>
           )}
         </View>
@@ -384,12 +464,41 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
               style={[a.pb_sm]}
               additionalCauses={additionalPostAlerts}
             />
-            {richText?.text ? (
+            {isRecipePostView(postShadow) ? (
+              <>
+                <ExpandedRecipePost
+                  expanded
+                  revision={postShadow.record}
+                  titleComponent={
+                    <View>
+                      <Button
+                        variant="outline"
+                        size="small"
+                        color="primary"
+                        style={[a.gap_xs]}
+                        label={_(msg`Start recipe preparation`)}
+                        onPress={() => {
+                          openModal({
+                            name: 'recipe-preparation',
+                            recipePost: postShadow,
+                            onReviewRecipe: onPrepareReview,
+                          })
+                        }}>
+                        <ButtonIcon icon={PlayIcon} />
+                        <ButtonText>
+                          <Trans>Prepare Recipe</Trans>
+                        </ButtonText>
+                      </Button>
+                    </View>
+                  }
+                />
+              </>
+            ) : richText?.text ? (
               <RichText
                 enableTags
                 selectable
                 value={richText}
-                style={[a.flex_1, a.text_xl]}
+                style={[a.flex_1, a.text_lg]}
                 authorHandle={post.author.handle}
                 shouldProxyLinks={true}
               />
@@ -411,13 +520,18 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
           />
           {post.repostCount !== 0 ||
           post.likeCount !== 0 ||
-          post.quoteCount !== 0 ? (
+          post.quoteCount !== 0 ||
+          post.bookmarkCount !== 0 ? (
             // Show this section unless we're *sure* it has no engagement.
             <View
               style={[
                 a.flex_row,
+                a.flex_wrap,
                 a.align_center,
-                a.gap_lg,
+                {
+                  rowGap: a.gap_sm.gap,
+                  columnGap: a.gap_lg.gap,
+                },
                 a.border_t,
                 a.border_b,
                 a.mt_md,
@@ -429,8 +543,8 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                   <Text
                     testID="repostCount-expanded"
                     style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
-                      {formatCount(i18n, post.repostCount)}
+                    <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
+                      {formatPostStatCount(post.repostCount)}
                     </Text>{' '}
                     <Plural
                       value={post.repostCount}
@@ -447,8 +561,8 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                   <Text
                     testID="quoteCount-expanded"
                     style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
-                      {formatCount(i18n, post.quoteCount)}
+                    <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
+                      {formatPostStatCount(post.quoteCount)}
                     </Text>{' '}
                     <Plural
                       value={post.quoteCount}
@@ -463,12 +577,22 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                   <Text
                     testID="likeCount-expanded"
                     style={[a.text_md, t.atoms.text_contrast_medium]}>
-                    <Text style={[a.text_md, a.font_bold, t.atoms.text]}>
-                      {formatCount(i18n, post.likeCount)}
+                    <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
+                      {formatPostStatCount(post.likeCount)}
                     </Text>{' '}
                     <Plural value={post.likeCount} one="like" other="likes" />
                   </Text>
                 </Link>
+              ) : null}
+              {post.bookmarkCount != null && post.bookmarkCount !== 0 ? (
+                <Text
+                  testID="bookmarkCount-expanded"
+                  style={[a.text_md, t.atoms.text_contrast_medium]}>
+                  <Text style={[a.text_md, a.font_semi_bold, t.atoms.text]}>
+                    {formatPostStatCount(post.bookmarkCount)}
+                  </Text>{' '}
+                  <Plural value={post.bookmarkCount} one="save" other="saves" />
+                </Text>
               ) : null}
             </View>
           ) : null}
@@ -487,6 +611,7 @@ const ThreadItemAnchorInner = memo(function ThreadItemAnchorInner({
                 record={record}
                 richText={richText}
                 onPressReply={onPressReply}
+                onPressReviewRate={onPressReviewRate}
                 logContext="PostThreadItem"
                 threadgateRecord={threadgateRecord}
                 feedContext={postSource?.post?.feedContext}
@@ -505,19 +630,15 @@ function ExpandedPostDetails({
   post,
   isThreadAuthor,
 }: {
-  post: Extract<ThreadItem, {type: 'threadPost'}>['value']['post']
+  post: AppBskyFeedDefs.PostView
   isThreadAuthor: boolean
 }) {
   const t = useTheme()
   const {_, i18n} = useLingui()
-  const openLink = useOpenLink()
+  const translate = useTranslate()
   const isRootPost = !('reply' in post.record)
   const langPrefs = useLanguagePrefs()
 
-  const translatorUrl = getTranslatorLink(
-    post.record?.text || '',
-    langPrefs.primaryLanguage,
-  )
   const needsTranslation = useMemo(
     () =>
       Boolean(
@@ -530,8 +651,7 @@ function ExpandedPostDetails({
   const onTranslatePress = useCallback(
     (e: GestureResponderEvent) => {
       e.preventDefault()
-      openLink(translatorUrl, true)
-
+      translate(recordText(post), langPrefs.primaryLanguage)
       if (
         bsky.dangerousIsType<AppBskyFeedPost.Record>(
           post.record,
@@ -544,11 +664,14 @@ function ExpandedPostDetails({
           textLength: post.record.text.length,
         })
       }
+      // TODO add metric for recipe
 
       return false
     },
-    [openLink, translatorUrl, langPrefs, post],
+    [translate, langPrefs, post],
   )
+
+  const revisionState = recordRevisionState(post.record)
 
   return (
     <View style={[a.gap_md, a.pt_md, a.align_start]}>
@@ -567,7 +690,12 @@ function ExpandedPostDetails({
             </Text>
 
             <InlineLinkText
-              to={translatorUrl}
+              // overridden to open an intent on android, but keep
+              // as anchor tag for accessibility
+              to={getTranslatorLink(
+                post.record.text,
+                langPrefs.primaryLanguage,
+              )}
               label={_(msg`Translate`)}
               style={[a.text_sm]}
               onPress={onTranslatePress}>
@@ -575,6 +703,7 @@ function ExpandedPostDetails({
             </InlineLinkText>
           </>
         )}
+        <RevisionState state={revisionState} />
       </View>
     </View>
   )
@@ -599,7 +728,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
 
   if (!isBackdated) return null
 
-  const orange = t.name === 'light' ? colors.warning.dark : colors.warning.light
+  const orange = colors.warning
 
   return (
     <>
@@ -631,7 +760,7 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
             <Text
               style={[
                 a.text_xs,
-                a.font_bold,
+                a.font_semi_bold,
                 a.leading_tight,
                 t.atoms.text_contrast_medium,
               ]}>
@@ -648,9 +777,14 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
         <Prompt.DescriptionText>
           <Trans>
             This post claims to have been created on{' '}
-            <RNText style={[a.font_bold]}>{niceDate(i18n, createdAt)}</RNText>,
-            but was first seen by {branding.naming.app_name} on{' '}
-            <RNText style={[a.font_bold]}>{niceDate(i18n, indexedAt)}</RNText>.
+            <RNText style={[a.font_semi_bold]}>
+              {niceDate(i18n, createdAt)}
+            </RNText>
+            , but was first seen by Bluesky on{branding.naming.app_name} on{' '}
+            <RNText style={[a.font_semi_bold]}>
+              {niceDate(i18n, indexedAt)}
+            </RNText>
+            .
           </Trans>
         </Prompt.DescriptionText>
         <Text
@@ -661,7 +795,8 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
             a.pb_xl,
           ]}>
           <Trans>
-            {branding.naming.app_name} cannot confirm the authenticity of the claimed date.
+            {branding.naming.app_name} cannot confirm the authenticity of the
+            claimed date.
           </Trans>
         </Text>
         <Prompt.Actions>
@@ -672,18 +807,21 @@ function BackdatedPostIndicator({post}: {post: AppBskyFeedDefs.PostView}) {
   )
 }
 
-function getThreadAuthor(
-  post: AppBskyFeedDefs.PostView,
-  record: AppBskyFeedPost.Record,
-): string {
-  if (!record.reply) {
+function getThreadAuthor(post: AnyPostView): string {
+  const record = post.record
+  if (dangerousIsRecipeView(record)) {
     return post.author.did
+  } else if (dangerousIsPostRecord(record)) {
+    if (!record.reply) {
+      return post.author.did
+    }
+    try {
+      return new AtUri(record.reply.root.uri).host
+    } catch {
+      return ''
+    }
   }
-  try {
-    return new AtUri(record.reply.root.uri).host
-  } catch {
-    return ''
-  }
+  return ''
 }
 
 export function ThreadItemAnchorSkeleton() {

@@ -4,26 +4,36 @@ import {
   type $Typed,
   type AppBskyFeedDefs,
   AppBskyFeedPost,
-  AtUri,
+  AppFoodiosFeedDefs,
+  AppFoodiosFeedReviewRating,
   moderatePost,
   RichText as RichTextAPI,
 } from '@atproto/api'
 import {Trans} from '@lingui/macro'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {
+  dangerousIsRecipeView,
+  postHref,
+  recipePostSummaryRichText,
+  recordRevisionState,
+} from '#/lib/api/feed/utils'
 import {usePalette} from '#/lib/hooks/usePalette'
-import {makeProfileLink} from '#/lib/routes/links'
 import {useModerationOpts} from '#/state/preferences/moderation-opts'
 import {unstableCacheProfileView} from '#/state/queries/profile'
 import {useSession} from '#/state/session'
+import {ExpandableRecipePost} from '#/view/com/posts/ExpandableRecipePost'
+import {PostAuthorDidProvider} from '#/view/com/posts/PostContext'
 import {Link} from '#/view/com/util/Link'
 import {PostMeta} from '#/view/com/util/PostMeta'
+import {Text} from '#/view/com/util/text/Text'
 import {atoms as a, useTheme} from '#/alf'
 import {ContentHider} from '#/components/moderation/ContentHider'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
 import {RichText} from '#/components/RichText'
+import {ReadOnlyRatingStars} from '#/components/StarRatings'
 import {Embed as StarterPackCard} from '#/components/StarterPack/StarterPackCard'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import * as bsky from '#/types/bsky'
 import {
   type Embed as TEmbed,
@@ -87,14 +97,18 @@ function MediaEmbed({
   switch (embed.type) {
     case 'images': {
       return (
-        <ContentHider modui={rest.moderation?.ui('contentMedia')}>
+        <ContentHider
+          modui={rest.moderation?.ui('contentMedia')}
+          activeStyle={[a.mt_sm]}>
           <ImageEmbed embed={embed} {...rest} />
         </ContentHider>
       )
     }
     case 'link': {
       return (
-        <ContentHider modui={rest.moderation?.ui('contentMedia')}>
+        <ContentHider
+          modui={rest.moderation?.ui('contentMedia')}
+          activeStyle={[a.mt_sm]}>
           <ExternalEmbed
             link={embed.view.external}
             onOpen={rest.onOpen}
@@ -105,8 +119,10 @@ function MediaEmbed({
     }
     case 'video': {
       return (
-        <ContentHider modui={rest.moderation?.ui('contentMedia')}>
-          <VideoEmbed embed={embed.view} />
+        <ContentHider
+          modui={rest.moderation?.ui('contentMedia')}
+          activeStyle={[a.mt_sm]}>
+          <VideoEmbed embed={embed.view} crop="constrained" />
         </ContentHider>
       )
     }
@@ -225,6 +241,7 @@ export function QuoteEmbed({
   embed: EmbedType<'post'>
   viewContext?: QuoteEmbedViewContext
 }) {
+  // TODO pass author down to video
   const moderationOpts = useModerationOpts()
   const quote = React.useMemo<$Typed<AppBskyFeedDefs.PostView>>(
     () => ({
@@ -242,30 +259,54 @@ export function QuoteEmbed({
   const t = useTheme()
   const queryClient = useQueryClient()
   const pal = usePalette('default')
-  const itemUrip = new AtUri(quote.uri)
-  const itemHref = makeProfileLink(quote.author, 'post', itemUrip.rkey)
+  const itemHref = postHref(quote.author, quote.uri)
   const itemTitle = `Post by ${quote.author.handle}`
-
   const richText = React.useMemo(() => {
     if (
-      !bsky.dangerousIsType<AppBskyFeedPost.Record>(
+      bsky.dangerousIsType<AppBskyFeedPost.Record>(
         quote.record,
         AppBskyFeedPost.isRecord,
       )
-    )
+    ) {
+      const {text, facets} = quote.record
+      return text.trim()
+        ? new RichTextAPI({text: text, facets: facets})
+        : undefined
+    } else if (
+      bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
+        quote.record,
+        AppFoodiosFeedDefs.isRecipeRevisionView,
+      )
+    ) {
+      const {text, name} = quote.record.revisionContent
+      return text.trim() || name.trim()
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(quote.record.revisionContent),
+          })
+        : undefined
+    } else if (
+      bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+        quote.record,
+        AppFoodiosFeedReviewRating.isRecord,
+      )
+    ) {
+      const {text} = quote.record
+      return text
+        ? new RichTextAPI({
+            text,
+          })
+        : undefined
+    } else {
       return undefined
-    const {text, facets} = quote.record
-    return text.trim()
-      ? new RichTextAPI({text: text, facets: facets})
-      : undefined
+    }
   }, [quote.record])
 
   const onBeforePress = React.useCallback(() => {
     unstableCacheProfileView(queryClient, quote.author)
     onOpen?.()
   }, [queryClient, quote.author, onOpen])
-
   const [hover, setHover] = React.useState(false)
+  const revisionState = recordRevisionState(quote.record)
   return (
     <View
       style={[a.mt_sm]}
@@ -278,7 +319,7 @@ export function QuoteEmbed({
         childContainerStyle={[a.pt_sm]}>
         {({active}) => (
           <>
-            {!active && <SubtleWebHover hover={hover} style={[a.rounded_md]} />}
+            {!active && <SubtleHover hover={hover} style={[a.rounded_md]} />}
             <Link
               style={[!active && a.p_md]}
               hoverStyle={{borderColor: pal.colors.borderLinkHover}}
@@ -291,8 +332,17 @@ export function QuoteEmbed({
                   moderation={moderation}
                   showAvatar
                   postHref={itemHref}
-                  timestamp={quote.indexedAt}
-                />
+                  timestamp={quote.indexedAt}>
+                  {revisionState === 'outdated' ? (
+                    <Text style={[a.pl_xs, t.atoms.text]}>
+                      <Trans>Outdated</Trans>
+                    </Text>
+                  ) : revisionState === 'edited' ? (
+                    <Text style={[a.pl_xs, t.atoms.text]}>
+                      <Trans>Edited</Trans>
+                    </Text>
+                  ) : null}
+                </PostMeta>
               </View>
               {moderation ? (
                 <PostAlerts
@@ -300,7 +350,9 @@ export function QuoteEmbed({
                   style={[a.py_xs]}
                 />
               ) : null}
-              {richText ? (
+              {dangerousIsRecipeView(quote.record) ? (
+                <ExpandableRecipePost revision={quote.record} />
+              ) : richText ? (
                 <RichText
                   value={richText}
                   style={a.text_md}
@@ -308,16 +360,26 @@ export function QuoteEmbed({
                   disableLinks
                 />
               ) : null}
+
+              {bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+                quote.record,
+                AppFoodiosFeedReviewRating.isRecord,
+              ) ? (
+                <ReadOnlyRatingStars record={quote.record} />
+              ) : null}
+
               {quote.embed && (
-                <Embed
-                  embed={quote.embed}
-                  moderation={moderation}
-                  isWithinQuote={parentIsWithinQuote ?? true}
-                  // already within quote? override nested
-                  allowNestedQuotes={
-                    parentIsWithinQuote ? false : parentAllowNestedQuotes
-                  }
-                />
+                <PostAuthorDidProvider did={quote.author.did}>
+                  <Embed
+                    embed={quote.embed}
+                    moderation={moderation}
+                    isWithinQuote={parentIsWithinQuote ?? true}
+                    // already within quote? override nested
+                    allowNestedQuotes={
+                      parentIsWithinQuote ? false : parentAllowNestedQuotes
+                    }
+                  />
+                </PostAuthorDidProvider>
               )}
             </Link>
           </>

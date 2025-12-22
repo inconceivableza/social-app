@@ -1,0 +1,3 @@
+[submodule "submodules/atproto"]
+	path = submodules/atproto
+	url = git@github.com:inconceivableza/atproto

@@ -1,6 +1,6 @@
 import React from 'react'
 import {type StyleProp, TextInput, View, type ViewStyle} from 'react-native'
-import {msg, Trans} from '@lingui/macro'
+import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {canReload, doDelayedReload} from '#/lib/reload'
@@ -171,27 +171,31 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
               accessibilityHint={_(msg`Custom server domain`)}
             />
           </View>
-          <View style={[a.flex_col, a.px_xs]}>
+          <View style={[a.flex_col, a.px_0, a.align_baseline]}>
             <Button
-              label={_(msg`Use`)}
+              label={_(msg`Connect`)}
+              style={[a.px_xs]}
               accessibilityHint={_(
-                msg`Use custom domain to retrieve server domains`,
+                msg`Use custom server domain to retrieve configuration`,
               )}
               onPress={() => {
                 onUseManualConfig(customDomain)
               }}>
-              <ButtonText style={[{color: 'black'}]}>
-                <Trans>Use</Trans>
+              <ButtonText style={[a.align_baseline]}>
+                <Text emoji>✅</Text>
               </ButtonText>
             </Button>
           </View>
-          <View style={[a.flex_col, a.px_xs]}>
+          <View style={[a.flex_col, a.px_0]}>
             <Button
-              label="↩️"
+              label="Close manual server domain"
+              style={[a.px_xs]}
               onPress={() => {
                 setShowCustomDomain(false)
               }}>
-              <ButtonText style={[{color: 'black'}]}>↩️</ButtonText>
+              <ButtonText style={[a.align_baseline]}>
+                <Text emoji>❌</Text>
+              </ButtonText>
             </Button>
           </View>
         </>

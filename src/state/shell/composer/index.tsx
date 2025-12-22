@@ -3,12 +3,14 @@ import {
   type AppBskyActorDefs,
   type AppBskyFeedDefs,
   type AppBskyUnspeccedGetPostThreadV2,
+  type ComAtprotoRepoStrongRef,
   type ModerationDecision,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useQueryClient} from '@tanstack/react-query'
 
+import {type RecipePostView} from '#/lib/api/feed/utils'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {postUriToRelativePath, toBskyAppUrl} from '#/lib/strings/url-helpers'
 import {purgeTemporaryImageFiles} from '#/state/gallery'
@@ -16,10 +18,9 @@ import {precacheResolveLinkQuery} from '#/state/queries/resolve-link'
 import {type EmojiPickerPosition} from '#/view/com/composer/text-input/web/EmojiPicker'
 import * as Toast from '#/view/com/util/Toast'
 
-export interface ComposerOptsPostRef {
-  uri: string
-  cid: string
+export type ComposerOptsPostRef = ComAtprotoRepoStrongRef.Main & {
   text: string
+  langs?: string[]
   author: AppBskyActorDefs.ProfileViewBasic
   embed?: AppBskyFeedDefs.PostView['embed']
   moderation?: ModerationDecision
@@ -28,11 +29,12 @@ export interface ComposerOptsPostRef {
 export type OnPostSuccessData =
   | {
       replyToUri?: string
-      posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
+    posts: AppBskyUnspeccedGetPostThreadV2.ThreadItem[]
     }
   | undefined
 
-export interface ComposerOpts {
+export interface PostComposerOpts {
+  type: 'post'
   replyTo?: ComposerOptsPostRef
   onPost?: (postUri: string | undefined) => void
   onPostSuccess?: (data: OnPostSuccessData) => void
@@ -44,6 +46,31 @@ export interface ComposerOpts {
   videoUri?: {uri: string; width: number; height: number}
 }
 
+export interface RecipeComposerOpts {
+  type: 'recipe'
+  edit?: RecipePostView
+  onPostSuccess?: (data: OnPostSuccessData) => void
+}
+
+export interface ReviewRatingComposerOpts {
+  type: 'review-rating'
+  replyTo?: ComposerOptsPostRef
+  onPost?: (postUri: string | undefined) => void
+  onPostSuccess?: (data: OnPostSuccessData) => void
+  quote?: AppBskyFeedDefs.PostView
+  mention?: string // handle of user to mention
+  openEmojiPicker?: (pos: EmojiPickerPosition | undefined) => void
+  text?: string
+  imageUris?: {uri: string; width: number; height: number; altText?: string}[]
+  videoUri?: {uri: string; width: number; height: number}
+}
+
+export type NormalComposerOpts = PostComposerOpts | ReviewRatingComposerOpts
+export type ComposerOpts =
+  | PostComposerOpts
+  | RecipeComposerOpts
+  | ReviewRatingComposerOpts
+
 type StateContext = ComposerOpts | undefined
 type ControlsContext = {
   openComposer: (opts: ComposerOpts) => void
@@ -51,12 +78,14 @@ type ControlsContext = {
 }
 
 const stateContext = React.createContext<StateContext>(undefined)
+stateContext.displayName = 'ComposerStateContext'
 const controlsContext = React.createContext<ControlsContext>({
   openComposer(_opts: ComposerOpts) {},
   closeComposer() {
     return false
   },
 })
+controlsContext.displayName = 'ComposerControlsContext'
 
 export function Provider({children}: React.PropsWithChildren<{}>) {
   const {_} = useLingui()
@@ -64,33 +93,44 @@ export function Provider({children}: React.PropsWithChildren<{}>) {
   const queryClient = useQueryClient()
 
   const openComposer = useNonReactiveCallback((opts: ComposerOpts) => {
-    if (opts.quote) {
-      const path = postUriToRelativePath(opts.quote.uri)
-      if (path) {
-        const appUrl = toBskyAppUrl(path)
-        precacheResolveLinkQuery(queryClient, appUrl, {
-          type: 'record',
-          kind: 'post',
-          record: {
-            cid: opts.quote.cid,
-            uri: opts.quote.uri,
-          },
-          view: opts.quote,
+    console.log('state-composer-openComposer', opts)
+    if (opts.type === 'post') {
+      if (opts.quote) {
+        const path = postUriToRelativePath(opts.quote.uri)
+        if (path) {
+          const appUrl = toBskyAppUrl(path)
+          precacheResolveLinkQuery(queryClient, appUrl, {
+            type: 'record',
+            kind: 'post',
+            record: {
+              cid: opts.quote.cid,
+              uri: opts.quote.uri,
+            },
+            view: opts.quote,
+          })
+        }
+      }
+      const author = opts.replyTo?.author || opts.quote?.author
+      const isBlocked = Boolean(
+        author &&
+          (author.viewer?.blocking ||
+            author.viewer?.blockedBy ||
+            author.viewer?.blockingByList),
+      )
+      if (isBlocked) {
+        Toast.show(
+          _(msg`Cannot interact with a blocked user`),
+          'exclamation-circle',
+        )
+      } else {
+        setState(prevOpts => {
+          if (prevOpts) {
+            // Never replace an already open composer.
+            return prevOpts
+          }
+          return opts
         })
       }
-    }
-    const author = opts.replyTo?.author || opts.quote?.author
-    const isBlocked = Boolean(
-      author &&
-        (author.viewer?.blocking ||
-          author.viewer?.blockedBy ||
-          author.viewer?.blockingByList),
-    )
-    if (isBlocked) {
-      Toast.show(
-        _(msg`Cannot interact with a blocked user`),
-        'exclamation-circle',
-      )
     } else {
       setState(prevOpts => {
         if (prevOpts) {

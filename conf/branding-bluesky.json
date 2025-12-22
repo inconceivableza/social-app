@@ -1,0 +1,53 @@
+{
+  "code": {
+    "android_sha256_cert_fingerprints": {
+      "1": "C1:4D:3C:6B:B5:D6:D9:AE:CF:C5:0B:BC:C1:9B:29:6D:D4:E6:87:46:36:D5:4C:1A:64:1C:14:08:BF:7E:F9:62",
+      "2": "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
+    },
+    "app_slug_scheme": "bluesky",
+    "apple_groups": "group.app.bsky",
+    "apple_team_id": "B3LX46C5HS",
+    "chat_api_did": "did:web:api.bsky.chat#bsky_chat",
+    "ios_clip_name": "BlueskyClip",
+    "ios_nse_name": "BlueskyNSE",
+    "ios_share_with_name": "Share-with-Bluesky",
+    "expo_project_owner": "blueskysocial",
+    "expo_project_id": "87ab4766-b66c-489c-98ca-65e740fa205b",
+    "google_service_project_name": "blueskyweb",
+    "sentry_project_organization": "blueskyweb",
+    "updates_url": "https://updates.bsky.app/manifest",
+    "web_package_id": "xyz.blueskyweb.app"
+  },
+  "atproto_accounts": {
+    "follow_default": {
+      "did": "did:plc:z72i7hdynmk6r22z27h6tvur",
+      "varname": "BSKY_APP_ACCOUNT_DID"
+    }
+  },
+  "content": {
+    "feeds": null,
+    "dids": {
+      "feedgen": "did:plc:z72i7hdynmk6r22z27h6tvur",
+      "discover_debug": {}
+    }
+  },
+  "naming": {
+    "app_name": "Bluesky",
+    "full_app_name": "Bluesky Social",
+    "spoken_name": "Blue Sky"
+  },
+  "styling": {
+    "additional_color_defs": [],
+    "android_splash_background_color_dark": "#0c2a49",
+    "android_splash_background_color_light": "#0c7cff",
+    "background_color": "#1185FE",
+    "ios_splash_background_color_dark": "#001429",
+    "map_color_names": []
+  },
+  "verbage": {
+    "app_description": "the social internet",
+    "app_emoji": "🦋",
+    "profile_description_placeholder": "e.g. Artist, dog-lover, and avid reader.",
+    "post_prompt": "What's up?"
+  }
+}

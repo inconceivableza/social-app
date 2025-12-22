@@ -23,6 +23,7 @@ const openPermissionAlert = (perm: string) => {
 export function usePhotoLibraryPermission() {
   const [res, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ['photo'],
+    writeOnly: true,
   })
   const requestPhotoAccessIfNeeded = async () => {
     // On the, we use <input type="file"> to produce a filepicker
@@ -52,6 +53,7 @@ export function usePhotoLibraryPermission() {
 export function useVideoLibraryPermission() {
   const [res, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ['video'],
+    writeOnly: true,
   })
   const requestVideoAccessIfNeeded = async () => {
     // On the, we use <input type="file"> to produce a filepicker

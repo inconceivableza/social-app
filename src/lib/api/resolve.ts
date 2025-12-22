@@ -5,6 +5,7 @@ import {
 } from '@atproto/api'
 import {AtUri} from '@atproto/api'
 import {type BskyAgent} from '@atproto/api'
+import {lexiconIds as ids} from '@atproto/api'
 
 import {POST_IMG_MAX} from '#/lib/constants'
 import {getLinkMeta} from '#/lib/link-meta/link-meta'
@@ -27,6 +28,12 @@ import {createComposerImage} from '#/state/gallery'
 import {type Gif} from '#/state/queries/tenor'
 import {createGIFDescription} from '../gif-alt-text'
 import {convertBskyAppUrlIfNeeded, makeRecordUri} from '../strings/url-helpers'
+import {
+  isRecipePostView,
+  isReviewRatingView,
+  type RecipePostView,
+  type ReviewRatingView,
+} from './feed/utils'
 
 type ResolvedExternalLink = {
   type: 'external'
@@ -64,13 +71,28 @@ type ResolvedStarterPackRecord = {
   view: AppBskyGraphDefs.StarterPackView
 }
 
+interface ResolvedRecipePost {
+  type: 'record'
+  record: ComAtprotoRepoStrongRef.Main
+  kind: 'recipePost'
+  view: RecipePostView
+}
+
+interface ResolvedReviewPost {
+  type: 'record'
+  record: ComAtprotoRepoStrongRef.Main
+  kind: 'review'
+  view: ReviewRatingView
+}
+
 export type ResolvedLink =
   | ResolvedExternalLink
   | ResolvedPostRecord
   | ResolvedFeedRecord
   | ResolvedListRecord
   | ResolvedStarterPackRecord
-
+  | ResolvedRecipePost
+  | ResolvedReviewPost
 export class EmbeddingDisabledError extends Error {
   constructor() {
     super('Embedding is disabled for this record')
@@ -86,11 +108,43 @@ export async function resolveLink(
   }
   if (isBskyPostUrl(uri)) {
     uri = convertBskyAppUrlIfNeeded(uri)
-    const [_0, user, _1, rkey] = uri.split('/').filter(Boolean)
-    const recordUri = makeRecordUri(user, 'app.bsky.feed.post', rkey)
+    const [_0, user, postType, rkey] = uri.split('/').filter(Boolean)
+    let collection = ''
+    if (postType === 'recipePost') {
+      collection = ids.AppFoodiosFeedRecipePost
+    } else if (postType === 'post') {
+      collection = ids.AppBskyFeedPost
+    } else if (postType === 'reviewRating') {
+      collection = ids.AppFoodiosFeedReviewRating
+    } else {
+      throw new Error('unknown post type ' + uri)
+    }
+    const recordUri = makeRecordUri(user, collection, rkey)
     const post = await getPost({uri: recordUri})
     if (post.viewer?.embeddingDisabled) {
       throw new EmbeddingDisabledError()
+    }
+    if (isRecipePostView(post)) {
+      return {
+        type: 'record',
+        record: {
+          cid: post.cid,
+          uri: post.uri,
+          revisionUri: post.record.selectedRevisionUri,
+        },
+        kind: 'recipePost',
+        view: post,
+      }
+    } else if (isReviewRatingView(post)) {
+      return {
+        type: 'record',
+        record: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+        kind: 'review',
+        view: post,
+      }
     }
     return {
       type: 'record',

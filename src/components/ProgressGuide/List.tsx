@@ -1,7 +1,8 @@
-import {StyleProp, View, ViewStyle} from 'react-native'
+import {type StyleProp, View, type ViewStyle} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {
   useProgressGuide,
   useProgressGuideControls,
@@ -10,7 +11,6 @@ import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon} from '#/components/Button'
 import {TimesLarge_Stroke2_Corner0_Rounded as Times} from '#/components/icons/Times'
 import {Text} from '#/components/Typography'
-import {branding} from '#/lib/constants'
 import {FollowDialog} from './FollowDialog'
 import {ProgressGuideTask} from './Task'
 
@@ -29,7 +29,7 @@ export function ProgressGuideList({style}: {style?: StyleProp<ViewStyle>}) {
           <Text
             style={[
               t.atoms.text_contrast_medium,
-              a.font_bold,
+              a.font_semi_bold,
               a.text_sm,
               {textTransform: 'uppercase'},
             ]}>
@@ -51,7 +51,9 @@ export function ProgressGuideList({style}: {style?: StyleProp<ViewStyle>}) {
               current={guide.numFollows + 1}
               total={10 + 1}
               title={_(msg`Follow 10 accounts`)}
-              subtitle={_(msg`${branding.naming.app_name} is better with friends!`)}
+              subtitle={_(
+                msg`${branding.naming.app_name} is better with friends!`,
+              )}
             />
             <FollowDialog guide={guide} />
           </>
@@ -68,7 +70,9 @@ export function ProgressGuideList({style}: {style?: StyleProp<ViewStyle>}) {
               current={guide.numFollows + 1}
               total={7 + 1}
               title={_(msg`Follow 7 accounts`)}
-              subtitle={_(msg`${branding.naming.app_name} is better with friends!`)}
+              subtitle={_(
+                msg`${branding.naming.app_name} is better with friends!`,
+              )}
             />
           </>
         )}

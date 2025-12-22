@@ -24,12 +24,13 @@ import {
   getSocialAppName,
   getSocialAppUrl,
 } from '../env-config'
-import {niceDate} from '../utils'
+import * as bsky from '../types/bsky'
+import {niceDate} from '../util/nice-date'
 
 // Default post URL and URI loaded from env-content: embed.default_post
 const DEFAULT_POST =
   getDefaultPost() ||
-  `${getSocialAppUrl()}/profile/bsky.social/post/3jzn6g7ixgq2y`
+  `${getSocialAppUrl()}/profile/did:plc:vjug55kidv6sye7ykr5faxxn/post/3jzn6g7ixgq2y`
 const DEFAULT_URI =
   getDefaultPostUri() ||
   'at://did:plc:vjug55kidv6sye7ykr5faxxn/app.bsky.feed.post/3jzn6g7ixgq2y'
@@ -79,7 +80,7 @@ function LandingPage() {
                 throw new Error('Invalid pathname')
               }
               const [profile, didOrHandle, type, rkey] = split
-              if (profile !== 'profile' || type !== 'post') {
+              if (profile !== 'profile' || type !== 'post' && type !== 'recipePost' && type !== "reviewRating") {
                 throw new Error('Invalid profile or type')
               }
 
@@ -94,7 +95,11 @@ function LandingPage() {
                 did = resolution.data.did
               }
 
-              atUri = `at://${did}/app.bsky.feed.post/${rkey}`
+              const collection = type === "post" ? "app.bsky.feed.post" :
+                type === "recipePost" ? "app.foodios.feed.recipePost" :
+                  type === "reviewRating" ? "app.foodios.feed.reviewRating" : ""
+
+              atUri = `at://${did}/${collection}/${rkey}`
             } catch (err) {
               console.log(err)
               throw new Error(`Invalid ${getSocialAppName()} URL`)
@@ -242,7 +247,12 @@ function Snippet({
   const snippet = useMemo(() => {
     const record = thread.post.record
 
-    if (!AppBskyFeedPost.isRecord(record)) {
+    if (
+      !bsky.dangerousIsType<AppBskyFeedPost.Record>(
+        record,
+        AppBskyFeedPost.isRecord,
+      )
+    ) {
       return ''
     }
 

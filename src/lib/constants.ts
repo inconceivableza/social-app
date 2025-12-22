@@ -1,6 +1,6 @@
 import {type Insets, Platform} from 'react-native'
 import Constants from 'expo-constants'
-import {type AppBskyActorDefs} from '@atproto/api'
+import {type AppBskyActorDefs, BSKY_LABELER_DID} from '@atproto/api'
 
 import {
   beginResolveEnvConfig,
@@ -8,6 +8,8 @@ import {
   getStoredEnvConfig,
   getStoredEnvContent,
 } from '#/state/env-config'
+import {type ProxyHeaderValue} from '#/state/session/agent'
+import {BAPP_CONFIG_DEV_URL, IS_DEV} from '#/env'
 
 beginResolveEnvConfig()
 export const envConfig = getStoredEnvConfig()
@@ -18,16 +20,37 @@ export const STAGING_SERVICE =
   DOMAIN_ENVCONFIGS.staging.BSKY_SERVICE ||
   DOMAIN_ENVCONFIGS.bluesky_staging.BSKY_SERVICE
 export const BSKY_SERVICE = envConfig.BSKY_SERVICE
+export const BSKY_SERVICE_DID = envConfig.BSKY_SERVICE_DID
 export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 export const HELP_DESK_URL = envConfig.HELP_DESK_URL
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
-export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
+const usingBlueskyEmbed = [
+  DOMAIN_ENVCONFIGS.bluesky.SOCIAL_EMBED_SERVICE,
+  DOMAIN_ENVCONFIGS.bluesky_staging.SOCIAL_EMBED_SERVICE,
+].includes(EMBED_SERVICE)
+export const EMBED_SCRIPT = usingBlueskyEmbed
+  ? `${EMBED_SERVICE}/static/embed.js`
+  : `${EMBED_SERVICE}/embed.js`
 export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
 export const STARTER_PACK_MAX_SIZE = 150
+export const CARD_ASPECT_RATIO = 1200 / 630
 export const CHAT_DISABLED = true
-
-export const branding = (Constants?.expoConfig?.extra || {}).branding
+export const CUSTOM_HOSTING_DISABLED = true
+export const WELCOME_MODAL_DISABLED = true
+export const ONBOARDING_DISABLE_INTERESTS = true
+export const ONBOARDING_DISABLE_SUGGESTED_ACCOUNTS = true
+export const ONBOARDING_DISABLE_SUGGESTED_STARTERPACKS = true
+export const ONBOARDING_DISABLE_VALUE_PROP = true
+export const branding = (
+  Constants?.expoConfig?.extra || {
+    branding: {
+      naming: {
+        app_name: '',
+      },
+    },
+  }
+).branding
 
 // HACK
 // Yes, this is exactly what it looks like. It's a hard-coded constant
@@ -74,6 +97,9 @@ export const MAX_DESCRIPTION = 256
 export const MAX_GRAPHEME_LENGTH = 300
 
 export const MAX_DM_GRAPHEME_LENGTH = 1000
+
+export const MAX_RECIPE_TITLE_GRAPHEME_LENGTH = 500
+export const MAX_RECIPE_DESCRIPTION_GRAPHEME_LENGTH = 5000
 
 // Recommended is 100 per: https://www.w3.org/WAI/GL/WCAG20/tests/test3.html
 // but increasing limit per user feedback
@@ -152,7 +178,6 @@ export const createHitslop = (size: number): Insets => ({
 export const HITSLOP_10 = createHitslop(10)
 export const HITSLOP_20 = createHitslop(20)
 export const HITSLOP_30 = createHitslop(30)
-export const POST_CTRL_HITSLOP = {top: 5, bottom: 10, left: 10, right: 10}
 export const LANG_DROPDOWN_HITSLOP = {top: 10, bottom: 10, left: 4, right: 4}
 export const BACK_HITSLOP = HITSLOP_30
 export const MAX_POST_LINES = 25
@@ -289,6 +314,10 @@ export const VIDEO_SERVICE = envConfig.VIDEO_SERVICE
 export const VIDEO_SERVICE_DID = envConfig.VIDEO_SERVICE_DID
 
 export const VIDEO_MAX_DURATION_MS = 3 * 60 * 1000 // 3 minutes in milliseconds
+/**
+ * Maximum size of a video in megabytes, _not_ mebibytes. Backend uses
+ * ISO megabytes.
+ */
 export const VIDEO_MAX_SIZE = 1000 * 1000 * 100 // 100mb
 
 export const SUPPORTED_MIME_TYPES = [
@@ -314,12 +343,38 @@ export const urls = {
 
 // ironically named, as this points to the non-public api host
 export const PUBLIC_APPVIEW = envConfig.APPVIEW_URL
-// FIXME: appview_did -> env-config: APPVIEW_DID
 // This should then be loaded with env-config, and not configured separately for production and staging
-export const PUBLIC_APPVIEW_DID = 'did:web:api.web.dallan.inclan'
-export const PUBLIC_STAGING_APPVIEW_DID = 'did:web:api.staging.bsky.dev'
+export const PUBLIC_APPVIEW_DID = envConfig.APPVIEW_DID
+export const PUBLIC_STAGING_APPVIEW_DID = DOMAIN_ENVCONFIGS.staging.APPVIEW_DID
 
 export const DEV_ENV_APPVIEW = `http://localhost:2584` // always the same
+
+// temp hack for e2e - esb
+export const BLUESKY_PROXY_HEADER = {
+  value: `${envConfig.BSKY_PROXY_DID || envConfig.BSKY_SERVICE_DID}#bsky_appview`,
+  get() {
+    return this.value as ProxyHeaderValue
+  },
+  set(value: string) {
+    this.value = value
+  },
+}
+
+export const DM_SERVICE_HEADERS = {
+  'atproto-proxy': `${envConfig.DM_PROXY_DID || envConfig.DM_SERVICE_DID}#bsky_chat`,
+}
+
+export const BLUESKY_MOD_SERVICE_HEADERS = {
+  'atproto-proxy': `${BSKY_LABELER_DID}#atproto_labeler`,
+}
+
+// const IPCC_URL is the old style and not used by default any more
+const BAPP_CONFIG_URL_PROD = `https://ip.bsky.app/config`
+const BAPP_CONFIG_URL = IS_DEV
+  ? (BAPP_CONFIG_DEV_URL ?? BAPP_CONFIG_URL_PROD)
+  : BAPP_CONFIG_URL_PROD
+export const GEOLOCATION_CONFIG_URL =
+  envConfig.GEOLOCATION_CONFIG_URL || BAPP_CONFIG_URL
 
 const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
 export const webLinks = {

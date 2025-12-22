@@ -2,6 +2,7 @@ import {View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {branding} from '#/lib/constants'
 import {atoms as a, platform, tokens, useBreakpoints, useTheme} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {useDialogContext} from '#/components/Dialog'
@@ -13,7 +14,6 @@ import {Divider} from '#/components/Divider'
 import {GradientFill} from '#/components/GradientFill'
 import {ShieldCheck_Stroke2_Corner0_Rounded as ShieldIcon} from '#/components/icons/Shield'
 import {Text} from '#/components/Typography'
-import {branding} from '#/lib/constants'
 
 export function VerificationReminder({
   showScreen,
@@ -59,7 +59,7 @@ export function VerificationReminder({
       <View style={[a.mb_xs, {height: 150 - dialogPadding}]} />
 
       <View style={[a.gap_sm]}>
-        <Text style={[a.text_xl, a.font_heavy]}>
+        <Text style={[a.text_xl, a.font_bold]}>
           <Trans>Please verify your email</Trans>
         </Text>
         <Text style={[a.text_sm, a.leading_snug, t.atoms.text_contrast_medium]}>

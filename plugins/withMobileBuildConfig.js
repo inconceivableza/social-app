@@ -13,14 +13,14 @@ function withMobileBuildConfig(config) {
       // Copy missing assets for notification sounds into the main app bundle
       // This should not be needed but this plugin seems to have have affected Expo's automatic asset copying
       const platformProjectRoot = config.modRequest.platformProjectRoot
-      const mainAppDir = path.join(platformProjectRoot, 'FoodiosDev')
+      const platformProjectName = config.modRequest.projectName
+      const mainAppDir = path.join(platformProjectRoot, platformProjectName)
 
-      const aiffPath = path.join(mainAppDir, 'dm.aiff')
-      if (!fs.existsSync(aiffPath)) {
-        const soundFiles = ['dm.aiff', 'dm.mp3']
-        for (const soundFile of soundFiles) {
+      const soundFiles = ['dm.aiff', 'dm.mp3', 'timer.aiff', 'timer.mp3']
+      for (const soundFile of soundFiles) {
+        const targetPath = path.join(mainAppDir, soundFile)
+        if (!fs.existsSync(targetPath)) {
           const sourcePath = path.join(projectRoot, 'assets', soundFile)
-          const targetPath = path.join(mainAppDir, soundFile)
           if (fs.existsSync(sourcePath)) {
             fs.copyFileSync(sourcePath, targetPath)
             console.log(`Fixed missing notification sound: ${soundFile}`)
@@ -224,10 +224,42 @@ function generateKotlinObject(name, obj, indent = '    ') {
   return result
 }
 
+// EXPO_PUBLIC_ENV is used at build time to determine which server environment is configured as default
+function getDefaultEnv(envConfig) {
+  const profileConfigNameMap = {
+    testflight: 'staging',
+    preview: 'staging',
+  }
+  const envName = process.env.EXPO_PUBLIC_ENV || 'production'
+  const lookupName = profileConfigNameMap[envName] ?? envName
+  if (envConfig?.[lookupName]) {
+    console.info(
+      `Building mobile using ${lookupName} env-config for ${envName} environment`,
+    )
+    return envConfig?.[lookupName]
+  } else if (envConfig?.production) {
+    console.warn(
+      `Could not find env-config called ${lookupName}; using production as default`,
+    )
+  } else {
+    var envNames = Object.keys(envConfig ?? {}).join(', ')
+    console.warn(
+      `Could not find env-config named ${lookupName} or production; existing environments are ${envNames}`,
+    )
+    throw Error(
+      `Could not find a default environment config for mobile build: check EXPO_PUBLIC_ENV and app.config.js`,
+    )
+  }
+  return (
+    envConfig?.[profileConfigNameMap[envName] ?? envName] ||
+    envConfig?.production ||
+    {}
+  )
+}
+
 async function generateiOSConfig(projectRoot, config) {
   const {branding, 'env-config': envConfig} = config.extra || {}
-  const currentEnv = process.env.NODE_ENV || 'production'
-  const environmentConfig = envConfig?.[currentEnv] || {}
+  const environmentConfig = getDefaultEnv(envConfig)
 
   // Strip EXPO_PUBLIC_ prefix from envConfig keys
   const processedEnvConfig = {}
@@ -285,8 +317,7 @@ ${generateSwiftStruct('envConfig', configData.envConfig)}
 
 async function generateAndroidConfig(projectRoot, config) {
   const {branding, 'env-config': envConfig} = config.extra || {}
-  const currentEnv = process.env.NODE_ENV || 'production'
-  const environmentConfig = envConfig?.[currentEnv] || {}
+  const environmentConfig = getDefaultEnv(envConfig)
 
   // Strip EXPO_PUBLIC_ prefix from envConfig keys
   const processedEnvConfig = {}

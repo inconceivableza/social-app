@@ -1,4 +1,12 @@
-import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {
+  type JSX,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   ActivityIndicator,
   AppState,
@@ -14,6 +22,7 @@ import {
   type AppBskyActorDefs,
   AppBskyEmbedVideo,
   type AppBskyFeedDefs,
+  ModerationDecision,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -24,6 +33,7 @@ import {DISCOVER_FEED_URI, KNOWN_SHUTDOWN_FEEDS} from '#/lib/constants'
 import {useInitialNumToRender} from '#/lib/hooks/useInitialNumToRender'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {logEvent} from '#/lib/statsig/statsig'
+import {isNetworkError} from '#/lib/strings/errors'
 import {logger} from '#/logger'
 import {isIOS, isNative, isWeb} from '#/platform/detection'
 import {listenPostCreated} from '#/state/events'
@@ -62,6 +72,7 @@ import {TrendingInterstitial} from '#/components/interstitials/Trending'
 import {TrendingVideos as TrendingVideosInterstitial} from '#/components/interstitials/TrendingVideos'
 import {DiscoverFallbackHeader} from './DiscoverFallbackHeader'
 import {FeedShutdownMsg} from './FeedShutdownMsg'
+import {PostAuthorDidProvider} from './PostContext'
 import {PostFeedErrorMessage} from './PostFeedErrorMessage'
 import {PostFeedItem} from './PostFeedItem'
 import {ShowLessFollowup} from './ShowLessFollowup'
@@ -282,7 +293,9 @@ let PostFeed = ({
         }
       }
     } catch (e) {
-      logger.error('Poll latest failed', {feed, message: String(e)})
+      if (!isNetworkError(e)) {
+        logger.error('Poll latest failed', {feed, message: String(e)})
+      }
     }
   })
 
@@ -293,7 +306,7 @@ let PostFeed = ({
     // more than 1 page can trigger some UI freakouts on iOS and android
     // -prf
     if (
-      data?.pages.length === 1 &&
+      data?.pages.filter(p => !!p.slices.length).length === 1 &&
       (feed === 'following' ||
         feed === `author|${myDid}|posts_and_author_threads`)
     ) {
@@ -727,29 +740,86 @@ let PostFeed = ({
         const slice = row.slice
         const indexInSlice = row.indexInSlice
         const item = slice.items[indexInSlice]
-        return (
-          <PostFeedItem
-            post={item.post}
-            record={item.record}
-            reason={indexInSlice === 0 ? slice.reason : undefined}
-            feedContext={slice.feedContext}
-            reqId={slice.reqId}
-            moderation={item.moderation}
-            parentAuthor={item.parentAuthor}
-            showReplyTo={row.showReplyTo}
-            isThreadParent={isThreadParentAt(slice.items, indexInSlice)}
-            isThreadChild={isThreadChildAt(slice.items, indexInSlice)}
-            isThreadLastChild={
-              isThreadChildAt(slice.items, indexInSlice) &&
-              slice.items.length === indexInSlice + 1
-            }
-            isParentBlocked={item.isParentBlocked}
-            isParentNotFound={item.isParentNotFound}
-            hideTopBorder={rowIndex === 0 && indexInSlice === 0}
-            rootPost={slice.items[0].post}
-            onShowLess={onPressShowLess}
-          />
-        )
+
+        if (item.type === 'post') {
+          return (
+            <PostAuthorDidProvider did={item.post.author.did}>
+              <PostFeedItem
+                post={item.post}
+                record={item.record}
+                reason={indexInSlice === 0 ? slice.reason : undefined}
+                feedContext={slice.feedContext}
+                reqId={slice.reqId}
+                moderation={item.moderation}
+                parentAuthor={item.parentAuthor}
+                showReplyTo={row.showReplyTo}
+                isThreadParent={isThreadParentAt(slice.items, indexInSlice)}
+                isThreadChild={isThreadChildAt(slice.items, indexInSlice)}
+                isThreadLastChild={
+                  isThreadChildAt(slice.items, indexInSlice) &&
+                  slice.items.length === indexInSlice + 1
+                }
+                isParentBlocked={item.isParentBlocked}
+                isParentNotFound={item.isParentNotFound}
+                hideTopBorder={rowIndex === 0 && indexInSlice === 0}
+                rootPost={slice.items[0].post}
+                onShowLess={onPressShowLess}
+              />
+            </PostAuthorDidProvider>
+          )
+        } else if (item.type === 'review') {
+          return (
+            <PostAuthorDidProvider did={item.post.author.did}>
+              <PostFeedItem
+                post={item.post}
+                record={item.post.record}
+                reason={indexInSlice === 0 ? slice.reason : undefined}
+                feedContext={slice.feedContext}
+                reqId={slice.reqId}
+                moderation={new ModerationDecision()}
+                parentAuthor={item.parentAuthor}
+                showReplyTo={row.showReplyTo}
+                isThreadParent={isThreadParentAt(slice.items, indexInSlice)}
+                isThreadChild={isThreadChildAt(slice.items, indexInSlice)}
+                isThreadLastChild={
+                  isThreadChildAt(slice.items, indexInSlice) &&
+                  slice.items.length === indexInSlice + 1
+                }
+                isParentBlocked={item.isParentBlocked}
+                isParentNotFound={item.isParentNotFound}
+                hideTopBorder={rowIndex === 0 && indexInSlice === 0}
+                rootPost={slice.items[0].post}
+                onShowLess={onPressShowLess}
+              />
+            </PostAuthorDidProvider>
+          )
+        } else if (item.type === 'recipe') {
+          return (
+            <PostAuthorDidProvider did={item.post.author.did}>
+              <PostFeedItem
+                post={item.post}
+                record={item.post.record}
+                reason={indexInSlice === 0 ? slice.reason : undefined}
+                feedContext={slice.feedContext}
+                reqId={slice.reqId}
+                moderation={new ModerationDecision()}
+                parentAuthor={item.parentAuthor}
+                showReplyTo={row.showReplyTo}
+                isThreadParent={isThreadParentAt(slice.items, indexInSlice)}
+                isThreadChild={isThreadChildAt(slice.items, indexInSlice)}
+                isThreadLastChild={
+                  isThreadChildAt(slice.items, indexInSlice) &&
+                  slice.items.length === indexInSlice + 1
+                }
+                isParentBlocked={item.isParentBlocked}
+                isParentNotFound={item.isParentNotFound}
+                hideTopBorder={rowIndex === 0 && indexInSlice === 0}
+                rootPost={slice.items[0].post}
+                onShowLess={onPressShowLess}
+              />
+            </PostAuthorDidProvider>
+          )
+        }
       } else if (row.type === 'sliceViewFullThread') {
         return <ViewFullThread uri={row.uri} />
       } else if (row.type === 'videoGridRowPlaceholder') {

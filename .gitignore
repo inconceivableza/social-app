@@ -58,6 +58,7 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+Gemfile.lock
 
 # auto-generated mobile build config
 modules/**/MobileBuildConfig.swift
@@ -123,3 +124,6 @@ src/locale/locales/**/*.js
 
 # ogcard assets
 bskyogcard/src/assets/fonts/noto-*
+
+# temporary package directory
+/eas-vendor-packages/

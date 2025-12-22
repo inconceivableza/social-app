@@ -3,25 +3,36 @@ import {View} from 'react-native'
 import {
   type AppBskyFeedDefs,
   type AppBskyFeedThreadgate,
+  AppFoodiosFeedReviewRating,
   AtUri,
   RichText as RichTextAPI,
 } from '@atproto/api'
-import {Trans} from '@lingui/macro'
+import {msg, Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
+import {
+  dangerousIsPostRecord,
+  dangerousIsRecipeView,
+  isRecipePostView,
+  isReviewRatingView,
+  postHref,
+  recipePostSummaryRichText,
+} from '#/lib/api/feed/utils'
 import {MAX_POST_LINES} from '#/lib/constants'
 import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
-import {makeProfileLink} from '#/lib/routes/links'
 import {countLines} from '#/lib/strings/helpers'
 import {
   POST_TOMBSTONE,
   type Shadow,
   usePostShadow,
 } from '#/state/cache/post-shadow'
+import {useModalControls} from '#/state/modals'
 import {type ThreadItem} from '#/state/queries/usePostThread/types'
 import {useSession} from '#/state/session'
 import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
+import {ExpandableRecipePost} from '#/view/com/posts/ExpandableRecipePost'
 import {PostMeta} from '#/view/com/util/PostMeta'
 import {PreviewableUserAvatar} from '#/view/com/util/UserAvatar'
 import {
@@ -29,8 +40,10 @@ import {
   OUTER_SPACE,
   REPLY_LINE_WIDTH,
 } from '#/screens/PostThread/const'
-import {atoms as a, useTheme} from '#/alf'
+import {atoms as a, useTheme, web} from '#/alf'
+import {Button, ButtonIcon} from '#/components/Button'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
+import {OutdatedIcon} from '#/components/icons/Outdated'
 import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
 import {LabelsOnMyPost} from '#/components/moderation/LabelsOnMe'
 import {PostAlerts} from '#/components/moderation/PostAlerts'
@@ -41,7 +54,7 @@ import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
 import {PostControls} from '#/components/PostControls'
 import {RichText} from '#/components/RichText'
 import * as Skele from '#/components/Skeleton'
-import {SubtleWebHover} from '#/components/SubtleWebHover'
+import {SubtleHover} from '#/components/SubtleHover'
 import {Text} from '#/components/Typography'
 
 export type ThreadItemPostProps = {
@@ -52,13 +65,16 @@ export type ThreadItemPostProps = {
   }
   onPostSuccess?: (data: OnPostSuccessData) => void
   threadgateRecord?: AppBskyFeedThreadgate.Record
+  anchor?: Extract<ThreadItem, {type: 'threadPost'}>
 }
 
 export function ThreadItemPost({
   item,
   overrides,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
+  anchor,
 }: ThreadItemPostProps) {
   const postShadow = usePostShadow(item.value.post)
 
@@ -73,6 +89,8 @@ export function ThreadItemPost({
       threadgateRecord={threadgateRecord}
       overrides={overrides}
       onPostSuccess={onPostSuccess}
+      onReviewRateSuccess={onReviewRateSuccess}
+      anchor={anchor}
     />
   )
 }
@@ -106,7 +124,8 @@ function ThreadItemPostDeleted({
           ]}>
           <TrashIcon style={[t.atoms.text_contrast_medium]} />
         </View>
-        <Text style={[a.text_md, a.font_bold, t.atoms.text_contrast_medium]}>
+        <Text
+          style={[a.text_md, a.font_semi_bold, t.atoms.text_contrast_medium]}>
           <Trans>Post has been deleted</Trans>
         </Text>
       </View>
@@ -131,9 +150,7 @@ const ThreadItemPostOuterWrapper = memo(function ThreadItemPostOuterWrapper({
     <View
       style={[
         showTopBorder && [a.border_t, t.atoms.border_contrast_low],
-        {
-          paddingHorizontal: OUTER_SPACE,
-        },
+        {paddingHorizontal: OUTER_SPACE},
         // If there's no next child, add a little padding to bottom
         !item.ui.showChildReplyLine &&
           !item.ui.precedesChildReadMore && {
@@ -180,7 +197,9 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   postShadow,
   overrides,
   onPostSuccess,
+  onReviewRateSuccess,
   threadgateRecord,
+  anchor,
 }: ThreadItemPostProps & {
   postShadow: Shadow<AppBskyFeedDefs.PostView>
 }) {
@@ -193,19 +212,27 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
   const moderation = item.moderation
   const richText = useMemo(
     () =>
-      new RichTextAPI({
-        text: record.text,
-        facets: record.facets,
-      }),
-    [record],
+      isRecipePostView(post)
+        ? new RichTextAPI({
+            text: recipePostSummaryRichText(post.record.revisionContent),
+          })
+        : isReviewRatingView(post)
+          ? new RichTextAPI({
+              text: post.record.text ?? '',
+            })
+          : new RichTextAPI({
+              text: record.text ?? '',
+              facets: record.facets,
+            }),
+    [record, post],
   )
   const [limitLines, setLimitLines] = useState(
     () => countLines(richText?.text) >= MAX_POST_LINES,
   )
+
   const threadRootUri = record.reply?.root?.uri || post.uri
-  const postHref = useMemo(() => {
-    const urip = new AtUri(post.uri)
-    return makeProfileLink(post.author, 'post', urip.rkey)
+  const href = useMemo(() => {
+    return postHref(post.author, post.uri)
   }, [post.uri, post.author])
   const threadgateHiddenReplies = useMergedThreadgateHiddenReplies({
     threadgateRecord,
@@ -227,6 +254,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
 
   const onPressReply = useCallback(() => {
     openComposer({
+      type: 'post',
       replyTo: {
         uri: post.uri,
         cid: post.cid,
@@ -234,27 +262,66 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
         author: post.author,
         embed: post.embed,
         moderation,
+        langs: post.record.langs,
       },
       onPostSuccess: onPostSuccess,
     })
   }, [openComposer, post, record, onPostSuccess, moderation])
+
+  const onPressReviewRate = useCallback(() => {
+    if (dangerousIsRecipeView(post)) {
+      openComposer({
+        type: 'post',
+        replyTo: {
+          uri: post.uri,
+          cid: post.cid,
+          text: record.text,
+          author: post.author,
+          embed: post.embed,
+          moderation,
+        },
+        onPostSuccess: onReviewRateSuccess,
+      })
+    }
+  }, [openComposer, post, record, onReviewRateSuccess, moderation])
 
   const onPressShowMore = useCallback(() => {
     setLimitLines(false)
   }, [setLimitLines])
 
   const {isActive: live} = useActorStatus(post.author)
-
+  const {openModal} = useModalControls()
+  // recipe revisions don't have a reply so they are the root
+  const rootReplyRef = AppFoodiosFeedReviewRating.isRecord(record)
+    ? record.subject
+    : dangerousIsPostRecord(record)
+      ? record.reply?.root
+      : null
+  const anchorRevision =
+    isRecipePostView(anchor?.value.post) &&
+    anchor?.value.post.record.selectedRevisionUri
+  const revisionMismatch =
+    anchorRevision &&
+    rootReplyRef &&
+    rootReplyRef.revisionUri &&
+    anchorRevision !== rootReplyRef.revisionUri
+  const {_} = useLingui()
+  const constitutesRating =
+    AppFoodiosFeedReviewRating.isRecord(record) &&
+    typeof record.reviewRating !== 'undefined'
+  const constitutesReview =
+    AppFoodiosFeedReviewRating.isRecord(record) && record.text
   return (
-    <SubtleHover>
+    <SubtleHoverWrapper>
       <ThreadItemPostOuterWrapper item={item} overrides={overrides}>
         <PostHider
           testID={`postThreadItem-by-${post.author.handle}`}
-          href={postHref}
+          href={href}
           disabled={overrides?.moderation === true}
           modui={moderation.ui('contentList')}
+          hiderStyle={[a.pl_0, a.pr_2xs, a.bg_transparent]}
           iconSize={LINEAR_AVI_WIDTH}
-          iconStyles={{marginLeft: 2, marginRight: 2}}
+          iconStyles={[a.mr_xs]}
           profile={post.author}
           interpretFilterAsBlur>
           <ThreadItemPostParentReplyLine item={item} />
@@ -290,16 +357,51 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 author={post.author}
                 moderation={moderation}
                 timestamp={post.indexedAt}
-                postHref={postHref}
-                style={[a.pb_xs]}
-              />
+                postHref={href}
+                style={[a.pb_xs]}>
+                {revisionMismatch && (
+                  <Button
+                    style={[a.pr_sm]}
+                    label={_(msg`Show original version`)}
+                    onPress={() => {
+                      // TODO: add api method for retrieving revision and remove all query param logic from getPosts
+                      rootReplyRef.revisionUri &&
+                        openModal({
+                          name: 'recipe-revision-view',
+                          uri: `${anchor.uri}?revision=${new AtUri(rootReplyRef.revisionUri).rkey}`,
+                        })
+                    }}>
+                    <ButtonIcon size="sm" icon={OutdatedIcon} />
+                  </Button>
+                )}
+                {(constitutesRating || constitutesReview) && (
+                  <Text
+                    style={[
+                      a.pl_xs,
+                      a.italic,
+                      a.text_md,
+                      a.leading_tight,
+                      a.flex_grow,
+                      a.text_right,
+                      t.atoms.text_contrast_medium,
+                      web({
+                        whiteSpace: 'nowrap',
+                      }),
+                    ]}>
+                    {constitutesRating ? ' rated this' : ' reviewed this'}
+                  </Text>
+                )}
+              </PostMeta>
               <LabelsOnMyPost post={post} style={[a.pb_xs]} />
               <PostAlerts
                 modui={moderation.ui('contentList')}
                 style={[a.pb_2xs]}
                 additionalCauses={additionalPostAlerts}
               />
-              {richText?.text ? (
+
+              {isRecipePostView(post) ? (
+                <ExpandableRecipePost revision={post.record} />
+              ) : richText?.text ? (
                 <>
                   <RichText
                     enableTags
@@ -317,6 +419,7 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                   )}
                 </>
               ) : undefined}
+
               {post.embed && (
                 <View style={[a.pb_xs]}>
                   <Embed
@@ -331,6 +434,8 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
                 record={record}
                 richText={richText}
                 onPressReply={onPressReply}
+                onPressReviewRate={onPressReviewRate}
+                onPostChanged={onPostSuccess}
                 logContext="PostThreadItem"
                 threadgateRecord={threadgateRecord}
               />
@@ -338,11 +443,11 @@ const ThreadItemPostInner = memo(function ThreadItemPostInner({
           </View>
         </PostHider>
       </ThreadItemPostOuterWrapper>
-    </SubtleHover>
+    </SubtleHoverWrapper>
   )
 })
 
-function SubtleHover({children}: {children: ReactNode}) {
+function SubtleHoverWrapper({children}: {children: ReactNode}) {
   const {
     state: hover,
     onIn: onHoverIn,
@@ -353,7 +458,7 @@ function SubtleHover({children}: {children: ReactNode}) {
       onPointerEnter={onHoverIn}
       onPointerLeave={onHoverOut}
       style={a.pointer}>
-      <SubtleWebHover hover={hover} />
+      <SubtleHover hover={hover} />
       {children}
     </View>
   )

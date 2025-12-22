@@ -53,12 +53,14 @@ const TooltipContext = createContext<TooltipContextType>({
   visible: false,
   onVisibleChange: () => {},
 })
+TooltipContext.displayName = 'TooltipContext'
 
 const TargetContext = createContext<TargetContextType>({
   targetMeasurements: undefined,
   setTargetMeasurements: () => {},
   shouldMeasure: false,
 })
+TargetContext.displayName = 'TargetContext'
 
 export function Outer({
   children,
@@ -142,9 +144,11 @@ export function Target({children}: {children: React.ReactNode}) {
 export function Content({
   children,
   label,
+  hide,
 }: {
   children: React.ReactNode
   label: string
+    hide?: boolean
 }) {
   const {position, visible, onVisibleChange} = useContext(TooltipContext)
   const {targetMeasurements} = useContext(TargetContext)
@@ -159,6 +163,7 @@ export function Content({
       <Bubble
         label={label}
         position={position}
+        hide={hide}
         /*
          * Gotta pass these in here. Inside the Bubble, we're Potal-ed outside
          * the context providers.
@@ -177,9 +182,11 @@ function Bubble({
   position,
   requestClose,
   targetMeasurements,
+  hide,
 }: {
   children: React.ReactNode
   label: string
+    hide?: boolean
   position: TooltipContextType['position']
   requestClose: () => void
   targetMeasurements: Exclude<
@@ -332,11 +339,13 @@ function Bubble({
             a.top_0,
             a.z_10,
             t.atoms.bg,
-            select(t.name, {
-              light: t.atoms.bg,
-              dark: t.atoms.bg_contrast_100,
-              dim: t.atoms.bg_contrast_100,
-            }),
+            hide
+              ? { backgroundColor: 'transparent' }
+              : select(t.name, {
+                  light: t.atoms.bg,
+                  dark: t.atoms.bg_contrast_100,
+                  dim: t.atoms.bg_contrast_100,
+                }),
             {
               borderTopLeftRadius: a.rounded_2xs.borderRadius,
               borderBottomRightRadius: a.rounded_2xs.borderRadius,
@@ -358,7 +367,7 @@ function Bubble({
               dark: t.atoms.bg_contrast_100,
               dim: t.atoms.bg_contrast_100,
             }),
-            t.atoms.shadow_md,
+            !hide && t.atoms.shadow_md,
             {
               shadowOpacity: 0.2,
               shadowOffset: {

@@ -6,7 +6,7 @@
   },
   "build": {
     "base": {
-      "node": "20.18.2"
+      "node": "20.19.4"
     },
     "development": {
       "extends": "base",
@@ -14,11 +14,17 @@
       "distribution": "internal",
       "channel": "development",
       "ios": {
-        "simulator": true,
         "resourceClass": "large"
       },
       "env": {
         "EXPO_PUBLIC_ENV": "development"
+      }
+    },
+    "development-simulator": {
+      "extends": "development",
+      "ios": {
+        "simulator": true,
+        "resourceClass": "large"
       }
     },
     "preview": {
@@ -36,7 +42,8 @@
       "extends": "base",
       "ios": {
         "resourceClass": "large",
-        "autoIncrement": true
+        "autoIncrement": true,
+        "buildArtifactPaths": ["ios/build/*"]
       },
       "android": {
         "autoIncrement": true
@@ -50,7 +57,8 @@
       "extends": "base",
       "distribution": "internal",
       "ios": {
-        "autoIncrement": false
+        "autoIncrement": false,
+        "buildArtifactPaths": ["ios/build/*"]
       },
       "android": {
         "autoIncrement": false
@@ -63,7 +71,8 @@
     "testflight": {
       "extends": "base",
       "ios": {
-        "autoIncrement": true
+        "autoIncrement": true,
+        "buildArtifactPaths": ["ios/build/*"]
       },
       "android": {
         "autoIncrement": true
@@ -77,7 +86,8 @@
       "extends": "base",
       "distribution": "internal",
       "ios": {
-        "autoIncrement": true
+        "autoIncrement": true,
+        "buildArtifactPaths": ["ios/build/*"]
       },
       "android": {
         "autoIncrement": true,

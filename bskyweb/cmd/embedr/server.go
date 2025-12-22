@@ -15,24 +15,30 @@ import (
 	text_template "text/template"
 	"time"
 
+	_ "net/http/pprof"
+
 	"github.com/bluesky-social/indigo/atproto/identity"
 	"github.com/bluesky-social/indigo/util/cliutil"
 	"github.com/bluesky-social/indigo/xrpc"
 	"github.com/bluesky-social/social-app/bskyweb"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	"github.com/labstack/echo-contrib/echoprometheus"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/klauspost/compress/gzhttp"
 	"github.com/klauspost/compress/gzip"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/urfave/cli/v2"
 )
 
 type Server struct {
-	echo  *echo.Echo
-	httpd *http.Server
-	xrpcc *xrpc.Client
-	dir   identity.Directory
-	cfg   *Config
+	echo         *echo.Echo
+	httpd        *http.Server
+	metricsHttpd *http.Server
+	xrpcc        *xrpc.Client
+	dir          identity.Directory
+	cfg          *Config
 }
 
 type Config struct {
@@ -52,6 +58,7 @@ func serve(cctx *cli.Context) error {
 	debug := cctx.Bool("debug")
 	httpAddress := cctx.String("http-address")
 	appviewHost := cctx.String("appview-host")
+	metricsAddress := cctx.String("metrics-address")
 	socialappParsedUrl, err := url.Parse(cctx.String("socialapp-url"))
 	if err != nil {
 		log.Fatalf("Error parsing socialapp-url: %v", err)
@@ -85,13 +92,28 @@ func serve(cctx *cli.Context) error {
 		return err
 	}
 
+	metricsMux := http.DefaultServeMux
+	metricsMux.Handle("/metrics", promhttp.Handler())
+
+	metricsHttpd := &http.Server{
+		Addr:    metricsAddress,
+		Handler: metricsMux,
+	}
+
+	go func() {
+		if err := metricsHttpd.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Error("failed to start metrics server", "error", err)
+		}
+	}()
+
 	//
 	// server
 	//
 	server := &Server{
-		echo:  e,
-		xrpcc: xrpcc,
-		dir:   identity.DefaultDirectory(),
+		echo:         e,
+		xrpcc:        xrpcc,
+		dir:          identity.DefaultDirectory(),
+		metricsHttpd: metricsHttpd,
 		cfg: &Config{
 			appviewUrl:     appviewHost,
 			cardUrl:        cctx.String("card-url"),
@@ -155,7 +177,7 @@ func serve(cctx *cli.Context) error {
 			return id, nil
 		},
 		DenyHandler: func(c echo.Context, identifier string, err error) error {
-			return c.String(http.StatusTooManyRequests, fmt.Sprint("Your request has been rate limited. Please try again later. Contact %s if you believe this was a mistake.\n", server.cfg.supportEmail))
+			return c.String(http.StatusTooManyRequests, fmt.Sprintf("Your request has been rate limited. Please try again later. Contact %s if you believe this was a mistake.\n", server.cfg.supportEmail))
 		},
 	}))
 
@@ -164,6 +186,14 @@ func serve(cctx *cli.Context) error {
 	e.Use(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{
 		RedirectCode: http.StatusFound,
 	}))
+
+	echoprom := echoprometheus.NewMiddlewareWithConfig(
+		echoprometheus.MiddlewareConfig{
+			DoNotUseRequestPathFor404: true,
+		},
+	)
+
+	e.Use(echoprom)
 
 	//
 	// configure routes
@@ -253,6 +283,11 @@ func (srv *Server) Shutdown() error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	// Shutdown metrics server too
+	if srv.metricsHttpd != nil {
+		srv.metricsHttpd.Shutdown(ctx)
+	}
 
 	return srv.httpd.Shutdown(ctx)
 }

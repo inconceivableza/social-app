@@ -1,5 +1,6 @@
 import {useCallback, useMemo, useState} from 'react'
-import {AppBskyFeedGetLikes as GetLikes} from '@atproto/api'
+import {View} from 'react-native'
+import {type AppBskyFeedGetLikes as GetLikes} from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
@@ -11,22 +12,19 @@ import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {ProfileCardWithFollowBtn} from '#/view/com/profile/ProfileCard'
 import {List} from '#/view/com/util/List'
 import {ListFooter, ListMaybePlaceholder} from '#/components/Lists'
-
-function renderItem({item, index}: {item: GetLikes.Like; index: number}) {
-  return (
-    <ProfileCardWithFollowBtn
-      key={item.actor.did}
-      profile={item.actor}
-      noBorder={index === 0}
-    />
-  )
-}
+import {Text} from '#/components/Typography'
 
 function keyExtractor(item: GetLikes.Like) {
   return item.actor.did
 }
 
-export function PostLikedBy({uri}: {uri: string}) {
+export function PostLikedBy({
+  uri,
+  revisionUri,
+}: {
+  uri: string
+  revisionUri?: string
+}) {
   const {_} = useLingui()
   const initialNumToRender = useInitialNumToRender()
 
@@ -46,7 +44,6 @@ export function PostLikedBy({uri}: {uri: string}) {
     error,
     refetch,
   } = useLikedByQuery(resolvedUri?.uri)
-
   const isError = Boolean(resolveError || error)
 
   const likes = useMemo(() => {
@@ -55,6 +52,21 @@ export function PostLikedBy({uri}: {uri: string}) {
     }
     return []
   }, [data])
+
+  const renderItem = useCallback(
+    ({item, index}: {item: GetLikes.Like; index: number}) => {
+      return (
+        <View key={item.actor.did}>
+          <ProfileCardWithFollowBtn
+            profile={item.actor}
+            noBorder={index === 0}
+          />
+          <Text>{item.revisionUri !== revisionUri && 'outdated'}</Text>
+        </View>
+      )
+    },
+    [revisionUri],
+  )
 
   const onRefresh = useCallback(async () => {
     setIsPTRing(true)

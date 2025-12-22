@@ -3,14 +3,67 @@ FROM node:20.11-alpine3.18 as build
 ARG SOCIAL_APP_NAME
 ENV SOCIAL_APP_NAME=${SOCIAL_APP_NAME}
 
+RUN corepack enable
+
+WORKDIR /app/submodules/atproto
+
+COPY ./submodules/atproto/package.json ./
+RUN corepack prepare --activate
+
+COPY ./submodules/atproto/tsconfig ./tsconfig
+# NOTE social-card's transitive dependencies go here: if that changes, this needs to be updated.
+# pnpm ls --only-projects --parseable -F api... -F common... | sed 's#^.*atproto/##'
+COPY ./submodules/atproto/packages/api/package.json ./packages/api/package.json
+COPY ./submodules/atproto/packages/common/package.json ./packages/common/package.json
+COPY ./submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY ./submodules/atproto/packages/common-web/package.json ./packages/common-web/package.json
+COPY ./submodules/atproto/packages/lex-cli/package.json ./packages/lex-cli/package.json
+COPY ./submodules/atproto/packages/lex/lex-cbor/package.json ./packages/lex/lex-cbor/package.json
+COPY ./submodules/atproto/packages/lex/lex-data/package.json ./packages/lex/lex-data/package.json
+COPY ./submodules/atproto/packages/lex/lex-json/package.json ./packages/lex/lex-json/package.json
+COPY ./submodules/atproto/packages/lexicon/package.json ./packages/lexicon/package.json
+COPY ./submodules/atproto/packages/syntax/package.json ./packages/syntax/package.json
+COPY ./submodules/atproto/packages/xrpc/package.json ./packages/xrpc/package.json
+
+COPY ./submodules/atproto/package.json ./package.json
+COPY ./submodules/atproto/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY ./submodules/atproto/pnpm-workspace.yaml ./pnpm-workspace.yaml
+
+RUN pnpm install --frozen-lockfile
+
+# COPY ./submodules/atproto/ .
+
+COPY ./submodules/atproto/*.js* ./
+# NOTE matching transitive dependencies from above
+COPY ./submodules/atproto/packages/api ./packages/api
+COPY ./submodules/atproto/packages/common ./packages/common
+COPY ./submodules/atproto/packages/common-web ./packages/common-web
+COPY ./submodules/atproto/packages/common-web ./packages/common-web
+COPY ./submodules/atproto/packages/lex-cli ./packages/lex-cli
+COPY ./submodules/atproto/packages/lex/lex-cbor ./packages/lex/lex-cbor
+COPY ./submodules/atproto/packages/lex/lex-data ./packages/lex/lex-data
+COPY ./submodules/atproto/packages/lex/lex-json ./packages/lex/lex-json
+COPY ./submodules/atproto/packages/lexicon ./packages/lexicon
+COPY ./submodules/atproto/packages/syntax ./packages/syntax
+COPY ./submodules/atproto/packages/xrpc ./packages/xrpc
+
+# build all packages with external node_modules
+RUN pnpm build
+# clean up
+# RUN rm -rf node_modules
+# install only prod deps, hoisted to root node_modules dir
+# RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
+
 # Move files into the image and install
-WORKDIR /app
+WORKDIR /app/bskyogcard
 
 COPY ./bskyogcard/package.json ./
 COPY ./bskyogcard/yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-COPY ./bskyogcard ./
+COPY ./bskyogcard/*.json ./
+COPY ./bskyogcard/src ./src
+COPY ./bskyogcard/scripts ./scripts
 
 # build then prune dev deps
 RUN yarn install-fonts && yarn build
@@ -24,15 +77,17 @@ RUN apk add --update dumb-init
 # Avoid zombie processes, handle signal forwarding
 ENTRYPOINT ["dumb-init", "--"]
 
-WORKDIR /app
-COPY --from=build /app /app
+WORKDIR /app/bskyogcard
+COPY --from=build /app/submodules/atproto/ /app/submodules/atproto/
+COPY --from=build /app/bskyogcard /app/bskyogcard
 RUN mkdir /app/data && chown node /app/data
 
 VOLUME /app/data
-EXPOSE 3000
+EXPOSE 3000 3001
+ENV CARD_PORT=3000
+ENV CARD_METRICS_PORT=3001
 ARG CARD_VERSION
 ENV CARD_VERSION=${CARD_VERSION}
-ENV CARD_PORT=3000
 ENV NODE_ENV=production
 # potential perf issues w/ io_uring on this version of node
 ENV UV_USE_IO_URING=0

@@ -6,10 +6,8 @@ import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 import debounce from 'lodash.debounce'
 
-import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
-import {ComposeIcon2} from '#/lib/icons'
 import {
   type CommonNavigatorParams,
   type NativeStackScreenProps,
@@ -26,7 +24,6 @@ import {
 import {useSession} from '#/state/session'
 import {useSetMinimalShellMode} from '#/state/shell'
 import {ErrorMessage} from '#/view/com/util/error/ErrorMessage'
-import {FAB} from '#/view/com/util/fab/FAB'
 import {List, type ListMethods} from '#/view/com/util/List'
 import {FeedFeedLoadingPlaceholder} from '#/view/com/util/LoadingPlaceholder'
 import {Text} from '#/view/com/util/text/Text'
@@ -46,6 +43,7 @@ import {SettingsGear2_Stroke2_Corner0_Rounded as Gear} from '#/components/icons/
 import * as Layout from '#/components/Layout'
 import {Link} from '#/components/Link'
 import * as ListCard from '#/components/ListCard'
+import {ComposeFAB} from '../com/composer/ComposeFAB'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'Feeds'>
 
@@ -105,7 +103,6 @@ type FlatlistSlice =
 
 export function FeedsScreen(_props: Props) {
   const pal = usePalette('default')
-  const {openComposer} = useOpenComposer()
   const {isMobile} = useWebMediaQueries()
   const [query, setQuery] = React.useState('')
   const [isPTR, setIsPTR] = React.useState(false)
@@ -144,9 +141,11 @@ export function FeedsScreen(_props: Props) {
     () => debounce(q => search(q), 500), // debounce for 500ms
     [search],
   )
-  const onPressCompose = React.useCallback(() => {
-    openComposer({})
-  }, [openComposer])
+  /* const onPressCompose = React.useCallback(() => {
+    openComposer({
+      type: 'post'
+    })
+  }, [openComposer]) */
   const onChangeQuery = React.useCallback(
     (text: string) => {
       setQuery(text)
@@ -542,17 +541,7 @@ export function FeedsScreen(_props: Props) {
           sideBorders={false}
         />
       </Layout.Center>
-
-      {hasSession && (
-        <FAB
-          testID="composeFAB"
-          onPress={onPressCompose}
-          icon={<ComposeIcon2 strokeWidth={1.5} size={29} style={s.white} />}
-          accessibilityRole="button"
-          accessibilityLabel={_(msg`New post`)}
-          accessibilityHint=""
-        />
-      )}
+      {hasSession && <ComposeFAB />}
     </Layout.Screen>
   )
 }
@@ -700,7 +689,7 @@ function FeedsSavedHeader() {
       }>
       <IconCircle icon={ListSparkle_Stroke2_Corner0_Rounded} size="lg" />
       <View style={[a.flex_1, a.gap_xs]}>
-        <Text style={[a.flex_1, a.text_2xl, a.font_heavy, t.atoms.text]}>
+        <Text style={[a.flex_1, a.text_2xl, a.font_bold, t.atoms.text]}>
           <Trans>My Feeds</Trans>
         </Text>
         <Text style={[t.atoms.text_contrast_high]}>
@@ -726,7 +715,7 @@ function FeedsAboutHeader() {
         size="lg"
       />
       <View style={[a.flex_1, a.gap_sm]}>
-        <Text style={[a.flex_1, a.text_2xl, a.font_heavy, t.atoms.text]}>
+        <Text style={[a.flex_1, a.text_2xl, a.font_bold, t.atoms.text]}>
           <Trans>Discover New Feeds</Trans>
         </Text>
         <Text style={[t.atoms.text_contrast_high]}>

@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 import {View} from 'react-native'
+import {type $Typed} from '@atproto/api'
+import {type AppBskyEmbedRecord} from '@atproto/api'
 
 import {createEmbedViewRecordFromPost} from '#/state/queries/postgate/util'
 import {useResolveLinkQuery} from '#/state/queries/resolve-link'
@@ -10,9 +12,46 @@ export function LazyQuoteEmbed({uri}: {uri: string}) {
   const t = useTheme()
   const {data} = useResolveLinkQuery(uri)
 
-  const view = useMemo(() => {
-    if (!data || data.type !== 'record' || data.kind !== 'post') return
-    return createEmbedViewRecordFromPost(data.view)
+  const view = useMemo<$Typed<ViewRecord> | undefined>(() => {
+    if (!data || data.type !== 'record') return
+    if (data.kind === 'post') {
+      return createEmbedViewRecordFromPost(data.view)
+    } else if (data.kind === 'recipePost') {
+      const {view} = data
+      const viewRec: $Typed<AppBskyEmbedRecord.ViewRecord> = {
+        $type: 'app.bsky.embed.record#viewRecord',
+        uri: view.uri,
+        cid: view.cid,
+        author: view.author,
+        value: view.record,
+        labels: view.labels,
+        replyCount: view.replyCount,
+        repostCount: view.repostCount,
+        likeCount: view.likeCount,
+        quoteCount: view.quoteCount,
+        indexedAt: view.indexedAt,
+        embeds: view.embed ? [view.embed] : [],
+      }
+      return viewRec
+    } else if (data.kind === 'review') {
+      const { view } = data
+
+      const viewRec: $Typed<AppBskyEmbedRecord.ViewRecord> = {
+        $type: 'app.bsky.embed.record#viewRecord',
+        uri: view.uri,
+        cid: view.cid,
+        author: view.author,
+        value: view.record,
+        labels: view.labels,
+        replyCount: view.replyCount,
+        repostCount: view.repostCount,
+        likeCount: view.likeCount,
+        quoteCount: view.quoteCount,
+        indexedAt: view.indexedAt,
+        embeds: view.images ? [view.images] : [],
+      }
+      return viewRec
+    }
   }, [data])
 
   return view ? (

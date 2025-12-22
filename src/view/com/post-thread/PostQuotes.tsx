@@ -1,9 +1,11 @@
 import {useCallback, useState} from 'react'
+import {View} from 'react-native'
 import {
-  AppBskyFeedDefs,
+  AppBskyEmbedRecord,
+  type AppBskyFeedDefs,
   AppBskyFeedPost,
   moderatePost,
-  ModerationDecision,
+  type ModerationDecision,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -16,21 +18,8 @@ import {usePostQuotesQuery} from '#/state/queries/post-quotes'
 import {useResolveUriQuery} from '#/state/queries/resolve-uri'
 import {Post} from '#/view/com/post/Post'
 import {ListFooter, ListMaybePlaceholder} from '#/components/Lists'
+import {Text} from '#/components/Typography'
 import {List} from '../util/List'
-
-function renderItem({
-  item,
-  index,
-}: {
-  item: {
-    post: AppBskyFeedDefs.PostView
-    moderation: ModerationDecision
-    record: AppBskyFeedPost.Record
-  }
-  index: number
-}) {
-  return <Post post={item.post} hideTopBorder={index === 0} />
-}
 
 function keyExtractor(item: {
   post: AppBskyFeedDefs.PostView
@@ -40,7 +29,13 @@ function keyExtractor(item: {
   return item.post.uri
 }
 
-export function PostQuotes({uri}: {uri: string}) {
+export function PostQuotes({
+  uri,
+  revisionUri,
+}: {
+  uri: string
+  revisionUri?: string
+}) {
   const {_} = useLingui()
   const initialNumToRender = useInitialNumToRender()
   const [isPTRing, setIsPTRing] = useState(false)
@@ -59,6 +54,31 @@ export function PostQuotes({uri}: {uri: string}) {
     error,
     refetch,
   } = usePostQuotesQuery(resolvedUri?.uri)
+
+  const renderItem = useCallback(
+    ({
+      item,
+      index,
+    }: {
+      item: {
+        post: AppBskyFeedDefs.PostView
+        moderation: ModerationDecision
+        record: AppBskyFeedPost.Record
+      }
+      index: number
+    }) => {
+      const embeddedRevision =
+        AppBskyEmbedRecord.isMain(item.record.embed) &&
+        item.record.embed.record.revisionUri
+      return (
+        <View key={item.post.uri}>
+          <Post post={item.post} hideTopBorder={index === 0} />
+          <Text>{embeddedRevision !== revisionUri && 'outdated'}</Text>
+        </View>
+      )
+    },
+    [revisionUri],
+  )
 
   const moderationOpts = useModerationOpts()
 

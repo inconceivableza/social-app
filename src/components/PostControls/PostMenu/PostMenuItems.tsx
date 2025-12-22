@@ -1,4 +1,4 @@
-import {memo, useMemo} from 'react'
+import {memo, useCallback, useMemo} from 'react'
 import {
   Platform,
   type PressableProps,
@@ -17,11 +17,17 @@ import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/native'
 
-import {IS_INTERNAL} from '#/lib/app-info'
+import {
+  dangerousIsPostRecord,
+  isRecipePostView,
+  postHref,
+  recordText,
+} from '#/lib/api/feed/utils'
 import {DISCOVER_DEBUG_DIDS} from '#/lib/constants'
+import {useOpenComposer} from '#/lib/hooks/useOpenComposer'
 import {useOpenLink} from '#/lib/hooks/useOpenLink'
+import {useTranslate} from '#/lib/hooks/useTranslate'
 import {getCurrentRoute} from '#/lib/routes/helpers'
-import {makeProfileLink} from '#/lib/routes/links'
 import {
   type CommonNavigatorParams,
   type NavigationProp,
@@ -29,7 +35,6 @@ import {
 import {logEvent, useGate} from '#/lib/statsig/statsig'
 import {richTextToString} from '#/lib/strings/rich-text-helpers'
 import {toShareUrl} from '#/lib/strings/url-helpers'
-import {getTranslatorLink} from '#/locale/helpers'
 import {logger} from '#/logger'
 import {type Shadow} from '#/state/cache/post-shadow'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
@@ -47,8 +52,14 @@ import {
   useProfileBlockMutationQueue,
   useProfileMuteMutationQueue,
 } from '#/state/queries/profile'
-import {useToggleReplyVisibilityMutation} from '#/state/queries/threadgate'
+import {
+  InvalidInteractionSettingsError,
+  MAX_HIDDEN_REPLIES,
+  MaxHiddenRepliesError,
+  useToggleReplyVisibilityMutation,
+} from '#/state/queries/threadgate'
 import {useRequireAuth, useSession} from '#/state/session'
+import {type OnPostSuccessData} from '#/state/shell/composer'
 import {useMergedThreadgateHiddenReplies} from '#/state/threadgate-hidden-replies'
 import * as Toast from '#/view/com/util/Toast'
 import {useDialogControl} from '#/components/Dialog'
@@ -60,6 +71,7 @@ import {
 import {Atom_Stroke2_Corner0_Rounded as AtomIcon} from '#/components/icons/Atom'
 import {BubbleQuestion_Stroke2_Corner0_Rounded as Translate} from '#/components/icons/Bubble'
 import {Clipboard_Stroke2_Corner2_Rounded as ClipboardIcon} from '#/components/icons/Clipboard'
+import {EditBig_Stroke2_Corner0_Rounded as EditBig} from '#/components/icons/EditBig'
 import {
   EmojiSad_Stroke2_Corner0_Rounded as EmojiSad,
   EmojiSmile_Stroke2_Corner0_Rounded as EmojiSmile,
@@ -83,22 +95,22 @@ import {
   useReportDialogControl,
 } from '#/components/moderation/ReportDialog'
 import * as Prompt from '#/components/Prompt'
+import {IS_INTERNAL} from '#/env'
 import * as bsky from '#/types/bsky'
 
 let PostMenuItems = ({
   post,
   postFeedContext,
   postReqId,
-  record,
   richText,
   threadgateRecord,
   onShowLess,
+  onPostChanged,
 }: {
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
   postFeedContext: string | undefined
   postReqId: string | undefined
-  record: AppBskyFeedPost.Record
   richText: RichTextAPI
   style?: StyleProp<ViewStyle>
   hitSlop?: PressableProps['hitSlop']
@@ -106,6 +118,7 @@ let PostMenuItems = ({
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
+  onPostChanged?: (payload: OnPostSuccessData) => void
 }): React.ReactNode => {
   const {hasSession, currentAccount} = useSession()
   const {_} = useLingui()
@@ -118,6 +131,7 @@ let PostMenuItems = ({
   const {hidePost} = useHiddenPostsApi()
   const feedFeedback = useFeedFeedbackContext()
   const openLink = useOpenLink()
+  const translate = useTranslate()
   const navigation = useNavigation<NavigationProp>()
   const {mutedWordsDialogControl} = useGlobalDialogsControlContext()
   const blockPromptControl = useDialogControl()
@@ -141,8 +155,9 @@ let PostMenuItems = ({
     })
   }, [post, currentAccount])
 
-  const rootUri = record.reply?.root?.uri || postUri
-  const isReply = Boolean(record.reply)
+  const isBskyPost = dangerousIsPostRecord(post.record)
+  const rootUri = post.record.reply?.root?.uri || postUri
+  const isReply = Boolean(post.record.reply)
   const [isThreadMuted, muteThread, unmuteThread] = useThreadMuteMutationQueue(
     post,
     rootUri,
@@ -168,14 +183,8 @@ let PostMenuItems = ({
   })
 
   const href = useMemo(() => {
-    const urip = new AtUri(postUri)
-    return makeProfileLink(postAuthor, 'post', urip.rkey)
+    return postHref(postAuthor, postUri)
   }, [postUri, postAuthor])
-
-  const translatorUrl = getTranslatorLink(
-    record.text,
-    langPrefs.primaryLanguage,
-  )
 
   const onDeletePost = () => {
     deletePostMutate({uri: postUri}).then(
@@ -191,7 +200,7 @@ let PostMenuItems = ({
             (params.name === currentAccount.handle ||
               params.name === currentAccount.did)
           ) {
-            const currentHref = makeProfileLink(postAuthor, 'post', params.rkey)
+            const currentHref = postHref(postAuthor, postUri)
             if (currentHref === href && navigation.canGoBack()) {
               navigation.goBack()
             }
@@ -234,8 +243,8 @@ let PostMenuItems = ({
     Toast.show(_(msg`Copied to clipboard`), 'clipboard-check')
   }
 
-  const onPressTranslate = async () => {
-    await openLink(translatorUrl, true)
+  const onPressTranslate = () => {
+    translate(recordText(post), langPrefs.primaryLanguage)
 
     if (
       bsky.dangerousIsType<AppBskyFeedPost.Record>(
@@ -257,6 +266,7 @@ let PostMenuItems = ({
 
   const onHidePost = () => {
     hidePost({uri: postUri})
+    logEvent('thread:click:hideReplyForMe', {})
   }
 
   const hideInPWI = !!postAuthor.labels?.find(
@@ -270,7 +280,9 @@ let PostMenuItems = ({
       feedContext: postFeedContext,
       reqId: postReqId,
     })
-    Toast.show(_(msg({message: 'Feedback sent!', context: 'toast'})))
+    Toast.show(
+      _(msg({message: 'Feedback sent to feed operator', context: 'toast'})),
+    )
   }
 
   const onPressShowLess = () => {
@@ -286,7 +298,9 @@ let PostMenuItems = ({
         feedContext: postFeedContext,
       })
     } else {
-      Toast.show(_(msg({message: 'Feedback sent!', context: 'toast'})))
+      Toast.show(
+        _(msg({message: 'Feedback sent to feed operator', context: 'toast'})),
+      )
     }
   }
 
@@ -333,16 +347,42 @@ let PostMenuItems = ({
         replyUri: postUri,
         action,
       })
+
+      // Log metric only when hiding (not when showing)
+      if (isHide) {
+        logEvent('thread:click:hideReplyForEveryone', {})
+      }
+
       Toast.show(
         isHide
           ? _(msg`Reply was successfully hidden`)
           : _(msg({message: 'Reply visibility updated', context: 'toast'})),
       )
     } catch (e: any) {
-      Toast.show(
-        _(msg({message: 'Updating reply visibility failed', context: 'toast'})),
-      )
-      logger.error(`Failed to ${action} reply`, {safeMessage: e.message})
+      if (e instanceof MaxHiddenRepliesError) {
+        Toast.show(
+          _(
+            msg({
+              message: `You can hide a maximum of ${MAX_HIDDEN_REPLIES} replies.`,
+              context: 'toast',
+            }),
+          ),
+        )
+      } else if (e instanceof InvalidInteractionSettingsError) {
+        Toast.show(
+          _(msg({message: 'Invalid interaction settings.', context: 'toast'})),
+        )
+      } else {
+        Toast.show(
+          _(
+            msg({
+              message: 'Updating reply visibility failed',
+              context: 'toast',
+            }),
+          ),
+        )
+        logger.error(`Failed to ${action} reply`, {safeMessage: e.message})
+      }
     }
   }
 
@@ -406,12 +446,39 @@ let PostMenuItems = ({
     DISCOVER_DEBUG_DIDS[currentAccount?.did || ''] ||
     gate('debug_show_feedcontext')
 
+  const {openComposer} = useOpenComposer()
+  const optimisticOnPostEdit = useCallback(
+    (payload: OnPostSuccessData) => {
+      if (payload && onPostChanged) {
+        onPostChanged(payload)
+      }
+    },
+    [onPostChanged],
+  )
+
   return (
     <>
       <Menu.Outer>
         {isAuthor && (
           <>
             <Menu.Group>
+              {isRecipePostView(post) && (
+                <Menu.Item
+                  testID="editPostBtn"
+                  label={_(msg`Edit`)}
+                  onPress={() => {
+                    logEvent('post:edit', {})
+                    openComposer({
+                      type: 'recipe',
+                      edit: post,
+                      onPostSuccess: optimisticOnPostEdit,
+                    })
+                    // TODO: when this composer is closed after a onPressPublish, update
+                  }}>
+                  <Menu.ItemText>{_(msg`Edit`)}</Menu.ItemText>
+                  <Menu.ItemIcon icon={EditBig} position="right" />
+                </Menu.Item>
+              )}
               <Menu.Item
                 testID="pinPostBtn"
                 label={
@@ -490,16 +557,19 @@ let PostMenuItems = ({
         )}
 
         {isDiscoverDebugUser && (
-          <Menu.Item
-            testID="postDropdownReportMisclassificationBtn"
-            label={_(msg`Assign topic for algo`)}
-            onPress={onReportMisclassification}>
-            <Menu.ItemText>{_(msg`Assign topic for algo`)}</Menu.ItemText>
-            <Menu.ItemIcon icon={AtomIcon} position="right" />
-          </Menu.Item>
+          <>
+            <Menu.Divider />
+            <Menu.Item
+              testID="postDropdownReportMisclassificationBtn"
+              label={_(msg`Assign topic for algo`)}
+              onPress={onReportMisclassification}>
+              <Menu.ItemText>{_(msg`Assign topic for algo`)}</Menu.ItemText>
+              <Menu.ItemIcon icon={AtomIcon} position="right" />
+            </Menu.Item>
+          </>
         )}
 
-        {hasSession && (
+        {hasSession && isBskyPost && (
           <>
             <Menu.Divider />
             <Menu.Group>
@@ -530,6 +600,7 @@ let PostMenuItems = ({
         )}
 
         {hasSession &&
+          isBskyPost &&
           (canHideReplyForEveryone || canDetachQuote || canHidePostForMe) && (
             <>
               <Menu.Divider />
@@ -615,7 +686,7 @@ let PostMenuItems = ({
           <>
             <Menu.Divider />
             <Menu.Group>
-              {!isAuthor && (
+              {!isAuthor && isBskyPost && (
                 <>
                   <Menu.Item
                     testID="postDropdownMuteBtn"
@@ -656,35 +727,35 @@ let PostMenuItems = ({
                 </>
               )}
 
+              {isAuthor && isBskyPost && (
+                <Menu.Item
+                  testID="postDropdownEditPostInteractions"
+                  label={_(msg`Edit interaction settings`)}
+                  onPress={() => postInteractionSettingsDialogControl.open()}
+                  {...(isAuthor
+                    ? Platform.select({
+                        web: {
+                          onHoverIn: prefetchPostInteractionSettings,
+                        },
+                        native: {
+                          onPressIn: prefetchPostInteractionSettings,
+                        },
+                      })
+                    : {})}>
+                  <Menu.ItemText>
+                    {_(msg`Edit interaction settings`)}
+                  </Menu.ItemText>
+                  <Menu.ItemIcon icon={Gear} position="right" />
+                </Menu.Item>
+              )}
               {isAuthor && (
-                <>
-                  <Menu.Item
-                    testID="postDropdownEditPostInteractions"
-                    label={_(msg`Edit interaction settings`)}
-                    onPress={() => postInteractionSettingsDialogControl.open()}
-                    {...(isAuthor
-                      ? Platform.select({
-                          web: {
-                            onHoverIn: prefetchPostInteractionSettings,
-                          },
-                          native: {
-                            onPressIn: prefetchPostInteractionSettings,
-                          },
-                        })
-                      : {})}>
-                    <Menu.ItemText>
-                      {_(msg`Edit interaction settings`)}
-                    </Menu.ItemText>
-                    <Menu.ItemIcon icon={Gear} position="right" />
-                  </Menu.Item>
-                  <Menu.Item
-                    testID="postDropdownDeleteBtn"
-                    label={_(msg`Delete post`)}
-                    onPress={() => deletePromptControl.open()}>
-                    <Menu.ItemText>{_(msg`Delete post`)}</Menu.ItemText>
-                    <Menu.ItemIcon icon={Trash} position="right" />
-                  </Menu.Item>
-                </>
+                <Menu.Item
+                  testID="postDropdownDeleteBtn"
+                  label={_(msg`Delete post`)}
+                  onPress={() => deletePromptControl.open()}>
+                  <Menu.ItemText>{_(msg`Delete post`)}</Menu.ItemText>
+                  <Menu.ItemIcon icon={Trash} position="right" />
+                </Menu.Item>
               )}
             </Menu.Group>
           </>

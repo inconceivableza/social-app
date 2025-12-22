@@ -19,7 +19,7 @@ export function StarterPack(props: {
 }) {
   const {starterPack, images, socialappName} = props
   const record = AppBskyGraphStarterpack.isRecord(starterPack.record)
-    ? starterPack.record
+    ? (starterPack.record as AppBskyGraphStarterpack.Record)
     : null
   const imagesArray = [...images.values()]
   const imageOfCreator = images.get(starterPack.creator.did)

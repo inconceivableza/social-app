@@ -22,7 +22,7 @@ export const router = new Router<AllNavigatableRoutes>({
   ModerationBlockedAccounts: '/moderation/blocked-accounts',
   ModerationInteractionSettings: '/moderation/interaction-settings',
   ModerationVerificationSettings: '/moderation/verification-settings',
-  // profiles, threads, lists
+  // profiles, threads, lists, recipes
   Profile: ['/profile/:name', '/profile/:name/rss'],
   ProfileFollowers: '/profile/:name/followers',
   ProfileFollows: '/profile/:name/follows',
@@ -30,9 +30,11 @@ export const router = new Router<AllNavigatableRoutes>({
   ProfileSearch: '/profile/:name/search',
   ProfileList: '/profile/:name/lists/:rkey',
   PostThread: '/profile/:name/post/:rkey',
-  PostLikedBy: '/profile/:name/post/:rkey/liked-by',
-  PostRepostedBy: '/profile/:name/post/:rkey/reposted-by',
-  PostQuotes: '/profile/:name/post/:rkey/quotes',
+  PostLikedBy: '/profile/:name/:postType/:rkey/liked-by',
+  PostRepostedBy: '/profile/:name/:postType/:rkey/reposted-by',
+  PostQuotes: '/profile/:name/:postType/:rkey/quotes',
+  RecipeThread: '/profile/:name/recipePost/:rkey',
+  ReviewRatingThread: '/profile/:name/reviewRating/:rkey',
   ProfileFeed: '/profile/:name/feed/:rkey',
   ProfileFeedLikedBy: '/profile/:name/feed/:rkey/liked-by',
   ProfileLabelerLikedBy: '/profile/:name/labeler/liked-by',
@@ -69,6 +71,7 @@ export const router = new Router<AllNavigatableRoutes>({
     '/settings/notifications/reposts-on-reposts',
   ActivityNotificationSettings: '/settings/notifications/activity',
   MiscellaneousNotificationSettings: '/settings/notifications/miscellaneous',
+  TimerNotificationSettings: '/settings/notifications/timers',
   // support
   Support: '/support',
   PrivacyPolicy: '/support/privacy',
@@ -90,4 +93,5 @@ export const router = new Router<AllNavigatableRoutes>({
   StarterPackShort: '/starter-pack-short/:code',
   StarterPackWizard: '/starter-pack/create',
   VideoFeed: '/video-feed',
+  Bookmarks: '/saved',
 })

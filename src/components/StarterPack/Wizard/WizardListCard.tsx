@@ -7,13 +7,13 @@ import {
   type ModerationOpts,
   type ModerationUI,
 } from '@atproto/api'
-import {type GeneratorView} from '@atproto/api/client/types/app/bsky/feed/defs'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {DISCOVER_FEED_URI, STARTER_PACK_MAX_SIZE} from '#/lib/constants'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
 import {sanitizeHandle} from '#/lib/strings/handles'
+import {logger} from '#/logger'
 import {useSession} from '#/state/session'
 import {UserAvatar} from '#/view/com/util/UserAvatar'
 import {
@@ -84,7 +84,7 @@ function WizardListCard({
           emoji
           style={[
             a.flex_1,
-            a.font_bold,
+            a.font_semi_bold,
             a.text_md,
             a.leading_tight,
             a.self_start,
@@ -132,10 +132,13 @@ export function WizardProfileCard({
 }) {
   const {currentAccount} = useSession()
 
-  const isMe = profile.did === currentAccount?.did
-  const included = isMe || state.profiles.some(p => p.did === profile.did)
+  // Determine the "main" profile for this starter pack - either targetDid or current account
+  const targetProfileDid = state.targetDid || currentAccount?.did
+  const isTarget = profile.did === targetProfileDid
+  const included = isTarget || state.profiles.some(p => p.did === profile.did)
   const disabled =
-    isMe || (!included && state.profiles.length >= STARTER_PACK_MAX_SIZE - 1)
+    isTarget ||
+    (!included && state.profiles.length >= STARTER_PACK_MAX_SIZE - 1)
   const moderationUi = moderateProfile(profile, moderationOpts).ui('avatar')
   const displayName = profile.displayName
     ? sanitizeDisplayName(profile.displayName)
@@ -145,11 +148,13 @@ export function WizardProfileCard({
     if (disabled) return
 
     Keyboard.dismiss()
-    if (profile.did === currentAccount?.did) return
+    if (profile.did === targetProfileDid) return
 
     if (!included) {
+      logger.metric('starterPack:addUser', {})
       dispatch({type: 'AddProfile', profile})
     } else {
+      logger.metric('starterPack:removeUser', {})
       dispatch({type: 'RemoveProfile', profileDid: profile.did})
     }
   }
@@ -177,7 +182,7 @@ export function WizardFeedCard({
   moderationOpts,
 }: {
   btnType: 'checkbox' | 'remove'
-  generator: GeneratorView
+  generator: AppBskyFeedDefs.GeneratorView
   state: WizardState
   dispatch: (action: WizardAction) => void
   moderationOpts: ModerationOpts

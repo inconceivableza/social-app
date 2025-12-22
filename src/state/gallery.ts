@@ -3,7 +3,7 @@ import {
   deleteAsync,
   makeDirectoryAsync,
   moveAsync,
-} from 'expo-file-system'
+} from 'expo-file-system/legacy'
 import {
   type Action,
   type ActionCrop,
@@ -24,10 +24,14 @@ export type ImageTransformation = {
 }
 
 export type ImageMeta = {
-  path: string
+  path: string // normally url, but can be cid: for editing
   width: number
   height: number
   mime: string
+  // for loading existing media in edit
+  fullsize?: string // fullsize url
+  thumb?: string // thumbnail url
+  size?: number
 }
 
 export type ImageSource = ImageMeta & {
@@ -167,14 +171,27 @@ export async function manipulateImage(
     return {alt: img.alt, source: img.source}
   }
 
-  const source = img.source
-  const result = await manipulateAsync(source.path, actions, {
-    format: SaveFormat.PNG,
-  })
+  // if this is a previously uploaded image, reconstruct the source
+  const source = img.source.fullsize
+    ? {
+        path: img.source.fullsize,
+        height: img.source.height,
+        width: img.source.width,
+        mime: img.source.mime,
+        id: img.source.id, // id matches so that it replaces the correct image in the embed
+      }
+    : img.source
+  const result = await manipulateAsync(
+    source.fullsize ?? source.path,
+    actions,
+    {
+      format: SaveFormat.PNG,
+    },
+  )
 
   return {
     alt: img.alt,
-    source: img.source,
+    source: source,
     transformed: {
       path: await moveIfNecessary(result.uri),
       width: result.width,

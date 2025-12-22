@@ -1,9 +1,19 @@
 import {memo, useEffect, useMemo, useState} from 'react'
 import {View} from 'react-native'
-import {AppBskyActorDefs, AppBskyFeedPost, AtUri} from '@atproto/api'
+import {
+  type AppBskyActorDefs,
+  type AppBskyFeedPost,
+  type AppFoodiosFeedDefs,
+  type AppFoodiosFeedReviewRating,
+  AtUri,
+} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
+import {
+  dangerousIsRecipeView,
+  recipePostSummaryRichText,
+} from '#/lib/api/feed/utils'
 import {EMBED_SCRIPT} from '#/lib/constants'
 import {niceDate} from '#/lib/strings/time'
 import {toShareUrl} from '#/lib/strings/url-helpers'
@@ -27,7 +37,10 @@ type EmbedDialogProps = {
   postAuthor: AppBskyActorDefs.ProfileViewBasic
   postCid: string
   postUri: string
-  record: AppBskyFeedPost.Record
+  record:
+    | AppBskyFeedPost.Record
+    | AppFoodiosFeedDefs.RecipeRevisionView
+    | AppFoodiosFeedReviewRating.Record
   timestamp: string
 }
 
@@ -70,12 +83,21 @@ function EmbedDialogInner({
       return toShareUrl(href) + '?ref_src=embed'
     }
 
-    const lang = record.langs && record.langs.length > 0 ? record.langs[0] : ''
+    const recordContent = dangerousIsRecipeView(record)
+      ? record.revisionContent
+      : record
+
+    const lang = recordContent.langs?.[0] ?? ''
     const profileHref = toEmbedUrl(['/profile', postAuthor.did].join('/'))
     const urip = new AtUri(postUri)
+    const postType = urip.collection.split('.').at(-1)
     const href = toEmbedUrl(
-      ['/profile', postAuthor.did, 'post', urip.rkey].join('/'),
+      ['/profile', postAuthor.did, postType, urip.rkey].join('/'),
     )
+
+    const recordText = dangerousIsRecipeView(record)
+      ? recipePostSummaryRichText(record.revisionContent)
+      : (record.text ?? '')
 
     // x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
     // DO NOT ADD ANY NEW INTERPOLATIONS BELOW WITHOUT ESCAPING THEM!
@@ -87,8 +109,8 @@ function EmbedDialogInner({
       postCid,
     )}" data-bluesky-embed-color-mode="${escapeHtml(
       colorMode,
-    )}"><p lang="${escapeHtml(lang)}">${escapeHtml(record.text)}${
-      record.embed
+    )}"><p lang="${escapeHtml(lang)}">${escapeHtml(recordText)}${
+      recordContent.embed
         ? `<br><br><a href="${escapeHtml(href)}">[image or embed]</a>`
         : ''
     }</p>&mdash; ${escapeHtml(
@@ -104,7 +126,7 @@ function EmbedDialogInner({
     <Dialog.Inner label={_(msg`Embed post`)} style={[{maxWidth: 500}]}>
       <View style={[a.gap_lg]}>
         <View style={[a.gap_sm]}>
-          <Text style={[a.text_2xl, a.font_heavy]}>
+          <Text style={[a.text_2xl, a.font_bold]}>
             <Trans>Embed post</Trans>
           </Text>
           <Text
@@ -147,7 +169,7 @@ function EmbedDialogInner({
 
           {showCustomisation && (
             <View style={[a.gap_sm, a.p_md]}>
-              <Text style={[t.atoms.text_contrast_medium, a.font_bold]}>
+              <Text style={[t.atoms.text_contrast_medium, a.font_semi_bold]}>
                 <Trans>Color theme</Trans>
               </Text>
               <ToggleButton.Group

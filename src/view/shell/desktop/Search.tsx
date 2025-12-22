@@ -35,7 +35,7 @@ let SearchLinkCard = ({
 
   const inner = (
     <View
-      style={[pal.border, {paddingVertical: 16, paddingHorizontal: 12}, style]}>
+      style={[pal.border, { paddingVertical: 16, paddingHorizontal: 12 }, style, { backgroundColor: pal.colors.backgroundLight }]}>
       <Text type="md" style={[pal.text]}>
         {label}
       </Text>
@@ -107,6 +107,7 @@ export function DesktopSearch() {
 
   return (
     <View style={[styles.container, pal.view]}>
+
       <SearchInput
         value={query}
         onChangeText={onChangeText}
@@ -129,7 +130,7 @@ export function DesktopSearch() {
             <>
               <SearchLinkCard
                 label={_(msg`Search for "${query}"`)}
-                to={`/search?q=${encodeURIComponent(query)}`}
+                  to={`/search?q=${encodeURIComponent(query)}`}
                 style={
                   (autocompleteData?.length ?? 0) > 0
                     ? {borderBottomWidth: 1}

@@ -5,9 +5,9 @@ import {useLingui} from '@lingui/react'
 import {StackActions, useNavigation} from '@react-navigation/native'
 import {useQueryClient} from '@tanstack/react-query'
 
-import {useEmail} from '#/lib/hooks/useEmail'
 import {type NavigationProp} from '#/lib/routes/types'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
+import {useEmail} from '#/state/email-verification'
 import {useAcceptConversation} from '#/state/queries/messages/accept-conversation'
 import {precacheConvoQuery} from '#/state/queries/messages/conversation'
 import {useLeaveConvo} from '#/state/queries/messages/leave-conversation'
@@ -36,7 +36,6 @@ export function RejectMenu({
   convo,
   profile,
   size = 'tiny',
-  variant = 'outline',
   color = 'secondary',
   label,
   showDeleteConvo,
@@ -117,7 +116,6 @@ export function RejectMenu({
               label={triggerProps.accessibilityLabel}
               style={[a.flex_1]}
               color={color}
-              variant={variant}
               size={size}>
               <ButtonText>
                 {label || (
@@ -129,7 +127,7 @@ export function RejectMenu({
             </Button>
           )}
         </Menu.Trigger>
-        <Menu.Outer>
+        <Menu.Outer showCancel>
           <Menu.Group>
             {showDeleteConvo && (
               <Menu.Item
@@ -181,7 +179,6 @@ export function RejectMenu({
 export function AcceptChatButton({
   convo,
   size = 'tiny',
-  variant = 'solid',
   color = 'secondary_inverted',
   label,
   currentScreen,
@@ -248,7 +245,6 @@ export function AcceptChatButton({
       {...props}
       label={label || _(msg`Accept chat request`)}
       size={size}
-      variant={variant}
       color={color}
       style={a.flex_1}
       onPress={onPressAccept}>
@@ -266,7 +262,6 @@ export function AcceptChatButton({
 export function DeleteChatButton({
   convo,
   size = 'tiny',
-  variant = 'outline',
   color = 'secondary',
   label,
   currentScreen,
@@ -315,7 +310,6 @@ export function DeleteChatButton({
     <Button
       label={label || _(msg`Delete chat`)}
       size={size}
-      variant={variant}
       color={color}
       style={a.flex_1}
       onPress={onPressDelete}

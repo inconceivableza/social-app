@@ -20,6 +20,7 @@ const TooltipContext = createContext<TooltipContextType>({
   position: 'bottom',
   onVisibleChange: () => {},
 })
+TooltipContext.displayName = 'TooltipContext'
 
 export function Outer({
   children,
@@ -54,9 +55,11 @@ export function Target({children}: {children: React.ReactNode}) {
 export function Content({
   children,
   label,
+  hide,
 }: {
   children: React.ReactNode
   label: string
+    hide?: boolean
 }) {
   const t = useTheme()
   const {position, onVisibleChange} = useContext(TooltipContext)
@@ -71,28 +74,35 @@ export function Content({
         onInteractOutside={() => onVisibleChange(false)}
         style={flatten([
           a.rounded_sm,
-          select(t.name, {
-            light: t.atoms.bg,
-            dark: t.atoms.bg_contrast_100,
-            dim: t.atoms.bg_contrast_100,
-          }),
+          hide
+            ? { backgroundColor: 'transparent' }
+            : select(t.name, {
+                light: t.atoms.bg,
+                dark: t.atoms.bg_contrast_100,
+                dim: t.atoms.bg_contrast_100,
+              }),
           {
             minWidth: 'max-content',
+          },
+          !hide && {
             boxShadow: select(t.name, {
               light: `0 0 24px ${transparentifyColor(t.palette.black, 0.2)}`,
               dark: `0 0 24px ${transparentifyColor(t.palette.black, 0.2)}`,
               dim: `0 0 24px ${transparentifyColor(t.palette.black, 0.2)}`,
-            }),
+          })
           },
         ])}>
         <Popover.Arrow
           width={ARROW_SIZE}
           height={ARROW_SIZE / 2}
-          fill={select(t.name, {
-            light: t.atoms.bg.backgroundColor,
-            dark: t.atoms.bg_contrast_100.backgroundColor,
-            dim: t.atoms.bg_contrast_100.backgroundColor,
-          })}
+          fill={
+            hide ? 'transparent' :
+            select(t.name, {
+              light: t.atoms.bg.backgroundColor,
+              dark: t.atoms.bg_contrast_100.backgroundColor,
+              dim: t.atoms.bg_contrast_100.backgroundColor,
+            })
+          }
         />
         <View style={[a.px_md, a.py_sm, {maxWidth: BUBBLE_MAX_WIDTH}]}>
           {children}

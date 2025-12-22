@@ -12,7 +12,8 @@ export function Composer({}: {winHeight: number}) {
   const state = useComposerState()
   const ref = useComposerCancelRef()
 
-  const open = !!state
+  const open =
+    !!state && (state?.type === 'post' || state?.type === 'review-rating')
   const prevOpen = React.useRef(open)
 
   React.useEffect(() => {
@@ -31,6 +32,7 @@ export function Composer({}: {winHeight: number}) {
       visible={open}
       presentationStyle="pageSheet"
       animationType="slide"
+      allowSwipeDismissal="true"
       onRequestClose={() => ref.current?.onPressCancel()}>
       <View style={[t.atoms.bg, a.flex_1]}>
         <ComposePost

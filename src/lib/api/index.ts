@@ -1,3 +1,9 @@
+import type AtpAgent from '@atproto/api'
+import {
+  type AppFoodiosFeedRecipePost,
+  type AppFoodiosFeedRecipeRevision,
+  type AppFoodiosFeedReviewRating,
+} from '@atproto/api'
 import {
   type $Typed,
   type AppBskyEmbedExternal,
@@ -14,6 +20,7 @@ import {
   type ComAtprotoRepoStrongRef,
   RichText,
 } from '@atproto/api'
+import {lexiconIds as ids} from '@atproto/api'
 import {TID} from '@atproto/common-web'
 import * as dcbor from '@ipld/dag-cbor'
 import {t} from '@lingui/macro'
@@ -36,17 +43,24 @@ import {
 } from '#/state/queries/threadgate'
 import {
   type EmbedDraft,
-  type PostDraft,
+  type EmbedState,
   type ThreadDraft,
 } from '#/view/com/composer/state/composer'
+import {type RecipePostDraft} from '#/view/com/composer/state/composerRecipe'
+import {hierarchyOptionToPaths} from '#/view/com/composer/state/dataRecipe'
 import {createGIFDescription} from '../gif-alt-text'
+import {type RecipePostView} from './feed/utils'
 import {uploadBlob} from './upload-blob'
 
 export {uploadBlob}
 
+type RemoveIndexSignature<T> = {
+  [K in keyof T as string extends K ? never : K]: T[K]
+}
+
 interface PostOpts {
   thread: ThreadDraft
-  replyTo?: string
+  replyTo?: ComAtprotoRepoStrongRef.Main
   onStateChange?: (state: string) => void
   langs?: string[]
 }
@@ -193,6 +207,352 @@ export async function post(
   return {uris}
 }
 
+type PartialRecipeRevision = Pick<
+  AppFoodiosFeedRecipeRevision.Record,
+  'createdAt' | 'recipePostRef' | 'parentRevisionRef'
+>
+
+async function recipeDraftToRecord(
+  agent: AtpAgent,
+  qc: QueryClient,
+  {createdAt, parentRevisionRef, recipePostRef}: PartialRecipeRevision,
+  post: RecipePostDraft,
+): Promise<AppFoodiosFeedRecipeRevision.Record> {
+  // TODO: strip out all empty fields
+  if (!post.recipeYield?.quantity) {
+    delete post.recipeYield
+  }
+
+  const [rt, embed] = await Promise.all([
+    resolveRT(agent, post.text),
+    resolveEmbed(agent, qc, post, () => {}),
+  ])
+
+  const revisionRecord: AppFoodiosFeedRecipeRevision.Record = {
+    $type: 'app.foodios.feed.recipeRevision',
+    recipePostRef,
+    createdAt,
+    parentRevisionRef,
+    ingredients: post.ingredients,
+    instructionSections: post.instructionSections,
+    text: rt.text,
+    facets: rt.facets,
+    name: post.name,
+    embed,
+    cookingTime: post.cookTime,
+    prepTime: post.prepTime,
+    recipeCategory: post.recipeCategories?.flatMap(hierarchyOptionToPaths),
+    recipeCuisine: post.recipeCuisines?.flatMap(hierarchyOptionToPaths),
+    suitableForDiet: post.recipeDiets?.flatMap(hierarchyOptionToPaths),
+    attribution: post.attribution,
+    nutrition: post.nutrition,
+    recipeYield: post.recipeYield,
+  }
+
+  return revisionRecord
+}
+
+interface RecipePostOpts {
+  post: RecipePostDraft
+}
+export async function postRecipe(
+  agent: AtpAgent,
+  qc: QueryClient,
+  {post}: RecipePostOpts,
+) {
+  const now = new Date()
+  const did = agent.assertDid
+  const tid = TID.next()
+  const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipePost}/${rkey}`
+  const recipeRecord: AppFoodiosFeedRecipePost.Record = {
+    $type: 'app.foodios.feed.recipePost',
+    createdAt: now.toISOString(),
+  }
+  const cid = await computeCid(recipeRecord)
+  const revisionRecord = await recipeDraftToRecord(
+    agent,
+    qc,
+    {
+      recipePostRef: {uri, cid},
+      createdAt: now.toISOString(),
+    },
+    post,
+  )
+
+  // TODO: add recipe labels
+  // TODO: consider whether we need a new rkey for revision
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
+    {
+      $type: 'com.atproto.repo.applyWrites#create',
+      collection: 'app.foodios.feed.recipePost',
+      value: recipeRecord,
+      rkey,
+    },
+    {
+      $type: 'com.atproto.repo.applyWrites#create',
+      collection: 'app.foodios.feed.recipeRevision',
+      value: revisionRecord,
+      rkey,
+    },
+  ]
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create recipe post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
+
+  return uri
+}
+interface RecipeRevisionOpts {
+  parentRevisionPost: RecipePostView
+  post: RecipePostDraft
+}
+export async function postRecipeRevision(
+  agent: AtpAgent,
+  qc: QueryClient,
+  {post, parentRevisionPost}: RecipeRevisionOpts,
+) {
+  const now = new Date()
+  const tid = TID.next()
+  const did = agent.assertDid
+  const rkey = tid.toString()
+  const uri = `at://${did}/${ids.AppFoodiosFeedRecipeRevision}/${rkey}`
+  const revisionRecord = await recipeDraftToRecord(
+    agent,
+    qc,
+    {
+      recipePostRef: parentRevisionPost.record.revisionContent.recipePostRef,
+      createdAt: now.toISOString(),
+      parentRevisionRef: {
+        uri: parentRevisionPost.record.selectedRevisionUri,
+        cid: parentRevisionPost.cid, // TODO: This field is currently populated with the selected revision's cid (not the the recipe post's) this may be confusing
+      },
+    },
+    post,
+  )
+
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = [
+    {
+      $type: 'com.atproto.repo.applyWrites#create',
+      collection: 'app.foodios.feed.recipeRevision',
+      value: revisionRecord,
+      rkey,
+    },
+  ]
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+
+    return uri
+  } catch (e: any) {
+    logger.error(`Failed to create recipe post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
+}
+
+interface ReviewRatingOpts {
+  thread: ThreadDraft
+  subject: ComAtprotoRepoStrongRef.Main
+  onStateChange?: (state: string) => void
+  langs?: string[]
+}
+
+export async function postReviewRating(
+  agent: BskyAgent,
+  queryClient: QueryClient,
+  opts: ReviewRatingOpts,
+) {
+  const thread = opts.thread
+  opts.onStateChange?.(t`Processing...`)
+
+  // this starts with the subject reviewed, then chains to form a thread if necessary
+  let replyPromise:
+    | Promise<AppBskyFeedPost.Record['reply']>
+    | AppBskyFeedPost.Record['reply']
+    | Promise<AppFoodiosFeedReviewRating.Record['subject']>
+    | AppFoodiosFeedReviewRating.Record['subject']
+    | undefined
+  // Not awaited to avoid waterfalls.
+  replyPromise = resolveReply(agent, opts.subject)
+
+  // add top 3 languages from user preferences if langs is provided
+  let langs = opts.langs
+  if (opts.langs) {
+    langs = opts.langs.slice(0, 3)
+  }
+
+  const did = agent.assertDid
+  const writes: $Typed<ComAtprotoRepoApplyWrites.Create>[] = []
+  const uris: string[] = []
+
+  let now = new Date()
+  let tid: TID | undefined
+
+  // A review could have follow-up posts in a thread; only the first will be a review-rating?
+  for (let i = 0; i < thread.posts.length; i++) {
+    const draft = thread.posts[i]
+    const isReviewRating = i === 0
+
+    // Not awaited to avoid waterfalls.
+    const rtPromise = resolveRT(agent, draft.richtext)
+    const embedPromise = resolveEmbed(
+      agent,
+      queryClient,
+      draft,
+      opts.onStateChange,
+    )
+    let labels: $Typed<ComAtprotoLabelDefs.SelfLabels> | undefined
+    if (draft.labels.length) {
+      labels = {
+        $type: 'com.atproto.label.defs#selfLabels',
+        values: draft.labels.map(val => ({val})),
+      }
+    }
+
+    // The sorting behavior for multiple posts sharing the same createdAt time is
+    // undefined, so what we'll do here is increment the time by 1 for every post
+    now.setMilliseconds(now.getMilliseconds() + 1)
+    tid = TID.next(tid)
+    const rkey = tid.toString()
+    const rtype = isReviewRating
+      ? 'app.foodios.feed.reviewRating'
+      : 'app.bsky.feed.post'
+    const uri = `at://${did}/${rtype}/${rkey}`
+    uris.push(uri)
+
+    const rt = await rtPromise
+    const embed = await embedPromise
+    const reply:
+      | AppBskyFeedPost.Record['reply']
+      | AppFoodiosFeedReviewRating.Record['subject'] = await replyPromise
+    const rating = isReviewRating
+      ? draft.rating === undefined
+        ? undefined
+        : Math.round(draft.rating * 2)
+      : undefined
+
+    const record:
+      | AppBskyFeedPost.Record
+      | RemoveIndexSignature<AppFoodiosFeedReviewRating.Record> = isReviewRating
+      ? {
+          $type: 'app.foodios.feed.reviewRating',
+          createdAt: now.toISOString(),
+          text: rt.text,
+          subject: reply?.root ?? opts.subject,
+          reviewRating: rating,
+          embed,
+          langs,
+          labels,
+        }
+      : {
+          // IMPORTANT: $type has to exist, CID is calculated with the `$type` field
+          // present and will produce the wrong CID if you omit it.
+          $type: 'app.bsky.feed.post',
+          createdAt: now.toISOString(),
+          text: rt.text,
+          facets: rt.facets,
+          reply,
+          embed,
+          langs,
+          labels,
+        }
+    writes.push({
+      $type: 'com.atproto.repo.applyWrites#create',
+      collection: rtype,
+      rkey: rkey,
+      value: record,
+    })
+
+    if (i === 0 && thread.threadgate.some(tg => tg.type !== 'everybody')) {
+      writes.push({
+        $type: 'com.atproto.repo.applyWrites#create',
+        collection: 'app.bsky.feed.threadgate',
+        rkey: rkey,
+        value: createThreadgateRecord({
+          createdAt: now.toISOString(),
+          post: uri,
+          allow: threadgateAllowUISettingToAllowRecordValue(thread.threadgate),
+        }),
+      })
+    }
+
+    if (
+      thread.postgate.embeddingRules?.length ||
+      thread.postgate.detachedEmbeddingUris?.length
+    ) {
+      writes.push({
+        $type: 'com.atproto.repo.applyWrites#create',
+        collection: 'app.bsky.feed.postgate',
+        rkey: rkey,
+        value: {
+          ...thread.postgate,
+          $type: 'app.bsky.feed.postgate',
+          createdAt: now.toISOString(),
+          post: uri,
+        },
+      })
+    }
+
+    // Prepare a ref to the current post for the next post in the thread.
+    const ref: ComAtprotoRepoStrongRef.Main = {
+      cid: await computeCid(record),
+      uri,
+    }
+    replyPromise = {
+      root: reply?.root ?? ref,
+      parent: ref,
+    }
+  }
+
+  try {
+    await agent.com.atproto.repo.applyWrites({
+      repo: agent.assertDid,
+      writes: writes,
+      validate: true,
+    })
+  } catch (e: any) {
+    logger.error(`Failed to create review-rating post`, {
+      safeMessage: e.message,
+    })
+    if (isNetworkError(e)) {
+      throw new Error(
+        t`Review-rating post failed to upload. Please check your Internet connection and try again.`,
+      )
+    } else {
+      throw e
+    }
+  }
+
+  return {uris}
+}
+
 async function resolveRT(agent: BskyAgent, richtext: RichText) {
   const trimmedText = richtext.text
     // Trim leading whitespace-only lines (but don't break ASCII art).
@@ -207,16 +567,43 @@ async function resolveRT(agent: BskyAgent, richtext: RichText) {
   return rt
 }
 
-async function resolveReply(agent: BskyAgent, replyTo: string) {
-  const replyToUrip = new AtUri(replyTo)
-  const parentPost = await agent.getPost({
-    repo: replyToUrip.host,
-    rkey: replyToUrip.rkey,
-  })
+async function resolveReply(
+  agent: BskyAgent,
+  replyTo: ComAtprotoRepoStrongRef.Main,
+) {
+  const replyToUrip = new AtUri(replyTo.uri)
+  if (replyToUrip.collection === ids.AppFoodiosFeedReviewRating) {
+    const parentPost = await agent.getReviewRating({
+      repo: replyToUrip.host,
+      rkey: replyToUrip.rkey,
+    })
+    if (parentPost) {
+      const parentRef: ComAtprotoRepoStrongRef.Main = {
+        uri: parentPost.uri,
+        cid: parentPost.cid,
+        revisionUri: replyTo.revisionUri,
+      }
+      return {
+        root: parentPost.value.subject,
+        parent: parentRef,
+      }
+    }
+  }
+  const parentPost = await (replyToUrip.collection ===
+  ids.AppFoodiosFeedRecipePost
+    ? agent.getRecipePost({
+        repo: replyToUrip.host,
+        rkey: replyToUrip.rkey,
+      })
+    : agent.getPost({
+        repo: replyToUrip.host,
+        rkey: replyToUrip.rkey,
+      }))
   if (parentPost) {
-    const parentRef = {
+    const parentRef: ComAtprotoRepoStrongRef.Main = {
       uri: parentPost.uri,
       cid: parentPost.cid,
+      revisionUri: replyTo.revisionUri,
     }
     return {
       root: parentPost.value.reply?.root || parentRef,
@@ -228,7 +615,7 @@ async function resolveReply(agent: BskyAgent, replyTo: string) {
 async function resolveEmbed(
   agent: BskyAgent,
   queryClient: QueryClient,
-  draft: PostDraft,
+  draft: EmbedState,
   onStateChange: ((state: string) => void) | undefined,
 ): Promise<
   | $Typed<AppBskyEmbedImages.Main>
@@ -239,6 +626,7 @@ async function resolveEmbed(
   | undefined
 > {
   if (draft.embed.quote) {
+    //
     const [resolvedMedia, resolvedQuote] = await Promise.all([
       resolveMedia(agent, queryClient, draft.embed, onStateChange),
       resolveRecord(agent, queryClient, draft.embed.quote.uri),
@@ -302,6 +690,24 @@ async function resolveMedia(
     onStateChange?.(t`Uploading images...`)
     const images: AppBskyEmbedImages.Image[] = await Promise.all(
       imagesDraft.map(async (image, i) => {
+        if (image.source.fullsize && image.source.path.startsWith('cid:')) {
+          logger.debug(`Unchanged image #${i}`)
+          const cid = CID.parse(image.source.path.replace('cid:', ''))
+          const dynamicSource = image.transformed ?? image.source
+          const newRef = new BlobRef(
+            cid,
+            dynamicSource.mime,
+            dynamicSource.size ?? 0,
+          )
+          return {
+            image: newRef.toJSON(), // typechecker would prefer if this was just `newRef` but that breaks at runtime
+            alt: image.alt,
+            aspectRatio: {
+              width: dynamicSource.width,
+              height: dynamicSource.height,
+            },
+          }
+        }
         logger.debug(`Compressing image #${i}`)
         const {path, width, height, mime} = await compressImage(image)
         logger.debug(`Uploading image #${i}`)
@@ -431,7 +837,12 @@ const mf_sha256 = Hasher.from({
   },
 })
 
-async function computeCid(record: AppBskyFeedPost.Record): Promise<string> {
+async function computeCid(
+  record:
+    | AppBskyFeedPost.Record
+    | AppFoodiosFeedRecipePost.Record
+    | AppFoodiosFeedReviewRating.Record,
+): Promise<string> {
   // IMPORTANT: `prepareObject` prepares the record to be hashed by removing
   // fields with undefined value, and converting BlobRef instances to the
   // right IPLD representation.

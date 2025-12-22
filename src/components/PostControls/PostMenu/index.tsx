@@ -1,13 +1,12 @@
 import {memo, useMemo, useState} from 'react'
+import {type Insets} from 'react-native'
 import {
   type AppBskyFeedDefs,
-  type AppBskyFeedPost,
   type AppBskyFeedThreadgate,
   type RichText as RichTextAPI,
 } from '@atproto/api'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
-import type React from 'react'
 
 import {type Shadow} from '#/state/cache/post-shadow'
 import {EventStopper} from '#/view/com/util/EventStopper'
@@ -23,22 +22,24 @@ let PostMenuButton = ({
   postFeedContext,
   postReqId,
   big,
-  record,
   richText,
   timestamp,
   threadgateRecord,
   onShowLess,
+  hitSlop,
+  onPostChanged,
 }: {
   testID: string
   post: Shadow<AppBskyFeedDefs.PostView>
   postFeedContext: string | undefined
   postReqId: string | undefined
   big?: boolean
-  record: AppBskyFeedPost.Record
   richText: RichTextAPI
   timestamp: string
   threadgateRecord?: AppBskyFeedThreadgate.Record
   onShowLess?: (interaction: AppBskyFeedDefs.Interaction) => void
+  hitSlop?: Insets
+  onPostChanged?: (payload: OnPostSuccessData) => void
 }): React.ReactNode => {
   const {_} = useLingui()
 
@@ -66,7 +67,8 @@ let PostMenuButton = ({
                 testID="postDropdownBtn"
                 big={big}
                 label={props.accessibilityLabel}
-                {...props}>
+                {...props}
+                hitSlop={hitSlop}>
                 <PostControlButtonIcon icon={DotsHorizontal} />
               </PostControlButton>
             )
@@ -79,11 +81,11 @@ let PostMenuButton = ({
             post={post}
             postFeedContext={postFeedContext}
             postReqId={postReqId}
-            record={record}
             richText={richText}
             timestamp={timestamp}
             threadgateRecord={threadgateRecord}
             onShowLess={onShowLess}
+            onPostChanged={onPostChanged}
           />
         )}
       </Menu.Root>

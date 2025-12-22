@@ -48,6 +48,11 @@ export type MetricEvents = {
   // Screen events
   'splash:signInPressed': {}
   'splash:createAccountPressed': {}
+  'welcomeModal:signupClicked': {}
+  'welcomeModal:exploreClicked': {}
+  'welcomeModal:signinClicked': {}
+  'welcomeModal:dismissed': {}
+  'welcomeModal:presented': {}
   'signup:nextPressed': {
     activeStep: number
     phoneVerificationRequired?: boolean
@@ -67,7 +72,9 @@ export type MetricEvents = {
     activeStep: number
     backgroundCount: number
   }
-  'signup:handleTaken': {}
+  'signup:handleTaken': {typeahead?: boolean}
+  'signup:handleAvailable': {typeahead?: boolean}
+  'signup:handleSuggestionSelected': {method: string}
   'signin:hostingProviderPressed': {
     hostingProviderDidChange: boolean
   }
@@ -87,6 +94,13 @@ export type MetricEvents = {
   'onboarding:interests:nextPressed': {
     selectedInterests: string[]
     selectedInterestsLength: number
+  }
+  'onboarding:suggestedAccounts:tabPressed': {
+    tab: string
+  }
+  'onboarding:suggestedAccounts:followAllPressed': {
+    tab: string
+    numAccounts: number
   }
   'onboarding:suggestedAccounts:nextPressed': {
     selectedAccountsLength: number
@@ -116,6 +130,9 @@ export type MetricEvents = {
   'onboarding:finished:avatarResult': {
     avatarResult: 'default' | 'created' | 'uploaded'
   }
+  'onboarding:valueProp:stepOne:nextPressed': {}
+  'onboarding:valueProp:stepTwo:nextPressed': {}
+  'onboarding:valueProp:skipPressed': {}
   'home:feedDisplayed': {
     feedUrl: string
     feedType: string
@@ -158,19 +175,24 @@ export type MetricEvents = {
   'feed:suggestion:press': {
     feedUrl: string
   }
-  'discover:showMore': {
+  'feed:showMore': {
+    feed: string
     feedContext: string
   }
-  'discover:showLess': {
+  'feed:showLess': {
+    feed: string
     feedContext: string
   }
-  'discover:clickthrough': {
+  'feed:clickthrough': {
+    feed: string
     count: number
   }
-  'discover:engaged': {
+  'feed:engaged': {
+    feed: string
     count: number
   }
-  'discover:seen': {
+  'feed:seen': {
+    feed: string
     count: number
   }
 
@@ -221,6 +243,15 @@ export type MetricEvents = {
   'post:unmute': {}
   'post:pin': {}
   'post:unpin': {}
+  'post:edit': {}
+  'post:bookmark': {
+    logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
+  }
+  'post:unbookmark': {
+    logContext: 'FeedItem' | 'PostThreadItem' | 'Post' | 'ImmersiveVideo'
+  }
+  'bookmarks:view': {}
+  'bookmarks:post-clicked': {}
   'profile:follow': {
     didBecomeMutual: boolean | undefined
     followeeClout: number | undefined
@@ -240,6 +271,7 @@ export type MetricEvents = {
       | 'PostOnboardingFindFollows'
       | 'ImmersiveVideo'
       | 'ExploreSuggestedAccounts'
+      | 'OnboardingSuggestedAccounts'
   }
   'suggestedUser:follow': {
     logContext:
@@ -247,12 +279,17 @@ export type MetricEvents = {
       | 'InterstitialDiscover'
       | 'InterstitialProfile'
       | 'Profile'
+      | 'Onboarding'
     location: 'Card' | 'Profile'
     recId?: number
     position: number
   }
   'suggestedUser:press': {
-    logContext: 'Explore' | 'InterstitialDiscover' | 'InterstitialProfile'
+    logContext:
+      | 'Explore'
+      | 'InterstitialDiscover'
+      | 'InterstitialProfile'
+      | 'Onboarding'
     recId?: number
     position: number
   }
@@ -260,6 +297,14 @@ export type MetricEvents = {
     logContext: 'Explore' | 'InterstitialDiscover' | 'InterstitialProfile'
     recId?: number
     position: number
+  }
+  'suggestedUser:seeMore': {
+    logContext:
+      | 'Explore'
+      | 'InterstitialDiscover'
+      | 'InterstitialProfile'
+      | 'Profile'
+      | 'Onboarding'
   }
   'profile:unfollow': {
     logContext:
@@ -278,6 +323,7 @@ export type MetricEvents = {
       | 'PostOnboardingFindFollows'
       | 'ImmersiveVideo'
       | 'ExploreSuggestedAccounts'
+      | 'OnboardingSuggestedAccounts'
   }
   'chat:create': {
     logContext: 'ProfileHeader' | 'NewChatDialog' | 'SendViaChatDialog'
@@ -288,6 +334,12 @@ export type MetricEvents = {
       | 'NewChatDialog'
       | 'ChatsList'
       | 'SendViaChatDialog'
+  }
+  'starterPack:addUser': {
+    starterPack?: string
+  }
+  'starterPack:removeUser': {
+    starterPack?: string
   }
   'starterPack:share': {
     starterPack: string
@@ -320,6 +372,7 @@ export type MetricEvents = {
   'feed:interstitial:feedCard:press': {}
 
   'profile:header:suggestedFollowsCard:press': {}
+  'profile:addToStarterPack': {}
 
   'test:all:always': {}
   'test:all:sometimes': {}
@@ -437,6 +490,8 @@ export type MetricEvents = {
   'share:press:embed': {}
 
   'thread:click:showOtherReplies': {}
+  'thread:click:hideReplyForMe': {}
+  'thread:click:hideReplyForEveryone': {}
   'thread:preferences:load': {
     [key: string]: any
   }
@@ -473,4 +528,11 @@ export type MetricEvents = {
   'ageAssurance:redirectDialogFail': {}
   'ageAssurance:appealDialogOpen': {}
   'ageAssurance:appealDialogSubmit': {}
+
+  /*
+   * Specifically for the `BlockedGeoOverlay`
+   */
+  'blockedGeoOverlay:shown': {}
+
+  'geo:debug': {}
 }

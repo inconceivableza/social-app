@@ -1,19 +1,25 @@
 import React from 'react'
-import {msg} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
 
 import {logger} from '#/logger'
-import {AvatarColor, Emoji} from '#/screens/Onboarding/StepProfile/types'
+import {
+  type AvatarColor,
+  type Emoji,
+} from '#/screens/Onboarding/StepProfile/types'
 
 export type OnboardingState = {
   hasPrev: boolean
   totalSteps: number
-  activeStep: 'profile' | 'interests' | 'finished'
+  activeStep:
+    | 'profile'
+    | 'interests'
+    | 'suggested-accounts'
+    | 'suggested-starterpacks'
+    | 'finished'
   activeStepIndex: number
+  stepTransitionDirection: 'Forward' | 'Backward'
 
   interestsStepResults: {
     selectedInterests: string[]
-    apiResponse: ApiResponseMap
   }
   profileStepResults: {
     isCreatedAvatar: boolean
@@ -31,6 +37,13 @@ export type OnboardingState = {
       backgroundColor: AvatarColor
     }
   }
+
+  experiments?: {
+    onboarding_interests?: boolean
+    onboarding_suggested_accounts?: boolean
+    onboarding_value_prop?: boolean
+    onboarding_suggested_starterpacks?: boolean
+  }
 }
 
 export type OnboardingAction =
@@ -46,7 +59,6 @@ export type OnboardingAction =
   | {
       type: 'setInterestsStepResults'
       selectedInterests: string[]
-      apiResponse: ApiResponseMap
     }
   | {
       type: 'setProfileStepResults'
@@ -62,75 +74,15 @@ export type OnboardingAction =
         | undefined
     }
 
-export type ApiResponseMap = {
-  interests: string[]
-  suggestedAccountDids: {
-    [key: string]: string[]
-  }
-  suggestedFeedUris: {
-    [key: string]: string[]
-  }
-}
-
-// most popular selected interests
-export const popularInterests = [
-  'art',
-  'gaming',
-  'sports',
-  'comics',
-  'music',
-  'politics',
-  'photography',
-  'science',
-  'news',
-]
-
-export function useInterestsDisplayNames() {
-  const {_} = useLingui()
-
-  return React.useMemo<Record<string, string>>(() => {
-    return {
-      // Keep this alphabetized
-      animals: _(msg`Animals`),
-      art: _(msg`Art`),
-      books: _(msg`Books`),
-      comedy: _(msg`Comedy`),
-      comics: _(msg`Comics`),
-      culture: _(msg`Culture`),
-      dev: _(msg`Software Dev`),
-      education: _(msg`Education`),
-      food: _(msg`Food`),
-      gaming: _(msg`Video Games`),
-      journalism: _(msg`Journalism`),
-      movies: _(msg`Movies`),
-      music: _(msg`Music`),
-      nature: _(msg`Nature`),
-      news: _(msg`News`),
-      pets: _(msg`Pets`),
-      photography: _(msg`Photography`),
-      politics: _(msg`Politics`),
-      science: _(msg`Science`),
-      sports: _(msg`Sports`),
-      tech: _(msg`Tech`),
-      tv: _(msg`TV`),
-      writers: _(msg`Writers`),
-    }
-  }, [_])
-}
-
 export const initialState: OnboardingState = {
   hasPrev: false,
   totalSteps: 3,
   activeStep: 'profile',
   activeStepIndex: 1,
+  stepTransitionDirection: 'Forward',
 
   interestsStepResults: {
     selectedInterests: [],
-    apiResponse: {
-      interests: [],
-      suggestedAccountDids: {},
-      suggestedFeedUris: {},
-    },
   },
   profileStepResults: {
     isCreatedAvatar: false,
@@ -147,6 +99,7 @@ export const Context = React.createContext<{
   state: {...initialState},
   dispatch: () => {},
 })
+Context.displayName = 'OnboardingContext'
 
 export function reducer(
   s: OnboardingState,
@@ -154,25 +107,38 @@ export function reducer(
 ): OnboardingState {
   let next = {...s}
 
+  const stepOrder: OnboardingState['activeStep'][] = [
+    'profile',
+    ...(s.experiments?.onboarding_interests ? (['interests'] as const) : []),
+    ...(s.experiments?.onboarding_suggested_accounts
+      ? (['suggested-accounts'] as const)
+      : []),
+    ...(s.experiments?.onboarding_suggested_starterpacks
+      ? (['suggested-starterpacks'] as const)
+      : []),
+    'finished',
+  ]
+
   switch (a.type) {
     case 'next': {
-      if (s.activeStep === 'profile') {
-        next.activeStep = 'interests'
-        next.activeStepIndex = 2
-      } else if (s.activeStep === 'interests') {
-        next.activeStep = 'finished'
-        next.activeStepIndex = 3
+      // 1-indexed for some reason
+      const nextIndex = s.activeStepIndex
+      const nextStep = stepOrder[nextIndex]
+      if (nextStep) {
+        next.activeStep = nextStep
+        next.activeStepIndex = nextIndex + 1
       }
+      next.stepTransitionDirection = 'Forward'
       break
     }
     case 'prev': {
-      if (s.activeStep === 'interests') {
-        next.activeStep = 'profile'
-        next.activeStepIndex = 1
-      } else if (s.activeStep === 'finished') {
-        next.activeStep = 'interests'
-        next.activeStepIndex = 2
+      const prevIndex = s.activeStepIndex - 2
+      const prevStep = stepOrder[prevIndex]
+      if (prevStep) {
+        next.activeStep = prevStep
+        next.activeStepIndex = prevIndex + 1
       }
+      next.stepTransitionDirection = 'Backward'
       break
     }
     case 'finish': {
@@ -182,7 +148,6 @@ export function reducer(
     case 'setInterestsStepResults': {
       next.interestsStepResults = {
         selectedInterests: a.selectedInterests,
-        apiResponse: a.apiResponse,
       }
       break
     }

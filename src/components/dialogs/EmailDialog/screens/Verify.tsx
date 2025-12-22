@@ -174,9 +174,9 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
     return (
       <View style={[a.gap_lg]}>
         <View style={[a.gap_sm]}>
-          <Text style={[a.text_xl, a.font_heavy]}>
+          <Text style={[a.text_xl, a.font_bold]}>
             <Span style={{top: 1}}>
-              <Check size="sm" fill={t.palette.positive_600} />
+              <Check size="sm" fill={t.palette.positive_500} />
             </Span>
             {'  '}
             <Trans>Email verification complete!</Trans>
@@ -197,12 +197,12 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
   return (
     <View style={[a.gap_lg]}>
       <View style={[a.gap_sm]}>
-        <Text style={[a.text_xl, a.font_heavy]}>
+        <Text style={[a.text_xl, a.font_bold]}>
           {state.step === 'email' ? (
             state.mutationStatus === 'success' ? (
               <>
                 <Span style={{top: 1}}>
-                  <Check size="sm" fill={t.palette.positive_600} />
+                  <Check size="sm" fill={t.palette.positive_500} />
                 </Span>
                 {'  '}
                 <Trans>Email sent!</Trans>
@@ -211,7 +211,9 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
               <Trans>Verify your email</Trans>
             )
           ) : (
-            <Trans>Verify email code</Trans>
+            <Trans comment="Dialog title when a user is verifying their email address by entering a code they have been sent">
+              Verify email code
+            </Trans>
           )}
         </Text>
 
@@ -237,7 +239,7 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
             state.mutationStatus === 'success' ? (
               <Trans>
                 We sent an email to{' '}
-                <Span style={[a.font_bold, t.atoms.text]}>
+                <Span style={[a.font_semi_bold, t.atoms.text]}>
                   {currentAccount!.email}
                 </Span>{' '}
                 containing a link. Please click on it to complete the email
@@ -246,7 +248,7 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
             ) : (
               <Trans>
                 We'll send an email to{' '}
-                <Span style={[a.font_bold, t.atoms.text]}>
+                <Span style={[a.font_semi_bold, t.atoms.text]}>
                   {currentAccount!.email}
                 </Span>{' '}
                 containing a link. Please click on it to complete the email
@@ -256,7 +258,7 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
           ) : (
             <Trans>
               Please enter the code we sent to{' '}
-              <Span style={[a.font_bold, t.atoms.text]}>
+              <Span style={[a.font_semi_bold, t.atoms.text]}>
                 {currentAccount!.email}
               </Span>{' '}
               below.
@@ -345,7 +347,13 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
           {state.error && <Admonition type="error">{state.error}</Admonition>}
 
           <Button
-            label={_(msg`Verify code`)}
+            label={_(
+              msg({
+                message: `Verify code`,
+                context: `action`,
+                comment: `Button text and accessibility label for action to verify the user's email address using the code entered`,
+              }),
+            )}
             size="large"
             variant="solid"
             color="primary"
@@ -356,7 +364,11 @@ export function Verify({config, showScreen}: ScreenProps<ScreenID.Verify>) {
               state.mutationStatus === 'pending'
             }>
             <ButtonText>
-              <Trans>Verify code</Trans>
+              <Trans
+                context="action"
+                comment="Button text and accessibility label for action to verify the user's email address using the code entered">
+                Verify code
+              </Trans>
             </ButtonText>
             {state.mutationStatus === 'pending' && <ButtonIcon icon={Loader} />}
           </Button>

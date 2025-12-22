@@ -1,6 +1,6 @@
 import '../index.css'
 
-import {AppBskyFeedDefs, AtpAgent} from '@atproto/api'
+import { AppBskyFeedDefs, AtpAgent, AtUri } from '@atproto/api'
 import {h, render} from 'preact'
 
 import logo from '../../assets/logo.svg'
@@ -13,7 +13,7 @@ import {
   getSocialAppName,
   getSocialAppUrl,
 } from '../env-config'
-import {getRkey} from '../utils'
+import { getRkey, postHref } from '../util/rkey'
 
 const root = document.getElementById('app')
 if (!root) throw new Error('No root element')
@@ -21,7 +21,7 @@ if (!root) throw new Error('No root element')
 const agent = new AtpAgent({
   service: getPublicAppviewUrl(),
 })
-
+console.log("embed start")
 const uri = `at://${window.location.pathname.slice('/embed/'.length)}`
 if (!uri) {
   throw new Error('No uri in path')
@@ -52,6 +52,7 @@ agent
     parentHeight: 0,
   })
   .then(({data}) => {
+    console.log("!!! embed")
     if (!AppBskyFeedDefs.isThreadViewPost(data.thread)) {
       throw new Error('Expected a ThreadViewPost')
     }
@@ -70,7 +71,7 @@ agent
   })
 
 function PwiOptOut({thread}: {thread: AppBskyFeedDefs.ThreadViewPost}) {
-  const href = `/profile/${thread.post.author.did}/post/${getRkey(thread.post)}`
+  const href = postHref(thread.post)
   return (
     <Container href={href}>
       <Link
