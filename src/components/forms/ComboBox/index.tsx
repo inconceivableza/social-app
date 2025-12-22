@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { TouchableOpacity, View, ScrollView } from 'react-native'
+import { useState } from 'react'
+import { TouchableOpacity, useWindowDimensions, View, ScrollView } from 'react-native'
 import { useTheme } from '@bsky.app/alf'
 import { msg, Trans } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
@@ -11,7 +11,6 @@ import * as TextField from '#/components/forms/TextField'
 import { PlusLarge_Stroke2_Corner0_Rounded as PlusIcon } from '#/components/icons/Plus'
 import { Text } from '#/components/Typography'
 import {
-  ComboBoxOptions,
   ComboBoxSelection,
   ComboBoxSingleSelectOptions,
 } from './common'
@@ -20,6 +19,7 @@ import {
   type ComboBoxProps,
   type ComboBoxSingleSelectProps,
 } from './types'
+import { ComboBoxOptions } from "./ComboBoxOptions"
 
 /**
  * Multi-select combo box, only allowing selection of the given options.
@@ -43,6 +43,7 @@ export function ComboBox<T extends BaseOption>(props: ComboBoxProps<T>) {
               t.atoms.bg_contrast_50,
               a.flex_row,
               a.align_center,
+              a.gap_sm
             ]}>
             <View style={[a.flex_1]}>
               {props.selection.length ? (
@@ -66,7 +67,7 @@ export function ComboBox<T extends BaseOption>(props: ComboBoxProps<T>) {
               }
             </View>
             {/* TODO provide better label */}
-            <View style={[a.ml_auto]}>
+            <View >
               <Button
                 style={[a.ml_auto]}
                 shape="round"
@@ -101,42 +102,54 @@ function ComboBoxInner<T extends BaseOption>({
 }: ComboBoxProps<T> & { onConfirm: () => void }) {
   const [searchText, setSearchText] = useState('')
   const { _ } = useLingui()
+  const { height: windowHeight } = useWindowDimensions()
+  const [headerHeight, setHeaderHeight] = useState(0)
+
+  // Calculate available height for list: window height - header - dialog padding/insets
+  // Reserve ~200px for dialog padding, safe areas, and margins
+  const availableHeight = Math.max(200, windowHeight - headerHeight - 200)
+
   return (
-    <View>
-      <View style={[a.gap_sm]}>
-        <View>
-          <Button
-            label={_(msg`Confirm selection`)}
-            onPress={onConfirm}
-            size="small"
-            color="primary"
-            style={[a.ml_auto]}>
-            <ButtonText>
-              <Trans>Done</Trans>
-            </ButtonText>
-          </Button>
+    <View style={[a.gap_sm]}>
+      <View
+        onLayout={(e) => {
+          setHeaderHeight(e.nativeEvent.layout.height)
+        }}>
+        <View style={[a.gap_sm]}>
+          <View>
+            <Button
+              label={_(msg`Confirm selection`)}
+              onPress={onConfirm}
+              size="small"
+              color="primary"
+              style={[a.ml_auto]}>
+              <ButtonText>
+                <Trans>Done</Trans>
+              </ButtonText>
+            </Button>
+          </View>
+          <View>
+            <TextField.Root>
+              <TextField.Input
+                value={searchText}
+                label={searchLabel}
+                onChangeText={setSearchText}
+              />
+            </TextField.Root>
+          </View>
+          <View>
+            <ComboBoxSelection onRemove={onRemove} selection={selection} />
+          </View>
         </View>
-        <View>
-          <TextField.Root>
-            <TextField.Input
-              value={searchText}
-              label={searchLabel}
-              onChangeText={setSearchText}
-            />
-          </TextField.Root>
-        </View>
-        <View>
-          <ComboBoxSelection onRemove={onRemove} selection={selection} />
-        </View>
-        <View>
-          <ComboBoxOptions
-            onSelect={onSelect}
-            options={options}
-            searchText={searchText}
-            selection={selection}
-            containerStyle={{ height: '100%' }}
-          />
-        </View>
+      </View>
+
+      <View style={{ maxHeight: availableHeight }}>
+        <ComboBoxOptions
+          onSelect={onSelect}
+          options={options}
+          searchText={searchText}
+          selection={selection}
+        />
       </View>
     </View>
   )
@@ -221,6 +234,7 @@ export function ComboBoxSingleSelect({
                   onChange(value)
                   dialog.close()
                 }}
+                optionStyle={[a.mb_xs]}
                 options={options}
                 value={value}
                 containerStyle={{ height: '100%' }}
