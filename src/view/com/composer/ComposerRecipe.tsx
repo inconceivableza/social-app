@@ -436,7 +436,7 @@ export function ComposerRecipe({
 
             <View
               style={[
-                {backgroundColor: t.palette.contrast_25},
+                { backgroundColor: t.palette.contrast_50 },
                 a.rounded_sm,
                 errorBorder(t, errors?.tree?.text),
               ]}>
@@ -481,7 +481,7 @@ export function ComposerRecipe({
                   t.atoms.border_contrast_low,
                   a.rounded_sm,
                   a.p_sm,
-                  {width: '50%'},
+                  { width: '75%' },
                 ]}>
                 <View style={[a.flex_1]}>
                   <TextField.Root
@@ -602,7 +602,7 @@ export function ComposerRecipe({
               </View>
 
               <View style={[a.flex_row, a.flex_wrap, a.gap_md, a.my_sm]}>
-                <View style={[a.flex_1, a.h_full]}>
+                <View style={[a.flex_1 ]}>
                   <ComboBox
                     options={recipeCategories.options}
                     label={_(msg`Categories`)}
