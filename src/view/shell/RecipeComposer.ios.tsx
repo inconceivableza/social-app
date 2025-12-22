@@ -32,7 +32,7 @@ export function RecipeComposer({}: {winHeight: number}) {
       visible={open}
       presentationStyle="pageSheet"
       animationType="slide"
-      allowSwipeDismissal="true"
+      allowSwipeDismissal={true}
       onRequestClose={() => ref.current?.onPressCancel()}>
       <View style={[t.atoms.bg, a.flex_1]}>
         <ComposerRecipe edit={state?.edit} />
