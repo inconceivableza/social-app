@@ -37,10 +37,10 @@ export const SplashScreen = ({
         style={[a.flex_1]}>
         <ErrorBoundary>
           <View style={[a.flex_1, a.justify_center, a.align_center]}>
-            <Logo width={92} fill="sky" />
+            <Logo width={128} />
 
             <View style={[a.pb_sm, a.pt_5xl]}>
-              <Logotype width={161} fill={t.atoms.text.color} />
+              <Logotype width={180} fill={t.atoms.text.color} />
             </View>
 
             <Text

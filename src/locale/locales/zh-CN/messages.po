@@ -1737,7 +1737,7 @@ msgstr "继续创建账户即代表你同意我们的<0>服务条款</0>。"
 msgid "By you"
 msgstr "由你创建"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "相机"
 
@@ -3858,7 +3858,7 @@ msgstr "无法撤回认证"
 msgid "Failed to resolve location. Please try again."
 msgstr "无法获取位置信息，请重试。"
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "无法保存图片：{0}"
 
@@ -4868,11 +4868,11 @@ msgstr "已清除图片缓存"
 msgid "Image cache cleared, freed {0}"
 msgstr "已清除图片缓存，释放了{0}"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "已保存图片"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "无法保存图片，请允许应用访问照片图库。"
 
@@ -6591,7 +6591,7 @@ msgstr "开启调试记录的额外详细信息"
 msgid "Opens alt text dialog"
 msgstr "打开替代文本对话框"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "开启设备相机"
 
@@ -6814,7 +6814,7 @@ msgstr "关注 @{0} 的用户"
 msgid "People I follow"
 msgstr "我关注的人"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "已被拒绝访问照片图库，请在系统设置中授权。"
 

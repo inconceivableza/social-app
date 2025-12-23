@@ -140,8 +140,9 @@ msgstr ""
 msgid "{0, plural, other {+# more}}"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:117
-#: src/components/EnvConfigIndicator.tsx:139
+#: src/components/EnvConfigIndicator.tsx:118
+#: src/components/EnvConfigIndicator.tsx:140
+#: src/components/forms/ComboBox/index.tsx:64
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
@@ -259,8 +260,8 @@ msgstr ""
 msgid "{0}, a list by {1}"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:110
-#: src/components/EnvConfigIndicator.tsx:131
+#: src/components/EnvConfigIndicator.tsx:111
+#: src/components/EnvConfigIndicator.tsx:132
 #: src/screens/Settings/Settings.tsx:625
 #: src/screens/Settings/Settings.tsx:642
 msgid "{0}. {reloadMessage}"
@@ -514,6 +515,7 @@ msgstr ""
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr ""
 
+#: src/components/forms/ComboBox/index.tsx:196
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:197
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:305
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:420
@@ -1412,8 +1414,12 @@ msgstr ""
 msgid "At least 8 characters"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:722
+#: src/view/com/composer/state/composerRecipe.ts:726
 msgid "At least one ingredient required"
+msgstr ""
+
+#: src/view/com/composer/state/composerRecipe.ts:512
+msgid "At least one instruction required"
 msgstr ""
 
 #: src/view/com/composer/ComposerRecipe.tsx:685
@@ -1732,7 +1738,7 @@ msgstr ""
 msgid "By you"
 msgstr ""
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr ""
 
@@ -1825,7 +1831,7 @@ msgstr ""
 msgid "Captions & alt text"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:529
+#: src/view/com/composer/state/composerRecipe.ts:533
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
@@ -1876,7 +1882,7 @@ msgstr ""
 msgid "Change report reason"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:205
+#: src/components/EnvConfigIndicator.tsx:206
 msgid "Change server domain"
 msgstr ""
 
@@ -1975,7 +1981,7 @@ msgstr ""
 msgid "Cholesterol"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:561
+#: src/view/com/composer/state/composerRecipe.ts:565
 msgid "Cholesterol content must be a number"
 msgstr ""
 
@@ -2315,7 +2321,7 @@ msgstr ""
 msgid "Confirm delete account"
 msgstr ""
 
-#: src/components/forms/ComboBox/index.tsx:131
+#: src/components/forms/ComboBox/index.tsx:121
 msgid "Confirm selection"
 msgstr ""
 
@@ -2350,7 +2356,7 @@ msgstr ""
 msgid "Confirmation code"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:176
+#: src/components/EnvConfigIndicator.tsx:177
 msgid "Connect"
 msgstr ""
 
@@ -2482,11 +2488,11 @@ msgstr ""
 msgid "Cooking time"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:735
+#: src/view/com/composer/state/composerRecipe.ts:739
 msgid "Cooking time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:737
+#: src/view/com/composer/state/composerRecipe.ts:741
 msgid "Cooking time must be greater than zero"
 msgstr ""
 
@@ -2765,7 +2771,7 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:171
+#: src/components/EnvConfigIndicator.tsx:172
 msgid "Custom server domain"
 msgstr ""
 
@@ -2900,8 +2906,8 @@ msgstr ""
 msgid "Delete my account"
 msgstr ""
 
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:753
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:755
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:754
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:756
 #: src/view/com/composer/Composer.tsx:1073
 msgid "Delete post"
 msgstr ""
@@ -3129,7 +3135,9 @@ msgstr ""
 #: src/components/dialogs/BirthDateSettings.tsx:149
 #: src/components/dialogs/BirthDateSettings.tsx:156
 #: src/components/dms/ReportDialog.tsx:321
-#: src/components/forms/ComboBox/index.tsx:136
+#: src/components/forms/ComboBox/index.tsx:127
+#: src/components/forms/ComboBox/index.tsx:210
+#: src/components/forms/ComboBox/index.tsx:215
 #: src/components/forms/DateField/index.tsx:103
 #: src/components/forms/DateField/index.tsx:109
 #: src/components/Select/index.tsx:185
@@ -3181,7 +3189,7 @@ msgstr ""
 msgid "Download CAR file"
 msgstr ""
 
-#: src/view/com/composer/text-input/TextInput.web.tsx:382
+#: src/view/com/composer/text-input/TextInput.web.tsx:383
 msgid "Drop to add images"
 msgstr ""
 
@@ -3260,8 +3268,8 @@ msgstr ""
 msgid "Edit image"
 msgstr ""
 
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:734
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:747
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:733
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:746
 msgid "Edit interaction settings"
 msgstr ""
 
@@ -3466,7 +3474,7 @@ msgstr ""
 msgid "Energy"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:523
+#: src/view/com/composer/state/composerRecipe.ts:527
 msgid "Energy value must be a number"
 msgstr ""
 
@@ -3530,7 +3538,7 @@ msgstr ""
 msgid "Entertainment"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:97
+#: src/components/EnvConfigIndicator.tsx:98
 msgid "Environment Config {currentEnvName}: {envConfigText}"
 msgstr ""
 
@@ -3649,7 +3657,7 @@ msgstr ""
 msgid "Expands or collapses post text"
 msgstr ""
 
-#: src/lib/api/index.ts:833
+#: src/lib/api/index.ts:831
 msgid "Expected uri to resolve to a record"
 msgstr ""
 
@@ -3853,7 +3861,7 @@ msgstr ""
 msgid "Failed to resolve location. Please try again."
 msgstr ""
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr ""
 
@@ -3928,7 +3936,7 @@ msgstr ""
 msgid "Failed to verify handle. Please try again."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:540
+#: src/view/com/composer/state/composerRecipe.ts:544
 msgid "Fat content must be a number"
 msgstr ""
 
@@ -4010,7 +4018,7 @@ msgstr ""
 msgid "Fetch update"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:545
+#: src/view/com/composer/state/composerRecipe.ts:549
 msgid "Fiber content must be a number"
 msgstr ""
 
@@ -4541,7 +4549,7 @@ msgstr ""
 msgid "Go to user's profile"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:51
+#: src/components/EnvConfigIndicator.tsx:52
 #: src/screens/Settings/Settings.tsx:606
 msgid "Going to reload app..."
 msgstr ""
@@ -4863,11 +4871,11 @@ msgstr ""
 msgid "Image cache cleared, freed {0}"
 msgstr ""
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr ""
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr ""
 
@@ -4924,11 +4932,11 @@ msgstr ""
 msgid "Incorrect username or password"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:487
+#: src/view/com/composer/state/composerRecipe.ts:491
 msgid "Ingredient name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:491
+#: src/view/com/composer/state/composerRecipe.ts:495
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
@@ -4967,7 +4975,7 @@ msgstr ""
 msgid "Instruction section options"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:499
+#: src/view/com/composer/state/composerRecipe.ts:503
 msgid "Instruction text cannot be empty"
 msgstr ""
 
@@ -5012,12 +5020,12 @@ msgstr ""
 msgid "Invalid report subject"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:638
-#: src/view/com/composer/state/composerRecipe.ts:648
-#: src/view/com/composer/state/composerRecipe.ts:666
-#: src/view/com/composer/state/composerRecipe.ts:675
-#: src/view/com/composer/state/composerRecipe.ts:688
-#: src/view/com/composer/state/composerRecipe.ts:701
+#: src/view/com/composer/state/composerRecipe.ts:642
+#: src/view/com/composer/state/composerRecipe.ts:652
+#: src/view/com/composer/state/composerRecipe.ts:670
+#: src/view/com/composer/state/composerRecipe.ts:679
+#: src/view/com/composer/state/composerRecipe.ts:692
+#: src/view/com/composer/state/composerRecipe.ts:705
 msgid "Invalid URL (must include protocol e.g. http://)"
 msgstr ""
 
@@ -5942,7 +5950,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:718
+#: src/view/com/composer/state/composerRecipe.ts:722
 msgid "Name cannot be empty"
 msgstr ""
 
@@ -6100,8 +6108,8 @@ msgstr ""
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:93
 #: src/screens/PostThread/components/HeaderDropdown.tsx:98
-#: src/screens/Settings/ThreadPreferences.tsx:80
-#: src/screens/Settings/ThreadPreferences.tsx:83
+#: src/screens/Settings/ThreadPreferences.tsx:72
+#: src/screens/Settings/ThreadPreferences.tsx:75
 msgid "Newest replies first"
 msgstr ""
 
@@ -6231,7 +6239,8 @@ msgstr ""
 msgid "No results for \"{0}\"."
 msgstr ""
 
-#: src/components/forms/ComboBox/common.tsx:72
+#: src/components/forms/ComboBox/ComboBoxOptions.tsx:58
+#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:71
 #: src/components/Lists.tsx:189
 #: src/screens/Search/SearchResults.tsx:315
 msgid "No results found"
@@ -6420,8 +6429,8 @@ msgstr ""
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:83
 #: src/screens/PostThread/components/HeaderDropdown.tsx:88
-#: src/screens/Settings/ThreadPreferences.tsx:72
-#: src/screens/Settings/ThreadPreferences.tsx:75
+#: src/screens/Settings/ThreadPreferences.tsx:64
+#: src/screens/Settings/ThreadPreferences.tsx:67
 msgid "Oldest replies first"
 msgstr ""
 
@@ -6586,7 +6595,7 @@ msgstr ""
 msgid "Opens alt text dialog"
 msgstr ""
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr ""
 
@@ -6809,7 +6818,7 @@ msgstr ""
 msgid "People I follow"
 msgstr ""
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr ""
 
@@ -7008,7 +7017,7 @@ msgstr ""
 msgid "Please enter your username"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:52
+#: src/components/EnvConfigIndicator.tsx:53
 #: src/screens/Settings/Settings.tsx:607
 msgid "Please exit and reload app manually..."
 msgstr ""
@@ -7110,8 +7119,8 @@ msgid "Post deleted"
 msgstr ""
 
 #: src/lib/api/index.ts:200
-#: src/lib/api/index.ts:321
-#: src/lib/api/index.ts:381
+#: src/lib/api/index.ts:319
+#: src/lib/api/index.ts:379
 msgid "Post failed to upload. Please check your Internet connection and try again."
 msgstr ""
 
@@ -7202,11 +7211,11 @@ msgstr ""
 msgid "Prep:"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:729
+#: src/view/com/composer/state/composerRecipe.ts:733
 msgid "Preparation time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:731
+#: src/view/com/composer/state/composerRecipe.ts:735
 msgid "Preparation time must be greater than zero"
 msgstr ""
 
@@ -7235,11 +7244,6 @@ msgstr ""
 
 #: src/screens/Settings/LanguageSettings.tsx:120
 msgid "Primary Language"
-msgstr ""
-
-#: src/screens/Settings/ThreadPreferences.tsx:94
-#: src/screens/Settings/ThreadPreferences.tsx:99
-msgid "Prioritize your Follows"
 msgstr ""
 
 #: src/view/shell/desktop/RightNav.tsx:125
@@ -7280,16 +7284,16 @@ msgid "Processing video..."
 msgstr ""
 
 #: src/lib/api/index.ts:74
-#: src/lib/api/index.ts:402
+#: src/lib/api/index.ts:400
 #: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:696
+#: src/view/com/composer/state/composerRecipe.ts:700
 msgid "Product attribution brand cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:697
+#: src/view/com/composer/state/composerRecipe.ts:701
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
@@ -7318,7 +7322,7 @@ msgstr ""
 msgid "Protein"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:535
+#: src/view/com/composer/state/composerRecipe.ts:539
 msgid "Protein content must be a number"
 msgstr ""
 
@@ -7334,11 +7338,11 @@ msgstr ""
 msgid "Public, sharable lists which can be used to drive feeds."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:660
+#: src/view/com/composer/state/composerRecipe.ts:664
 msgid "Publication attribution author cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:657
+#: src/view/com/composer/state/composerRecipe.ts:661
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
@@ -7584,8 +7588,12 @@ msgstr ""
 msgid "Recipe timer finished"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:588
+#: src/view/com/composer/state/composerRecipe.ts:592
 msgid "Recipe yield quantity must be a number"
+msgstr ""
+
+#: src/view/com/composer/state/composerRecipe.ts:594
+msgid "Recipe yield quantity must be greater than zero"
 msgstr ""
 
 #: src/screens/Search/Shell.tsx:663
@@ -7729,7 +7737,7 @@ msgstr ""
 msgid "Remove section"
 msgstr ""
 
-#: src/components/forms/ComboBox/common.tsx:113
+#: src/components/forms/ComboBox/common.tsx:53
 msgid "Remove selection"
 msgstr ""
 
@@ -8158,7 +8166,7 @@ msgstr ""
 msgid "Review Recipe"
 msgstr ""
 
-#: src/lib/api/index.ts:555
+#: src/lib/api/index.ts:553
 msgid "Review-rating post failed to upload. Please check your Internet connection and try again."
 msgstr ""
 
@@ -8174,7 +8182,7 @@ msgstr ""
 msgid "Saturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:567
+#: src/view/com/composer/state/composerRecipe.ts:571
 msgid "Saturated fat content must be a number"
 msgstr ""
 
@@ -8466,7 +8474,7 @@ msgstr ""
 msgid "Select a color"
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:225
+#: src/components/EnvConfigIndicator.tsx:226
 msgid "Select a server domain"
 msgstr ""
 
@@ -8676,7 +8684,7 @@ msgstr ""
 msgid "Serving size"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:514
+#: src/view/com/composer/state/composerRecipe.ts:518
 msgid "Serving size quantity must be a number"
 msgstr ""
 
@@ -8867,11 +8875,11 @@ msgstr ""
 msgid "Show anyway"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:684
+#: src/view/com/composer/state/composerRecipe.ts:688
 msgid "Show attribution network cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:682
+#: src/view/com/composer/state/composerRecipe.ts:686
 msgid "Show attribution title cannot be empty"
 msgstr ""
 
@@ -8920,7 +8928,7 @@ msgstr ""
 msgid "Show original version"
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:127
+#: src/screens/Settings/ThreadPreferences.tsx:98
 msgid "Show post replies in a threaded tree view"
 msgstr ""
 
@@ -8936,10 +8944,6 @@ msgstr ""
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:43
 msgid "Show replies as"
-msgstr ""
-
-#: src/screens/Settings/ThreadPreferences.tsx:104
-msgid "Show replies by people you follow before all other replies"
 msgstr ""
 
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:630
@@ -9103,7 +9107,7 @@ msgstr ""
 msgid "Sodium"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:555
+#: src/view/com/composer/state/composerRecipe.ts:559
 msgid "Sodium content must be a number"
 msgstr ""
 
@@ -9179,15 +9183,15 @@ msgstr ""
 msgid "Sorry! Your session expired. Please sign in again."
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:52
+#: src/screens/Settings/ThreadPreferences.tsx:44
 msgid "Sort replies"
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:59
+#: src/screens/Settings/ThreadPreferences.tsx:51
 msgid "Sort replies by"
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:56
+#: src/screens/Settings/ThreadPreferences.tsx:48
 msgid "Sort replies to the same post by:"
 msgstr ""
 
@@ -9366,7 +9370,7 @@ msgstr ""
 msgid "Sugar"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:550
+#: src/view/com/composer/state/composerRecipe.ts:554
 msgid "Sugar content must be a number"
 msgstr ""
 
@@ -10062,7 +10066,7 @@ msgstr ""
 msgid "Thread preferences"
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:42
+#: src/screens/Settings/ThreadPreferences.tsx:34
 msgid "Thread Preferences"
 msgstr ""
 
@@ -10129,15 +10133,15 @@ msgstr ""
 msgid "Toggles the sound"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:745
+#: src/view/com/composer/state/composerRecipe.ts:749
 msgid "Too many categories selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:741
+#: src/view/com/composer/state/composerRecipe.ts:745
 msgid "Too many cuisines selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:749
+#: src/view/com/composer/state/composerRecipe.ts:753
 msgid "Too many diets selected"
 msgstr ""
 
@@ -10149,8 +10153,8 @@ msgstr ""
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:73
 #: src/screens/PostThread/components/HeaderDropdown.tsx:78
-#: src/screens/Settings/ThreadPreferences.tsx:64
-#: src/screens/Settings/ThreadPreferences.tsx:67
+#: src/screens/Settings/ThreadPreferences.tsx:56
+#: src/screens/Settings/ThreadPreferences.tsx:59
 msgid "Top replies first"
 msgstr ""
 
@@ -10166,7 +10170,7 @@ msgstr ""
 msgid "Trans fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:573
+#: src/view/com/composer/state/composerRecipe.ts:577
 msgid "Trans fat content must be a number"
 msgstr ""
 
@@ -10179,8 +10183,8 @@ msgstr ""
 msgid "Translate"
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:115
-#: src/screens/Settings/ThreadPreferences.tsx:120
+#: src/screens/Settings/ThreadPreferences.tsx:86
+#: src/screens/Settings/ThreadPreferences.tsx:91
 msgid "Tree view"
 msgstr ""
 
@@ -10449,7 +10453,7 @@ msgstr ""
 msgid "Unsaturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:579
+#: src/view/com/composer/state/composerRecipe.ts:583
 msgid "Unsaturated fat content must be a number"
 msgstr ""
 
@@ -10560,12 +10564,12 @@ msgstr ""
 msgid "Upload from Library"
 msgstr ""
 
-#: src/lib/api/index.ts:699
+#: src/lib/api/index.ts:697
 msgid "Uploading images..."
 msgstr ""
 
-#: src/lib/api/index.ts:783
-#: src/lib/api/index.ts:807
+#: src/lib/api/index.ts:781
+#: src/lib/api/index.ts:805
 msgid "Uploading link thumbnail..."
 msgstr ""
 
@@ -10598,7 +10602,7 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:179
+#: src/components/EnvConfigIndicator.tsx:180
 msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
@@ -11191,7 +11195,7 @@ msgstr ""
 msgid "We've confirmed your age assurance status. You can now close this dialog."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:674
+#: src/view/com/composer/state/composerRecipe.ts:678
 msgid "Website attribution name cannot be empty"
 msgstr ""
 

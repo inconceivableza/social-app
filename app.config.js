@@ -644,6 +644,7 @@ module.exports = function (_config) {
         ],
         ['expo-screen-orientation', {initialOrientation: 'PORTRAIT_UP'}],
         ['expo-location'],
+        ['expo-media-library', {granularPermissions: []}],
       ].filter(Boolean),
       extra: {
         eas: {

@@ -1737,7 +1737,7 @@ msgstr "계정을 만들면 <0>서비스 이용약관</0>에 동의하는 것입
 msgid "By you"
 msgstr "내가 만듦"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "카메라"
 
@@ -3858,7 +3858,7 @@ msgstr "인증을 취소하지 못했습니다"
 msgid "Failed to resolve location. Please try again."
 msgstr "위치를 확인하지 못했습니다. 다시 시도해 주세요."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "이미지를 저장하지 못함: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "이미지 캐시를 지웠습니다"
 msgid "Image cache cleared, freed {0}"
 msgstr "이미지 캐시를 지우고 {0}를 확보했습니다"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "이미지를 저장했습니다"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "사진 보관함에 대한 접근 권한이 부여되지 않으면 이미지를 저장할 수 없습니다."
 
@@ -6591,7 +6591,7 @@ msgstr "디버그 항목에 대한 추가 세부 정보를 엽니다"
 msgid "Opens alt text dialog"
 msgstr "대체 텍스트 대화 상자를 엽니다"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "기기에서 카메라를 엽니다"
 
@@ -6814,7 +6814,7 @@ msgstr "@{0} 님을 팔로우하는 사용자"
 msgid "People I follow"
 msgstr "내가 팔로우하는 사용자"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "사진 보관함에 대한 접근 권한이 거부되었습니다. 시스템 설정에서 활성화해 주세요."
 

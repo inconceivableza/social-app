@@ -3,7 +3,7 @@ import {type StyleProp, TextInput, View, type ViewStyle} from 'react-native'
 import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {canReload, doDelayedReload} from '#/lib/reload'
+import * as reload from '#/lib/reload'
 import {logger} from '#/logger'
 import {
   builtinConfigNames,
@@ -47,7 +47,8 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
-  const reloadMessage = canReload
+  logger.warn('Evaluating reload', reload)
+  const reloadMessage = reload?.canReload
     ? _(msg`Going to reload app...`)
     : _(msg`Please exit and reload app manually...`)
 
@@ -108,7 +109,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
       if (result.success) {
         setCurrentEnvName(envName)
         Toast.show(_(msg`${result.message}. ${reloadMessage}`))
-        await doDelayedReload(
+        await reload.doDelayedReload(
           'Changed environment config',
           'Reloading app after environment config change',
           'User must exit and reload app after environment config change to prevent errors',
@@ -130,7 +131,7 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
         setCurrentEnvName('custom')
         Toast.show(_(msg`${result.message}. ${reloadMessage}`))
         setShowCustomDomain(false)
-        await doDelayedReload(
+        await reload.doDelayedReload(
           'Changed environment config',
           'Reloading app after environment config change',
           'User must exit and reload app after environment config change to prevent errors',

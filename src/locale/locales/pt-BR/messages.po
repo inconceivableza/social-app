@@ -1737,7 +1737,7 @@ msgstr "Ao criar uma conta você concorda com os <0>Termos de Serviço</0>."
 msgid "By you"
 msgstr "Por você"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Câmera"
 
@@ -3858,7 +3858,7 @@ msgstr "Falha ao remover a verificação"
 msgid "Failed to resolve location. Please try again."
 msgstr "Falha ao determinar localização. Por favor, tente novamente."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Não foi possível salvar a imagem: {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Memória temporária de imagens removida"
 msgid "Image cache cleared, freed {0}"
 msgstr "Memória temporária de imagens removida, {0} liberados"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Imagem salva"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Imagens não podem ser salvas a menos que seja concedida permissão para acessar sua galeria de fotos."
 
@@ -6591,7 +6591,7 @@ msgstr "Abre detalhes adicionais para um registro de depuração"
 msgid "Opens alt text dialog"
 msgstr "Abrir janela de texto alternativo"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Abre a câmera do dispositivo"
 
@@ -6814,7 +6814,7 @@ msgstr "Pessoas seguindo @{0}"
 msgid "People I follow"
 msgstr "Pessoas que eu sigo"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "A permissão para acessar sua galeria de fotos foi negada. Por favor, habilite-a nas configurações do dispositivo."
 

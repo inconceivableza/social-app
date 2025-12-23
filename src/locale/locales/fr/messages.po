@@ -1737,7 +1737,7 @@ msgstr "En créant un compte, vous acceptez les <0>Conditions générales</0>."
 msgid "By you"
 msgstr "Par vous"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:70
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:73
 msgid "Camera"
 msgstr "Caméra"
 
@@ -3858,7 +3858,7 @@ msgstr "Échec du retrait de la vérification"
 msgid "Failed to resolve location. Please try again."
 msgstr "Échec de la géolocalisation. Veuillez réessayer."
 
-#: src/lib/media/save-image.ts:28
+#: src/lib/media/save-image.ts:29
 msgid "Failed to save image: {0}"
 msgstr "Échec de l’enregistrement de l’image : {0}"
 
@@ -4868,11 +4868,11 @@ msgstr "Cache des images purgé"
 msgid "Image cache cleared, freed {0}"
 msgstr "Cache des images purgé, {0} libérés"
 
-#: src/lib/media/save-image.ts:26
+#: src/lib/media/save-image.ts:27
 msgid "Image saved"
 msgstr "Image enregistrée"
 
-#: src/lib/media/save-image.ts:45
+#: src/lib/media/save-image.ts:46
 msgid "Images cannot be saved unless permission is granted to access your photo library."
 msgstr "Les images ne peuvent être enregistrées tant qu’une permission d’accès à votre photothèque n’est pas autorisée."
 
@@ -6591,7 +6591,7 @@ msgstr "Ouvre des détails supplémentaires pour une entrée de débug"
 msgid "Opens alt text dialog"
 msgstr "Ouvre la boîte de dialogue sur le texte alt"
 
-#: src/view/com/composer/photos/OpenCameraBtn.tsx:71
+#: src/view/com/composer/photos/OpenCameraBtn.tsx:74
 msgid "Opens camera on device"
 msgstr "Ouvre l’appareil photo de l’appareil"
 
@@ -6814,7 +6814,7 @@ msgstr "Personnes qui suivent @{0}"
 msgid "People I follow"
 msgstr "Comptes suivis"
 
-#: src/lib/media/save-image.ts:51
+#: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Permission d’accès à votre photothèque refusée. Veuillez l’autoriser depuis vos paramètres système."
 
