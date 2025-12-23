@@ -928,7 +928,7 @@ function RecipeIngredients({
         t.atoms.border_contrast_low,
         a.rounded_sm,
       ]}>
-      <View style={[a.gap_xs]}>
+      <View style={[a.gap_sm]}>
         {state.ingredients.map(({id, name, quantity, unit}, i) => (
           <View style={[a.flex_row, a.gap_sm, a.flex_wrap, a.flex_1]} key={id}>
             <View style={[a.w_full]}>
