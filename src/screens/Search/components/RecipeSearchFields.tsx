@@ -31,7 +31,7 @@ const searchFields = [
   },
   {
     field: 'recipeDiets',
-    label: msg`Suitable diets`,
+    label: msg`Diets`,
     searchLabel: msg`Search suitable diets...`,
     options: recipeDiets,
   },
@@ -126,6 +126,7 @@ export const recipeParamsSchema = z.object({
   recipeDiets: makeParamSchema(recipeDiets),
   searchType: z.enum(['all', 'recipes']).catch(() => 'all' as const),
 })
+
 
 export function useRecipeSearchState({
   recipeCategories,

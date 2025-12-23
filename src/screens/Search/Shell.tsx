@@ -36,10 +36,9 @@ import {
   type Params,
   parseSearchQuery,
 } from '#/screens/Search/utils'
-import {atoms as a, tokens, useBreakpoints, useTheme, web} from '#/alf'
+import { atoms as a, platform, select, tokens, useBreakpoints, useTheme, web } from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
-import {SearchInput} from '#/components/forms/SearchInput'
-import * as ToggleButton from '#/components/forms/ToggleButton'
+import { SearchInput } from '#/components/forms/SearchInput'
 import * as Layout from '#/components/Layout'
 import {Text} from '#/components/Typography'
 import {account, useStorage} from '#/storage'
@@ -54,6 +53,7 @@ import {SearchHistory} from './components/SearchHistory'
 import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
+import { SearchTypeInput } from './components/SearchTypeInput'
 
 export function SearchScreenShell({
   queryParam,
@@ -147,7 +147,7 @@ export function SearchScreenShell({
   })
 
   const parsedParams = useMemo(() => {
-    return recipeParamsSchema.parse(route.params)
+    return recipeParamsSchema.parse(route.params ?? {})
   }, [route.params])
 
   const [recipeSearchFields, dispatchRecipeSearch] =
@@ -380,27 +380,8 @@ export function SearchScreenShell({
                   a.gap_xs,
                   a.align_center,
                 ]}>
-                <View style={{width: '25%'}}>
-                  <ToggleButton.Group
-                    label={_(msg`Search type`)}
-                    onChange={values => {
-                      const found = searchTypeOptions.find(
-                        ({value}) => value === values[0],
-                      )
-                      setSearchType(found?.value ?? 'all')
-                    }}
-                    values={[searchType]}>
-                    {searchTypeOptions.map(({label, value}) => (
-                      <ToggleButton.Button
-                        label={_(label)}
-                        name={value}
-                        key={`searchtype-${value}`}>
-                        <ToggleButton.ButtonText>
-                          {_(label)}
-                        </ToggleButton.ButtonText>
-                      </ToggleButton.Button>
-                    ))}
-                  </ToggleButton.Group>
+                <View style={[platform({ web: { width: '25%' } })]}>
+                  <SearchTypeInput value={searchType} onChange={setSearchType} />
                 </View>
                 <View style={{flexGrow: 1}}>
                   <SearchInput
@@ -411,8 +392,8 @@ export function SearchScreenShell({
                     onClearText={onPressClearQuery}
                     onSubmitEditing={onSubmit}
                     placeholder={
-                      inputPlaceholder ??
-                      _(msg`Search for posts, users, or feeds`)
+                      inputPlaceholder ?? searchType === "all" ?
+                        _(msg`Search for posts, users, or feeds`) : _(msg`Search for recipes`)
                     }
                     hitSlop={{...HITSLOP_20, top: 0}}
                   />
@@ -653,13 +634,4 @@ function scrollToTopWeb() {
   }
 }
 
-const searchTypeOptions = [
-  {
-    value: 'all',
-    label: msg`All`,
-  },
-  {
-    value: 'recipes',
-    label: msg`Recipes`,
-  },
-] as const
+
