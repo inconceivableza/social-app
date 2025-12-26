@@ -44,7 +44,8 @@ let SearchResults = ({
 
   const sections = useMemo(() => {
     if (!queryWithParams) return []
-    const noParams = queryWithParams === query
+    const params = queryWithParams.split(" ").slice(1)
+    const noParams = params.length === 0 || params.length === 1 && params[0] === "searchType:all"
     return [
       {
         title: _(msg`Top`),
