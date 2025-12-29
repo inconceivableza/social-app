@@ -880,6 +880,8 @@ type EnvConfigResponse struct {
 	CORS_ALLOWED_ORIGINS    string `json:"CORS_ALLOWED_ORIGINS"`
 	DM_SERVICE_DID          string `json:"DM_SERVICE_DID"`
 	GIF_SERVICE             string `json:"GIF_SERVICE"`
+	FEEDBACK_POST_URL       string `json:"FEEDBACK_POST_URL"`
+	FEEDBACK_POST_TOKEN     string `json:"FEEDBACK_POST_TOKEN"`
 	GEOLOCATION_CONFIG_URL  string `json:"GEOLOCATION_CONFIG_URL"`
 	LINK_HOST               string `json:"LINK_HOST"`
 	OGCARD_URL              string `json:"OGCARD_URL"`
@@ -908,6 +910,8 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 		CORS_ALLOWED_ORIGINS:    os.Getenv("EXPO_PUBLIC_CORS_ALLOWED_ORIGINS"),
 		DM_SERVICE_DID:          os.Getenv("EXPO_PUBLIC_DM_SERVICE_DID"),
 		GIF_SERVICE:             os.Getenv("EXPO_PUBLIC_GIF_SERVICE"),
+		FEEDBACK_POST_URL:       os.Getenv("EXPO_PUBLIC_FEEDBACK_POST_URL"),
+		FEEDBACK_POST_URL:       os.Getenv("EXPO_PUBLIC_FEEDBACK_POST_TOKEN"),
 		GEOLOCATION_CONFIG_URL:  os.Getenv("EXPO_PUBLIC_GEOLOCATION_CONFIG_URL"),
 		LINK_HOST:               os.Getenv("EXPO_PUBLIC_LINK_HOST"),
 		OGCARD_URL:              os.Getenv("EXPO_PUBLIC_OGCARD_URL"),

@@ -70,6 +70,8 @@ const EMPTY_CONFIG: EnvConfig = {
   BSKY_SERVICE_DID: '',
   DM_PROXY_DID: '',
   DM_SERVICE_DID: '',
+  FEEDBACK_POST_URL: '',
+  FEEDBACK_POST_TOKEN: '',
   GEOLOCATION_CONFIG_URL: '',
   GIF_HOST: '',
   HELP_DESK_URL: '',
@@ -98,6 +100,8 @@ const InternalToEnvName: EnvConfig & Record<string, string> = {
   BSKY_SERVICE_DID: 'ATP_PDS_DID',
   DM_PROXY_DID: 'CHAT_PROXY_DID',
   DM_SERVICE_DID: 'DM_SERVICE_DID',
+  FEEDBACK_POST_URL: 'FEEDBACK_POST_URL',
+  FEEDBACK_POST_TOKEN: 'FEEDBACK_POST_TOKEN',
   GEOLOCATION_CONFIG_URL: 'GEOLOCATION_CONFIG_URL',
   GIF_HOST: 'GIF_HOST',
   HELP_DESK_URL: 'SOCIAL_HELP_DESK_URL',
@@ -220,6 +224,8 @@ const BLUESKY_CONFIG: EnvConfig = {
   BSKY_SERVICE_DID: 'did:web:bsky.social',
   DM_PROXY_DID: 'did:web:api.bsky.chat',
   DM_SERVICE_DID: 'did:web:api.bsky.chat',
+  FEEDBACK_POST_URL: '',
+  FEEDBACK_POST_TOKEN: '',
   GEOLOCATION_CONFIG_URL: 'https://ip.bsky.app/config',
   GIF_HOST: 't.gifs.bsky.app',
   HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
@@ -403,6 +409,8 @@ const BLUESKY_STAGING_CONFIG: EnvConfig = {
   BSKY_SERVICE_DID: 'did:web:staging.bsky.dev',
   DM_PROXY_DID: BLUESKY_CONFIG.DM_SERVICE_DID, // use the same proxy as the service
   DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
+  FEEDBACK_POST_URL: BLUESKY_CONFIG.FEEDBACK_POST_URL,
+  FEEDBACK_POST_TOKEN: BLUESKY_CONFIG.FEEDBACK_POST_TOKEN,
   GEOLOCATION_CONFIG_URL: 'https://bsky.app/ipcc', // not sure if staging actually uses this or the bsky one
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
   HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
@@ -572,9 +580,7 @@ export async function fetchEnvConfig(server: string) {
     if (res.ok) {
       const json = (await res.json()) as Record<string, string>
       logger.info(`Loaded json for environment config: ${JSON.stringify(json)}`)
-      const envConfig: EnvConfig = jsonToEnvConfig(
-        json,
-      )
+      const envConfig: EnvConfig = jsonToEnvConfig(json)
       logger.info(
         `Loaded environment config from json with fallback: ${envConfig}`,
       )
