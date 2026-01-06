@@ -9,6 +9,7 @@ import {SearchLinkCard} from '#/view/shell/desktop/Search'
 import {SearchProfileCard} from '#/screens/Search/components/SearchProfileCard'
 import {atoms as a} from '#/alf'
 import * as Layout from '#/components/Layout'
+import { SearchType } from './SearchTypeInput/options'
 
 let AutocompleteResults = ({
   isAutocompleteFetching,
@@ -20,7 +21,7 @@ let AutocompleteResults = ({
 }: {
   isAutocompleteFetching: boolean
   autocompleteData: AppBskyActorDefs.ProfileViewBasic[] | undefined
-  queryType: 'recipes' | 'all'
+    queryType: SearchType
   onSubmit: () => void
   onResultPress: () => void
   onProfileClick: (profile: AppBskyActorDefs.ProfileViewBasic) => void

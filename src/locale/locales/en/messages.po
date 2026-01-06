@@ -605,7 +605,7 @@ msgstr ""
 msgid "<0>{date}</0> at {time}"
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:259
+#: src/screens/Search/SearchResults.tsx:260
 msgid "<0>Sign in</0><1> or </1><2>create an account</2><3> </3><4>to search for news, sports, politics, and everything else happening on {appName}.</4>"
 msgstr ""
 
@@ -1022,7 +1022,6 @@ msgstr ""
 
 #. the default tab in the interests tab bar
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:146
-#: src/screens/Search/Shell.tsx:659
 #: src/view/screens/Notifications.tsx:84
 msgid "All"
 msgstr ""
@@ -1414,11 +1413,12 @@ msgstr ""
 msgid "At least 8 characters"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:726
+#: src/view/com/composer/state/composerRecipe.ts:751
 msgid "At least one ingredient required"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:512
+#: src/view/com/composer/state/composerRecipe.ts:519
+#: src/view/com/composer/state/composerRecipe.ts:754
 msgid "At least one instruction required"
 msgstr ""
 
@@ -1635,7 +1635,7 @@ msgstr ""
 #: src/components/dialogs/DeviceLocationRequestDialog.tsx:64
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:21
 #: src/components/WelcomeModal.tsx:33
-#: src/screens/Search/SearchResults.tsx:183
+#: src/screens/Search/SearchResults.tsx:184
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:49
 msgid "Bluesky"
 msgstr ""
@@ -1762,7 +1762,7 @@ msgstr ""
 #: src/screens/Deactivated.tsx:158
 #: src/screens/Profile/Header/EditProfileDialog.tsx:218
 #: src/screens/Profile/Header/EditProfileDialog.tsx:226
-#: src/screens/Search/Shell.tsx:430
+#: src/screens/Search/Shell.tsx:411
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:85
@@ -1803,7 +1803,7 @@ msgstr ""
 msgid "Cancel reactivation and sign out"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:422
+#: src/screens/Search/Shell.tsx:403
 msgid "Cancel search"
 msgstr ""
 
@@ -1831,7 +1831,7 @@ msgstr ""
 msgid "Captions & alt text"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:533
+#: src/view/com/composer/state/composerRecipe.ts:543
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
@@ -1857,6 +1857,7 @@ msgid "Change app icon to \"{0}\""
 msgstr ""
 
 #: src/components/AppLanguageDropdown.tsx:40
+#: src/screens/Search/components/SearchTypeInput/index.tsx:13
 msgid "Change app language"
 msgstr ""
 
@@ -1981,7 +1982,7 @@ msgstr ""
 msgid "Cholesterol"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:565
+#: src/view/com/composer/state/composerRecipe.ts:585
 msgid "Cholesterol content must be a number"
 msgstr ""
 
@@ -2488,11 +2489,11 @@ msgstr ""
 msgid "Cooking time"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:739
+#: src/view/com/composer/state/composerRecipe.ts:766
 msgid "Cooking time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:741
+#: src/view/com/composer/state/composerRecipe.ts:769
 msgid "Cooking time must be greater than zero"
 msgstr ""
 
@@ -2701,7 +2702,7 @@ msgstr ""
 #: src/components/dialogs/Signin.tsx:87
 #: src/components/dialogs/Signin.tsx:89
 #: src/screens/Hashtag.tsx:232
-#: src/screens/Search/SearchResults.tsx:270
+#: src/screens/Search/SearchResults.tsx:271
 msgid "Create an account"
 msgstr ""
 
@@ -2987,6 +2988,10 @@ msgstr ""
 
 #: src/components/WhoCanReply.tsx:188
 msgid "Dialog: adjust who can interact with this post"
+msgstr ""
+
+#: src/screens/Search/components/RecipeSearchFields.tsx:34
+msgid "Diets"
 msgstr ""
 
 #: src/screens/Settings/AppearanceSettings.tsx:123
@@ -3474,8 +3479,12 @@ msgstr ""
 msgid "Energy"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:527
+#: src/view/com/composer/state/composerRecipe.ts:536
 msgid "Energy value must be a number"
+msgstr ""
+
+#: src/view/com/composer/state/composerRecipe.ts:539
+msgid "Energy value must be greater than zero"
 msgstr ""
 
 #: src/view/com/composer/videos/SubtitleDialog.tsx:158
@@ -3575,7 +3584,7 @@ msgstr ""
 msgid "Error receiving captcha response."
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:147
+#: src/screens/Search/SearchResults.tsx:148
 msgid "Error: {error}"
 msgstr ""
 
@@ -3936,7 +3945,7 @@ msgstr ""
 msgid "Failed to verify handle. Please try again."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:544
+#: src/view/com/composer/state/composerRecipe.ts:557
 msgid "Fat content must be a number"
 msgstr ""
 
@@ -3991,7 +4000,7 @@ msgstr ""
 
 #: src/Navigation.tsx:604
 #: src/screens/SavedFeeds.tsx:108
-#: src/screens/Search/SearchResults.tsx:76
+#: src/screens/Search/SearchResults.tsx:77
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
 #: src/view/screens/Feeds.tsx:510
 #: src/view/screens/Profile.tsx:226
@@ -4018,7 +4027,7 @@ msgstr ""
 msgid "Fetch update"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:549
+#: src/view/com/composer/state/composerRecipe.ts:564
 msgid "Fiber content must be a number"
 msgstr ""
 
@@ -4071,7 +4080,7 @@ msgstr ""
 msgid "Find people to follow"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:592
+#: src/screens/Search/Shell.tsx:573
 msgid "Find posts, users, and feeds on {0}"
 msgstr ""
 
@@ -4932,11 +4941,11 @@ msgstr ""
 msgid "Incorrect username or password"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:491
+#: src/view/com/composer/state/composerRecipe.ts:497
 msgid "Ingredient name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:495
+#: src/view/com/composer/state/composerRecipe.ts:501
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
@@ -4975,7 +4984,7 @@ msgstr ""
 msgid "Instruction section options"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:503
+#: src/view/com/composer/state/composerRecipe.ts:510
 msgid "Instruction text cannot be empty"
 msgstr ""
 
@@ -5020,12 +5029,12 @@ msgstr ""
 msgid "Invalid report subject"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:642
-#: src/view/com/composer/state/composerRecipe.ts:652
-#: src/view/com/composer/state/composerRecipe.ts:670
-#: src/view/com/composer/state/composerRecipe.ts:679
-#: src/view/com/composer/state/composerRecipe.ts:692
-#: src/view/com/composer/state/composerRecipe.ts:705
+#: src/view/com/composer/state/composerRecipe.ts:667
+#: src/view/com/composer/state/composerRecipe.ts:677
+#: src/view/com/composer/state/composerRecipe.ts:695
+#: src/view/com/composer/state/composerRecipe.ts:704
+#: src/view/com/composer/state/composerRecipe.ts:717
+#: src/view/com/composer/state/composerRecipe.ts:730
 msgid "Invalid URL (must include protocol e.g. http://)"
 msgstr ""
 
@@ -5202,7 +5211,7 @@ msgid "Last initiated just now"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:101
-#: src/screens/Search/SearchResults.tsx:60
+#: src/screens/Search/SearchResults.tsx:61
 #: src/screens/Topic.tsx:77
 msgid "Latest"
 msgstr ""
@@ -5950,7 +5959,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:722
+#: src/view/com/composer/state/composerRecipe.ts:747
 msgid "Name cannot be empty"
 msgstr ""
 
@@ -6242,7 +6251,7 @@ msgstr ""
 #: src/components/forms/ComboBox/ComboBoxOptions.tsx:58
 #: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:71
 #: src/components/Lists.tsx:189
-#: src/screens/Search/SearchResults.tsx:315
+#: src/screens/Search/SearchResults.tsx:316
 msgid "No results found"
 msgstr ""
 
@@ -6250,8 +6259,8 @@ msgstr ""
 msgid "No results found for \"{query}\""
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:351
-#: src/screens/Search/SearchResults.tsx:396
+#: src/screens/Search/SearchResults.tsx:352
+#: src/screens/Search/SearchResults.tsx:397
 msgid "No results found for {query}"
 msgstr ""
 
@@ -6800,7 +6809,7 @@ msgid "Pause video"
 msgstr ""
 
 #: src/screens/ProfileList/index.tsx:163
-#: src/screens/Search/SearchResults.tsx:70
+#: src/screens/Search/SearchResults.tsx:71
 #: src/screens/StarterPack/StarterPackScreen.tsx:189
 msgid "People"
 msgstr ""
@@ -6820,6 +6829,10 @@ msgstr ""
 
 #: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
+msgstr ""
+
+#: src/view/com/composer/state/composerRecipe.ts:674
+msgid "Person attribution name cannot be empty"
 msgstr ""
 
 #: src/components/StarterPack/Wizard/WizardListCard.tsx:58
@@ -7211,11 +7224,11 @@ msgstr ""
 msgid "Prep:"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:733
+#: src/view/com/composer/state/composerRecipe.ts:758
 msgid "Preparation time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:735
+#: src/view/com/composer/state/composerRecipe.ts:761
 msgid "Preparation time must be greater than zero"
 msgstr ""
 
@@ -7289,11 +7302,11 @@ msgstr ""
 msgid "Processing..."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:700
+#: src/view/com/composer/state/composerRecipe.ts:725
 msgid "Product attribution brand cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:701
+#: src/view/com/composer/state/composerRecipe.ts:726
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
@@ -7322,7 +7335,7 @@ msgstr ""
 msgid "Protein"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:539
+#: src/view/com/composer/state/composerRecipe.ts:550
 msgid "Protein content must be a number"
 msgstr ""
 
@@ -7338,11 +7351,11 @@ msgstr ""
 msgid "Public, sharable lists which can be used to drive feeds."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:664
+#: src/view/com/composer/state/composerRecipe.ts:689
 msgid "Publication attribution author cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:661
+#: src/view/com/composer/state/composerRecipe.ts:686
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
@@ -7588,16 +7601,12 @@ msgstr ""
 msgid "Recipe timer finished"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:592
+#: src/view/com/composer/state/composerRecipe.ts:616
 msgid "Recipe yield quantity must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:594
+#: src/view/com/composer/state/composerRecipe.ts:619
 msgid "Recipe yield quantity must be greater than zero"
-msgstr ""
-
-#: src/screens/Search/Shell.tsx:663
-msgid "Recipes"
 msgstr ""
 
 #: src/screens/Search/modules/ExploreRecommendations.tsx:54
@@ -8182,7 +8191,7 @@ msgstr ""
 msgid "Saturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:571
+#: src/view/com/composer/state/composerRecipe.ts:592
 msgid "Saturated fat content must be a number"
 msgstr ""
 
@@ -8295,7 +8304,7 @@ msgstr ""
 #: src/components/forms/SearchInput.tsx:34
 #: src/components/forms/SearchInput.tsx:36
 #: src/screens/Search/Shell.tsx:359
-#: src/screens/Search/Shell.tsx:580
+#: src/screens/Search/Shell.tsx:561
 #: src/view/shell/bottom-bar/BottomBar.tsx:200
 msgid "Search"
 msgstr ""
@@ -8341,7 +8350,7 @@ msgstr ""
 msgid "Search for feeds that you want to suggest to others."
 msgstr ""
 
-#: src/screens/Search/components/AutocompleteResults.tsx:45
+#: src/screens/Search/components/AutocompleteResults.tsx:46
 msgid "Search for matching {0}"
 msgstr ""
 
@@ -8353,8 +8362,12 @@ msgstr ""
 msgid "Search for more feeds"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:415
+#: src/screens/Search/Shell.tsx:396
 msgid "Search for posts, users, or feeds"
+msgstr ""
+
+#: src/screens/Search/Shell.tsx:396
+msgid "Search for recipes"
 msgstr ""
 
 #: src/components/dialogs/GifSelect.tsx:167
@@ -8362,7 +8375,7 @@ msgid "Search GIFs"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:221
-#: src/screens/Search/SearchResults.tsx:257
+#: src/screens/Search/SearchResults.tsx:258
 msgid "Search is currently unavailable when logged out"
 msgstr ""
 
@@ -8394,7 +8407,7 @@ msgstr ""
 msgid "Search Tenor"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:385
+#: src/screens/Search/components/SearchTypeInput/index.web.tsx:10
 msgid "Search type"
 msgstr ""
 
@@ -8556,6 +8569,10 @@ msgstr ""
 msgid "Select primary language"
 msgstr ""
 
+#: src/screens/Search/components/SearchTypeInput/index.tsx:35
+msgid "Select search type"
+msgstr ""
+
 #: src/view/com/composer/videos/SubtitleFilePicker.tsx:60
 #: src/view/com/composer/videos/SubtitleFilePicker.tsx:67
 msgid "Select subtitle file (.vtt)"
@@ -8684,7 +8701,7 @@ msgstr ""
 msgid "Serving size"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:518
+#: src/view/com/composer/state/composerRecipe.ts:525
 msgid "Serving size quantity must be a number"
 msgstr ""
 
@@ -8875,11 +8892,11 @@ msgstr ""
 msgid "Show anyway"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:688
+#: src/view/com/composer/state/composerRecipe.ts:713
 msgid "Show attribution network cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:686
+#: src/view/com/composer/state/composerRecipe.ts:711
 msgid "Show attribution title cannot be empty"
 msgstr ""
 
@@ -8994,7 +9011,7 @@ msgstr ""
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
 #: src/screens/Login/LoginForm.tsx:184
-#: src/screens/Search/SearchResults.tsx:262
+#: src/screens/Search/SearchResults.tsx:263
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
 #: src/view/com/auth/SplashScreen.web.tsx:129
@@ -9107,7 +9124,7 @@ msgstr ""
 msgid "Sodium"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:559
+#: src/view/com/composer/state/composerRecipe.ts:578
 msgid "Sodium content must be a number"
 msgstr ""
 
@@ -9370,7 +9387,7 @@ msgstr ""
 msgid "Sugar"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:554
+#: src/view/com/composer/state/composerRecipe.ts:571
 msgid "Sugar content must be a number"
 msgstr ""
 
@@ -9391,7 +9408,6 @@ msgstr ""
 msgid "Suggestive"
 msgstr ""
 
-#: src/screens/Search/components/RecipeSearchFields.tsx:34
 #: src/view/com/composer/ComposerRecipe.tsx:654
 msgid "Suitable diets"
 msgstr ""
@@ -10133,20 +10149,20 @@ msgstr ""
 msgid "Toggles the sound"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:749
+#: src/view/com/composer/state/composerRecipe.ts:777
 msgid "Too many categories selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:745
+#: src/view/com/composer/state/composerRecipe.ts:773
 msgid "Too many cuisines selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:753
+#: src/view/com/composer/state/composerRecipe.ts:781
 msgid "Too many diets selected"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:90
-#: src/screens/Search/SearchResults.tsx:50
+#: src/screens/Search/SearchResults.tsx:51
 #: src/screens/Topic.tsx:71
 msgid "Top"
 msgstr ""
@@ -10170,7 +10186,7 @@ msgstr ""
 msgid "Trans fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:577
+#: src/view/com/composer/state/composerRecipe.ts:599
 msgid "Trans fat content must be a number"
 msgstr ""
 
@@ -10453,7 +10469,7 @@ msgstr ""
 msgid "Unsaturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:583
+#: src/view/com/composer/state/composerRecipe.ts:606
 msgid "Unsaturated fat content must be a number"
 msgstr ""
 
@@ -11158,7 +11174,7 @@ msgstr ""
 msgid "We're sorry, but we weren't able to load your muted words at this time. Please try again."
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:289
+#: src/screens/Search/SearchResults.tsx:290
 msgid "We're sorry, but your search could not be completed. Please try again in a few minutes."
 msgstr ""
 
@@ -11195,7 +11211,7 @@ msgstr ""
 msgid "We've confirmed your age assurance status. You can now close this dialog."
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:678
+#: src/view/com/composer/state/composerRecipe.ts:703
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
