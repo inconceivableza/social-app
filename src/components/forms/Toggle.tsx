@@ -245,11 +245,13 @@ export function Item({
 export function LabelText({
   children,
   style,
-}: React.PropsWithChildren<TextStyleProp>) {
+  emoji,
+}: React.PropsWithChildren<TextStyleProp> & {emoji?: boolean}) {
   const t = useTheme()
   const {disabled} = useItemContext()
   return (
     <Text
+      emoji={emoji}
       style={[
         a.font_semi_bold,
         a.leading_tight,
