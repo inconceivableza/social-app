@@ -71,7 +71,7 @@ export const DISCOVER_DEBUG_DIDS: Record<string, true> =
     {} as Record<string, true>,
   ) || {}
 
-const BASE_FEEDBACK_FORM_URL = `${HELP_DESK_URL}/requests/new`
+const BASE_FEEDBACK_FORM_URL = HELP_DESK_URL
 export const FEEDBACK_POST_URL =
   envConfig.FEEDBACK_POST_URL || process.env.EXPO_PUBLIC_FEEDBACK_POST_URL
 export const FEEDBACK_POST_TOKEN =
@@ -84,6 +84,16 @@ export function FEEDBACK_FORM_URL({
   handle?: string
 }): string {
   let str = BASE_FEEDBACK_FORM_URL
+  if (str.startsWith('mailto:')) {
+    const subject = `${branding?.naming?.app_name} Signup support request`
+    str += `?subject=${encodeURIComponent(subject)}`
+    return str
+  }
+  if (str.search(/zendesk.com/)) {
+    str += '/requests/new'
+  } else {
+    return str
+  }
   if (email) {
     str += `?tf_anonymous_requester_email=${encodeURIComponent(email)}`
     if (handle) {
