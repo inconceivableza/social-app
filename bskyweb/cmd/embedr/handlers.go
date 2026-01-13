@@ -64,7 +64,6 @@ func (srv *Server) getClientSideData() map[string]interface{} {
 		"VITE_EMBED_URL":          srv.cfg.embedUrl,
 		"VITE_LINK_URL":           srv.cfg.linkUrl,
 		"VITE_PUBLIC_APPVIEW_URL": srv.cfg.appviewUrl,
-		"VITE_SOCIAL_APP_ABOUT":   srv.cfg.socialappAbout,
 		"VITE_SOCIAL_APP_HOST":    srv.cfg.socialappHost,
 		"VITE_SOCIAL_APP_NAME":    srv.cfg.socialappName,
 		"VITE_SOCIAL_APP_URL":     srv.cfg.socialappUrl,

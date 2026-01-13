@@ -47,7 +47,6 @@ type Config struct {
 	embedUrl       string
 	linkUrl        string
 	securityEmail  string
-	socialappAbout string
 	socialappHost  string
 	socialappName  string
 	socialappUrl   string
@@ -120,7 +119,6 @@ func serve(cctx *cli.Context) error {
 			embedUrl:       cctx.String("embed-url"),
 			linkUrl:        cctx.String("link-url"),
 			securityEmail:  cctx.String("security-email"),
-			socialappAbout: cctx.String("socialapp-about"),
 			socialappHost:  socialappParsedUrl.Host,
 			socialappName:  cctx.String("socialapp-name"),
 			socialappUrl:   cctx.String("socialapp-url"),

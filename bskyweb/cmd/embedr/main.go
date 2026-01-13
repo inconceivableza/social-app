@@ -70,12 +70,6 @@ func run(args []string) {
 					EnvVars: []string{"LINK_URL"},
 				},
 				&cli.StringFlag{
-					Name:    "socialapp-about",
-					Usage:   "url of about page for social app",
-					Value:   "https://bsky.social",
-					EnvVars: []string{"SOCIAL_APP_ABOUT"},
-				},
-				&cli.StringFlag{
 					Name:    "support-email",
 					Usage:   "email address for support",
 					Value:   "support@bsky.app",
