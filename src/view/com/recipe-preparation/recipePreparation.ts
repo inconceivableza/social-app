@@ -12,8 +12,11 @@ import {type PreparationState} from './types'
 function initPreparationState(
   record: AppFoodiosFeedRecipeRevision.Record,
 ): PreparationState {
+  // TODO
   return {
-    ingredients: record.ingredients.map(() => ({checked: false})),
+    ingredientSections: record.ingredientSections.map(({ ingredients }) =>
+      ingredients.map(() => ({ checked: false }))
+    ),
     instructionSections: record.instructionSections.map(({instructions}) =>
       instructions.map(() => ({checked: false})),
     ),
@@ -65,7 +68,8 @@ type Action<Type extends string, Payload extends {}> = {
 export type PreparationAction =
   | {
       type: 'toggle_ingredient'
-      idx: number
+    sectionIdx: number
+    ingredientIdx: number
     }
   | Action<
       'toggle_instruction',
@@ -88,9 +92,10 @@ export function preparationReducer(
   state = cloneDeep(state)
   switch (action.type) {
     case 'toggle_ingredient': {
-      const ingredient = state.ingredients.at(action.idx)
-      if (!ingredient) return state
-      ingredient.checked = !ingredient.checked
+      const section = state.ingredientSections.at(action.sectionIdx)
+      const instruction = section?.at(action.ingredientIdx)
+      if (!instruction) return state
+      instruction.checked = !instruction.checked
       return state
     }
     case 'toggle_instruction': {

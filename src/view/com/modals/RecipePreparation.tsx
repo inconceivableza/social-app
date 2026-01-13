@@ -1,30 +1,30 @@
-import {useEffect, useMemo, useState} from 'react'
-import {ScrollView, View} from 'react-native'
-import {runOnJS} from 'react-native-reanimated'
-import {UITextView} from 'react-native-uitextview'
+import { useEffect, useMemo, useState } from 'react'
+import { ScrollView, View } from 'react-native'
+import { runOnJS } from 'react-native-reanimated'
+import { UITextView } from 'react-native-uitextview'
 import * as Notifications from 'expo-notifications'
-import {RichText as RichTextAPI} from '@atproto/api'
-import {msg, Trans} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
-import {padStart} from 'lodash'
+import { RichText as RichTextAPI } from '@atproto/api'
+import { msg, Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
+import { padStart } from 'lodash'
 
-import {type RecipePostView} from '#/lib/api/feed/utils'
-import {useHaptics} from '#/lib/haptics'
-import {countLines} from '#/lib/strings/helpers'
-import {isAndroid, isNative} from '#/platform/detection'
-import {atoms as a, useTheme} from '#/alf'
-import {Button, ButtonIcon, ButtonText} from '#/components/Button'
+import { type RecipePostView } from '#/lib/api/feed/utils'
+import { useHaptics } from '#/lib/haptics'
+import { countLines } from '#/lib/strings/helpers'
+import { isAndroid, isNative } from '#/platform/detection'
+import { atoms as a, useTheme } from '#/alf'
+import { Button, ButtonIcon, ButtonText } from '#/components/Button'
 import * as TextField from '#/components/forms/TextField'
 import * as Toggle from '#/components/forms/Toggle'
-import {Clock_Stroke2_Corner0_Rounded as ClockIcon} from '#/components/icons/Clock'
-import {Pause_Filled_Corner0_Rounded as PauseIcon} from '#/components/icons/Pause'
-import {Play_Filled_Corner0_Rounded as PlayIcon} from '#/components/icons/Play'
-import {PlusLarge_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
-import {Trash_Stroke2_Corner0_Rounded as TrashIcon} from '#/components/icons/Trash'
-import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
-import {RichText} from '#/components/RichText'
-import {Text} from '#/components/Typography'
-import {usePreparationState} from '../recipe-preparation/recipePreparation'
+import { Clock_Stroke2_Corner0_Rounded as ClockIcon } from '#/components/icons/Clock'
+import { Pause_Filled_Corner0_Rounded as PauseIcon } from '#/components/icons/Pause'
+import { Play_Filled_Corner0_Rounded as PlayIcon } from '#/components/icons/Play'
+import { PlusLarge_Stroke2_Corner0_Rounded as PlusIcon } from '#/components/icons/Plus'
+import { Trash_Stroke2_Corner0_Rounded as TrashIcon } from '#/components/icons/Trash'
+import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
+import { RichText } from '#/components/RichText'
+import { Text } from '#/components/Typography'
+import { usePreparationState } from '../recipe-preparation/recipePreparation'
 
 export const snapPoints = [isAndroid ? 'fullscreen' : '90%']
 
@@ -40,7 +40,7 @@ export function Component({
   const revision = recipePost.record
   const revisionContent = revision.revisionContent
   const t = useTheme()
-  const {_} = useLingui()
+  const { _ } = useLingui()
   const playHaptic = useHaptics()
   const [state, dispatch] = usePreparationState(revision)
   const richText = useMemo(
@@ -62,7 +62,7 @@ export function Component({
       console.log('Notification being scheduled')
       const instructionSection =
         revisionContent.instructionSections[
-          Number(instructionKey.split('-')[0])
+        Number(instructionKey.split('-')[0])
         ]
       const sectionName = instructionSection?.name
         ? `${instructionSection.name} - `
@@ -74,7 +74,7 @@ export function Component({
           body: _(
             msg`The countdown for instruction ${sectionName}${instructionNumber} in recipe ${revisionContent.name} has finished.`,
           ),
-          data: {reason: 'timer', subject: recipePost.uri, instructionKey},
+          data: { reason: 'timer', subject: recipePost.uri, instructionKey },
           sound: 'timer.aiff',
         },
         trigger: {
@@ -118,27 +118,36 @@ export function Component({
           <Trans context="recipe">Ingredients</Trans>
         </Text>
       </View>
-      <View style={[a.ml_sm, a.py_xs]}>
-        {revisionContent.ingredients.map((ingredient, i) => {
+      <View style={a.gap_sm}>
+        {revisionContent.ingredientSections.map(({ name, ingredients }, sectionIdx) => {
           return (
-            <View key={i} style={[a.py_2xs]}>
-              <Toggle.Item
-                type="checkbox"
-                label={_(msg`Toggle ingredient`)}
-                name={`toggle_ingredient_${i}`}
-                onChange={() => dispatch({type: 'toggle_ingredient', idx: i})}
-                value={state.ingredients[i]?.checked}>
-                <Toggle.Checkbox />
-                <Toggle.LabelText
-                  style={[
-                    a.text_md,
-                    a.font_normal,
-                    {lineHeight: a.text_md.fontSize * 1.4},
-                  ]}>
-                  {`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}
-                </Toggle.LabelText>
-              </Toggle.Item>
+            <View key={sectionIdx} style={[a.gap_sm]}>
+              {name && <Text style={[a.font_bold, a.py_2xs]}>{name}</Text>}
+              <View style={[a.ml_sm, a.gap_xs]}>
+                {ingredients.map((ingredient, ingredientIdx) => {
+
+                  return <View key={ingredientIdx} style={[a.py_2xs]}>
+                    <Toggle.Item
+                      type="checkbox"
+                      label={_(msg`Toggle ingredient`)}
+                      name={`toggle_ingredient_${ingredientIdx}`}
+                      onChange={() => dispatch({ type: 'toggle_ingredient', ingredientIdx, sectionIdx })}
+                      value={state.ingredientSections[sectionIdx]?.[ingredientIdx]?.checked}>
+                      <Toggle.Checkbox />
+                      <Toggle.LabelText
+                        style={[
+                          a.text_md,
+                          a.font_normal,
+                          { lineHeight: a.text_md.fontSize * 1.4 },
+                        ]}>
+                        {[ingredient.quantity, ingredient.unit, ingredient.name].filter(Boolean).join(" ")}
+                      </Toggle.LabelText>
+                    </Toggle.Item>
+                  </View>
+                })}
+              </View>
             </View>
+
           )
         })}
       </View>
@@ -147,13 +156,13 @@ export function Component({
           <Trans context="recipe">Instructions</Trans>
         </Text>
       </View>
-      <View>
+      <View style={a.gap_sm}>
         {revisionContent.instructionSections.map(
-          ({name, instructions}, sectionIdx) => {
+          ({ name, instructions }, sectionIdx) => {
             return (
-              <View key={sectionIdx} style={[a.gap_sm, a.py_xs]}>
+              <View key={sectionIdx} style={[a.gap_sm]}>
                 {name && <Text style={[a.font_bold, a.py_2xs]}>{name}</Text>}
-                <View style={[a.ml_sm, a.py_xs]}>
+                <View style={[a.ml_sm, a.gap_xs]}>
                   {instructions.map((instruction, instructionIdx) => {
                     const instructionKey =
                       `${sectionIdx}-${instructionIdx}` as const
@@ -190,7 +199,7 @@ export function Component({
                             style={[
                               a.text_md,
                               a.font_normal,
-                              {lineHeight: a.text_md.fontSize * 1.4},
+                              { lineHeight: a.text_md.fontSize * 1.4 },
                             ]}>
                             {`${instructionIdx + 1}. ${instruction.text}`}
                           </Toggle.LabelText>
@@ -200,7 +209,7 @@ export function Component({
                             onDelete={() =>
                               setTimers(ts => {
                                 delete ts[instructionKey]
-                                return {...ts}
+                                return { ...ts }
                               })
                             }
                             onNotify={() =>
@@ -215,7 +224,7 @@ export function Component({
                             shape="round"
                             style={[a.flex_grow_0, a.py_2xs, a.px_sm]}
                             onPress={() =>
-                              setTimers(ts => ({...ts, [instructionKey]: true}))
+                              setTimers(ts => ({ ...ts, [instructionKey]: true }))
                             }>
                             <ButtonIcon icon={ClockIcon} />
                             <ButtonText>+</ButtonText>
@@ -230,7 +239,7 @@ export function Component({
           },
         )}
       </View>
-      <View style={[a.align_center, {marginTop: 4}]}>
+      <View style={[a.align_center, a.mt_md]}>
         <Button
           size="large"
           variant="solid"
@@ -275,8 +284,8 @@ function InstructionTimer({
   const [timingState, setTimingState] = useState<
     'inactive' | 'active' | 'paused' | 'complete'
   >('inactive')
-  const [duration, setDuration] = useState({hours: 0, minutes: 0, seconds: 0}) // Duration in seconds
-  const {_} = useLingui()
+  const [duration, setDuration] = useState({ hours: 0, minutes: 0, seconds: 0 }) // Duration in seconds
+  const { _ } = useLingui()
   const t = useTheme()
 
   const durationSeconds =
@@ -288,7 +297,7 @@ function InstructionTimer({
       const value = Number(text)
       if (Number.isNaN(value)) return
 
-      setDuration(d => ({...d, [field]: value}))
+      setDuration(d => ({ ...d, [field]: value }))
     }
   }
 
@@ -320,7 +329,7 @@ function InstructionTimer({
 
       if (diff <= 0) {
         clearInterval(id)
-        setDuration({hours: 0, minutes: 0, seconds: 0})
+        setDuration({ hours: 0, minutes: 0, seconds: 0 })
         setSeconds(0)
         setTimingState('complete')
         onNotify()
@@ -334,11 +343,11 @@ function InstructionTimer({
   const timerButtonSize = isAndroid ? 'sm' : 'xs'
   return timingState === 'inactive' ? (
     <View
-      style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_center, {width: '100%'}]}>
+      style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_center, { width: '100%' }]}>
       <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
         <TextField.Root>
           <TextField.Input
-            style={[a.p_0, a.m_0, {height: 40}]}
+            style={[a.p_0, a.m_0, { height: 40 }]}
             selectTextOnFocus
             onChangeText={durationCallback('hours')}
             inputMode="decimal"
@@ -353,7 +362,7 @@ function InstructionTimer({
       <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
-            style={[a.p_0, a.m_0, {height: 40}]}
+            style={[a.p_0, a.m_0, { height: 40 }]}
             selectTextOnFocus
             onChangeText={durationCallback('minutes')}
             inputMode="decimal"
@@ -368,7 +377,7 @@ function InstructionTimer({
       <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
         <TextField.Root>
           <TextField.Input
-            style={[a.p_0, a.m_0, {height: 40}]}
+            style={[a.p_0, a.m_0, { height: 40 }]}
             selectTextOnFocus
             onChangeText={durationCallback('seconds')}
             inputMode="decimal"
@@ -387,7 +396,7 @@ function InstructionTimer({
           a.flex_row,
           a.flex_0,
           a.align_start,
-          {alignItems: 'center', columnGap: 4},
+          { alignItems: 'center', columnGap: 4 },
         ]}>
         <Button
           disabled={durationSeconds <= 0}
@@ -420,16 +429,16 @@ function InstructionTimer({
         a.align_center,
         a.gap_sm,
         a.p_sm,
-        {borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400},
+          { borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400 },
       ]}>
       <View>
         <UITextView
           style={[
             timingState === 'complete'
-              ? {color: t.palette.negative_300}
+              ? { color: t.palette.negative_300 }
               : timingState === 'paused'
-                ? {color: t.palette.contrast_700}
-                : {color: t.palette.primary_700},
+                  ? { color: t.palette.contrast_700 }
+                  : { color: t.palette.primary_700 },
             {
               fontFamily: 'monospace, ui-monospace',
               fontVariant: 'tabular-nums',

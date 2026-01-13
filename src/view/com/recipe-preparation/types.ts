@@ -1,4 +1,4 @@
 export type PreparationState = {
-    ingredients: { checked: boolean }[]
+    ingredientSections: { checked: boolean }[][]
     instructionSections: { checked?: boolean }[][]
 }
