@@ -199,7 +199,7 @@ export function ExpandedRecipePost({
               </View>
             ) : null}
           </View>
-          <View style={[a.py_sm]}>
+          <View>
             <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Ingredients</Trans>
             </Text>
@@ -209,7 +209,7 @@ export function ExpandedRecipePost({
               return <IngredientsSection key={i} section={section} />
             })}
           </View>
-          <View style={[a.py_sm]}>
+          <View>
             <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Instructions</Trans>
             </Text>
