@@ -471,7 +471,13 @@ func (srv *Server) errorHandler(err error, c echo.Context) {
 func (srv *Server) WebWellKnown(c echo.Context, filename string) error {
 	data := srv.NewTemplateContext()
 	data["branding"] = srv.cfg.branding
-	c.Response().Header().Set("Content-Type", "text/plain; charset=utf-8")
+	var contentType string
+	if strings.HasSuffix(filename, ".json") {
+		contentType = "application/json"
+	} else {
+		contentType = "text/plain; charset=utf-8"
+	}
+	c.Response().Header().Set("Content-Type", contentType)
 	return c.Render(http.StatusOK, ".well-known/"+filename, data)
 }
 
