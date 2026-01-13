@@ -42,15 +42,15 @@ type Server struct {
 }
 
 type Config struct {
-	appviewUrl     string
-	cardUrl        string
-	embedUrl       string
-	linkUrl        string
-	securityEmail  string
-	socialappHost  string
-	socialappUrl   string
-	supportEmail   string
-	branding       bskyweb.Branding
+	appviewUrl    string
+	cardUrl       string
+	embedUrl      string
+	linkUrl       string
+	securityEmail string
+	socialappHost string
+	socialappUrl  string
+	supportEmail  string
+	branding      bskyweb.Branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -115,15 +115,15 @@ func serve(cctx *cli.Context) error {
 		dir:          identity.DefaultDirectory(),
 		metricsHttpd: metricsHttpd,
 		cfg: &Config{
-			appviewUrl:     appviewHost,
-			cardUrl:        cctx.String("card-url"),
-			embedUrl:       cctx.String("embed-url"),
-			linkUrl:        cctx.String("link-url"),
-			securityEmail:  cctx.String("security-email"),
-			socialappHost:  socialappParsedUrl.Host,
-			socialappUrl:   cctx.String("socialapp-url"),
-			supportEmail:   cctx.String("support-email"),
-			branding:       branding,
+			appviewUrl:    appviewHost,
+			cardUrl:       cctx.String("card-url"),
+			embedUrl:      cctx.String("embed-url"),
+			linkUrl:       cctx.String("link-url"),
+			securityEmail: cctx.String("security-email"),
+			socialappHost: socialappParsedUrl.Host,
+			socialappUrl:  cctx.String("socialapp-url"),
+			supportEmail:  cctx.String("support-email"),
+			branding:      branding,
 		},
 	}
 
