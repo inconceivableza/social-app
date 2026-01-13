@@ -1023,52 +1023,53 @@ function RecipeIngredients({
                     </TextField.Root>
                   </View>
                   <View style={[a.w_full]}>
-                    <View style={[a.flex_row, a.align_center, a.flex_1, a.gap_xs]}>
-                      <View style={[a.flex_1]}>
-                        <TextField.Root
-                          isInvalid={!!errors?.tree?.ingredientSections?.[sectionIdx]?.ingredients?.[ingredientIdx]?.quantity}>
-                          <TextField.Input
-                            inputMode="numeric"
-                            label={_(msg`Quantity`)}
-                            defaultValue={quantity}
+                    <View style={[a.flex_row, a.align_center, a.flex_1, a.gap_sm]}>
+                      <View style={[a.flex_row, a.gap_xs, a.flex_1]}>
+                        <View style={[a.flex_1]}>
+                          <TextField.Root
+                            isInvalid={!!errors?.tree?.ingredientSections?.[sectionIdx]?.ingredients?.[ingredientIdx]?.quantity}>
+                            <TextField.Input
+                              inputMode="numeric"
+                              label={_(msg`Quantity`)}
+                              defaultValue={quantity}
+                              onFocus={() => {
+                                setEmojiFocus(undefined, null)
+                              }}
+                              onChangeText={value => {
+                                dispatch({
+                                  type: 'edit_ingredient',
+                                  prop: 'quantity',
+                                  value,
+                                  sectionId,
+                                  ingredientId
+                                })
+                              }}
+                            />
+                          </TextField.Root>
+                        </View>
+                        <View style={[a.flex_1]}>
+                          <ComboBoxSingleSelect
+                            label={_(msg`Unit`)}
+                            onChange={value => {
+                              dispatch({
+                                type: 'edit_ingredient',
+                                prop: 'unit',
+                                value,
+                                ingredientId,
+                                sectionId
+                              })
+                            }}
                             onFocus={() => {
                               setEmojiFocus(undefined, null)
                             }}
-                            onChangeText={value => {
-                              dispatch({
-                                type: 'edit_ingredient',
-                                prop: 'quantity',
-                                value,
-                                sectionId,
-                                ingredientId
-                              })
-                            }}
+                            value={unit}
+                            options={recipeUnits.map(u => u.label)}
+                            isInvalid={!!errors?.tree?.ingredientSections?.[sectionIdx]?.ingredients?.[ingredientIdx]?.unit}
                           />
-                        </TextField.Root>
+                        </View>
                       </View>
-                      <View style={[a.flex_1]}>
-                        <ComboBoxSingleSelect
-                          label={_(msg`Unit`)}
-                          onChange={value => {
-                            dispatch({
-                              type: 'edit_ingredient',
-                              prop: 'unit',
-                              value,
-                              ingredientId,
-                              sectionId
-                            })
-                          }}
-                          onFocus={() => {
-                            setEmojiFocus(undefined, null)
-                          }}
-                          value={unit}
-                          options={recipeUnits.map(u => u.label)}
-                          isInvalid={!!errors?.tree?.ingredientSections?.[sectionIdx]?.ingredients?.[ingredientIdx]?.unit}
-                        />
-                      </View>
-                      <View>
+                      <View style={a.ml_auto}>
                         <Button
-                          style={[]}
                           label={_(msg`Remove ingredient`)}
                           size="small"
                           variant="outline"
