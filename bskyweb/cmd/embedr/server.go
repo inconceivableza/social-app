@@ -50,7 +50,7 @@ type Config struct {
 	socialappHost  string
 	socialappUrl   string
 	supportEmail   string
-	branding      bskyweb.Branding
+	branding       bskyweb.Branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -108,6 +108,7 @@ func serve(cctx *cli.Context) error {
 	//
 	// server
 	//
+	branding := bskyweb.LoadBrandingWithFallback(cctx.String("branding"), log)
 	server := &Server{
 		echo:         e,
 		xrpcc:        xrpcc,
@@ -122,7 +123,7 @@ func serve(cctx *cli.Context) error {
 			socialappHost:  socialappParsedUrl.Host,
 			socialappUrl:   cctx.String("socialapp-url"),
 			supportEmail:   cctx.String("support-email"),
-			branding:      branding,
+			branding:       branding,
 		},
 	}
 
