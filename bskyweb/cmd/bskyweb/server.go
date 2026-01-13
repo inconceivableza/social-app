@@ -61,8 +61,6 @@ type Config struct {
 	branding           bskyweb.Branding
 }
 
-}
-
 func serve(cctx *cli.Context) error {
 	debug := cctx.Bool("debug")
 	httpAddress := cctx.String("http-address")
