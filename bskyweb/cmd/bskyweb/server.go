@@ -846,8 +846,6 @@ type EnvConfigResponse struct {
 	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
 	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
 	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
-	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
-	SOCIAL_POLICY_BASE_URL  string `json:"SOCIAL_POLICY_BASE_URL"`
 	STATUS_PAGE_URL         string `json:"STATUS_PAGE_URL"`
 	VIDEO_SERVICE           string `json:"VIDEO_SERVICE"`
 	VIDEO_SERVICE_DID       string `json:"VIDEO_SERVICE_DID"`
@@ -873,8 +871,6 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 		SOCIAL_APP_HOST:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
 		SOCIAL_APP_URL:          os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
 		SOCIAL_EMBED_SERVICE:    os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),
-		SOCIAL_HELP_DESK_URL:    os.Getenv("EXPO_PUBLIC_SOCIAL_HELP_DESK_URL"),
-		SOCIAL_POLICY_BASE_URL:  os.Getenv("EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL"),
 		STATUS_PAGE_URL:         os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL"),
 		VIDEO_SERVICE:           os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
 		VIDEO_SERVICE_DID:       os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),

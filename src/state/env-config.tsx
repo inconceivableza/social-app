@@ -60,7 +60,6 @@ export type {EnvConfig, EnvContent}
  * In builds, this will resolve directly to the environment variables set, or fall back to the Bluesky ones
  * When running from node in dev mode, this will resolve using the EXPO_PUBLIC_ variables at runtime
  */
-const HELP_DESK_LANG = 'en-us'
 
 const EMPTY_CONFIG: EnvConfig = {
   APPVIEW_DID: '',
@@ -72,10 +71,8 @@ const EMPTY_CONFIG: EnvConfig = {
   DM_SERVICE_DID: '',
   GEOLOCATION_CONFIG_URL: '',
   GIF_HOST: '',
-  HELP_DESK_URL: '',
   LINK_HOST: '',
   OGCARD_URL: '',
-  POLICY_BASE_URL: '',
   PREVIEW_LINK_META_PROXY: '',
   PUBLIC_BSKY_SERVICE: '',
   SOCIAL_APP_HOST: '',
@@ -100,10 +97,8 @@ const InternalToEnvName: EnvConfig & Record<string, string> = {
   DM_SERVICE_DID: 'DM_SERVICE_DID',
   GEOLOCATION_CONFIG_URL: 'GEOLOCATION_CONFIG_URL',
   GIF_HOST: 'GIF_HOST',
-  HELP_DESK_URL: 'SOCIAL_HELP_DESK_URL',
   LINK_HOST: 'LINK_HOST',
   OGCARD_URL: 'OGCARD_URL',
-  POLICY_BASE_URL: 'SOCIAL_POLICY_BASE_URL',
   PREVIEW_LINK_META_PROXY: 'PREVIEW_LINK_META_PROXY',
   PUBLIC_BSKY_SERVICE: 'ATP_PUBLIC_APPVIEW_URL',
   SOCIAL_APP_HOST: 'SOCIAL_APP_HOST', // plan to use to detect host match with env
@@ -134,8 +129,6 @@ const processEnvConfigValues: Record<string, string> = {
   SOCIAL_APP_HOST: process.env.EXPO_PUBLIC_SOCIAL_APP_HOST,
   SOCIAL_APP_URL: process.env.EXPO_PUBLIC_SOCIAL_APP_URL,
   SOCIAL_EMBED_SERVICE: process.env.EXPO_PUBLIC_SOCIAL_EMBED_SERVICE,
-  SOCIAL_HELP_DESK_URL: process.env.EXPO_PUBLIC_SOCIAL_HELP_DESK_URL,
-  SOCIAL_POLICY_BASE_URL: process.env.EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL,
   STATSIG_CLIENT_KEY: process.env.EXPO_PUBLIC_STATSIG_CLIENT_KEY,
   STATSIG_API_URL: process.env.EXPO_PUBLIC_STATSIG_API_URL,
   STATUS_PAGE_URL: process.env.EXPO_PUBLIC_STATUS_PAGE_URL,
@@ -222,10 +215,8 @@ const BLUESKY_CONFIG: EnvConfig = {
   DM_SERVICE_DID: 'did:web:api.bsky.chat',
   GEOLOCATION_CONFIG_URL: 'https://ip.bsky.app/config',
   GIF_HOST: 't.gifs.bsky.app',
-  HELP_DESK_URL: `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`,
   LINK_HOST: 'https://go.bsky.app',
   OGCARD_URL: `https://ogcard.cdn.bsky.app`,
-  POLICY_BASE_URL: 'https://bsky.social/about/support',
   PREVIEW_LINK_META_PROXY: 'https://cardyb.bsky.app/v1/extract?url=',
   PUBLIC_BSKY_SERVICE: 'https://public.api.bsky.app',
   SOCIAL_APP_HOST: 'bsky.app',
@@ -409,10 +400,8 @@ const BLUESKY_STAGING_CONFIG: EnvConfig = {
   DM_SERVICE_DID: BLUESKY_CONFIG.DM_SERVICE_DID,
   GEOLOCATION_CONFIG_URL: 'https://bsky.app/ipcc', // not sure if staging actually uses this or the bsky one
   GIF_HOST: BLUESKY_CONFIG.GIF_HOST,
-  HELP_DESK_URL: BLUESKY_CONFIG.HELP_DESK_URL,
   LINK_HOST: BLUESKY_CONFIG.LINK_HOST,
   OGCARD_URL: BLUESKY_CONFIG.OGCARD_URL,
-  POLICY_BASE_URL: 'https://staging.bsky.dev/about/support',
   PREVIEW_LINK_META_PROXY: 'https://cardyb.staging.bsky.dev/v1/extract?url=',
   PUBLIC_BSKY_SERVICE: BLUESKY_CONFIG.PUBLIC_BSKY_SERVICE,
   SOCIAL_APP_HOST: BLUESKY_CONFIG.SOCIAL_APP_HOST,

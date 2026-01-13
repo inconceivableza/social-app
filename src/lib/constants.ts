@@ -23,7 +23,8 @@ export const BSKY_SERVICE = envConfig.BSKY_SERVICE
 export const BSKY_SERVICE_DID = envConfig.BSKY_SERVICE_DID
 export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
-export const HELP_DESK_URL = envConfig.HELP_DESK_URL
+const HELP_DESK_LANG = 'en-us'
+export const HELP_DESK_URL = (envContent.links.helpDesk || 'https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}').replace("${HELP_DESK_LANG}", HELP_DESK_LANG)
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
 const usingBlueskyEmbed = [
   DOMAIN_ENVCONFIGS.bluesky.SOCIAL_EMBED_SERVICE,
@@ -386,7 +387,7 @@ const BAPP_CONFIG_URL = IS_DEV
 export const GEOLOCATION_CONFIG_URL =
   envConfig.GEOLOCATION_CONFIG_URL || BAPP_CONFIG_URL
 
-const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
+const POLICY_BASE_URL = envContent.links.policyBase || 'https://bsky.social/about/support'
 export const webLinks = {
   main: POLICY_BASE_URL, // main support page
   tos: `${POLICY_BASE_URL}/tos`,
