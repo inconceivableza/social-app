@@ -72,10 +72,8 @@ export const DISCOVER_DEBUG_DIDS: Record<string, true> =
   ) || {}
 
 const BASE_FEEDBACK_FORM_URL = HELP_DESK_URL
-export const FEEDBACK_POST_URL =
-  envConfig.FEEDBACK_POST_URL || process.env.EXPO_PUBLIC_FEEDBACK_POST_URL
-export const FEEDBACK_POST_TOKEN =
-  envConfig.FEEDBACK_POST_TOKEN || process.env.EXPO_PUBLIC_FEEDBACK_POST_TOKEN
+export const FEEDBACK_POST_URL = envContent.feedback?.postUrl || null
+export const FEEDBACK_POST_TOKEN = envContent.feedback?.postToken || null
 export function FEEDBACK_FORM_URL({
   email,
   handle,

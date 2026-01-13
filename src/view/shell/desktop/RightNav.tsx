@@ -1,10 +1,15 @@
 import {useEffect, useState} from 'react'
-import {TouchableOpacity, View} from 'react-native'
+import {Linking, TouchableOpacity, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useNavigation} from '@react-navigation/core'
 
-import {HELP_DESK_URL, webLinks} from '#/lib/constants'
+import {
+  FEEDBACK_FORM_URL,
+  FEEDBACK_POST_URL,
+  HELP_DESK_URL,
+  webLinks,
+} from '#/lib/constants'
 import {useModalControls} from '#/state/modals'
 import {useKawaiiMode} from '#/state/preferences/kawaii'
 import {useInviteCodesQuery} from '#/state/queries/invites'
@@ -48,7 +53,7 @@ function useWebQueryParams() {
 export function DesktopRightNav({routeName}: {routeName: string}) {
   const t = useTheme()
   const {_} = useLingui()
-  const {hasSession} = useSession()
+  const {hasSession, currentAccount} = useSession()
   const {openModal} = useModalControls()
   const kawaii = useKawaiiMode()
   const gutters = useGutters(['base', 0, 'base', 'wide'])
@@ -66,7 +71,16 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
   const width = centerColumnOffset ? 250 : 300
 
   const onPressFeedback = () => {
-    openModal({name: 'user-feedback'})
+    if (FEEDBACK_POST_URL) {
+      openModal({name: 'user-feedback'})
+    } else {
+      Linking.openURL(
+        FEEDBACK_FORM_URL({
+          email: currentAccount?.email,
+          handle: currentAccount?.handle,
+        }),
+      )
+    }
   }
   return (
     <View

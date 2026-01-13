@@ -6,7 +6,13 @@ import {useLingui} from '@lingui/react'
 import {StackActions, useNavigation} from '@react-navigation/native'
 
 import {useActorStatus} from '#/lib/actor-status'
-import {CHAT_DISABLED, HELP_DESK_URL, webLinks} from '#/lib/constants'
+import {
+  CHAT_DISABLED,
+  FEEDBACK_FORM_URL,
+  FEEDBACK_POST_TOKEN,
+  HELP_DESK_URL,
+  webLinks,
+} from '#/lib/constants'
 import {type PressableScale} from '#/lib/custom-animations/PressableScale'
 import {useNavigationTabState} from '#/lib/hooks/useNavigationTabState'
 import {getTabState, TabState} from '#/lib/routes/helpers'
@@ -295,8 +301,17 @@ let DrawerContent = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
   }, [navigation, setDrawerOpen])
 
   const onPressFeedback = React.useCallback(() => {
-    openModal({name: 'user-feedback'})
-  }, [openModal])
+    if (FEEDBACK_POST_TOKEN) {
+      openModal({name: 'user-feedback'})
+    } else {
+      Linking.openURL(
+        FEEDBACK_FORM_URL({
+          email: currentAccount?.email,
+          handle: currentAccount?.handle,
+        }),
+      )
+    }
+  }, [openModal, currentAccount])
 
   const onPressHelp = React.useCallback(() => {
     Linking.openURL(HELP_DESK_URL)

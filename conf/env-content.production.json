@@ -24,6 +24,10 @@
     "about": "https://ghost.foodios.social",
     "blog": "https://ghost.foodios.social/blog"
   },
+  "feedback": {
+    "postUrl": "https://cloud.activepieces.com/api/v1/webhooks/bgy3a5sqKFb244c3XOLrx/sync",
+    "postToken": "IQu8pho9Oosii3oC"
+  },
   "sample_content": {
     "profile": {
       "name": "welcome-aboard.foodios.social"
