@@ -48,9 +48,9 @@ type Config struct {
 	linkUrl        string
 	securityEmail  string
 	socialappHost  string
-	socialappName  string
 	socialappUrl   string
 	supportEmail   string
+	branding      bskyweb.Branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -120,9 +120,9 @@ func serve(cctx *cli.Context) error {
 			linkUrl:        cctx.String("link-url"),
 			securityEmail:  cctx.String("security-email"),
 			socialappHost:  socialappParsedUrl.Host,
-			socialappName:  cctx.String("socialapp-name"),
 			socialappUrl:   cctx.String("socialapp-url"),
 			supportEmail:   cctx.String("support-email"),
+			branding:      branding,
 		},
 	}
 

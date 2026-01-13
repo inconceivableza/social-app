@@ -102,6 +102,13 @@ func run(args []string) {
 					Required: false,
 					EnvVars:  []string{"DEBUG"},
 				},
+				&cli.StringFlag{
+					Name:     "branding",
+					Usage:    "path to branding JSON file",
+					Required: false,
+					Value:    "branding.json",
+					EnvVars:  []string{"BRANDING_FILE"},
+				},
 			},
 		},
 	}
