@@ -88,7 +88,7 @@ export function FEEDBACK_FORM_URL({
     str += `?subject=${encodeURIComponent(subject)}`
     return str
   }
-  if (str.search(/zendesk.com/)) {
+  if (str.search(/zendesk.com/) !== -1) {
     str += '/requests/new'
   } else {
     return str
