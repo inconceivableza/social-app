@@ -233,7 +233,7 @@ async function recipeDraftToRecord(
     recipePostRef,
     createdAt,
     parentRevisionRef,
-    ingredients: post.ingredients,
+    ingredientSections: post.ingredientSections,
     instructionSections: post.instructionSections,
     text: rt.text,
     facets: rt.facets,
