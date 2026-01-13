@@ -447,7 +447,7 @@ func (srv *Server) NewTemplateContext() pongo2.Context {
 		"socialappAbout":     srv.cfg.socialappAbout,
 		"socialappAboutHost": srv.cfg.socialappAboutHost,
 		"socialappHost":      srv.cfg.socialappHost,
-		"socialappName":      srv.cfg.branding.Naming["name"].(string),
+		"socialappName":      srv.cfg.branding.Naming["app_name"].(string),
 		"socialappUrl":       srv.cfg.socialappUrl,
 		"embedUrl":           srv.cfg.embedUrl,
 		"statuspageUrl":      srv.cfg.statuspageUrl,

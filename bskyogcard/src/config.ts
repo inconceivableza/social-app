@@ -44,7 +44,7 @@ export const envToCfg = (env: Environment): Config => {
     version: env.version,
     appviewUrl: env.appviewUrl ?? 'https://api.bsky.app',
     originVerify: env.originVerify,
-    socialappName: branding.naming?.name ?? 'Bluesky',
+    socialappName: branding.naming?.app_name ?? 'Bluesky',
   }
   return {
     service: serviceCfg,
