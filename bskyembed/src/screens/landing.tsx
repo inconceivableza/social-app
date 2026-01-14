@@ -1,6 +1,14 @@
 import '../index.css'
 
-import {AppBskyFeedDefs, AppBskyFeedPost, AtpAgent, AtUri} from '@atproto/api'
+import {
+  AppBskyFeedDefs,
+  AppBskyFeedPost,
+  AppFoodiosFeedDefs,
+  AppFoodiosFeedRecipeRevision,
+  AppFoodiosFeedReviewRating,
+  AtpAgent,
+  AtUri,
+} from '@atproto/api'
 import {h, render} from 'preact'
 import {useEffect, useMemo, useRef, useState} from 'preact/hooks'
 
@@ -80,7 +88,12 @@ function LandingPage() {
                 throw new Error('Invalid pathname')
               }
               const [profile, didOrHandle, type, rkey] = split
-              if (profile !== 'profile' || type !== 'post' && type !== 'recipePost' && type !== "reviewRating") {
+              if (
+                profile !== 'profile' ||
+                (type !== 'post' &&
+                  type !== 'recipePost' &&
+                  type !== 'reviewRating')
+              ) {
                 throw new Error('Invalid profile or type')
               }
 
@@ -95,9 +108,14 @@ function LandingPage() {
                 did = resolution.data.did
               }
 
-              const collection = type === "post" ? "app.bsky.feed.post" :
-                type === "recipePost" ? "app.foodios.feed.recipePost" :
-                  type === "reviewRating" ? "app.foodios.feed.reviewRating" : ""
+              const collection =
+                type === 'post'
+                  ? 'app.bsky.feed.post'
+                  : type === 'recipePost'
+                    ? 'app.foodios.feed.recipePost'
+                    : type === 'reviewRating'
+                      ? 'app.foodios.feed.reviewRating'
+                      : ''
 
               atUri = `at://${did}/${collection}/${rkey}`
             } catch (err) {
@@ -224,6 +242,19 @@ function Skeleton() {
   )
 }
 
+function recipeText({
+  recipeContent,
+}: {
+  recipeContent: AppFoodiosFeedRecipeRevision.Main
+}) {
+  const paragraphs = []
+  paragraphs.push(recipeContent.name)
+  if (recipeContent.text) {
+    paragraphs.push(recipeContent.text)
+  }
+  return paragraphs.join('\n')
+}
+
 function Snippet({
   thread,
   colorMode,
@@ -245,18 +276,34 @@ function Snippet({
   }, [copied])
 
   const snippet = useMemo(() => {
-    const record = thread.post.record
-
-    if (
-      !bsky.dangerousIsType<AppBskyFeedPost.Record>(
-        record,
-        AppBskyFeedPost.isRecord,
+    const baseRecord = thread.post.record
+    const isPost = bsky.dangerousIsType<AppBskyFeedPost.Record>(
+      baseRecord,
+      AppBskyFeedPost.isRecord,
+    )
+    const isRecipeRevisionView =
+      bsky.dangerousIsType<AppFoodiosFeedDefs.RecipeRevisionView>(
+        baseRecord,
+        AppFoodiosFeedDefs.isRecipeRevisionView,
       )
-    ) {
+    const isReviewRating =
+      bsky.dangerousIsType<AppFoodiosFeedReviewRating.Record>(
+        baseRecord,
+        AppFoodiosFeedReviewRating.isRecord,
+      )
+
+    if (!(isPost || isRecipeRevisionView || isReviewRating)) {
       return ''
     }
 
+    const record = isRecipeRevisionView
+      ? baseRecord.revisionContent
+      : baseRecord
+
     const lang = record.langs && record.langs.length > 0 ? record.langs[0] : ''
+    const text = isRecipeRevisionView
+      ? recipeText({recipeContent: baseRecord.revisionContent})
+      : record.text
     const profileHref = toShareUrl(
       ['/profile', thread.post.author.did].join('/'),
     )
@@ -275,7 +322,7 @@ function Snippet({
       thread.post.cid,
     )}" data-bluesky-embed-color-mode="${escapeHtml(
       colorMode,
-    )}"><p lang="${escapeHtml(lang)}">${escapeHtml(record.text)}${
+    )}"><p lang="${escapeHtml(lang)}">${escapeHtml(text || '')}${
       record.embed
         ? `<br><br><a href="${escapeHtml(href)}">[image or embed]</a>`
         : ''
