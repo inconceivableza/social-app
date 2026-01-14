@@ -62,10 +62,8 @@ export type EnvConfig = {
   DM_SERVICE_DID: string
   GEOLOCATION_CONFIG_URL: string
   GIF_HOST: string
-  HELP_DESK_URL: string
   LINK_HOST: string
   OGCARD_URL: string
-  POLICY_BASE_URL: string
   PREVIEW_LINK_META_PROXY: string
   PUBLIC_BSKY_SERVICE: string
   SOCIAL_APP_HOST: string // this is used as a reference
@@ -78,6 +76,7 @@ export type EnvConfig = {
   VIDEO_SERVICE_DID: string
 }
 
+// NB any changes here must be added to env-config/EMPTY_CONTENT as well
 export type EnvContent = {
   onboarding: {
     auto_follow_accounts: string[]
@@ -104,7 +103,13 @@ export type EnvContent = {
   links: {
     about?: string
     blog?: string
+    helpDesk?: string
     jobs?: string
+    policyBase?: string
+  }
+  feedback?: {
+    postUrl?: string
+    postToken?: string
   }
   sample_content: {
     profile: {

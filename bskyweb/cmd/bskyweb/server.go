@@ -42,14 +42,6 @@ type Server struct {
 	ipccClient http.Client
 }
 
-type Branding struct {
-	Code    map[string]interface{} `json:"code"`
-	Naming  map[string]interface{} `json:"naming"`
-	Styling struct {
-	} `json:"styling"`
-	Verbage map[string]interface{} `json:"verbage"`
-}
-
 type Config struct {
 	debug              bool
 	httpAddress        string
@@ -64,49 +56,9 @@ type Config struct {
 	socialappAbout     string
 	socialappAboutHost string
 	socialappHost      string
-	socialappName      string
 	socialappUrl       string
 	statuspageUrl      string
-	branding           Branding
-}
-
-// loadBrandingWithFallback loads branding configuration with fallback chain:
-// 1. External file from --branding flag (if exists)
-// 2. Embedded branding.json
-func loadBrandingWithFallback(brandingFile string) Branding {
-	var branding Branding
-
-	// external file
-	_, err := os.Stat(brandingFile)
-	if err == nil {
-		if brandingData, err := os.ReadFile(brandingFile); err == nil {
-			if err := json.Unmarshal(brandingData, &branding); err == nil {
-				log.Infof("Using branding file %s", brandingFile)
-				return branding
-			} else {
-				log.Warnf("Failed to parse external branding file %s: %v", brandingFile, err)
-			}
-		}
-	}
-
-	// Try embedded branding.json
-	if brandingData, err := bskyweb.BrandingFS.ReadFile("branding.json"); err == nil {
-		if err := json.Unmarshal(brandingData, &branding); err == nil {
-			log.Info("Using embedded branding")
-			return branding
-		}
-		log.Warnf("Failed to parse embedded branding.json: %v", err)
-		if brandingData, err := bskyweb.BrandingFS.ReadFile("branding-bluesky.json"); err == nil {
-			if err := json.Unmarshal(brandingData, &branding); err == nil {
-				log.Info("Using embedded bluesky branding")
-				return branding
-			}
-			log.Warnf("Failed to parse embedded branding-bluesky.json: %v", err)
-		}
-	}
-
-	log.Warnf("No branding configuration found, using empty defaults")
-	return branding
+	branding           bskyweb.Branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -128,7 +80,6 @@ func serve(cctx *cli.Context) error {
 	}
 	socialappAboutHost := socialappAboutParsedUrl.Host
 	socialappHost := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST")
-	socialappName := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_NAME")
 	socialappUrl := os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL")
 	embedUrl := os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE")
 	statuspageUrl := os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL")
@@ -136,7 +87,7 @@ func serve(cctx *cli.Context) error {
 	canonicalInstance := cctx.Bool("bsky-canonical-instance")
 	robotsDisallowAll := cctx.Bool("robots-disallow-all")
 
-	branding := loadBrandingWithFallback(cctx.String("branding"))
+	branding := bskyweb.LoadBrandingWithFallback(cctx.String("branding"), log)
 
 	// Echo
 	e := echo.New()
@@ -186,7 +137,6 @@ func serve(cctx *cli.Context) error {
 			socialappAbout:     socialappAbout,
 			socialappAboutHost: socialappAboutHost,
 			socialappHost:      socialappHost,
-			socialappName:      socialappName,
 			socialappUrl:       socialappUrl,
 			statuspageUrl:      statuspageUrl,
 			branding:           branding,
@@ -497,7 +447,7 @@ func (srv *Server) NewTemplateContext() pongo2.Context {
 		"socialappAbout":     srv.cfg.socialappAbout,
 		"socialappAboutHost": srv.cfg.socialappAboutHost,
 		"socialappHost":      srv.cfg.socialappHost,
-		"socialappName":      srv.cfg.socialappName,
+		"socialappName":      srv.cfg.branding.Naming["app_name"].(string),
 		"socialappUrl":       srv.cfg.socialappUrl,
 		"embedUrl":           srv.cfg.embedUrl,
 		"statuspageUrl":      srv.cfg.statuspageUrl,
@@ -519,7 +469,13 @@ func (srv *Server) errorHandler(err error, c echo.Context) {
 func (srv *Server) WebWellKnown(c echo.Context, filename string) error {
 	data := srv.NewTemplateContext()
 	data["branding"] = srv.cfg.branding
-	c.Response().Header().Set("Content-Type", "text/plain; charset=utf-8")
+	var contentType string
+	if strings.HasSuffix(filename, ".json") {
+		contentType = "application/json"
+	} else {
+		contentType = "text/plain; charset=utf-8"
+	}
+	c.Response().Header().Set("Content-Type", contentType)
 	return c.Render(http.StatusOK, ".well-known/"+filename, data)
 }
 
@@ -886,11 +842,8 @@ type EnvConfigResponse struct {
 	PREVIEW_LINK_META_PROXY string `json:"PREVIEW_LINK_META_PROXY"`
 	SOCIAL_APP_ABOUT        string `json:"SOCIAL_APP_ABOUT"` // not currently used by main social-app's env-config
 	SOCIAL_APP_HOST         string `json:"SOCIAL_APP_HOST"`
-	SOCIAL_APP_NAME         string `json:"SOCIAL_APP_NAME"` // not currently used by main social-app's env-config
 	SOCIAL_APP_URL          string `json:"SOCIAL_APP_URL"`
 	SOCIAL_EMBED_SERVICE    string `json:"SOCIAL_EMBED_SERVICE"`
-	SOCIAL_HELP_DESK_URL    string `json:"SOCIAL_HELP_DESK_URL"`
-	SOCIAL_POLICY_BASE_URL  string `json:"SOCIAL_POLICY_BASE_URL"`
 	STATUS_PAGE_URL         string `json:"STATUS_PAGE_URL"`
 	VIDEO_SERVICE           string `json:"VIDEO_SERVICE"`
 	VIDEO_SERVICE_DID       string `json:"VIDEO_SERVICE_DID"`
@@ -914,11 +867,8 @@ func (srv *Server) WebEnvConfig(c echo.Context) error {
 		PREVIEW_LINK_META_PROXY: os.Getenv("EXPO_PUBLIC_PREVIEW_LINK_META_PROXY"),
 		SOCIAL_APP_ABOUT:        os.Getenv("EXPO_PUBLIC_SOCIAL_APP_ABOUT"),
 		SOCIAL_APP_HOST:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_HOST"),
-		SOCIAL_APP_NAME:         os.Getenv("EXPO_PUBLIC_SOCIAL_APP_NAME"),
 		SOCIAL_APP_URL:          os.Getenv("EXPO_PUBLIC_SOCIAL_APP_URL"),
 		SOCIAL_EMBED_SERVICE:    os.Getenv("EXPO_PUBLIC_SOCIAL_EMBED_SERVICE"),
-		SOCIAL_HELP_DESK_URL:    os.Getenv("EXPO_PUBLIC_SOCIAL_HELP_DESK_URL"),
-		SOCIAL_POLICY_BASE_URL:  os.Getenv("EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL"),
 		STATUS_PAGE_URL:         os.Getenv("EXPO_PUBLIC_STATUS_PAGE_URL"),
 		VIDEO_SERVICE:           os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE"),
 		VIDEO_SERVICE_DID:       os.Getenv("EXPO_PUBLIC_VIDEO_SERVICE_DID"),

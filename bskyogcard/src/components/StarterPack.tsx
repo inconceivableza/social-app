@@ -8,9 +8,9 @@ export const STARTERPACK_HEIGHT = 630
 export const STARTERPACK_WIDTH = 1200
 export const TILE_SIZE = STARTERPACK_HEIGHT / 3
 
-const GRADIENT_TOP = '#0A7AFF'
-const GRADIENT_BOTTOM = '#59B9FF'
-const IMAGE_STROKE = '#359CFF'
+const GRADIENT_TOP = '#f38516'
+const GRADIENT_BOTTOM = '#f7ac62'
+const IMAGE_STROKE = '#f59a3f'
 
 export function StarterPack(props: {
   starterPack: AppBskyGraphDefs.StarterPackView

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, TextStyle, View } from 'react-native'
 import { runOnJS } from 'react-native-reanimated'
 import { UITextView } from 'react-native-uitextview'
 import * as Notifications from 'expo-notifications'
@@ -40,7 +40,7 @@ export function Component({
   const revision = recipePost.record
   const revisionContent = revision.revisionContent
   const t = useTheme()
-  const { _ } = useLingui()
+  const {_} = useLingui()
   const playHaptic = useHaptics()
   const [state, dispatch] = usePreparationState(revision)
   const richText = useMemo(
@@ -162,49 +162,76 @@ export function Component({
             return (
               <View key={sectionIdx} style={[a.gap_sm]}>
                 {name && <Text style={[a.font_bold, a.py_2xs]}>{name}</Text>}
-                <View style={[a.ml_sm, a.gap_xs]}>
+                <View style={[a.ml_sm, a.gap_xs, a.flex_1]}>
                   {instructions.map((instruction, instructionIdx) => {
                     const instructionKey =
                       `${sectionIdx}-${instructionIdx}` as const
                     const hasTimer = timers[instructionKey]
                     return (
-                      <View
-                        style={[
-                          a.flex_row,
-                          a.flex_wrap,
-                          a.gap_md,
-                          a.py_2xs,
-                          a.align_baseline,
-                        ]}
-                        key={instructionIdx}>
-                        <Toggle.Item
-                          type="checkbox"
-                          label={_(msg`Toggle instruction`)}
-                          name={`toggle_instruction_${instructionIdx}`}
-                          onChange={() =>
-                            dispatch({
-                              type: 'toggle_instruction',
-                              sectionIdx,
-                              instructionIdx,
-                            })
+                      <View key={instructionIdx}>
+                        <View
+                          style={[
+                            a.flex_row,
+                            a.gap_md,
+                            a.py_2xs,
+                            a.align_end,
+                            a.flex_1
+                          ]}
+                          key={instructionIdx}>
+                          <Toggle.Item
+                            type="checkbox"
+                            label={_(msg`Toggle instruction`)}
+                            name={`toggle_instruction_${instructionIdx}`}
+                            onChange={() =>
+                              dispatch({
+                                type: 'toggle_instruction',
+                                sectionIdx,
+                                instructionIdx,
+                              })
+                            }
+                            value={
+                              state.instructionSections[sectionIdx]?.[
+                                instructionIdx
+                              ]?.checked
+                            }
+                            style={[a.align_start, a.flex_1]}>
+                            <Toggle.Checkbox />
+                            <Toggle.LabelText
+                              emoji
+                              style={[
+                                a.text_md,
+                                a.font_normal,
+                                { lineHeight: a.text_md.fontSize * 1.4 },
+                                a.flex_grow,
+                                a.flex_shrink,
+                              ]}>
+                              {`${instructionIdx + 1}. ${instruction.text}`}
+                            </Toggle.LabelText>
+                          </Toggle.Item>
+                          {
+                            <Button
+                              label={_(msg`Create timer`)}
+                              color="secondary"
+                              variant="solid"
+                              shape="round"
+                              style={[
+                                a.flex_grow_0,
+                                a.py_2xs,
+                                a.px_sm,
+                                a.mx_2xs,
+                                hasTimer && {opacity: 0},
+                              ]}
+                              onPress={() =>
+                                setTimers(ts => ({
+                                  ...ts,
+                                  [instructionKey]: !ts[instructionKey],
+                                }))
+                              }>
+                              <ButtonIcon icon={ClockIcon} />
+                            </Button>
                           }
-                          value={
-                            state.instructionSections[sectionIdx]?.[
-                              instructionIdx
-                            ]?.checked
-                          }
-                          style={[a.align_start, a.flex_1]}>
-                          <Toggle.Checkbox />
-                          <Toggle.LabelText
-                            style={[
-                              a.text_md,
-                              a.font_normal,
-                              { lineHeight: a.text_md.fontSize * 1.4 },
-                            ]}>
-                            {`${instructionIdx + 1}. ${instruction.text}`}
-                          </Toggle.LabelText>
-                        </Toggle.Item>
-                        {hasTimer ? (
+                        </View>
+                        {hasTimer && (
                           <InstructionTimer
                             onDelete={() =>
                               setTimers(ts => {
@@ -216,19 +243,6 @@ export function Component({
                               scheduleLocalNotification(instructionKey)
                             }
                           />
-                        ) : (
-                          <Button
-                            label={_(msg`Create timer`)}
-                            color="secondary"
-                            variant="solid"
-                            shape="round"
-                            style={[a.flex_grow_0, a.py_2xs, a.px_sm]}
-                            onPress={() =>
-                              setTimers(ts => ({ ...ts, [instructionKey]: true }))
-                            }>
-                            <ButtonIcon icon={ClockIcon} />
-                            <ButtonText>+</ButtonText>
-                          </Button>
                         )}
                       </View>
                     )
@@ -285,7 +299,8 @@ function InstructionTimer({
     'inactive' | 'active' | 'paused' | 'complete'
   >('inactive')
   const [duration, setDuration] = useState({ hours: 0, minutes: 0, seconds: 0 }) // Duration in seconds
-  const { _ } = useLingui()
+  const [durationText, setDurationText] = useState({hours: '00', minutes: '00', seconds: '00'}) // Duration in seconds
+  const {_} = useLingui()
   const t = useTheme()
 
   const durationSeconds =
@@ -294,9 +309,10 @@ function InstructionTimer({
   // TODO: ensure hours <= 24, minutes < 60, seconds < 60
   function durationCallback(field: keyof typeof duration) {
     return function (text: string) {
+      if (text.length > 2) text = text.substring(text.length-2)
+      setDurationText(d => ({...d, [field]: text.padStart(2, '0')}))
       const value = Number(text)
       if (Number.isNaN(value)) return
-
       setDuration(d => ({ ...d, [field]: value }))
     }
   }
@@ -306,6 +322,11 @@ function InstructionTimer({
       hours: duration.hours,
       minutes: duration.minutes + 1,
       seconds: duration.seconds,
+    })
+    setDurationText({
+      hours: String(duration.hours).padStart(2, '0'),
+      minutes: String(duration.minutes + 1).padStart(2, '0'),
+      seconds: String(duration.seconds).padStart(2, '0'),
     })
     if (timingState === 'active' || timingState === 'paused') {
       setSeconds(seconds + 60)
@@ -341,84 +362,102 @@ function InstructionTimer({
   }, [timingState, startTime, durationSeconds, onNotify])
   // TODO: used controlled inputs (prevents non numerical values)
   const timerButtonSize = isAndroid ? 'sm' : 'xs'
+  const th = 28, tmw = isNative ? 32 : 28
+  const timeInputRootStyle = [a.py_0, a.px_2xs, a.m_0]
+  const timeInputViewStyle = [a.p_0, a.m_0, a.flex_col, a.flex_1, a.align_baseline, a.flex_shrink, isAndroid && {maxWidth: 62}, {borderColor: 'transparent', borderWidth: 2}]
+  const clockFont: TextStyle = {fontFamily: 'Inter-Regular, monospace, ui-monospace', fontVariant: ['tabular-nums']}
+  const timeInputTextStyle = [a.pt_0, a.pb_0, a.pr_2xs, a.pl_xs, a.m_0, {height: th, maxWidth: tmw}, a.align_baseline, clockFont]
+  const timeInputSuffixStyle = [a.p_0, a.pr_0, a.m_0, a.align_baseline]
   return timingState === 'inactive' ? (
     <View
-      style={[a.flex_row, a.gap_2xs, a.mb_sm, a.align_center, { width: '100%' }]}>
-      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1, a.align_baseline]}>
-        <TextField.Root>
+      style={[a.flex_row, a.gap_xs, a.pt_xs, a.mb_sm, a.align_center, a.flex_shrink, { alignSelf: 'flex-end' }]}>
+      <View style={timeInputViewStyle}>
+        <TextField.Root style={timeInputRootStyle}>
           <TextField.Input
-            style={[a.p_0, a.m_0, { height: 40 }]}
+            style={timeInputTextStyle}
             selectTextOnFocus
             onChangeText={durationCallback('hours')}
             inputMode="decimal"
             label={_(msg`Hours`)}
-            defaultValue="00"
+            value={durationText.hours}
+            editable
+            manualOverrideFonts
           />
-          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`h`)}>
+          <TextField.SuffixText style={timeInputSuffixStyle} label={_(msg`h`)}>
             h
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
-        <TextField.Root>
+      <View style={timeInputViewStyle}>
+        <TextField.Root style={timeInputRootStyle}>
           <TextField.Input
-            style={[a.p_0, a.m_0, { height: 40 }]}
+            style={timeInputTextStyle}
             selectTextOnFocus
             onChangeText={durationCallback('minutes')}
             inputMode="decimal"
             label={_(msg`Minutes`)}
-            defaultValue="00"
+            value={durationText.minutes}
+            editable
+            manualOverrideFonts
           />
-          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`m`)}>
+          <TextField.SuffixText style={timeInputSuffixStyle} label={_(msg`m`)}>
             m
           </TextField.SuffixText>
         </TextField.Root>
       </View>
-      <View style={[a.p_2xs, a.m_0, a.flex_col, a.flex_1]}>
-        <TextField.Root>
+      <View style={timeInputViewStyle}>
+        <TextField.Root style={timeInputRootStyle}>
           <TextField.Input
-            style={[a.p_0, a.m_0, { height: 40 }]}
+            style={timeInputTextStyle}
             selectTextOnFocus
             onChangeText={durationCallback('seconds')}
             inputMode="decimal"
             label={_(msg`Seconds`)}
-            defaultValue="00"
+            value={durationText.seconds}
+            editable
+            manualOverrideFonts
           />
-          <TextField.SuffixText style={[a.p_0, a.m_0]} label={_(msg`s`)}>
+          <TextField.SuffixText style={timeInputSuffixStyle} label={_(msg`s`)}>
             s
           </TextField.SuffixText>
         </TextField.Root>
       </View>
       <View
         style={[
-          a.p_xs,
+          a.px_xs,
           a.m_0,
           a.flex_row,
           a.flex_0,
-          a.align_start,
-          { alignItems: 'center', columnGap: 4 },
+          {alignItems: 'center'},
+          a.flex_shrink,
+          a.gap_sm,
         ]}>
         <Button
           disabled={durationSeconds <= 0}
           label={_(msg`Start timing`)}
-          variant="solid"
-          color="primary"
-          size="small"
+          variant="ghost"
+          color={durationSeconds <= 0 ? 'secondary' : 'primary'}
           onPress={() => {
             if (durationSeconds <= 0) return
             setSeconds(durationSeconds)
             setStartTime(Date.now())
             setTimingState('active')
           }}>
-          <ButtonIcon icon={PlayIcon} />
+          <ButtonIcon icon={PlayIcon} size={timerButtonSize}/>
         </Button>
         <Button
           label={_(msg`Cancel timer setup`)}
           onPress={onDelete}
-          variant="solid"
-          color="primary"
-          size="small">
-          <ButtonIcon icon={TrashIcon} />
+          variant="ghost"
+          color="primary">
+          <ButtonIcon icon={TrashIcon} size={timerButtonSize}/>
+        </Button>
+        <Button
+          label={_(msg`Add another minute`)}
+          onPress={onAnotherMinute}
+          variant="ghost"
+          color="primary">
+          <ButtonIcon icon={PlusIcon} size={timerButtonSize}/>
         </Button>
       </View>
     </View>
@@ -426,63 +465,81 @@ function InstructionTimer({
     <View
       style={[
         a.flex_row,
-        a.align_center,
+        a.flex_shrink,
+        {alignSelf: 'flex-end'},
         a.gap_sm,
-        a.p_sm,
-          { borderWidth: 1, borderRadius: 4, borderColor: t.palette.primary_400 },
+        a.p_0,
+        a.pt_xs,
+        a.mb_sm,
       ]}>
-      <View>
+      <View style={[a.z_10,
+                  a.inset_0,
+                  a.rounded_sm,
+                  t.atoms.bg_contrast_50,
+                  {borderColor: 'transparent', borderWidth: 2},
+                  a.px_sm,
+                  {alignContent: 'center'},
+                  ]}>
         <UITextView
           style={[
             timingState === 'complete'
               ? { color: t.palette.negative_300 }
               : timingState === 'paused'
                   ? { color: t.palette.contrast_700 }
-                  : { color: t.palette.primary_700 },
-            {
-              fontFamily: 'monospace, ui-monospace',
-              fontVariant: 'tabular-nums',
-            },
+                  : {},
+            clockFont,
+            {height: th, alignContent: 'center'},
           ]}>
           {displayTime(seconds)}
         </UITextView>
       </View>
-      {(timingState === 'active' || timingState === 'complete') && (
-        <Button
-          label={_(msg`Pause timer`)}
-          disabled={timingState === 'complete'}
-          variant="ghost"
-          color={timingState === 'complete' ? 'secondary' : 'primary'}
-          onPress={() => {
-            const hours = Math.trunc(seconds / 3600)
-            const minuteSeconds = seconds - hours * 3600
-            setDuration({
-              hours,
-              minutes: Math.trunc(minuteSeconds / 60),
-              seconds: minuteSeconds % 60,
-            })
-            setStartTime(Date.now())
-            setTimingState('paused')
-          }}>
-          <ButtonIcon icon={PauseIcon} size={timerButtonSize} />
+      <View
+        style={[
+          a.px_xs,
+          a.m_0,
+          a.flex_row,
+          a.flex_0,
+          {alignItems: 'center'},
+          a.flex_shrink,
+          a.gap_sm,
+        ]}>
+        {(timingState === 'active' || timingState === 'complete') && (
+          <Button
+            label={_(msg`Pause timer`)}
+            disabled={timingState === 'complete'}
+            variant="ghost"
+            color={timingState === 'complete' ? 'secondary' : 'primary'}
+            onPress={() => {
+              const hours = Math.trunc(seconds / 3600)
+              const minuteSeconds = seconds - hours * 3600
+              setDuration({
+                hours,
+                minutes: Math.trunc(minuteSeconds / 60),
+                seconds: minuteSeconds % 60,
+              })
+              setStartTime(Date.now())
+              setTimingState('paused')
+            }}>
+            <ButtonIcon icon={PauseIcon} size={timerButtonSize} />
+          </Button>
+        )}
+        {timingState === 'paused' && (
+          <Button
+            label={_(msg`Play timer`)}
+            onPress={() => {
+              setStartTime(Date.now())
+              setTimingState('active')
+            }}>
+            <ButtonIcon icon={PlayIcon} size={timerButtonSize} />
+          </Button>
+        )}
+        <Button label={_(msg`Quit timer`)} onPress={onDelete}>
+          <ButtonIcon icon={TrashIcon} size={timerButtonSize} />
         </Button>
-      )}
-      {timingState === 'paused' && (
-        <Button
-          label={_(msg`Play timer`)}
-          onPress={() => {
-            setStartTime(Date.now())
-            setTimingState('active')
-          }}>
-          <ButtonIcon icon={PlayIcon} size={timerButtonSize} />
+        <Button label={_(msg`Add another minute`)} onPress={onAnotherMinute}>
+          <ButtonIcon icon={PlusIcon} size={timerButtonSize} />
         </Button>
-      )}
-      <Button label={_(msg`Quit timer`)} onPress={onDelete}>
-        <ButtonIcon icon={TrashIcon} size={timerButtonSize} />
-      </Button>
-      <Button label={_(msg`Add another minute`)} onPress={onAnotherMinute}>
-        <ButtonIcon icon={PlusIcon} size={timerButtonSize} />
-      </Button>
+      </View>
     </View>
   )
 }
