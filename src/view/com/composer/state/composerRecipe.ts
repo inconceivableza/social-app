@@ -1,21 +1,21 @@
-import {useMemo, useReducer} from 'react'
+import { useMemo, useReducer } from 'react'
 import {
   AppBskyEmbedImages,
   type AppBskyFeedDefs,
   type AppFoodiosFeedRecipeRevision,
   RichText,
 } from '@atproto/api'
-import {msg} from '@lingui/macro'
+import { msg } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import _ from 'lodash'
-import {nanoid} from 'nanoid/non-secure'
+import { nanoid } from 'nanoid/non-secure'
 import z from 'zod'
 
-import {type RecipePostView} from '#/lib/api/feed/utils'
-import {type SelfLabel} from '#/lib/moderation'
-import {isNative} from '#/platform/detection'
-import {type Attribution} from '../recipe/RecipeAttribution'
-import {type EmbedAction, type EmbedDraft, embedReducer} from './composer'
+import { type RecipePostView } from '#/lib/api/feed/utils'
+import { type SelfLabel } from '#/lib/moderation'
+import { isNative } from '#/platform/detection'
+import { type Attribution } from '../recipe/RecipeAttribution'
+import { type EmbedAction, type EmbedDraft, embedReducer } from './composer'
 import {
   type HierarchyOption,
   recipeCategories,
@@ -31,6 +31,11 @@ interface IngredientDraft {
   name: string
   quantity: string
   unit: string
+}
+interface IngredientSectionDraft {
+  id: string
+  name?: string
+  ingredients: IngredientDraft[]
 }
 
 interface InstructionDraft {
@@ -51,7 +56,7 @@ export interface RecipePostDraft {
   id: string
   name: string
   text: RichText
-  ingredients: IngredientDraft[]
+  ingredientSections: IngredientSectionDraft[]
   instructionSections: InstructionSectionDraft[]
   prepTime?: string
   cookTime?: string
@@ -68,50 +73,54 @@ export interface RecipePostDraft {
 
 export type RecipeComposerAction =
   | TaggedUnion<
-      'type',
-      {
-        update_name: {value: string}
-        update_main_text: {value: RichText}
-        add_instruction_section: {prevSectionId: string}
-        remove_instruction_section: {sectionId: string}
-        edit_section_name: {sectionId: string; value: string}
-        add_instruction: {sectionId: string}
-        edit_instruction_text: {
-          value: string
-          sectionId: string
-          instructionId: string
-        }
-        remove_instruction: {sectionId: string; instructionId: string}
-        add_ingredient: {}
-        edit_ingredient: {
-          value: string
-          prop: keyof IngredientDraft
-          id: string
-        }
-        remove_ingredient: {id: string}
-        add_element: {
-          field: 'recipeCuisines' | 'recipeCategories' | 'recipeDiets'
-          value: HierarchyOption
-        }
-        remove_element: {
-          field: 'recipeCuisines' | 'recipeCategories' | 'recipeDiets'
-          value: HierarchyOption
-        }
-        set_prep_time: {value: string}
-        set_cook_time: {value: string}
-        set_yield: {field: 'quantity' | 'unit'; value: string}
-        set_nutrition_serving: {field: 'quantity' | 'unit'; value: string}
-        update_nutrition: {
-          field: Exclude<keyof NutritionDraft, 'servingSize'>
-          value: string
-        }
-        clear_nutrition: {}
-        update_attribution: {value?: Attribution}
+    'type',
+    {
+      update_name: { value: string }
+      update_main_text: { value: RichText }
+      add_instruction_section: { prevSectionId: string }
+      remove_instruction_section: { sectionId: string }
+      edit_instruction_section_name: { sectionId: string; value: string }
+      add_instruction: { sectionId: string }
+      edit_instruction_text: {
+        value: string
+        sectionId: string
+        instructionId: string
       }
-    >
+      remove_instruction: { sectionId: string; instructionId: string }
+      add_ingredient_section: { prevSectionId: string }
+      remove_ingredient_section: { sectionId: string }
+      edit_ingredient_section_name: { sectionId: string; value: string }
+      add_ingredient: { sectionId: string }
+      edit_ingredient: {
+        value: string
+        prop: keyof IngredientDraft
+        sectionId: string
+        ingredientId: string
+      }
+      remove_ingredient: { sectionId: string; ingredientId: string }
+      add_element: {
+        field: 'recipeCuisines' | 'recipeCategories' | 'recipeDiets'
+        value: HierarchyOption
+      }
+      remove_element: {
+        field: 'recipeCuisines' | 'recipeCategories' | 'recipeDiets'
+        value: HierarchyOption
+      }
+      set_prep_time: { value: string }
+      set_cook_time: { value: string }
+      set_yield: { field: 'quantity' | 'unit'; value: string }
+      set_nutrition_serving: { field: 'quantity' | 'unit'; value: string }
+      update_nutrition: {
+        field: Exclude<keyof NutritionDraft, 'servingSize'>
+        value: string
+      }
+      clear_nutrition: {}
+      update_attribution: { value?: Attribution }
+    }
+  >
   | EmbedAction
 
-function findById<T extends {id: string}>(arr: T[], id: string) {
+function findById<T extends { id: string }>(arr: T[], id: string) {
   const result = arr.find(section => section.id === id)
   if (!result) {
     throw new Error('Invalid id ' + id)
@@ -139,10 +148,10 @@ function recipePostReducer(
       if (sectionIdx < 0) {
         throw new Error('Invalid section id ' + action.prevSectionId)
       }
-      sections.splice(sectionIdx, 1, sections[sectionIdx], newSection())
+      sections.splice(sectionIdx, 1, sections[sectionIdx], newInstructionSection())
       return state
     }
-    case 'edit_section_name': {
+    case 'edit_instruction_section_name': {
       const section = findById(state.instructionSections, action.sectionId)
       section.name = action.value
       return state
@@ -160,7 +169,7 @@ function recipePostReducer(
     }
     case 'remove_instruction_section': {
       const sections = state.instructionSections
-      const idx = sections.findIndex(({id}) => id === action.sectionId)
+      const idx = sections.findIndex(({ id }) => id === action.sectionId)
       if (idx < 0) {
         throw new Error('Invalid section id ' + action.sectionId)
       }
@@ -170,14 +179,14 @@ function recipePostReducer(
         delete sections[0].name
       }
       if (!sections.length) {
-        sections.push(newSection())
+        sections.push(newInstructionSection())
       }
       return state
     }
     case 'remove_instruction': {
       const section = findById(state.instructionSections, action.sectionId)
       const idx = section.instructions.findIndex(
-        ({id}) => id === action.instructionId,
+        ({ id }) => id === action.instructionId,
       )
       if (idx < 0) {
         throw new Error('Invalid instruction id ' + action.sectionId)
@@ -188,28 +197,65 @@ function recipePostReducer(
       }
       return state
     }
+    case 'add_ingredient_section': {
+      const sections = state.ingredientSections
+      const sectionIdx = sections.findIndex(
+        section => section.id === action.prevSectionId,
+      )
+      if (sectionIdx < 0) {
+        throw new Error('Invalid section id ' + action.prevSectionId)
+      }
+      sections.splice(sectionIdx, 1, sections[sectionIdx], newIngredientSection())
+      return state
+    }
+    case 'remove_ingredient_section': {
+      const sections = state.ingredientSections
+      const idx = sections.findIndex(({ id }) => id === action.sectionId)
+      if (idx < 0) {
+        throw new Error('Invalid section id ' + action.sectionId)
+      }
+      sections.splice(idx, 1)
+      // If there's one remaining section, remove the name so that we revert to the simple view
+      if (sections.length === 1) {
+        delete sections[0].name
+      }
+      if (!sections.length) {
+        sections.push(newIngredientSection())
+      }
+      return state
+    }
+    case 'edit_ingredient_section_name': {
+      const section = findById(state.ingredientSections, action.sectionId)
+      section.name = action.value
+      return state
+    }
     case 'add_ingredient': {
-      state.ingredients.push(newIngredient())
+      const section = findById(state.ingredientSections, action.sectionId)
+      section.ingredients.push(newIngredient())
       return state
     }
     case 'edit_ingredient': {
-      const ingredient = findById(state.ingredients, action.id)
+      const section = findById(state.ingredientSections, action.sectionId)
+      const ingredient = findById(section.ingredients, action.ingredientId)
       ingredient[action.prop] = action.value
       return state
     }
     case 'remove_ingredient': {
-      const idx = state.ingredients.findIndex(({id}) => id === action.id)
+      const section = findById(state.ingredientSections, action.sectionId)
+      const idx = section.ingredients.findIndex(
+        ({ id }) => id === action.ingredientId,
+      )
       if (idx < 0) {
-        throw new Error('Invalid id ' + action.id)
+        throw new Error('Invalid ingredient id ' + action.sectionId)
       }
-      state.ingredients.splice(idx, 1)
-      if (!state.ingredients.length) {
-        state.ingredients.push(newIngredient())
+      section.ingredients.splice(idx, 1)
+      if (!section.ingredients.length) {
+        section.ingredients.push(newIngredient())
       }
       return state
     }
     case 'add_element': {
-      if (state[action.field]?.find(({id}) => id === action.value.id)) {
+      if (state[action.field]?.find(({ id }) => id === action.value.id)) {
         return state
       }
       const arr = (state[action.field] ??= [])
@@ -247,7 +293,7 @@ function recipePostReducer(
     }
     case 'set_nutrition_serving': {
       const nutrition = (state.nutrition ??= {
-        servingSize: {quantity: '0', unit: ''},
+        servingSize: { quantity: '0', unit: '' },
         energy: '0',
       })
       nutrition.servingSize[action.field] = action.value
@@ -255,7 +301,7 @@ function recipePostReducer(
     }
     case 'update_nutrition': {
       const nutrition = (state.nutrition ??= {
-        servingSize: {quantity: '0', unit: ''},
+        servingSize: { quantity: '0', unit: '' },
         energy: '0',
       })
       nutrition[action.field] = action.value
@@ -296,10 +342,17 @@ function newInstruction(): InstructionDraft {
   }
 }
 
-function newSection(): InstructionSectionDraft {
+function newInstructionSection(): InstructionSectionDraft {
   return {
     id: nanoid(),
     instructions: [newInstruction()],
+  }
+}
+
+function newIngredientSection(): IngredientSectionDraft {
+  return {
+    id: nanoid(),
+    ingredients: [newIngredient()]
   }
 }
 
@@ -316,7 +369,7 @@ const SUPPORTED_IMAGE_MIME_TYPES: Array<string> = (
 ).filter(Boolean)
 
 function imageExtToMimeType(extension: string) {
-  const extMap: Record<string, string> = {jpg: 'jpeg', svg: 'svg+xml'}
+  const extMap: Record<string, string> = { jpg: 'jpeg', svg: 'svg+xml' }
   const ext = extension.toLowerCase()
   const potMime = 'image/' + (extMap[ext] ?? ext)
   if (SUPPORTED_IMAGE_MIME_TYPES.includes(potMime)) {
@@ -352,7 +405,7 @@ function embedToDraft(
       media: {
         type: 'images',
         images: postEmbed.images.map(
-          ({alt, fullsize, thumb, aspectRatio}, index) => ({
+          ({ alt, fullsize, thumb, aspectRatio }, index) => ({
             source: {
               height: aspectRatio!.height,
               width: aspectRatio!.width,
@@ -386,8 +439,8 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
       text: new RichText({
         text: '',
       }),
-      ingredients: [newIngredient()],
-      instructionSections: [newSection()],
+      ingredientSections: [newIngredientSection()],
+      instructionSections: [newInstructionSection()],
       labels: [],
       embed: {
         quote: undefined,
@@ -401,7 +454,7 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
     name,
     text,
     facets,
-    ingredients,
+    ingredientSections,
     instructionSections,
     labels,
     embed: recordEmbed,
@@ -415,7 +468,7 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
     suitableForDiet,
     tags,
   } = init.record.revisionContent
-  const {embed: postEmbed} = init
+  const { embed: postEmbed } = init
 
   return {
     id: nanoid(),
@@ -424,17 +477,25 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
       text,
       facets,
     }),
-    ingredients: ingredients.map(ingredient => ({...ingredient, id: nanoid()})),
-    instructionSections: instructionSections.length
-      ? instructionSections.map(section => ({
-          ...section,
-          id: nanoid(),
-          instructions: section.instructions.map(instruction => ({
-            ...instruction,
-            id: nanoid(),
-          })),
+    ingredientSections: ingredientSections.length ?
+      ingredientSections.map(({ name, ingredients }) => ({
+        name,
+        id: nanoid(),
+        ingredients: ingredients.map(ingredient => ({
+          ...ingredient,
+          id: nanoid()
         }))
-      : [newSection()],
+      })) : [newIngredientSection()],
+    instructionSections: instructionSections.length
+      ? instructionSections.map(({ name, instructions }) => ({
+        name,
+        id: nanoid(),
+        instructions: instructions.map(instruction => ({
+          ...instruction,
+          id: nanoid(),
+        })),
+      }))
+      : [newInstructionSection()],
     labels: labels && 'values' in labels ? labels.values.map(v => v.val) : [],
     embed: embedToDraft(postEmbed, recordEmbed),
     recipeCuisines: recipeCuisine
@@ -458,15 +519,16 @@ const initState = (init?: RecipePostView): RecipePostDraft => {
 function preprocessState(state: RecipePostDraft) {
   state = _.cloneDeep(state)
   state.instructionSections.forEach(section => {
-    section.instructions = section.instructions.filter(({text}) => !!text)
+    section.instructions = section.instructions.filter(({ text }) => !!text)
   })
-  state.ingredients = state.ingredients.filter(
-    ({name, quantity, unit}) => !!(name || quantity || unit),
-  )
+  state.ingredientSections.forEach(section => {
+    section.ingredients = section.ingredients.filter(
+      ({ name, quantity, unit }) => !!(name || quantity || unit))
+  })
   return state
 }
 
-export function useRecipePostReducer({edit}: {edit?: RecipePostView}) {
+export function useRecipePostReducer({ edit }: { edit?: RecipePostView }) {
   const { _ } = useLingui()
   const [state, dispatch] = useReducer(recipePostReducer, initState(edit))
 
@@ -484,7 +546,7 @@ export function useRecipePostReducer({edit}: {edit?: RecipePostView}) {
     }
   }, [state, schema])
 
-  return {state, dispatch, errors} as const
+  return { state, dispatch, errors } as const
 }
 
 export type RecipeReducerOutput = ReturnType<typeof useRecipePostReducer>
@@ -505,6 +567,12 @@ function createRecipePostDraftSchema(_: (descriptor: { id: string; message?: str
     unit: z.string(),
   })
 
+  const ingredientSectionDraftSchema = z.object({
+    id: z.string(),
+    name: z.string().optional(),
+    ingredients: z.array(ingredientDraftSchema).min(1, _(msg`At least one ingredient per section required`))
+  })
+
   const instructionDraftSchema = z.object({
     id: z.string(),
     text: z.string().min(1, _(msg`Instruction text cannot be empty`)),
@@ -516,7 +584,7 @@ function createRecipePostDraftSchema(_: (descriptor: { id: string; message?: str
     name: z.string().optional(),
     instructions: z
       .array(instructionDraftSchema)
-      .min(1, _(msg`At least one instruction required`)),
+      .min(1, _(msg`At least one instruction per section required`)),
   })
 
   const nutritionServingSizeSchema = z.object({
@@ -743,11 +811,11 @@ function createRecipePostDraftSchema(_: (descriptor: { id: string; message?: str
 
   const selfLabelSchema = z.enum(['sexual', 'nudity', 'porn', 'graphic-media'])
 
-  return z.object({
+  const recipeDraftSchema = z.object({
     name: z.string().min(1, _(msg`Name cannot be empty`)),
     text: z.instanceof(RichText).optional(),
-    ingredients: z
-      .array(ingredientDraftSchema)
+    ingredientSections: z
+      .array(ingredientSectionDraftSchema)
       .min(1, _(msg`At least one ingredient required`)),
     instructionSections: z
       .array(instructionSectionDraftSchema)
@@ -787,4 +855,5 @@ function createRecipePostDraftSchema(_: (descriptor: { id: string; message?: str
     labels: z.array(selfLabelSchema),
     tags: z.array(z.string()).optional(),
   })
+  return recipeDraftSchema
 }

@@ -1,19 +1,19 @@
-import {useMemo, useState} from 'react'
-import {View} from 'react-native'
+import { useMemo, useState } from 'react'
+import { View } from 'react-native'
 import {
   type AppFoodiosFeedDefs,
   type AppFoodiosFeedRecipeRevision,
 } from '@atproto/api'
-import {RichText as RichTextAPI} from '@atproto/api'
-import {msg, plural, Trans} from '@lingui/macro'
-import {useLingui} from '@lingui/react'
+import { RichText as RichTextAPI } from '@atproto/api'
+import { msg, plural, Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 import type React from 'react'
 
-import {atoms as a, atoms, useTheme} from '#/alf'
-import {Accordion} from '#/components/Accordion'
-import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
-import {RichText} from '#/components/RichText'
-import {Text} from '#/components/Typography'
+import { atoms as a, atoms, useTheme } from '#/alf'
+import { Accordion } from '#/components/Accordion'
+import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
+import { RichText } from '#/components/RichText'
+import { Text } from '#/components/Typography'
 import {
   dedupHierarchyOptions,
   pathToHierarchyOption,
@@ -21,8 +21,8 @@ import {
   recipeCuisines,
   recipeDiets,
 } from '../composer/state/dataRecipe'
-import {type NutritionElement, nutritionFields} from '../recipe/NutritionFields'
-import {RecipeAttributionDisplay} from '../recipe/RecipeAttributionDisplay'
+import { type NutritionElement, nutritionFields } from '../recipe/NutritionFields'
+import { RecipeAttributionDisplay } from '../recipe/RecipeAttributionDisplay'
 
 export function ExpandableRecipePost({
   revision,
@@ -58,7 +58,7 @@ export function ExpandedRecipePost({
   // TODO: count lines - if too long truncate unless expanded
   const record = revision.revisionContent
   const t = useTheme()
-  const {_} = useLingui()
+  const { _ } = useLingui()
   const richText = useMemo(() => {
     return new RichTextAPI({
       text: revision.revisionContent.text,
@@ -68,92 +68,94 @@ export function ExpandedRecipePost({
   return (
     <View style={[a.gap_xs]}>
       <View style={[a.flex_row]}>
-        <View style={{justifyContent: 'center', marginRight: 'auto'}}>
+        <View style={{ justifyContent: 'center', marginRight: 'auto' }}>
           <Text emoji style={[a.text_xl, a.font_bold]}>
             {record.name}
           </Text>
         </View>
         {titleComponent}
       </View>
-      <View style={[a.gap_xs, a.py_sm]}>
-        {record.recipeCategory?.length ? (
-          <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
-            <Text style={[a.font_medium]}>{`${plural(
-              record.recipeCategory.length,
-              {
-                one: 'Category',
-                other: 'Categories',
-              },
-            )}:`}</Text>
-            <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
-              {dedupHierarchyOptions(
-                record.recipeCategory.flatMap(path => {
-                  const option = pathToHierarchyOption(path, recipeCategories)
-                  return option ? [option] : []
-                }),
-              ).map(opt => (
-                <View
-                  style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
-                  key={opt.id}>
-                  <Text>{_(opt.label)}</Text>
-                </View>
-              ))}
+      {!!(record.recipeCategory?.length || record.suitableForDiet?.length || record.recipeCuisine?.length) &&
+        <View style={[a.gap_xs, a.py_sm]}>
+          {record.recipeCategory?.length ? (
+            <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
+              <Text style={[a.font_medium]}>{`${plural(
+                record.recipeCategory.length,
+                {
+                  one: 'Category',
+                  other: 'Categories',
+                },
+              )}:`}</Text>
+              <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+                {dedupHierarchyOptions(
+                  record.recipeCategory.flatMap(path => {
+                    const option = pathToHierarchyOption(path, recipeCategories)
+                    return option ? [option] : []
+                  }),
+                ).map(opt => (
+                  <View
+                    style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
+                    key={opt.id}>
+                    <Text>{_(opt.label)}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-        ) : null}
+          ) : null}
 
-        {record.suitableForDiet?.length ? (
-          <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
-            <Text style={[a.font_medium]}>{`${plural(
-              record.suitableForDiet.length,
-              {
-                one: 'Suitable for diet',
-                other: 'Suitable for diets',
-              },
-            )}:`}</Text>
-            <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
-              {dedupHierarchyOptions(
-                record.suitableForDiet.flatMap(path => {
-                  const option = pathToHierarchyOption(path, recipeDiets)
-                  return option ? [option] : []
-                }),
-              ).map(opt => (
-                <View
-                  style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
-                  key={opt.id}>
-                  <Text>{_(opt.label)}</Text>
-                </View>
-              ))}
+          {record.suitableForDiet?.length ? (
+            <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
+              <Text style={[a.font_medium]}>{`${plural(
+                record.suitableForDiet.length,
+                {
+                  one: 'Suitable for diet',
+                  other: 'Suitable for diets',
+                },
+              )}:`}</Text>
+              <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+                {dedupHierarchyOptions(
+                  record.suitableForDiet.flatMap(path => {
+                    const option = pathToHierarchyOption(path, recipeDiets)
+                    return option ? [option] : []
+                  }),
+                ).map(opt => (
+                  <View
+                    style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
+                    key={opt.id}>
+                    <Text>{_(opt.label)}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-        ) : null}
+          ) : null}
 
-        {record.recipeCuisine?.length ? (
-          <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
-            <Text style={[a.font_medium]}>{`${plural(
-              record.recipeCuisine.length,
-              {
-                one: 'Cuisine',
-                other: 'Cuisines',
-              },
-            )}:`}</Text>
-            <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
-              {dedupHierarchyOptions(
-                (record.recipeCuisine ?? []).flatMap(path => {
-                  const option = pathToHierarchyOption(path, recipeCuisines)
-                  return option ? [option] : []
-                }),
-              ).map(opt => (
-                <View
-                  style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
-                  key={opt.id}>
-                  <Text>{_(opt.label)}</Text>
-                </View>
-              ))}
+          {record.recipeCuisine?.length ? (
+            <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
+              <Text style={[a.font_medium]}>{`${plural(
+                record.recipeCuisine.length,
+                {
+                  one: 'Cuisine',
+                  other: 'Cuisines',
+                },
+              )}:`}</Text>
+              <View style={[a.flex_row, a.gap_xs, a.flex_wrap, a.flex_1]}>
+                {dedupHierarchyOptions(
+                  (record.recipeCuisine ?? []).flatMap(path => {
+                    const option = pathToHierarchyOption(path, recipeCuisines)
+                    return option ? [option] : []
+                  }),
+                ).map(opt => (
+                  <View
+                    style={[t.atoms.bg_contrast_100, a.p_xs, a.rounded_xs]}
+                    key={opt.id}>
+                    <Text>{_(opt.label)}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-        ) : null}
-      </View>
+          ) : null}
+        </View>
+      }
       <View>
         <RichText
           enableTags
@@ -197,31 +199,26 @@ export function ExpandedRecipePost({
               </View>
             ) : null}
           </View>
-          <View style={[a.py_sm]}>
+          <View>
             <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Ingredients</Trans>
             </Text>
           </View>
-          <View style={[a.ml_sm]}>
-            {record.ingredients.map((ingredient, i) => {
-              return (
-                <View key={i} style={[a.flex_row, a.gap_sm, a.py_xs]}>
-                  <Text
-                    emoji>{`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`}</Text>
-                </View>
-              )
+          <View style={a.gap_sm}>
+            {record.ingredientSections.map((section, i) => {
+              return <IngredientsSection key={i} section={section} />
             })}
           </View>
-          <View style={[a.py_sm]}>
+          <View>
             <Text style={[a.text_lg, t.atoms.text_contrast_medium]}>
               <Trans context="recipe">Instructions</Trans>
             </Text>
           </View>
-          <View>
+          <View style={a.gap_xs}>
             {record.instructionSections.map(
-              ({name, instructions}, sectionIdx) => {
+              ({ name, instructions }, sectionIdx) => {
                 return (
-                  <View key={sectionIdx} style={[a.gap_sm, a.py_xs]}>
+                  <View key={sectionIdx} style={a.gap_xs}>
                     {name && (
                       <Text emoji style={[a.font_bold]}>
                         {name}
@@ -258,6 +255,24 @@ export function ExpandedRecipePost({
   )
 }
 
+function IngredientsSection({ section }: { section: AppFoodiosFeedRecipeRevision.IngredientSection }) {
+  return <View style={a.gap_xs}>
+    {section.name && <Text emoji style={[a.font_bold]}>{section.name}</Text>}
+    <View style={[a.ml_sm]}>
+      {section.ingredients.map((ingredient, i) => {
+        return (
+          <View key={i} style={[a.flex_row, a.gap_sm, a.py_xs]}>
+            <Text
+              emoji>{[ingredient.quantity, ingredient.unit, ingredient.name].filter(Boolean).join(" ")}</Text>
+          </View>
+        )
+      })}
+    </View>
+  </View>
+}
+
+// TODO licensing website
+
 function NutritionView({
   nutrition,
 }: {
@@ -278,8 +293,8 @@ function NutritionalValue({
   label,
   unit,
   subFields,
-}: NutritionElement & {nutrition: AppFoodiosFeedRecipeRevision.Nutrition}) {
-  const {_} = useLingui()
+}: NutritionElement & { nutrition: AppFoodiosFeedRecipeRevision.Nutrition }) {
+  const { _ } = useLingui()
   const value = nutrition[field]
   if (!value) {
     return null

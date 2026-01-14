@@ -209,6 +209,7 @@ export const ComposePost = ({
   const [isKeyboardVisible] = useIsKeyboardVisible({iosUseWillEvents: true})
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishingStage, setPublishingStage] = useState('')
+  // TODO:
   const [error, setError] = useState('')
 
   /**
