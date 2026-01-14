@@ -24,6 +24,13 @@ import * as Layout from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {SearchError} from '#/components/SearchError'
 import {Text} from '#/components/Typography'
+import { parseSearchQuery } from './utils'
+import z from "zod"
+
+// Show the People and Feeds tabs only if there are no other params set and search type is 'all'
+const noParamsSchema = z.object({
+  searchType: z.literal('all')
+}).strict()
 
 let SearchResults = ({
   query,
@@ -41,12 +48,17 @@ let SearchResults = ({
   initialPage?: number
 }): React.ReactNode => {
   const {_} = useLingui()
-
+  const showPeopleAndFeeds = useMemo(() => {
+    const parsedParams = parseSearchQuery(queryWithParams).params
+    return noParamsSchema.safeParse(parsedParams).success
+  }, [queryWithParams])
   const sections = useMemo(() => {
     if (!queryWithParams) return []
-    const params = queryWithParams.split(" ").slice(1)
-    const noParams = params.length === 0 || params.length === 1 && params[0] === "searchType:all"
-    return [
+
+    const sections: {
+      title: string
+      component: React.ReactNode
+    }[] = [
       {
         title: _(msg`Top`),
         component: (
@@ -66,23 +78,23 @@ let SearchResults = ({
             active={activeTab === 1}
           />
         ),
-      },
-      noParams && {
+        }, 
+      ]
+    if (showPeopleAndFeeds) {
+      sections.push({
         title: _(msg`People`),
         component: (
           <SearchScreenUserResults query={query} active={activeTab === 2} />
         ),
       },
-      noParams && {
+        {
         title: _(msg`Feeds`),
         component: (
           <SearchScreenFeedsResults query={query} active={activeTab === 3} />
         ),
-      },
-    ].filter(Boolean) as {
-      title: string
-      component: React.ReactNode
-    }[]
+        },)
+    }
+    return sections
   }, [_, query, queryWithParams, activeTab])
 
   return (

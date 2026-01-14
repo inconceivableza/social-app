@@ -3,10 +3,10 @@ import { msg } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { searchTypeOptions, SearchType } from './options'
 
-
 export function SearchTypeInput({ value, onChange }: { value: SearchType, onChange: (value: SearchType) => void }) {
   const { _ } = useLingui()
   return <ToggleButton.Group
+
     label={_(msg`Search type`)}
     onChange={values => {
       const found = searchTypeOptions.find(
