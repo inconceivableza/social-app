@@ -54,6 +54,7 @@ import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
 import { SearchTypeInput } from './components/SearchTypeInput'
+import { SearchType } from './components/SearchTypeInput/options'
 
 export function SearchScreenShell({
   queryParam,
@@ -153,7 +154,7 @@ export function SearchScreenShell({
   const [recipeSearchFields, dispatchRecipeSearch] =
     useRecipeSearchState(parsedParams)
 
-  const [searchType, setSearchType] = useState<'all' | 'recipes'>(
+  const [searchType, setSearchType] = useState<SearchType>(
     parsedParams.searchType,
   )
 
