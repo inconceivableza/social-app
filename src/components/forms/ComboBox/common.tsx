@@ -39,9 +39,8 @@ export function ComboBoxSelection<T extends BaseOption>({
           style={[
             a.rounded_sm,
             t.atoms.bg_contrast_25,
-            a.p_sm,
+            a.px_sm,
             a.flex_row,
-            a.gap_xs,
             a.align_center,
             a.flex_wrap
           ]}>
@@ -51,8 +50,9 @@ export function ComboBoxSelection<T extends BaseOption>({
           <View>
           <Button
             label={_(msg`Remove selection`)}
-            size='small'
+              size='tiny'
             shape='round'
+
             onPress={() => {
               onRemove(opt)
             }}>
