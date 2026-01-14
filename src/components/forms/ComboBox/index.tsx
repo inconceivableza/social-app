@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { TouchableOpacity, useWindowDimensions, View, ScrollView } from 'react-native'
-import { useTheme } from '@bsky.app/alf'
+import { TouchableOpacity, useWindowDimensions, View } from 'react-native'
+import { useTheme } from '#/alf'
 import { msg, Trans } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 
