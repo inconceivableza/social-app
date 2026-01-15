@@ -150,8 +150,8 @@ export function Component({}: {}) {
                   )}>
                   <LinearGradient
                     colors={[
-                      gradients.blueLight.start,
-                      gradients.blueLight.end,
+                      gradients.orangeLight.start,
+                      gradients.orangeLight.end,
                     ]}
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 1}}

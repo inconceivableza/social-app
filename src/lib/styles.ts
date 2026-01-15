@@ -68,9 +68,12 @@ export const colors = {
 }
 
 export const gradients = {
-  blueLight: {start: '#5A71FA', end: colors.orange1}, // buttons
-  blue: {start: '#5E55FB', end: colors.orange1}, // fab
-  blueDark: {start: '#5F45E0', end: colors.orange1}, // avis, banner
+  blueLight: {start: '#5A71FA', end: colors.blue3}, // buttons
+  blue: {start: '#5E55FB', end: colors.blue3}, // fab
+  blueDark: {start: '#5F45E0', end: colors.blue3}, // avis, banner
+  orangeLight: {start: '#fff67d', end: colors.orange1}, // buttons
+  orange: {start: '#f0c342', end: colors.orange1}, // fab
+  orangeDark: {start: '#c78f23', end: colors.orange1}, // avis, banner
 }
 
 /**

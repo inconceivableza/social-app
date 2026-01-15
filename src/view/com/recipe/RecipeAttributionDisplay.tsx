@@ -165,11 +165,15 @@ function WebsiteAttributionDisplay({
   value: $Typed<AppFoodiosFeedRecipeRevision.WebsiteAttribution>
 }) {
   const {_} = useLingui()
+  const licenseType = value.license?.licenseType
+  const licenseLabel = licenseType ? licenseLabels[licenseType] : null
+
   return (
     <View style={[a.gap_xs]}>
       <Text>
         <Trans context="recipe attribution">From website</Trans>: {value.name}
       </Text>
+      {licenseLabel && <Text>{`${_(msg`License`)}: ${licenseLabel}`}</Text>}
       <InlineLinkText
         label={_(msg`Attribution link`)}
         to={value.url}
