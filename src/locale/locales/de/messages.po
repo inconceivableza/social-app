@@ -60,7 +60,7 @@ msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, one {# Gefällt mir} other {# Gefällt mir}}"
 
 #: src/lib/hooks/useTimeAgo.ts:149
-#: src/view/com/posts/ExpandableRecipePost.tsx:176
+#: src/view/com/posts/ExpandableRecipePost.tsx:180
 msgid "{0, plural, one {# minute} other {# minutes}}"
 msgstr "{0, plural, one {# Minute} other {# Minuten}}"
 
@@ -91,11 +91,11 @@ msgstr "{0, plural, one {# ungelesenes Element} other {# ungelesene Elemente}}"
 msgid "{0, plural, one {#mo} other {#mo}}"
 msgstr "{0, plural, one {#Mo} other {#Mo}}"
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:82
+#: src/view/com/posts/ExpandableRecipePost.tsx:86
 msgid "{0, plural, one {Category} other {Categories}}"
 msgstr ""
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:134
+#: src/view/com/posts/ExpandableRecipePost.tsx:138
 msgid "{0, plural, one {Cuisine} other {Cuisines}}"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr "{0, plural, one {Repost} other {Reposts}}"
 msgid "{0, plural, one {save} other {saves}}"
 msgstr "{0, plural, one {Speicherung} other {Speicherungen}}"
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:108
+#: src/view/com/posts/ExpandableRecipePost.tsx:112
 msgid "{0, plural, one {Suitable for diet} other {Suitable for diets}}"
 msgstr ""
 
@@ -524,6 +524,7 @@ msgstr "{joinedAllTimeCount, plural, other {# Nutzer sind}} beigetreten!"
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:197
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:305
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:420
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:554
 msgid "{label}"
 msgstr ""
 
@@ -669,7 +670,7 @@ msgid "A screenshot of a profile page with a bell icon next to the follow button
 msgstr "Ein Screenshot einer Profilseite mit einem Glocken-Symbol neben dem Folgen-Button, das auf die neue Funktion für Aktivitätsmitteilungen hinweist."
 
 #: src/Navigation.tsx:550
-#: src/screens/Settings/AboutSettings.tsx:75
+#: src/screens/Settings/AboutSettings.tsx:82
 #: src/screens/Settings/Settings.tsx:271
 #: src/screens/Settings/Settings.tsx:274
 msgid "About"
@@ -1016,11 +1017,11 @@ msgstr "Anfrage zur Altersverifikation wurde übermittelt"
 msgid "Age assurance only takes a few minutes"
 msgstr "Die Altersverifikation dauert nur wenige Minuten"
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:198
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:202
 msgid "Air date"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:556
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:601
 msgid "Air date (optional)"
 msgstr ""
 
@@ -1421,24 +1422,24 @@ msgstr "Thema für den Algorithmus festlegen"
 msgid "At least 8 characters"
 msgstr "Mindestens 8 Zeichen"
 
-#: src/view/com/composer/state/composerRecipe.ts:573
+#: src/view/com/composer/state/composerRecipe.ts:587
 msgid "At least one ingredient per section required"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:819
+#: src/view/com/composer/state/composerRecipe.ts:841
 msgid "At least one ingredient required"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:587
+#: src/view/com/composer/state/composerRecipe.ts:601
 msgid "At least one instruction per section required"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:822
+#: src/view/com/composer/state/composerRecipe.ts:844
 msgid "At least one instruction required"
 msgstr ""
 
 #: src/view/com/composer/ComposerRecipe.tsx:686
-#: src/view/com/posts/ExpandableRecipePost.tsx:248
+#: src/view/com/posts/ExpandableRecipePost.tsx:252
 msgid "Attribution"
 msgstr ""
 
@@ -1450,9 +1451,9 @@ msgstr ""
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:91
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:115
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:151
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:174
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:228
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:178
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:205
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:232
 msgid "Attribution link"
 msgstr ""
 
@@ -1668,7 +1669,7 @@ msgstr "Bilder verwischen und aus Feeds herausfiltern"
 msgid "Books"
 msgstr "Bücher"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:596
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:641
 msgid "Brand"
 msgstr ""
 
@@ -1846,7 +1847,7 @@ msgstr "Untertitel (.vtt)"
 msgid "Captions & alt text"
 msgstr "Untertitel und Alt-Text"
 
-#: src/view/com/composer/state/composerRecipe.ts:611
+#: src/view/com/composer/state/composerRecipe.ts:625
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
@@ -1997,7 +1998,7 @@ msgstr "Überprüfe deinen Posteingang auf eine E-Mail mit dem Bestätigungscode
 msgid "Cholesterol"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:653
+#: src/view/com/composer/state/composerRecipe.ts:667
 msgid "Cholesterol content must be a number"
 msgstr ""
 
@@ -2062,8 +2063,8 @@ msgstr "Alle Speicherdaten löschen (danach neu starten)"
 msgid "Clear attribution"
 msgstr ""
 
-#: src/screens/Settings/AboutSettings.tsx:116
-#: src/screens/Settings/AboutSettings.tsx:120
+#: src/screens/Settings/AboutSettings.tsx:123
+#: src/screens/Settings/AboutSettings.tsx:127
 msgid "Clear image cache"
 msgstr "Bildcache leeren"
 
@@ -2492,7 +2493,7 @@ msgstr "Konversation gelöscht"
 msgid "Conversation deleted"
 msgstr "Konversation gelöscht"
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:186
+#: src/view/com/posts/ExpandableRecipePost.tsx:190
 msgid "Cook:"
 msgstr ""
 
@@ -2504,11 +2505,11 @@ msgstr "Kochen"
 msgid "Cooking time"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:834
+#: src/view/com/composer/state/composerRecipe.ts:856
 msgid "Cooking time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:837
+#: src/view/com/composer/state/composerRecipe.ts:859
 msgid "Cooking time must be greater than zero"
 msgstr ""
 
@@ -2516,7 +2517,7 @@ msgstr ""
 msgid "Copied"
 msgstr ""
 
-#: src/screens/Settings/AboutSettings.tsx:151
+#: src/screens/Settings/AboutSettings.tsx:158
 msgid "Copied build version to clipboard"
 msgstr "Die Build-Version wurde in die Zwischenablage kopiert"
 
@@ -2535,7 +2536,7 @@ msgstr "In die Zwischenablage kopiert"
 msgid "Copied!"
 msgstr "Kopiert!"
 
-#: src/screens/Settings/AboutSettings.tsx:127
+#: src/screens/Settings/AboutSettings.tsx:134
 msgid "Copies build version to clipboard"
 msgstr "Kopiert die Build-Version in die Zwischenablage"
 
@@ -2987,12 +2988,12 @@ msgstr "Zitat trennen"
 msgid "Detach quote post?"
 msgstr "Zitat-Post trennen?"
 
-#: src/screens/Settings/AboutSettings.tsx:140
+#: src/screens/Settings/AboutSettings.tsx:147
 msgctxt "toast"
 msgid "Developer mode disabled"
 msgstr "Entwicklermodus deaktiviert"
 
-#: src/screens/Settings/AboutSettings.tsx:134
+#: src/screens/Settings/AboutSettings.tsx:141
 msgctxt "toast"
 msgid "Developer mode enabled"
 msgstr "Entwicklermodus aktiviert"
@@ -3495,12 +3496,8 @@ msgstr "Ende des Feeds"
 msgid "Energy"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:604
+#: src/view/com/composer/state/composerRecipe.ts:618
 msgid "Energy value must be a number"
-msgstr ""
-
-#: src/view/com/composer/state/composerRecipe.ts:607
-msgid "Energy value must be greater than zero"
 msgstr ""
 
 #: src/view/com/composer/videos/SubtitleDialog.tsx:158
@@ -3567,11 +3564,11 @@ msgstr "Unterhaltung"
 msgid "Environment Config {currentEnvName}: {envConfigText}"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:196
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:200
 msgid "Episode"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:542
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:587
 msgid "Episode (optional)"
 msgstr ""
 
@@ -3961,7 +3958,7 @@ msgstr "E-Mail-Verifizierung fehlgeschlagen, bitte versuche es erneut."
 msgid "Failed to verify handle. Please try again."
 msgstr "Fehler beim Überprüfen des Handles. Bitte versuche es erneut."
 
-#: src/view/com/composer/state/composerRecipe.ts:625
+#: src/view/com/composer/state/composerRecipe.ts:639
 msgid "Fat content must be a number"
 msgstr ""
 
@@ -4043,7 +4040,7 @@ msgstr "Feeds, die dir gefallen könnten."
 msgid "Fetch update"
 msgstr "Update abrufen"
 
-#: src/view/com/composer/state/composerRecipe.ts:632
+#: src/view/com/composer/state/composerRecipe.ts:646
 msgid "Fiber content must be a number"
 msgstr ""
 
@@ -4351,7 +4348,7 @@ msgctxt "recipe attribution"
 msgid "From person"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:222
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:226
 msgctxt "recipe attribution"
 msgid "From product"
 msgstr ""
@@ -4361,12 +4358,12 @@ msgctxt "recipe attribution"
 msgid "From publication"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:194
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:198
 msgctxt "recipe attribution"
 msgid "From TV show"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:171
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:174
 msgctxt "recipe attribution"
 msgid "From website"
 msgstr ""
@@ -4887,12 +4884,12 @@ msgstr "Illegal und dringend"
 msgid "Image"
 msgstr "Bild"
 
-#: src/screens/Settings/AboutSettings.tsx:64
+#: src/screens/Settings/AboutSettings.tsx:71
 msgid "Image cache cleared"
 msgstr "Bildcache geleert"
 
 #. Android-only toast message which includes amount of space freed using localized number formatting
-#: src/screens/Settings/AboutSettings.tsx:50
+#: src/screens/Settings/AboutSettings.tsx:57
 msgid "Image cache cleared, freed {0}"
 msgstr "Bildcache geleert, {0} freigegeben"
 
@@ -4957,11 +4954,11 @@ msgstr "Posteingang leer!"
 msgid "Incorrect username or password"
 msgstr "Ungültiger Nutzername oder Passwort"
 
-#: src/view/com/composer/state/composerRecipe.ts:559
+#: src/view/com/composer/state/composerRecipe.ts:571
 msgid "Ingredient name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:563
+#: src/view/com/composer/state/composerRecipe.ts:575
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
@@ -4971,7 +4968,7 @@ msgstr ""
 
 #: src/view/com/composer/ComposerRecipe.tsx:579
 #: src/view/com/modals/RecipePreparation.tsx:118
-#: src/view/com/posts/ExpandableRecipePost.tsx:204
+#: src/view/com/posts/ExpandableRecipePost.tsx:208
 msgctxt "recipe"
 msgid "Ingredients"
 msgstr ""
@@ -5004,13 +5001,13 @@ msgstr ""
 msgid "Instruction section options"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:578
+#: src/view/com/composer/state/composerRecipe.ts:592
 msgid "Instruction text cannot be empty"
 msgstr ""
 
 #: src/view/com/composer/ComposerRecipe.tsx:594
 #: src/view/com/modals/RecipePreparation.tsx:156
-#: src/view/com/posts/ExpandableRecipePost.tsx:214
+#: src/view/com/posts/ExpandableRecipePost.tsx:218
 msgctxt "recipe"
 msgid "Instructions"
 msgstr ""
@@ -5049,12 +5046,12 @@ msgstr "Ungültige Interaktionseinstellungen."
 msgid "Invalid report subject"
 msgstr "Ungültiges Meldethema"
 
-#: src/view/com/composer/state/composerRecipe.ts:735
-#: src/view/com/composer/state/composerRecipe.ts:745
-#: src/view/com/composer/state/composerRecipe.ts:763
-#: src/view/com/composer/state/composerRecipe.ts:772
-#: src/view/com/composer/state/composerRecipe.ts:785
-#: src/view/com/composer/state/composerRecipe.ts:798
+#: src/view/com/composer/state/composerRecipe.ts:751
+#: src/view/com/composer/state/composerRecipe.ts:761
+#: src/view/com/composer/state/composerRecipe.ts:781
+#: src/view/com/composer/state/composerRecipe.ts:792
+#: src/view/com/composer/state/composerRecipe.ts:807
+#: src/view/com/composer/state/composerRecipe.ts:820
 msgid "Invalid URL (must include protocol e.g. http://)"
 msgstr ""
 
@@ -5345,11 +5342,14 @@ msgid "Let's go!"
 msgstr "Los geht's!"
 
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:88
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:176
 msgid "License"
 msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:284
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:294
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:533
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:543
 msgid "License type"
 msgstr ""
 
@@ -5749,7 +5749,7 @@ msgstr ""
 
 #: src/view/com/composer/ComposerRecipe.tsx:551
 #: src/view/com/composer/ComposerRecipe.tsx:568
-#: src/view/com/posts/ExpandableRecipePost.tsx:188
+#: src/view/com/posts/ExpandableRecipePost.tsx:192
 msgid "minutes"
 msgstr ""
 
@@ -5980,7 +5980,7 @@ msgstr "Meine Feeds"
 msgid "Name"
 msgstr "Name"
 
-#: src/view/com/composer/state/composerRecipe.ts:815
+#: src/view/com/composer/state/composerRecipe.ts:837
 msgid "Name cannot be empty"
 msgstr ""
 
@@ -6027,8 +6027,8 @@ msgstr "Möchtest du eine Urheberrechtsverletzung, eine rechtliche Anfrage oder 
 msgid "Need to report a copyright violation?"
 msgstr "Möchtest du eine Urheberrechtsverletzung melden?"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:549
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:197
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:594
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
 msgid "Network"
 msgstr ""
 
@@ -6354,9 +6354,9 @@ msgstr "Hinweis: Dieser Post ist nur für eingeloggte Nutzer sichtbar."
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:353
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:471
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:510
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:571
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:624
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:526
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:616
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:669
 msgid "Notes (optional)"
 msgstr ""
 
@@ -6429,7 +6429,7 @@ msgid "Nudity or adult content not labeled as such"
 msgstr "Nacktheit oder Erwachseneninhalt nicht als solche gekennzeichnet"
 
 #: src/view/com/composer/ComposerRecipe.tsx:677
-#: src/view/com/posts/ExpandableRecipePost.tsx:242
+#: src/view/com/posts/ExpandableRecipePost.tsx:246
 msgid "Nutritional Information"
 msgstr ""
 
@@ -6852,7 +6852,7 @@ msgstr "Personen, denen ich folge"
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Zugriff auf deine Galerie wurde verweigert. Bitte aktiviere ihn in deinen Systemeinstellungen."
 
-#: src/view/com/composer/state/composerRecipe.ts:742
+#: src/view/com/composer/state/composerRecipe.ts:758
 msgid "Person attribution name cannot be empty"
 msgstr ""
 
@@ -7241,15 +7241,15 @@ msgstr "Warnung vor möglicherweise irreführendem Link"
 msgid "Prep time"
 msgstr ""
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:174
+#: src/view/com/posts/ExpandableRecipePost.tsx:178
 msgid "Prep:"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:826
+#: src/view/com/composer/state/composerRecipe.ts:848
 msgid "Preparation time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:829
+#: src/view/com/composer/state/composerRecipe.ts:851
 msgid "Preparation time must be greater than zero"
 msgstr ""
 
@@ -7305,8 +7305,8 @@ msgstr "Datenschutz- und Sicherheitseinstellungen"
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:37
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:104
 #: src/Navigation.tsx:349
-#: src/screens/Settings/AboutSettings.tsx:92
-#: src/screens/Settings/AboutSettings.tsx:95
+#: src/screens/Settings/AboutSettings.tsx:99
+#: src/screens/Settings/AboutSettings.tsx:102
 #: src/view/screens/PrivacyPolicy.tsx:35
 #: src/view/shell/Drawer.tsx:768
 #: src/view/shell/Drawer.tsx:769
@@ -7323,15 +7323,15 @@ msgstr "Video wird verarbeitet..."
 msgid "Processing..."
 msgstr "Wird verarbeitet..."
 
-#: src/view/com/composer/state/composerRecipe.ts:793
+#: src/view/com/composer/state/composerRecipe.ts:815
 msgid "Product attribution brand cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:794
+#: src/view/com/composer/state/composerRecipe.ts:816
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:603
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:648
 msgid "Product name"
 msgstr ""
 
@@ -7356,7 +7356,7 @@ msgstr "Profil aktualisiert"
 msgid "Protein"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:618
+#: src/view/com/composer/state/composerRecipe.ts:632
 msgid "Protein content must be a number"
 msgstr ""
 
@@ -7372,11 +7372,11 @@ msgstr "Öffentliche, teilbare Listen von Nutzern, die zum Stummschalten oder Bl
 msgid "Public, sharable lists which can be used to drive feeds."
 msgstr "Öffentliche, teilbare Listen, die verwendet werden können, um Feeds zu steuern."
 
-#: src/view/com/composer/state/composerRecipe.ts:757
+#: src/view/com/composer/state/composerRecipe.ts:775
 msgid "Publication attribution author cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:754
+#: src/view/com/composer/state/composerRecipe.ts:772
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
@@ -7622,11 +7622,11 @@ msgstr ""
 msgid "Recipe timer finished"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:684
+#: src/view/com/composer/state/composerRecipe.ts:699
 msgid "Recipe yield quantity must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:687
+#: src/view/com/composer/state/composerRecipe.ts:702
 msgid "Recipe yield quantity must be greater than zero"
 msgstr ""
 
@@ -8213,7 +8213,7 @@ msgstr ""
 msgid "Saturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:660
+#: src/view/com/composer/state/composerRecipe.ts:674
 msgid "Saturated fat content must be a number"
 msgstr ""
 
@@ -8724,7 +8724,7 @@ msgstr "Server-Adresse"
 msgid "Serving size"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:593
+#: src/view/com/composer/state/composerRecipe.ts:607
 msgid "Serving size quantity must be a number"
 msgstr ""
 
@@ -8915,11 +8915,11 @@ msgstr "Alt-Text anzeigen"
 msgid "Show anyway"
 msgstr "Trotzdem anzeigen"
 
-#: src/view/com/composer/state/composerRecipe.ts:781
+#: src/view/com/composer/state/composerRecipe.ts:803
 msgid "Show attribution network cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:779
+#: src/view/com/composer/state/composerRecipe.ts:799
 msgid "Show attribution title cannot be empty"
 msgstr ""
 
@@ -9001,7 +9001,7 @@ msgstr "Reposts anzeigen"
 msgid "Show samples of your saved feeds in your Following feed"
 msgstr "Zeige Beispiele deiner gespeicherten Feeds in deinem Following-Feed"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:535
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:580
 msgid "Show title"
 msgstr ""
 
@@ -9155,7 +9155,7 @@ msgstr "Soziale Medien, die du kontrollierst."
 msgid "Sodium"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:646
+#: src/view/com/composer/state/composerRecipe.ts:660
 msgid "Sodium content must be a number"
 msgstr ""
 
@@ -9328,8 +9328,8 @@ msgstr "Startpakete"
 msgid "Starter packs let you easily share your favorite feeds and people with your friends."
 msgstr "Startpakete ermöglichen es dir, deine liebsten Feeds und Personen ganz einfach mit deinen Freunden zu teilen."
 
-#: src/screens/Settings/AboutSettings.tsx:100
-#: src/screens/Settings/AboutSettings.tsx:103
+#: src/screens/Settings/AboutSettings.tsx:107
+#: src/screens/Settings/AboutSettings.tsx:110
 msgid "Status Page"
 msgstr "Status-Seite"
 
@@ -9418,7 +9418,7 @@ msgstr "Erfolgreich verifiziert"
 msgid "Sugar"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:639
+#: src/view/com/composer/state/composerRecipe.ts:653
 msgid "Sugar content must be a number"
 msgstr ""
 
@@ -9492,8 +9492,8 @@ msgid "System"
 msgstr "System"
 
 #: src/screens/Log.tsx:58
-#: src/screens/Settings/AboutSettings.tsx:107
-#: src/screens/Settings/AboutSettings.tsx:110
+#: src/screens/Settings/AboutSettings.tsx:114
+#: src/screens/Settings/AboutSettings.tsx:117
 #: src/screens/Settings/Settings.tsx:486
 msgid "System log"
 msgstr "Systemprotokoll"
@@ -9566,8 +9566,8 @@ msgstr "Bedingungen"
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:32
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:99
 #: src/Navigation.tsx:354
-#: src/screens/Settings/AboutSettings.tsx:84
-#: src/screens/Settings/AboutSettings.tsx:87
+#: src/screens/Settings/AboutSettings.tsx:91
+#: src/screens/Settings/AboutSettings.tsx:94
 #: src/view/screens/TermsOfService.tsx:35
 #: src/view/shell/Drawer.tsx:761
 #: src/view/shell/Drawer.tsx:763
@@ -10180,15 +10180,15 @@ msgstr "Umschalten, um Inhalte für Erwachsene zu aktivieren oder zu deaktiviere
 msgid "Toggles the sound"
 msgstr "Schaltet den Ton um"
 
-#: src/view/com/composer/state/composerRecipe.ts:845
+#: src/view/com/composer/state/composerRecipe.ts:867
 msgid "Too many categories selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:841
+#: src/view/com/composer/state/composerRecipe.ts:863
 msgid "Too many cuisines selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:849
+#: src/view/com/composer/state/composerRecipe.ts:871
 msgid "Too many diets selected"
 msgstr ""
 
@@ -10217,7 +10217,7 @@ msgstr ""
 msgid "Trans fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:667
+#: src/view/com/composer/state/composerRecipe.ts:681
 msgid "Trans fat content must be a number"
 msgstr ""
 
@@ -10500,7 +10500,7 @@ msgstr "Liste gelöst"
 msgid "Unsaturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:674
+#: src/view/com/composer/state/composerRecipe.ts:688
 msgid "Unsaturated fat content must be a number"
 msgstr ""
 
@@ -10537,11 +10537,11 @@ msgstr "Nicht unterstützter Videotyp: {mimeType}"
 msgid "Unwanted Sexual Content"
 msgstr "Unerwünschter sexueller Inhalt"
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:225
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:229
 msgid "UPC"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:610
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:655
 msgid "UPC (optional)"
 msgstr ""
 
@@ -10624,15 +10624,15 @@ msgstr "Link-Vorschaubild wird hochgeladen..."
 msgid "Uploading video..."
 msgstr "Video wird hochgeladen..."
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:503
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:519
 msgid "URL"
 msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:315
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:346
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:464
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:564
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:617
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:609
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:662
 msgid "URL (optional)"
 msgstr ""
 
@@ -10863,8 +10863,8 @@ msgstr "Verifizieren"
 msgid "Verifying your age assurance status"
 msgstr "Verifizierung deiner Altersverifikation"
 
-#: src/screens/Settings/AboutSettings.tsx:126
-#: src/screens/Settings/AboutSettings.tsx:155
+#: src/screens/Settings/AboutSettings.tsx:133
+#: src/screens/Settings/AboutSettings.tsx:162
 msgid "Version {0}"
 msgstr "Version {0}"
 
@@ -11242,11 +11242,11 @@ msgstr "Wir aktualisieren unsere Nutzungsbedingungen, Datenschutzerklärung und 
 msgid "We've confirmed your age assurance status. You can now close this dialog."
 msgstr "Wir haben deinen Altersverifikationsstatus bestätigt. Du kannst dieses Dialogfeld jetzt schließen."
 
-#: src/view/com/composer/state/composerRecipe.ts:771
+#: src/view/com/composer/state/composerRecipe.ts:789
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:496
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:512
 msgid "Website name"
 msgstr ""
 
@@ -11412,7 +11412,7 @@ msgstr ""
 msgid "Yield is used to indicate how much a recipe will produce. Use the units to indicate whether this is a number of servings, items, or a measurement like grams or litres."
 msgstr ""
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:195
+#: src/view/com/posts/ExpandableRecipePost.tsx:199
 msgid "Yield:"
 msgstr ""
 
