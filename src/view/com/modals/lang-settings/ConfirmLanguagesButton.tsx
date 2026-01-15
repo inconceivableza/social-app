@@ -34,7 +34,7 @@ export const ConfirmLanguagesButton = ({
         accessibilityLabel={_(msg`Confirm content language settings`)}
         accessibilityHint="">
         <LinearGradient
-          colors={[gradients.blueLight.start, gradients.blueLight.end]}
+          colors={[gradients.orangeLight.start, gradients.orangeLight.end]}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
           style={[styles.btn]}>
