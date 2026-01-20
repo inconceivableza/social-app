@@ -144,6 +144,7 @@ let DrawerProfileCard = ({
             other="following"
           />
         </Trans>
+        <InviteCodes />
       </Text>
     </TouchableOpacity>
   )
@@ -156,7 +157,7 @@ let InviteCodes = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
   const {data: invites} = useInviteCodesQuery()
   const invitesAvailable = invites?.available?.length ?? 0
   const {openModal} = useModalControls()
-  const {_} = useLingui()
+  const {_, i18n} = useLingui()
   const t = useTheme()
 
   const onPress = React.useCallback(() => {
@@ -171,26 +172,42 @@ let InviteCodes = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
       accessibilityRole="button"
       accessibilityLabel={_(msg`Invite codes: ${invitesAvailable} available`)}
       accessibilityHint={_(msg`Opens list of invite codes`)}
+      style={[a.flex_row, a.align_center]}
       disabled={invites?.disabled}>
       <TicketIcon
         style={[
           invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
         ]}
-        size="md"
+        size="sm"
       />
       <Text
         style={[
-          a.text_lg,
-          invitesAvailable > 0 ? t.atoms.text : t.atoms.text_contrast_medium,
+          a.text_md,
+          invitesAvailable > 0
+            ? t.atoms.text_contrast_medium
+            : t.atoms.text_contrast_low,
         ]}>
+        &nbsp;
         {invites?.disabled ? (
           <Trans>
             Your invite codes are hidden when logged in using an App Password
           </Trans>
-        ) : invitesAvailable === 1 ? (
-          <Trans>{invitesAvailable} invite code available</Trans>
         ) : (
-          <Trans>{invitesAvailable} invite codes available</Trans>
+          <Trans>
+            <Text
+              style={[
+                a.text_md,
+                t.atoms.text_contrast_medium,
+                a.font_semi_bold,
+              ]}>
+              {formatCount(i18n, invitesAvailable ?? 0)}
+            </Text>{' '}
+            <Plural
+              value={invitesAvailable ?? 0}
+              one="invite code available"
+              other="invite codes available"
+            />
+          </Trans>
         )}
       </Text>
     </TouchableOpacity>
@@ -351,7 +368,6 @@ let DrawerContent = ({}: React.PropsWithoutRef<{}>): React.ReactNode => {
 
         {hasSession ? (
           <>
-            <InviteCodes />
             <SearchMenuItem isActive={isAtSearch} onPress={onPressSearch} />
             <HomeMenuItem isActive={isAtHome} onPress={onPressHome} />
             {!CHAT_DISABLED && (
