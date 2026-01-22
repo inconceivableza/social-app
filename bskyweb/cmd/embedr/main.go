@@ -70,12 +70,6 @@ func run(args []string) {
 					EnvVars: []string{"LINK_URL"},
 				},
 				&cli.StringFlag{
-					Name:    "socialapp-about",
-					Usage:   "url of about page for social app",
-					Value:   "https://bsky.social",
-					EnvVars: []string{"SOCIAL_APP_ABOUT"},
-				},
-				&cli.StringFlag{
 					Name:    "support-email",
 					Usage:   "email address for support",
 					Value:   "support@bsky.app",
@@ -107,6 +101,13 @@ func run(args []string) {
 					Value:    false,
 					Required: false,
 					EnvVars:  []string{"DEBUG"},
+				},
+				&cli.StringFlag{
+					Name:     "branding",
+					Usage:    "path to branding JSON file",
+					Required: false,
+					Value:    "branding.json",
+					EnvVars:  []string{"BRANDING_FILE"},
 				},
 			},
 		},

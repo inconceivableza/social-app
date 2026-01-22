@@ -979,7 +979,7 @@ let ComposerPost = React.memo(function ComposerPost({
           type={currentProfile?.associated?.labeler ? 'labeler' : 'user'}
           style={[a.mt_xs]}
         />
-        <View style={[a.flex_col, a.m_sm, a.align_start, isNative && a.flex_1]}>
+        <View style={[a.flex_col, a.m_sm, a.align_start, a.flex_1]}>
           {isReviewRating && (
             <View style={[a.m_0, a.align_start]}>
               <Button

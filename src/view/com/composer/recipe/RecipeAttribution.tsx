@@ -488,6 +488,22 @@ function WebsiteAttributionFields({
   ) => void
 }) {
   const {_} = useLingui()
+  const t = useTheme()
+
+  const selectedLicense = useMemo(() => {
+    if (!value.license || typeof value.license.$type !== 'string') return
+    return value.license.$type
+  }, [value.license])
+
+  const handleLicenseChange = (licenseId: string) => {
+    const license = licenseOptions.find(opt => opt.$type === licenseId)
+    if (!license) return
+
+    onChange({
+      ...value,
+      license,
+    })
+  }
 
   return (
     <View style={[a.gap_sm]}>
@@ -513,6 +529,35 @@ function WebsiteAttributionFields({
           multiline
         />
       </TextField.Root>
+      <Select.Root value={selectedLicense} onValueChange={handleLicenseChange}>
+        <Select.Trigger label={_(msg`License type`)}>
+          {({props}) => (
+            <Button
+              label={props.accessibilityLabel}
+              {...props}
+              color="secondary"
+              size="small"
+              variant="solid"
+              style={[a.pr_xs, a.pl_sm]}>
+              <Select.ValueText
+                placeholder={_(msg`License type`)}
+                style={[t.atoms.text_contrast_medium]}
+              />
+              <Select.Icon style={[t.atoms.text_contrast_medium]} />
+            </Button>
+          )}
+        </Select.Trigger>
+        <Select.Content
+          renderItem={({label, $type}) => (
+            <Select.Item value={$type} label={_(label)}>
+              <Select.ItemText>
+                <Trans>{label}</Trans>
+              </Select.ItemText>
+            </Select.Item>
+          )}
+          items={licenseOptions}
+        />
+      </Select.Root>
     </View>
   )
 }

@@ -60,7 +60,7 @@ msgid "{0, plural, one {# like} other {# likes}}"
 msgstr "{0, plural, one {# ŝato} other {# ŝatoj}}"
 
 #: src/lib/hooks/useTimeAgo.ts:149
-#: src/view/com/posts/ExpandableRecipePost.tsx:174
+#: src/view/com/posts/ExpandableRecipePost.tsx:180
 msgid "{0, plural, one {# minute} other {# minutes}}"
 msgstr "{0, plural, one {# minuto} other {# minutoj}}"
 
@@ -82,7 +82,7 @@ msgstr "{0, plural, one {# sekundo} other {# sekundoj}}"
 
 #: src/view/shell/bottom-bar/BottomBar.tsx:228
 #: src/view/shell/bottom-bar/BottomBar.tsx:261
-#: src/view/shell/Drawer.tsx:547
+#: src/view/shell/Drawer.tsx:562
 msgid "{0, plural, one {# unread item} other {# unread items}}"
 msgstr "{0, plural, one {# nelegita elemento} other {# nelegitaj elementoj}}"
 
@@ -91,11 +91,11 @@ msgstr "{0, plural, one {# nelegita elemento} other {# nelegitaj elementoj}}"
 msgid "{0, plural, one {#mo} other {#mo}}"
 msgstr "{0, plural, one {#mo} other {#mo}}"
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:81
+#: src/view/com/posts/ExpandableRecipePost.tsx:86
 msgid "{0, plural, one {Category} other {Categories}}"
 msgstr ""
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:133
+#: src/view/com/posts/ExpandableRecipePost.tsx:138
 msgid "{0, plural, one {Cuisine} other {Cuisines}}"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr "{0, plural, one {reafiŝo} other {reafiŝoj}}"
 msgid "{0, plural, one {save} other {saves}}"
 msgstr "{0, plural, one {konservo} other {konservoj}}"
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:107
+#: src/view/com/posts/ExpandableRecipePost.tsx:112
 msgid "{0, plural, one {Suitable for diet} other {Suitable for diets}}"
 msgstr ""
 
@@ -145,8 +145,9 @@ msgstr "{0, plural, one {# homo}other {# homoj}} uzis ĉi tiun startpakon!"
 msgid "{0, plural, other {+# more}}"
 msgstr "{0, plural, other {+# pli}}"
 
-#: src/components/EnvConfigIndicator.tsx:117
-#: src/components/EnvConfigIndicator.tsx:139
+#: src/components/EnvConfigIndicator.tsx:118
+#: src/components/EnvConfigIndicator.tsx:140
+#: src/components/forms/ComboBox/index.tsx:64
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
@@ -154,11 +155,11 @@ msgstr "{0, plural, other {+# pli}}"
 #: src/view/com/auth/server-input/index.tsx:142
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
-#: src/view/com/composer/Composer.tsx:901
+#: src/view/com/composer/Composer.tsx:902
 msgid "{0}"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:1229
+#: src/view/com/composer/Composer.tsx:1230
 msgctxt "action"
 msgid "{0}"
 msgstr ""
@@ -264,8 +265,8 @@ msgstr "{0}, fluo de {1}, ŝatata de {2}"
 msgid "{0}, a list by {1}"
 msgstr "{0}, listo de {1}"
 
-#: src/components/EnvConfigIndicator.tsx:110
-#: src/components/EnvConfigIndicator.tsx:131
+#: src/components/EnvConfigIndicator.tsx:111
+#: src/components/EnvConfigIndicator.tsx:132
 #: src/screens/Settings/Settings.tsx:625
 #: src/screens/Settings/Settings.tsx:642
 msgid "{0}. {reloadMessage}"
@@ -505,13 +506,13 @@ msgstr "{hours, plural, one {# horo {minutesString}} other {# horoj {minutesStri
 msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr "{hours, plural, one {# horo} other {# horoj}}"
 
-#: src/view/shell/desktop/RightNav.tsx:217
-#: src/view/shell/Drawer.tsx:185
+#: src/view/shell/desktop/RightNav.tsx:231
+#: src/view/shell/Drawer.tsx:191
 msgid "{invitesAvailable} invite code available"
 msgstr ""
 
-#: src/view/shell/desktop/RightNav.tsx:219
-#: src/view/shell/Drawer.tsx:187
+#: src/view/shell/desktop/RightNav.tsx:233
+#: src/view/shell/Drawer.tsx:193
 msgid "{invitesAvailable} invite codes available"
 msgstr ""
 
@@ -519,9 +520,11 @@ msgstr ""
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr "{joinedAllTimeCount, plural, one {# uzanto}other {# uzantoj}} aliĝis!"
 
+#: src/components/forms/ComboBox/index.tsx:196
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:197
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:305
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:420
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:554
 msgid "{label}"
 msgstr ""
 
@@ -546,7 +549,7 @@ msgstr ""
 msgid "{rank}."
 msgstr "{rank}."
 
-#: src/view/com/modals/UserFeedback.tsx:179
+#: src/view/com/modals/UserFeedback.tsx:180
 msgid "{star} stars"
 msgstr ""
 
@@ -583,11 +586,11 @@ msgctxt "feeds"
 msgid "<0>{0}, </0><1>{1}, </1>and {2, plural, one {# other} other {# others}} are included in your starter pack"
 msgstr "<0>{0}, </0><1>{1}, </1>kaj {2, plural, one {# alia} other {# aliaj}} estas en via startpako"
 
-#: src/view/shell/Drawer.tsx:120
+#: src/view/shell/Drawer.tsx:126
 msgid "<0>{0}</0> {1, plural, one {follower} other {followers}}"
 msgstr "<0>{0}</0> {1, plural, one {sekvanto} other {sekvantoj}}"
 
-#: src/view/shell/Drawer.tsx:131
+#: src/view/shell/Drawer.tsx:137
 msgid "<0>{0}</0> {1, plural, one {following} other {following}}"
 msgstr "<0>{0}</0> {1, plural, one {sekvata} other {sekvataj}}"
 
@@ -608,7 +611,7 @@ msgstr "<0>{0}</0> anoj"
 msgid "<0>{date}</0> at {time}"
 msgstr "<0>{date}</0> je {time}"
 
-#: src/screens/Search/SearchResults.tsx:259
+#: src/screens/Search/SearchResults.tsx:272
 msgid "<0>Sign in</0><1> or </1><2>create an account</2><3> </3><4>to search for news, sports, politics, and everything else happening on {appName}.</4>"
 msgstr ""
 
@@ -667,7 +670,7 @@ msgid "A screenshot of a profile page with a bell icon next to the follow button
 msgstr "Ekrankopio montranta paĝon kun sonorila piktogramo apud la sekvi-butono, kiu estas la nova funkcio \"agadaj sciigoj\"."
 
 #: src/Navigation.tsx:550
-#: src/screens/Settings/AboutSettings.tsx:75
+#: src/screens/Settings/AboutSettings.tsx:82
 #: src/screens/Settings/Settings.tsx:271
 #: src/screens/Settings/Settings.tsx:274
 msgid "About"
@@ -831,15 +834,16 @@ msgstr "Aldoni alternativan tekston (nedeviga)"
 msgid "Add another account"
 msgstr "Aldoni plian konton"
 
-#: src/view/com/modals/RecipePreparation.tsx:474
+#: src/view/com/modals/RecipePreparation.tsx:456
+#: src/view/com/modals/RecipePreparation.tsx:539
 msgid "Add another minute"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:900
+#: src/view/com/composer/Composer.tsx:901
 msgid "Add another post"
 msgstr "Aldoni plian afiŝon"
 
-#: src/view/com/composer/Composer.tsx:1609
+#: src/view/com/composer/Composer.tsx:1610
 msgid "Add another post to thread"
 msgstr "Aldoni plian afiŝon al fadeno"
 
@@ -862,7 +866,7 @@ msgstr "Aldoni emoĝian reagon"
 msgid "Add ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1185
+#: src/view/com/composer/ComposerRecipe.tsx:1286
 msgid "Add instruction"
 msgstr ""
 
@@ -901,11 +905,13 @@ msgstr "Aldoni reagon"
 msgid "Add recommended feeds"
 msgstr "Aldoni rekomenditajn fluojn"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1200
+#: src/view/com/composer/ComposerRecipe.tsx:1114
+#: src/view/com/composer/ComposerRecipe.tsx:1301
 msgid "Add section"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1202
+#: src/view/com/composer/ComposerRecipe.tsx:1116
+#: src/view/com/composer/ComposerRecipe.tsx:1303
 msgid "Add Section"
 msgstr ""
 
@@ -1011,11 +1017,11 @@ msgstr "Informpeto de garantio pri aĝo estis sendita"
 msgid "Age assurance only takes a few minutes"
 msgstr "Garantio pri aĝo daŭros nur kelkajn minutojn"
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:198
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:202
 msgid "Air date"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:556
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:601
 msgid "Air date (optional)"
 msgstr ""
 
@@ -1025,7 +1031,6 @@ msgstr "ludoviko@ekzemplo.com"
 
 #. the default tab in the interests tab bar
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:146
-#: src/screens/Search/Shell.tsx:659
 #: src/view/screens/Notifications.tsx:84
 msgid "All"
 msgstr "Ĉiuj"
@@ -1379,11 +1384,11 @@ msgstr "Ĉu vi certas, ke vi volas foriri el ĉi tiu konversacio? La mesaĝoj es
 msgid "Are you sure you want to remove this from your feeds?"
 msgstr "Ĉu vi certas, ke vi volas forigi ĉi tion el viaj fluoj?"
 
-#: src/view/com/composer/Composer.tsx:845
+#: src/view/com/composer/Composer.tsx:846
 msgid "Are you sure you'd like to discard this draft?"
 msgstr "Ĉu vi certas, ke vi volas forĵeti ĉi tiun malneton?"
 
-#: src/view/com/composer/Composer.tsx:1099
+#: src/view/com/composer/Composer.tsx:1100
 msgid "Are you sure you'd like to discard this post?"
 msgstr "Ĉu vi certas, ke vi volas forĵeti ĉi tiun afiŝon?"
 
@@ -1417,12 +1422,24 @@ msgstr "Asigni temon por algoritmo"
 msgid "At least 8 characters"
 msgstr "Almenaŭ 8 signoj"
 
-#: src/view/com/composer/state/composerRecipe.ts:722
+#: src/view/com/composer/state/composerRecipe.ts:587
+msgid "At least one ingredient per section required"
+msgstr ""
+
+#: src/view/com/composer/state/composerRecipe.ts:841
 msgid "At least one ingredient required"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:685
-#: src/view/com/posts/ExpandableRecipePost.tsx:251
+#: src/view/com/composer/state/composerRecipe.ts:601
+msgid "At least one instruction per section required"
+msgstr ""
+
+#: src/view/com/composer/state/composerRecipe.ts:844
+msgid "At least one instruction required"
+msgstr ""
+
+#: src/view/com/composer/ComposerRecipe.tsx:686
+#: src/view/com/posts/ExpandableRecipePost.tsx:252
 msgid "Attribution"
 msgstr ""
 
@@ -1434,9 +1451,9 @@ msgstr ""
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:91
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:115
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:151
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:174
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:228
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:178
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:205
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:232
 msgid "Attribution link"
 msgstr ""
 
@@ -1634,7 +1651,7 @@ msgstr "Blogo"
 #: src/components/dialogs/DeviceLocationRequestDialog.tsx:64
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:21
 #: src/components/WelcomeModal.tsx:33
-#: src/screens/Search/SearchResults.tsx:183
+#: src/screens/Search/SearchResults.tsx:196
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:49
 msgid "Bluesky"
 msgstr "Bluesky"
@@ -1652,7 +1669,7 @@ msgstr "Malklarigi bildojn kaj elfiltri el fluoj"
 msgid "Books"
 msgstr "Libroj"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:596
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:641
 msgid "Brand"
 msgstr ""
 
@@ -1761,7 +1778,7 @@ msgstr "Fotilo"
 #: src/screens/Deactivated.tsx:158
 #: src/screens/Profile/Header/EditProfileDialog.tsx:218
 #: src/screens/Profile/Header/EditProfileDialog.tsx:226
-#: src/screens/Search/Shell.tsx:430
+#: src/screens/Search/Shell.tsx:412
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:85
@@ -1771,26 +1788,26 @@ msgstr "Fotilo"
 #: src/screens/Settings/Settings.tsx:334
 #: src/screens/Takendown.tsx:110
 #: src/screens/Takendown.tsx:113
-#: src/view/com/composer/Composer.tsx:1160
-#: src/view/com/composer/Composer.tsx:1171
-#: src/view/com/composer/ComposerRecipe.tsx:1298
-#: src/view/com/composer/ComposerRecipe.tsx:1309
+#: src/view/com/composer/Composer.tsx:1161
+#: src/view/com/composer/Composer.tsx:1172
+#: src/view/com/composer/ComposerRecipe.tsx:1399
+#: src/view/com/composer/ComposerRecipe.tsx:1410
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:43
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:52
-#: src/view/com/modals/UserFeedback.tsx:268
-#: src/view/com/modals/UserFeedback.tsx:271
+#: src/view/com/modals/UserFeedback.tsx:269
+#: src/view/com/modals/UserFeedback.tsx:272
 #: src/view/shell/desktop/LeftNav.tsx:214
 msgid "Cancel"
 msgstr "Nuligi"
 
-#: src/view/com/modals/DeleteAccount.tsx:170
-#: src/view/com/modals/DeleteAccount.tsx:278
+#: src/view/com/modals/DeleteAccount.tsx:172
+#: src/view/com/modals/DeleteAccount.tsx:280
 msgctxt "action"
 msgid "Cancel"
 msgstr "Nuligi"
 
-#: src/view/com/modals/DeleteAccount.tsx:166
-#: src/view/com/modals/DeleteAccount.tsx:274
+#: src/view/com/modals/DeleteAccount.tsx:168
+#: src/view/com/modals/DeleteAccount.tsx:276
 msgid "Cancel account deletion"
 msgstr "Nuligi forigon de konto"
 
@@ -1802,11 +1819,11 @@ msgstr "Nuligi citadon de afiŝo"
 msgid "Cancel reactivation and sign out"
 msgstr "Nuligi reaktivigon kaj elsaluti"
 
-#: src/screens/Search/Shell.tsx:422
+#: src/screens/Search/Shell.tsx:404
 msgid "Cancel search"
 msgstr "Nuligi serĉon"
 
-#: src/view/com/modals/RecipePreparation.tsx:407
+#: src/view/com/modals/RecipePreparation.tsx:449
 msgid "Cancel timer setup"
 msgstr ""
 
@@ -1817,7 +1834,7 @@ msgstr ""
 msgid "Cannot interact with a blocked user"
 msgstr "Ne eblas interagi kun blokita uzanto"
 
-#: src/view/com/composer/Composer.tsx:468
+#: src/view/com/composer/Composer.tsx:469
 msgid "Cannot post review-rating without a subject to review."
 msgstr ""
 
@@ -1830,11 +1847,11 @@ msgstr "Subtekstoj (.vtt)"
 msgid "Captions & alt text"
 msgstr "Subtekstoj kaj alternativa teksto"
 
-#: src/view/com/composer/state/composerRecipe.ts:529
+#: src/view/com/composer/state/composerRecipe.ts:625
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:608
+#: src/view/com/composer/ComposerRecipe.tsx:609
 msgid "Categories"
 msgstr ""
 
@@ -1856,6 +1873,7 @@ msgid "Change app icon to \"{0}\""
 msgstr "Ŝanĝi apan piktogramon al \"{0}\""
 
 #: src/components/AppLanguageDropdown.tsx:40
+#: src/screens/Search/components/SearchTypeInput/index.tsx:13
 msgid "Change app language"
 msgstr "Ŝanĝi apan lingvon"
 
@@ -1881,7 +1899,7 @@ msgstr "Dialogujo pri pasvorta ŝanĝo"
 msgid "Change report reason"
 msgstr "Ŝanĝi kialon de raporto"
 
-#: src/components/EnvConfigIndicator.tsx:205
+#: src/components/EnvConfigIndicator.tsx:206
 msgid "Change server domain"
 msgstr ""
 
@@ -1906,7 +1924,7 @@ msgstr "Ŝanĝoj konservitaj"
 #: src/Navigation.tsx:577
 #: src/view/shell/bottom-bar/BottomBar.tsx:224
 #: src/view/shell/desktop/LeftNav.tsx:646
-#: src/view/shell/Drawer.tsx:515
+#: src/view/shell/Drawer.tsx:530
 msgid "Chat"
 msgstr "Babilejoj"
 
@@ -1972,7 +1990,7 @@ msgstr "Kontroli mian staton"
 msgid "Check your email for a sign in code and enter it here."
 msgstr "Kontrolu vian retpoŝton por trovi ensalut-kodon kaj entajpu ĝin ĉi tie."
 
-#: src/view/com/modals/DeleteAccount.tsx:213
+#: src/view/com/modals/DeleteAccount.tsx:215
 msgid "Check your inbox for an email with the confirmation code to enter below:"
 msgstr "En via ricevujo serĉu retmesaĝon kun konfirmkodo, kaj entajpu ĝin suben:"
 
@@ -1980,7 +1998,7 @@ msgstr "En via ricevujo serĉu retmesaĝon kun konfirmkodo, kaj entajpu ĝin sub
 msgid "Cholesterol"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:561
+#: src/view/com/composer/state/composerRecipe.ts:667
 msgid "Cholesterol content must be a number"
 msgstr ""
 
@@ -2020,7 +2038,7 @@ msgstr "Elektu vian kontogastiganton"
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "Elektu vian propran novaĵfluon! Fluoj konstruitaj de la komunumo helpas vin trovi enhavon, kiun vi amos."
 
-#: src/screens/Signup/StepInfo/index.tsx:251
+#: src/screens/Signup/StepInfo/index.tsx:254
 msgid "Choose your password"
 msgstr "Elektu vian pasvorton"
 
@@ -2028,7 +2046,7 @@ msgstr "Elektu vian pasvorton"
 msgid "Choose your username"
 msgstr "Elektu vian uzantnomon"
 
-#: src/view/com/composer/ComposerRecipe.tsx:885
+#: src/view/com/composer/ComposerRecipe.tsx:886
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:218
 msgid "Clear"
 msgstr ""
@@ -2045,12 +2063,12 @@ msgstr "Forigi ĉiujn konservitajn datumojn (restartigu poste)"
 msgid "Clear attribution"
 msgstr ""
 
-#: src/screens/Settings/AboutSettings.tsx:116
-#: src/screens/Settings/AboutSettings.tsx:120
+#: src/screens/Settings/AboutSettings.tsx:123
+#: src/screens/Settings/AboutSettings.tsx:127
 msgid "Clear image cache"
 msgstr "Viŝi bildan kaŝmemoron"
 
-#: src/view/com/composer/ComposerRecipe.tsx:879
+#: src/view/com/composer/ComposerRecipe.tsx:880
 msgid "Clear nutrition"
 msgstr ""
 
@@ -2201,8 +2219,8 @@ msgstr "Fermi bonvenon-fenestron"
 msgid "Closes password update alert"
 msgstr "Fermas la averton pri pasvorta ĝisdatigo"
 
-#: src/view/com/composer/Composer.tsx:1168
-#: src/view/com/composer/ComposerRecipe.tsx:1306
+#: src/view/com/composer/Composer.tsx:1169
+#: src/view/com/composer/ComposerRecipe.tsx:1407
 msgid "Closes post composer and discards post draft"
 msgstr "Fermas afiŝan redaktilon kaj forĵetas afiŝan malneton"
 
@@ -2242,7 +2260,7 @@ msgstr "Komedio"
 msgid "Comics"
 msgstr "Komiksoj"
 
-#: src/view/com/modals/UserFeedback.tsx:197
+#: src/view/com/modals/UserFeedback.tsx:198
 msgid "Comments (optional)"
 msgstr ""
 
@@ -2277,7 +2295,7 @@ msgstr ""
 msgid "Compose post"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:1062
+#: src/view/com/composer/Composer.tsx:1063
 msgid "Compose posts up to {0, plural, other {# characters}} in length"
 msgstr "Krei afiŝojn maksimume {0, plural, one {# signon}other {# signojn}} longajn"
 
@@ -2285,7 +2303,7 @@ msgstr "Krei afiŝojn maksimume {0, plural, one {# signon}other {# signojn}} lon
 msgid "Compose recipe"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:464
+#: src/view/com/composer/ComposerRecipe.tsx:465
 msgid "Compose recipe description up to {0, plural, other {# characters}} in length"
 msgstr ""
 
@@ -2293,7 +2311,7 @@ msgstr ""
 msgid "Compose reply"
 msgstr "Krei respondon"
 
-#: src/view/com/composer/Composer.tsx:2005
+#: src/view/com/composer/Composer.tsx:2006
 msgid "Compressing video..."
 msgstr "Densigado de videaĵo..."
 
@@ -2316,11 +2334,11 @@ msgstr "Konfirmi"
 msgid "Confirm content language settings"
 msgstr "Konfirmi lingvajn agordojn de enhavo"
 
-#: src/view/com/modals/DeleteAccount.tsx:264
+#: src/view/com/modals/DeleteAccount.tsx:266
 msgid "Confirm delete account"
 msgstr "Konfirmu kontan forigon"
 
-#: src/components/forms/ComboBox/index.tsx:131
+#: src/components/forms/ComboBox/index.tsx:121
 msgid "Confirm selection"
 msgstr ""
 
@@ -2350,12 +2368,12 @@ msgstr "Konfirmu vian lokon per GPS. Datumoj pri via loko ne estas spurataj kaj 
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:192
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:144
 #: src/screens/Settings/components/DisableEmail2FADialog.tsx:150
-#: src/view/com/modals/DeleteAccount.tsx:220
-#: src/view/com/modals/DeleteAccount.tsx:226
+#: src/view/com/modals/DeleteAccount.tsx:222
+#: src/view/com/modals/DeleteAccount.tsx:228
 msgid "Confirmation code"
 msgstr "Konfirmkodo"
 
-#: src/components/EnvConfigIndicator.tsx:176
+#: src/components/EnvConfigIndicator.tsx:177
 msgid "Connect"
 msgstr ""
 
@@ -2475,7 +2493,7 @@ msgstr "Konversacio forigita"
 msgid "Conversation deleted"
 msgstr "Konversacio forigita"
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:184
+#: src/view/com/posts/ExpandableRecipePost.tsx:190
 msgid "Cook:"
 msgstr ""
 
@@ -2483,15 +2501,15 @@ msgstr ""
 msgid "Cooking"
 msgstr "Kuirado"
 
-#: src/view/com/composer/ComposerRecipe.tsx:560
+#: src/view/com/composer/ComposerRecipe.tsx:561
 msgid "Cooking time"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:735
+#: src/view/com/composer/state/composerRecipe.ts:856
 msgid "Cooking time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:737
+#: src/view/com/composer/state/composerRecipe.ts:859
 msgid "Cooking time must be greater than zero"
 msgstr ""
 
@@ -2499,7 +2517,7 @@ msgstr ""
 msgid "Copied"
 msgstr ""
 
-#: src/screens/Settings/AboutSettings.tsx:151
+#: src/screens/Settings/AboutSettings.tsx:158
 msgid "Copied build version to clipboard"
 msgstr "Versio kopiita al tondujo"
 
@@ -2518,7 +2536,7 @@ msgstr "Kopiita al tondujo"
 msgid "Copied!"
 msgstr "Kopiita!"
 
-#: src/screens/Settings/AboutSettings.tsx:127
+#: src/screens/Settings/AboutSettings.tsx:134
 msgid "Copies build version to clipboard"
 msgstr "Kopias version al tondujo"
 
@@ -2700,7 +2718,7 @@ msgstr "Krei konton"
 #: src/components/dialogs/Signin.tsx:87
 #: src/components/dialogs/Signin.tsx:89
 #: src/screens/Hashtag.tsx:232
-#: src/screens/Search/SearchResults.tsx:270
+#: src/screens/Search/SearchResults.tsx:283
 msgid "Create an account"
 msgstr "Krei konton"
 
@@ -2736,7 +2754,7 @@ msgstr "Krei raporton pri {0}"
 msgid "Create starter pack"
 msgstr "Krei startpakon"
 
-#: src/view/com/modals/RecipePreparation.tsx:212
+#: src/view/com/modals/RecipePreparation.tsx:213
 msgid "Create timer"
 msgstr ""
 
@@ -2756,7 +2774,7 @@ msgstr "La kreinto estis blokita"
 msgid "Cuisine"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:630
+#: src/view/com/composer/ComposerRecipe.tsx:631
 msgid "Cuisine type"
 msgstr ""
 
@@ -2770,7 +2788,7 @@ msgstr "Kulturo"
 msgid "Custom"
 msgstr "Propra"
 
-#: src/components/EnvConfigIndicator.tsx:171
+#: src/components/EnvConfigIndicator.tsx:172
 msgid "Custom server domain"
 msgstr ""
 
@@ -2810,7 +2828,7 @@ msgstr "Malhela reĝimo"
 msgid "Dark theme"
 msgstr "Malhela etoso"
 
-#: src/screens/Signup/StepInfo/index.tsx:279
+#: src/screens/Signup/StepInfo/index.tsx:289
 msgid "Date of birth"
 msgstr "Naskiĝdato"
 
@@ -2852,7 +2870,7 @@ msgstr "Forigi"
 msgid "Delete account"
 msgstr "Forigi konton"
 
-#: src/view/com/modals/DeleteAccount.tsx:101
+#: src/view/com/modals/DeleteAccount.tsx:103
 msgid "Delete Account <0>\"</0><1>{0}</1><2>\"</2>"
 msgstr "Forigi konton <0>\"</0><1>{0}</1><2>\"</2>"
 
@@ -2901,17 +2919,18 @@ msgstr "Forigi mesaĝon"
 msgid "Delete message for me"
 msgstr "Forigi mesaĝon por mi"
 
-#: src/view/com/modals/DeleteAccount.tsx:267
+#: src/view/com/modals/DeleteAccount.tsx:269
 msgid "Delete my account"
 msgstr "Forigi mian konton"
 
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:753
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:755
-#: src/view/com/composer/Composer.tsx:1073
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:754
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:756
+#: src/view/com/composer/Composer.tsx:1074
 msgid "Delete post"
 msgstr "Forigi afiŝon"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1118
+#: src/view/com/composer/ComposerRecipe.tsx:1001
+#: src/view/com/composer/ComposerRecipe.tsx:1219
 msgid "Delete Section"
 msgstr ""
 
@@ -2951,7 +2970,7 @@ msgstr "Forigita listo"
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:436
 #: src/screens/Profile/Header/EditProfileDialog.tsx:363
 #: src/screens/Profile/Header/EditProfileDialog.tsx:370
-#: src/view/com/composer/ComposerRecipe.tsx:448
+#: src/view/com/composer/ComposerRecipe.tsx:449
 msgid "Description"
 msgstr "Priskribo"
 
@@ -2969,12 +2988,12 @@ msgstr "Malligi citaĵon"
 msgid "Detach quote post?"
 msgstr "Ĉu malligi citatan afiŝon?"
 
-#: src/screens/Settings/AboutSettings.tsx:140
+#: src/screens/Settings/AboutSettings.tsx:147
 msgctxt "toast"
 msgid "Developer mode disabled"
 msgstr "Programista reĝimo malŝaltita"
 
-#: src/screens/Settings/AboutSettings.tsx:134
+#: src/screens/Settings/AboutSettings.tsx:141
 msgctxt "toast"
 msgid "Developer mode enabled"
 msgstr "Programista reĝimo ŝaltita"
@@ -2987,6 +3006,10 @@ msgstr "Programistaj opcioj"
 #: src/components/WhoCanReply.tsx:188
 msgid "Dialog: adjust who can interact with this post"
 msgstr "Dialogujo: kiu povas interagi kun ĉi tiu afiŝo"
+
+#: src/screens/Search/components/RecipeSearchFields.tsx:34
+msgid "Diets"
+msgstr ""
 
 #: src/screens/Settings/AppearanceSettings.tsx:123
 msgid "Dim"
@@ -3025,8 +3048,8 @@ msgstr "Malŝaltita"
 
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:92
 #: src/screens/Profile/Header/EditProfileDialog.tsx:82
-#: src/view/com/composer/Composer.tsx:847
-#: src/view/com/composer/Composer.tsx:1106
+#: src/view/com/composer/Composer.tsx:848
+#: src/view/com/composer/Composer.tsx:1107
 msgid "Discard"
 msgstr "Forĵeti"
 
@@ -3035,11 +3058,11 @@ msgstr "Forĵeti"
 msgid "Discard changes?"
 msgstr "Ĉu forĵeti ŝanĝojn?"
 
-#: src/view/com/composer/Composer.tsx:844
+#: src/view/com/composer/Composer.tsx:845
 msgid "Discard draft?"
 msgstr "Ĉu forĵeti malneton?"
 
-#: src/view/com/composer/Composer.tsx:1098
+#: src/view/com/composer/Composer.tsx:1099
 msgid "Discard post?"
 msgstr "Ĉu forĵeti afiŝon?"
 
@@ -3062,8 +3085,8 @@ msgstr "Malkovri novajn fluojn"
 msgid "Dismiss"
 msgstr "Ignori"
 
-#: src/view/com/composer/Composer.tsx:1929
-#: src/view/com/composer/ComposerRecipe.tsx:759
+#: src/view/com/composer/Composer.tsx:1930
+#: src/view/com/composer/ComposerRecipe.tsx:760
 msgid "Dismiss error"
 msgstr "Ignori eraron"
 
@@ -3106,7 +3129,7 @@ msgstr "Ne apliku ĉi tiun silentigitan vorton al uzantoj, kiujn vi sekvas"
 msgid "Does not include nudity."
 msgstr "Ne inkluzivas nudecon."
 
-#: src/view/com/modals/UserFeedback.tsx:220
+#: src/view/com/modals/UserFeedback.tsx:221
 msgid "Doesn't include your account data with the feedback"
 msgstr ""
 
@@ -3134,7 +3157,9 @@ msgstr "Ne maltrankvilu! Ĉiuj ekzistantaj mesaĝoj kaj agordoj estas konservita
 #: src/components/dialogs/BirthDateSettings.tsx:149
 #: src/components/dialogs/BirthDateSettings.tsx:156
 #: src/components/dms/ReportDialog.tsx:321
-#: src/components/forms/ComboBox/index.tsx:136
+#: src/components/forms/ComboBox/index.tsx:127
+#: src/components/forms/ComboBox/index.tsx:210
+#: src/components/forms/ComboBox/index.tsx:215
 #: src/components/forms/DateField/index.tsx:103
 #: src/components/forms/DateField/index.tsx:109
 #: src/components/Select/index.tsx:185
@@ -3186,7 +3211,7 @@ msgstr ""
 msgid "Download CAR file"
 msgstr "Elŝuti CAR-dosieron"
 
-#: src/view/com/composer/text-input/TextInput.web.tsx:382
+#: src/view/com/composer/text-input/TextInput.web.tsx:383
 msgid "Drop to add images"
 msgstr "Demetu bildojn por aldoni"
 
@@ -3265,8 +3290,8 @@ msgstr "Redakti fluojn"
 msgid "Edit image"
 msgstr "Redakti bildon"
 
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:734
-#: src/components/PostControls/PostMenu/PostMenuItems.tsx:747
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:733
+#: src/components/PostControls/PostMenu/PostMenuItems.tsx:746
 msgid "Edit interaction settings"
 msgstr "Redakti interagajn agordojn"
 
@@ -3350,7 +3375,7 @@ msgid "Either the creator of this list has blocked you or you have blocked the c
 msgstr "Aŭ la kreinto de ĉi tiu listo blokis vin aŭ vi blokis la kreinton."
 
 #: src/screens/Settings/AccountSettings.tsx:66
-#: src/screens/Signup/StepInfo/index.tsx:203
+#: src/screens/Signup/StepInfo/index.tsx:206
 msgid "Email"
 msgstr "Retpoŝtadreso"
 
@@ -3471,7 +3496,7 @@ msgstr "Fino de la fluo"
 msgid "Energy"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:523
+#: src/view/com/composer/state/composerRecipe.ts:618
 msgid "Energy value must be a number"
 msgstr ""
 
@@ -3515,7 +3540,7 @@ msgid "Enter your birth date"
 msgstr "Entajpu vian naskiĝdaton"
 
 #: src/screens/Login/ForgotPasswordForm.tsx:104
-#: src/screens/Signup/StepInfo/index.tsx:223
+#: src/screens/Signup/StepInfo/index.tsx:226
 msgid "Enter your email address"
 msgstr "Entajpu vian retpoŝtadreson"
 
@@ -3535,19 +3560,19 @@ msgstr "Ŝaltas plenekranon"
 msgid "Entertainment"
 msgstr "Amuzo"
 
-#: src/components/EnvConfigIndicator.tsx:97
+#: src/components/EnvConfigIndicator.tsx:98
 msgid "Environment Config {currentEnvName}: {envConfigText}"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:196
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:200
 msgid "Episode"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:542
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:587
 msgid "Episode (optional)"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:2014
+#: src/view/com/composer/Composer.tsx:2015
 #: src/view/com/util/error/ErrorScreen.tsx:42
 msgid "Error"
 msgstr "Eraro"
@@ -3572,7 +3597,7 @@ msgstr "Eraro okazis dum konservado de dosiero"
 msgid "Error receiving captcha response."
 msgstr "Eraris ricevante la captcha-respondon."
 
-#: src/screens/Search/SearchResults.tsx:147
+#: src/screens/Search/SearchResults.tsx:160
 msgid "Error: {error}"
 msgstr "Eraro: {error}"
 
@@ -3622,7 +3647,7 @@ msgstr "Ekskluzivas uzantojn, kiujn vi sekvas"
 msgid "Exit fullscreen"
 msgstr "Malŝalti plenekranon"
 
-#: src/view/com/modals/DeleteAccount.tsx:275
+#: src/view/com/modals/DeleteAccount.tsx:277
 msgid "Exits account deletion process"
 msgstr "Eliri el la procezo de kontoforigo"
 
@@ -3630,7 +3655,7 @@ msgstr "Eliri el la procezo de kontoforigo"
 msgid "Exits image view"
 msgstr "Eliri el la bildmontro"
 
-#: src/view/com/modals/UserFeedback.tsx:269
+#: src/view/com/modals/UserFeedback.tsx:270
 msgid "Exits the feedback form"
 msgstr ""
 
@@ -3654,7 +3679,7 @@ msgstr "Etendi afiŝan tekston"
 msgid "Expands or collapses post text"
 msgstr "Etendas aŭ maletendas la tekston de la afiŝo"
 
-#: src/lib/api/index.ts:833
+#: src/lib/api/index.ts:831
 msgid "Expected uri to resolve to a record"
 msgstr "Espektas uri-on gvidantan al rikordo"
 
@@ -3689,9 +3714,9 @@ msgid "Explicit sexual images."
 msgstr "Detalaj seksumaj bildoj."
 
 #: src/Navigation.tsx:791
-#: src/screens/Search/Shell.tsx:359
+#: src/screens/Search/Shell.tsx:360
 #: src/view/shell/desktop/LeftNav.tsx:728
-#: src/view/shell/Drawer.tsx:463
+#: src/view/shell/Drawer.tsx:478
 msgid "Explore"
 msgstr "Esplori"
 
@@ -3885,7 +3910,7 @@ msgstr "Malsukcesis sendi retmesaĝon, bonvolu reprovi."
 msgid "Failed to submit appeal, please try again."
 msgstr "Malsukcesis sendi apelacion, bonvole reprovu."
 
-#: src/view/com/modals/UserFeedback.tsx:149
+#: src/view/com/modals/UserFeedback.tsx:150
 msgid "Failed to submit feedback. Please try again."
 msgstr ""
 
@@ -3933,7 +3958,7 @@ msgstr "Malsukcesis konfirmi retpoŝtadreson, bonvolu reprovi."
 msgid "Failed to verify handle. Please try again."
 msgstr "La aŭtentikigo de via identigilo malsukcesis. Bonvolu reprovi."
 
-#: src/view/com/composer/state/composerRecipe.ts:540
+#: src/view/com/composer/state/composerRecipe.ts:639
 msgid "Fat content must be a number"
 msgstr ""
 
@@ -3966,13 +3991,13 @@ msgstr "Baskuligi fluon"
 msgid "Feed unavailable"
 msgstr "Fluo ne disponebla"
 
-#: src/view/shell/desktop/RightNav.tsx:112
-#: src/view/shell/desktop/RightNav.tsx:119
-#: src/view/shell/Drawer.tsx:417
+#: src/view/shell/desktop/RightNav.tsx:126
+#: src/view/shell/desktop/RightNav.tsx:133
+#: src/view/shell/Drawer.tsx:432
 msgid "Feedback"
 msgstr "Prikomentado"
 
-#: src/view/com/modals/UserFeedback.tsx:208
+#: src/view/com/modals/UserFeedback.tsx:209
 msgid "Feedback comments"
 msgstr ""
 
@@ -3982,18 +4007,18 @@ msgctxt "toast"
 msgid "Feedback sent to feed operator"
 msgstr "Prikomentado sendita al operatoro de la fluo"
 
-#: src/view/com/modals/UserFeedback.tsx:142
+#: src/view/com/modals/UserFeedback.tsx:143
 msgid "Feedback submitted successfully! Thank you for your input."
 msgstr ""
 
 #: src/Navigation.tsx:604
 #: src/screens/SavedFeeds.tsx:108
-#: src/screens/Search/SearchResults.tsx:76
+#: src/screens/Search/SearchResults.tsx:91
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
 #: src/view/screens/Feeds.tsx:510
 #: src/view/screens/Profile.tsx:226
 #: src/view/shell/desktop/LeftNav.tsx:766
-#: src/view/shell/Drawer.tsx:579
+#: src/view/shell/Drawer.tsx:594
 msgid "Feeds"
 msgstr "Fluoj"
 
@@ -4015,7 +4040,7 @@ msgstr "Fluoj, kiuj eble plaĉos al vi."
 msgid "Fetch update"
 msgstr "Elŝuti ĝisdatigon"
 
-#: src/view/com/composer/state/composerRecipe.ts:545
+#: src/view/com/composer/state/composerRecipe.ts:646
 msgid "Fiber content must be a number"
 msgstr ""
 
@@ -4068,7 +4093,7 @@ msgstr "Trovi kontojn por sekvi"
 msgid "Find people to follow"
 msgstr "Trovi homojn por sekvi"
 
-#: src/screens/Search/Shell.tsx:592
+#: src/screens/Search/Shell.tsx:574
 msgid "Find posts, users, and feeds on {0}"
 msgstr ""
 
@@ -4250,7 +4275,7 @@ msgstr "Tipara grando"
 msgid "Food"
 msgstr "Manĝaĵo"
 
-#: src/view/com/modals/UserFeedback.tsx:209
+#: src/view/com/modals/UserFeedback.tsx:210
 msgid "For entering comments on the app"
 msgstr ""
 
@@ -4258,7 +4283,7 @@ msgstr ""
 msgid "For now, we have made the difficult decision to block access to {appName} in the state of Mississippi."
 msgstr ""
 
-#: src/view/com/modals/DeleteAccount.tsx:125
+#: src/view/com/modals/DeleteAccount.tsx:127
 msgid "For security reasons, we'll need to send a confirmation code to your email address."
 msgstr "Pro sekurecaj kialoj, ni sendos konfirmkodon al via retpoŝtadreso."
 
@@ -4323,7 +4348,7 @@ msgctxt "recipe attribution"
 msgid "From person"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:222
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:226
 msgctxt "recipe attribution"
 msgid "From product"
 msgstr ""
@@ -4333,12 +4358,12 @@ msgctxt "recipe attribution"
 msgid "From publication"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:194
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:198
 msgctxt "recipe attribution"
 msgid "From TV show"
 msgstr ""
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:171
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:174
 msgctxt "recipe attribution"
 msgid "From website"
 msgstr ""
@@ -4357,7 +4382,7 @@ msgstr ""
 msgid "Generate a starter pack"
 msgstr "Generi startpakon"
 
-#: src/view/shell/Drawer.tsx:421
+#: src/view/shell/Drawer.tsx:436
 msgid "Get help"
 msgstr "Akiri helpon"
 
@@ -4546,7 +4571,7 @@ msgstr "Iri al profilo"
 msgid "Go to user's profile"
 msgstr "Iri al uzanta profilo"
 
-#: src/components/EnvConfigIndicator.tsx:51
+#: src/components/EnvConfigIndicator.tsx:52
 #: src/screens/Settings/Settings.tsx:606
 msgid "Going to reload app..."
 msgstr ""
@@ -4558,7 +4583,7 @@ msgstr ""
 msgid "Graphic Media"
 msgstr "Maldeca aŭdvidaĵo"
 
-#: src/view/com/modals/RecipePreparation.tsx:348
+#: src/view/com/modals/RecipePreparation.tsx:386
 msgid "h"
 msgstr ""
 
@@ -4613,9 +4638,9 @@ msgstr "Ĉu vi havas problemon?"
 
 #: src/screens/Settings/Settings.tsx:263
 #: src/screens/Settings/Settings.tsx:267
-#: src/view/shell/desktop/RightNav.tsx:133
-#: src/view/shell/desktop/RightNav.tsx:134
-#: src/view/shell/Drawer.tsx:430
+#: src/view/shell/desktop/RightNav.tsx:147
+#: src/view/shell/desktop/RightNav.tsx:148
+#: src/view/shell/Drawer.tsx:445
 msgid "Help"
 msgstr "Helpo"
 
@@ -4760,7 +4785,7 @@ msgstr "Momenton! Ni iom post iom donas aliron al la videaĵo, kaj vi ankoraŭ a
 #: src/Navigation.tsx:808
 #: src/view/shell/bottom-bar/BottomBar.tsx:180
 #: src/view/shell/desktop/LeftNav.tsx:710
-#: src/view/shell/Drawer.tsx:489
+#: src/view/shell/Drawer.tsx:504
 msgid "Home"
 msgstr "Hejmo"
 
@@ -4777,7 +4802,7 @@ msgstr "Provizanto de gastigo"
 msgid "Hot"
 msgstr "Populara"
 
-#: src/view/com/modals/RecipePreparation.tsx:345
+#: src/view/com/modals/RecipePreparation.tsx:381
 msgid "Hours"
 msgstr ""
 
@@ -4786,7 +4811,7 @@ msgstr ""
 msgid "How should we open this link?"
 msgstr "Kiel ni malfermu ĉi tiun ligilon?"
 
-#: src/view/com/modals/UserFeedback.tsx:164
+#: src/view/com/modals/UserFeedback.tsx:165
 msgid "How was Foodios today?"
 msgstr ""
 
@@ -4859,12 +4884,12 @@ msgstr "Kontraŭleĝa kaj urĝa"
 msgid "Image"
 msgstr "Bildo"
 
-#: src/screens/Settings/AboutSettings.tsx:64
+#: src/screens/Settings/AboutSettings.tsx:71
 msgid "Image cache cleared"
 msgstr "Bilda kaŝmemoro viŝita"
 
 #. Android-only toast message which includes amount of space freed using localized number formatting
-#: src/screens/Settings/AboutSettings.tsx:50
+#: src/screens/Settings/AboutSettings.tsx:57
 msgid "Image cache cleared, freed {0}"
 msgstr "Bilda kaŝmemoro viŝita, {0} liberita(j)"
 
@@ -4929,17 +4954,21 @@ msgstr "Ricevujo malplenas!"
 msgid "Incorrect username or password"
 msgstr "Malĝusta uzantnomo aŭ pasvorto"
 
-#: src/view/com/composer/state/composerRecipe.ts:487
+#: src/view/com/composer/state/composerRecipe.ts:571
 msgid "Ingredient name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:491
+#: src/view/com/composer/state/composerRecipe.ts:575
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:578
+#: src/view/com/composer/ComposerRecipe.tsx:973
+msgid "Ingredient section options"
+msgstr ""
+
+#: src/view/com/composer/ComposerRecipe.tsx:579
 #: src/view/com/modals/RecipePreparation.tsx:118
-#: src/view/com/posts/ExpandableRecipePost.tsx:202
+#: src/view/com/posts/ExpandableRecipePost.tsx:208
 msgctxt "recipe"
 msgid "Ingredients"
 msgstr ""
@@ -4948,7 +4977,7 @@ msgstr ""
 msgid "Input code sent to your email for password reset"
 msgstr "Entajpu la kodon senditan al via retpoŝtadreso por restarigi vian pasvorton"
 
-#: src/view/com/modals/DeleteAccount.tsx:228
+#: src/view/com/modals/DeleteAccount.tsx:230
 msgid "Input confirmation code for account deletion"
 msgstr "Entajpu konfirmkodon por forigi vian konton"
 
@@ -4956,7 +4985,7 @@ msgstr "Entajpu konfirmkodon por forigi vian konton"
 msgid "Input new password"
 msgstr "Entajpu novan pasvorton"
 
-#: src/view/com/modals/DeleteAccount.tsx:247
+#: src/view/com/modals/DeleteAccount.tsx:249
 msgid "Input password for account deletion"
 msgstr "Entajpu pasvorton por forigi vian konton"
 
@@ -4964,21 +4993,21 @@ msgstr "Entajpu pasvorton por forigi vian konton"
 msgid "Input the code which has been emailed to you"
 msgstr "Entajpu la kodon senditan al via retpoŝtadreso"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1131
+#: src/view/com/composer/ComposerRecipe.tsx:1232
 msgid "Instruction"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1090
+#: src/view/com/composer/ComposerRecipe.tsx:1191
 msgid "Instruction section options"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:499
+#: src/view/com/composer/state/composerRecipe.ts:592
 msgid "Instruction text cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:593
-#: src/view/com/modals/RecipePreparation.tsx:147
-#: src/view/com/posts/ExpandableRecipePost.tsx:217
+#: src/view/com/composer/ComposerRecipe.tsx:594
+#: src/view/com/modals/RecipePreparation.tsx:156
+#: src/view/com/posts/ExpandableRecipePost.tsx:218
 msgctxt "recipe"
 msgid "Instructions"
 msgstr ""
@@ -5017,12 +5046,12 @@ msgstr "Nevalidaj agordoj pri interagado."
 msgid "Invalid report subject"
 msgstr "Nevalida temlinio de raporto"
 
-#: src/view/com/composer/state/composerRecipe.ts:638
-#: src/view/com/composer/state/composerRecipe.ts:648
-#: src/view/com/composer/state/composerRecipe.ts:666
-#: src/view/com/composer/state/composerRecipe.ts:675
-#: src/view/com/composer/state/composerRecipe.ts:688
-#: src/view/com/composer/state/composerRecipe.ts:701
+#: src/view/com/composer/state/composerRecipe.ts:751
+#: src/view/com/composer/state/composerRecipe.ts:761
+#: src/view/com/composer/state/composerRecipe.ts:781
+#: src/view/com/composer/state/composerRecipe.ts:792
+#: src/view/com/composer/state/composerRecipe.ts:807
+#: src/view/com/composer/state/composerRecipe.ts:820
 msgid "Invalid URL (must include protocol e.g. http://)"
 msgstr ""
 
@@ -5036,7 +5065,7 @@ msgstr "Nevalida aŭtentikig-kodo"
 msgid "Invite a Friend"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:173
+#: src/screens/Signup/StepInfo/index.tsx:176
 msgid "Invite code"
 msgstr "Invita kodo"
 
@@ -5048,8 +5077,8 @@ msgstr "Invita kodo neakceptita. Kontrolu ĉu vi entajpis ĝin ĝuste kaj reprov
 msgid "Invite codes: {0} available"
 msgstr ""
 
-#: src/view/shell/desktop/RightNav.tsx:179
-#: src/view/shell/Drawer.tsx:166
+#: src/view/shell/desktop/RightNav.tsx:193
+#: src/view/shell/Drawer.tsx:172
 msgid "Invite codes: {invitesAvailable} available"
 msgstr ""
 
@@ -5081,7 +5110,7 @@ msgstr ""
 msgid "ISBN (optional)"
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:299
+#: src/screens/Signup/StepInfo/index.tsx:309
 msgid "It's correct"
 msgstr "Ĝi ĝustas"
 
@@ -5093,11 +5122,11 @@ msgstr "<0>{0} </0>estas sola ĉi-momente! Aldoni pli da homoj al via startpako 
 msgid "It's just you right now! Add more people to your starter pack by searching above."
 msgstr "Vi estas sola ĉi-momente! Aldoni pli da homoj al via startpako serĉante supre."
 
-#: src/view/com/composer/ComposerRecipe.tsx:938
+#: src/view/com/composer/ComposerRecipe.tsx:1015
 msgid "Item"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:1948
+#: src/view/com/composer/Composer.tsx:1949
 msgid "Job ID: {0}"
 msgstr "ID de laboro: {0}"
 
@@ -5122,8 +5151,8 @@ msgstr "Aliĝi al konversacio"
 msgid "Journalism"
 msgstr "Ĵurnalismo"
 
-#: src/view/com/modals/UserFeedback.tsx:218
-#: src/view/com/modals/UserFeedback.tsx:226
+#: src/view/com/modals/UserFeedback.tsx:219
+#: src/view/com/modals/UserFeedback.tsx:227
 msgid "Keep feedback anonymous"
 msgstr ""
 
@@ -5199,7 +5228,7 @@ msgid "Last initiated just now"
 msgstr "Laste iniciatita ĝuste nun"
 
 #: src/screens/Hashtag.tsx:101
-#: src/screens/Search/SearchResults.tsx:60
+#: src/screens/Search/SearchResults.tsx:73
 #: src/screens/Topic.tsx:77
 msgid "Latest"
 msgstr "Plej freŝaj"
@@ -5313,11 +5342,14 @@ msgid "Let's go!"
 msgstr "Ek!"
 
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:88
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:176
 msgid "License"
 msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:284
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:294
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:533
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:543
 msgid "License type"
 msgstr ""
 
@@ -5496,7 +5528,7 @@ msgstr "Listo malsilentigita"
 #: src/view/screens/Profile.tsx:220
 #: src/view/screens/Profile.tsx:228
 #: src/view/shell/desktop/LeftNav.tsx:784
-#: src/view/shell/Drawer.tsx:594
+#: src/view/shell/Drawer.tsx:609
 msgid "Lists"
 msgstr "Listoj"
 
@@ -5552,12 +5584,12 @@ msgstr "Protokolo"
 msgid "Logged-out visibility"
 msgstr "Videbleco de elsalutintaj uzantoj"
 
-#: src/view/shell/desktop/RightNav.tsx:145
+#: src/view/shell/desktop/RightNav.tsx:159
 msgid "Logo by @sawaratsuki.bsky.social"
 msgstr "Emblemo farita de @sawaratsuki.bsky.social"
 
-#: src/view/shell/desktop/RightNav.tsx:142
-#: src/view/shell/Drawer.tsx:758
+#: src/view/shell/desktop/RightNav.tsx:156
+#: src/view/shell/Drawer.tsx:773
 msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
 msgstr "Emblemo farita de <0>@sawaratsuki.bsky.social</0>"
 
@@ -5581,7 +5613,7 @@ msgstr "Ŝajne vi depinglis ĉiujn viajn fluojn. Sed ne maltrankviliĝu, vi pova
 msgid "Looks like you're missing a following feed. <0>Click here to add one.</0>"
 msgstr "Fluo de sekvatoj ŝajne mankas al vi. <0>Alklaku por aldoni iun.</0>"
 
-#: src/view/com/modals/RecipePreparation.tsx:363
+#: src/view/com/modals/RecipePreparation.tsx:403
 msgid "m"
 msgstr ""
 
@@ -5710,18 +5742,18 @@ msgctxt "Name of app icon variant"
 msgid "Midnight"
 msgstr "Noktomezo"
 
-#: src/view/com/composer/ComposerRecipe.tsx:551
-#: src/view/com/composer/ComposerRecipe.tsx:568
+#: src/view/com/composer/ComposerRecipe.tsx:552
+#: src/view/com/composer/ComposerRecipe.tsx:569
 msgid "min"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:550
-#: src/view/com/composer/ComposerRecipe.tsx:567
-#: src/view/com/posts/ExpandableRecipePost.tsx:186
+#: src/view/com/composer/ComposerRecipe.tsx:551
+#: src/view/com/composer/ComposerRecipe.tsx:568
+#: src/view/com/posts/ExpandableRecipePost.tsx:192
 msgid "minutes"
 msgstr ""
 
-#: src/view/com/modals/RecipePreparation.tsx:360
+#: src/view/com/modals/RecipePreparation.tsx:398
 msgid "Minutes"
 msgstr ""
 
@@ -5811,7 +5843,8 @@ msgid "More languages..."
 msgstr "Pliaj lingvoj..."
 
 #: src/screens/ProfileList/components/MoreOptionsMenu.tsx:149
-#: src/view/com/composer/ComposerRecipe.tsx:1096
+#: src/view/com/composer/ComposerRecipe.tsx:979
+#: src/view/com/composer/ComposerRecipe.tsx:1197
 #: src/view/com/profile/ProfileMenu.tsx:228
 #: src/view/com/profile/ProfileMenu.tsx:234
 msgid "More options"
@@ -5942,12 +5975,12 @@ msgid "My Feeds"
 msgstr "Miaj fluoj"
 
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:399
-#: src/view/com/composer/ComposerRecipe.tsx:433
+#: src/view/com/composer/ComposerRecipe.tsx:435
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:339
 msgid "Name"
 msgstr "Nomo"
 
-#: src/view/com/composer/state/composerRecipe.ts:718
+#: src/view/com/composer/state/composerRecipe.ts:837
 msgid "Name cannot be empty"
 msgstr ""
 
@@ -5981,7 +6014,7 @@ msgstr "Iri al startpako"
 msgid "Navigates to the next screen"
 msgstr "Iras al la sekva ekrano"
 
-#: src/view/shell/Drawer.tsx:81
+#: src/view/shell/Drawer.tsx:87
 msgid "Navigates to your profile"
 msgstr "Iras al via profilo"
 
@@ -5994,8 +6027,8 @@ msgstr "Ĉu vi bezonas raporti kopirajtan malobservon, jurpeton aŭ problemon pr
 msgid "Need to report a copyright violation?"
 msgstr "Ĉu vi bezonas raporti kopirajtan malobservon?"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:549
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:197
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:594
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
 msgid "Network"
 msgstr ""
 
@@ -6105,8 +6138,8 @@ msgstr "Informa dialogujo pri nova uzanto"
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:93
 #: src/screens/PostThread/components/HeaderDropdown.tsx:98
-#: src/screens/Settings/ThreadPreferences.tsx:80
-#: src/screens/Settings/ThreadPreferences.tsx:83
+#: src/screens/Settings/ThreadPreferences.tsx:72
+#: src/screens/Settings/ThreadPreferences.tsx:75
 msgid "Newest replies first"
 msgstr "La plej novaj respondoj unue"
 
@@ -6236,9 +6269,10 @@ msgstr "Sen rezultoj"
 msgid "No results for \"{0}\"."
 msgstr "Sen rezultoj por \"{0}\"."
 
-#: src/components/forms/ComboBox/common.tsx:72
+#: src/components/forms/ComboBox/ComboBoxOptions.tsx:58
+#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:71
 #: src/components/Lists.tsx:189
-#: src/screens/Search/SearchResults.tsx:315
+#: src/screens/Search/SearchResults.tsx:328
 msgid "No results found"
 msgstr "Neniu rezulto trovita"
 
@@ -6246,8 +6280,8 @@ msgstr "Neniu rezulto trovita"
 msgid "No results found for \"{query}\""
 msgstr "Neniu rezulto trovita por \"{query}\""
 
-#: src/screens/Search/SearchResults.tsx:351
-#: src/screens/Search/SearchResults.tsx:396
+#: src/screens/Search/SearchResults.tsx:364
+#: src/screens/Search/SearchResults.tsx:409
 msgid "No results found for {query}"
 msgstr "Neniu rezulto trovita por {query}"
 
@@ -6320,9 +6354,9 @@ msgstr "Noto: Ĉi tiu afiŝo videblas nur al ensalutintaj uzantoj."
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:353
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:471
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:510
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:571
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:624
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:526
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:616
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:669
 msgid "Notes (optional)"
 msgstr ""
 
@@ -6368,7 +6402,7 @@ msgstr "Sciigaj sonoj"
 #: src/view/screens/Notifications.tsx:126
 #: src/view/shell/bottom-bar/BottomBar.tsx:256
 #: src/view/shell/desktop/LeftNav.tsx:747
-#: src/view/shell/Drawer.tsx:542
+#: src/view/shell/Drawer.tsx:557
 msgid "Notifications"
 msgstr "Sciigoj"
 
@@ -6394,8 +6428,8 @@ msgstr "Nudeco"
 msgid "Nudity or adult content not labeled as such"
 msgstr "Nudeco aŭ poradolta enhavo ne etikedita tiel"
 
-#: src/view/com/composer/ComposerRecipe.tsx:676
-#: src/view/com/posts/ExpandableRecipePost.tsx:245
+#: src/view/com/composer/ComposerRecipe.tsx:677
+#: src/view/com/posts/ExpandableRecipePost.tsx:246
 msgid "Nutritional Information"
 msgstr ""
 
@@ -6425,8 +6459,8 @@ msgstr "Bone"
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:83
 #: src/screens/PostThread/components/HeaderDropdown.tsx:88
-#: src/screens/Settings/ThreadPreferences.tsx:72
-#: src/screens/Settings/ThreadPreferences.tsx:75
+#: src/screens/Settings/ThreadPreferences.tsx:64
+#: src/screens/Settings/ThreadPreferences.tsx:67
 msgid "Oldest replies first"
 msgstr "La plej malnovaj respondoj unue"
 
@@ -6438,11 +6472,11 @@ msgstr "ĉe<0><1/><2><3/></2></0>"
 msgid "Onboarding reset"
 msgstr "Restarigi la lernilon"
 
-#: src/view/com/composer/Composer.tsx:411
+#: src/view/com/composer/Composer.tsx:412
 msgid "One or more GIFs is missing alt text."
 msgstr "Al unu aŭ pli da GIF-oj mankas alt-teksto."
 
-#: src/view/com/composer/Composer.tsx:408
+#: src/view/com/composer/Composer.tsx:409
 msgid "One or more images is missing alt text."
 msgstr "Al unu aŭ pli da bildoj mankas alternativa teksto."
 
@@ -6454,7 +6488,7 @@ msgstr "Unu aŭ pli el viaj elektitaj dosieroj ne estas subtenata."
 msgid "One or more of your selected files are too large. Maximum size is 100 MB."
 msgstr "Unu aŭ pli el viaj elektitaj dosieroj estas tro grandaj. Maksimuma grando estas 100 MB."
 
-#: src/view/com/composer/Composer.tsx:418
+#: src/view/com/composer/Composer.tsx:419
 msgid "One or more videos is missing alt text."
 msgstr "Al unu aŭ pli da videaĵoj mankas alternativa teksto."
 
@@ -6511,8 +6545,8 @@ msgid "Open drawer menu"
 msgstr "Malfermi flankmenuon"
 
 #: src/screens/Messages/components/MessageInput.web.tsx:181
-#: src/view/com/composer/Composer.tsx:1594
-#: src/view/com/composer/ComposerRecipe.tsx:1488
+#: src/view/com/composer/Composer.tsx:1595
+#: src/view/com/composer/ComposerRecipe.tsx:1589
 msgid "Open emoji picker"
 msgstr "Malfermi emoĝi-elektilon"
 
@@ -6612,12 +6646,12 @@ msgstr "Malfermas afiŝ-kreilon"
 msgid "Opens device gallery to select up to {MAX_IMAGES, plural, other {# images}}, or a single video or GIF."
 msgstr "Malfermas aparatan galerion por elekti ĝis {MAX_IMAGES, plural, other {# bildojn}}, aŭ unuopan videaĵon aŭ GIF-on."
 
-#: src/view/com/composer/Composer.tsx:1595
-#: src/view/com/composer/ComposerRecipe.tsx:1489
+#: src/view/com/composer/Composer.tsx:1596
+#: src/view/com/composer/ComposerRecipe.tsx:1590
 msgid "Opens emoji picker"
 msgstr "Malfermas emoĝi-elektilon"
 
-#: src/view/shell/desktop/RightNav.tsx:113
+#: src/view/shell/desktop/RightNav.tsx:127
 msgid "Opens Feedback Form"
 msgstr ""
 
@@ -6644,8 +6678,8 @@ msgid "Opens link {0}"
 msgstr "Malfermas ligilon {0}"
 
 #: src/view/com/modals/InviteCodes.tsx:174
-#: src/view/shell/desktop/RightNav.tsx:180
-#: src/view/shell/Drawer.tsx:167
+#: src/view/shell/desktop/RightNav.tsx:194
+#: src/view/shell/Drawer.tsx:173
 msgid "Opens list of invite codes"
 msgstr ""
 
@@ -6735,7 +6769,7 @@ msgstr ""
 msgid "Outdated"
 msgstr ""
 
-#: src/view/com/modals/UserFeedback.tsx:170
+#: src/view/com/modals/UserFeedback.tsx:171
 msgid "Overall Enjoyment (optional)"
 msgstr ""
 
@@ -6759,9 +6793,9 @@ msgstr "Paĝo netrovita"
 #: src/screens/Login/LoginForm.tsx:233
 #: src/screens/Settings/AccountSettings.tsx:121
 #: src/screens/Settings/AccountSettings.tsx:125
-#: src/screens/Signup/StepInfo/index.tsx:238
-#: src/view/com/modals/DeleteAccount.tsx:239
-#: src/view/com/modals/DeleteAccount.tsx:246
+#: src/screens/Signup/StepInfo/index.tsx:241
+#: src/view/com/modals/DeleteAccount.tsx:241
+#: src/view/com/modals/DeleteAccount.tsx:248
 msgid "Password"
 msgstr "Pasvorto"
 
@@ -6787,7 +6821,7 @@ msgstr "Pasvorto ĝisdatigita!"
 msgid "Pause"
 msgstr "Paŭzigi"
 
-#: src/view/com/modals/RecipePreparation.tsx:443
+#: src/view/com/modals/RecipePreparation.tsx:508
 msgid "Pause timer"
 msgstr ""
 
@@ -6796,7 +6830,7 @@ msgid "Pause video"
 msgstr "Paŭzigi videaĵon"
 
 #: src/screens/ProfileList/index.tsx:163
-#: src/screens/Search/SearchResults.tsx:70
+#: src/screens/Search/SearchResults.tsx:85
 #: src/screens/StarterPack/StarterPackScreen.tsx:189
 msgid "People"
 msgstr "Homoj"
@@ -6817,6 +6851,10 @@ msgstr "Homoj kiujn mi sekvas"
 #: src/lib/media/save-image.ts:52
 msgid "Permission to access your photo library was denied. Please enable it in your system settings."
 msgstr "Permeso por aliro al via bildbiblioteko estis neita. Bonvolu doni ĝin en viaj sistemagordoj."
+
+#: src/view/com/composer/state/composerRecipe.ts:758
+msgid "Person attribution name cannot be empty"
+msgstr ""
 
 #: src/components/StarterPack/Wizard/WizardListCard.tsx:58
 msgid "Person toggle"
@@ -6886,7 +6924,7 @@ msgstr "Ludi"
 msgid "Play {0}"
 msgstr "Ludi {0}"
 
-#: src/view/com/modals/RecipePreparation.tsx:463
+#: src/view/com/modals/RecipePreparation.tsx:528
 msgid "Play timer"
 msgstr ""
 
@@ -6928,7 +6966,7 @@ msgid "Please choose your handle."
 msgstr "Bonvolu elekti vian identigilon."
 
 #: src/screens/Signup/state.ts:281
-#: src/screens/Signup/StepInfo/index.tsx:125
+#: src/screens/Signup/StepInfo/index.tsx:128
 msgid "Please choose your password."
 msgstr "Bonvolu elekti vian pasvorton."
 
@@ -6941,7 +6979,7 @@ msgid "Please complete the verification captcha."
 msgstr "Bonvolu plenumi la captcha-kontrolon."
 
 #: src/components/ageAssurance/AgeAssuranceInitDialog.tsx:102
-#: src/screens/Signup/StepInfo/index.tsx:114
+#: src/screens/Signup/StepInfo/index.tsx:117
 msgid "Please double-check that you have entered your email address correctly."
 msgstr "Bonvolu rekontroli ĉu vi ĝuste entajpis vian retpoŝtadreson."
 
@@ -6989,11 +7027,11 @@ msgid "Please enter the security code we sent to your previous email address."
 msgstr "Bonvolu entajpi la sekurecan kodon, kiun ni sendis al via antaŭa retpoŝtadreso."
 
 #: src/screens/Signup/state.ts:265
-#: src/screens/Signup/StepInfo/index.tsx:96
+#: src/screens/Signup/StepInfo/index.tsx:99
 msgid "Please enter your email."
 msgstr "Bonvolu entajpi vian retpoŝtadreson."
 
-#: src/screens/Signup/StepInfo/index.tsx:89
+#: src/screens/Signup/StepInfo/index.tsx:92
 msgid "Please enter your invite code."
 msgstr "Bonvolu entajpi vian invitan kodon."
 
@@ -7005,7 +7043,7 @@ msgstr "Bonvolu entajpi vian novan retpoŝtadreson."
 msgid "Please enter your password"
 msgstr "Bonvolu entajpi vian pasvorton"
 
-#: src/view/com/modals/DeleteAccount.tsx:235
+#: src/view/com/modals/DeleteAccount.tsx:237
 msgid "Please enter your password as well:"
 msgstr "Bonvolu ankaŭ entajpi vian pasvorton:"
 
@@ -7013,7 +7051,7 @@ msgstr "Bonvolu ankaŭ entajpi vian pasvorton:"
 msgid "Please enter your username"
 msgstr "Bonvolu entajpi vian uzantnomon"
 
-#: src/components/EnvConfigIndicator.tsx:52
+#: src/components/EnvConfigIndicator.tsx:53
 #: src/screens/Settings/Settings.tsx:607
 msgid "Please exit and reload app manually..."
 msgstr ""
@@ -7031,7 +7069,7 @@ msgstr "Bonvolu klarigi kial vi pensas, ke viaj babilejoj estis malebligitaj mis
 msgid "Please go back, or activate this element to return to the start of the active content."
 msgstr "Bonvolu iri reen aŭ aktivigi ĉi tiun elementon por reveni al la komenco de la aktiva enhavo."
 
-#: src/view/com/composer/Composer.tsx:446
+#: src/view/com/composer/Composer.tsx:447
 msgid "Please provide a rating"
 msgstr ""
 
@@ -7051,7 +7089,7 @@ msgstr "Bonvolu elekti kontrol-servon"
 msgid "Please select a reason for this report"
 msgstr "Bonvolu elekti kaŭzon de ĉi tiu raporto"
 
-#: src/view/com/modals/UserFeedback.tsx:201
+#: src/view/com/modals/UserFeedback.tsx:202
 msgid "Please share your feedback..."
 msgstr ""
 
@@ -7087,13 +7125,13 @@ msgstr "Afiŝo"
 msgid "Post"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:1237
-#: src/view/com/composer/ComposerRecipe.tsx:1336
+#: src/view/com/composer/Composer.tsx:1238
+#: src/view/com/composer/ComposerRecipe.tsx:1437
 msgctxt "action"
 msgid "Post"
 msgstr "Afiŝi"
 
-#: src/view/com/composer/Composer.tsx:1235
+#: src/view/com/composer/Composer.tsx:1236
 msgctxt "action"
 msgid "Post All"
 msgstr "Afiŝi ĉiujn"
@@ -7115,8 +7153,8 @@ msgid "Post deleted"
 msgstr "Afiŝo forigita"
 
 #: src/lib/api/index.ts:200
-#: src/lib/api/index.ts:321
-#: src/lib/api/index.ts:381
+#: src/lib/api/index.ts:319
+#: src/lib/api/index.ts:379
 msgid "Post failed to upload. Please check your Internet connection and try again."
 msgstr "Malsukcesis ŝargi afiŝon. Bonvolu kontroli vian retkonekton kaj reprovi."
 
@@ -7199,19 +7237,19 @@ msgstr "Eventuale misgvida ligilo"
 msgid "Potentially misleading link warning"
 msgstr "Averto pri eventuale misgvida ligilo"
 
-#: src/view/com/composer/ComposerRecipe.tsx:543
+#: src/view/com/composer/ComposerRecipe.tsx:544
 msgid "Prep time"
 msgstr ""
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:172
+#: src/view/com/posts/ExpandableRecipePost.tsx:178
 msgid "Prep:"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:729
+#: src/view/com/composer/state/composerRecipe.ts:848
 msgid "Preparation time must be a number"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:731
+#: src/view/com/composer/state/composerRecipe.ts:851
 msgid "Preparation time must be greater than zero"
 msgstr ""
 
@@ -7242,13 +7280,8 @@ msgstr "Antaŭa bildo"
 msgid "Primary Language"
 msgstr "Ĉefa lingvo"
 
-#: src/screens/Settings/ThreadPreferences.tsx:94
-#: src/screens/Settings/ThreadPreferences.tsx:99
-msgid "Prioritize your Follows"
-msgstr "Prioritatigi viajn sekvatojn"
-
-#: src/view/shell/desktop/RightNav.tsx:125
-#: src/view/shell/desktop/RightNav.tsx:126
+#: src/view/shell/desktop/RightNav.tsx:139
+#: src/view/shell/desktop/RightNav.tsx:140
 msgid "Privacy"
 msgstr "Privateco"
 
@@ -7272,33 +7305,33 @@ msgstr "Agordoj de privateco kaj sekureco"
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:37
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:104
 #: src/Navigation.tsx:349
-#: src/screens/Settings/AboutSettings.tsx:92
-#: src/screens/Settings/AboutSettings.tsx:95
+#: src/screens/Settings/AboutSettings.tsx:99
+#: src/screens/Settings/AboutSettings.tsx:102
 #: src/view/screens/PrivacyPolicy.tsx:35
-#: src/view/shell/Drawer.tsx:753
-#: src/view/shell/Drawer.tsx:754
+#: src/view/shell/Drawer.tsx:768
+#: src/view/shell/Drawer.tsx:769
 msgid "Privacy Policy"
 msgstr "Regularo pri privateco"
 
-#: src/view/com/composer/Composer.tsx:2011
+#: src/view/com/composer/Composer.tsx:2012
 msgid "Processing video..."
 msgstr "Pritraktado de videaĵo..."
 
 #: src/lib/api/index.ts:74
-#: src/lib/api/index.ts:402
+#: src/lib/api/index.ts:400
 #: src/screens/Login/ForgotPasswordForm.tsx:154
 msgid "Processing..."
 msgstr "Pritraktado..."
 
-#: src/view/com/composer/state/composerRecipe.ts:696
+#: src/view/com/composer/state/composerRecipe.ts:815
 msgid "Product attribution brand cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:697
+#: src/view/com/composer/state/composerRecipe.ts:816
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:603
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:648
 msgid "Product name"
 msgstr ""
 
@@ -7309,8 +7342,8 @@ msgstr "profilo"
 
 #: src/view/shell/bottom-bar/BottomBar.tsx:320
 #: src/view/shell/desktop/LeftNav.tsx:825
-#: src/view/shell/Drawer.tsx:80
-#: src/view/shell/Drawer.tsx:645
+#: src/view/shell/Drawer.tsx:86
+#: src/view/shell/Drawer.tsx:660
 msgid "Profile"
 msgstr "Profilo"
 
@@ -7323,7 +7356,7 @@ msgstr "Profilo ĝisdatigita"
 msgid "Protein"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:535
+#: src/view/com/composer/state/composerRecipe.ts:632
 msgid "Protein content must be a number"
 msgstr ""
 
@@ -7339,11 +7372,11 @@ msgstr "Publikaj kaj kundivideblaj listoj por bloki aŭ silentigi uzantojn amase
 msgid "Public, sharable lists which can be used to drive feeds."
 msgstr "Publikaj k kundivideblaj listoj, kiuj povas esti uzitaj por funkciigi fluojn."
 
-#: src/view/com/composer/state/composerRecipe.ts:660
+#: src/view/com/composer/state/composerRecipe.ts:775
 msgid "Publication attribution author cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:657
+#: src/view/com/composer/state/composerRecipe.ts:772
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
@@ -7354,32 +7387,32 @@ msgstr ""
 
 #. Accessibility label for button to publish a single post
 #. Accessibility label for button to publish a single post
-#: src/view/com/composer/Composer.tsx:1213
+#: src/view/com/composer/Composer.tsx:1214
 #: src/view/com/composer/ComposerRecipe.tsx:116
 msgid "Publish post"
 msgstr "Publikigi afiŝon"
 
 #. Accessibility label for button to publish multiple posts in a thread
-#: src/view/com/composer/Composer.tsx:1206
+#: src/view/com/composer/Composer.tsx:1207
 msgid "Publish posts"
 msgstr "Publikigi afiŝojn"
 
 #. Accessibility label for button to publish a recipe
-#: src/view/com/composer/ComposerRecipe.tsx:1321
+#: src/view/com/composer/ComposerRecipe.tsx:1422
 msgid "Publish recipe"
 msgstr ""
 
 #. Accessibility label for button to publish multiple replies in a thread
-#: src/view/com/composer/Composer.tsx:1191
+#: src/view/com/composer/Composer.tsx:1192
 msgid "Publish replies"
 msgstr "Publikigi respondojn"
 
 #. Accessibility label for button to publish a single reply
-#: src/view/com/composer/Composer.tsx:1198
+#: src/view/com/composer/Composer.tsx:1199
 msgid "Publish reply"
 msgstr "Publikigi respondon"
 
-#: src/view/com/composer/Composer.tsx:1187
+#: src/view/com/composer/Composer.tsx:1188
 msgid "Publish Review"
 msgstr ""
 
@@ -7419,11 +7452,11 @@ msgstr "QR-kodo estis elŝutita!"
 msgid "QR code saved to your camera roll!"
 msgstr "QR-kodo konservita en via bildgalerio!"
 
-#: src/view/com/composer/ComposerRecipe.tsx:955
+#: src/view/com/composer/ComposerRecipe.tsx:1033
 msgid "Quantity"
 msgstr ""
 
-#: src/view/com/modals/RecipePreparation.tsx:471
+#: src/view/com/modals/RecipePreparation.tsx:536
 msgid "Quit timer"
 msgstr ""
 
@@ -7472,7 +7505,7 @@ msgstr "Citaĵoj de ĉi tiu afiŝo"
 msgid "Rate limit exceeded – you've tried to change your handle too many times in a short period. Please wait a minute before trying again."
 msgstr "Limo de operacioj transpasita – vi provis ŝanĝi vian identigilon tro multajn fojojn dum mallonga tempo. Bonvolu atendi minuton antaŭ provi denove."
 
-#: src/view/com/modals/UserFeedback.tsx:181
+#: src/view/com/modals/UserFeedback.tsx:182
 msgid "Rates the application with {star} stars"
 msgstr ""
 
@@ -7589,12 +7622,12 @@ msgstr ""
 msgid "Recipe timer finished"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:588
+#: src/view/com/composer/state/composerRecipe.ts:699
 msgid "Recipe yield quantity must be a number"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:663
-msgid "Recipes"
+#: src/view/com/composer/state/composerRecipe.ts:702
+msgid "Recipe yield quantity must be greater than zero"
 msgstr ""
 
 #: src/screens/Search/modules/ExploreRecommendations.tsx:54
@@ -7704,11 +7737,11 @@ msgstr "Ĉu forigi el viaj fluoj?"
 msgid "Remove image"
 msgstr "Forigi bildon"
 
-#: src/view/com/composer/ComposerRecipe.tsx:993
+#: src/view/com/composer/ComposerRecipe.tsx:1073
 msgid "Remove ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1157
+#: src/view/com/composer/ComposerRecipe.tsx:1258
 msgid "Remove instruction"
 msgstr ""
 
@@ -7730,11 +7763,12 @@ msgstr "Forigi profilon"
 msgid "Remove repost"
 msgstr "Forigi reafiŝon"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1110
+#: src/view/com/composer/ComposerRecipe.tsx:993
+#: src/view/com/composer/ComposerRecipe.tsx:1211
 msgid "Remove section"
 msgstr ""
 
-#: src/components/forms/ComboBox/common.tsx:113
+#: src/components/forms/ComboBox/common.tsx:52
 msgid "Remove selection"
 msgstr ""
 
@@ -7840,7 +7874,7 @@ msgstr "Respondoj malebligitaj"
 msgid "Replies to this post are disabled."
 msgstr "Respondoj por ĉi tiu afiŝo estis malebligitaj."
 
-#: src/view/com/composer/Composer.tsx:1233
+#: src/view/com/composer/Composer.tsx:1234
 msgctxt "action"
 msgid "Reply"
 msgstr "Respondi"
@@ -8049,7 +8083,7 @@ msgstr "Devigi alternativan tekston antaŭ ol afiŝi"
 msgid "Require an email code to sign in to your account."
 msgstr "Devigi retmesaĝan kodon por ensaluti al via konto."
 
-#: src/screens/Signup/StepInfo/index.tsx:187
+#: src/screens/Signup/StepInfo/index.tsx:190
 msgid "Required for this provider"
 msgstr "Necesa por ĉi tiu provizanto"
 
@@ -8158,12 +8192,12 @@ msgstr "Revenas al antaŭa paĝo"
 msgid "Returns to the previous step"
 msgstr "Revenas al la antaŭa paŝo"
 
-#: src/view/com/modals/RecipePreparation.tsx:238
-#: src/view/com/modals/RecipePreparation.tsx:241
+#: src/view/com/modals/RecipePreparation.tsx:261
+#: src/view/com/modals/RecipePreparation.tsx:264
 msgid "Review Recipe"
 msgstr ""
 
-#: src/lib/api/index.ts:555
+#: src/lib/api/index.ts:553
 msgid "Review-rating post failed to upload. Please check your Internet connection and try again."
 msgstr ""
 
@@ -8171,7 +8205,7 @@ msgstr ""
 msgid "Review/Rating by @{0}"
 msgstr ""
 
-#: src/view/com/modals/RecipePreparation.tsx:378
+#: src/view/com/modals/RecipePreparation.tsx:420
 msgid "s"
 msgstr ""
 
@@ -8179,7 +8213,7 @@ msgstr ""
 msgid "Saturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:567
+#: src/view/com/composer/state/composerRecipe.ts:674
 msgid "Saturated fat content must be a number"
 msgstr ""
 
@@ -8220,7 +8254,7 @@ msgstr "Konservi naskiĝtagon"
 msgid "Save changes"
 msgstr "Konservi ŝanĝojn"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1334
+#: src/view/com/composer/ComposerRecipe.tsx:1435
 msgctxt "action"
 msgid "Save Changes"
 msgstr ""
@@ -8244,7 +8278,7 @@ msgid "Save to my feeds"
 msgstr "Konservi al miaj fluoj"
 
 #: src/view/shell/desktop/LeftNav.tsx:803
-#: src/view/shell/Drawer.tsx:620
+#: src/view/shell/Drawer.tsx:635
 msgctxt "link to bookmarks screen"
 msgid "Saved"
 msgstr "Konservitaj"
@@ -8291,8 +8325,8 @@ msgstr "Rulumi al la supro"
 #: src/components/dialogs/SearchablePeopleList.tsx:514
 #: src/components/forms/SearchInput.tsx:34
 #: src/components/forms/SearchInput.tsx:36
-#: src/screens/Search/Shell.tsx:359
-#: src/screens/Search/Shell.tsx:580
+#: src/screens/Search/Shell.tsx:360
+#: src/screens/Search/Shell.tsx:562
 #: src/view/shell/bottom-bar/BottomBar.tsx:200
 msgid "Search"
 msgstr "Serĉi"
@@ -8307,12 +8341,12 @@ msgid "Search by name or interest"
 msgstr "Serĉi per nomo aŭ intereso"
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:23
-#: src/view/com/composer/ComposerRecipe.tsx:609
+#: src/view/com/composer/ComposerRecipe.tsx:610
 msgid "Search categories..."
 msgstr ""
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:29
-#: src/view/com/composer/ComposerRecipe.tsx:631
+#: src/view/com/composer/ComposerRecipe.tsx:632
 msgid "Search cuisines..."
 msgstr ""
 
@@ -8338,7 +8372,7 @@ msgstr "Serĉi \"{query}\""
 msgid "Search for feeds that you want to suggest to others."
 msgstr "Serĉu fluojn, kiujn vi volas proponi al aliuloj."
 
-#: src/screens/Search/components/AutocompleteResults.tsx:45
+#: src/screens/Search/components/AutocompleteResults.tsx:46
 msgid "Search for matching {0}"
 msgstr ""
 
@@ -8350,16 +8384,20 @@ msgstr "Serĉi pliajn kontojn"
 msgid "Search for more feeds"
 msgstr "Serĉi pliajn fluojn"
 
-#: src/screens/Search/Shell.tsx:415
+#: src/screens/Search/Shell.tsx:397
 msgid "Search for posts, users, or feeds"
 msgstr "Serĉi afiŝojn, uzantojn aŭ fluojn"
+
+#: src/screens/Search/Shell.tsx:397
+msgid "Search for recipes"
+msgstr ""
 
 #: src/components/dialogs/GifSelect.tsx:167
 msgid "Search GIFs"
 msgstr "Serĉi GIF-ojn"
 
 #: src/screens/Hashtag.tsx:221
-#: src/screens/Search/SearchResults.tsx:257
+#: src/screens/Search/SearchResults.tsx:270
 msgid "Search is currently unavailable when logged out"
 msgstr "Serĉado nun estas nedisponebla kiam elsalutinta"
 
@@ -8383,7 +8421,7 @@ msgid "Search profiles"
 msgstr "Serĉi profilojn"
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:35
-#: src/view/com/composer/ComposerRecipe.tsx:655
+#: src/view/com/composer/ComposerRecipe.tsx:656
 msgid "Search suitable diets..."
 msgstr ""
 
@@ -8391,7 +8429,7 @@ msgstr ""
 msgid "Search Tenor"
 msgstr "Traserĉi Tenor"
 
-#: src/screens/Search/Shell.tsx:385
+#: src/screens/Search/components/SearchTypeInput/index.web.tsx:10
 msgid "Search type"
 msgstr ""
 
@@ -8404,11 +8442,12 @@ msgstr "Serĉi..."
 msgid "Searches for profiles"
 msgstr "Serĉas profilojn"
 
-#: src/view/com/modals/RecipePreparation.tsx:375
+#: src/view/com/modals/RecipePreparation.tsx:415
 msgid "Seconds"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1085
+#: src/view/com/composer/ComposerRecipe.tsx:968
+#: src/view/com/composer/ComposerRecipe.tsx:1186
 msgid "Section title"
 msgstr ""
 
@@ -8471,7 +8510,7 @@ msgstr "Elekti {langName}"
 msgid "Select a color"
 msgstr "Elekti koloron"
 
-#: src/components/EnvConfigIndicator.tsx:225
+#: src/components/EnvConfigIndicator.tsx:226
 msgid "Select a server domain"
 msgstr ""
 
@@ -8553,6 +8592,10 @@ msgstr "Elektu afiŝan lingvon"
 msgid "Select primary language"
 msgstr "Elektu ĉefan lingvon"
 
+#: src/screens/Search/components/SearchTypeInput/index.tsx:23
+msgid "Select search type"
+msgstr ""
+
 #: src/view/com/composer/videos/SubtitleFilePicker.tsx:60
 #: src/view/com/composer/videos/SubtitleFilePicker.tsx:67
 msgid "Select subtitle file (.vtt)"
@@ -8582,7 +8625,7 @@ msgstr "Elektu kiun lingvon uzi por la apa uzantinterfaco."
 msgid "Select which languages you want your subscribed feeds to include. If none are selected, all languages will be shown."
 msgstr "Elektu kiujn lingvojn vi volas en viaj abonitaj fluoj. Se neniu elektita, ĉiuj lingvoj estos montrotaj."
 
-#: src/screens/Signup/StepInfo/index.tsx:280
+#: src/screens/Signup/StepInfo/index.tsx:290
 msgid "Select your date of birth"
 msgstr "Elektu la daton de via naskiĝo"
 
@@ -8611,16 +8654,16 @@ msgstr "Sendu mojosan retejon!"
 #: src/components/dialogs/EmailDialog/screens/Manage2FA/Disable.tsx:174
 #: src/components/dialogs/EmailDialog/screens/Manage2FA/Disable.tsx:181
 #: src/components/dialogs/EmailDialog/screens/Verify.tsx:302
-#: src/view/com/modals/DeleteAccount.tsx:145
+#: src/view/com/modals/DeleteAccount.tsx:147
 msgid "Send email"
 msgstr "Sendi retmesaĝon"
 
-#: src/view/com/modals/DeleteAccount.tsx:158
+#: src/view/com/modals/DeleteAccount.tsx:160
 msgctxt "action"
 msgid "Send Email"
 msgstr "Sendi retmesaĝon"
 
-#: src/view/shell/Drawer.tsx:410
+#: src/view/shell/Drawer.tsx:425
 msgid "Send feedback"
 msgstr "Sendi prikomentadon"
 
@@ -8665,11 +8708,11 @@ msgstr "Sendi konfirman retmesaĝon"
 msgid "Send via direct message"
 msgstr "Sendi per rekta mesaĝo"
 
-#: src/view/com/modals/DeleteAccount.tsx:147
+#: src/view/com/modals/DeleteAccount.tsx:149
 msgid "Sends email with confirmation code for account deletion"
 msgstr "Sendas retmesaĝon kun konfirmkodo por forigi konton"
 
-#: src/view/com/modals/UserFeedback.tsx:254
+#: src/view/com/modals/UserFeedback.tsx:255
 msgid "Sends the feedback about the application"
 msgstr ""
 
@@ -8677,11 +8720,11 @@ msgstr ""
 msgid "Server address"
 msgstr "Servila adreso"
 
-#: src/view/com/composer/ComposerRecipe.tsx:846
+#: src/view/com/composer/ComposerRecipe.tsx:847
 msgid "Serving size"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:514
+#: src/view/com/composer/state/composerRecipe.ts:607
 msgid "Serving size quantity must be a number"
 msgstr ""
 
@@ -8708,7 +8751,7 @@ msgstr "Agordas retpoŝtadreson por restarigi pasvorton"
 #: src/Navigation.tsx:217
 #: src/screens/Settings/Settings.tsx:124
 #: src/view/shell/desktop/LeftNav.tsx:843
-#: src/view/shell/Drawer.tsx:658
+#: src/view/shell/Drawer.tsx:673
 msgid "Settings"
 msgstr "Agordoj"
 
@@ -8872,11 +8915,11 @@ msgstr "Montri alternativan tekston"
 msgid "Show anyway"
 msgstr "Montri ĉiuokaze"
 
-#: src/view/com/composer/state/composerRecipe.ts:684
+#: src/view/com/composer/state/composerRecipe.ts:803
 msgid "Show attribution network cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:682
+#: src/view/com/composer/state/composerRecipe.ts:799
 msgid "Show attribution title cannot be empty"
 msgstr ""
 
@@ -8925,7 +8968,7 @@ msgstr "Montri pli da respondoj"
 msgid "Show original version"
 msgstr ""
 
-#: src/screens/Settings/ThreadPreferences.tsx:127
+#: src/screens/Settings/ThreadPreferences.tsx:98
 msgid "Show post replies in a threaded tree view"
 msgstr "Montri respondojn de afiŝo per fadena arbovido"
 
@@ -8943,10 +8986,6 @@ msgstr "Montri respondojn"
 msgid "Show replies as"
 msgstr "Montri respondojn"
 
-#: src/screens/Settings/ThreadPreferences.tsx:104
-msgid "Show replies by people you follow before all other replies"
-msgstr "Montri respondojn de miaj sekvatoj antaŭ ĉiuj aliaj respondoj"
-
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:630
 #: src/components/PostControls/PostMenu/PostMenuItems.tsx:640
 msgid "Show reply for everyone"
@@ -8962,7 +9001,7 @@ msgstr "Montri reafiŝojn"
 msgid "Show samples of your saved feeds in your Following feed"
 msgstr "Montri ekzemplojn de viaj konservitaj fluoj en via Following-fluo"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:535
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:580
 msgid "Show title"
 msgstr ""
 
@@ -8974,9 +9013,17 @@ msgstr "Montri averton"
 msgid "Show warning and filter from feeds"
 msgstr "Montri averton kaj elfiltri el fluoj"
 
+#: src/screens/Signup/StepInfo/index.tsx:268
+msgid "Show/Hide"
+msgstr ""
+
 #: src/screens/PostThread/components/ThreadItemAnchor.tsx:738
 msgid "Shows information about when this post was created"
 msgstr "Montri informojn pri kiam ĉi tiu afiŝo estis kreita"
+
+#: src/screens/Signup/StepInfo/index.tsx:269
+msgid "Shows or Hides the Password"
+msgstr ""
 
 #: src/screens/Settings/Settings.tsx:150
 msgid "Shows other accounts you can switch to"
@@ -8995,7 +9042,7 @@ msgstr "Montras la enhavon"
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
 #: src/screens/Login/LoginForm.tsx:184
-#: src/screens/Search/SearchResults.tsx:262
+#: src/screens/Search/SearchResults.tsx:275
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
 #: src/view/com/auth/SplashScreen.web.tsx:129
@@ -9108,7 +9155,7 @@ msgstr "Socia komunikilo regata de vi."
 msgid "Sodium"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:555
+#: src/view/com/composer/state/composerRecipe.ts:660
 msgid "Sodium content must be a number"
 msgstr ""
 
@@ -9184,15 +9231,15 @@ msgstr "Pordonu, ni ne eblis ŝargi kontajn proponojn nune."
 msgid "Sorry! Your session expired. Please sign in again."
 msgstr "Pardonu! Via seanco eksvalidiĝis. Bonvolu ensaluti denove."
 
-#: src/screens/Settings/ThreadPreferences.tsx:52
+#: src/screens/Settings/ThreadPreferences.tsx:44
 msgid "Sort replies"
 msgstr "Ordigi respondojn"
 
-#: src/screens/Settings/ThreadPreferences.tsx:59
+#: src/screens/Settings/ThreadPreferences.tsx:51
 msgid "Sort replies by"
 msgstr "Ordigi respondojn laŭ"
 
-#: src/screens/Settings/ThreadPreferences.tsx:56
+#: src/screens/Settings/ThreadPreferences.tsx:48
 msgid "Sort replies to the same post by:"
 msgstr "Ordigi respondojn al la sama afiŝo laŭ:"
 
@@ -9245,7 +9292,7 @@ msgstr "Komenci babili kun {displayName}"
 msgid "Start recipe preparation"
 msgstr ""
 
-#: src/view/com/modals/RecipePreparation.tsx:394
+#: src/view/com/modals/RecipePreparation.tsx:437
 msgid "Start timing"
 msgstr ""
 
@@ -9281,8 +9328,8 @@ msgstr "Startpakoj"
 msgid "Starter packs let you easily share your favorite feeds and people with your friends."
 msgstr "Starterpako ebligas al vi konigi viajn plej ŝatatajn fluojn kaj homojn kun viaj amikoj."
 
-#: src/screens/Settings/AboutSettings.tsx:100
-#: src/screens/Settings/AboutSettings.tsx:103
+#: src/screens/Settings/AboutSettings.tsx:107
+#: src/screens/Settings/AboutSettings.tsx:110
 msgid "Status Page"
 msgstr "Paĝo pri stato"
 
@@ -9316,11 +9363,11 @@ msgstr "Sendi apelacion"
 msgid "Submit Appeal"
 msgstr "Sendi apelacion"
 
-#: src/view/com/modals/UserFeedback.tsx:252
+#: src/view/com/modals/UserFeedback.tsx:253
 msgid "Submit feedback"
 msgstr ""
 
-#: src/view/com/modals/UserFeedback.tsx:259
+#: src/view/com/modals/UserFeedback.tsx:260
 msgid "Submit Feedback"
 msgstr ""
 
@@ -9371,7 +9418,7 @@ msgstr "Sukcese konfirmita"
 msgid "Sugar"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:550
+#: src/view/com/composer/state/composerRecipe.ts:653
 msgid "Sugar content must be a number"
 msgstr ""
 
@@ -9392,8 +9439,7 @@ msgstr "Proponitaj por vi"
 msgid "Suggestive"
 msgstr "Maldeca"
 
-#: src/screens/Search/components/RecipeSearchFields.tsx:34
-#: src/view/com/composer/ComposerRecipe.tsx:654
+#: src/view/com/composer/ComposerRecipe.tsx:655
 msgid "Suitable diets"
 msgstr ""
 
@@ -9446,8 +9492,8 @@ msgid "System"
 msgstr "Sistema"
 
 #: src/screens/Log.tsx:58
-#: src/screens/Settings/AboutSettings.tsx:107
-#: src/screens/Settings/AboutSettings.tsx:110
+#: src/screens/Settings/AboutSettings.tsx:114
+#: src/screens/Settings/AboutSettings.tsx:117
 #: src/screens/Settings/Settings.tsx:486
 msgid "System log"
 msgstr "Sistema protokolo"
@@ -9511,8 +9557,8 @@ msgstr "Diru nin iom pri vi"
 msgid "Tell us a little more"
 msgstr "Diru nin pli"
 
-#: src/view/shell/desktop/RightNav.tsx:129
-#: src/view/shell/desktop/RightNav.tsx:130
+#: src/view/shell/desktop/RightNav.tsx:143
+#: src/view/shell/desktop/RightNav.tsx:144
 msgid "Terms"
 msgstr "Kondiĉoj"
 
@@ -9520,11 +9566,11 @@ msgstr "Kondiĉoj"
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:32
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:99
 #: src/Navigation.tsx:354
-#: src/screens/Settings/AboutSettings.tsx:84
-#: src/screens/Settings/AboutSettings.tsx:87
+#: src/screens/Settings/AboutSettings.tsx:91
+#: src/screens/Settings/AboutSettings.tsx:94
 #: src/view/screens/TermsOfService.tsx:35
-#: src/view/shell/Drawer.tsx:746
-#: src/view/shell/Drawer.tsx:748
+#: src/view/shell/Drawer.tsx:761
+#: src/view/shell/Drawer.tsx:763
 msgid "Terms of Service"
 msgstr "Uzokondiĉoj"
 
@@ -9984,7 +10030,7 @@ msgstr "Ĉi tiu afiŝo estis forigita de ĝia aŭtoro"
 msgid "This post will be hidden from feeds and threads. This cannot be undone."
 msgstr "Ĉi tiu afiŝo estos kaŝota el fluoj kaj fadenoj. Tio ne povas esti malfarita."
 
-#: src/view/com/composer/Composer.tsx:549
+#: src/view/com/composer/Composer.tsx:550
 msgid "This post's author has disabled quote posts."
 msgstr "La aŭtoro de ĉi tiu afiŝo malŝaltis citafiŝojn."
 
@@ -10067,7 +10113,7 @@ msgstr "Fadenaj agordoj"
 msgid "Thread preferences"
 msgstr "Fadenaj preferoj"
 
-#: src/screens/Settings/ThreadPreferences.tsx:42
+#: src/screens/Settings/ThreadPreferences.tsx:34
 msgid "Thread Preferences"
 msgstr "Fadenaj preferoj"
 
@@ -10118,11 +10164,11 @@ msgstr "Al kiu vi volus sendi ĉi tiun raporton?"
 msgid "Today"
 msgstr "Hodiaŭ"
 
-#: src/view/com/modals/RecipePreparation.tsx:127
+#: src/view/com/modals/RecipePreparation.tsx:132
 msgid "Toggle ingredient"
 msgstr ""
 
-#: src/view/com/modals/RecipePreparation.tsx:173
+#: src/view/com/modals/RecipePreparation.tsx:183
 msgid "Toggle instruction"
 msgstr ""
 
@@ -10134,28 +10180,28 @@ msgstr "Baskuligi por ebligi aŭ malebligi poradoltan enhavon"
 msgid "Toggles the sound"
 msgstr "Baskulas la sonon"
 
-#: src/view/com/composer/state/composerRecipe.ts:745
+#: src/view/com/composer/state/composerRecipe.ts:867
 msgid "Too many categories selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:741
+#: src/view/com/composer/state/composerRecipe.ts:863
 msgid "Too many cuisines selected"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:749
+#: src/view/com/composer/state/composerRecipe.ts:871
 msgid "Too many diets selected"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:90
-#: src/screens/Search/SearchResults.tsx:50
+#: src/screens/Search/SearchResults.tsx:63
 #: src/screens/Topic.tsx:71
 msgid "Top"
 msgstr "Plej popularaj"
 
 #: src/screens/PostThread/components/HeaderDropdown.tsx:73
 #: src/screens/PostThread/components/HeaderDropdown.tsx:78
-#: src/screens/Settings/ThreadPreferences.tsx:64
-#: src/screens/Settings/ThreadPreferences.tsx:67
+#: src/screens/Settings/ThreadPreferences.tsx:56
+#: src/screens/Settings/ThreadPreferences.tsx:59
 msgid "Top replies first"
 msgstr "La plej popularaj respondoj unue"
 
@@ -10171,7 +10217,7 @@ msgstr ""
 msgid "Trans fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:573
+#: src/view/com/composer/state/composerRecipe.ts:681
 msgid "Trans fat content must be a number"
 msgstr ""
 
@@ -10184,8 +10230,8 @@ msgstr ""
 msgid "Translate"
 msgstr "Traduki"
 
-#: src/screens/Settings/ThreadPreferences.tsx:115
-#: src/screens/Settings/ThreadPreferences.tsx:120
+#: src/screens/Settings/ThreadPreferences.tsx:86
+#: src/screens/Settings/ThreadPreferences.tsx:91
 msgid "Tree view"
 msgstr "Arbovido"
 
@@ -10343,9 +10389,9 @@ msgstr ""
 msgid "Unfortunately, none of your subscribed labelers supports this report type."
 msgstr "Bedaŭrinde, neniu el viaj abonitaj etikediloj subtenas ĉi tiun tipon de raporto."
 
-#: src/view/com/composer/ComposerRecipe.tsx:509
-#: src/view/com/composer/ComposerRecipe.tsx:866
-#: src/view/com/composer/ComposerRecipe.tsx:973
+#: src/view/com/composer/ComposerRecipe.tsx:510
+#: src/view/com/composer/ComposerRecipe.tsx:867
+#: src/view/com/composer/ComposerRecipe.tsx:1052
 msgid "Unit"
 msgstr ""
 
@@ -10454,7 +10500,7 @@ msgstr "Listo depinglita"
 msgid "Unsaturated fat"
 msgstr ""
 
-#: src/view/com/composer/state/composerRecipe.ts:579
+#: src/view/com/composer/state/composerRecipe.ts:688
 msgid "Unsaturated fat content must be a number"
 msgstr ""
 
@@ -10480,7 +10526,7 @@ msgstr "Malaboni de ĉi tiu etikedilo"
 msgid "Unsubscribed from list"
 msgstr "Malabonita de listo"
 
-#: src/view/com/composer/Composer.tsx:941
+#: src/view/com/composer/Composer.tsx:942
 msgid "Unsupported video type: {mimeType}"
 msgstr "Nesubtenata videaĵa tipo: {mimeType}"
 
@@ -10491,11 +10537,11 @@ msgstr "Nesubtenata videaĵa tipo: {mimeType}"
 msgid "Unwanted Sexual Content"
 msgstr "Nedezirata seksuma enhavo"
 
-#: src/view/com/recipe/RecipeAttributionDisplay.tsx:225
+#: src/view/com/recipe/RecipeAttributionDisplay.tsx:229
 msgid "UPC"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:610
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:655
 msgid "UPC (optional)"
 msgstr ""
 
@@ -10565,28 +10611,28 @@ msgstr "Alŝuti el la dosieroj"
 msgid "Upload from Library"
 msgstr "Alŝuti el la biblioteko"
 
-#: src/lib/api/index.ts:699
+#: src/lib/api/index.ts:697
 msgid "Uploading images..."
 msgstr "Alŝutado de bildoj..."
 
-#: src/lib/api/index.ts:783
-#: src/lib/api/index.ts:807
+#: src/lib/api/index.ts:781
+#: src/lib/api/index.ts:805
 msgid "Uploading link thumbnail..."
 msgstr "Alŝutado de ligila miniaturo..."
 
-#: src/view/com/composer/Composer.tsx:2008
+#: src/view/com/composer/Composer.tsx:2009
 msgid "Uploading video..."
 msgstr "Alŝutado de videaĵo..."
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:503
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:519
 msgid "URL"
 msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:315
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:346
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:464
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:564
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:617
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:609
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:662
 msgid "URL (optional)"
 msgstr ""
 
@@ -10603,7 +10649,7 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:179
+#: src/components/EnvConfigIndicator.tsx:180
 msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
@@ -10817,8 +10863,8 @@ msgstr "Konfirmado"
 msgid "Verifying your age assurance status"
 msgstr "Konfirmado de via stato de garantio pri aĝo"
 
-#: src/screens/Settings/AboutSettings.tsx:126
-#: src/screens/Settings/AboutSettings.tsx:155
+#: src/screens/Settings/AboutSettings.tsx:133
+#: src/screens/Settings/AboutSettings.tsx:162
 msgid "Version {0}"
 msgstr "Versio {0}"
 
@@ -10861,7 +10907,7 @@ msgstr "Videaĵo netrovita."
 msgid "Video settings"
 msgstr "Agordoj pri videaĵoj"
 
-#: src/view/com/composer/Composer.tsx:2018
+#: src/view/com/composer/Composer.tsx:2019
 msgid "Video uploaded"
 msgstr "Videaĵo alŝutita"
 
@@ -10877,7 +10923,7 @@ msgstr "Videaĵoj"
 msgid "Videos must be less than 3 minutes long."
 msgstr "Videaĵoj devas esti malpli ol 3 minute longaj."
 
-#: src/view/com/composer/Composer.tsx:622
+#: src/view/com/composer/Composer.tsx:623
 msgctxt "Action to view the post the user just created"
 msgid "View"
 msgstr "Vidi"
@@ -10939,7 +10985,7 @@ msgstr "Vidi pli"
 msgid "View more trending videos"
 msgstr "Vidi pli da furoraj videaĵoj"
 
-#: src/view/com/composer/Composer.tsx:617
+#: src/view/com/composer/Composer.tsx:618
 msgid "View post"
 msgstr "Vidi afiŝon"
 
@@ -11159,11 +11205,11 @@ msgstr "Ni bedaŭras, sed ni ne povis adrestrovi ĉi tiun liston. Se tio daŭras
 msgid "We're sorry, but we weren't able to load your muted words at this time. Please try again."
 msgstr "Ni bedaŭras, sed ni ne povis ŝargi viajn silentigitajn vortojn nuntempe. Bonvolu provi denove."
 
-#: src/screens/Search/SearchResults.tsx:289
+#: src/screens/Search/SearchResults.tsx:302
 msgid "We're sorry, but your search could not be completed. Please try again in a few minutes."
 msgstr "Bedaŭrinde, via serĉo malsukcesis. Bonvolu reprovi post kelkaj minutoj."
 
-#: src/view/com/composer/Composer.tsx:546
+#: src/view/com/composer/Composer.tsx:547
 msgid "We're sorry! The post you are replying to has been deleted."
 msgstr "Ni bedaŭras! La afiŝo al kiu vi respondas estis forigita."
 
@@ -11196,11 +11242,11 @@ msgstr "Ni aktualigas niajn Uzokondiĉojn, Regularon pri privateco kaj Regularon
 msgid "We've confirmed your age assurance status. You can now close this dialog."
 msgstr "Ni konfirmis vian staton de garantio pri aĝo. Nun vi povas fermi ĉi tiun dialogujon."
 
-#: src/view/com/composer/state/composerRecipe.ts:674
+#: src/view/com/composer/state/composerRecipe.ts:789
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:496
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:512
 msgid "Website name"
 msgstr ""
 
@@ -11294,20 +11340,20 @@ msgstr "Kial ĉi tiu uzanto estu reviziita?"
 msgid "Write a message"
 msgstr "Tajpu mesaĝon"
 
-#: src/view/com/composer/Composer.tsx:1060
+#: src/view/com/composer/Composer.tsx:1061
 msgid "Write post"
 msgstr "Tajpu afiŝon"
 
-#: src/view/com/composer/ComposerRecipe.tsx:462
+#: src/view/com/composer/ComposerRecipe.tsx:463
 msgid "Write recipe description"
 msgstr ""
 
 #: src/screens/PostThread/components/ThreadComposePrompt.tsx:90
-#: src/view/com/composer/Composer.tsx:899
+#: src/view/com/composer/Composer.tsx:900
 msgid "Write your reply"
 msgstr "Tajpu vian respondon"
 
-#: src/view/com/composer/Composer.tsx:896
+#: src/view/com/composer/Composer.tsx:897
 msgid "Write your review"
 msgstr ""
 
@@ -11354,19 +11400,19 @@ msgstr "Jes, reaktivigu mian konton"
 msgid "Yesterday"
 msgstr "Hieraŭ"
 
-#: src/view/com/composer/ComposerRecipe.tsx:491
+#: src/view/com/composer/ComposerRecipe.tsx:492
 msgid "Yield"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:522
+#: src/view/com/composer/ComposerRecipe.tsx:523
 msgid "Yield explanation"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:525
+#: src/view/com/composer/ComposerRecipe.tsx:526
 msgid "Yield is used to indicate how much a recipe will produce. Use the units to indicate whether this is a number of servings, items, or a measurement like grams or litres."
 msgstr ""
 
-#: src/view/com/posts/ExpandableRecipePost.tsx:193
+#: src/view/com/posts/ExpandableRecipePost.tsx:199
 msgid "Yield:"
 msgstr ""
 
@@ -11432,7 +11478,7 @@ msgstr "Vi povas adapti viajn interesojn iam ajn de agordoj pri \"Enhavo kaj aŭ
 msgid "You can also discover new Custom Feeds to follow."
 msgstr "Vi ankaŭ povas malkovri novajn proprajn fluojn por sekvi."
 
-#: src/view/com/modals/DeleteAccount.tsx:198
+#: src/view/com/modals/DeleteAccount.tsx:200
 msgid "You can also temporarily deactivate your account instead, and reactivate it at any time."
 msgstr "Vi ankaŭ povas dumtempe malaktivigi vian konton anstataŭe kaj reaktivigi ĝin iam ajn."
 
@@ -11792,7 +11838,7 @@ msgstr "Vi elĉerpis videaĵojn por spekti. Ĉu eble estas bona tempo fari paŭz
 msgid "Your account"
 msgstr "Via konto"
 
-#: src/view/com/modals/DeleteAccount.tsx:84
+#: src/view/com/modals/DeleteAccount.tsx:86
 msgid "Your account has been deleted"
 msgstr "Via konto estis forigita"
 
@@ -11816,7 +11862,7 @@ msgstr ""
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr "Via apelacio estas sendita. Se via apelacio sukcesos, vi ricevos retmesaĝon."
 
-#: src/screens/Signup/StepInfo/index.tsx:267
+#: src/screens/Signup/StepInfo/index.tsx:277
 msgid "Your birth date"
 msgstr "Via naskiĝdato"
 
@@ -11849,7 +11895,7 @@ msgstr "Via retpoŝtadreso"
 #: src/screens/Login/ForgotPasswordForm.tsx:54
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:83
 #: src/screens/Signup/state.ts:273
-#: src/screens/Signup/StepInfo/index.tsx:103
+#: src/screens/Signup/StepInfo/index.tsx:106
 msgid "Your email appears to be invalid."
 msgstr "Via retpoŝtadreso ŝajnas esti nevalida."
 
@@ -11890,8 +11936,8 @@ msgstr "Viaj interesoj estis ĝisdatigitaj!"
 msgid "Your interests help us find what you like!"
 msgstr "Viaj interesoj helpas nin ekscii, kion vi ŝatas!"
 
-#: src/view/shell/desktop/RightNav.tsx:212
-#: src/view/shell/Drawer.tsx:181
+#: src/view/shell/desktop/RightNav.tsx:226
+#: src/view/shell/Drawer.tsx:187
 msgid "Your invite codes are hidden when logged in using an App Password"
 msgstr ""
 
@@ -11907,15 +11953,15 @@ msgstr "Viaj silentigitaj vortoj"
 msgid "Your password has been changed successfully! Please use your new password when you sign in to {appName} from now on."
 msgstr ""
 
-#: src/screens/Signup/StepInfo/index.tsx:132
+#: src/screens/Signup/StepInfo/index.tsx:135
 msgid "Your password must be at least 8 characters long."
 msgstr "Via pasvorto bezonas almenaŭ 8 signojn."
 
-#: src/view/com/composer/Composer.tsx:613
+#: src/view/com/composer/Composer.tsx:614
 msgid "Your post was sent"
 msgstr "Via afiŝo estis sendita"
 
-#: src/view/com/composer/Composer.tsx:610
+#: src/view/com/composer/Composer.tsx:611
 msgid "Your posts were sent"
 msgstr "Viaj afiŝoj estis senditaj"
 
@@ -11948,7 +11994,7 @@ msgstr ""
 msgid "Your recipe has been updated"
 msgstr ""
 
-#: src/view/com/composer/Composer.tsx:612
+#: src/view/com/composer/Composer.tsx:613
 msgid "Your reply was sent"
 msgstr "Via respondo estis sendita"
 

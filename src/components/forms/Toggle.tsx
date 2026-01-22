@@ -1,6 +1,7 @@
 import React from 'react'
 import {Pressable, type StyleProp, View, type ViewStyle} from 'react-native'
 import Animated, {LinearTransition} from 'react-native-reanimated'
+import Svg from 'react-native-svg'
 
 import {HITSLOP_10} from '#/lib/constants'
 import {isNative} from '#/platform/detection'
@@ -14,6 +15,7 @@ import {
 } from '#/alf'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
 import {CheckThick_Stroke2_Corner0_Rounded as Checkmark} from '#/components/icons/Check'
+import {sizes} from '#/components/icons/common'
 import {Text} from '#/components/Typography'
 
 export type ItemState = {
@@ -243,11 +245,13 @@ export function Item({
 export function LabelText({
   children,
   style,
-}: React.PropsWithChildren<TextStyleProp>) {
+  emoji,
+}: React.PropsWithChildren<TextStyleProp> & {emoji?: boolean}) {
   const t = useTheme()
   const {disabled} = useItemContext()
   return (
     <Text
+      emoji={emoji}
       style={[
         a.font_semi_bold,
         a.leading_tight,
@@ -361,7 +365,11 @@ export function Checkbox() {
         baseStyles,
         hovered ? baseHoverStyles : {},
       ]}>
-      {selected ? <Checkmark size="xs" fill={t.palette.primary_500} /> : null}
+      {selected ? (
+        <Checkmark size="xs" fill={t.palette.primary_500} />
+      ) : (
+        <Svg style={{width: sizes.xs, height: sizes.xs}} />
+      )}
     </View>
   )
 }

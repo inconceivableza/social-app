@@ -2,6 +2,9 @@ import type {ImportMetaEnv} from './vite-env.d'
 
 // Minimal EnvContent type for bskyembed (only what we need)
 type EnvContent = {
+  links: {
+    about: string
+  }
   embed: {
     default_post: {
       profile_name: string
@@ -21,13 +24,15 @@ const blueskyEnvConfig = {
   VITE_EMBED_URL: 'https://embed.bsky.app',
   VITE_LINK_URL: 'https://go.bsky.app',
   VITE_PUBLIC_APPVIEW_URL: 'https://public.api.bsky.app',
-  VITE_SOCIAL_APP_ABOUT: 'https://bsky.social/about',
   VITE_SOCIAL_APP_HOST: 'bsky.app',
   VITE_SOCIAL_APP_NAME: 'Bluesky',
   VITE_SOCIAL_APP_URL: 'https://bsky.app',
 }
 
 const blueskyEnvContent: EnvContent = {
+  links: {
+    about: 'https://bsky.social/about',
+  },
   embed: {
     default_post: {
       profile_name: 'emilyliu.me',
@@ -36,6 +41,7 @@ const blueskyEnvContent: EnvContent = {
     },
   },
 }
+
 function fallbackConfig(
   potentialValue: unknown,
   fallbackValue: string,
@@ -63,10 +69,6 @@ const devEnvConfig = {
   VITE_PUBLIC_APPVIEW_URL: fallbackConfig(
     import.meta.env.VITE_PUBLIC_APPVIEW_URL,
     blueskyEnvConfig.VITE_PUBLIC_APPVIEW_URL,
-  ),
-  VITE_SOCIAL_APP_ABOUT: fallbackConfig(
-    import.meta.env.VITE_SOCIAL_APP_ABOUT,
-    blueskyEnvConfig.VITE_SOCIAL_APP_ABOUT,
   ),
   VITE_SOCIAL_APP_HOST: fallbackConfig(
     import.meta.env.VITE_SOCIAL_APP_HOST,
@@ -180,7 +182,7 @@ export function getPublicAppviewUrl(): string {
 }
 
 export function getSocialAppAbout(): string {
-  return getEnvConfigSync().VITE_SOCIAL_APP_ABOUT
+  return envContent.links.about
 }
 
 export function getSocialAppHost(): string {

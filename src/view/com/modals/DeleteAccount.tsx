@@ -10,7 +10,7 @@ import {LinearGradient} from 'expo-linear-gradient'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {DM_SERVICE_HEADERS} from '#/lib/constants'
+import {CHAT_DISABLED, DM_SERVICE_HEADERS} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {cleanError} from '#/lib/strings/errors'
@@ -66,15 +66,17 @@ export function Component({}: {}) {
     const token = confirmCode.replace(/\s/g, '')
 
     try {
-      // inform chat service of intent to delete account
-      const {success} = await agent.api.chat.bsky.actor.deleteAccount(
-        undefined,
-        {
-          headers: DM_SERVICE_HEADERS,
-        },
-      )
-      if (!success) {
-        throw new Error('Failed to inform chat service of account deletion')
+      if (!CHAT_DISABLED) {
+        // inform chat service of intent to delete account
+        const {success} = await agent.api.chat.bsky.actor.deleteAccount(
+          undefined,
+          {
+            headers: DM_SERVICE_HEADERS,
+          },
+        )
+        if (!success) {
+          throw new Error('Failed to inform chat service of account deletion')
+        }
       }
       await agent.com.atproto.server.deleteAccount({
         did: currentAccount.did,
@@ -148,8 +150,8 @@ export function Component({}: {}) {
                   )}>
                   <LinearGradient
                     colors={[
-                      gradients.blueLight.start,
-                      gradients.blueLight.end,
+                      gradients.orangeLight.start,
+                      gradients.orangeLight.end,
                     ]}
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 1}}

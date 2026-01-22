@@ -1,19 +1,19 @@
-import { useMemo, useState } from 'react'
-import { View } from 'react-native'
+import {useMemo, useState} from 'react'
+import {View} from 'react-native'
 import {
   type AppFoodiosFeedDefs,
   type AppFoodiosFeedRecipeRevision,
 } from '@atproto/api'
-import { RichText as RichTextAPI } from '@atproto/api'
-import { msg, plural, Trans } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
+import {RichText as RichTextAPI} from '@atproto/api'
+import {msg, plural, Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 import type React from 'react'
 
-import { atoms as a, atoms, useTheme } from '#/alf'
-import { Accordion } from '#/components/Accordion'
-import { ShowMoreTextButton } from '#/components/Post/ShowMoreTextButton'
-import { RichText } from '#/components/RichText'
-import { Text } from '#/components/Typography'
+import {atoms as a, atoms, useTheme} from '#/alf'
+import {Accordion} from '#/components/Accordion'
+import {ShowMoreTextButton} from '#/components/Post/ShowMoreTextButton'
+import {RichText} from '#/components/RichText'
+import {Text} from '#/components/Typography'
 import {
   dedupHierarchyOptions,
   pathToHierarchyOption,
@@ -21,8 +21,8 @@ import {
   recipeCuisines,
   recipeDiets,
 } from '../composer/state/dataRecipe'
-import { type NutritionElement, nutritionFields } from '../recipe/NutritionFields'
-import { RecipeAttributionDisplay } from '../recipe/RecipeAttributionDisplay'
+import {type NutritionElement, nutritionFields} from '../recipe/NutritionFields'
+import {RecipeAttributionDisplay} from '../recipe/RecipeAttributionDisplay'
 
 export function ExpandableRecipePost({
   revision,
@@ -58,7 +58,7 @@ export function ExpandedRecipePost({
   // TODO: count lines - if too long truncate unless expanded
   const record = revision.revisionContent
   const t = useTheme()
-  const { _ } = useLingui()
+  const {_} = useLingui()
   const richText = useMemo(() => {
     return new RichTextAPI({
       text: revision.revisionContent.text,
@@ -68,14 +68,18 @@ export function ExpandedRecipePost({
   return (
     <View style={[a.gap_xs]}>
       <View style={[a.flex_row]}>
-        <View style={{ justifyContent: 'center', marginRight: 'auto' }}>
+        <View style={{justifyContent: 'center', marginRight: 'auto'}}>
           <Text emoji style={[a.text_xl, a.font_bold]}>
             {record.name}
           </Text>
         </View>
         {titleComponent}
       </View>
-      {!!(record.recipeCategory?.length || record.suitableForDiet?.length || record.recipeCuisine?.length) &&
+      {!!(
+        record.recipeCategory?.length ||
+        record.suitableForDiet?.length ||
+        record.recipeCuisine?.length
+      ) && (
         <View style={[a.gap_xs, a.py_sm]}>
           {record.recipeCategory?.length ? (
             <View style={[a.flex_row, a.align_baseline, a.gap_sm]}>
@@ -155,7 +159,7 @@ export function ExpandedRecipePost({
             </View>
           ) : null}
         </View>
-      }
+      )}
       <View>
         <RichText
           enableTags
@@ -216,7 +220,7 @@ export function ExpandedRecipePost({
           </View>
           <View style={a.gap_xs}>
             {record.instructionSections.map(
-              ({ name, instructions }, sectionIdx) => {
+              ({name, instructions}, sectionIdx) => {
                 return (
                   <View key={sectionIdx} style={a.gap_xs}>
                     {name && (
@@ -255,20 +259,33 @@ export function ExpandedRecipePost({
   )
 }
 
-function IngredientsSection({ section }: { section: AppFoodiosFeedRecipeRevision.IngredientSection }) {
-  return <View style={a.gap_xs}>
-    {section.name && <Text emoji style={[a.font_bold]}>{section.name}</Text>}
-    <View style={[a.ml_sm]}>
-      {section.ingredients.map((ingredient, i) => {
-        return (
-          <View key={i} style={[a.flex_row, a.gap_sm, a.py_xs]}>
-            <Text
-              emoji>{[ingredient.quantity, ingredient.unit, ingredient.name].filter(Boolean).join(" ")}</Text>
-          </View>
-        )
-      })}
+function IngredientsSection({
+  section,
+}: {
+  section: AppFoodiosFeedRecipeRevision.IngredientSection
+}) {
+  return (
+    <View style={a.gap_xs}>
+      {section.name && (
+        <Text emoji style={[a.font_bold]}>
+          {section.name}
+        </Text>
+      )}
+      <View style={[a.ml_sm]}>
+        {section.ingredients.map((ingredient, i) => {
+          return (
+            <View key={i} style={[a.flex_row, a.gap_sm, a.py_xs]}>
+              <Text emoji>
+                {[ingredient.quantity, ingredient.unit, ingredient.name]
+                  .filter(Boolean)
+                  .join(' ')}
+              </Text>
+            </View>
+          )
+        })}
+      </View>
     </View>
-  </View>
+  )
 }
 
 // TODO licensing website
@@ -293,15 +310,18 @@ function NutritionalValue({
   label,
   unit,
   subFields,
-}: NutritionElement & { nutrition: AppFoodiosFeedRecipeRevision.Nutrition }) {
-  const { _ } = useLingui()
+}: NutritionElement & {nutrition: AppFoodiosFeedRecipeRevision.Nutrition}) {
+  const {_} = useLingui()
   const value = nutrition[field]
-  if (!value) {
+  const hasSubFields =
+    (subFields || []).map(subfield => nutrition[subfield.field]).filter(Boolean)
+      .length > 0
+  if (!value && !hasSubFields) {
     return null
   }
   return (
     <View key={field} style={atoms.gap_xs}>
-      <Text>{`${_(label)}: ${value}${_(unit)}`}</Text>
+      {value && <Text>{`${_(label)}: ${value}${_(unit)}`}</Text>}
       {subFields && (
         <View style={[atoms.pl_sm, atoms.gap_xs]}>
           {subFields.map(subField => (

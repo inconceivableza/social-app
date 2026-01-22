@@ -214,7 +214,7 @@ export function TextInput({
   }, [t, richtext, inputTextStyle])
 
   return (
-    <View style={[a.flex_1, a.pl_md, hasRightPadding && a.pr_4xl]}>
+    <View style={[a.flex_1, a.pl_md, hasRightPadding && a.pr_4xl, a.w_full]}>
       <PasteInput
         testID="composerTextInput"
         ref={textInput}

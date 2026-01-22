@@ -42,16 +42,15 @@ type Server struct {
 }
 
 type Config struct {
-	appviewUrl     string
-	cardUrl        string
-	embedUrl       string
-	linkUrl        string
-	securityEmail  string
-	socialappAbout string
-	socialappHost  string
-	socialappName  string
-	socialappUrl   string
-	supportEmail   string
+	appviewUrl    string
+	cardUrl       string
+	embedUrl      string
+	linkUrl       string
+	securityEmail string
+	socialappHost string
+	socialappUrl  string
+	supportEmail  string
+	branding      bskyweb.Branding
 }
 
 func serve(cctx *cli.Context) error {
@@ -109,22 +108,22 @@ func serve(cctx *cli.Context) error {
 	//
 	// server
 	//
+	branding := bskyweb.LoadBrandingWithFallback(cctx.String("branding"), log)
 	server := &Server{
 		echo:         e,
 		xrpcc:        xrpcc,
 		dir:          identity.DefaultDirectory(),
 		metricsHttpd: metricsHttpd,
 		cfg: &Config{
-			appviewUrl:     appviewHost,
-			cardUrl:        cctx.String("card-url"),
-			embedUrl:       cctx.String("embed-url"),
-			linkUrl:        cctx.String("link-url"),
-			securityEmail:  cctx.String("security-email"),
-			socialappAbout: cctx.String("socialapp-about"),
-			socialappHost:  socialappParsedUrl.Host,
-			socialappName:  cctx.String("socialapp-name"),
-			socialappUrl:   cctx.String("socialapp-url"),
-			supportEmail:   cctx.String("support-email"),
+			appviewUrl:    appviewHost,
+			cardUrl:       cctx.String("card-url"),
+			embedUrl:      cctx.String("embed-url"),
+			linkUrl:       cctx.String("link-url"),
+			securityEmail: cctx.String("security-email"),
+			socialappHost: socialappParsedUrl.Host,
+			socialappUrl:  cctx.String("socialapp-url"),
+			supportEmail:  cctx.String("support-email"),
+			branding:      branding,
 		},
 	}
 

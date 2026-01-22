@@ -23,7 +23,8 @@ export const BSKY_SERVICE = envConfig.BSKY_SERVICE
 export const BSKY_SERVICE_DID = envConfig.BSKY_SERVICE_DID
 export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
-export const HELP_DESK_URL = envConfig.HELP_DESK_URL
+const HELP_DESK_LANG = 'en-us'
+export const HELP_DESK_URL = (envContent.links.helpDesk || 'https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}').replace("${HELP_DESK_LANG}", HELP_DESK_LANG)
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
 const usingBlueskyEmbed = [
   DOMAIN_ENVCONFIGS.bluesky.SOCIAL_EMBED_SERVICE,
@@ -71,9 +72,9 @@ export const DISCOVER_DEBUG_DIDS: Record<string, true> =
     {} as Record<string, true>,
   ) || {}
 
-const BASE_FEEDBACK_FORM_URL = `${HELP_DESK_URL}/requests/new`
-export const FEEDBACK_POST_URL = process.env.FEEDBACK_POST_URL
-export const FEEDBACK_POST_TOKEN = process.env.FEEDBACK_POST_TOKEN
+const BASE_FEEDBACK_FORM_URL = HELP_DESK_URL
+export const FEEDBACK_POST_URL = envContent.feedback?.postUrl || null
+export const FEEDBACK_POST_TOKEN = envContent.feedback?.postToken || null
 export function FEEDBACK_FORM_URL({
   email,
   handle,
@@ -82,6 +83,16 @@ export function FEEDBACK_FORM_URL({
   handle?: string
 }): string {
   let str = BASE_FEEDBACK_FORM_URL
+  if (str.startsWith('mailto:')) {
+    const subject = `${branding?.naming?.app_name} Signup support request`
+    str += `?subject=${encodeURIComponent(subject)}`
+    return str
+  }
+  if (str.search(/zendesk.com/) !== -1) {
+    str += '/requests/new'
+  } else {
+    return str
+  }
   if (email) {
     str += `?tf_anonymous_requester_email=${encodeURIComponent(email)}`
     if (handle) {
@@ -384,7 +395,7 @@ const BAPP_CONFIG_URL = IS_DEV
 export const GEOLOCATION_CONFIG_URL =
   envConfig.GEOLOCATION_CONFIG_URL || BAPP_CONFIG_URL
 
-const POLICY_BASE_URL = envConfig.POLICY_BASE_URL
+const POLICY_BASE_URL = envContent.links.policyBase || 'https://bsky.social/about/support'
 export const webLinks = {
   main: POLICY_BASE_URL, // main support page
   tos: `${POLICY_BASE_URL}/tos`,

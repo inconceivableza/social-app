@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import {type TextInput, View} from 'react-native'
+import {Pressable, type TextInput, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import * as EmailValidator from 'email-validator'
@@ -17,6 +17,8 @@ import {FormError} from '#/components/forms/FormError'
 import {HostingProvider} from '#/components/forms/HostingProvider'
 import * as TextField from '#/components/forms/TextField'
 import {Envelope_Stroke2_Corner0_Rounded as Envelope} from '#/components/icons/Envelope'
+import {Eye_Stroke2_Corner0_Rounded as Eye} from '#/components/icons/Eye'
+import {EyeSlash_Stroke2_Corner0_Rounded as EyeSlash} from '#/components/icons/EyeSlash'
 import {Lock_Stroke2_Corner0_Rounded as Lock} from '#/components/icons/Lock'
 import {Ticket_Stroke2_Corner0_Rounded as Ticket} from '#/components/icons/Ticket'
 import {Loader} from '#/components/Loader'
@@ -61,6 +63,7 @@ export function StepInfo({
   const birthdateInputRef = useRef<DateFieldRef>(null)
 
   const [hasWarnedEmail, setHasWarnedEmail] = React.useState<boolean>(false)
+  const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
   const tldtsRef = React.useRef<typeof tldts>(undefined)
   React.useEffect(() => {
@@ -250,7 +253,7 @@ export function StepInfo({
                   }}
                   label={_(msg`Choose your password`)}
                   defaultValue={state.password}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   autoComplete="new-password"
                   autoCapitalize="none"
                   returnKeyType="next"
@@ -260,6 +263,13 @@ export function StepInfo({
                   )}
                   passwordRules="minlength: 8;"
                 />
+                <Pressable
+                  onPress={() => setShowPassword(!showPassword)}
+                  accessibilityLabel={_(msg`Show/Hide`)}
+                  accessibilityHint={_(msg`Shows or Hides the Password`)}
+                  style={a.z_20}>
+                  <TextField.Icon icon={showPassword ? EyeSlash : Eye} />
+                </Pressable>
               </TextField.Root>
             </View>
             <View>

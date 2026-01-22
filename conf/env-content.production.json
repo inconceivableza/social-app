@@ -22,7 +22,14 @@
   },
   "links": {
     "about": "https://ghost.foodios.social",
-    "blog": "https://ghost.foodios.social/blog"
+    "blog": "https://ghost.foodios.social/blog",
+    "helpDesk": "https://ghost.foodios.social/support/",
+    "policyBase": "https://ghost.foodios.social/about/support",
+    "pdsSupport": "https://ghost.foodios.social/support/"
+  },
+  "feedback": {
+    "postUrl": "https://cloud.activepieces.com/api/v1/webhooks/bgy3a5sqKFb244c3XOLrx/sync",
+    "postToken": "IQu8pho9Oosii3oC"
   },
   "sample_content": {
     "profile": {

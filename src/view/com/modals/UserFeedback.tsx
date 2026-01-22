@@ -103,7 +103,8 @@ export function Component() {
 
     try {
       const submitUrl = FEEDBACK_POST_URL
-      const bearerToken = FEEDBACK_POST_TOKEN
+      const bearerToken = FEEDBACK_POST_TOKEN || ''
+      if (!bearerToken) console.warn('No bearer token defined for feedback')
 
       const data = {
         satisfaction: rating > 0 ? rating.toString() : '',

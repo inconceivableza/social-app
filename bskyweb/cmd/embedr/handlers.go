@@ -49,7 +49,7 @@ func (srv *Server) getServerSideData() map[string]interface{} {
 		"appviewUrl":    srv.cfg.appviewUrl,
 		"embedUrl":      srv.cfg.embedUrl,
 		"socialappHost": srv.cfg.socialappHost,
-		"socialappName": srv.cfg.socialappName,
+		"socialappName": srv.cfg.branding.Naming["app_name"].(string),
 		"socialappUrl":  srv.cfg.socialappUrl,
 		"securityEmail": srv.cfg.securityEmail,
 		"supportEmail":  srv.cfg.supportEmail,
@@ -64,9 +64,8 @@ func (srv *Server) getClientSideData() map[string]interface{} {
 		"VITE_EMBED_URL":          srv.cfg.embedUrl,
 		"VITE_LINK_URL":           srv.cfg.linkUrl,
 		"VITE_PUBLIC_APPVIEW_URL": srv.cfg.appviewUrl,
-		"VITE_SOCIAL_APP_ABOUT":   srv.cfg.socialappAbout,
 		"VITE_SOCIAL_APP_HOST":    srv.cfg.socialappHost,
-		"VITE_SOCIAL_APP_NAME":    srv.cfg.socialappName,
+		"VITE_SOCIAL_APP_NAME":    srv.cfg.branding.Naming["app_name"].(string),
 		"VITE_SOCIAL_APP_URL":     srv.cfg.socialappUrl,
 	}
 	return data
@@ -216,7 +215,7 @@ func (srv *Server) WebOEmbed(c echo.Context) error {
 		Version:      "1.0",
 		AuthorName:   "@" + post.Author.Handle,
 		AuthorURL:    fmt.Sprintf("%s/profile/%s", srv.cfg.socialappUrl, post.Author.Handle),
-		ProviderName: srv.cfg.socialappName,
+		ProviderName: srv.cfg.branding.Naming["app_name"].(string),
 		ProviderURL:  srv.cfg.socialappUrl,
 		CacheAge:     86400,
 		Width:        &width,

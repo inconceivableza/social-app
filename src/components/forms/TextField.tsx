@@ -152,6 +152,10 @@ export type InputProps = Omit<TextInputProps, 'value' | 'onChangeText'> & {
   onChangeText?: (value: string) => void
   isInvalid?: boolean
   inputRef?: React.RefObject<TextInput | null> | React.ForwardedRef<TextInput>
+  /**
+   * @deprecated Manually overridden fonts could create havoc; use with care and test on each plaform.
+   */
+  manualOverrideFonts?: boolean
 }
 
 export function createInput(Component: typeof TextInput) {
@@ -225,7 +229,7 @@ export function createInput(Component: typeof TextInput) {
       style,
     ])
 
-    applyFonts(flattened, fonts.family)
+    if (!rest.manualOverrideFonts) applyFonts(flattened, fonts.family)
 
     // should always be defined on `typography`
     // @ts-ignore

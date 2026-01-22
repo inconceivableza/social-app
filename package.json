@@ -1,6 +1,6 @@
 {
   "name": "foodios.app",
-  "version": "1.109.0",
+  "version": "1.109.1",
   "private": true,
   "engines": {
     "node": ">=20"
@@ -201,7 +201,7 @@
     "react-image-crop": "^11.0.7",
     "react-is": "19",
     "react-keyed-flatten-children": "^5.0.0",
-    "react-native": "0.81.4",
+    "react-native": "0.81.5",
     "react-native-compressor": "^1.13.0",
     "react-native-date-picker": "^5.0.13",
     "react-native-device-attest": "^0.1.6",

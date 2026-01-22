@@ -2,7 +2,7 @@ import {AtUri, lexiconIds as ids} from '@atproto/api'
 import psl from 'psl'
 import TLDs from 'tlds'
 
-import {branding, BSKY_SERVICE, envConfig} from '#/lib/constants'
+import {branding, BSKY_SERVICE, envConfig, envContent} from '#/lib/constants'
 import {isInvalidHandle} from '#/lib/strings/handles'
 import {startUriToStarterPackUri} from '#/lib/strings/starter-pack'
 import {logger} from '#/logger'
@@ -12,9 +12,14 @@ function getTrustedHosts() {
     envConfig.SOCIAL_APP_HOST.replace('.', '\\.'),
     envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '').replace('.', '\\.'),
     'blueskyweb\\.xyz',
-    envConfig.HELP_DESK_URL.replace(/^https?:\/\//, '')
-      .replace(/\/.*$/, '')
-      .replace('.', '\\.'),
+    ...(envContent.links.helpDesk
+      ? [
+          envContent.links.helpDesk
+            .replace(/^https?:\/\//, '')
+            .replace(/\/.*$/, '')
+            .replace('.', '\\.'),
+        ]
+      : []),
     ...(__DEV__ ? ['localhost:19006', 'localhost:8100'] : []),
   ]
 }

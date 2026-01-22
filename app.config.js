@@ -106,7 +106,7 @@ module.exports = function (_config) {
     Object.entries(envContentFilenames).map(
       ([profileName, contentBasename]) => {
         const contentFilename = findExisting(
-          path.join(defaultEnvPath, 'submodules', 'atproto', contentBasename),
+          path.join('submodules', 'atproto', contentBasename),
         )
         const contentSource = contentFilename
           ? fs.readFileSync(contentFilename).toString('utf-8')

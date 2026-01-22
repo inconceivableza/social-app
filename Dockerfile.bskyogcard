@@ -54,6 +54,11 @@ RUN pnpm build
 # install only prod deps, hoisted to root node_modules dir
 # RUN pnpm install --prod --shamefully-hoist --frozen-lockfile --prefer-offline > /dev/null
 
+# Copy conf files
+WORKDIR /app/conf
+
+COPY ./conf ./
+
 # Move files into the image and install
 WORKDIR /app/bskyogcard
 
@@ -80,6 +85,7 @@ ENTRYPOINT ["dumb-init", "--"]
 WORKDIR /app/bskyogcard
 COPY --from=build /app/submodules/atproto/ /app/submodules/atproto/
 COPY --from=build /app/bskyogcard /app/bskyogcard
+COPY --from=build /app/conf /app/conf
 RUN mkdir /app/data && chown node /app/data
 
 VOLUME /app/data
