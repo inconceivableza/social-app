@@ -38,6 +38,7 @@ Allows configuration of domains, branding and server-specific contents within th
 import React from 'react'
 import Constants from 'expo-constants'
 import EventEmitter from 'eventemitter3'
+import z from "zod"
 
 // import {logger} from '#/logger'
 const logger = {
@@ -450,12 +451,63 @@ export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
   process: PROCESS_ENV_CONFIG,
 }
 
+const envContentSchema = z.object({
+  onboarding: z.object({
+    auto_follow_accounts: z.array(z.string()),
+  }),
+  feeds: z.object({
+    named: z.record(
+      z.object({
+        title: z.string(),
+        uri: z.string(),
+        type: z.string(),
+        pinned: z.boolean(),
+        default: z.boolean().optional(),
+        video: z.boolean().optional(),
+        feedback: z.boolean().optional(),
+      })
+    ),
+    log_for_owner_dids: z.array(z.string()),
+    extra_headers_for_owner_dids: z.array(z.string()),
+    known_shutdown_feeds: z.array(z.string()),
+    feedback_proxy_did: z.string(),
+    authed_only: z.array(z.string()),
+    fallback_to: z.string(),
+  }),
+  links: z.object({
+    about: z.string().optional(),
+    blog: z.string().optional(),
+    jobs: z.string().optional(),
+  }),
+  sample_content: z.object({
+    profile: z.object({
+      name: z.string(),
+    }),
+    images: z.object({
+      default_avatar: z.string(),
+      default_banner: z.string(),
+    }),
+  }),
+  embed: z.object({
+    default_post: z.object({
+      profile_name: z.string(),
+      did: z.string(),
+      record_type: z.string().optional(),
+      post_id: z.string(),
+    }),
+  }),
+  debug: z.object({
+    discover_debug_dids: z.array(z.string()),
+  }),
+})
+
+
 function buildSystemToEnvContent(contentObj: any): EnvContent {
   // Convert build system content object to typed EnvContent
   if (!contentObj || typeof contentObj !== 'object') {
     return EMPTY_CONTENT
   }
-  return jsonToEnvContent(contentObj)
+  return envContentSchema.parse(contentObj)
 }
 
 // Build-time content configurations from build system
@@ -590,56 +642,6 @@ export async function fetchEnvConfig(server: string) {
   return null
 }
 
-function jsonToEnvContent(json: Record<string, any>): EnvContent {
-  function mergeNestedContent<T>(
-    jsonValue: any,
-    defaultValue: T,
-    path: string = '',
-  ): T {
-    // If jsonValue exists and matches the expected structure, use it
-    if (jsonValue !== undefined && jsonValue !== null) {
-      if (
-        typeof defaultValue === 'object' &&
-        defaultValue !== null &&
-        !Array.isArray(defaultValue)
-      ) {
-        // Handle nested objects recursively
-        const result = {} as T
-        for (const key in defaultValue) {
-          const currentPath = path ? `${path}.${key}` : key
-          const nestedJsonValue = jsonValue[key]
-          result[key] = mergeNestedContent(
-            defaultValue[key],
-            nestedJsonValue,
-            currentPath,
-          )
-        }
-        return result
-      } else {
-        // For primitive values, use jsonValue if it exists
-        if (
-          Array.isArray(defaultValue) &&
-          typeof jsonValue === 'object' &&
-          !Array.isArray(jsonValue)
-        ) {
-          if (jsonValue.length) {
-            console.warn(
-              `Got unexpected object when array expected at ${path}, using values as array: ${jsonValue}`,
-            )
-            return Object.values(jsonValue) as typeof defaultValue
-          } else {
-            return [] as typeof defaultValue
-          }
-        }
-        return jsonValue as T
-      }
-    }
-    return defaultValue
-  }
-
-  return mergeNestedContent(json, EMPTY_CONTENT)
-}
-
 export async function fetchEnvConfigAndContent(server: string): Promise<{
   config?: EnvConfig
   content?: EnvContent
@@ -685,7 +687,7 @@ export async function fetchEnvContent(server: string) {
       logger.info(
         `Loaded json for environment content: ${JSON.stringify(json)}`,
       )
-      const envContent: EnvContent = jsonToEnvContent(json)
+      const envContent: EnvContent = envContentSchema.parse(json)
       logger.info(
         `Loaded environment content from json with fallback: ${envContent}`,
       )
@@ -788,7 +790,7 @@ export function getStoredEnvContent(): EnvContent {
     if (envContentStorage) {
       const storedContentString = envContentStorage.get(['content'])
       if (storedContentString) {
-        return JSON.parse(storedContentString) as EnvContent
+        return envContentSchema.parse(JSON.parse(storedContentString))
       }
     }
   } catch (e) {
