@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import {useNavigation} from '@react-navigation/native'
 
 import {type NavigationProp} from '#/lib/routes/types'
 import {type FeedSourceInfo} from '#/state/queries/feed'
 import {useSession} from '#/state/session'
-import {type RenderTabBarFnProps} from '#/view/com/pager/Pager'
+import { type RenderTabBarFnProps } from '#/view/com/pager/Pager'
 import {TabBar} from '../pager/TabBar'
 import {HomeHeaderLayout} from './HomeHeaderLayout'
+import { getNamedFeed } from '#/lib/constants'
 
 export function HomeHeader(
-  props: RenderTabBarFnProps & {
+  props: RenderTabBarFnProps & PropsWithChildren<{
     testID?: string
     onPressSelected: () => void
     feeds: FeedSourceInfo[]
-  },
+  }>,
 ) {
   const {feeds, onSelect: onSelectProp} = props
   const {hasSession} = useSession()
@@ -22,8 +23,8 @@ export function HomeHeader(
   const hasPinnedCustom = React.useMemo<boolean>(() => {
     if (!hasSession) return false
     return feeds.some(tab => {
-      const isFollowing = tab.uri === 'following'
-      return !isFollowing
+      const isBuiltIn = getNamedFeed(tab.uri)
+      return !isBuiltIn 
     })
   }, [feeds, hasSession])
 
@@ -62,6 +63,7 @@ export function HomeHeader(
         dragProgress={props.dragProgress}
         dragState={props.dragState}
       />
+      {props.children}
     </HomeHeaderLayout>
   )
 }

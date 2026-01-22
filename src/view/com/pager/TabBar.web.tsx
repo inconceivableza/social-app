@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef} from 'react'
-import {type ScrollView, StyleSheet, View} from 'react-native'
+import { type ScrollView, StyleProp, StyleSheet, TextStyle, View } from 'react-native'
 
 import {atoms as a, useBreakpoints, useTheme, web} from '#/alf'
 import {Text} from '#/components/Typography'
@@ -15,6 +15,7 @@ export interface TabBarProps {
 
   onSelect?: (index: number) => void
   onPressSelected?: (index: number) => void
+  itemTextStyle?: StyleProp<TextStyle>
 }
 
 // How much of the previous/next item we're showing
@@ -27,6 +28,7 @@ export function TabBar({
   items,
   onSelect,
   onPressSelected,
+  itemTextStyle
 }: TabBarProps) {
   const t = useTheme()
   const scrollElRef = useRef<ScrollView>(null)
@@ -123,6 +125,7 @@ export function TabBar({
                     a.text_md,
                     a.font_semi_bold,
                     {lineHeight: 20},
+                    itemTextStyle
                   ]}>
                   {item}
                   <View

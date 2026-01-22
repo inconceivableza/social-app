@@ -2,7 +2,9 @@ import {useCallback} from 'react'
 import {
   type LayoutChangeEvent,
   ScrollView,
+  StyleProp,
   StyleSheet,
+  TextStyle,
   View,
 } from 'react-native'
 import Animated, {
@@ -30,6 +32,7 @@ export interface TabBarProps {
   onPressSelected?: (index: number) => void
   dragProgress: SharedValue<number>
   dragState: SharedValue<'idle' | 'dragging' | 'settling'>
+  itemTextStyle?: StyleProp<TextStyle>
 }
 
 const ITEM_PADDING = 10
@@ -46,6 +49,7 @@ export function TabBar({
   onPressSelected,
   dragProgress,
   dragState,
+  itemTextStyle
 }: TabBarProps) {
   const t = useTheme()
   const scrollElRef = useAnimatedRef<ScrollView>()
@@ -349,6 +353,7 @@ export function TabBar({
                   onPressItem={onPressItem}
                   onItemLayout={onItemLayout}
                   onTextLayout={onTextLayout}
+                  itemTextStyle={itemTextStyle}
                 />
               )
             })}
@@ -381,6 +386,7 @@ function TabBarItem({
   onPressItem,
   onItemLayout,
   onTextLayout,
+  itemTextStyle
 }: {
   index: number
   testID: string | undefined
@@ -389,6 +395,7 @@ function TabBarItem({
   onPressItem: (index: number) => void
   onItemLayout: (index: number, layout: {x: number; width: number}) => void
   onTextLayout: (index: number, layout: {width: number}) => void
+    itemTextStyle?: StyleProp<TextStyle>
 }) {
   const t = useTheme()
   const style = useAnimatedStyle(() => {
@@ -431,7 +438,7 @@ function TabBarItem({
           <Text
             emoji
             testID={testID ? `${testID}-${item}` : undefined}
-            style={[styles.itemText, t.atoms.text, a.text_md, a.font_semi_bold]}
+            style={[styles.itemText, t.atoms.text, a.text_md, a.font_semi_bold, itemTextStyle]}
             onLayout={handleTextLayout}>
             {item}
           </Text>

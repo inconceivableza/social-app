@@ -307,7 +307,7 @@ let PostFeed = ({
     // -prf
     if (
       data?.pages.filter(p => !!p.slices.length).length === 1 &&
-      (feed === 'following' ||
+      (feed === 'following' || feed === "everything" ||
         feed === `author|${myDid}|posts_and_author_threads`)
     ) {
       queryClient.invalidateQueries({queryKey: RQKEY(feed)})
@@ -378,7 +378,6 @@ let PostFeed = ({
         return row
       }
     }
-
     let feedKind: 'following' | 'discover' | 'profile' | 'thevids' | undefined
     if (feedType === 'following') {
       feedKind = 'following'

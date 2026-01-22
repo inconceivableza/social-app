@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {ActivityIndicator, StyleSheet, View} from 'react-native'
 import {type AppBskyFeedDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 import debounce from 'lodash.debounce'
-
+import { Pin_Filled_Corner0_Rounded as PinIcon } from '#/components/icons/Pin'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {
@@ -44,6 +44,7 @@ import * as Layout from '#/components/Layout'
 import {Link} from '#/components/Link'
 import * as ListCard from '#/components/ListCard'
 import {ComposeFAB} from '../com/composer/ComposeFAB'
+import { getNamedFeed } from '#/lib/constants'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'Feeds'>
 
@@ -548,16 +549,20 @@ export function FeedsScreen(_props: Props) {
 
 function FeedOrFollowing({savedFeed}: {savedFeed: SavedFeedItem}) {
   return savedFeed.type === 'timeline' ? (
-    <FollowingFeed />
+    <TimelineFeed savedFeed={savedFeed} />
   ) : (
     <SavedFeed savedFeed={savedFeed} />
   )
 }
 
-function FollowingFeed() {
+function TimelineFeed({ savedFeed }: { savedFeed: SavedFeedItem & { type: 'timeline' } }) {
+  const feedInfo = useMemo(() => getNamedFeed(savedFeed.config.value),
+    [savedFeed.config.value]
+  )
   const t = useTheme()
   const {_} = useLingui()
-  return (
+
+  return feedInfo && (
     <View
       style={[
         a.flex_1,
@@ -588,9 +593,10 @@ function FollowingFeed() {
             fill={t.palette.white}
           />
         </View>
-        <FeedCard.TitleAndByline
-          title={_(msg({message: 'Following', context: 'feed-name'}))}
+        <FeedCard.TitleAndByline // TODO: localize
+          title={_(msg({ message: feedInfo.title, context: 'feed-name' }))}
         />
+        {savedFeed.config.pinned && <PinIcon />}
       </FeedCard.Header>
     </View>
   )
@@ -622,7 +628,7 @@ function SavedFeed({
           <FeedCard.Header>
             <FeedCard.Avatar src={savedFeed.view.avatar} size={28} />
             <FeedCard.TitleAndByline title={savedFeed.view.displayName} />
-
+            {savedFeed.config.pinned && <PinIcon />}
             <ChevronRight size="sm" fill={t.atoms.text_contrast_low.color} />
           </FeedCard.Header>
         </View>
@@ -636,7 +642,7 @@ function SavedFeed({
           <ListCard.Header>
             <ListCard.Avatar src={savedFeed.view.avatar} size={28} />
             <ListCard.TitleAndByline title={savedFeed.view.name} />
-
+              {savedFeed.config.pinned && <PinIcon />}
             <ChevronRight size="sm" fill={t.atoms.text_contrast_low.color} />
           </ListCard.Header>
         </View>

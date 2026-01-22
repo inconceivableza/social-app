@@ -49,6 +49,7 @@ export function FeedPage({
   renderEndOfFeed,
   savedFeedConfig,
   feedInfo,
+  ListHeaderComponent
 }: {
   testID?: string
   feed: FeedDescriptor
@@ -59,6 +60,7 @@ export function FeedPage({
   renderEndOfFeed?: () => JSX.Element
   savedFeedConfig?: AppBskyActorDefs.SavedFeed
   feedInfo: FeedSourceInfo
+    ListHeaderComponent?: () => JSX.Element
 }) {
   const {hasSession} = useSession()
   const {_} = useLingui()
@@ -158,6 +160,7 @@ export function FeedPage({
             headerOffset={headerOffset}
             savedFeedConfig={savedFeedConfig}
             isVideoFeed={isVideoFeed}
+            ListHeaderComponent={ListHeaderComponent}
           />
         </FeedFeedbackProvider>
       </MainScrollProvider>

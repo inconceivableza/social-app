@@ -22,6 +22,7 @@ import {
 import {
   DISCOVER_FEED_URI,
   DISCOVER_SAVED_FEED,
+  getNamedFeed,
   KNOWN_AUTHED_ONLY_FEEDS,
 } from '#/lib/constants'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
@@ -474,17 +475,18 @@ export function usePinnedFeedsInfos() {
       const result: SavedFeedSourceInfo[] = []
       for (let pinnedItem of pinnedItems) {
         const feedInfo = resolved.get(pinnedItem.value)
+        const defaultFeed = getNamedFeed(pinnedItem.value)
         if (feedInfo) {
           result.push({
             ...feedInfo,
             savedFeed: pinnedItem,
           })
-        } else if (pinnedItem.type === 'timeline') {
+        } else if (pinnedItem.type === 'timeline' && defaultFeed) {
           result.push({
             type: 'feed',
-            displayName: 'Following',
-            uri: pinnedItem.value,
-            feedDescriptor: 'following',
+            displayName: defaultFeed.title,
+            uri: defaultFeed.uri,
+            feedDescriptor: pinnedItem.value as FeedDescriptor, // TODO: better to check this
             route: {
               href: '/',
               name: 'Home',
@@ -492,7 +494,7 @@ export function usePinnedFeedsInfos() {
             },
             cid: '',
             avatar: '',
-            description: new RichText({text: ''}),
+            description: new RichText({ text: '' }),
             creatorDid: '',
             creatorHandle: '',
             likeCount: 0,

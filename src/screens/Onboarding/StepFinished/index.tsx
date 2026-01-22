@@ -16,8 +16,7 @@ import {uploadBlob} from '#/lib/api'
 import {
   AUTO_FOLLOW_ACCOUNT_DIDS,
   branding,
-  DISCOVER_SAVED_FEED,
-  TIMELINE_SAVED_FEED,
+  DEFAULT_TIMELINE_FEEDS,
   VIDEO_SAVED_FEED,
 } from '#/lib/constants'
 import {useRequestNotificationsPermission} from '#/lib/notifications/notifications'
@@ -113,16 +112,10 @@ export function StepFinished() {
 
           // Default feeds that every user should have pinned when landing in the app
           // Read from env-content: feeds.recommended, filtered to pinned
-          const feedsToSave: AppBskyActorDefs.SavedFeed[] = [
-            {
-              ...DISCOVER_SAVED_FEED,
-              id: TID.nextStr(),
-            },
-            {
-              ...TIMELINE_SAVED_FEED,
-              id: TID.nextStr(),
-            },
-          ]
+          const feedsToSave: AppBskyActorDefs.SavedFeed[] = DEFAULT_TIMELINE_FEEDS.map(feed => ({
+            ...feed,
+            id: TID.nextStr(),
+          }))
           if (gate('onboarding_add_video_feed')) {
             feedsToSave.push({
               ...VIDEO_SAVED_FEED,
