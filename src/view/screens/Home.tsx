@@ -1,8 +1,8 @@
-import React from 'react'
-import {ActivityIndicator, StyleSheet} from 'react-native'
+import React, { useState } from 'react'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import {useFocusEffect} from '@react-navigation/native'
-
-import {PROD_DEFAULT_FEED} from '#/lib/constants'
+import { atoms as a, useTheme } from '#/alf'
+import { getNamedFeed, PROD_DEFAULT_FEED } from '#/lib/constants'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {useOTAUpdates} from '#/lib/hooks/useOTAUpdates'
 import {useSetTitle} from '#/lib/hooks/useSetTitle'
@@ -38,6 +38,7 @@ import {FollowingEndOfFeed} from '#/view/com/posts/FollowingEndOfFeed'
 import {NoFeedsPinned} from '#/screens/Home/NoFeedsPinned'
 import * as Layout from '#/components/Layout'
 import {useDemoMode} from '#/storage/hooks/demo-mode'
+import { TabBar } from '../com/pager/TabBar'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'Home' | 'Start'>
 export function HomeScreen(props: Props) {
@@ -193,6 +194,7 @@ function HomeScreenReady({
   )
 
   const [demoMode] = useDemoMode()
+  const [filter, setFilter] = useState('')
 
   const renderTabBar = React.useCallback(
     (props: RenderTabBarFnProps) => {
@@ -208,6 +210,7 @@ function HomeScreenReady({
           />
         )
       }
+      const isDefaultFeed = maybeSelectedFeed && getNamedFeed(maybeSelectedFeed) 
       return (
         <HomeHeader
           key="FEEDS_TAB_BAR"
@@ -215,10 +218,12 @@ function HomeScreenReady({
           testID="homeScreenFeedTabs"
           onPressSelected={onPressSelected}
           feeds={pinnedFeedInfos}
-        />
+        >
+          {isDefaultFeed && <TimelineFilterHeader onFilterChange={setFilter} />}
+        </HomeHeader>
       )
     },
-    [onPressSelected, pinnedFeedInfos, demoMode],
+    [onPressSelected, pinnedFeedInfos, demoMode, maybeSelectedFeed],
   )
 
   const renderFollowingEmptyState = React.useCallback(() => {
@@ -237,8 +242,9 @@ function HomeScreenReady({
             .filter(f => f.type === 'feed' || f.type === 'list')
             .map(f => f.value)
         : [],
+      filter
     }
-  }, [preferences])
+  }, [preferences, filter])
 
   if (demoMode) {
     return (
@@ -281,7 +287,8 @@ function HomeScreenReady({
       {pinnedFeedInfos.length ? (
         pinnedFeedInfos.map((feedInfo, index) => {
           const feed = feedInfo.feedDescriptor
-          if (feed === 'following') {
+          const isBuiltIn = !!getNamedFeed(feedInfo.uri)
+          if (isBuiltIn) {
             return (
               <FeedPage
                 key={feed}
@@ -324,12 +331,36 @@ function HomeScreenReady({
         testID="customFeedPage"
         isPageFocused
         isPageAdjacent={false}
-        feed={`feedgen|${PROD_DEFAULT_FEED('whats-hot')}`}
+          feed={'everything'}
         renderEmptyState={renderCustomFeedEmptyState}
         feedInfo={pinnedFeedInfos[0]}
       />
     </Pager>
   )
+}
+
+// TODO: localize
+const timelineFilters = [
+  { id: 'all', label: 'All' },
+  { id: 'post', label: 'Posts' },
+  { id: 'recipe', label: 'Recipes' },
+  { id: 'review', label: 'Reviews' },
+]
+
+function TimelineFilterHeader({ onFilterChange }: { onFilterChange: (filterId: string) => void }) {
+  const t = useTheme()
+  return <View style={[a.border_t, t.atoms.border_contrast_low]}>
+    <Pager onPageSelected={pageIdx => {
+      const filter = timelineFilters.at(pageIdx)
+      if (!filter) return;
+      onFilterChange(filter.id)
+    }} renderTabBar={props => <TabBar
+      {...props}
+      items={timelineFilters.map(({ label }) => label)}
+      itemTextStyle={a.text_sm}
+    />}
+    />
+  </View>
 }
 
 const styles = StyleSheet.create({

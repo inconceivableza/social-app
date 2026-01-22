@@ -3,15 +3,14 @@ import {type AppBskyFeedDefs, type BskyAgent} from '@atproto/api'
 import {type FeedAPI, type FeedAPIResponse} from './types'
 
 export class FollowingFeedAPI implements FeedAPI {
-  agent: BskyAgent
 
-  constructor({agent}: {agent: BskyAgent}) {
-    this.agent = agent
+  constructor(private params: { agent: BskyAgent, filter?: string }) {
   }
 
   async peekLatest(): Promise<AppBskyFeedDefs.FeedViewPost> {
-    const res = await this.agent.getTimeline({
+    const res = await this.params.agent.getFollowingFeed({
       limit: 1,
+      filter: this.params.filter
     })
     return res.data.feed[0]
   }
@@ -23,7 +22,8 @@ export class FollowingFeedAPI implements FeedAPI {
     cursor: string | undefined
     limit: number
   }): Promise<FeedAPIResponse> {
-    const res = await this.agent.getTimeline({
+    const res = await this.params.agent.getFollowingFeed({
+      filter: this.params.filter,
       cursor,
       limit,
     })

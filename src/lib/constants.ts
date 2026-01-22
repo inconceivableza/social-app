@@ -252,6 +252,14 @@ export const TIMELINE_SAVED_FEED = envContent.feeds?.named?.timeline
       pinned: true,
     }
 
+export const DEFAULT_TIMELINE_FEEDS = Object.values(envContent.feeds?.named).map(({ type, uri, pinned }) => ({
+  type, value: uri, pinned
+}))
+
+export function getNamedFeed(value: string) {
+  return Object.values(envContent.feeds.named).find(({ uri }) => value === uri)
+}
+
 export const VIDEO_SAVED_FEED = envContent.feeds?.named?.video
   ? {
       type: envContent.feeds.named.video.type,

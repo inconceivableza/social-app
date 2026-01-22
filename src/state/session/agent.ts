@@ -14,6 +14,7 @@ import {networkRetry} from '#/lib/async/retry'
 import {
   BLUESKY_PROXY_HEADER,
   BSKY_SERVICE,
+  DEFAULT_TIMELINE_FEEDS,
   DISCOVER_SAVED_FEED,
   IS_PROD_SERVICE,
   PUBLIC_BSKY_SERVICE,
@@ -31,6 +32,7 @@ import {
 } from './moderation'
 import {type SessionAccount} from './types'
 import {isSessionExpired, isSignupQueued} from './util'
+import { Nux } from '../queries/nuxs'
 
 export type ProxyHeaderValue = `${Did}#${AtprotoServiceType}`
 
@@ -161,17 +163,21 @@ export async function createAgentAndCreateAccount(
     try {
       networkRetry(1, async () => {
         await agent.setPersonalDetails({birthDate: birthDate.toISOString()})
+        // Note: these get overwritten in finishOnboarding
         await agent.overwriteSavedFeeds([
-          {
-            ...DISCOVER_SAVED_FEED,
+          // {
+          //   ...DISCOVER_SAVED_FEED,
+          //   id: TID.nextStr(),
+          // },
+          ...DEFAULT_TIMELINE_FEEDS.map(feed => ({
+            ...feed, 
             id: TID.nextStr(),
-          },
-          {
-            ...TIMELINE_SAVED_FEED,
-            id: TID.nextStr(),
-          },
+          }))
         ])
-
+        agent.bskyAppUpsertNux({
+          id: Nux.EverythingTimeline,
+          completed: true
+        })
         if (getAge(birthDate) < 18) {
           await agent.api.com.atproto.repo.putRecord({
             repo: account.did,

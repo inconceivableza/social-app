@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {View} from 'react-native'
 import Animated, {LinearTransition} from 'react-native-reanimated'
 import {type AppBskyActorDefs} from '@atproto/api'
@@ -9,7 +9,7 @@ import {useFocusEffect} from '@react-navigation/native'
 import {useNavigation} from '@react-navigation/native'
 import {type NativeStackScreenProps} from '@react-navigation/native-stack'
 
-import {RECOMMENDED_SAVED_FEEDS, TIMELINE_SAVED_FEED} from '#/lib/constants'
+import { getNamedFeed, RECOMMENDED_SAVED_FEEDS, TIMELINE_SAVED_FEED } from '#/lib/constants'
 import {useHaptics} from '#/lib/haptics'
 import {
   type CommonNavigatorParams,
@@ -302,7 +302,7 @@ function ListItem({
       style={[a.flex_row, a.border_b, t.atoms.border_contrast_low]}
       layout={LinearTransition.duration(100)}>
       {feed.type === 'timeline' ? (
-        <FollowingFeedCard />
+        <TimelineFeedCard savedFeed={feed} />
       ) : (
         <FeedSourceCard
           key={feedUri}
@@ -379,9 +379,13 @@ function SectionHeaderText({children}: {children: React.ReactNode}) {
   )
 }
 
-function FollowingFeedCard() {
+function TimelineFeedCard({ savedFeed }: { savedFeed: AppBskyActorDefs.SavedFeed }) {
   const t = useTheme()
-  return (
+  const feedInfo = useMemo(() => getNamedFeed(savedFeed.value),
+    [savedFeed.value]
+  )
+
+  return (feedInfo &&
     <View style={[a.flex_row, a.align_center, a.flex_1, a.p_lg]}>
       <View
         style={[
@@ -407,7 +411,8 @@ function FollowingFeedCard() {
       </View>
       <View style={[a.flex_1, a.flex_row, a.gap_sm, a.align_center]}>
         <Text style={[a.text_sm, a.font_semi_bold, a.leading_snug]}>
-          <Trans context="feed-name">Following</Trans>
+          {/* TODO: ensure localized */}
+          <Trans context="feed-name">{feedInfo.title}</Trans>
         </Text>
       </View>
     </View>

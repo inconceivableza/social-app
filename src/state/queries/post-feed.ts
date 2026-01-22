@@ -26,6 +26,8 @@ import {LikesFeedAPI} from '#/lib/api/feed/likes'
 import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
+import { EverythingFeedAPI } from '#/lib/api/feed/everything'
+
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
 import {
   aggregateUserInterests,
@@ -64,6 +66,7 @@ type PostsUriList = string
 
 export type FeedDescriptor =
   | 'following'
+  | 'everything'
   | `author|${ActorDid}|${AuthorFilter}`
   | `feedgen|${FeedUri}`
   | `likes|${ActorDid}`
@@ -74,6 +77,7 @@ export interface FeedParams {
   mergeFeedEnabled?: boolean
   mergeFeedSources?: string[]
   feedCacheKey?: 'discover' | 'explore' | undefined
+  filter?: string
 }
 
 type RQPageParam = {cursor: string | undefined; api: FeedAPI} | undefined
@@ -174,11 +178,7 @@ export function usePostFeedQuery(
     Boolean(preferences) &&
     isAgeAssuranceReady
   const userInterests = aggregateUserInterests(preferences)
-  const followingPinnedIndex =
-    preferences?.savedFeeds?.findIndex(
-      f => f.pinned && f.value === 'following',
-    ) ?? -1
-  const enableFollowingToDiscoverFallback = followingPinnedIndex === 0
+  const enableFollowingToDiscoverFallback = false
   const agent = useAgent()
   const lastRun = useRef<{
     data: InfiniteData<FeedPageUnselected>
@@ -531,7 +531,7 @@ function createApi({
       if (enableFollowingToDiscoverFallback) {
         return new HomeFeedAPI({agent, userInterests})
       } else {
-        return new FollowingFeedAPI({agent})
+        return new FollowingFeedAPI({ agent, filter: feedParams.filter })
       }
     }
   } else if (feedDesc.startsWith('author')) {
@@ -555,6 +555,8 @@ function createApi({
     return new PostListFeedAPI({agent, feedParams: {uris: uriList.split(',')}})
   } else if (feedDesc === 'demo') {
     return new DemoFeedAPI({agent})
+  } else if (feedDesc === 'everything') {
+    return new EverythingFeedAPI({ agent, filter: feedParams.filter })
   } else {
     // shouldnt happen
     return new FollowingFeedAPI({agent})
