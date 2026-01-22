@@ -1,5 +1,7 @@
 import {useCallback} from 'react'
 import {
+  BskyAgent,
+  BskyPreferences,
   type AppBskyActorDefs,
   type BskyFeedViewPreference,
   type LabelPreference,
@@ -24,6 +26,8 @@ import {
 } from '#/state/queries/preferences/types'
 import {useAgent} from '#/state/session'
 import {saveLabelers} from '#/state/session/agent-config'
+import { Nux } from '#/state/queries/nuxs'
+import { TID } from '@atproto/common-web'
 
 export * from '#/state/queries/preferences/const'
 export * from '#/state/queries/preferences/moderation'
@@ -46,6 +50,12 @@ export function usePreferencesQuery() {
         return DEFAULT_LOGGED_OUT_PREFERENCES
       } else {
         const res = await agent.getPreferences()
+        try {
+          await upsertEverythingFeed(agent, res)
+
+        } catch (e) {
+          console.error(e)
+        }
 
         // save to local storage to ensure there are labels on initial requests
         saveLabelers(
@@ -104,6 +114,37 @@ export function useClearPreferencesMutation() {
       })
     },
   })
+}
+
+/*
+  Checks for everything timeline nux. If not found adds the everything timeline to the user's saved feeds.
+  Also mutates the provided preferences to include the everything timeline.
+*/
+async function upsertEverythingFeed(agent: BskyAgent, prefs: BskyPreferences) {
+  const everythingTimelineNux = prefs.bskyAppState.nuxs.find(({ id }) => id === Nux.EverythingTimeline)
+  const savedFeeds = prefs.savedFeeds
+
+  if (!everythingTimelineNux && !savedFeeds.find(({ value, type }) => type === "timeline" && value === 'everything')) {
+    const followingIdx = savedFeeds.findIndex(({ type, value }) => type === "timeline" && value === "following")
+    const everythingFeed = {
+      id: TID.nextStr(),
+      type: 'timeline',
+      value: 'everything',
+      pinned: true
+    }
+    if (followingIdx < 0) {
+      savedFeeds.unshift(everythingFeed)
+    } else {
+      // Insert the everything feed after the following feed
+      savedFeeds.splice(followingIdx, 1, savedFeeds[followingIdx], everythingFeed)
+    }
+    await agent.bskyAppUpsertNux({
+      id: Nux.EverythingTimeline,
+      completed: true
+    })
+    console.log('overwriting feeds', savedFeeds)
+    await agent.overwriteSavedFeeds(savedFeeds)
+  }
 }
 
 export function usePreferencesSetContentLabelMutation() {
