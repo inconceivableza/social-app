@@ -63,6 +63,7 @@ export type EnvConfig = {
   GEOLOCATION_CONFIG_URL: string
   GIF_HOST: string
   LINK_HOST: string
+  MOD_SERVICE_DID: string
   OGCARD_URL: string
   PREVIEW_LINK_META_PROXY: string
   PUBLIC_BSKY_SERVICE: string
