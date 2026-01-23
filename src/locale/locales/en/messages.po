@@ -140,6 +140,11 @@ msgstr ""
 msgid "{0, plural, other {+# more}}"
 msgstr ""
 
+#: src/screens/SavedFeeds.tsx:415
+msgctxt "feed-name"
+msgid "{0}"
+msgstr ""
+
 #: src/components/EnvConfigIndicator.tsx:118
 #: src/components/EnvConfigIndicator.tsx:140
 #: src/components/forms/ComboBox/index.tsx:64
@@ -896,7 +901,7 @@ msgstr ""
 msgid "Add Reaction"
 msgstr ""
 
-#: src/screens/Home/NoFeedsPinned.tsx:99
+#: src/screens/Home/NoFeedsPinned.tsx:96
 msgid "Add recommended feeds"
 msgstr ""
 
@@ -1042,7 +1047,7 @@ msgstr ""
 msgid "All languages"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:696
+#: src/view/screens/Feeds.tsx:702
 msgid "All the feeds you've saved, right in one place."
 msgstr ""
 
@@ -1332,7 +1337,7 @@ msgid "Appearance"
 msgstr ""
 
 #: src/screens/Feeds/NoSavedFeedsOfAnyType.tsx:51
-#: src/screens/Home/NoFeedsPinned.tsx:93
+#: src/screens/Home/NoFeedsPinned.tsx:90
 msgid "Apply default recommended feeds"
 msgstr ""
 
@@ -1685,8 +1690,8 @@ msgstr ""
 msgid "Browse more suggestions on the Explore page"
 msgstr ""
 
-#: src/screens/Home/NoFeedsPinned.tsx:103
-#: src/screens/Home/NoFeedsPinned.tsx:109
+#: src/screens/Home/NoFeedsPinned.tsx:100
+#: src/screens/Home/NoFeedsPinned.tsx:106
 msgid "Browse other feeds"
 msgstr ""
 
@@ -2017,7 +2022,7 @@ msgstr ""
 msgid "Choose Post Languages"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:431
+#: src/screens/Onboarding/StepFinished/index.tsx:424
 msgid "Choose the algorithms that power your custom feeds."
 msgstr ""
 
@@ -2029,7 +2034,7 @@ msgstr ""
 msgid "Choose your account provider"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:722
+#: src/view/screens/Feeds.tsx:728
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr ""
 
@@ -2265,8 +2270,8 @@ msgstr ""
 msgid "Community Guidelines"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:343
-#: src/screens/Onboarding/StepFinished/index.tsx:444
+#: src/screens/Onboarding/StepFinished/index.tsx:336
+#: src/screens/Onboarding/StepFinished/index.tsx:437
 msgid "Complete onboarding and start using your account"
 msgstr ""
 
@@ -3072,7 +3077,7 @@ msgid "Discover new custom feeds"
 msgstr ""
 
 #: src/screens/Search/Explore.tsx:432
-#: src/view/screens/Feeds.tsx:719
+#: src/view/screens/Feeds.tsx:725
 msgid "Discover New Feeds"
 msgstr ""
 
@@ -3310,7 +3315,7 @@ msgid "Edit moderation list"
 msgstr ""
 
 #: src/Navigation.tsx:374
-#: src/view/screens/Feeds.tsx:517
+#: src/view/screens/Feeds.tsx:518
 msgid "Edit My Feeds"
 msgstr ""
 
@@ -4010,7 +4015,7 @@ msgstr ""
 #: src/screens/SavedFeeds.tsx:108
 #: src/screens/Search/SearchResults.tsx:91
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
-#: src/view/screens/Feeds.tsx:510
+#: src/view/screens/Feeds.tsx:511
 #: src/view/screens/Profile.tsx:226
 #: src/view/shell/desktop/LeftNav.tsx:766
 #: src/view/shell/Drawer.tsx:594
@@ -4063,8 +4068,8 @@ msgstr ""
 msgid "Filter who you receive notifications from"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:349
-#: src/screens/Onboarding/StepFinished/index.tsx:447
+#: src/screens/Onboarding/StepFinished/index.tsx:342
+#: src/screens/Onboarding/StepFinished/index.tsx:440
 msgid "Finalizing"
 msgstr ""
 
@@ -4119,7 +4124,7 @@ msgctxt "Name of app icon variant"
 msgid "Flat White"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:427
+#: src/screens/Onboarding/StepFinished/index.tsx:420
 msgid "Flexible"
 msgstr ""
 
@@ -4221,12 +4226,6 @@ msgstr ""
 #: src/screens/PostThread/components/ThreadItemAnchorFollowButton.tsx:134
 #: src/screens/Profile/Header/ProfileHeaderStandard.tsx:256
 #: src/screens/VideoFeed/index.tsx:855
-msgid "Following"
-msgstr ""
-
-#: src/screens/SavedFeeds.tsx:410
-#: src/view/screens/Feeds.tsx:592
-msgctxt "feed-name"
 msgid "Following"
 msgstr ""
 
@@ -5331,8 +5330,8 @@ msgstr ""
 msgid "Let's get your password reset!"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:351
-#: src/screens/Onboarding/StepFinished/index.tsx:447
+#: src/screens/Onboarding/StepFinished/index.tsx:344
+#: src/screens/Onboarding/StepFinished/index.tsx:440
 msgid "Let's go!"
 msgstr ""
 
@@ -5563,7 +5562,7 @@ msgstr ""
 #: src/screens/Profile/ProfileFeed/index.tsx:221
 #: src/screens/Profile/Sections/Feed.tsx:94
 #: src/screens/ProfileList/FeedSection.tsx:105
-#: src/view/com/feeds/FeedPage.tsx:167
+#: src/view/com/feeds/FeedPage.tsx:170
 msgid "Load new posts"
 msgstr ""
 
@@ -5600,7 +5599,7 @@ msgstr ""
 msgid "Looks like you haven't saved any feeds! Use our recommendations or browse more below."
 msgstr ""
 
-#: src/screens/Home/NoFeedsPinned.tsx:83
+#: src/screens/Home/NoFeedsPinned.tsx:80
 msgid "Looks like you unpinned all your feeds. But don't worry, you can add some below 😄"
 msgstr ""
 
@@ -5965,7 +5964,7 @@ msgstr ""
 msgid "My Birthday"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:693
+#: src/view/screens/Feeds.tsx:699
 msgid "My Feeds"
 msgstr ""
 
@@ -6027,7 +6026,7 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:415
+#: src/screens/Onboarding/StepFinished/index.tsx:408
 msgid "Never lose access to your followers or data."
 msgstr ""
 
@@ -6150,8 +6149,8 @@ msgstr ""
 #: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
-#: src/screens/Onboarding/StepFinished/index.tsx:344
-#: src/screens/Onboarding/StepFinished/index.tsx:353
+#: src/screens/Onboarding/StepFinished/index.tsx:337
+#: src/screens/Onboarding/StepFinished/index.tsx:346
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:157
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:165
 #: src/screens/Signup/BackNextButtons.tsx:67
@@ -6271,7 +6270,7 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:472
+#: src/view/screens/Feeds.tsx:473
 msgid "No results found for \"{query}\""
 msgstr ""
 
@@ -6522,7 +6521,7 @@ msgstr ""
 msgid "Oops!"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:411
+#: src/screens/Onboarding/StepFinished/index.tsx:404
 msgid "Open"
 msgstr ""
 
@@ -7355,7 +7354,7 @@ msgstr ""
 msgid "Protein content must be a number"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:397
+#: src/screens/Onboarding/StepFinished/index.tsx:390
 msgid "Public"
 msgstr ""
 
@@ -8345,7 +8344,7 @@ msgstr ""
 msgid "Search cuisines..."
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:443
+#: src/view/screens/Feeds.tsx:444
 msgid "Search feeds"
 msgstr ""
 
@@ -9116,16 +9115,16 @@ msgstr ""
 msgid "Similar accounts"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:309
-#: src/screens/Onboarding/StepFinished/index.tsx:331
+#: src/screens/Onboarding/StepFinished/index.tsx:302
+#: src/screens/Onboarding/StepFinished/index.tsx:324
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:222
 #: src/screens/Onboarding/StepSuggestedStarterpacks/index.tsx:102
 #: src/screens/StarterPack/Wizard/index.tsx:217
 msgid "Skip"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:302
-#: src/screens/Onboarding/StepFinished/index.tsx:328
+#: src/screens/Onboarding/StepFinished/index.tsx:295
+#: src/screens/Onboarding/StepFinished/index.tsx:321
 msgid "Skip introduction and start using your account"
 msgstr ""
 
@@ -9777,7 +9776,7 @@ msgid "There was an issue fetching notifications. Tap here to try again."
 msgstr ""
 
 #: src/screens/Search/Explore.tsx:993
-#: src/view/com/posts/PostFeed.tsx:714
+#: src/view/com/posts/PostFeed.tsx:713
 msgid "There was an issue fetching posts. Tap here to try again."
 msgstr ""
 
@@ -11111,7 +11110,7 @@ msgstr ""
 msgid "We have sent another verification email to <0>{0}</0>."
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:386
+#: src/screens/Onboarding/StepFinished/index.tsx:379
 msgid "We hope you have a wonderful time. Remember, {0} is:"
 msgstr ""
 
@@ -11281,7 +11280,7 @@ msgstr ""
 msgid "Who can verify?"
 msgstr ""
 
-#: src/screens/Home/NoFeedsPinned.tsx:79
+#: src/screens/Home/NoFeedsPinned.tsx:76
 #: src/screens/Messages/ChatList.tsx:270
 #: src/screens/Messages/Inbox.tsx:198
 msgid "Whoops!"
@@ -11783,7 +11782,7 @@ msgstr ""
 msgid "You're in line"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:383
+#: src/screens/Onboarding/StepFinished/index.tsx:376
 msgid "You're ready to go!"
 msgstr ""
 
@@ -11960,7 +11959,7 @@ msgstr ""
 msgid "Your posts were sent"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:401
+#: src/screens/Onboarding/StepFinished/index.tsx:394
 msgid "Your posts, likes, and blocks are public. Mutes are private."
 msgstr ""
 
