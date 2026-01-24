@@ -140,11 +140,6 @@ msgstr ""
 msgid "{0, plural, other {+# more}}"
 msgstr ""
 
-#: src/screens/SavedFeeds.tsx:415
-msgctxt "feed-name"
-msgid "{0}"
-msgstr ""
-
 #: src/components/EnvConfigIndicator.tsx:118
 #: src/components/EnvConfigIndicator.tsx:140
 #: src/components/forms/ComboBox/index.tsx:64
@@ -156,6 +151,11 @@ msgstr ""
 #: src/view/com/auth/SplashScreen.tsx:53
 #: src/view/com/auth/SplashScreen.web.tsx:105
 #: src/view/com/composer/Composer.tsx:902
+msgid "{0}"
+msgstr ""
+
+#: src/screens/SavedFeeds.tsx:415
+msgctxt "feed-name"
 msgid "{0}"
 msgstr ""
 
