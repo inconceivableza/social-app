@@ -28,7 +28,7 @@ export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 const HELP_DESK_LANG = 'en-us'
 export const HELP_DESK_URL = (
-  envContent.links.helpDesk ||
+  envContent.links?.helpDesk ||
   'https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}'
 ).replace('${HELP_DESK_LANG}', HELP_DESK_LANG)
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
@@ -260,12 +260,16 @@ export const TIMELINE_SAVED_FEED = envContent.feeds?.named?.timeline
       pinned: true,
     }
 
-export const DEFAULT_TIMELINE_FEEDS = Object.values(envContent.feeds?.named).map(({ type, uri, pinned }) => ({
-  type, value: uri, pinned
+export const DEFAULT_TIMELINE_FEEDS = Object.values(
+  envContent.feeds?.named,
+).map(({type, uri, pinned}) => ({
+  type,
+  value: uri,
+  pinned,
 }))
 
 export function getNamedFeed(value: string) {
-  return Object.values(envContent.feeds.named).find(({ uri }) => value === uri)
+  return Object.values(envContent.feeds.named).find(({uri}) => value === uri)
 }
 
 export const VIDEO_SAVED_FEED = envContent.feeds?.named?.video
