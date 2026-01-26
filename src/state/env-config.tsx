@@ -478,7 +478,10 @@ const envContentSchema = z.object({
     .object({
       about: z.string().optional(),
       blog: z.string().optional(),
+      helpDesk: z.string().optional(),
       jobs: z.string().optional(),
+      policyBase: z.string().optional(),
+      pdsSupport: z.string().optional(),
     })
     .default({}),
   sample_content: z.object({
@@ -498,6 +501,12 @@ const envContentSchema = z.object({
       post_id: z.string(),
     }),
   }),
+  feedback: z
+    .object({
+      postUrl: z.string().optional(),
+      postToken: z.string().optional(),
+    })
+    .default({}),
   debug: z
     .object({
       discover_debug_dids: z.array(z.string()).default([]),
