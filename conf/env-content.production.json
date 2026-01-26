@@ -22,9 +22,8 @@
     "log_for_owner_dids": [],
     "extra_headers_for_owner_dids": [],
     "known_shutdown_feeds": [],
-    "feedback_proxy_did": "did:web:discover.foodios.app",
     "authed_only": [],
-    "fallback_to": "timeline"
+    "fallback_to": "following"
   },
   "links": {
     "about": "https://ghost.foodios.social",
