@@ -7,7 +7,6 @@ import {
   FEED_FALLBACK_FEED,
   FEED_FALLBACK_FEEDNAME,
   PROD_DEFAULT_FEED,
-  SAMPLE_PROFILE_NAME,
 } from '#/lib/constants'
 import {logger} from '#/logger'
 import {
@@ -100,18 +99,30 @@ export function FeedShutdownMsg({feedUri}: {feedUri: string}) {
       <Text style={[a.text_5xl, a.font_semi_bold, t.atoms.text, a.text_center]}>
         :(
       </Text>
-      <Text style={[a.text_md, a.leading_snug, t.atoms.text, a.text_center]}>
-        <Trans>
-          This feed is no longer online. We are showing{' '}
-          <InlineLinkText
-            label={_(msg`The ${FEED_FALLBACK_FEED?.title || 'Discover'} feed`)}
-            to={`/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}/feed/${FEED_FALLBACK_FEEDNAME}`}
-            style={[a.text_md]}>
-            {FEED_FALLBACK_FEED?.title || 'Discover'}
-          </InlineLinkText>{' '}
-          instead.
-        </Trans>
-      </Text>
+      {FEED_FALLBACK_FEED ? (
+        <Text style={[a.text_md, a.leading_snug, t.atoms.text, a.text_center]}>
+          <Trans>
+            This feed is no longer online. We are showing{' '}
+            {FEED_FALLBACK_FEED.profile_name ? (
+              <InlineLinkText
+                label={_(
+                  msg`The ${FEED_FALLBACK_FEED.title || 'Discover'} feed`,
+                )}
+                to={`/profile/${FEED_FALLBACK_FEED.profile_name || 'bsky.app'}/feed/${FEED_FALLBACK_FEEDNAME}`}
+                style={[a.text_md]}>
+                {FEED_FALLBACK_FEED.title || 'Discover'}
+              </InlineLinkText>
+            ) : (
+              FEED_FALLBACK_FEED.title || 'Discover'
+            )}{' '}
+            instead.
+          </Trans>
+        </Text>
+      ) : (
+        <Text style={[a.text_md, a.leading_snug, t.atoms.text, a.text_center]}>
+          This feed is no longer online.
+        </Text>
+      )}
       {hasFeedPinned ? (
         <View style={[a.flex_row, a.justify_center, a.gap_sm]}>
           <Button

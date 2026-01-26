@@ -469,8 +469,8 @@ const envContentSchema = z.object({
     extra_headers_for_owner_dids: z.array(z.string()),
     known_shutdown_feeds: z.array(z.string()),
     authed_only: z.array(z.string()),
-    fallback_to: z.string(),
   }),
+  fallback_to: z.string().optional(),
   links: z.object({
     about: z.string().optional(),
     blog: z.string().optional(),

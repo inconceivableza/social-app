@@ -1,11 +1,7 @@
 import {View} from 'react-native'
 import {Trans} from '@lingui/macro'
 
-import {
-  FEED_FALLBACK_FEED,
-  FEED_FALLBACK_FEEDNAME,
-  SAMPLE_PROFILE_NAME,
-} from '#/lib/constants'
+import {FEED_FALLBACK_FEED, FEED_FALLBACK_FEEDNAME} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {InfoCircleIcon} from '#/lib/icons'
 import {TextLink} from '../util/Link'
@@ -29,20 +25,32 @@ export function DiscoverFallbackHeader() {
       <View style={{width: 68, paddingLeft: 12}}>
         <InfoCircleIcon size={36} style={pal.textLight} strokeWidth={1.5} />
       </View>
-      <View style={{flex: 1}}>
-        <Text type="md" style={pal.text}>
-          <Trans>
-            We ran out of posts from your follows. Here's the latest from{' '}
-            <TextLink
-              type="md-medium"
-              href={`/profile/${SAMPLE_PROFILE_NAME || 'bsky.app'}/feed/${FEED_FALLBACK_FEEDNAME}`}
-              text={FEED_FALLBACK_FEED?.title || 'Discover'}
-              style={pal.link}
-            />
-            .
-          </Trans>
-        </Text>
-      </View>
+      {FEED_FALLBACK_FEED ? (
+        <View style={{flex: 1}}>
+          <Text type="md" style={pal.text}>
+            <Trans>
+              We ran out of posts from your follows. Here's the latest from{' '}
+              {FEED_FALLBACK_FEED.profile_name ? (
+                <TextLink
+                  type="md-medium"
+                  href={`/profile/${FEED_FALLBACK_FEED.profile_name || 'bsky.app'}/feed/${FEED_FALLBACK_FEEDNAME}`}
+                  text={FEED_FALLBACK_FEED.title || 'Discover'}
+                  style={pal.link}
+                />
+              ) : (
+                FEED_FALLBACK_FEED.title || 'Discover'
+              )}
+              .
+            </Trans>
+          </Text>
+        </View>
+      ) : (
+        <View style={{flex: 1}}>
+          <Text type="md" style={pal.text}>
+            <Trans>That's the end of posts from this feed.</Trans>
+          </Text>
+        </View>
+      )}
     </View>
   )
 }

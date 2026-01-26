@@ -89,6 +89,7 @@ export type EnvContent = {
         uri: string
         type: string
         pinned: boolean
+        profile_name?: string
         default?: boolean
         video?: boolean
         feedback?: boolean
@@ -98,7 +99,7 @@ export type EnvContent = {
     extra_headers_for_owner_dids: string[]
     known_shutdown_feeds: string[]
     authed_only: string[]
-    fallback_to: string
+    fallback_to?: string
   }
   links: {
     about?: string
