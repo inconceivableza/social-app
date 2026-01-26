@@ -1,8 +1,9 @@
 import React from 'react'
 import {View} from 'react-native'
-import {BSKY_LABELER_DID, type ModerationCause} from '@atproto/api'
+import {type ModerationCause} from '@atproto/api'
 import {Trans} from '@lingui/macro'
 
+import {BSKY_LABELER_DID} from '#/lib/constants'
 import {useModerationCauseDescription} from '#/lib/moderation/useModerationCauseDescription'
 import {UserAvatar} from '#/view/com/util/UserAvatar'
 import {atoms as a, useTheme, type ViewStyleProp} from '#/alf'
