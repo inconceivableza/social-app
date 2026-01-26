@@ -447,32 +447,40 @@ export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
 }
 
 const envContentSchema = z.object({
-  onboarding: z.object({
-    auto_follow_accounts: z.array(z.string()),
-  }),
-  feeds: z.object({
-    named: z.record(
-      z.object({
-        title: z.string(),
-        uri: z.string(),
-        type: z.string(),
-        pinned: z.boolean(),
-        default: z.boolean().optional(),
-        video: z.boolean().optional(),
-        feedback: z.boolean().optional(),
-      }),
-    ),
-    log_for_owner_dids: z.array(z.string()),
-    extra_headers_for_owner_dids: z.array(z.string()),
-    known_shutdown_feeds: z.array(z.string()),
-    authed_only: z.array(z.string()),
-  }),
-  fallback_to: z.string().optional(),
-  links: z.object({
-    about: z.string().optional(),
-    blog: z.string().optional(),
-    jobs: z.string().optional(),
-  }),
+  onboarding: z
+    .object({
+      auto_follow_accounts: z.array(z.string()).default([]),
+    })
+    .default({}),
+  feeds: z
+    .object({
+      named: z
+        .record(
+          z.object({
+            title: z.string(),
+            uri: z.string(),
+            type: z.string(),
+            pinned: z.boolean(),
+            default: z.boolean().optional(),
+            video: z.boolean().optional(),
+            feedback: z.boolean().optional(),
+          }),
+        )
+        .default({}),
+      log_for_owner_dids: z.array(z.string()).default([]),
+      extra_headers_for_owner_dids: z.array(z.string()).default([]),
+      known_shutdown_feeds: z.array(z.string()).default([]),
+      authed_only: z.array(z.string()).default([]),
+      fallback_to: z.string().optional(),
+    })
+    .default({}),
+  links: z
+    .object({
+      about: z.string().optional(),
+      blog: z.string().optional(),
+      jobs: z.string().optional(),
+    })
+    .default({}),
   sample_content: z.object({
     profile: z.object({
       name: z.string(),
@@ -490,9 +498,11 @@ const envContentSchema = z.object({
       post_id: z.string(),
     }),
   }),
-  debug: z.object({
-    discover_debug_dids: z.array(z.string()),
-  }),
+  debug: z
+    .object({
+      discover_debug_dids: z.array(z.string()).default([]),
+    })
+    .default({}),
 })
 
 function buildSystemToEnvContent(contentObj: any): EnvContent {
