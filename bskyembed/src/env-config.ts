@@ -5,8 +5,8 @@ type EnvContent = {
   links: {
     about: string
   }
-  embed: {
-    default_post: {
+  embed?: {
+    default_post?: {
       profile_name: string
       did: string
       record_type?: string
@@ -201,11 +201,12 @@ export function getAppviewUrl(): string {
   return getEnvConfigSync().VITE_APPVIEW_URL
 }
 
-export function getDefaultPost(): string {
+export function getDefaultPost(): string | undefined {
   if (!contentCache) {
     throw new Error('Content not loaded yet')
   }
-  const post = contentCache.embed.default_post
+  const post = contentCache?.embed?.default_post
+  if (!post) return undefined
   return `${getSocialAppUrl()}/profile/${post.profile_name}/${post.record_type || 'post'}/${post.post_id}`
 }
 
@@ -214,11 +215,12 @@ const componentTypeMap = {
   recipePost: 'app.foodios.feed.recipePost',
 }
 
-export function getDefaultPostUri(): string {
+export function getDefaultPostUri(): string | undefined {
   if (!contentCache) {
     throw new Error('Content not loaded yet')
   }
-  const post = contentCache.embed.default_post
+  const post = contentCache?.embed?.default_post
+  if (!post) return undefined
   const componentType =
     !post.record_type || post.record_type === 'post'
       ? componentTypeMap.post

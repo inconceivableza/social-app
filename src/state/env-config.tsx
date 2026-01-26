@@ -484,23 +484,33 @@ const envContentSchema = z.object({
       pdsSupport: z.string().optional(),
     })
     .default({}),
-  sample_content: z.object({
-    profile: z.object({
-      name: z.string(),
-    }),
-    images: z.object({
-      default_avatar: z.string(),
-      default_banner: z.string(),
-    }),
-  }),
-  embed: z.object({
-    default_post: z.object({
-      profile_name: z.string(),
-      did: z.string(),
-      record_type: z.string().optional(),
-      post_id: z.string(),
-    }),
-  }),
+  sample_content: z
+    .object({
+      profile: z
+        .object({
+          name: z.string().optional(),
+        })
+        .optional(),
+      images: z
+        .object({
+          default_avatar: z.string().optional(),
+          default_banner: z.string().optional(),
+        })
+        .optional(),
+    })
+    .default({}),
+  embed: z
+    .object({
+      default_post: z
+        .object({
+          profile_name: z.string(),
+          did: z.string(),
+          record_type: z.string().optional(),
+          post_id: z.string(),
+        })
+        .optional(),
+    })
+    .default({}),
   feedback: z
     .object({
       postUrl: z.string().optional(),

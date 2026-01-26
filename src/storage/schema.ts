@@ -112,17 +112,17 @@ export type EnvContent = {
     postUrl?: string
     postToken?: string
   }
-  sample_content: {
-    profile: {
-      name: string
+  sample_content?: {
+    profile?: {
+      name?: string
     }
-    images: {
-      default_avatar: string
-      default_banner: string
+    images?: {
+      default_avatar?: string
+      default_banner?: string
     }
   }
-  embed: {
-    default_post: {
+  embed?: {
+    default_post?: {
       profile_name: string
       did: string
       record_type?: string
