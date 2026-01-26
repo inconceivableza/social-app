@@ -9102,6 +9102,13 @@ expo-dev-menu@7.0.11:
   dependencies:
     expo-dev-menu-interface "2.0.0"
 
+expo-dev-menu@^7.0.18:
+  version "7.0.18"
+  resolved "https://registry.yarnpkg.com/expo-dev-menu/-/expo-dev-menu-7.0.18.tgz#4f3e2dc20b82fc495afb602301b83fa16430f6b8"
+  integrity sha512-4kTdlHrnZCAWCT6tZRQHSSjZ7vECFisL4T+nsG/GJDo/jcHNaOVGV5qPV9wzlTxyMk3YOPggRw4+g7Ownrg5eA==
+  dependencies:
+    expo-dev-menu-interface "2.0.0"
+
 expo-device@7.1.4, expo-device@~4.1.1:
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/expo-device/-/expo-device-7.1.4.tgz#84ae7c2520cc45f15a9cb0433ae1226c33f7a8ef"

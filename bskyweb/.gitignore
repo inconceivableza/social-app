@@ -15,6 +15,9 @@ static/css/*.map
 static/css/*.css.LICENSE.txt
 static/css/empty.txt
 static/media/*.png
+static/media/*.webp
+static/media/*.jpg
+static/media/*.cjs
 static/media/empty.txt
 templates/scripts.html
 templates/*-embed.html
@@ -25,6 +28,7 @@ embedr-static/post-*.js
 embedr-static/post-*.css
 embedr-static/index-*.js
 embedr-static/polyfills-*.js
+embedr-static/*.svg
 
 # Don't ignore this file
 !.gitignore

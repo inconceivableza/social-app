@@ -1,6 +1,6 @@
-import {BSKY_LABELER_DID, BskyAgent} from '@atproto/api'
+import {BskyAgent} from '@atproto/api'
 
-import {IS_TEST_USER} from '#/lib/constants'
+import {BSKY_LABELER_DID, IS_TEST_USER} from '#/lib/constants'
 import {configureAdditionalModerationAuthorities} from './additional-moderation-authorities'
 import {readLabelers} from './agent-config'
 import {type SessionAccount} from './types'

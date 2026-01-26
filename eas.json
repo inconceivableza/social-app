@@ -105,6 +105,11 @@
         "ascAppId": "6444370199"
       }
     },
+    "testflight": {
+      "ios": {
+        "ascAppId": "6444370199"
+      }
+    },
     "testflight-android": {
       "android": {
         "track": "internal",

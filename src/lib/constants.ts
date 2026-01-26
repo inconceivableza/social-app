@@ -1,6 +1,9 @@
 import {type Insets, Platform} from 'react-native'
 import Constants from 'expo-constants'
-import {type AppBskyActorDefs, BSKY_LABELER_DID} from '@atproto/api'
+import {
+  type AppBskyActorDefs,
+  BSKY_LABELER_DID as DEFAULT_BSKY_LABELER_DID,
+} from '@atproto/api'
 
 import {
   beginResolveEnvConfig,
@@ -24,7 +27,10 @@ export const BSKY_SERVICE_DID = envConfig.BSKY_SERVICE_DID
 export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 const HELP_DESK_LANG = 'en-us'
-export const HELP_DESK_URL = (envContent.links.helpDesk || 'https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}').replace("${HELP_DESK_LANG}", HELP_DESK_LANG)
+export const HELP_DESK_URL = (
+  envContent.links.helpDesk ||
+  'https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}'
+).replace('${HELP_DESK_LANG}', HELP_DESK_LANG)
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
 const usingBlueskyEmbed = [
   DOMAIN_ENVCONFIGS.bluesky.SOCIAL_EMBED_SERVICE,
@@ -34,6 +40,8 @@ export const EMBED_SCRIPT = usingBlueskyEmbed
   ? `${EMBED_SERVICE}/static/embed.js`
   : `${EMBED_SERVICE}/embed.js`
 export const BSKY_DOWNLOAD_URL = `${envConfig.SOCIAL_APP_URL}/download`
+export const BSKY_LABELER_DID =
+  envConfig.MOD_SERVICE_DID || DEFAULT_BSKY_LABELER_DID
 export const STARTER_PACK_MAX_SIZE = 150
 export const CARD_ASPECT_RATIO = 1200 / 630
 export const CHAT_DISABLED = true
@@ -395,7 +403,8 @@ const BAPP_CONFIG_URL = IS_DEV
 export const GEOLOCATION_CONFIG_URL =
   envConfig.GEOLOCATION_CONFIG_URL || BAPP_CONFIG_URL
 
-const POLICY_BASE_URL = envContent.links.policyBase || 'https://bsky.social/about/support'
+const POLICY_BASE_URL =
+  envContent.links.policyBase || 'https://bsky.social/about/support'
 export const webLinks = {
   main: POLICY_BASE_URL, // main support page
   tos: `${POLICY_BASE_URL}/tos`,

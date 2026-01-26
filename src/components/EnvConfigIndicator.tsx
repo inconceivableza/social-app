@@ -47,7 +47,6 @@ export function EnvConfigIndicator({style}: IndicatorProps) {
   const defaultCustomDomain = DOMAIN_ENVCONFIGS.development.SOCIAL_APP_HOST
   const [customDomain, setCustomDomain] = React.useState(defaultCustomDomain)
   const [showCustomDomain, setShowCustomDomain] = React.useState(false)
-  logger.warn('Evaluating reload', reload)
   const reloadMessage = reload?.canReload
     ? _(msg`Going to reload app...`)
     : _(msg`Please exit and reload app manually...`)
