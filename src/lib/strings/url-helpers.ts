@@ -12,7 +12,7 @@ function getTrustedHosts() {
     envConfig.SOCIAL_APP_HOST.replace('.', '\\.'),
     envConfig.BSKY_SERVICE.replace(/^https?:\/\//, '').replace('.', '\\.'),
     'blueskyweb\\.xyz',
-    ...(envContent.links.helpDesk
+    ...(envContent.links?.helpDesk
       ? [
           envContent.links.helpDesk
             .replace(/^https?:\/\//, '')

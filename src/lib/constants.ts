@@ -28,7 +28,7 @@ export const PUBLIC_BSKY_SERVICE = envConfig.PUBLIC_BSKY_SERVICE
 export const DEFAULT_SERVICE = BSKY_SERVICE
 const HELP_DESK_LANG = 'en-us'
 export const HELP_DESK_URL = (
-  envContent.links.helpDesk ||
+  envContent.links?.helpDesk ||
   'https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}'
 ).replace('${HELP_DESK_LANG}', HELP_DESK_LANG)
 export const EMBED_SERVICE = envConfig.SOCIAL_EMBED_SERVICE
@@ -260,12 +260,16 @@ export const TIMELINE_SAVED_FEED = envContent.feeds?.named?.timeline
       pinned: true,
     }
 
-export const DEFAULT_TIMELINE_FEEDS = Object.values(envContent.feeds?.named).map(({ type, uri, pinned }) => ({
-  type, value: uri, pinned
+export const DEFAULT_TIMELINE_FEEDS = Object.values(
+  envContent.feeds?.named,
+).map(({type, uri, pinned}) => ({
+  type,
+  value: uri,
+  pinned,
 }))
 
 export function getNamedFeed(value: string) {
-  return Object.values(envContent.feeds.named).find(({ uri }) => value === uri)
+  return Object.values(envContent.feeds.named).find(({uri}) => value === uri)
 }
 
 export const VIDEO_SAVED_FEED = envContent.feeds?.named?.video
@@ -297,10 +301,6 @@ export const KNOWN_SHUTDOWN_FEEDS = envContent.feeds?.known_shutdown_feeds || []
 // Legacy constants that are still needed for some functions
 export const STAGING_VIDEO_FEED_URI =
   'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids'
-
-// Feed proxy DID from env-content: feeds.feedback_proxy_did
-export const FEED_PROXY_DID =
-  envContent.feeds?.feedback_proxy_did || 'did:web:discover.bsky.app'
 
 // Authenticated-only feeds from env-content: feeds.authed_only
 export const KNOWN_AUTHED_ONLY_FEEDS = envContent.feeds?.authed_only || []

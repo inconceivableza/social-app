@@ -38,7 +38,7 @@ Allows configuration of domains, branding and server-specific contents within th
 import React from 'react'
 import Constants from 'expo-constants'
 import EventEmitter from 'eventemitter3'
-import z from "zod"
+import z from 'zod'
 
 // import {logger} from '#/logger'
 const logger = {
@@ -277,7 +277,6 @@ const BLUESKY_CONTENT: EnvContent = {
     known_shutdown_feeds: [
       'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm',
     ],
-    feedback_proxy_did: 'did:web:discover.bsky.app',
     authed_only: [
       'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/with-friends',
       'at://did:plc:tenurhgjptubkk5zf5qhi3og/app.bsky.feed.generator/mutuals',
@@ -330,7 +329,6 @@ const BLUESKY_STAGING_CONTENT: EnvContent = {
   ...BLUESKY_CONTENT,
   feeds: {
     ...BLUESKY_CONTENT.feeds,
-    feedback_proxy_did: 'did:web:algo.pop2.bsky.app',
     named: {
       ...BLUESKY_CONTENT.feeds.named,
       discover: {
@@ -364,7 +362,6 @@ const EMPTY_CONTENT: EnvContent = {
     log_for_owner_dids: [],
     extra_headers_for_owner_dids: [],
     known_shutdown_feeds: [],
-    feedback_proxy_did: '',
     authed_only: [],
     fallback_to: '',
   },
@@ -450,55 +447,82 @@ export const DOMAIN_ENVCONFIGS: Record<string, EnvConfig> = {
 }
 
 const envContentSchema = z.object({
-  onboarding: z.object({
-    auto_follow_accounts: z.array(z.string()),
-  }),
-  feeds: z.object({
-    named: z.record(
-      z.object({
-        title: z.string(),
-        uri: z.string(),
-        type: z.string(),
-        pinned: z.boolean(),
-        default: z.boolean().optional(),
-        video: z.boolean().optional(),
-        feedback: z.boolean().optional(),
-      })
-    ),
-    log_for_owner_dids: z.array(z.string()),
-    extra_headers_for_owner_dids: z.array(z.string()),
-    known_shutdown_feeds: z.array(z.string()),
-    feedback_proxy_did: z.string(),
-    authed_only: z.array(z.string()),
-    fallback_to: z.string(),
-  }),
-  links: z.object({
-    about: z.string().optional(),
-    blog: z.string().optional(),
-    jobs: z.string().optional(),
-  }),
-  sample_content: z.object({
-    profile: z.object({
-      name: z.string(),
-    }),
-    images: z.object({
-      default_avatar: z.string(),
-      default_banner: z.string(),
-    }),
-  }),
-  embed: z.object({
-    default_post: z.object({
-      profile_name: z.string(),
-      did: z.string(),
-      record_type: z.string().optional(),
-      post_id: z.string(),
-    }),
-  }),
-  debug: z.object({
-    discover_debug_dids: z.array(z.string()),
-  }),
+  onboarding: z
+    .object({
+      auto_follow_accounts: z.array(z.string()).default([]),
+    })
+    .default({}),
+  feeds: z
+    .object({
+      named: z
+        .record(
+          z.object({
+            title: z.string(),
+            uri: z.string(),
+            type: z.string(),
+            pinned: z.boolean(),
+            default: z.boolean().optional(),
+            video: z.boolean().optional(),
+            feedback: z.boolean().optional(),
+          }),
+        )
+        .default({}),
+      log_for_owner_dids: z.array(z.string()).default([]),
+      extra_headers_for_owner_dids: z.array(z.string()).default([]),
+      known_shutdown_feeds: z.array(z.string()).default([]),
+      authed_only: z.array(z.string()).default([]),
+      fallback_to: z.string().optional(),
+    })
+    .default({}),
+  links: z
+    .object({
+      about: z.string().optional(),
+      blog: z.string().optional(),
+      helpDesk: z.string().optional(),
+      jobs: z.string().optional(),
+      policyBase: z.string().optional(),
+      pdsSupport: z.string().optional(),
+    })
+    .default({}),
+  sample_content: z
+    .object({
+      profile: z
+        .object({
+          name: z.string().optional(),
+        })
+        .optional(),
+      images: z
+        .object({
+          default_avatar: z.string().optional(),
+          default_banner: z.string().optional(),
+        })
+        .optional(),
+    })
+    .default({}),
+  embed: z
+    .object({
+      default_post: z
+        .object({
+          profile_name: z.string(),
+          did: z.string(),
+          record_type: z.string().optional(),
+          post_id: z.string(),
+        })
+        .optional(),
+    })
+    .default({}),
+  feedback: z
+    .object({
+      postUrl: z.string().optional(),
+      postToken: z.string().optional(),
+    })
+    .default({}),
+  debug: z
+    .object({
+      discover_debug_dids: z.array(z.string()).default([]),
+    })
+    .default({}),
 })
-
 
 function buildSystemToEnvContent(contentObj: any): EnvContent {
   // Convert build system content object to typed EnvContent

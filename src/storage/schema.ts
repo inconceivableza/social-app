@@ -89,6 +89,7 @@ export type EnvContent = {
         uri: string
         type: string
         pinned: boolean
+        profile_name?: string
         default?: boolean
         video?: boolean
         feedback?: boolean
@@ -97,9 +98,8 @@ export type EnvContent = {
     log_for_owner_dids: string[]
     extra_headers_for_owner_dids: string[]
     known_shutdown_feeds: string[]
-    feedback_proxy_did: string
     authed_only: string[]
-    fallback_to: string
+    fallback_to?: string
   }
   links: {
     about?: string
@@ -112,17 +112,17 @@ export type EnvContent = {
     postUrl?: string
     postToken?: string
   }
-  sample_content: {
-    profile: {
-      name: string
+  sample_content?: {
+    profile?: {
+      name?: string
     }
-    images: {
-      default_avatar: string
-      default_banner: string
+    images?: {
+      default_avatar?: string
+      default_banner?: string
     }
   }
-  embed: {
-    default_post: {
+  embed?: {
+    default_post?: {
       profile_name: string
       did: string
       record_type?: string

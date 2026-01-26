@@ -15,16 +15,17 @@ import {
   BLUESKY_PROXY_HEADER,
   BSKY_SERVICE,
   DEFAULT_TIMELINE_FEEDS,
-  DISCOVER_SAVED_FEED,
+  // DISCOVER_SAVED_FEED,
   IS_PROD_SERVICE,
   PUBLIC_BSKY_SERVICE,
-  TIMELINE_SAVED_FEED,
+  // TIMELINE_SAVED_FEED,
 } from '#/lib/constants'
 import {tryFetchGates} from '#/lib/statsig/statsig'
 import {getAge} from '#/lib/strings/time'
 import {logger} from '#/logger'
 import {snoozeEmailConfirmationPrompt} from '#/state/shell/reminders'
 import {emitNetworkConfirmed, emitNetworkLost} from '../events'
+import {Nux} from '../queries/nuxs'
 import {addSessionErrorLog} from './logging'
 import {
   configureModerationForAccount,
@@ -32,7 +33,6 @@ import {
 } from './moderation'
 import {type SessionAccount} from './types'
 import {isSessionExpired, isSignupQueued} from './util'
-import { Nux } from '../queries/nuxs'
 
 export type ProxyHeaderValue = `${Did}#${AtprotoServiceType}`
 
@@ -170,13 +170,13 @@ export async function createAgentAndCreateAccount(
           //   id: TID.nextStr(),
           // },
           ...DEFAULT_TIMELINE_FEEDS.map(feed => ({
-            ...feed, 
+            ...feed,
             id: TID.nextStr(),
-          }))
+          })),
         ])
         agent.bskyAppUpsertNux({
           id: Nux.EverythingTimeline,
-          completed: true
+          completed: true,
         })
         if (getAge(birthDate) < 18) {
           await agent.api.com.atproto.repo.putRecord({
