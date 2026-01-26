@@ -277,7 +277,6 @@ const BLUESKY_CONTENT: EnvContent = {
     known_shutdown_feeds: [
       'at://did:plc:wqowuobffl66jv3kpsvo7ak4/app.bsky.feed.generator/the-algorithm',
     ],
-    feedback_proxy_did: 'did:web:discover.bsky.app',
     authed_only: [
       'at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/with-friends',
       'at://did:plc:tenurhgjptubkk5zf5qhi3og/app.bsky.feed.generator/mutuals',
@@ -330,7 +329,6 @@ const BLUESKY_STAGING_CONTENT: EnvContent = {
   ...BLUESKY_CONTENT,
   feeds: {
     ...BLUESKY_CONTENT.feeds,
-    feedback_proxy_did: 'did:web:algo.pop2.bsky.app',
     named: {
       ...BLUESKY_CONTENT.feeds.named,
       discover: {
@@ -364,7 +362,6 @@ const EMPTY_CONTENT: EnvContent = {
     log_for_owner_dids: [],
     extra_headers_for_owner_dids: [],
     known_shutdown_feeds: [],
-    feedback_proxy_did: '',
     authed_only: [],
     fallback_to: '',
   },
