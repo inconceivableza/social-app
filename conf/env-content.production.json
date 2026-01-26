@@ -6,9 +6,15 @@
   },
   "feeds": {
     "named": {
-      "timeline": {
+      "following": {
         "title": "Following",
         "uri": "following",
+        "type": "timeline",
+        "pinned": true
+      },
+      "everything": {
+        "title": "Everything",
+        "uri": "everything",
         "type": "timeline",
         "pinned": true
       }
