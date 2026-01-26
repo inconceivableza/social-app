@@ -97,7 +97,6 @@ export type EnvContent = {
     log_for_owner_dids: string[]
     extra_headers_for_owner_dids: string[]
     known_shutdown_feeds: string[]
-    feedback_proxy_did: string
     authed_only: string[]
     fallback_to: string
   }

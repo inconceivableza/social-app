@@ -302,10 +302,6 @@ export const KNOWN_SHUTDOWN_FEEDS = envContent.feeds?.known_shutdown_feeds || []
 export const STAGING_VIDEO_FEED_URI =
   'at://did:plc:yofh3kx63drvfljkibw5zuxo/app.bsky.feed.generator/thevids'
 
-// Feed proxy DID from env-content: feeds.feedback_proxy_did
-export const FEED_PROXY_DID =
-  envContent.feeds?.feedback_proxy_did || 'did:web:discover.bsky.app'
-
 // Authenticated-only feeds from env-content: feeds.authed_only
 export const KNOWN_AUTHED_ONLY_FEEDS = envContent.feeds?.authed_only || []
 

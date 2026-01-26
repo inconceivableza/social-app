@@ -38,7 +38,7 @@ Allows configuration of domains, branding and server-specific contents within th
 import React from 'react'
 import Constants from 'expo-constants'
 import EventEmitter from 'eventemitter3'
-import z from "zod"
+import z from 'zod'
 
 // import {logger} from '#/logger'
 const logger = {
@@ -463,12 +463,11 @@ const envContentSchema = z.object({
         default: z.boolean().optional(),
         video: z.boolean().optional(),
         feedback: z.boolean().optional(),
-      })
+      }),
     ),
     log_for_owner_dids: z.array(z.string()),
     extra_headers_for_owner_dids: z.array(z.string()),
     known_shutdown_feeds: z.array(z.string()),
-    feedback_proxy_did: z.string(),
     authed_only: z.array(z.string()),
     fallback_to: z.string(),
   }),
@@ -498,7 +497,6 @@ const envContentSchema = z.object({
     discover_debug_dids: z.array(z.string()),
   }),
 })
-
 
 function buildSystemToEnvContent(contentObj: any): EnvContent {
   // Convert build system content object to typed EnvContent
