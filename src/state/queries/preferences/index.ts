@@ -8,7 +8,7 @@ import {
 } from '@atproto/api'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 
-import {PROD_DEFAULT_FEED} from '#/lib/constants'
+import { DISCOVER_FEED_URI, PROD_DEFAULT_FEED } from '#/lib/constants'
 import {replaceEqualDeep} from '#/lib/functions'
 import {getAge} from '#/lib/strings/time'
 import {logger} from '#/logger'
@@ -51,10 +51,10 @@ export function usePreferencesQuery() {
       } else {
         const res = await agent.getPreferences()
         try {
-          await upsertEverythingFeed(agent, res)
-
+          // TODO: remove this after all users upgraded 
+          res.savedFeeds = await upsertEverythingFeed(agent, res)
         } catch (e) {
-          console.error(e)
+          console.error("Failed to migrate saved feeds", e)
         }
 
         // save to local storage to ensure there are labels on initial requests
@@ -118,14 +118,14 @@ export function useClearPreferencesMutation() {
 
 /*
   Checks for everything timeline nux. If not found adds the everything timeline to the user's saved feeds.
-  Also mutates the provided preferences to include the everything timeline.
 */
 async function upsertEverythingFeed(agent: BskyAgent, prefs: BskyPreferences) {
   const everythingTimelineNux = prefs.bskyAppState.nuxs.find(({ id }) => id === Nux.EverythingTimeline)
-  const savedFeeds = prefs.savedFeeds
+  const savedFeeds = [...prefs.savedFeeds]
 
   if (!everythingTimelineNux && !savedFeeds.find(({ value, type }) => type === "timeline" && value === 'everything')) {
     const followingIdx = savedFeeds.findIndex(({ type, value }) => type === "timeline" && value === "following")
+
     const everythingFeed = {
       id: TID.nextStr(),
       type: 'timeline',
@@ -138,13 +138,23 @@ async function upsertEverythingFeed(agent: BskyAgent, prefs: BskyPreferences) {
       // Insert the everything feed after the following feed
       savedFeeds.splice(followingIdx, 1, savedFeeds[followingIdx], everythingFeed)
     }
+    // Remove the what's hot feed
+    const whatsHotIdx = savedFeeds.findIndex(({ value }) => value === DISCOVER_FEED_URI)
+    if (whatsHotIdx > 0) {
+      savedFeeds.splice(whatsHotIdx, 1)
+    }
+
     await agent.bskyAppUpsertNux({
       id: Nux.EverythingTimeline,
       completed: true
     })
+
     console.log('overwriting feeds', savedFeeds)
     await agent.overwriteSavedFeeds(savedFeeds)
+
+    return savedFeeds
   }
+  return prefs.savedFeeds
 }
 
 export function usePreferencesSetContentLabelMutation() {
