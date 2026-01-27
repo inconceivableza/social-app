@@ -140,7 +140,7 @@ async function upsertEverythingFeed(agent: BskyAgent, prefs: BskyPreferences) {
     }
     // Remove the what's hot feed
     const whatsHotIdx = savedFeeds.findIndex(({ value }) => value === DISCOVER_FEED_URI)
-    if (whatsHotIdx > 0) {
+    if (whatsHotIdx >= 0) {
       savedFeeds.splice(whatsHotIdx, 1)
     }
 

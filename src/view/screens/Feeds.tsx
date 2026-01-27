@@ -594,7 +594,7 @@ function TimelineFeed({ savedFeed }: { savedFeed: SavedFeedItem & { type: 'timel
           />
         </View>
         <FeedCard.TitleAndByline // TODO: localize
-          title={_(msg({ message: feedInfo.title, context: 'feed-name' }))}
+          title={feedInfo.title}
         />
         {savedFeed.config.pinned && <PinIcon />}
       </FeedCard.Header>
