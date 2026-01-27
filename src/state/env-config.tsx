@@ -585,10 +585,14 @@ function getFallbackEnvConfig(): EnvConfig {
   return __DEV__ ? DOMAIN_ENVCONFIGS.development : determineDomainEnvConfig()
 }
 
+function isCustomDomain() {
+  return hostname !== PRODUCTION_DOMAIN && hostname !== STAGING_DOMAIN
+}
+
 export function getStoredEnvConfig(): EnvConfig {
   const storedEnvConfig: EnvConfig = {...EMPTY_CONFIG}
   try {
-    if (envConfigStorage) {
+    if (envConfigStorage && isCustomDomain()) {
       for (const key in EMPTY_CONFIG) {
         const typedKey = key as keyof EnvConfig
         storedEnvConfig[typedKey] = envConfigStorage.get([typedKey]) || ''
@@ -807,7 +811,7 @@ export function hasNonemptyStoredEnvContent(): boolean {
 }
 export function getStoredEnvContent(): EnvContent {
   try {
-    if (envContentStorage) {
+    if (envContentStorage && isCustomDomain()) {
       const storedContentString = envContentStorage.get(['content'])
       if (storedContentString) {
         return envContentSchema.parse(JSON.parse(storedContentString))
@@ -870,6 +874,16 @@ export function renderEnvContent(
  * envConfig is actually resolved statically here, so it synchronously initializes it
  */
 export function beginResolveEnvConfig() {
+  /**
+   * We only use local storage if the current domain (i.e. page doing the request) is not known to be
+   * the foodios prod/staging domain. Not that local storage WILL be used if your social app is
+   * served from a custom domain and you have manually set your server endpoint to prod/staging.
+   */
+  if (!isCustomDomain()) {
+    logger.info("Non-custom domain: won't load stored env")
+    return
+  }
+  logger.info("Custom domain: attempting to use stored env")
   /**
    * In dev, IP server is unavailable, but if running from bluesky-selfhost-env,
    * we want to use the environment
