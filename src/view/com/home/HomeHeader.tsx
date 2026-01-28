@@ -8,6 +8,7 @@ import { type RenderTabBarFnProps } from '#/view/com/pager/Pager'
 import {TabBar} from '../pager/TabBar'
 import {HomeHeaderLayout} from './HomeHeaderLayout'
 import { getNamedFeed } from '#/lib/constants'
+import { View } from 'react-native'
 
 export function HomeHeader(
   props: RenderTabBarFnProps & PropsWithChildren<{
@@ -63,7 +64,9 @@ export function HomeHeader(
         dragProgress={props.dragProgress}
         dragState={props.dragState}
       />
+      <View>
       {props.children}
+      </View>
     </HomeHeaderLayout>
   )
 }

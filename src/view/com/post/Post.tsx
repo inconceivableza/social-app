@@ -44,6 +44,7 @@ import {RichText} from '#/components/RichText'
 import {SubtleHover} from '#/components/SubtleHover'
 import * as bsky from '#/types/bsky'
 import {ExpandableRecipePost} from '../posts/ExpandableRecipePost'
+import { PostAuthorDidProvider } from '../posts/PostContext'
 
 export function Post({
   post,
@@ -100,16 +101,18 @@ export function Post({
   }
   if (postContent && moderation) {
     return (
-      <PostInner
-        post={postShadowed}
-        record={postContent.record}
-        richText={postContent.richText}
-        moderation={moderation}
-        showReplyLine={showReplyLine}
-        hideTopBorder={hideTopBorder}
-        style={style}
-        onBeforePress={onBeforePress}
-      />
+      <PostAuthorDidProvider did={post.author.did}>
+        <PostInner
+          post={postShadowed}
+          record={postContent.record}
+          richText={postContent.richText}
+          moderation={moderation}
+          showReplyLine={showReplyLine}
+          hideTopBorder={hideTopBorder}
+          style={style}
+          onBeforePress={onBeforePress}
+        />
+      </PostAuthorDidProvider>
     )
   }
   return null

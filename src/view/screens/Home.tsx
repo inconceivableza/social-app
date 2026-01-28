@@ -210,7 +210,7 @@ function HomeScreenReady({
           />
         )
       }
-      const isDefaultFeed = maybeSelectedFeed && getNamedFeed(maybeSelectedFeed) 
+      const isDefaultFeed = maybeSelectedFeed && getNamedFeed(maybeSelectedFeed)
       return (
         <HomeHeader
           key="FEEDS_TAB_BAR"
@@ -347,20 +347,33 @@ const timelineFilters = [
   { id: 'review', label: 'Reviews' },
 ]
 
-function TimelineFilterHeader({ onFilterChange }: { onFilterChange: (filterId: string) => void }) {
+function TimelineFilterHeader({
+  onFilterChange
+}: {
+  onFilterChange: (filterId: string) => void
+}) {
   const t = useTheme()
-  return <View style={[a.border_t, t.atoms.border_contrast_low]}>
-    <Pager onPageSelected={pageIdx => {
-      const filter = timelineFilters.at(pageIdx)
-      if (!filter) return;
-      onFilterChange(filter.id)
-    }} renderTabBar={props => <TabBar
-      {...props}
-      items={timelineFilters.map(({ label }) => label)}
-      itemTextStyle={a.text_sm}
-    />}
-    />
-  </View>
+  return (
+    <View style={[a.border_t, t.atoms.border_contrast_low]}>
+      <Pager
+        onPageSelected={pageIdx => {
+          const filter = timelineFilters.at(pageIdx)
+          if (!filter) return
+          onFilterChange(filter.id)
+        }}
+        renderTabBar={props => (
+          <TabBar
+            {...props}
+            items={timelineFilters.map(({label}) => label)}
+            itemTextStyle={a.text_sm}
+          />
+        )}>
+        {timelineFilters.map(filter => (
+          <View key={filter.id} />
+        ))}
+      </Pager>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
