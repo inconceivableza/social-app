@@ -187,6 +187,8 @@ function ProfileScreenLoaded({
   const listsSectionRef = React.useRef<SectionRef>(null)
   const starterPacksSectionRef = React.useRef<SectionRef>(null)
   const labelsSectionRef = React.useRef<SectionRef>(null)
+  const recipesSectionRef = React.useRef<SectionRef>(null)
+  const allSectionRef = React.useRef<SectionRef>(null)
 
   useSetTitle(combinedDisplayName(profile))
 
@@ -210,14 +212,17 @@ function ProfileScreenLoaded({
     // Order is significant
     const allSections = [
       { id: "filters", visible: hasLabeler, title: _(msg`Labels`), ref: labelsSectionRef },
+      { id: "all", visible: !hasLabeler, title: _(msg`All`), ref: allSectionRef },
       { id: "posts", visible: true, title: _(msg`Posts`), ref: postsSectionRef },
-      { id: "replies", visible: hasSession, title: _(msg`Replies`), ref: repliesSectionRef },
+      { id: "replies", visible: hasSession && false /** Currently has same functionality as "all" */, title: _(msg`Replies`), ref: repliesSectionRef },
+      { id: "recipes", visible: !hasLabeler, title: _(msg`Recipes`), ref: recipesSectionRef },
+      { id: "reviews", visible: !hasLabeler, title: _(msg`Reviews`), ref: recipesSectionRef },
       { id: "media", visible: !hasLabeler, title: _(msg`Media`), ref: mediaSectionRef },
       { id: "videos", visible: !hasLabeler, title: _(msg`Videos`), ref: videosSectionRef },
       { id: "likes", visible: isMe, title: _(msg`Likes`), ref: likesSectionRef },
       { id: "feeds", visible: isMe || feedGenCount > 0, title: _(msg`Feeds`), ref: feedsSectionRef },
       { id: "starter_packs", visible: isMe || starterPackCount > 0, title: _(msg`Starter Packs`), ref: starterPacksSectionRef },
-      { id: "lists", visible: hasSession && (isMe || listCount > 0) && hasLabeler, title: _(msg`Lists`), ref: listsSectionRef },
+      { id: "lists", visible: hasSession && (isMe || listCount > 0), title: _(msg`Lists`), ref: listsSectionRef },
     ] as const
 
     const visibleSections = allSections.filter(({ visible }) => visible)
@@ -318,17 +323,18 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("lists") && !!profile.associated?.labeler
-          ? ({headerHeight, isFocused, scrollElRef}) => (
-              <ProfileLists
-                ref={listsSectionRef}
-                did={profile.did}
-                scrollElRef={scrollElRef as ListRef}
-                headerOffset={headerHeight}
-                enabled={isFocused}
-                setScrollViewTag={setScrollViewTag}
-              />
-            )
+        {sectionById.has("all")
+          ? ({ headerHeight, isFocused, scrollElRef }) => (
+            <ProfileFeedSection
+              ref={postsSectionRef}
+              feed={`author|${profile.did}|all`}
+              headerHeight={headerHeight}
+              isFocused={isFocused}
+              scrollElRef={scrollElRef as ListRef}
+              ignoreFilterFor={profile.did}
+              setScrollViewTag={setScrollViewTag}
+            />
+          )
           : null}
         {sectionById.has("posts")
           ? ({headerHeight, isFocused, scrollElRef}) => (
@@ -356,6 +362,24 @@ function ProfileScreenLoaded({
               />
             )
           : null}
+        {sectionById.has("recipes") ? ({ headerHeight, isFocused, scrollElRef }) => <ProfileFeedSection
+          ref={recipesSectionRef}
+          feed={`author|${profile.did}|recipes`}
+          headerHeight={headerHeight}
+          isFocused={isFocused}
+          scrollElRef={scrollElRef as ListRef}
+          ignoreFilterFor={profile.did}
+          setScrollViewTag={setScrollViewTag}
+        /> : null}
+        {sectionById.has("reviews") ? ({ headerHeight, isFocused, scrollElRef }) => <ProfileFeedSection
+          ref={recipesSectionRef}
+          feed={`author|${profile.did}|reviews`}
+          headerHeight={headerHeight}
+          isFocused={isFocused}
+          scrollElRef={scrollElRef as ListRef}
+          ignoreFilterFor={profile.did}
+          setScrollViewTag={setScrollViewTag}
+        /> : null}
         {sectionById.has("media")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
