@@ -62,6 +62,27 @@ let List = React.forwardRef<ListMethods, ListProps>(
     const t = useTheme()
     const dedupe = useDedupe(400)
     const {activeLightbox} = useLightbox()
+    const listRef = React.useRef<FlatList_INTERNAL | null>(null)
+    const prevHeaderOffset = React.useRef<number | undefined>(headerOffset)
+
+    React.useImperativeHandle(ref, () => listRef.current as FlatList_INTERNAL)
+
+    // When headerOffset changes after initial mount, adjust scroll position
+    React.useEffect(() => {
+      const prev = prevHeaderOffset.current
+      const current = headerOffset
+
+      if (prev != null && current != null && prev !== current && listRef.current) {
+        const delta = current - prev
+        // Adjust scroll position to maintain visual position
+        listRef.current.scrollToOffset({
+          offset: -current,
+          animated: false,
+        })
+      }
+
+      prevHeaderOffset.current = current
+    }, [headerOffset])
 
     function handleScrolledDownChange(didScrollDown: boolean) {
       onScrolledDownChange?.(didScrollDown)
@@ -172,7 +193,7 @@ let List = React.forwardRef<ListMethods, ListProps>(
         scrollEventThrottle={1}
         style={style}
         // @ts-expect-error FlatList_INTERNAL ref type is wrong -sfn
-        ref={ref}
+        ref={listRef}
       />
     )
   },
