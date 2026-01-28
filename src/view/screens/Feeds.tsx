@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react'
+import React, {useMemo} from 'react'
 import {ActivityIndicator, StyleSheet, View} from 'react-native'
 import {type AppBskyFeedDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {useFocusEffect} from '@react-navigation/native'
 import debounce from 'lodash.debounce'
-import { Pin_Filled_Corner0_Rounded as PinIcon } from '#/components/icons/Pin'
+
+import {getNamedFeed} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
 import {useWebMediaQueries} from '#/lib/hooks/useWebMediaQueries'
 import {
@@ -39,12 +40,12 @@ import {ChevronRight_Stroke2_Corner0_Rounded as ChevronRight} from '#/components
 import {FilterTimeline_Stroke2_Corner0_Rounded as FilterTimeline} from '#/components/icons/FilterTimeline'
 import {ListMagnifyingGlass_Stroke2_Corner0_Rounded} from '#/components/icons/ListMagnifyingGlass'
 import {ListSparkle_Stroke2_Corner0_Rounded} from '#/components/icons/ListSparkle'
+import {Pin_Filled_Corner0_Rounded as PinIcon} from '#/components/icons/Pin'
 import {SettingsGear2_Stroke2_Corner0_Rounded as Gear} from '#/components/icons/SettingsGear2'
 import * as Layout from '#/components/Layout'
 import {Link} from '#/components/Link'
 import * as ListCard from '#/components/ListCard'
 import {ComposeFAB} from '../com/composer/ComposeFAB'
-import { getNamedFeed } from '#/lib/constants'
 
 type Props = NativeStackScreenProps<CommonNavigatorParams, 'Feeds'>
 
@@ -555,50 +556,56 @@ function FeedOrFollowing({savedFeed}: {savedFeed: SavedFeedItem}) {
   )
 }
 
-function TimelineFeed({ savedFeed }: { savedFeed: SavedFeedItem & { type: 'timeline' } }) {
-  const feedInfo = useMemo(() => getNamedFeed(savedFeed.config.value),
-    [savedFeed.config.value]
+function TimelineFeed({
+  savedFeed,
+}: {
+  savedFeed: SavedFeedItem & {type: 'timeline'}
+}) {
+  const feedInfo = useMemo(
+    () => getNamedFeed(savedFeed.config.value),
+    [savedFeed.config.value],
   )
   const t = useTheme()
-  const {_} = useLingui()
 
-  return feedInfo && (
-    <View
-      style={[
-        a.flex_1,
-        a.px_lg,
-        a.py_md,
-        a.border_b,
-        t.atoms.border_contrast_low,
-      ]}>
-      <FeedCard.Header>
-        <View
-          style={[
-            a.align_center,
-            a.justify_center,
-            {
-              width: 28,
-              height: 28,
-              borderRadius: 3,
-              backgroundColor: t.palette.primary_500,
-            },
-          ]}>
-          <FilterTimeline
+  return (
+    feedInfo && (
+      <View
+        style={[
+          a.flex_1,
+          a.px_lg,
+          a.py_md,
+          a.border_b,
+          t.atoms.border_contrast_low,
+        ]}>
+        <FeedCard.Header>
+          <View
             style={[
+              a.align_center,
+              a.justify_center,
               {
-                width: 18,
-                height: 18,
+                width: 28,
+                height: 28,
+                borderRadius: 3,
+                backgroundColor: t.palette.primary_500,
               },
-            ]}
-            fill={t.palette.white}
+            ]}>
+            <FilterTimeline
+              style={[
+                {
+                  width: 18,
+                  height: 18,
+                },
+              ]}
+              fill={t.palette.white}
+            />
+          </View>
+          <FeedCard.TitleAndByline // TODO: localize
+            title={feedInfo.title}
           />
-        </View>
-        <FeedCard.TitleAndByline // TODO: localize
-          title={feedInfo.title}
-        />
-        {savedFeed.config.pinned && <PinIcon />}
-      </FeedCard.Header>
-    </View>
+          {savedFeed.config.pinned && <PinIcon />}
+        </FeedCard.Header>
+      </View>
+    )
   )
 }
 
@@ -642,7 +649,7 @@ function SavedFeed({
           <ListCard.Header>
             <ListCard.Avatar src={savedFeed.view.avatar} size={28} />
             <ListCard.TitleAndByline title={savedFeed.view.name} />
-              {savedFeed.config.pinned && <PinIcon />}
+            {savedFeed.config.pinned && <PinIcon />}
             <ChevronRight size="sm" fill={t.atoms.text_contrast_low.color} />
           </ListCard.Header>
         </View>
