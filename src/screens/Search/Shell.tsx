@@ -36,9 +36,16 @@ import {
   type Params,
   parseSearchQuery,
 } from '#/screens/Search/utils'
-import { atoms as a, platform, select, tokens, useBreakpoints, useTheme, web } from '#/alf'
+import {
+  atoms as a,
+  platform,
+  tokens,
+  useBreakpoints,
+  useTheme,
+  web,
+} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
-import { SearchInput } from '#/components/forms/SearchInput'
+import {SearchInput} from '#/components/forms/SearchInput'
 import * as Layout from '#/components/Layout'
 import {Text} from '#/components/Typography'
 import {account, useStorage} from '#/storage'
@@ -51,10 +58,10 @@ import {
 } from './components/RecipeSearchFields'
 import {SearchHistory} from './components/SearchHistory'
 import {SearchLanguageDropdown} from './components/SearchLanguageDropdown'
+import {SearchTypeInput} from './components/SearchTypeInput'
+import {type SearchType} from './components/SearchTypeInput/options'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
-import { SearchTypeInput } from './components/SearchTypeInput'
-import { SearchType } from './components/SearchTypeInput/options'
 
 export function SearchScreenShell({
   queryParam,
@@ -381,8 +388,11 @@ export function SearchScreenShell({
                   a.gap_xs,
                   a.align_center,
                 ]}>
-                <View style={[platform({ web: { width: '25%' } })]}>
-                  <SearchTypeInput value={searchType} onChange={setSearchType} />
+                <View style={[platform({web: {width: '25%'}})]}>
+                  <SearchTypeInput
+                    value={searchType}
+                    onChange={setSearchType}
+                  />
                 </View>
                 <View style={{flexGrow: 1}}>
                   <SearchInput
@@ -393,8 +403,9 @@ export function SearchScreenShell({
                     onClearText={onPressClearQuery}
                     onSubmitEditing={onSubmit}
                     placeholder={
-                      inputPlaceholder ?? searchType === "all" ?
-                        _(msg`Search for posts, users, or feeds`) : _(msg`Search for recipes`)
+                      (inputPlaceholder ?? searchType === 'all')
+                        ? _(msg`Search for posts, users, or feeds`)
+                        : _(msg`Search for recipes`)
                     }
                     hitSlop={{...HITSLOP_20, top: 0}}
                   />
@@ -634,5 +645,3 @@ function scrollToTopWeb() {
     window.scrollTo(0, 0)
   }
 }
-
-

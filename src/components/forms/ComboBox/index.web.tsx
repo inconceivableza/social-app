@@ -1,20 +1,16 @@
 import {useState} from 'react'
 import {View} from 'react-native'
+import {atoms} from '@bsky.app/alf'
 import {Popover} from 'radix-ui'
 
 import * as TextField from '#/components/forms/TextField'
-import {
-  ComboBoxSelection,
-  ComboBoxSingleSelectOptions,
-} from './common'
-import { ComboBoxOptions } from "./ComboBoxOptions"
-
+import {ComboBoxOptions} from './ComboBoxOptions'
+import {ComboBoxSelection, ComboBoxSingleSelectOptions} from './common'
 import {
   type BaseOption,
   type ComboBoxProps,
   type ComboBoxSingleSelectProps,
 } from './types'
-import { atoms } from '@bsky.app/alf'
 
 /**
  * Multi-select combo box, only allowing selection of the given options.
@@ -66,13 +62,13 @@ export function ComboBox<T extends BaseOption>({
                 onSelect(opt)
                 reset()
               }}
-              containerStyle={{ maxHeight: 200 }}
+              containerStyle={{maxHeight: 200}}
             />
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
       <View style={[atoms.mt_xs]}>
-      <ComboBoxSelection selection={selection} onRemove={onRemove} />
+        <ComboBoxSelection selection={selection} onRemove={onRemove} />
       </View>
     </View>
   )

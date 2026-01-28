@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import React, {useState} from 'react'
+import {ActivityIndicator, StyleSheet, View} from 'react-native'
 import {useFocusEffect} from '@react-navigation/native'
-import { atoms as a, useTheme } from '#/alf'
-import { getNamedFeed, PROD_DEFAULT_FEED } from '#/lib/constants'
+
+import {getNamedFeed, PROD_DEFAULT_FEED} from '#/lib/constants'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {useOTAUpdates} from '#/lib/hooks/useOTAUpdates'
 import {useSetTitle} from '#/lib/hooks/useSetTitle'
@@ -36,9 +36,10 @@ import {CustomFeedEmptyState} from '#/view/com/posts/CustomFeedEmptyState'
 import {FollowingEmptyState} from '#/view/com/posts/FollowingEmptyState'
 import {FollowingEndOfFeed} from '#/view/com/posts/FollowingEndOfFeed'
 import {NoFeedsPinned} from '#/screens/Home/NoFeedsPinned'
+import {atoms as a, useTheme} from '#/alf'
 import * as Layout from '#/components/Layout'
 import {useDemoMode} from '#/storage/hooks/demo-mode'
-import { TabBar } from '../com/pager/TabBar'
+import {TabBar} from '../com/pager/TabBar'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'Home' | 'Start'>
 export function HomeScreen(props: Props) {
@@ -217,8 +218,7 @@ function HomeScreenReady({
           {...props}
           testID="homeScreenFeedTabs"
           onPressSelected={onPressSelected}
-          feeds={pinnedFeedInfos}
-        >
+          feeds={pinnedFeedInfos}>
           {isDefaultFeed && <TimelineFilterHeader onFilterChange={setFilter} />}
         </HomeHeader>
       )
@@ -242,7 +242,7 @@ function HomeScreenReady({
             .filter(f => f.type === 'feed' || f.type === 'list')
             .map(f => f.value)
         : [],
-      filter
+      filter,
     }
   }, [preferences, filter])
 
@@ -331,7 +331,7 @@ function HomeScreenReady({
         testID="customFeedPage"
         isPageFocused
         isPageAdjacent={false}
-          feed={'everything'}
+        feed={'everything'}
         renderEmptyState={renderCustomFeedEmptyState}
         feedInfo={pinnedFeedInfos[0]}
       />
@@ -341,14 +341,14 @@ function HomeScreenReady({
 
 // TODO: localize
 const timelineFilters = [
-  { id: 'all', label: 'All' },
-  { id: 'post', label: 'Posts' },
-  { id: 'recipe', label: 'Recipes' },
-  { id: 'review', label: 'Reviews' },
+  {id: 'all', label: 'All'},
+  {id: 'post', label: 'Posts'},
+  {id: 'recipe', label: 'Recipes'},
+  {id: 'review', label: 'Reviews'},
 ]
 
 function TimelineFilterHeader({
-  onFilterChange
+  onFilterChange,
 }: {
   onFilterChange: (filterId: string) => void
 }) {
