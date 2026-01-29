@@ -59,6 +59,9 @@ export type AuthorFilter =
   | 'posts_and_author_threads'
   | 'posts_with_media'
   | 'posts_with_video'
+  | 'recipes'
+  | 'reviews'
+  | 'all'
 type FeedUri = string
 type ListUri = string
 type PostsUriList = string

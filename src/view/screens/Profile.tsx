@@ -187,6 +187,8 @@ function ProfileScreenLoaded({
   const listsSectionRef = React.useRef<SectionRef>(null)
   const starterPacksSectionRef = React.useRef<SectionRef>(null)
   const labelsSectionRef = React.useRef<SectionRef>(null)
+  const recipesSectionRef = React.useRef<SectionRef>(null)
+  const allSectionRef = React.useRef<SectionRef>(null)
 
   useSetTitle(combinedDisplayName(profile))
 
@@ -201,104 +203,40 @@ function ProfileScreenLoaded({
 
   const isMe = profile.did === currentAccount?.did
   const hasLabeler = !!profile.associated?.labeler
-  const showFiltersTab = hasLabeler
-  const showPostsTab = true
-  const showRepliesTab = hasSession
-  const showMediaTab = !hasLabeler
-  const showVideosTab = !hasLabeler
-  const showLikesTab = isMe
   const feedGenCount = profile.associated?.feedgens || 0
-  const showFeedsTab = isMe || feedGenCount > 0
   const starterPackCount = profile.associated?.starterPacks || 0
-  const showStarterPacksTab = isMe || starterPackCount > 0
   // subtract starterpack count from list count, since starterpacks are a type of list
   const listCount = (profile.associated?.lists || 0) - starterPackCount
-  const showListsTab = hasSession && (isMe || listCount > 0)
 
-  const sectionTitles = [
-    showFiltersTab ? _(msg`Labels`) : undefined,
-    showListsTab && hasLabeler ? _(msg`Lists`) : undefined,
-    showPostsTab ? _(msg`Posts`) : undefined,
-    showRepliesTab ? _(msg`Replies`) : undefined,
-    showMediaTab ? _(msg`Media`) : undefined,
-    showVideosTab ? _(msg`Videos`) : undefined,
-    showLikesTab ? _(msg`Likes`) : undefined,
-    showFeedsTab ? _(msg`Feeds`) : undefined,
-    showStarterPacksTab ? _(msg`Starter Packs`) : undefined,
-    showListsTab && !hasLabeler ? _(msg`Lists`) : undefined,
-  ].filter(Boolean) as string[]
+  const { visibleSections, sectionById, sectionTitles } = useMemo(() => {
+    // Order is significant
+    const allSections = [
+      { id: "filters", visible: hasLabeler, title: _(msg`Labels`), ref: labelsSectionRef },
+      { id: "all", visible: !hasLabeler, title: _(msg`All`), ref: allSectionRef },
+      { id: "posts", visible: true, title: _(msg`Posts`), ref: postsSectionRef },
+      { id: "replies", visible: hasSession && false /** Currently has same functionality as "all" */, title: _(msg`Replies`), ref: repliesSectionRef },
+      { id: "recipes", visible: !hasLabeler, title: _(msg`Recipes`), ref: recipesSectionRef },
+      { id: "reviews", visible: !hasLabeler, title: _(msg`Reviews`), ref: recipesSectionRef },
+      { id: "media", visible: !hasLabeler, title: _(msg`Media`), ref: mediaSectionRef },
+      { id: "videos", visible: !hasLabeler, title: _(msg`Videos`), ref: videosSectionRef },
+      { id: "likes", visible: isMe, title: _(msg`Likes`), ref: likesSectionRef },
+      { id: "feeds", visible: isMe || feedGenCount > 0, title: _(msg`Feeds`), ref: feedsSectionRef },
+      { id: "starter_packs", visible: isMe || starterPackCount > 0, title: _(msg`Starter Packs`), ref: starterPacksSectionRef },
+      { id: "lists", visible: hasSession && (isMe || listCount > 0), title: _(msg`Lists`), ref: listsSectionRef },
+    ] as const
 
-  let nextIndex = 0
-  let filtersIndex: number | null = null
-  let postsIndex: number | null = null
-  let repliesIndex: number | null = null
-  let mediaIndex: number | null = null
-  let videosIndex: number | null = null
-  let likesIndex: number | null = null
-  let feedsIndex: number | null = null
-  let starterPacksIndex: number | null = null
-  let listsIndex: number | null = null
-  if (showFiltersTab) {
-    filtersIndex = nextIndex++
-  }
-  if (showPostsTab) {
-    postsIndex = nextIndex++
-  }
-  if (showRepliesTab) {
-    repliesIndex = nextIndex++
-  }
-  if (showMediaTab) {
-    mediaIndex = nextIndex++
-  }
-  if (showVideosTab) {
-    videosIndex = nextIndex++
-  }
-  if (showLikesTab) {
-    likesIndex = nextIndex++
-  }
-  if (showFeedsTab) {
-    feedsIndex = nextIndex++
-  }
-  if (showStarterPacksTab) {
-    starterPacksIndex = nextIndex++
-  }
-  if (showListsTab) {
-    listsIndex = nextIndex++
-  }
+    const visibleSections = allSections.filter(({ visible }) => visible)
+    const sectionById = new Map(visibleSections.map((section) => [section.id, section]))
+    const sectionTitles = visibleSections.map(({ title }) => title)
+
+    return { visibleSections, sectionById, sectionTitles }
+  }, [hasLabeler, hasSession, isMe, feedGenCount, starterPackCount, listCount])
 
   const scrollSectionToTop = useCallback(
     (index: number) => {
-      if (index === filtersIndex) {
-        labelsSectionRef.current?.scrollToTop()
-      } else if (index === postsIndex) {
-        postsSectionRef.current?.scrollToTop()
-      } else if (index === repliesIndex) {
-        repliesSectionRef.current?.scrollToTop()
-      } else if (index === mediaIndex) {
-        mediaSectionRef.current?.scrollToTop()
-      } else if (index === videosIndex) {
-        videosSectionRef.current?.scrollToTop()
-      } else if (index === likesIndex) {
-        likesSectionRef.current?.scrollToTop()
-      } else if (index === feedsIndex) {
-        feedsSectionRef.current?.scrollToTop()
-      } else if (index === starterPacksIndex) {
-        starterPacksSectionRef.current?.scrollToTop()
-      } else if (index === listsIndex) {
-        listsSectionRef.current?.scrollToTop()
-      }
+      visibleSections[index].ref?.current?.scrollToTop()
     },
-    [
-      filtersIndex,
-      postsIndex,
-      repliesIndex,
-      mediaIndex,
-      videosIndex,
-      likesIndex,
-      feedsIndex,
-      listsIndex,
-      starterPacksIndex,
-    ],
+    [visibleSections],
   )
 
   useFocusEffect(
@@ -370,7 +308,7 @@ function ProfileScreenLoaded({
         onCurrentPageSelected={onCurrentPageSelected}
         renderHeader={renderHeader}
         allowHeaderOverScroll>
-        {showFiltersTab
+        {sectionById.has("filters")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileLabelsSection
                 ref={labelsSectionRef}
@@ -385,19 +323,20 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showListsTab && !!profile.associated?.labeler
-          ? ({headerHeight, isFocused, scrollElRef}) => (
-              <ProfileLists
-                ref={listsSectionRef}
-                did={profile.did}
-                scrollElRef={scrollElRef as ListRef}
-                headerOffset={headerHeight}
-                enabled={isFocused}
-                setScrollViewTag={setScrollViewTag}
-              />
-            )
+        {sectionById.has("all")
+          ? ({ headerHeight, isFocused, scrollElRef }) => (
+            <ProfileFeedSection
+              ref={postsSectionRef}
+              feed={`author|${profile.did}|all`}
+              headerHeight={headerHeight}
+              isFocused={isFocused}
+              scrollElRef={scrollElRef as ListRef}
+              ignoreFilterFor={profile.did}
+              setScrollViewTag={setScrollViewTag}
+            />
+          )
           : null}
-        {showPostsTab
+        {sectionById.has("posts")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={postsSectionRef}
@@ -410,7 +349,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showRepliesTab
+        {sectionById.has("replies")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={repliesSectionRef}
@@ -423,7 +362,25 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showMediaTab
+        {sectionById.has("recipes") ? ({ headerHeight, isFocused, scrollElRef }) => <ProfileFeedSection
+          ref={recipesSectionRef}
+          feed={`author|${profile.did}|recipes`}
+          headerHeight={headerHeight}
+          isFocused={isFocused}
+          scrollElRef={scrollElRef as ListRef}
+          ignoreFilterFor={profile.did}
+          setScrollViewTag={setScrollViewTag}
+        /> : null}
+        {sectionById.has("reviews") ? ({ headerHeight, isFocused, scrollElRef }) => <ProfileFeedSection
+          ref={recipesSectionRef}
+          feed={`author|${profile.did}|reviews`}
+          headerHeight={headerHeight}
+          isFocused={isFocused}
+          scrollElRef={scrollElRef as ListRef}
+          ignoreFilterFor={profile.did}
+          setScrollViewTag={setScrollViewTag}
+        /> : null}
+        {sectionById.has("media")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={mediaSectionRef}
@@ -436,7 +393,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showVideosTab
+        {sectionById.has("videos")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={videosSectionRef}
@@ -449,7 +406,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showLikesTab
+        {sectionById.has("likes")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={likesSectionRef}
@@ -462,7 +419,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showFeedsTab
+        {sectionById.has("feeds")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedgens
                 ref={feedsSectionRef}
@@ -474,7 +431,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showStarterPacksTab
+        {sectionById.has("starter_packs")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileStarterPacks
                 ref={starterPacksSectionRef}
@@ -487,7 +444,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {showListsTab && !profile.associated?.labeler
+        {sectionById.has("lists")
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileLists
                 ref={listsSectionRef}
