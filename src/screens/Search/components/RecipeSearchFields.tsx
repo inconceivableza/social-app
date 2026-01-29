@@ -125,8 +125,10 @@ export const recipeParamsSchema = z.object({
   recipeCuisines: makeParamSchema(recipeCuisines),
   recipeDiets: makeParamSchema(recipeDiets),
   searchType: z.enum(['all', 'recipes']).catch(() => 'all' as const),
+  tab: z
+    .enum(['top', 'latest', 'people', 'user', 'profile', 'feeds', 'feed'])
+    .default('top'),
 })
-
 
 export function useRecipeSearchState({
   recipeCategories,

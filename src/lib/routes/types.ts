@@ -5,7 +5,14 @@ import {type VideoFeedSourceContext} from '#/screens/VideoFeed/types'
 
 export type {NativeStackScreenProps} from '@react-navigation/native-stack'
 
-export type SearchTabOptions = 'user' | 'profile' | 'feed'
+export type SearchTabOptions =
+  | 'user'
+  | 'profile'
+  | 'feed'
+  | 'top'
+  | 'latest'
+  | 'people'
+  | 'feeds'
 
 export type CommonNavigatorParams = {
   NotFound: undefined

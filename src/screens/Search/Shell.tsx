@@ -170,10 +170,15 @@ export function SearchScreenShell({
       // Certain options have multiple paths i.e. multiple parents. We want results from all of them.
       opts.flatMap(opt => opt.paths.map(path => path.join('/'))).join(','),
     )
-    const params = {...incompleteParams, ...recipeParams, searchType}
+    const params = {
+      ...incompleteParams,
+      ...recipeParams,
+      searchType,
+      tab: parsedParams.tab,
+    }
     const queryWithParams = makeSearchQuery(query, params)
     return {queryWithParams, params}
-  }, [query, incompleteParams, recipeSearchFields, searchType])
+  }, [query, incompleteParams, parsedParams, recipeSearchFields, searchType])
 
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
 
@@ -218,7 +223,7 @@ export function SearchScreenShell({
         navigation.push(route.name, {q: item, ...pickBy(params)})
       } else {
         textInput.current?.blur()
-        navigation.setParams({q: item})
+        navigation.setParams({q: item, ...pickBy(params)})
       }
     },
     [updateSearchHistory, navigation, route, params],
@@ -230,19 +235,17 @@ export function SearchScreenShell({
     setShowAutocomplete(false)
     if (isWeb) {
       // Empty params resets the URL to be /search rather than /search?q=
-      // Also clear the tab parameter
-      const {
-        q: _q,
-        tab: _tab,
-        ...parameters
-      } = (route.params ?? {}) as {
+      const {q: _q, ...parameters} = (route.params ?? {}) as {
         [key: string]: string
       }
       // @ts-expect-error route is not typesafe
       navigation.replace(route.name, parameters)
     } else {
       setSearchText('')
-      navigation.setParams({q: '', tab: undefined})
+      const {q: _q, ...parameters} = (route.params ?? {}) as {
+        [key: string]: string
+      }
+      navigation.setParams({q: '', ...parameters})
     }
   }, [setShowAutocomplete, setSearchText, navigation, route.params, route.name])
 
@@ -321,6 +324,20 @@ export function SearchScreenShell({
     (tab?: SearchTabOptions) => {
       textInput.current?.focus()
 
+      // If a tab is specified, set the tab parameter
+      if (tab) {
+        if (isWeb) {
+          navigation.setParams({...route.params, tab})
+        } else {
+          navigation.setParams({tab})
+        }
+      }
+    },
+    [navigation, route],
+  )
+
+  const updateCurrentTab = useCallback(
+    (tab?: SearchTabOptions) => {
       // If a tab is specified, set the tab parameter
       if (tab) {
         if (isWeb) {
@@ -487,10 +504,18 @@ export function SearchScreenShell({
           queryWithParams={queryWithParams}
           headerHeight={headerHeight}
           focusSearchInput={focusSearchInput}
+          updateCurrentTab={updateCurrentTab}
         />
       </View>
     </Layout.Screen>
   )
+}
+
+const tabIndexToTab: Record<number, SearchTabOptions> = {
+  0: 'top',
+  1: 'latest',
+  2: 'people',
+  3: 'feeds',
 }
 
 let SearchScreenInner = ({
@@ -498,11 +523,13 @@ let SearchScreenInner = ({
   queryWithParams,
   headerHeight,
   focusSearchInput,
+  updateCurrentTab,
 }: {
   query: string
   queryWithParams: string
   headerHeight: number
   focusSearchInput: (tab?: SearchTabOptions) => void
+  updateCurrentTab: (tab?: SearchTabOptions) => void
 }): React.ReactNode => {
   const t = useTheme()
   const setMinimalShellMode = useSetMinimalShellMode()
@@ -519,9 +546,15 @@ let SearchScreenInner = ({
     switch (tabParam) {
       case 'user':
       case 'profile':
+      case 'top':
+        return 0
+      case 'latest':
+        return 1
+      case 'people':
         return 2 // People tab
       case 'feed':
         return 3 // Feeds tab
+      case 'feeds':
       default:
         return 0
     }
@@ -541,8 +574,9 @@ let SearchScreenInner = ({
     (index: number) => {
       setMinimalShellMode(false)
       setActiveTab(index)
+      updateCurrentTab(tabIndexToTab[index])
     },
-    [setMinimalShellMode],
+    [setMinimalShellMode, updateCurrentTab],
   )
   return queryWithParams ? (
     <SearchResults
