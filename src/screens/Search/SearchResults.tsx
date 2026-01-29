@@ -31,6 +31,7 @@ import {parseSearchQuery} from './utils'
 const noParamsSchema = z
   .object({
     searchType: z.literal('all'),
+    tab: z.enum(['user', 'profile', 'feeds']).optional(),
   })
   .strict()
 

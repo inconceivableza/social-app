@@ -21,7 +21,7 @@ import {mapValues, pickBy} from 'lodash'
 import {branding, HITSLOP_10, HITSLOP_20} from '#/lib/constants'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {MagnifyingGlassIcon} from '#/lib/icons'
-import {type NavigationProp} from '#/lib/routes/types'
+import {type NavigationProp, type SearchTabOptions} from '#/lib/routes/types'
 import {isWeb} from '#/platform/detection'
 import {listenSoftReset} from '#/state/events'
 import {useActorAutocompleteQuery} from '#/state/queries/actor-autocomplete'
@@ -318,7 +318,7 @@ export function SearchScreenShell({
   }, [setShowAutocomplete, searchType])
 
   const focusSearchInput = useCallback(
-    (tab?: 'user' | 'profile' | 'feed') => {
+    (tab?: SearchTabOptions) => {
       textInput.current?.focus()
 
       // If a tab is specified, set the tab parameter
@@ -502,7 +502,7 @@ let SearchScreenInner = ({
   query: string
   queryWithParams: string
   headerHeight: number
-  focusSearchInput: (tab?: 'user' | 'profile' | 'feed') => void
+  focusSearchInput: (tab?: SearchTabOptions) => void
 }): React.ReactNode => {
   const t = useTheme()
   const setMinimalShellMode = useSetMinimalShellMode()
@@ -511,9 +511,7 @@ let SearchScreenInner = ({
   const route = useRoute()
 
   // Get tab parameter from route params
-  const tabParam = (
-    route.params as {q?: string; tab?: 'user' | 'profile' | 'feed'}
-  )?.tab
+  const tabParam = (route.params as {q?: string; tab?: SearchTabOptions})?.tab
 
   // Map tab parameter to tab index
   const getInitialTabIndex = useCallback(() => {

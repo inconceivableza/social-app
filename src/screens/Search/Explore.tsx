@@ -11,6 +11,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import * as bcp47Match from 'bcp-47-match'
 
 import {popularInterests, useInterestsDisplayNames} from '#/lib/interests'
+import {type SearchTabOptions} from '#/lib/routes/types'
 import {cleanError} from '#/lib/strings/errors'
 import {sanitizeHandle} from '#/lib/strings/handles'
 import {logger} from '#/logger'
@@ -125,7 +126,7 @@ type ExploreScreenItems =
       searchButton?: {
         label: string
         metricsTag: MetricEvents['explore:module:searchButtonPress']['module']
-        tab: 'user' | 'profile' | 'feed'
+        tab: SearchTabOptions
       }
     }
   | {
@@ -136,7 +137,7 @@ type ExploreScreenItems =
       searchButton?: {
         label: string
         metricsTag: MetricEvents['explore:module:searchButtonPress']['module']
-        tab: 'user' | 'profile' | 'feed'
+        tab: SearchTabOptions
       }
       hideDefaultTab?: boolean
     }
@@ -206,7 +207,7 @@ type ExploreScreenItems =
 export function Explore({
   focusSearchInput,
 }: {
-  focusSearchInput: (tab: 'user' | 'profile' | 'feed') => void
+  focusSearchInput: (tab: SearchTabOptions) => void
   headerHeight: number
 }) {
   const {_} = useLingui()
