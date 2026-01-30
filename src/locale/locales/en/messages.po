@@ -1034,6 +1034,7 @@ msgstr ""
 #. the default tab in the interests tab bar
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:146
 #: src/view/screens/Notifications.tsx:84
+#: src/view/screens/Profile.tsx:215
 msgid "All"
 msgstr ""
 
@@ -4018,7 +4019,7 @@ msgstr ""
 #: src/screens/Search/SearchResults.tsx:91
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
 #: src/view/screens/Feeds.tsx:511
-#: src/view/screens/Profile.tsx:226
+#: src/view/screens/Profile.tsx:223
 #: src/view/shell/desktop/LeftNav.tsx:766
 #: src/view/shell/Drawer.tsx:610
 msgid "Feeds"
@@ -5181,7 +5182,7 @@ msgid "Labeled by the author."
 msgstr ""
 
 #: src/view/com/composer/labels/LabelsBtn.tsx:75
-#: src/view/screens/Profile.tsx:219
+#: src/view/screens/Profile.tsx:214
 msgid "Labels"
 msgstr ""
 
@@ -5416,7 +5417,7 @@ msgstr ""
 #: src/lib/hooks/useNotificationHandler.ts:131
 #: src/screens/Settings/NotificationSettings/index.tsx:139
 #: src/screens/Settings/NotificationSettings/LikeNotificationSettings.tsx:41
-#: src/view/screens/Profile.tsx:225
+#: src/view/screens/Profile.tsx:222
 msgid "Likes"
 msgstr ""
 
@@ -5521,8 +5522,7 @@ msgstr ""
 
 #: src/Navigation.tsx:176
 #: src/view/screens/Lists.tsx:67
-#: src/view/screens/Profile.tsx:220
-#: src/view/screens/Profile.tsx:228
+#: src/view/screens/Profile.tsx:225
 #: src/view/shell/desktop/LeftNav.tsx:784
 #: src/view/shell/Drawer.tsx:625
 msgid "Lists"
@@ -5659,7 +5659,7 @@ msgstr ""
 msgid "Maybe later"
 msgstr ""
 
-#: src/view/screens/Profile.tsx:223
+#: src/view/screens/Profile.tsx:220
 msgid "Media"
 msgstr ""
 
@@ -7209,7 +7209,7 @@ msgstr ""
 #: src/screens/ProfileList/index.tsx:163
 #: src/screens/Settings/NotificationSettings/ActivityNotificationSettings.tsx:216
 #: src/screens/StarterPack/StarterPackScreen.tsx:191
-#: src/view/screens/Profile.tsx:221
+#: src/view/screens/Profile.tsx:216
 msgid "Posts"
 msgstr ""
 
@@ -7332,7 +7332,7 @@ msgid "Product name"
 msgstr ""
 
 #: src/view/screens/DebugMod.tsx:943
-#: src/view/screens/Profile.tsx:363
+#: src/view/screens/Profile.tsx:301
 msgid "profile"
 msgstr ""
 
@@ -7626,6 +7626,10 @@ msgstr ""
 msgid "Recipe yield quantity must be greater than zero"
 msgstr ""
 
+#: src/view/screens/Profile.tsx:218
+msgid "Recipes"
+msgstr ""
+
 #: src/screens/Search/modules/ExploreRecommendations.tsx:54
 msgid "Recommended"
 msgstr ""
@@ -7858,7 +7862,7 @@ msgstr ""
 #: src/screens/Settings/NotificationSettings/ActivityNotificationSettings.tsx:218
 #: src/screens/Settings/NotificationSettings/index.tsx:161
 #: src/screens/Settings/NotificationSettings/ReplyNotificationSettings.tsx:41
-#: src/view/screens/Profile.tsx:222
+#: src/view/screens/Profile.tsx:217
 msgid "Replies"
 msgstr ""
 
@@ -8199,6 +8203,10 @@ msgstr ""
 
 #: src/Navigation.tsx:303
 msgid "Review/Rating by @{0}"
+msgstr ""
+
+#: src/view/screens/Profile.tsx:219
+msgid "Reviews"
 msgstr ""
 
 #: src/view/com/modals/RecipePreparation.tsx:420
@@ -9316,7 +9324,7 @@ msgid "Starter pack is invalid"
 msgstr ""
 
 #: src/screens/Search/Explore.tsx:626
-#: src/view/screens/Profile.tsx:227
+#: src/view/screens/Profile.tsx:224
 msgid "Starter Packs"
 msgstr ""
 
@@ -10915,7 +10923,7 @@ msgstr ""
 msgid "Video: {0}"
 msgstr ""
 
-#: src/view/screens/Profile.tsx:224
+#: src/view/screens/Profile.tsx:221
 msgid "Videos"
 msgstr ""
 
