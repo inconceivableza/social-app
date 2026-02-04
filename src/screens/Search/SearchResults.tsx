@@ -53,13 +53,20 @@ let SearchResults = ({
   initialPage?: number
 }): React.ReactNode => {
   const {_} = useLingui()
+  const parsedQuery = parseSearchQuery(queryWithParams)
+  const {searchType, tab: _tab, ...serverParams} = parsedQuery.params
+  const serverParamsStr = Object.keys(serverParams)
+    .map(key => `${key}:${serverParams[key]}`)
+    .join(' ')
+  const queryForServer =
+    parsedQuery.query +
+    ' ' +
+    serverParamsStr +
+    (searchType && searchType !== 'all' ? ` searchType:${searchType}` : '')
   const showPeopleAndFeeds = useMemo(() => {
-    const parsedParams = parseSearchQuery(queryWithParams).params
-    return noParamsSchema.safeParse(parsedParams).success
-  }, [queryWithParams])
+    return noParamsSchema.safeParse(parsedQuery.params).success
+  }, [parsedQuery])
   const sections = useMemo(() => {
-    if (!queryWithParams) return []
-
     const sections: {
       title: string
       component: React.ReactNode
@@ -68,7 +75,7 @@ let SearchResults = ({
         title: _(msg`Top`),
         component: (
           <SearchScreenPostResults
-            query={queryWithParams}
+            query={queryForServer}
             sort="top"
             active={activeTab === 0}
           />
@@ -78,7 +85,7 @@ let SearchResults = ({
         title: _(msg`Latest`),
         component: (
           <SearchScreenPostResults
-            query={queryWithParams}
+            query={queryForServer}
             sort="latest"
             active={activeTab === 1}
           />
@@ -102,7 +109,7 @@ let SearchResults = ({
       )
     }
     return sections
-  }, [_, query, queryWithParams, activeTab, showPeopleAndFeeds])
+  }, [_, query, queryForServer, activeTab, showPeopleAndFeeds])
 
   return (
     <Pager
