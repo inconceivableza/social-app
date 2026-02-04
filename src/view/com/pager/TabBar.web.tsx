@@ -1,5 +1,11 @@
 import {useCallback, useEffect, useRef} from 'react'
-import { type ScrollView, StyleProp, StyleSheet, TextStyle, View } from 'react-native'
+import {
+  type ScrollView,
+  type StyleProp,
+  StyleSheet,
+  type TextStyle,
+  View,
+} from 'react-native'
 
 import {atoms as a, useBreakpoints, useTheme, web} from '#/alf'
 import {Text} from '#/components/Typography'
@@ -28,7 +34,7 @@ export function TabBar({
   items,
   onSelect,
   onPressSelected,
-  itemTextStyle
+  itemTextStyle,
 }: TabBarProps) {
   const t = useTheme()
   const scrollElRef = useRef<ScrollView>(null)
@@ -125,7 +131,7 @@ export function TabBar({
                     a.text_md,
                     a.font_semi_bold,
                     {lineHeight: 20},
-                    itemTextStyle
+                    itemTextStyle,
                   ]}>
                   {item}
                   <View

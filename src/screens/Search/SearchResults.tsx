@@ -3,6 +3,7 @@ import {ActivityIndicator, View} from 'react-native'
 import {type AppBskyFeedDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
+import z from 'zod'
 
 import {branding} from '#/lib/constants'
 import {usePalette} from '#/lib/hooks/usePalette'
@@ -24,13 +25,14 @@ import * as Layout from '#/components/Layout'
 import {InlineLinkText} from '#/components/Link'
 import {SearchError} from '#/components/SearchError'
 import {Text} from '#/components/Typography'
-import { parseSearchQuery } from './utils'
-import z from "zod"
+import {parseSearchQuery} from './utils'
 
 // Show the People and Feeds tabs only if there are no other params set and search type is 'all'
-const noParamsSchema = z.object({
-  searchType: z.literal('all')
-}).strict()
+const noParamsSchema = z
+  .object({
+    searchType: z.literal('all'),
+  })
+  .strict()
 
 let SearchResults = ({
   query,
@@ -78,24 +80,26 @@ let SearchResults = ({
             active={activeTab === 1}
           />
         ),
-        }, 
-      ]
-    if (showPeopleAndFeeds) {
-      sections.push({
-        title: _(msg`People`),
-        component: (
-          <SearchScreenUserResults query={query} active={activeTab === 2} />
-        ),
       },
+    ]
+    if (showPeopleAndFeeds) {
+      sections.push(
         {
-        title: _(msg`Feeds`),
-        component: (
-          <SearchScreenFeedsResults query={query} active={activeTab === 3} />
-        ),
-        },)
+          title: _(msg`People`),
+          component: (
+            <SearchScreenUserResults query={query} active={activeTab === 2} />
+          ),
+        },
+        {
+          title: _(msg`Feeds`),
+          component: (
+            <SearchScreenFeedsResults query={query} active={activeTab === 3} />
+          ),
+        },
+      )
     }
     return sections
-  }, [_, query, queryWithParams, activeTab])
+  }, [_, query, queryWithParams, activeTab, showPeopleAndFeeds])
 
   return (
     <Pager

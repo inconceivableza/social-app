@@ -1,16 +1,12 @@
 import {useMemo} from 'react'
-import { ScrollView, StyleProp, View, ViewStyle } from 'react-native'
-import { Trans} from '@lingui/macro'
+import {ScrollView, type StyleProp, View, type ViewStyle} from 'react-native'
+import {Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {atoms as a, select, useTheme} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {Text} from '#/components/Typography'
-import {
-  type BaseOption,
-  type ComboBoxProps,
-} from './types'
-
+import {type BaseOption, type ComboBoxProps} from './types'
 
 // TODO: may want to pass function for rendering option
 export function ComboBoxOptions<T extends BaseOption>({
@@ -18,10 +14,10 @@ export function ComboBoxOptions<T extends BaseOption>({
   onSelect,
   searchText,
   selection,
-  containerStyle
+  containerStyle,
 }: Pick<ComboBoxProps<T>, 'options' | 'onSelect' | 'selection'> & {
-    searchText: string,
-    containerStyle?: StyleProp<ViewStyle>
+  searchText: string
+  containerStyle?: StyleProp<ViewStyle>
 }) {
   const {_} = useLingui()
   const t = useTheme()
@@ -46,7 +42,7 @@ export function ComboBoxOptions<T extends BaseOption>({
           dark: t.atoms.bg_contrast_100,
           dim: t.atoms.bg_contrast_100,
         }),
-        containerStyle
+        containerStyle,
       ]}>
       {filteredOptions.length ? (
         filteredOptions.map(opt => {

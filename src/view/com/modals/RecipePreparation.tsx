@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ScrollView, TextStyle, View } from 'react-native'
+import { ScrollView, type TextStyle, View } from 'react-native'
 import { runOnJS } from 'react-native-reanimated'
 import { UITextView } from 'react-native-uitextview'
 import * as Notifications from 'expo-notifications'

@@ -1,25 +1,22 @@
-import { useState } from 'react'
-import { TouchableOpacity, useWindowDimensions, View } from 'react-native'
-import { useTheme } from '#/alf'
-import { msg, Trans } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
+import {useState} from 'react'
+import {TouchableOpacity, useWindowDimensions, View} from 'react-native'
+import {msg, Trans} from '@lingui/macro'
+import {useLingui} from '@lingui/react'
 
-import { atoms as a } from '#/alf'
-import { Button, ButtonIcon, ButtonText } from '#/components/Button'
+import {useTheme} from '#/alf'
+import {atoms as a} from '#/alf'
+import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import * as Dialog from '#/components/Dialog'
 import * as TextField from '#/components/forms/TextField'
-import { PlusLarge_Stroke2_Corner0_Rounded as PlusIcon } from '#/components/icons/Plus'
-import { Text } from '#/components/Typography'
-import {
-  ComboBoxSelection,
-  ComboBoxSingleSelectOptions,
-} from './common'
+import {PlusLarge_Stroke2_Corner0_Rounded as PlusIcon} from '#/components/icons/Plus'
+import {Text} from '#/components/Typography'
+import {ComboBoxOptions} from './ComboBoxOptions'
+import {ComboBoxSelection, ComboBoxSingleSelectOptions} from './common'
 import {
   type BaseOption,
   type ComboBoxProps,
   type ComboBoxSingleSelectProps,
 } from './types'
-import { ComboBoxOptions } from "./ComboBoxOptions"
 
 /**
  * Multi-select combo box, only allowing selection of the given options.
@@ -35,39 +32,37 @@ export function ComboBox<T extends BaseOption>(props: ComboBoxProps<T>) {
         onPress={() => {
           dialog.open()
         }}>
-        <View >
+        <View>
           <View
             style={[
               a.p_sm,
-              { borderRadius: 8 },
+              {borderRadius: 8},
               t.atoms.bg_contrast_50,
               a.flex_row,
               a.align_center,
-              a.gap_sm
+              a.gap_sm,
             ]}>
             <View style={[a.flex_1]}>
               {props.selection.length ? (
-
                 <ComboBoxSelection
                   selection={props.selection}
                   onRemove={props.onRemove}
                 />
-
-              ) :
-
-                <Text style={[
-                  a.text_md,
-                  {
-                    color: t.palette.contrast_500,
-                    lineHeight: a.text_md.fontSize * 1.2
-                  },
-                ]}><Trans>{props.label}</Trans></Text>
-
-
-              }
+              ) : (
+                <Text
+                  style={[
+                    a.text_md,
+                    {
+                      color: t.palette.contrast_500,
+                      lineHeight: a.text_md.fontSize * 1.2,
+                    },
+                  ]}>
+                  <Trans>{props.label}</Trans>
+                </Text>
+              )}
             </View>
             {/* TODO provide better label */}
-            <View >
+            <View>
               <Button
                 style={[a.ml_auto]}
                 shape="round"
@@ -99,10 +94,10 @@ function ComboBoxInner<T extends BaseOption>({
   onSelect,
   onConfirm,
   searchLabel,
-}: ComboBoxProps<T> & { onConfirm: () => void }) {
+}: ComboBoxProps<T> & {onConfirm: () => void}) {
   const [searchText, setSearchText] = useState('')
-  const { _ } = useLingui()
-  const { height: windowHeight } = useWindowDimensions()
+  const {_} = useLingui()
+  const {height: windowHeight} = useWindowDimensions()
   const [headerHeight, setHeaderHeight] = useState(0)
 
   // Calculate available height for list: window height - header - dialog padding/insets
@@ -112,7 +107,7 @@ function ComboBoxInner<T extends BaseOption>({
   return (
     <View style={[a.gap_sm]}>
       <View
-        onLayout={(e) => {
+        onLayout={e => {
           setHeaderHeight(e.nativeEvent.layout.height)
         }}>
         <View style={[a.gap_sm]}>
@@ -143,7 +138,7 @@ function ComboBoxInner<T extends BaseOption>({
         </View>
       </View>
 
-      <View style={{ maxHeight: availableHeight }}>
+      <View style={{maxHeight: availableHeight}}>
         <ComboBoxOptions
           onSelect={onSelect}
           options={options}
@@ -168,7 +163,7 @@ export function ComboBoxSingleSelect({
 }: ComboBoxSingleSelectProps) {
   const t = useTheme()
   const dialog = Dialog.useDialogControl()
-  const { _ } = useLingui()
+  const {_} = useLingui()
   return (
     <View>
       <TouchableOpacity
@@ -177,27 +172,29 @@ export function ComboBoxSingleSelect({
           dialog.open()
         }}>
         <View>
-          <View style={[
-            a.p_md,
-            { borderRadius: 8 },
-            t.atoms.bg_contrast_50,
-            a.flex_row,
-            a.align_center,
-            a.h_full
-          ]}>
+          <View
+            style={[
+              a.p_md,
+              {borderRadius: 8},
+              t.atoms.bg_contrast_50,
+              a.flex_row,
+              a.align_center,
+              a.h_full,
+            ]}>
             <View style={[a.flex_1]}>
-              {value ? <Text style={[a.text_md]}>{value}</Text> : <Text style={[
-                a.text_md,
-                {
-                  color: t.palette.contrast_500,
-                },
-              ]}>
-
-                <Trans>
-                  {label}
-                </Trans>
-              </Text>}
-
+              {value ? (
+                <Text style={[a.text_md]}>{value}</Text>
+              ) : (
+                <Text
+                  style={[
+                    a.text_md,
+                    {
+                      color: t.palette.contrast_500,
+                    },
+                  ]}>
+                  <Trans>{label}</Trans>
+                </Text>
+              )}
             </View>
           </View>
         </View>
@@ -207,17 +204,17 @@ export function ComboBoxSingleSelect({
         <Dialog.Inner label={label}>
           <View style={[a.gap_sm]}>
             <View style={[a.flex_row, a.ml_auto]}>
-              <Button onPress={() => dialog.close()} label={_(msg`Done`)}
-                size='small'
-                color="primary"
-              >
+              <Button
+                onPress={() => dialog.close()}
+                label={_(msg`Done`)}
+                size="small"
+                color="primary">
                 <ButtonText>
                   <Trans>Done</Trans>
                 </ButtonText>
               </Button>
             </View>
             <View>
-
               <TextField.Root isInvalid={isInvalid}>
                 <TextField.Input
                   selectTextOnFocus
@@ -228,7 +225,7 @@ export function ComboBoxSingleSelect({
                 />
               </TextField.Root>
             </View>
-            <View >
+            <View>
               <ComboBoxSingleSelectOptions
                 onChange={value => {
                   onChange(value)
@@ -237,7 +234,7 @@ export function ComboBoxSingleSelect({
                 optionStyle={[a.mb_xs]}
                 options={options}
                 value={value}
-                containerStyle={{ height: '100%' }}
+                containerStyle={{height: '100%'}}
               />
             </View>
           </View>

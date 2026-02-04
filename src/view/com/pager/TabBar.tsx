@@ -2,9 +2,9 @@ import {useCallback} from 'react'
 import {
   type LayoutChangeEvent,
   ScrollView,
-  StyleProp,
+  type StyleProp,
   StyleSheet,
-  TextStyle,
+  type TextStyle,
   View,
 } from 'react-native'
 import Animated, {
@@ -49,7 +49,7 @@ export function TabBar({
   onPressSelected,
   dragProgress,
   dragState,
-  itemTextStyle
+  itemTextStyle,
 }: TabBarProps) {
   const t = useTheme()
   const scrollElRef = useAnimatedRef<ScrollView>()
@@ -386,7 +386,7 @@ function TabBarItem({
   onPressItem,
   onItemLayout,
   onTextLayout,
-  itemTextStyle
+  itemTextStyle,
 }: {
   index: number
   testID: string | undefined
@@ -395,7 +395,7 @@ function TabBarItem({
   onPressItem: (index: number) => void
   onItemLayout: (index: number, layout: {x: number; width: number}) => void
   onTextLayout: (index: number, layout: {width: number}) => void
-    itemTextStyle?: StyleProp<TextStyle>
+  itemTextStyle?: StyleProp<TextStyle>
 }) {
   const t = useTheme()
   const style = useAnimatedStyle(() => {
@@ -438,7 +438,13 @@ function TabBarItem({
           <Text
             emoji
             testID={testID ? `${testID}-${item}` : undefined}
-            style={[styles.itemText, t.atoms.text, a.text_md, a.font_semi_bold, itemTextStyle]}
+            style={[
+              styles.itemText,
+              t.atoms.text,
+              a.text_md,
+              a.font_semi_bold,
+              itemTextStyle,
+            ]}
             onLayout={handleTextLayout}>
             {item}
           </Text>

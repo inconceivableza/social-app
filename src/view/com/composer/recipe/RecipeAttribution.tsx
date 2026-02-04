@@ -307,6 +307,7 @@ function OriginalAttributionFields({
             </Select.Item>
           )}
           items={licenseOptions}
+          valueExtractor={item => item.$type}
         />
       </Select.Root>
 
@@ -422,6 +423,7 @@ function PublicationAttributionFields({
             </Select.Item>
           )}
           items={publicationTypeOptions}
+          valueExtractor={item => item.$type}
         />
       </Select.Root>
       <TextField.Root>
@@ -556,6 +558,7 @@ function WebsiteAttributionFields({
             </Select.Item>
           )}
           items={licenseOptions}
+          valueExtractor={item => item.$type}
         />
       </Select.Root>
     </View>

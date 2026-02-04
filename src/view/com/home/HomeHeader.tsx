@@ -1,21 +1,22 @@
-import React, { PropsWithChildren } from 'react'
+import React, {type PropsWithChildren} from 'react'
+import {View} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 
+import {getNamedFeed} from '#/lib/constants'
 import {type NavigationProp} from '#/lib/routes/types'
 import {type FeedSourceInfo} from '#/state/queries/feed'
 import {useSession} from '#/state/session'
-import { type RenderTabBarFnProps } from '#/view/com/pager/Pager'
+import {type RenderTabBarFnProps} from '#/view/com/pager/Pager'
 import {TabBar} from '../pager/TabBar'
 import {HomeHeaderLayout} from './HomeHeaderLayout'
-import { getNamedFeed } from '#/lib/constants'
-import { View } from 'react-native'
 
 export function HomeHeader(
-  props: RenderTabBarFnProps & PropsWithChildren<{
-    testID?: string
-    onPressSelected: () => void
-    feeds: FeedSourceInfo[]
-  }>,
+  props: RenderTabBarFnProps &
+    PropsWithChildren<{
+      testID?: string
+      onPressSelected: () => void
+      feeds: FeedSourceInfo[]
+    }>,
 ) {
   const {feeds, onSelect: onSelectProp} = props
   const {hasSession} = useSession()
@@ -25,7 +26,7 @@ export function HomeHeader(
     if (!hasSession) return false
     return feeds.some(tab => {
       const isBuiltIn = getNamedFeed(tab.uri)
-      return !isBuiltIn 
+      return !isBuiltIn
     })
   }, [feeds, hasSession])
 
@@ -64,9 +65,7 @@ export function HomeHeader(
         dragProgress={props.dragProgress}
         dragState={props.dragState}
       />
-      <View>
-      {props.children}
-      </View>
+      <View>{props.children}</View>
     </HomeHeaderLayout>
   )
 }

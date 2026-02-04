@@ -20,14 +20,13 @@ import {
 import {AuthorFeedAPI} from '#/lib/api/feed/author'
 import {CustomFeedAPI} from '#/lib/api/feed/custom'
 import {DemoFeedAPI} from '#/lib/api/feed/demo'
+import {EverythingFeedAPI} from '#/lib/api/feed/everything'
 import {FollowingFeedAPI} from '#/lib/api/feed/following'
 import {HomeFeedAPI} from '#/lib/api/feed/home'
 import {LikesFeedAPI} from '#/lib/api/feed/likes'
 import {ListFeedAPI} from '#/lib/api/feed/list'
 import {MergeFeedAPI} from '#/lib/api/feed/merge'
 import {PostListFeedAPI} from '#/lib/api/feed/posts'
-import { EverythingFeedAPI } from '#/lib/api/feed/everything'
-
 import {type FeedAPI, type ReasonFeedSource} from '#/lib/api/feed/types'
 import {
   aggregateUserInterests,
@@ -534,7 +533,7 @@ function createApi({
       if (enableFollowingToDiscoverFallback) {
         return new HomeFeedAPI({agent, userInterests})
       } else {
-        return new FollowingFeedAPI({ agent, filter: feedParams.filter })
+        return new FollowingFeedAPI({agent, filter: feedParams.filter})
       }
     }
   } else if (feedDesc.startsWith('author')) {
@@ -559,7 +558,7 @@ function createApi({
   } else if (feedDesc === 'demo') {
     return new DemoFeedAPI({agent})
   } else if (feedDesc === 'everything') {
-    return new EverythingFeedAPI({ agent, filter: feedParams.filter })
+    return new EverythingFeedAPI({agent, filter: feedParams.filter})
   } else {
     // shouldnt happen
     return new FollowingFeedAPI({agent})

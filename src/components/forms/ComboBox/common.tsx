@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
-import { ScrollView, StyleProp, View, ViewStyle } from 'react-native'
-import {msg, Trans} from '@lingui/macro'
+import {ScrollView, type StyleProp, View, type ViewStyle} from 'react-native'
+import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {atoms as a, select, useTheme} from '#/alf'
@@ -42,22 +42,21 @@ export function ComboBoxSelection<T extends BaseOption>({
             a.px_sm,
             a.flex_row,
             a.align_center,
-            a.flex_wrap
+            a.flex_wrap,
           ]}>
-          <View >
+          <View>
             <Text>{opt.label}</Text>
           </View>
           <View>
-          <Button
-            label={_(msg`Remove selection`)}
-              size='tiny'
-            shape='round'
-
-            onPress={() => {
-              onRemove(opt)
-            }}>
-            <ButtonIcon icon={CircleXIcon} />
-          </Button>
+            <Button
+              label={_(msg`Remove selection`)}
+              size="tiny"
+              shape="round"
+              onPress={() => {
+                onRemove(opt)
+              }}>
+              <ButtonIcon icon={CircleXIcon} />
+            </Button>
           </View>
         </View>
       ))}
@@ -70,10 +69,10 @@ export function ComboBoxSingleSelectOptions({
   options,
   onChange,
   containerStyle,
-  optionStyle
+  optionStyle,
 }: Pick<ComboBoxSingleSelectProps, 'value' | 'options' | 'onChange'> & {
   containerStyle?: StyleProp<ViewStyle>
-    optionStyle?: StyleProp<ViewStyle>
+  optionStyle?: StyleProp<ViewStyle>
 }) {
   const t = useTheme()
   const {_} = useLingui()
@@ -104,7 +103,9 @@ export function ComboBoxSingleSelectOptions({
         containerStyle,
       ]}>
       {filteredOptions.map((opt, i) => (
-        <View key={i} style={[a.border_b, t.atoms.border_contrast_low, optionStyle]}>
+        <View
+          key={i}
+          style={[a.border_b, t.atoms.border_contrast_low, optionStyle]}>
           <Button
             label={_(opt)}
             size="small"
