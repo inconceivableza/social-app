@@ -1,6 +1,7 @@
 import {
   memo,
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -215,20 +216,15 @@ export function SearchScreenShell({
       tab: actualTab,
     }
     const queryWithParams = makeSearchQuery(query, params)
+    return {queryWithParams, params}
+  }, [query, incompleteParams, parsedParams, recipeSearchFields, searchType])
+
+  useEffect(() => {
     const checkRouteParams = nonEmptyParams({q: query, ...params})
     if (!equalParams(checkRouteParams, route.params)) {
       navigation.replaceParams(checkRouteParams)
     }
-    return {queryWithParams, params}
-  }, [
-    query,
-    incompleteParams,
-    parsedParams,
-    recipeSearchFields,
-    searchType,
-    navigation,
-    route.params,
-  ])
+  }, [query, params, route.params, navigation])
 
   const onChangeSearchType = useCallback(
     (searchType: SearchType) => {
