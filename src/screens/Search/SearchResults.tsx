@@ -1,4 +1,4 @@
-import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {memo, useCallback, useMemo, useState} from 'react'
 import {ActivityIndicator, View} from 'react-native'
 import {type AppBskyFeedDefs} from '@atproto/api'
 import {msg, Trans} from '@lingui/macro'
@@ -14,7 +14,7 @@ import {useSearchPostsQuery} from '#/state/queries/search-posts'
 import {useSession} from '#/state/session'
 import {useLoggedOutViewControls} from '#/state/shell/logged-out'
 import {useCloseAllActiveElements} from '#/state/util'
-import {Pager, type PagerRef} from '#/view/com/pager/Pager'
+import {Pager} from '#/view/com/pager/Pager'
 import {TabBar} from '#/view/com/pager/TabBar'
 import {Post} from '#/view/com/post/Post'
 import {ProfileCardWithFollowBtn} from '#/view/com/profile/ProfileCard'
@@ -53,7 +53,6 @@ let SearchResults = ({
   initialPage?: number
 }): React.ReactNode => {
   const {_} = useLingui()
-  const pagerRef = useRef<PagerRef>(null)
   const parsedQuery = parseSearchQuery(queryWithParams)
   const {searchType, tab: _tab, ...serverParams} = parsedQuery.params
   const serverParamsStr = Object.keys(serverParams)
@@ -112,12 +111,9 @@ let SearchResults = ({
     return sections
   }, [_, query, queryForServer, activeTab, showPeopleAndFeeds])
 
-  useEffect(() => {
-    pagerRef.current?.setPage(activeTab)
-  }, [activeTab])
   return (
     <Pager
-      ref={pagerRef}
+      key={`${showPeopleAndFeeds ? 'full' : 'minimal'}-${initialPage}`}
       onPageSelected={onPageSelected}
       renderTabBar={props => (
         <Layout.Center style={[a.z_10, web([a.sticky, {top: headerHeight}])]}>
