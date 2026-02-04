@@ -44,6 +44,7 @@ let SearchResults = ({
   onPageSelected,
   headerHeight,
   initialPage = 0,
+  visibilityKey = 0,
 }: {
   query: string
   queryWithParams: string
@@ -51,6 +52,7 @@ let SearchResults = ({
   onPageSelected: (page: number) => void
   headerHeight: number
   initialPage?: number
+  visibilityKey?: number
 }): React.ReactNode => {
   const {_} = useLingui()
   const parsedQuery = parseSearchQuery(queryWithParams)
@@ -113,7 +115,7 @@ let SearchResults = ({
 
   return (
     <Pager
-      key={`${showPeopleAndFeeds ? 'full' : 'minimal'}-${initialPage}`}
+      key={`${showPeopleAndFeeds ? 'full' : 'minimal'}-${initialPage}-${visibilityKey}`}
       onPageSelected={onPageSelected}
       renderTabBar={props => (
         <Layout.Center style={[a.z_10, web([a.sticky, {top: headerHeight}])]}>

@@ -279,12 +279,14 @@ export function SearchScreenShell({
       setShowAutocomplete(false)
       updateSearchHistory(item)
 
+      const currentTab = (route.params as {tab?: string})?.tab || params.tab
+      const newParams = {q: item, ...pickBy(params), tab: currentTab}
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, {q: item, ...pickBy(params)})
+        navigation.push(route.name, newParams)
       } else {
         textInput.current?.blur()
-        navigation.setParams({q: item, ...pickBy(params)})
+        navigation.setParams(newParams)
       }
     },
     [updateSearchHistory, navigation, route, params],
@@ -566,6 +568,7 @@ export function SearchScreenShell({
           headerHeight={headerHeight}
           focusSearchInput={focusSearchInput}
           updateCurrentTab={updateCurrentTab}
+          isHidden={showAutocomplete}
         />
       </View>
     </Layout.Screen>
@@ -585,18 +588,38 @@ let SearchScreenInner = ({
   headerHeight,
   focusSearchInput,
   updateCurrentTab,
+  isHidden,
 }: {
   query: string
   queryWithParams: string
   headerHeight: number
   focusSearchInput: (tab?: SearchTabOptions) => void
   updateCurrentTab: (tab?: SearchTabOptions) => void
+  isHidden: boolean
 }): React.ReactNode => {
   const t = useTheme()
   const setMinimalShellMode = useSetMinimalShellMode()
   const {hasSession} = useSession()
   const {gtTablet} = useBreakpoints()
   const route = useRoute()
+
+  const isHiddenRef = useRef(isHidden)
+  const wasHiddenRef = useRef(isHidden)
+  const justBecameVisibleRef = useRef(false)
+  const [visibilityCounter, setVisibilityCounter] = useState(0)
+
+  if (wasHiddenRef.current && !isHidden) {
+    justBecameVisibleRef.current = true
+  }
+  wasHiddenRef.current = isHidden
+  isHiddenRef.current = isHidden
+
+  useLayoutEffect(() => {
+    if (!isHidden && justBecameVisibleRef.current) {
+      setVisibilityCounter(c => c + 1)
+      justBecameVisibleRef.current = false
+    }
+  }, [isHidden])
 
   // Get tab parameter from route params
   const tabParam = (route.params as {q?: string; tab?: SearchTabOptions})?.tab
@@ -633,11 +656,20 @@ let SearchScreenInner = ({
 
   const onPageSelected = useCallback(
     (index: number) => {
+      if (isHiddenRef.current) {
+        return
+      }
+      if (justBecameVisibleRef.current) {
+        const expectedIndex = getInitialTabIndex()
+        if (index !== expectedIndex) {
+          return
+        }
+      }
       setMinimalShellMode(false)
       setActiveTab(index)
       updateCurrentTab(tabIndexToTab[index])
     },
-    [setMinimalShellMode, updateCurrentTab],
+    [setMinimalShellMode, updateCurrentTab, activeTab, tabParam, getInitialTabIndex],
   )
   return queryWithParams ? (
     <SearchResults
@@ -647,6 +679,7 @@ let SearchScreenInner = ({
       headerHeight={headerHeight}
       onPageSelected={onPageSelected}
       initialPage={activeTab}
+      visibilityKey={visibilityCounter}
     />
   ) : hasSession ? (
     <Explore focusSearchInput={focusSearchInput} headerHeight={headerHeight} />
