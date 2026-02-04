@@ -200,10 +200,12 @@ export function SearchScreenShell({
       opts.flatMap(opt => opt.paths.map(path => path.join('/'))).join(','),
     )
     // we need to change the tab parameter if it isn't available with the current search
-    const showPeopleAndFeeds = searchType !== 'recipes' && !incompleteParams
+    const showPeopleAndFeeds =
+      searchType !== 'recipes' &&
+      !Object.keys(nonEmptyParams(incompleteParams)).length
     const actualTab = showPeopleAndFeeds
       ? parsedParams.tab
-      : parsedParams.tab in ['top', 'latest']
+      : parsedParams.tab === 'top' || parsedParams.tab === 'latest'
         ? parsedParams.tab
         : 'top'
     const params = {
