@@ -208,29 +208,85 @@ function ProfileScreenLoaded({
   // subtract starterpack count from list count, since starterpacks are a type of list
   const listCount = (profile.associated?.lists || 0) - starterPackCount
 
-  const { visibleSections, sectionById, sectionTitles } = useMemo(() => {
+  const {visibleSections, sectionById, sectionTitles} = useMemo(() => {
     // Order is significant
     const allSections = [
-      { id: "filters", visible: hasLabeler, title: _(msg`Labels`), ref: labelsSectionRef },
-      { id: "all", visible: !hasLabeler, title: _(msg`All`), ref: allSectionRef },
-      { id: "posts", visible: true, title: _(msg`Posts`), ref: postsSectionRef },
-      { id: "replies", visible: hasSession && false /** Currently has same functionality as "all" */, title: _(msg`Replies`), ref: repliesSectionRef },
-      { id: "recipes", visible: !hasLabeler, title: _(msg`Recipes`), ref: recipesSectionRef },
-      { id: "reviews", visible: !hasLabeler, title: _(msg`Reviews`), ref: recipesSectionRef },
-      { id: "media", visible: !hasLabeler, title: _(msg`Media`), ref: mediaSectionRef },
-      { id: "videos", visible: !hasLabeler, title: _(msg`Videos`), ref: videosSectionRef },
-      { id: "likes", visible: isMe, title: _(msg`Likes`), ref: likesSectionRef },
-      { id: "feeds", visible: isMe || feedGenCount > 0, title: _(msg`Feeds`), ref: feedsSectionRef },
-      { id: "starter_packs", visible: isMe || starterPackCount > 0, title: _(msg`Starter Packs`), ref: starterPacksSectionRef },
-      { id: "lists", visible: hasSession && (isMe || listCount > 0), title: _(msg`Lists`), ref: listsSectionRef },
+      {
+        id: 'filters',
+        visible: hasLabeler,
+        title: _(msg`Labels`),
+        ref: labelsSectionRef,
+      },
+      {id: 'all', visible: !hasLabeler, title: _(msg`All`), ref: allSectionRef},
+      {id: 'posts', visible: true, title: _(msg`Posts`), ref: postsSectionRef},
+      {
+        id: 'replies',
+        visible:
+          hasSession && false /** Currently has same functionality as "all" */,
+        title: _(msg`Replies`),
+        ref: repliesSectionRef,
+      },
+      {
+        id: 'recipes',
+        visible: !hasLabeler,
+        title: _(msg`Recipes`),
+        ref: recipesSectionRef,
+      },
+      {
+        id: 'reviews',
+        visible: !hasLabeler,
+        title: _(msg`Reviews`),
+        ref: recipesSectionRef,
+      },
+      {
+        id: 'media',
+        visible: !hasLabeler,
+        title: _(msg`Media`),
+        ref: mediaSectionRef,
+      },
+      {
+        id: 'videos',
+        visible: !hasLabeler,
+        title: _(msg`Videos`),
+        ref: videosSectionRef,
+      },
+      {id: 'likes', visible: isMe, title: _(msg`Likes`), ref: likesSectionRef},
+      {
+        id: 'feeds',
+        visible: isMe || feedGenCount > 0,
+        title: _(msg`Feeds`),
+        ref: feedsSectionRef,
+      },
+      {
+        id: 'starter_packs',
+        visible: isMe || starterPackCount > 0,
+        title: _(msg`Starter Packs`),
+        ref: starterPacksSectionRef,
+      },
+      {
+        id: 'lists',
+        visible: hasSession && (isMe || listCount > 0),
+        title: _(msg`Lists`),
+        ref: listsSectionRef,
+      },
     ] as const
 
-    const visibleSections = allSections.filter(({ visible }) => visible)
-    const sectionById = new Map(visibleSections.map((section) => [section.id, section]))
-    const sectionTitles = visibleSections.map(({ title }) => title)
+    const visibleSections = allSections.filter(({visible}) => visible)
+    const sectionById = new Map(
+      visibleSections.map(section => [section.id, section]),
+    )
+    const sectionTitles = visibleSections.map(({title}) => title)
 
-    return { visibleSections, sectionById, sectionTitles }
-  }, [hasLabeler, hasSession, isMe, feedGenCount, starterPackCount, listCount])
+    return {visibleSections, sectionById, sectionTitles}
+  }, [
+    _,
+    hasLabeler,
+    hasSession,
+    isMe,
+    feedGenCount,
+    starterPackCount,
+    listCount,
+  ])
 
   const scrollSectionToTop = useCallback(
     (index: number) => {
@@ -308,7 +364,7 @@ function ProfileScreenLoaded({
         onCurrentPageSelected={onCurrentPageSelected}
         renderHeader={renderHeader}
         allowHeaderOverScroll>
-        {sectionById.has("filters")
+        {sectionById.has('filters')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileLabelsSection
                 ref={labelsSectionRef}
@@ -323,20 +379,20 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("all")
-          ? ({ headerHeight, isFocused, scrollElRef }) => (
-            <ProfileFeedSection
-              ref={postsSectionRef}
-              feed={`author|${profile.did}|all`}
-              headerHeight={headerHeight}
-              isFocused={isFocused}
-              scrollElRef={scrollElRef as ListRef}
-              ignoreFilterFor={profile.did}
-              setScrollViewTag={setScrollViewTag}
-            />
-          )
+        {sectionById.has('all')
+          ? ({headerHeight, isFocused, scrollElRef}) => (
+              <ProfileFeedSection
+                ref={postsSectionRef}
+                feed={`author|${profile.did}|all`}
+                headerHeight={headerHeight}
+                isFocused={isFocused}
+                scrollElRef={scrollElRef as ListRef}
+                ignoreFilterFor={profile.did}
+                setScrollViewTag={setScrollViewTag}
+              />
+            )
           : null}
-        {sectionById.has("posts")
+        {sectionById.has('posts')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={postsSectionRef}
@@ -349,7 +405,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("replies")
+        {sectionById.has('replies')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={repliesSectionRef}
@@ -362,25 +418,33 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("recipes") ? ({ headerHeight, isFocused, scrollElRef }) => <ProfileFeedSection
-          ref={recipesSectionRef}
-          feed={`author|${profile.did}|recipes`}
-          headerHeight={headerHeight}
-          isFocused={isFocused}
-          scrollElRef={scrollElRef as ListRef}
-          ignoreFilterFor={profile.did}
-          setScrollViewTag={setScrollViewTag}
-        /> : null}
-        {sectionById.has("reviews") ? ({ headerHeight, isFocused, scrollElRef }) => <ProfileFeedSection
-          ref={recipesSectionRef}
-          feed={`author|${profile.did}|reviews`}
-          headerHeight={headerHeight}
-          isFocused={isFocused}
-          scrollElRef={scrollElRef as ListRef}
-          ignoreFilterFor={profile.did}
-          setScrollViewTag={setScrollViewTag}
-        /> : null}
-        {sectionById.has("media")
+        {sectionById.has('recipes')
+          ? ({headerHeight, isFocused, scrollElRef}) => (
+              <ProfileFeedSection
+                ref={recipesSectionRef}
+                feed={`author|${profile.did}|recipes`}
+                headerHeight={headerHeight}
+                isFocused={isFocused}
+                scrollElRef={scrollElRef as ListRef}
+                ignoreFilterFor={profile.did}
+                setScrollViewTag={setScrollViewTag}
+              />
+            )
+          : null}
+        {sectionById.has('reviews')
+          ? ({headerHeight, isFocused, scrollElRef}) => (
+              <ProfileFeedSection
+                ref={recipesSectionRef}
+                feed={`author|${profile.did}|reviews`}
+                headerHeight={headerHeight}
+                isFocused={isFocused}
+                scrollElRef={scrollElRef as ListRef}
+                ignoreFilterFor={profile.did}
+                setScrollViewTag={setScrollViewTag}
+              />
+            )
+          : null}
+        {sectionById.has('media')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={mediaSectionRef}
@@ -393,7 +457,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("videos")
+        {sectionById.has('videos')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={videosSectionRef}
@@ -406,7 +470,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("likes")
+        {sectionById.has('likes')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedSection
                 ref={likesSectionRef}
@@ -419,7 +483,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("feeds")
+        {sectionById.has('feeds')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileFeedgens
                 ref={feedsSectionRef}
@@ -431,7 +495,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("starter_packs")
+        {sectionById.has('starter_packs')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileStarterPacks
                 ref={starterPacksSectionRef}
@@ -444,7 +508,7 @@ function ProfileScreenLoaded({
               />
             )
           : null}
-        {sectionById.has("lists")
+        {sectionById.has('lists')
           ? ({headerHeight, isFocused, scrollElRef}) => (
               <ProfileLists
                 ref={listsSectionRef}
