@@ -618,8 +618,8 @@ let SearchScreenInner = ({
       case 'people':
         return 2 // People tab
       case 'feed':
-        return 3 // Feeds tab
       case 'feeds':
+        return 3 // Feeds tab
       default:
         return 0
     }
