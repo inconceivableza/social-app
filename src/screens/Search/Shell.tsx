@@ -63,6 +63,35 @@ import {type SearchType} from './components/SearchTypeInput/options'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
 
+type ParamsArg = Params | Readonly<object | undefined>
+
+function nonEmptyParams(params: ParamsArg) {
+  return Object.fromEntries(
+    Object.entries(params ?? {}).filter(([_key, value]) => !!value),
+  )
+}
+
+function excludeRecipeParams(params: ParamsArg) {
+  return Object.fromEntries(
+    Object.entries(params ?? {}).filter(
+      ([key]) =>
+        !(key in ['recipeCategories', 'recipeCuisines', 'recipeDiets']),
+    ),
+  )
+}
+
+function equalParams(p1: ParamsArg, p2: ParamsArg) {
+  /* const t1 = (p1 ?? {}) as Record<string, string>, t2 = (p2 ?? {}) as Record<string, string>
+  const k1 = Object.keys(t1), k2 = Object.keys(t2)
+  if (k1.length !== k2.length) return false;
+  for (const k of k1) {
+    if (!(k in t2)) return false
+    if (t1[k] !== t2[k]) return false
+  }
+  return true */
+  return JSON.stringify(p1 ?? {}) === JSON.stringify(p2 ?? {})
+}
+
 export function SearchScreenShell({
   queryParam,
   testID,
@@ -170,15 +199,49 @@ export function SearchScreenShell({
       // Certain options have multiple paths i.e. multiple parents. We want results from all of them.
       opts.flatMap(opt => opt.paths.map(path => path.join('/'))).join(','),
     )
+    // we need to change the tab parameter if it isn't available with the current search
+    const showPeopleAndFeeds = searchType !== 'recipes' && !incompleteParams
+    const actualTab = showPeopleAndFeeds
+      ? parsedParams.tab
+      : parsedParams.tab in ['top', 'latest']
+        ? parsedParams.tab
+        : 'top'
     const params = {
       ...incompleteParams,
-      ...recipeParams,
+      ...(searchType === 'recipes' ? recipeParams : {}),
       searchType,
-      tab: parsedParams.tab,
+      tab: actualTab,
     }
     const queryWithParams = makeSearchQuery(query, params)
+    const checkRouteParams = nonEmptyParams({q: query, ...params})
+    if (!equalParams(checkRouteParams, route.params)) {
+      navigation.replaceParams(checkRouteParams)
+    }
     return {queryWithParams, params}
-  }, [query, incompleteParams, parsedParams, recipeSearchFields, searchType])
+  }, [
+    query,
+    incompleteParams,
+    parsedParams,
+    recipeSearchFields,
+    searchType,
+    navigation,
+    route.params,
+  ])
+
+  const onChangeSearchType = useCallback(
+    (searchType: SearchType) => {
+      const relevantParams =
+        searchType === 'recipes' ? params : excludeRecipeParams(params)
+      const newParams = {
+        ...relevantParams,
+        q: query,
+        searchType,
+      }
+      setSearchType(searchType)
+      navigation.replaceParams(newParams)
+    },
+    [navigation, query, params],
+  )
 
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
 
@@ -408,7 +471,7 @@ export function SearchScreenShell({
                 <View style={[platform({web: {width: '25%'}})]}>
                   <SearchTypeInput
                     value={searchType}
-                    onChange={setSearchType}
+                    onChange={onChangeSearchType}
                   />
                 </View>
                 <View style={{flexGrow: 1}}>
