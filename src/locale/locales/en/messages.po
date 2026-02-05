@@ -142,7 +142,7 @@ msgstr ""
 
 #: src/components/EnvConfigIndicator.tsx:117
 #: src/components/EnvConfigIndicator.tsx:139
-#: src/components/forms/ComboBox/index.tsx:64
+#: src/components/forms/ComboBox/index.tsx:60
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
@@ -518,11 +518,11 @@ msgstr ""
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr ""
 
-#: src/components/forms/ComboBox/index.tsx:196
+#: src/components/forms/ComboBox/index.tsx:195
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:197
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:305
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:420
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:554
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:421
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:556
 msgid "{label}"
 msgstr ""
 
@@ -613,7 +613,7 @@ msgstr ""
 msgid "<0>{date}</0> at {time}"
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:272
+#: src/screens/Search/SearchResults.tsx:276
 msgid "<0>Sign in</0><1> or </1><2>create an account</2><3> </3><4>to search for news, sports, politics, and everything else happening on {appName}.</4>"
 msgstr ""
 
@@ -1023,7 +1023,7 @@ msgstr ""
 msgid "Air date"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:601
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:604
 msgid "Air date (optional)"
 msgstr ""
 
@@ -1050,7 +1050,7 @@ msgstr ""
 msgid "All languages"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:702
+#: src/view/screens/Feeds.tsx:709
 msgid "All the feeds you've saved, right in one place."
 msgstr ""
 
@@ -1469,7 +1469,7 @@ msgctxt "Name of app icon variant"
 msgid "Aurora"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:436
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:438
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:142
 msgid "Author"
 msgstr ""
@@ -1654,7 +1654,7 @@ msgstr ""
 #: src/components/dialogs/DeviceLocationRequestDialog.tsx:64
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:21
 #: src/components/WelcomeModal.tsx:33
-#: src/screens/Search/SearchResults.tsx:196
+#: src/screens/Search/SearchResults.tsx:200
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:49
 msgid "Bluesky"
 msgstr ""
@@ -1672,7 +1672,7 @@ msgstr ""
 msgid "Books"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:641
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:644
 msgid "Brand"
 msgstr ""
 
@@ -1781,7 +1781,7 @@ msgstr ""
 #: src/screens/Deactivated.tsx:158
 #: src/screens/Profile/Header/EditProfileDialog.tsx:218
 #: src/screens/Profile/Header/EditProfileDialog.tsx:226
-#: src/screens/Search/Shell.tsx:412
+#: src/screens/Search/Shell.tsx:423
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:85
@@ -1822,7 +1822,7 @@ msgstr ""
 msgid "Cancel reactivation and sign out"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:404
+#: src/screens/Search/Shell.tsx:415
 msgid "Cancel search"
 msgstr ""
 
@@ -2037,7 +2037,7 @@ msgstr ""
 msgid "Choose your account provider"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:728
+#: src/view/screens/Feeds.tsx:735
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr ""
 
@@ -2341,7 +2341,7 @@ msgstr ""
 msgid "Confirm delete account"
 msgstr ""
 
-#: src/components/forms/ComboBox/index.tsx:121
+#: src/components/forms/ComboBox/index.tsx:116
 msgid "Confirm selection"
 msgstr ""
 
@@ -2721,7 +2721,7 @@ msgstr ""
 #: src/components/dialogs/Signin.tsx:87
 #: src/components/dialogs/Signin.tsx:89
 #: src/screens/Hashtag.tsx:232
-#: src/screens/Search/SearchResults.tsx:283
+#: src/screens/Search/SearchResults.tsx:287
 msgid "Create an account"
 msgstr ""
 
@@ -3080,7 +3080,7 @@ msgid "Discover new custom feeds"
 msgstr ""
 
 #: src/screens/Search/Explore.tsx:432
-#: src/view/screens/Feeds.tsx:725
+#: src/view/screens/Feeds.tsx:732
 msgid "Discover New Feeds"
 msgstr ""
 
@@ -3160,9 +3160,9 @@ msgstr ""
 #: src/components/dialogs/BirthDateSettings.tsx:149
 #: src/components/dialogs/BirthDateSettings.tsx:156
 #: src/components/dms/ReportDialog.tsx:321
-#: src/components/forms/ComboBox/index.tsx:127
-#: src/components/forms/ComboBox/index.tsx:210
-#: src/components/forms/ComboBox/index.tsx:215
+#: src/components/forms/ComboBox/index.tsx:122
+#: src/components/forms/ComboBox/index.tsx:209
+#: src/components/forms/ComboBox/index.tsx:213
 #: src/components/forms/DateField/index.tsx:103
 #: src/components/forms/DateField/index.tsx:109
 #: src/components/Select/index.tsx:185
@@ -3318,7 +3318,7 @@ msgid "Edit moderation list"
 msgstr ""
 
 #: src/Navigation.tsx:374
-#: src/view/screens/Feeds.tsx:518
+#: src/view/screens/Feeds.tsx:519
 msgid "Edit My Feeds"
 msgstr ""
 
@@ -3571,7 +3571,7 @@ msgstr ""
 msgid "Episode"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:587
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:590
 msgid "Episode (optional)"
 msgstr ""
 
@@ -3600,7 +3600,7 @@ msgstr ""
 msgid "Error receiving captcha response."
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:160
+#: src/screens/Search/SearchResults.tsx:164
 msgid "Error: {error}"
 msgstr ""
 
@@ -3717,7 +3717,7 @@ msgid "Explicit sexual images."
 msgstr ""
 
 #: src/Navigation.tsx:791
-#: src/screens/Search/Shell.tsx:360
+#: src/screens/Search/Shell.tsx:367
 #: src/view/shell/desktop/LeftNav.tsx:728
 #: src/view/shell/Drawer.tsx:494
 msgid "Explore"
@@ -4016,9 +4016,9 @@ msgstr ""
 
 #: src/Navigation.tsx:604
 #: src/screens/SavedFeeds.tsx:108
-#: src/screens/Search/SearchResults.tsx:91
+#: src/screens/Search/SearchResults.tsx:94
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
-#: src/view/screens/Feeds.tsx:511
+#: src/view/screens/Feeds.tsx:512
 #: src/view/screens/Profile.tsx:223
 #: src/view/shell/desktop/LeftNav.tsx:766
 #: src/view/shell/Drawer.tsx:610
@@ -4096,7 +4096,7 @@ msgstr ""
 msgid "Find people to follow"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:574
+#: src/screens/Search/Shell.tsx:585
 msgid "Find posts, users, and feeds on {0}"
 msgstr ""
 
@@ -5103,7 +5103,7 @@ msgstr ""
 msgid "ISBN"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:450
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:452
 msgid "ISBN (optional)"
 msgstr ""
 
@@ -5225,7 +5225,7 @@ msgid "Last initiated just now"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:101
-#: src/screens/Search/SearchResults.tsx:73
+#: src/screens/Search/SearchResults.tsx:75
 #: src/screens/Topic.tsx:77
 msgid "Latest"
 msgstr ""
@@ -5345,8 +5345,8 @@ msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:284
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:294
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:533
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:543
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:535
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:545
 msgid "License type"
 msgstr ""
 
@@ -5966,13 +5966,13 @@ msgstr ""
 msgid "My Birthday"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:699
+#: src/view/screens/Feeds.tsx:706
 msgid "My Feeds"
 msgstr ""
 
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:399
 #: src/view/com/composer/ComposerRecipe.tsx:435
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:339
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:340
 msgid "Name"
 msgstr ""
 
@@ -6023,7 +6023,7 @@ msgstr ""
 msgid "Need to report a copyright violation?"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:594
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:597
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
 msgid "Network"
 msgstr ""
@@ -6265,19 +6265,19 @@ msgstr ""
 msgid "No results for \"{0}\"."
 msgstr ""
 
-#: src/components/forms/ComboBox/ComboBoxOptions.tsx:58
-#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:71
+#: src/components/forms/ComboBox/ComboBoxOptions.tsx:54
+#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:67
 #: src/components/Lists.tsx:189
-#: src/screens/Search/SearchResults.tsx:328
+#: src/screens/Search/SearchResults.tsx:332
 msgid "No results found"
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:473
+#: src/view/screens/Feeds.tsx:474
 msgid "No results found for \"{query}\""
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:364
-#: src/screens/Search/SearchResults.tsx:409
+#: src/screens/Search/SearchResults.tsx:368
+#: src/screens/Search/SearchResults.tsx:413
 msgid "No results found for {query}"
 msgstr ""
 
@@ -6348,11 +6348,11 @@ msgstr ""
 msgid "Note: This post is only visible to logged-in users."
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:353
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:471
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:526
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:616
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:669
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:354
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:473
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:528
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:619
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:672
 msgid "Notes (optional)"
 msgstr ""
 
@@ -6773,7 +6773,7 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:456
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:458
 msgid "Page (optional)"
 msgstr ""
 
@@ -6826,7 +6826,7 @@ msgid "Pause video"
 msgstr ""
 
 #: src/screens/ProfileList/index.tsx:163
-#: src/screens/Search/SearchResults.tsx:85
+#: src/screens/Search/SearchResults.tsx:88
 #: src/screens/StarterPack/StarterPackScreen.tsx:189
 msgid "People"
 msgstr ""
@@ -7327,7 +7327,7 @@ msgstr ""
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:648
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:651
 msgid "Product name"
 msgstr ""
 
@@ -7376,8 +7376,8 @@ msgstr ""
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:399
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:409
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:400
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:410
 msgid "Publication type"
 msgstr ""
 
@@ -7416,7 +7416,7 @@ msgstr ""
 msgid "Publisher"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:443
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:445
 msgid "Publisher (optional)"
 msgstr ""
 
@@ -8329,8 +8329,8 @@ msgstr ""
 #: src/components/dialogs/SearchablePeopleList.tsx:514
 #: src/components/forms/SearchInput.tsx:34
 #: src/components/forms/SearchInput.tsx:36
-#: src/screens/Search/Shell.tsx:360
-#: src/screens/Search/Shell.tsx:562
+#: src/screens/Search/Shell.tsx:367
+#: src/screens/Search/Shell.tsx:573
 #: src/view/shell/bottom-bar/BottomBar.tsx:200
 msgid "Search"
 msgstr ""
@@ -8354,7 +8354,7 @@ msgstr ""
 msgid "Search cuisines..."
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:444
+#: src/view/screens/Feeds.tsx:445
 msgid "Search feeds"
 msgstr ""
 
@@ -8388,11 +8388,11 @@ msgstr ""
 msgid "Search for more feeds"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:397
+#: src/screens/Search/Shell.tsx:407
 msgid "Search for posts, users, or feeds"
 msgstr ""
 
-#: src/screens/Search/Shell.tsx:397
+#: src/screens/Search/Shell.tsx:408
 msgid "Search for recipes"
 msgstr ""
 
@@ -8401,7 +8401,7 @@ msgid "Search GIFs"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:221
-#: src/screens/Search/SearchResults.tsx:270
+#: src/screens/Search/SearchResults.tsx:274
 msgid "Search is currently unavailable when logged out"
 msgstr ""
 
@@ -8433,7 +8433,7 @@ msgstr ""
 msgid "Search Tenor"
 msgstr ""
 
-#: src/screens/Search/components/SearchTypeInput/index.web.tsx:10
+#: src/screens/Search/components/SearchTypeInput/index.web.tsx:17
 msgid "Search type"
 msgstr ""
 
@@ -9005,7 +9005,7 @@ msgstr ""
 msgid "Show samples of your saved feeds in your Following feed"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:580
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:583
 msgid "Show title"
 msgstr ""
 
@@ -9046,7 +9046,7 @@ msgstr ""
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
 #: src/screens/Login/LoginForm.tsx:184
-#: src/screens/Search/SearchResults.tsx:275
+#: src/screens/Search/SearchResults.tsx:279
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
 #: src/view/com/auth/SplashScreen.web.tsx:129
@@ -10147,7 +10147,7 @@ msgstr ""
 msgid "Timers"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:429
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:431
 msgid "Title"
 msgstr ""
 
@@ -10201,7 +10201,7 @@ msgid "Too many diets selected"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:90
-#: src/screens/Search/SearchResults.tsx:63
+#: src/screens/Search/SearchResults.tsx:65
 #: src/screens/Topic.tsx:71
 msgid "Top"
 msgstr ""
@@ -10549,7 +10549,7 @@ msgstr ""
 msgid "UPC"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:655
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:658
 msgid "UPC (optional)"
 msgstr ""
 
@@ -10632,15 +10632,15 @@ msgstr ""
 msgid "Uploading video..."
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:519
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:521
 msgid "URL"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:315
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:346
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:464
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:609
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:662
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:316
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:347
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:466
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:612
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:665
 msgid "URL (optional)"
 msgstr ""
 
@@ -11213,7 +11213,7 @@ msgstr ""
 msgid "We're sorry, but we weren't able to load your muted words at this time. Please try again."
 msgstr ""
 
-#: src/screens/Search/SearchResults.tsx:302
+#: src/screens/Search/SearchResults.tsx:306
 msgid "We're sorry, but your search could not be completed. Please try again in a few minutes."
 msgstr ""
 
@@ -11254,7 +11254,7 @@ msgstr ""
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:512
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:514
 msgid "Website name"
 msgstr ""
 
