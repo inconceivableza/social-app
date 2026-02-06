@@ -1,6 +1,7 @@
 import {
   memo,
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -8,6 +9,7 @@ import {
 } from 'react'
 import {
   type StyleProp,
+  StyleSheet,
   type TextInput,
   View,
   type ViewStyle,
@@ -21,7 +23,7 @@ import {mapValues, pickBy} from 'lodash'
 import {branding, HITSLOP_10, HITSLOP_20} from '#/lib/constants'
 import {useNonReactiveCallback} from '#/lib/hooks/useNonReactiveCallback'
 import {MagnifyingGlassIcon} from '#/lib/icons'
-import {type NavigationProp} from '#/lib/routes/types'
+import {type NavigationProp, type SearchTabOptions} from '#/lib/routes/types'
 import {isWeb} from '#/platform/detection'
 import {listenSoftReset} from '#/state/events'
 import {useActorAutocompleteQuery} from '#/state/queries/actor-autocomplete'
@@ -62,6 +64,35 @@ import {SearchTypeInput} from './components/SearchTypeInput'
 import {type SearchType} from './components/SearchTypeInput/options'
 import {Explore} from './Explore'
 import {SearchResults} from './SearchResults'
+
+type ParamsArg = Params | Readonly<object | undefined>
+
+function nonEmptyParams(params: ParamsArg) {
+  return Object.fromEntries(
+    Object.entries(params ?? {}).filter(([_key, value]) => !!value),
+  )
+}
+
+function excludeRecipeParams(params: ParamsArg) {
+  return Object.fromEntries(
+    Object.entries(params ?? {}).filter(
+      ([key]) =>
+        !(key in ['recipeCategories', 'recipeCuisines', 'recipeDiets']),
+    ),
+  )
+}
+
+function equalParams(p1: ParamsArg, p2: ParamsArg) {
+  /* const t1 = (p1 ?? {}) as Record<string, string>, t2 = (p2 ?? {}) as Record<string, string>
+  const k1 = Object.keys(t1), k2 = Object.keys(t2)
+  if (k1.length !== k2.length) return false;
+  for (const k of k1) {
+    if (!(k in t2)) return false
+    if (t1[k] !== t2[k]) return false
+  }
+  return true */
+  return JSON.stringify(p1 ?? {}) === JSON.stringify(p2 ?? {})
+}
 
 export function SearchScreenShell({
   queryParam,
@@ -170,10 +201,46 @@ export function SearchScreenShell({
       // Certain options have multiple paths i.e. multiple parents. We want results from all of them.
       opts.flatMap(opt => opt.paths.map(path => path.join('/'))).join(','),
     )
-    const params = {...incompleteParams, ...recipeParams, searchType}
+    // we need to change the tab parameter if it isn't available with the current search
+    const showPeopleAndFeeds =
+      searchType !== 'recipes' &&
+      !Object.keys(nonEmptyParams(incompleteParams)).length
+    const actualTab = showPeopleAndFeeds
+      ? parsedParams.tab
+      : parsedParams.tab === 'top' || parsedParams.tab === 'latest'
+        ? parsedParams.tab
+        : 'top'
+    const params = {
+      ...incompleteParams,
+      ...(searchType === 'recipes' ? recipeParams : {}),
+      searchType,
+      tab: actualTab,
+    }
     const queryWithParams = makeSearchQuery(query, params)
     return {queryWithParams, params}
-  }, [query, incompleteParams, recipeSearchFields, searchType])
+  }, [query, incompleteParams, parsedParams, recipeSearchFields, searchType])
+
+  useEffect(() => {
+    const checkRouteParams = nonEmptyParams({q: query, ...params})
+    if (!equalParams(checkRouteParams, route.params)) {
+      navigation.replaceParams(checkRouteParams)
+    }
+  }, [query, params, route.params, navigation])
+
+  const onChangeSearchType = useCallback(
+    (searchType: SearchType) => {
+      const relevantParams =
+        searchType === 'recipes' ? params : excludeRecipeParams(params)
+      const newParams = {
+        ...relevantParams,
+        q: query,
+        searchType,
+      }
+      setSearchType(searchType)
+      navigation.replaceParams(newParams)
+    },
+    [navigation, query, params],
+  )
 
   const showFilters = Boolean(queryWithParams && !showAutocomplete)
 
@@ -213,12 +280,14 @@ export function SearchScreenShell({
       setShowAutocomplete(false)
       updateSearchHistory(item)
 
+      const currentTab = (route.params as {tab?: string})?.tab || params.tab
+      const newParams = {q: item, ...pickBy(params), tab: currentTab}
       if (isWeb) {
         // @ts-expect-error route is not typesafe
-        navigation.push(route.name, {q: item, ...pickBy(params)})
+        navigation.push(route.name, newParams)
       } else {
         textInput.current?.blur()
-        navigation.setParams({q: item})
+        navigation.setParams(newParams)
       }
     },
     [updateSearchHistory, navigation, route, params],
@@ -230,19 +299,17 @@ export function SearchScreenShell({
     setShowAutocomplete(false)
     if (isWeb) {
       // Empty params resets the URL to be /search rather than /search?q=
-      // Also clear the tab parameter
-      const {
-        q: _q,
-        tab: _tab,
-        ...parameters
-      } = (route.params ?? {}) as {
+      const {q: _q, ...parameters} = (route.params ?? {}) as {
         [key: string]: string
       }
       // @ts-expect-error route is not typesafe
       navigation.replace(route.name, parameters)
     } else {
       setSearchText('')
-      navigation.setParams({q: '', tab: undefined})
+      const {q: _q, ...parameters} = (route.params ?? {}) as {
+        [key: string]: string
+      }
+      navigation.setParams({q: '', ...parameters})
     }
   }, [setShowAutocomplete, setSearchText, navigation, route.params, route.name])
 
@@ -318,9 +385,23 @@ export function SearchScreenShell({
   }, [setShowAutocomplete, searchType])
 
   const focusSearchInput = useCallback(
-    (tab?: 'user' | 'profile' | 'feed') => {
+    (tab?: SearchTabOptions) => {
       textInput.current?.focus()
 
+      // If a tab is specified, set the tab parameter
+      if (tab) {
+        if (isWeb) {
+          navigation.setParams({...route.params, tab})
+        } else {
+          navigation.setParams({tab})
+        }
+      }
+    },
+    [navigation, route],
+  )
+
+  const updateCurrentTab = useCallback(
+    (tab?: SearchTabOptions) => {
       // If a tab is specified, set the tab parameter
       if (tab) {
         if (isWeb) {
@@ -391,7 +472,7 @@ export function SearchScreenShell({
                 <View style={[platform({web: {width: '25%'}})]}>
                   <SearchTypeInput
                     value={searchType}
-                    onChange={setSearchType}
+                    onChange={onChangeSearchType}
                   />
                 </View>
                 <View style={{flexGrow: 1}}>
@@ -452,45 +533,54 @@ export function SearchScreenShell({
         </Layout.Center>
       </View>
 
-      <View
-        style={{
-          display: showAutocomplete && !fixedParams ? 'flex' : 'none',
-          flex: 1,
-        }}>
-        {query.trim() ? (
-          <AutocompleteResults
-            isAutocompleteFetching={isAutocompleteFetching}
-            autocompleteData={autocompleteData}
-            queryType={searchType}
-            onSubmit={onSubmit}
-            onResultPress={onAutocompleteResultPress}
-            onProfileClick={handleProfileClick}
+      <View style={a.flex_1}>
+        {/* Always render SearchScreenInner to prevent Android PagerView from
+            losing its page state when hidden via display:none */}
+        <View
+          style={a.flex_1}
+          pointerEvents={showAutocomplete && !fixedParams ? 'none' : 'auto'}>
+          <SearchScreenInner
+            query={query}
+            queryWithParams={queryWithParams}
+            headerHeight={headerHeight}
+            focusSearchInput={focusSearchInput}
+            updateCurrentTab={updateCurrentTab}
           />
-        ) : (
-          <SearchHistory
-            searchHistory={termHistory}
-            selectedProfiles={accountHistoryProfiles?.profiles || []}
-            onItemClick={handleHistoryItemClick}
-            onProfileClick={handleProfileClick}
-            onRemoveItemClick={deleteSearchHistoryItem}
-            onRemoveProfileClick={deleteProfileHistoryItem}
-          />
+        </View>
+        {/* Overlay autocomplete on top when active */}
+        {showAutocomplete && !fixedParams && (
+          <View style={[StyleSheet.absoluteFill, t.atoms.bg]}>
+            {query.trim() ? (
+              <AutocompleteResults
+                isAutocompleteFetching={isAutocompleteFetching}
+                autocompleteData={autocompleteData}
+                queryType={searchType}
+                onSubmit={onSubmit}
+                onResultPress={onAutocompleteResultPress}
+                onProfileClick={handleProfileClick}
+              />
+            ) : (
+              <SearchHistory
+                searchHistory={termHistory}
+                selectedProfiles={accountHistoryProfiles?.profiles || []}
+                onItemClick={handleHistoryItemClick}
+                onProfileClick={handleProfileClick}
+                onRemoveItemClick={deleteSearchHistoryItem}
+                onRemoveProfileClick={deleteProfileHistoryItem}
+              />
+            )}
+          </View>
         )}
-      </View>
-      <View
-        style={{
-          display: showAutocomplete ? 'none' : 'flex',
-          flex: 1,
-        }}>
-        <SearchScreenInner
-          query={query}
-          queryWithParams={queryWithParams}
-          headerHeight={headerHeight}
-          focusSearchInput={focusSearchInput}
-        />
       </View>
     </Layout.Screen>
   )
+}
+
+const tabIndexToTab: Record<number, SearchTabOptions> = {
+  0: 'top',
+  1: 'latest',
+  2: 'people',
+  3: 'feeds',
 }
 
 let SearchScreenInner = ({
@@ -498,11 +588,13 @@ let SearchScreenInner = ({
   queryWithParams,
   headerHeight,
   focusSearchInput,
+  updateCurrentTab,
 }: {
   query: string
   queryWithParams: string
   headerHeight: number
-  focusSearchInput: (tab?: 'user' | 'profile' | 'feed') => void
+  focusSearchInput: (tab?: SearchTabOptions) => void
+  updateCurrentTab: (tab?: SearchTabOptions) => void
 }): React.ReactNode => {
   const t = useTheme()
   const setMinimalShellMode = useSetMinimalShellMode()
@@ -511,9 +603,7 @@ let SearchScreenInner = ({
   const route = useRoute()
 
   // Get tab parameter from route params
-  const tabParam = (
-    route.params as {q?: string; tab?: 'user' | 'profile' | 'feed'}
-  )?.tab
+  const tabParam = (route.params as {q?: string; tab?: SearchTabOptions})?.tab
 
   // Map tab parameter to tab index
   const getInitialTabIndex = useCallback(() => {
@@ -521,8 +611,14 @@ let SearchScreenInner = ({
     switch (tabParam) {
       case 'user':
       case 'profile':
+      case 'top':
+        return 0
+      case 'latest':
+        return 1
+      case 'people':
         return 2 // People tab
       case 'feed':
+      case 'feeds':
         return 3 // Feeds tab
       default:
         return 0
@@ -543,8 +639,9 @@ let SearchScreenInner = ({
     (index: number) => {
       setMinimalShellMode(false)
       setActiveTab(index)
+      updateCurrentTab(tabIndexToTab[index])
     },
-    [setMinimalShellMode],
+    [setMinimalShellMode, updateCurrentTab],
   )
   return queryWithParams ? (
     <SearchResults

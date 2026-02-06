@@ -540,6 +540,7 @@ function ComposeRecipeBtn() {
   return (
     <View style={[a.flex_row, a.pl_md, a.pt_xl]}>
       <Button
+        testID="leftNavComposeRecipe"
         label={_(msg`Compose new recipe`)}
         onPress={onPressCompose}
         size="large"
@@ -607,6 +608,7 @@ function ComposeBtn() {
   return (
     <View style={[a.flex_row, a.pl_md, a.pt_xl]}>
       <Button
+        testID="leftNavComposePost"
         disabled={isFetchingHandle}
         label={_(msg`Compose new post`)}
         onPress={onPressCompose}

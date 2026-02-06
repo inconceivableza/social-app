@@ -43,7 +43,7 @@ let AutocompleteResults = ({
           keyboardDismissMode="on-drag">
           <SearchLinkCard
             label={_(
-              msg`Search for matching ${queryType === 'all' ? _(`posts`) : _(`recipes`)}`,
+              msg`Search for matching ${queryType === 'all' ? _(`posts, people or feeds`) : _(`recipes`)}`,
             )}
             onPress={onSubmit}
             style={a.border_b}

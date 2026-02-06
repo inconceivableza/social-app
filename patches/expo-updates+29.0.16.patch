@@ -1,0 +1,66 @@
+diff --git a/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift b/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift
+index 78f7fdb..065c7c3 100644
+--- a/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift
++++ b/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift
+@@ -76,31 +76,12 @@ public final class ExpoUpdatesReactDelegateHandler: ExpoReactDelegateHandler, Ap
+       fatalError("`reactDelegate` should not be nil")
+     }
+ 
+-    func recreateRootView(
+-      withBundleURL: URL?,
+-      moduleName: String?,
+-      initialProps: [AnyHashable: Any]?,
+-      launchOptions: [AnyHashable: Any]?
+-    ) -> UIView {
+-      if let appDelegate = (UIApplication.shared.delegate as? (any ReactNativeFactoryProvider)) ??
+-        ((UIApplication.shared.delegate as? NSObject)?.value(forKey: "_expoAppDelegate") as? (any ReactNativeFactoryProvider)) {
+-          return appDelegate.recreateRootView(
+-            withBundleURL: withBundleURL,
+-            moduleName: moduleName,
+-            initialProps: initialProps,
+-            launchOptions: launchOptions
+-          )
+-        }
+-
+-        return reactDelegate.reactNativeFactory.recreateRootView(
+-          withBundleURL: withBundleURL,
+-          moduleName: moduleName,
+-          initialProps: initialProps,
+-          launchOptions: launchOptions
+-        )
++    guard let appDelegate = (UIApplication.shared.delegate as? (any ReactNativeFactoryProvider)) ??
++      ((UIApplication.shared.delegate as? NSObject)?.value(forKey: "_expoAppDelegate") as? (any ReactNativeFactoryProvider)) else {
++      fatalError("`UIApplication.shared.delegate` must be an `ExpoAppDelegate` or `EXAppDelegateWrapper`")
+     }
+ 
+-    let rootView = recreateRootView(
++    let rootView = appDelegate.recreateRootView(
+       withBundleURL: AppController.sharedInstance.launchAssetUrl(),
+       moduleName: self.rootViewModuleName,
+       initialProps: self.rootViewInitialProperties,
+diff --git a/node_modules/expo-updates/ios/EXUpdates/Update/ExpoUpdatesUpdate.swift b/node_modules/expo-updates/ios/EXUpdates/Update/ExpoUpdatesUpdate.swift
+index 68086bd..78c7761 100644
+--- a/node_modules/expo-updates/ios/EXUpdates/Update/ExpoUpdatesUpdate.swift
++++ b/node_modules/expo-updates/ios/EXUpdates/Update/ExpoUpdatesUpdate.swift
+@@ -78,13 +78,20 @@ public final class ExpoUpdatesUpdate: Update {
+       status = UpdateStatus.StatusPending
+     }
+ 
++    // Instead of relying on various hacks to get the correct format for the specific
++    // platform on the backend, we can just add this little patch..
++    let dateFormatter = DateFormatter()
++    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
++    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
++    let date = dateFormatter.date(from:commitTime) ?? RCTConvert.nsDate(commitTime)!
++
+     return Update(
+       manifest: manifest,
+       config: config,
+       database: database,
+       updateId: uuid,
+       scopeKey: config.scopeKey,
+-      commitTime: RCTConvert.nsDate(commitTime),
++      commitTime: date,
+       runtimeVersion: runtimeVersion,
+       keep: true,
+       status: status,
