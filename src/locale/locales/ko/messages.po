@@ -82,7 +82,7 @@ msgstr "{0, plural, other {#초}}"
 
 #: src/view/shell/bottom-bar/BottomBar.tsx:228
 #: src/view/shell/bottom-bar/BottomBar.tsx:261
-#: src/view/shell/Drawer.tsx:562
+#: src/view/shell/Drawer.tsx:578
 msgid "{0, plural, one {# unread item} other {# unread items}}"
 msgstr "읽지 않은 항목 {0, plural, other {#개}}"
 
@@ -145,9 +145,14 @@ msgstr "{0, plural, other {#명}}이 이 스타터 팩을 사용했습니다!"
 msgid "{0, plural, other {+# more}}"
 msgstr "{0, plural, other {+#명}}"
 
-#: src/components/EnvConfigIndicator.tsx:118
-#: src/components/EnvConfigIndicator.tsx:140
-#: src/components/forms/ComboBox/index.tsx:64
+#: src/screens/SavedFeeds.tsx:415
+msgctxt "feed-name"
+msgid "{0}"
+msgstr ""
+
+#: src/components/EnvConfigIndicator.tsx:117
+#: src/components/EnvConfigIndicator.tsx:139
+#: src/components/forms/ComboBox/index.tsx:60
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
@@ -265,8 +270,8 @@ msgstr "{1} 님의 리스트 {0}, {2}명이 좋아요 표시함"
 msgid "{0}, a list by {1}"
 msgstr "{1} 님의 리스트 {0}"
 
-#: src/components/EnvConfigIndicator.tsx:111
-#: src/components/EnvConfigIndicator.tsx:132
+#: src/components/EnvConfigIndicator.tsx:110
+#: src/components/EnvConfigIndicator.tsx:131
 #: src/screens/Settings/Settings.tsx:625
 #: src/screens/Settings/Settings.tsx:642
 msgid "{0}. {reloadMessage}"
@@ -507,12 +512,10 @@ msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr "{hours, plural, other {#시간}}"
 
 #: src/view/shell/desktop/RightNav.tsx:231
-#: src/view/shell/Drawer.tsx:191
 msgid "{invitesAvailable} invite code available"
 msgstr ""
 
 #: src/view/shell/desktop/RightNav.tsx:233
-#: src/view/shell/Drawer.tsx:193
 msgid "{invitesAvailable} invite codes available"
 msgstr ""
 
@@ -520,11 +523,11 @@ msgstr ""
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr "{joinedAllTimeCount, plural, other {#명}}의 사용자가 가입했습니다!"
 
-#: src/components/forms/ComboBox/index.tsx:196
+#: src/components/forms/ComboBox/index.tsx:195
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:197
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:305
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:420
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:554
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:421
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:556
 msgid "{label}"
 msgstr ""
 
@@ -594,6 +597,10 @@ msgstr "<0>{0}</0> {1, plural, other {팔로워}}"
 msgid "<0>{0}</0> {1, plural, one {following} other {following}}"
 msgstr "<0>{0}</0> {1, plural, other {팔로우 중}}"
 
+#: src/view/shell/Drawer.tsx:196
+msgid "<0>{0}</0> {1, plural, one {invite code available} other {invite codes available}}"
+msgstr ""
+
 #: src/screens/StarterPack/Wizard/index.tsx:510
 #: src/screens/StarterPack/Wizard/index.tsx:564
 msgid "<0>{0}</0> and<1> </1><2>{1} </2>are included in your starter pack"
@@ -611,7 +618,7 @@ msgstr "<0>{0}</0>의 멤버"
 msgid "<0>{date}</0> at {time}"
 msgstr "<0>{date}</0> {time}"
 
-#: src/screens/Search/SearchResults.tsx:272
+#: src/screens/Search/SearchResults.tsx:287
 msgid "<0>Sign in</0><1> or </1><2>create an account</2><3> </3><4>to search for news, sports, politics, and everything else happening on {appName}.</4>"
 msgstr ""
 
@@ -731,7 +738,7 @@ msgid "Account muted"
 msgstr "계정을 뮤트했습니다"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:105
-#: src/lib/moderation/useModerationCauseDescription.ts:99
+#: src/lib/moderation/useModerationCauseDescription.ts:96
 msgid "Account Muted"
 msgstr "계정 뮤트됨"
 
@@ -866,7 +873,7 @@ msgstr "이모티콘 반응 추가"
 msgid "Add ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1286
+#: src/view/com/composer/ComposerRecipe.tsx:1321
 msgid "Add instruction"
 msgstr ""
 
@@ -901,17 +908,17 @@ msgstr "리스트에 사용자 추가하기"
 msgid "Add Reaction"
 msgstr "반응 추가"
 
-#: src/screens/Home/NoFeedsPinned.tsx:99
+#: src/screens/Home/NoFeedsPinned.tsx:96
 msgid "Add recommended feeds"
 msgstr "추천 피드 추가"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1114
-#: src/view/com/composer/ComposerRecipe.tsx:1301
+#: src/view/com/composer/ComposerRecipe.tsx:1151
+#: src/view/com/composer/ComposerRecipe.tsx:1336
 msgid "Add section"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1116
-#: src/view/com/composer/ComposerRecipe.tsx:1303
+#: src/view/com/composer/ComposerRecipe.tsx:1153
+#: src/view/com/composer/ComposerRecipe.tsx:1338
 msgid "Add Section"
 msgstr ""
 
@@ -978,7 +985,7 @@ msgstr "성인물"
 
 #: src/components/moderation/ContentHider.tsx:120
 #: src/lib/moderation/useGlobalLabelStrings.ts:34
-#: src/lib/moderation/useModerationCauseDescription.ts:149
+#: src/lib/moderation/useModerationCauseDescription.ts:146
 #: src/view/com/composer/labels/LabelsBtn.tsx:127
 msgid "Adult Content"
 msgstr "성인 콘텐츠"
@@ -1021,7 +1028,7 @@ msgstr "연령 확인은 몇 분이면 완료됩니다"
 msgid "Air date"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:601
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:604
 msgid "Air date (optional)"
 msgstr ""
 
@@ -1032,6 +1039,7 @@ msgstr "alice@example.com"
 #. the default tab in the interests tab bar
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:146
 #: src/view/screens/Notifications.tsx:84
+#: src/view/screens/Profile.tsx:220
 msgid "All"
 msgstr "모두"
 
@@ -1047,7 +1055,7 @@ msgstr "모든 계정을 팔로우했습니다"
 msgid "All languages"
 msgstr "모든 언어"
 
-#: src/view/screens/Feeds.tsx:696
+#: src/view/screens/Feeds.tsx:709
 msgid "All the feeds you've saved, right in one place."
 msgstr "저장한 모든 피드를 한 곳에서 확인하세요."
 
@@ -1215,7 +1223,7 @@ msgid "An mockup of a iPhone showing the {0} app open to the profile of a verifi
 msgstr ""
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:136
-#: src/lib/moderation/useModerationCauseDescription.ts:145
+#: src/lib/moderation/useModerationCauseDescription.ts:142
 msgid "an unknown labeler"
 msgstr "알 수 없는 라벨러"
 
@@ -1337,7 +1345,7 @@ msgid "Appearance"
 msgstr "모양"
 
 #: src/screens/Feeds/NoSavedFeedsOfAnyType.tsx:51
-#: src/screens/Home/NoFeedsPinned.tsx:93
+#: src/screens/Home/NoFeedsPinned.tsx:90
 msgid "Apply default recommended feeds"
 msgstr "기본 추천 피드 적용하기"
 
@@ -1438,7 +1446,7 @@ msgstr ""
 msgid "At least one instruction required"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:686
+#: src/view/com/composer/ComposerRecipe.tsx:689
 #: src/view/com/posts/ExpandableRecipePost.tsx:252
 msgid "Attribution"
 msgstr ""
@@ -1466,7 +1474,7 @@ msgctxt "Name of app icon variant"
 msgid "Aurora"
 msgstr "오로라"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:436
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:438
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:142
 msgid "Author"
 msgstr ""
@@ -1651,7 +1659,7 @@ msgstr "블로그"
 #: src/components/dialogs/DeviceLocationRequestDialog.tsx:64
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:21
 #: src/components/WelcomeModal.tsx:33
-#: src/screens/Search/SearchResults.tsx:196
+#: src/screens/Search/SearchResults.tsx:211
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:49
 msgid "Bluesky"
 msgstr "Bluesky"
@@ -1669,7 +1677,7 @@ msgstr "이미지 블러 및 피드에서 필터링"
 msgid "Books"
 msgstr "책"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:641
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:644
 msgid "Brand"
 msgstr ""
 
@@ -1690,8 +1698,8 @@ msgstr "더 많은 추천 찾아보기"
 msgid "Browse more suggestions on the Explore page"
 msgstr "탐색 페이지에서 더 많은 추천 찾아보기"
 
-#: src/screens/Home/NoFeedsPinned.tsx:103
-#: src/screens/Home/NoFeedsPinned.tsx:109
+#: src/screens/Home/NoFeedsPinned.tsx:100
+#: src/screens/Home/NoFeedsPinned.tsx:106
 msgid "Browse other feeds"
 msgstr "다른 피드 탐색하기"
 
@@ -1722,7 +1730,7 @@ msgstr "비즈니스"
 #: src/components/LabelingServiceCard/index.tsx:62
 #: src/components/moderation/ReportDialog/index.tsx:686
 #: src/screens/Search/components/StarterPackCard.tsx:106
-#: src/screens/Search/Explore.tsx:937
+#: src/screens/Search/Explore.tsx:938
 msgid "By {0}"
 msgstr "{0} 님이 만듦"
 
@@ -1778,7 +1786,7 @@ msgstr "카메라"
 #: src/screens/Deactivated.tsx:158
 #: src/screens/Profile/Header/EditProfileDialog.tsx:218
 #: src/screens/Profile/Header/EditProfileDialog.tsx:226
-#: src/screens/Search/Shell.tsx:412
+#: src/screens/Search/Shell.tsx:504
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:85
@@ -1790,8 +1798,8 @@ msgstr "카메라"
 #: src/screens/Takendown.tsx:113
 #: src/view/com/composer/Composer.tsx:1161
 #: src/view/com/composer/Composer.tsx:1172
-#: src/view/com/composer/ComposerRecipe.tsx:1399
-#: src/view/com/composer/ComposerRecipe.tsx:1410
+#: src/view/com/composer/ComposerRecipe.tsx:1434
+#: src/view/com/composer/ComposerRecipe.tsx:1445
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:43
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:52
 #: src/view/com/modals/UserFeedback.tsx:269
@@ -1819,7 +1827,7 @@ msgstr "게시물 인용 취소"
 msgid "Cancel reactivation and sign out"
 msgstr "재활성화 취소 및 로그아웃"
 
-#: src/screens/Search/Shell.tsx:404
+#: src/screens/Search/Shell.tsx:496
 msgid "Cancel search"
 msgstr "검색 취소"
 
@@ -1851,7 +1859,7 @@ msgstr "자막 및 대체 텍스트"
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:609
+#: src/view/com/composer/ComposerRecipe.tsx:612
 msgid "Categories"
 msgstr ""
 
@@ -1899,7 +1907,7 @@ msgstr "비밀번호 변경 대화 상자"
 msgid "Change report reason"
 msgstr "신고 이유 변경"
 
-#: src/components/EnvConfigIndicator.tsx:206
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1923,8 +1931,8 @@ msgstr "변경 사항을 저장했습니다"
 #: src/lib/hooks/useNotificationHandler.ts:102
 #: src/Navigation.tsx:577
 #: src/view/shell/bottom-bar/BottomBar.tsx:224
-#: src/view/shell/desktop/LeftNav.tsx:646
-#: src/view/shell/Drawer.tsx:530
+#: src/view/shell/desktop/LeftNav.tsx:648
+#: src/view/shell/Drawer.tsx:546
 msgid "Chat"
 msgstr "대화"
 
@@ -2022,7 +2030,7 @@ msgstr "사용자 선택"
 msgid "Choose Post Languages"
 msgstr "게시물 언어 선택"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:431
+#: src/screens/Onboarding/StepFinished/index.tsx:424
 msgid "Choose the algorithms that power your custom feeds."
 msgstr "맞춤 피드를 구동할 알고리즘을 선택하세요."
 
@@ -2034,7 +2042,7 @@ msgstr "이 색상을 아바타로 선택"
 msgid "Choose your account provider"
 msgstr "계정 제공자 선택"
 
-#: src/view/screens/Feeds.tsx:722
+#: src/view/screens/Feeds.tsx:735
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "나만의 타임라인을 선택하세요! 커뮤니티에서 만든 피드를 통해 마음에 드는 콘텐츠를 찾을 수 있습니다."
 
@@ -2046,7 +2054,7 @@ msgstr "비밀번호를 입력하세요"
 msgid "Choose your username"
 msgstr "사용자 이름 선택"
 
-#: src/view/com/composer/ComposerRecipe.tsx:886
+#: src/view/com/composer/ComposerRecipe.tsx:889
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:218
 msgid "Clear"
 msgstr ""
@@ -2068,7 +2076,7 @@ msgstr ""
 msgid "Clear image cache"
 msgstr "이미지 캐시 지우기"
 
-#: src/view/com/composer/ComposerRecipe.tsx:880
+#: src/view/com/composer/ComposerRecipe.tsx:883
 msgid "Clear nutrition"
 msgstr ""
 
@@ -2220,7 +2228,7 @@ msgid "Closes password update alert"
 msgstr "비밀번호 변경 알림을 닫습니다"
 
 #: src/view/com/composer/Composer.tsx:1169
-#: src/view/com/composer/ComposerRecipe.tsx:1407
+#: src/view/com/composer/ComposerRecipe.tsx:1442
 msgid "Closes post composer and discards post draft"
 msgstr "게시물 작성기를 닫고 게시물 초안을 삭제합니다"
 
@@ -2270,8 +2278,8 @@ msgstr ""
 msgid "Community Guidelines"
 msgstr "커뮤니티 가이드라인"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:343
-#: src/screens/Onboarding/StepFinished/index.tsx:444
+#: src/screens/Onboarding/StepFinished/index.tsx:336
+#: src/screens/Onboarding/StepFinished/index.tsx:437
 msgid "Complete onboarding and start using your account"
 msgstr "온보딩 완료 후 계정 사용 시작"
 
@@ -2283,11 +2291,11 @@ msgstr "챌린지 완료하기"
 msgid "Compose"
 msgstr ""
 
-#: src/view/shell/desktop/LeftNav.tsx:611
+#: src/view/shell/desktop/LeftNav.tsx:613
 msgid "Compose new post"
 msgstr "새 게시물 작성하기"
 
-#: src/view/shell/desktop/LeftNav.tsx:543
+#: src/view/shell/desktop/LeftNav.tsx:544
 msgid "Compose new recipe"
 msgstr ""
 
@@ -2338,7 +2346,7 @@ msgstr "콘텐츠 언어 설정 확인"
 msgid "Confirm delete account"
 msgstr "계정 삭제 확인"
 
-#: src/components/forms/ComboBox/index.tsx:121
+#: src/components/forms/ComboBox/index.tsx:116
 msgid "Confirm selection"
 msgstr ""
 
@@ -2373,7 +2381,7 @@ msgstr "GPS로 위치를 확인하세요. 위치 데이터는 추적되지 않�
 msgid "Confirmation code"
 msgstr "인증 코드"
 
-#: src/components/EnvConfigIndicator.tsx:177
+#: src/components/EnvConfigIndicator.tsx:176
 msgid "Connect"
 msgstr ""
 
@@ -2431,14 +2439,14 @@ msgid "Content Languages"
 msgstr "콘텐츠 언어"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:84
-#: src/lib/moderation/useModerationCauseDescription.ts:83
+#: src/lib/moderation/useModerationCauseDescription.ts:80
 msgid "Content Not Available"
 msgstr "콘텐츠를 사용할 수 없음"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:52
 #: src/components/moderation/ScreenHider.tsx:99
 #: src/lib/moderation/useGlobalLabelStrings.ts:22
-#: src/lib/moderation/useModerationCauseDescription.ts:46
+#: src/lib/moderation/useModerationCauseDescription.ts:43
 msgid "Content Warning"
 msgstr "콘텐츠 경고"
 
@@ -2501,7 +2509,7 @@ msgstr ""
 msgid "Cooking"
 msgstr "요리"
 
-#: src/view/com/composer/ComposerRecipe.tsx:561
+#: src/view/com/composer/ComposerRecipe.tsx:564
 msgid "Cooking time"
 msgstr ""
 
@@ -2718,7 +2726,7 @@ msgstr "계정 만들기"
 #: src/components/dialogs/Signin.tsx:87
 #: src/components/dialogs/Signin.tsx:89
 #: src/screens/Hashtag.tsx:232
-#: src/screens/Search/SearchResults.tsx:283
+#: src/screens/Search/SearchResults.tsx:298
 msgid "Create an account"
 msgstr "계정 만들기"
 
@@ -2774,7 +2782,7 @@ msgstr "작성자 차단됨"
 msgid "Cuisine"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:631
+#: src/view/com/composer/ComposerRecipe.tsx:634
 msgid "Cuisine type"
 msgstr ""
 
@@ -2788,7 +2796,7 @@ msgstr "문화"
 msgid "Custom"
 msgstr "사용자 지정"
 
-#: src/components/EnvConfigIndicator.tsx:172
+#: src/components/EnvConfigIndicator.tsx:171
 msgid "Custom server domain"
 msgstr ""
 
@@ -2929,8 +2937,8 @@ msgstr "내 계정 삭제"
 msgid "Delete post"
 msgstr "게시물 삭제"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1001
-#: src/view/com/composer/ComposerRecipe.tsx:1219
+#: src/view/com/composer/ComposerRecipe.tsx:1002
+#: src/view/com/composer/ComposerRecipe.tsx:1254
 msgid "Delete Section"
 msgstr ""
 
@@ -2970,7 +2978,7 @@ msgstr "삭제된 리스트"
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:436
 #: src/screens/Profile/Header/EditProfileDialog.tsx:363
 #: src/screens/Profile/Header/EditProfileDialog.tsx:370
-#: src/view/com/composer/ComposerRecipe.tsx:449
+#: src/view/com/composer/ComposerRecipe.tsx:447
 msgid "Description"
 msgstr "설명"
 
@@ -3076,8 +3084,8 @@ msgstr "앱이 로그아웃한 사용자에게 내 계정을 표시하지 않도
 msgid "Discover new custom feeds"
 msgstr "새로운 맞춤 피드 찾아보기"
 
-#: src/screens/Search/Explore.tsx:432
-#: src/view/screens/Feeds.tsx:719
+#: src/screens/Search/Explore.tsx:433
+#: src/view/screens/Feeds.tsx:732
 msgid "Discover New Feeds"
 msgstr "새 피드 발견하기"
 
@@ -3086,7 +3094,7 @@ msgid "Dismiss"
 msgstr "닫기"
 
 #: src/view/com/composer/Composer.tsx:1930
-#: src/view/com/composer/ComposerRecipe.tsx:760
+#: src/view/com/composer/ComposerRecipe.tsx:763
 msgid "Dismiss error"
 msgstr "오류 무시"
 
@@ -3157,9 +3165,9 @@ msgstr "걱정 마세요! 모든 기존 메시지와 설정은 저장되며 성�
 #: src/components/dialogs/BirthDateSettings.tsx:149
 #: src/components/dialogs/BirthDateSettings.tsx:156
 #: src/components/dms/ReportDialog.tsx:321
-#: src/components/forms/ComboBox/index.tsx:127
-#: src/components/forms/ComboBox/index.tsx:210
-#: src/components/forms/ComboBox/index.tsx:215
+#: src/components/forms/ComboBox/index.tsx:122
+#: src/components/forms/ComboBox/index.tsx:209
+#: src/components/forms/ComboBox/index.tsx:213
 #: src/components/forms/DateField/index.tsx:103
 #: src/components/forms/DateField/index.tsx:109
 #: src/components/Select/index.tsx:185
@@ -3315,7 +3323,7 @@ msgid "Edit moderation list"
 msgstr "검토 리스트 편집"
 
 #: src/Navigation.tsx:374
-#: src/view/screens/Feeds.tsx:517
+#: src/view/screens/Feeds.tsx:519
 msgid "Edit My Feeds"
 msgstr "내 피드 편집"
 
@@ -3560,7 +3568,7 @@ msgstr "전체화면으로 봅니다"
 msgid "Entertainment"
 msgstr "엔터테인먼트"
 
-#: src/components/EnvConfigIndicator.tsx:98
+#: src/components/EnvConfigIndicator.tsx:97
 msgid "Environment Config {currentEnvName}: {envConfigText}"
 msgstr ""
 
@@ -3568,7 +3576,7 @@ msgstr ""
 msgid "Episode"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:587
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:590
 msgid "Episode (optional)"
 msgstr ""
 
@@ -3597,7 +3605,7 @@ msgstr "파일을 저장하는 동안 오류가 발생했습니다"
 msgid "Error receiving captcha response."
 msgstr "캡차 응답을 수신하는 동안 오류가 발생했습니다."
 
-#: src/screens/Search/SearchResults.tsx:160
+#: src/screens/Search/SearchResults.tsx:175
 msgid "Error: {error}"
 msgstr "오류: {error}"
 
@@ -3714,9 +3722,9 @@ msgid "Explicit sexual images."
 msgstr "노골적인 성적 이미지."
 
 #: src/Navigation.tsx:791
-#: src/screens/Search/Shell.tsx:360
-#: src/view/shell/desktop/LeftNav.tsx:728
-#: src/view/shell/Drawer.tsx:478
+#: src/screens/Search/Shell.tsx:448
+#: src/view/shell/desktop/LeftNav.tsx:730
+#: src/view/shell/Drawer.tsx:494
 msgid "Explore"
 msgstr "탐색"
 
@@ -3812,10 +3820,10 @@ msgstr "모든 추천 계정을 팔로우하지 못했습니다. 다시 시도�
 msgid "Failed to load conversations"
 msgstr "대화를 불러오지 못했습니다"
 
-#: src/screens/Search/Explore.tsx:468
-#: src/screens/Search/Explore.tsx:520
-#: src/screens/Search/Explore.tsx:558
-#: src/screens/Search/Explore.tsx:597
+#: src/screens/Search/Explore.tsx:469
+#: src/screens/Search/Explore.tsx:521
+#: src/screens/Search/Explore.tsx:559
+#: src/screens/Search/Explore.tsx:598
 msgid "Failed to load feeds preferences"
 msgstr "피드 환경설정을 불러오지 못했습니다"
 
@@ -3846,14 +3854,14 @@ msgstr "지난 메시지를 불러오지 못했습니다"
 msgid "Failed to load preference."
 msgstr "환경설정을 불러오지 못했습니다."
 
-#: src/screens/Search/Explore.tsx:461
-#: src/screens/Search/Explore.tsx:513
-#: src/screens/Search/Explore.tsx:551
-#: src/screens/Search/Explore.tsx:590
+#: src/screens/Search/Explore.tsx:462
+#: src/screens/Search/Explore.tsx:514
+#: src/screens/Search/Explore.tsx:552
+#: src/screens/Search/Explore.tsx:591
 msgid "Failed to load suggested feeds"
 msgstr "추천 피드를 불러오지 못했습니다"
 
-#: src/screens/Search/Explore.tsx:371
+#: src/screens/Search/Explore.tsx:372
 msgid "Failed to load suggested follows"
 msgstr "추천 팔로우를 불러오지 못했습니다"
 
@@ -3993,7 +4001,7 @@ msgstr "사용할 수 없는 피드"
 
 #: src/view/shell/desktop/RightNav.tsx:126
 #: src/view/shell/desktop/RightNav.tsx:133
-#: src/view/shell/Drawer.tsx:432
+#: src/view/shell/Drawer.tsx:448
 msgid "Feedback"
 msgstr "피드백"
 
@@ -4013,12 +4021,12 @@ msgstr ""
 
 #: src/Navigation.tsx:604
 #: src/screens/SavedFeeds.tsx:108
-#: src/screens/Search/SearchResults.tsx:91
+#: src/screens/Search/SearchResults.tsx:104
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
-#: src/view/screens/Feeds.tsx:510
-#: src/view/screens/Profile.tsx:226
-#: src/view/shell/desktop/LeftNav.tsx:766
-#: src/view/shell/Drawer.tsx:594
+#: src/view/screens/Feeds.tsx:512
+#: src/view/screens/Profile.tsx:257
+#: src/view/shell/desktop/LeftNav.tsx:768
+#: src/view/shell/Drawer.tsx:610
 msgid "Feeds"
 msgstr "피드"
 
@@ -4068,8 +4076,8 @@ msgstr "내 활동 알림을 받을 수 있는 사용자 필터링"
 msgid "Filter who you receive notifications from"
 msgstr "알림 수신 대상 필터링"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:349
-#: src/screens/Onboarding/StepFinished/index.tsx:447
+#: src/screens/Onboarding/StepFinished/index.tsx:342
+#: src/screens/Onboarding/StepFinished/index.tsx:440
 msgid "Finalizing"
 msgstr "마무리 중"
 
@@ -4093,7 +4101,7 @@ msgstr "팔로우할 계정 찾아보기"
 msgid "Find people to follow"
 msgstr "팔로우할 사용자 찾아보기"
 
-#: src/screens/Search/Shell.tsx:574
+#: src/screens/Search/Shell.tsx:682
 msgid "Find posts, users, and feeds on {0}"
 msgstr ""
 
@@ -4124,7 +4132,7 @@ msgctxt "Name of app icon variant"
 msgid "Flat White"
 msgstr "플랫 화이트"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:427
+#: src/screens/Onboarding/StepFinished/index.tsx:420
 msgid "Flexible"
 msgstr "유연성"
 
@@ -4229,12 +4237,6 @@ msgstr "내가 아는 팔로워"
 msgid "Following"
 msgstr "팔로우 중"
 
-#: src/screens/SavedFeeds.tsx:410
-#: src/view/screens/Feeds.tsx:592
-msgctxt "feed-name"
-msgid "Following"
-msgstr "팔로우 중"
-
 #: src/components/ProfileCard.tsx:474
 #: src/screens/Profile/Header/ProfileHeaderStandard.tsx:96
 msgid "Following {0}"
@@ -4258,7 +4260,7 @@ msgstr "팔로우 중 피드 설정"
 msgid "Follows you"
 msgstr "나를 팔로우함"
 
-#: src/components/Pills.tsx:175
+#: src/components/Pills.tsx:176
 msgid "Follows You"
 msgstr "나를 팔로우함"
 
@@ -4382,7 +4384,7 @@ msgstr ""
 msgid "Generate a starter pack"
 msgstr "스타터 팩 만들기"
 
-#: src/view/shell/Drawer.tsx:436
+#: src/view/shell/Drawer.tsx:452
 msgid "Get help"
 msgstr "도움말"
 
@@ -4571,7 +4573,7 @@ msgstr "프로필로 이동"
 msgid "Go to user's profile"
 msgstr "사용자의 프로필로 이동"
 
-#: src/components/EnvConfigIndicator.tsx:52
+#: src/components/EnvConfigIndicator.tsx:51
 #: src/screens/Settings/Settings.tsx:606
 msgid "Going to reload app..."
 msgstr ""
@@ -4640,7 +4642,7 @@ msgstr "문제가 있나요?"
 #: src/screens/Settings/Settings.tsx:267
 #: src/view/shell/desktop/RightNav.tsx:147
 #: src/view/shell/desktop/RightNav.tsx:148
-#: src/view/shell/Drawer.tsx:445
+#: src/view/shell/Drawer.tsx:461
 msgid "Help"
 msgstr "도움말"
 
@@ -4784,8 +4786,8 @@ msgstr "잠깐! 동영상에 대한 접근 권한이 점차적으로 제공되�
 #: src/Navigation.tsx:786
 #: src/Navigation.tsx:808
 #: src/view/shell/bottom-bar/BottomBar.tsx:180
-#: src/view/shell/desktop/LeftNav.tsx:710
-#: src/view/shell/Drawer.tsx:504
+#: src/view/shell/desktop/LeftNav.tsx:712
+#: src/view/shell/Drawer.tsx:520
 msgid "Home"
 msgstr "홈"
 
@@ -4962,11 +4964,11 @@ msgstr ""
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:973
+#: src/view/com/composer/ComposerRecipe.tsx:974
 msgid "Ingredient section options"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:579
+#: src/view/com/composer/ComposerRecipe.tsx:582
 #: src/view/com/modals/RecipePreparation.tsx:118
 #: src/view/com/posts/ExpandableRecipePost.tsx:208
 msgctxt "recipe"
@@ -4993,11 +4995,11 @@ msgstr "계정을 삭제하기 위해 비밀번호를 입력합니다"
 msgid "Input the code which has been emailed to you"
 msgstr "이메일로 전송된 코드를 입력합니다"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1232
+#: src/view/com/composer/ComposerRecipe.tsx:1267
 msgid "Instruction"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1191
+#: src/view/com/composer/ComposerRecipe.tsx:1226
 msgid "Instruction section options"
 msgstr ""
 
@@ -5005,7 +5007,7 @@ msgstr ""
 msgid "Instruction text cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:594
+#: src/view/com/composer/ComposerRecipe.tsx:597
 #: src/view/com/modals/RecipePreparation.tsx:156
 #: src/view/com/posts/ExpandableRecipePost.tsx:218
 msgctxt "recipe"
@@ -5078,7 +5080,7 @@ msgid "Invite codes: {0} available"
 msgstr ""
 
 #: src/view/shell/desktop/RightNav.tsx:193
-#: src/view/shell/Drawer.tsx:172
+#: src/view/shell/Drawer.tsx:173
 msgid "Invite codes: {invitesAvailable} available"
 msgstr ""
 
@@ -5106,7 +5108,7 @@ msgstr "현재 위치가 정확하지 않나요? <0>여기를 탭하여 위치�
 msgid "ISBN"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:450
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:452
 msgid "ISBN (optional)"
 msgstr ""
 
@@ -5122,7 +5124,7 @@ msgstr "지금은 <0>{0}</0>밖에 없습니다! 위에서 검색하여 스타�
 msgid "It's just you right now! Add more people to your starter pack by searching above."
 msgstr "아직은 나밖에 없습니다! 위에서 검색하여 스타터 팩에 더 많은 사용자를 추가해 보세요."
 
-#: src/view/com/composer/ComposerRecipe.tsx:1015
+#: src/view/com/composer/ComposerRecipe.tsx:1022
 msgid "Item"
 msgstr ""
 
@@ -5185,7 +5187,7 @@ msgid "Labeled by the author."
 msgstr "작성자가 라벨 지정함."
 
 #: src/view/com/composer/labels/LabelsBtn.tsx:75
-#: src/view/screens/Profile.tsx:219
+#: src/view/screens/Profile.tsx:217
 msgid "Labels"
 msgstr "라벨"
 
@@ -5228,7 +5230,7 @@ msgid "Last initiated just now"
 msgstr "방금 시작함"
 
 #: src/screens/Hashtag.tsx:101
-#: src/screens/Search/SearchResults.tsx:73
+#: src/screens/Search/SearchResults.tsx:85
 #: src/screens/Topic.tsx:77
 msgid "Latest"
 msgstr "최신"
@@ -5336,8 +5338,8 @@ msgstr "직접 선택하기"
 msgid "Let's get your password reset!"
 msgstr "비밀번호를 재설정해 봅시다!"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:351
-#: src/screens/Onboarding/StepFinished/index.tsx:447
+#: src/screens/Onboarding/StepFinished/index.tsx:344
+#: src/screens/Onboarding/StepFinished/index.tsx:440
 msgid "Let's go!"
 msgstr "출발!"
 
@@ -5348,8 +5350,8 @@ msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:284
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:294
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:533
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:543
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:535
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:545
 msgid "License type"
 msgstr ""
 
@@ -5420,7 +5422,7 @@ msgstr "{likeCount, plural, other {#명}}의 사용자가 좋아요 표시함"
 #: src/lib/hooks/useNotificationHandler.ts:131
 #: src/screens/Settings/NotificationSettings/index.tsx:139
 #: src/screens/Settings/NotificationSettings/LikeNotificationSettings.tsx:41
-#: src/view/screens/Profile.tsx:225
+#: src/view/screens/Profile.tsx:253
 msgid "Likes"
 msgstr "좋아요"
 
@@ -5525,10 +5527,9 @@ msgstr "리스트를 언뮤트했습니다"
 
 #: src/Navigation.tsx:176
 #: src/view/screens/Lists.tsx:67
-#: src/view/screens/Profile.tsx:220
-#: src/view/screens/Profile.tsx:228
-#: src/view/shell/desktop/LeftNav.tsx:784
-#: src/view/shell/Drawer.tsx:609
+#: src/view/screens/Profile.tsx:269
+#: src/view/shell/desktop/LeftNav.tsx:786
+#: src/view/shell/Drawer.tsx:625
 msgid "Lists"
 msgstr "리스트"
 
@@ -5552,12 +5553,12 @@ msgstr "라이브 기능은 베타 테스트 중입니다"
 msgid "Live link"
 msgstr "라이브 링크"
 
-#: src/screens/Search/Explore.tsx:84
+#: src/screens/Search/Explore.tsx:85
 msgid "Load more"
 msgstr "더 불러오기"
 
-#: src/screens/Search/Explore.tsx:502
-#: src/screens/Search/Explore.tsx:579
+#: src/screens/Search/Explore.tsx:503
+#: src/screens/Search/Explore.tsx:580
 msgid "Load more suggested feeds"
 msgstr "추천 피드 더 불러오기"
 
@@ -5568,7 +5569,7 @@ msgstr "새 알림 불러오기"
 #: src/screens/Profile/ProfileFeed/index.tsx:221
 #: src/screens/Profile/Sections/Feed.tsx:94
 #: src/screens/ProfileList/FeedSection.tsx:105
-#: src/view/com/feeds/FeedPage.tsx:167
+#: src/view/com/feeds/FeedPage.tsx:170
 msgid "Load new posts"
 msgstr "새 게시물 불러오기"
 
@@ -5589,7 +5590,7 @@ msgid "Logo by @sawaratsuki.bsky.social"
 msgstr "@sawaratsuki.bsky.social 님의 로고"
 
 #: src/view/shell/desktop/RightNav.tsx:156
-#: src/view/shell/Drawer.tsx:773
+#: src/view/shell/Drawer.tsx:789
 msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
 msgstr "<0>@sawaratsuki.bsky.social</0> 님의 로고"
 
@@ -5605,7 +5606,7 @@ msgstr "XXXXX-XXXXX 형식"
 msgid "Looks like you haven't saved any feeds! Use our recommendations or browse more below."
 msgstr "저장한 피드가 없는 것 같습니다! 권장 사항을 사용하거나 아래에서 더 많은 피드를 찾아보세요."
 
-#: src/screens/Home/NoFeedsPinned.tsx:83
+#: src/screens/Home/NoFeedsPinned.tsx:80
 msgid "Looks like you unpinned all your feeds. But don't worry, you can add some below 😄"
 msgstr "모든 피드를 고정 해제했군요. 하지만 걱정하지 마세요. 아래에서 추가할 수 있습니다 😄"
 
@@ -5663,7 +5664,7 @@ msgstr "모두 읽음으로 표시했습니다"
 msgid "Maybe later"
 msgstr "나중에 하기"
 
-#: src/view/screens/Profile.tsx:223
+#: src/view/screens/Profile.tsx:244
 msgid "Media"
 msgstr "미디어"
 
@@ -5742,13 +5743,13 @@ msgctxt "Name of app icon variant"
 msgid "Midnight"
 msgstr "심야"
 
-#: src/view/com/composer/ComposerRecipe.tsx:552
-#: src/view/com/composer/ComposerRecipe.tsx:569
+#: src/view/com/composer/ComposerRecipe.tsx:554
+#: src/view/com/composer/ComposerRecipe.tsx:572
 msgid "min"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:551
-#: src/view/com/composer/ComposerRecipe.tsx:568
+#: src/view/com/composer/ComposerRecipe.tsx:553
+#: src/view/com/composer/ComposerRecipe.tsx:571
 #: src/view/com/posts/ExpandableRecipePost.tsx:192
 msgid "minutes"
 msgstr ""
@@ -5828,7 +5829,7 @@ msgid "Moderation tools"
 msgstr "검토 도구"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:54
-#: src/lib/moderation/useModerationCauseDescription.ts:48
+#: src/lib/moderation/useModerationCauseDescription.ts:45
 msgid "Moderator has chosen to set a general warning on the content."
 msgstr "검토자가 콘텐츠에 일반 경고를 설정했습니다."
 
@@ -5843,8 +5844,8 @@ msgid "More languages..."
 msgstr "모든 언어..."
 
 #: src/screens/ProfileList/components/MoreOptionsMenu.tsx:149
-#: src/view/com/composer/ComposerRecipe.tsx:979
-#: src/view/com/composer/ComposerRecipe.tsx:1197
+#: src/view/com/composer/ComposerRecipe.tsx:980
+#: src/view/com/composer/ComposerRecipe.tsx:1232
 #: src/view/com/profile/ProfileMenu.tsx:228
 #: src/view/com/profile/ProfileMenu.tsx:234
 msgid "More options"
@@ -5953,7 +5954,7 @@ msgstr "뮤트한 계정"
 msgid "Muted accounts have their posts removed from your feed and from your notifications. Mutes are completely private."
 msgstr "계정을 뮤트하면 피드와 알림에서 해당 계정의 게시물이 사라집니다. 뮤트 목록은 완전히 비공개로 유지됩니다."
 
-#: src/lib/moderation/useModerationCauseDescription.ts:93
+#: src/lib/moderation/useModerationCauseDescription.ts:90
 msgid "Muted by \"{0}\""
 msgstr "\"{0}\"에 의해 뮤트됨"
 
@@ -5970,13 +5971,13 @@ msgstr "뮤트 목록은 비공개입니다. 뮤트한 계정은 나와 상호�
 msgid "My Birthday"
 msgstr "내 생년월일"
 
-#: src/view/screens/Feeds.tsx:693
+#: src/view/screens/Feeds.tsx:706
 msgid "My Feeds"
 msgstr "내 피드"
 
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:399
-#: src/view/com/composer/ComposerRecipe.tsx:435
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:339
+#: src/view/com/composer/ComposerRecipe.tsx:433
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:340
 msgid "Name"
 msgstr "이름"
 
@@ -6027,12 +6028,12 @@ msgstr "저작권 위반, 법적 요청 또는 규정 준수 문제를 신고해
 msgid "Need to report a copyright violation?"
 msgstr "저작권 위반을 신고해야 하나요?"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:594
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:597
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
 msgid "Network"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:415
+#: src/screens/Onboarding/StepFinished/index.tsx:408
 msgid "Never lose access to your followers or data."
 msgstr "팔로워 또는 데이터에 대한 접근 권한을 잃지 않습니다."
 
@@ -6110,7 +6111,7 @@ msgctxt "action"
 msgid "New post"
 msgstr "새 게시물"
 
-#: src/view/shell/desktop/LeftNav.tsx:619
+#: src/view/shell/desktop/LeftNav.tsx:621
 msgctxt "action"
 msgid "New Post"
 msgstr "새 게시물"
@@ -6123,7 +6124,7 @@ msgstr "{firstAuthorLink} 님 <0>외 {additionalAuthorsCount, plural, other {{fo
 msgid "New posts from {firstAuthorName} and {additionalAuthorsCount, plural, one {{formattedAuthorsCount} other} other {{formattedAuthorsCount} others}}"
 msgstr "{firstAuthorName} 님 외 {additionalAuthorsCount, plural, other {{formattedAuthorsCount}명}}의 새 게시물"
 
-#: src/view/shell/desktop/LeftNav.tsx:551
+#: src/view/shell/desktop/LeftNav.tsx:552
 msgctxt "action"
 msgid "New Recipe"
 msgstr ""
@@ -6155,8 +6156,8 @@ msgstr "뉴스"
 #: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
-#: src/screens/Onboarding/StepFinished/index.tsx:344
-#: src/screens/Onboarding/StepFinished/index.tsx:353
+#: src/screens/Onboarding/StepFinished/index.tsx:337
+#: src/screens/Onboarding/StepFinished/index.tsx:346
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:157
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:165
 #: src/screens/Signup/BackNextButtons.tsx:67
@@ -6265,27 +6266,27 @@ msgstr "결과 없음"
 msgid "No results"
 msgstr "결과 없음"
 
-#: src/screens/Search/Explore.tsx:794
+#: src/screens/Search/Explore.tsx:795
 msgid "No results for \"{0}\"."
 msgstr "\"{0}\"에 대한 결과가 없습니다."
 
-#: src/components/forms/ComboBox/ComboBoxOptions.tsx:58
-#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:71
+#: src/components/forms/ComboBox/ComboBoxOptions.tsx:54
+#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:67
 #: src/components/Lists.tsx:189
-#: src/screens/Search/SearchResults.tsx:328
+#: src/screens/Search/SearchResults.tsx:343
 msgid "No results found"
 msgstr "결과를 찾을 수 없음"
 
-#: src/view/screens/Feeds.tsx:472
+#: src/view/screens/Feeds.tsx:474
 msgid "No results found for \"{query}\""
 msgstr "\"{query}\"에 대한 결과를 찾을 수 없습니다"
 
-#: src/screens/Search/SearchResults.tsx:364
-#: src/screens/Search/SearchResults.tsx:409
+#: src/screens/Search/SearchResults.tsx:379
+#: src/screens/Search/SearchResults.tsx:424
 msgid "No results found for {query}"
 msgstr "{query}에 대한 결과를 찾을 수 없습니다"
 
-#: src/screens/Search/Explore.tsx:798
+#: src/screens/Search/Explore.tsx:799
 msgid "No results."
 msgstr "결과가 없습니다."
 
@@ -6352,11 +6353,11 @@ msgstr ""
 msgid "Note: This post is only visible to logged-in users."
 msgstr "참고: 이 게시물은 로그인한 사용자만 볼 수 있습니다."
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:353
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:471
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:526
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:616
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:669
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:354
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:473
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:528
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:619
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:672
 msgid "Notes (optional)"
 msgstr ""
 
@@ -6401,8 +6402,8 @@ msgstr "알림음"
 #: src/screens/Settings/Settings.tsx:226
 #: src/view/screens/Notifications.tsx:126
 #: src/view/shell/bottom-bar/BottomBar.tsx:256
-#: src/view/shell/desktop/LeftNav.tsx:747
-#: src/view/shell/Drawer.tsx:557
+#: src/view/shell/desktop/LeftNav.tsx:749
+#: src/view/shell/Drawer.tsx:573
 msgid "Notifications"
 msgstr "알림"
 
@@ -6428,7 +6429,7 @@ msgstr "나체"
 msgid "Nudity or adult content not labeled as such"
 msgstr "나체 또는 성인 콘텐츠로 설정되지 않은 콘텐츠"
 
-#: src/view/com/composer/ComposerRecipe.tsx:677
+#: src/view/com/composer/ComposerRecipe.tsx:680
 #: src/view/com/posts/ExpandableRecipePost.tsx:246
 msgid "Nutritional Information"
 msgstr ""
@@ -6527,7 +6528,7 @@ msgstr "문제가 발생했습니다!"
 msgid "Oops!"
 msgstr "이런!"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:411
+#: src/screens/Onboarding/StepFinished/index.tsx:404
 msgid "Open"
 msgstr "공개성"
 
@@ -6546,7 +6547,7 @@ msgstr "서랍 메뉴 열기"
 
 #: src/screens/Messages/components/MessageInput.web.tsx:181
 #: src/view/com/composer/Composer.tsx:1595
-#: src/view/com/composer/ComposerRecipe.tsx:1589
+#: src/view/com/composer/ComposerRecipe.tsx:1624
 msgid "Open emoji picker"
 msgstr "이모티콘 선택기 열기"
 
@@ -6647,7 +6648,7 @@ msgid "Opens device gallery to select up to {MAX_IMAGES, plural, other {# images
 msgstr "기기 갤러리를 열어 이미지를 최대 {MAX_IMAGES, plural, other {#개}}까지 또는 동영상, GIF를 1개 선택합니다."
 
 #: src/view/com/composer/Composer.tsx:1596
-#: src/view/com/composer/ComposerRecipe.tsx:1590
+#: src/view/com/composer/ComposerRecipe.tsx:1625
 msgid "Opens emoji picker"
 msgstr "이모티콘 선택기를 엽니다"
 
@@ -6679,7 +6680,7 @@ msgstr "링크 {0}을(를) 엽니다"
 
 #: src/view/com/modals/InviteCodes.tsx:174
 #: src/view/shell/desktop/RightNav.tsx:194
-#: src/view/shell/Drawer.tsx:173
+#: src/view/shell/Drawer.tsx:174
 msgid "Opens list of invite codes"
 msgstr ""
 
@@ -6777,7 +6778,7 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:456
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:458
 msgid "Page (optional)"
 msgstr ""
 
@@ -6830,7 +6831,7 @@ msgid "Pause video"
 msgstr "동영상 일시 정지"
 
 #: src/screens/ProfileList/index.tsx:163
-#: src/screens/Search/SearchResults.tsx:85
+#: src/screens/Search/SearchResults.tsx:98
 #: src/screens/StarterPack/StarterPackScreen.tsx:189
 msgid "People"
 msgstr "사용자"
@@ -7051,7 +7052,7 @@ msgstr "비밀번호를 입력하세요."
 msgid "Please enter your username"
 msgstr "사용자 이름을 입력하세요"
 
-#: src/components/EnvConfigIndicator.tsx:53
+#: src/components/EnvConfigIndicator.tsx:52
 #: src/screens/Settings/Settings.tsx:607
 msgid "Please exit and reload app manually..."
 msgstr ""
@@ -7126,7 +7127,7 @@ msgid "Post"
 msgstr ""
 
 #: src/view/com/composer/Composer.tsx:1238
-#: src/view/com/composer/ComposerRecipe.tsx:1437
+#: src/view/com/composer/ComposerRecipe.tsx:1472
 msgctxt "action"
 msgid "Post"
 msgstr "게시하기"
@@ -7166,12 +7167,12 @@ msgid "Post has been deleted"
 msgstr "게시물 삭제됨"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:109
-#: src/lib/moderation/useModerationCauseDescription.ts:107
+#: src/lib/moderation/useModerationCauseDescription.ts:104
 msgid "Post Hidden by Muted Word"
 msgstr "뮤트한 단어로 숨겨진 게시물"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:112
-#: src/lib/moderation/useModerationCauseDescription.ts:116
+#: src/lib/moderation/useModerationCauseDescription.ts:113
 msgid "Post Hidden by You"
 msgstr "내가 숨긴 게시물"
 
@@ -7237,7 +7238,7 @@ msgstr "오해의 소지가 있는 링크"
 msgid "Potentially misleading link warning"
 msgstr "오해의 소지가 있는 링크 경고"
 
-#: src/view/com/composer/ComposerRecipe.tsx:544
+#: src/view/com/composer/ComposerRecipe.tsx:546
 msgid "Prep time"
 msgstr ""
 
@@ -7308,8 +7309,8 @@ msgstr "개인정보 및 보안 설정"
 #: src/screens/Settings/AboutSettings.tsx:99
 #: src/screens/Settings/AboutSettings.tsx:102
 #: src/view/screens/PrivacyPolicy.tsx:35
-#: src/view/shell/Drawer.tsx:768
-#: src/view/shell/Drawer.tsx:769
+#: src/view/shell/Drawer.tsx:784
+#: src/view/shell/Drawer.tsx:785
 msgid "Privacy Policy"
 msgstr "개인정보 처리방침"
 
@@ -7331,19 +7332,19 @@ msgstr ""
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:648
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:651
 msgid "Product name"
 msgstr ""
 
 #: src/view/screens/DebugMod.tsx:943
-#: src/view/screens/Profile.tsx:363
+#: src/view/screens/Profile.tsx:357
 msgid "profile"
 msgstr "프로필"
 
 #: src/view/shell/bottom-bar/BottomBar.tsx:320
-#: src/view/shell/desktop/LeftNav.tsx:825
+#: src/view/shell/desktop/LeftNav.tsx:827
 #: src/view/shell/Drawer.tsx:86
-#: src/view/shell/Drawer.tsx:660
+#: src/view/shell/Drawer.tsx:676
 msgid "Profile"
 msgstr "프로필"
 
@@ -7360,7 +7361,7 @@ msgstr ""
 msgid "Protein content must be a number"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:397
+#: src/screens/Onboarding/StepFinished/index.tsx:390
 msgid "Public"
 msgstr "공공성"
 
@@ -7380,8 +7381,8 @@ msgstr ""
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:399
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:409
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:400
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:410
 msgid "Publication type"
 msgstr ""
 
@@ -7398,7 +7399,7 @@ msgid "Publish posts"
 msgstr "게시물 등록하기"
 
 #. Accessibility label for button to publish a recipe
-#: src/view/com/composer/ComposerRecipe.tsx:1422
+#: src/view/com/composer/ComposerRecipe.tsx:1457
 msgid "Publish recipe"
 msgstr ""
 
@@ -7420,7 +7421,7 @@ msgstr ""
 msgid "Publisher"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:443
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:445
 msgid "Publisher (optional)"
 msgstr ""
 
@@ -7452,7 +7453,7 @@ msgstr "QR 코드를 다운로드했습니다."
 msgid "QR code saved to your camera roll!"
 msgstr "QR 코드를 사진 보관함에 저장했습니다."
 
-#: src/view/com/composer/ComposerRecipe.tsx:1033
+#: src/view/com/composer/ComposerRecipe.tsx:1060
 msgid "Quantity"
 msgstr ""
 
@@ -7630,6 +7631,10 @@ msgstr ""
 msgid "Recipe yield quantity must be greater than zero"
 msgstr ""
 
+#: src/view/screens/Profile.tsx:232
+msgid "Recipes"
+msgstr ""
+
 #: src/screens/Search/modules/ExploreRecommendations.tsx:54
 msgid "Recommended"
 msgstr "추천"
@@ -7697,8 +7702,8 @@ msgstr "배너 제거"
 msgid "Remove embed"
 msgstr "임베드 제거"
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:121
-#: src/view/com/posts/FeedShutdownMsg.tsx:125
+#: src/view/com/posts/FeedShutdownMsg.tsx:132
+#: src/view/com/posts/FeedShutdownMsg.tsx:136
 #: src/view/com/posts/PostFeedErrorMessage.tsx:174
 msgid "Remove feed"
 msgstr "피드 제거"
@@ -7737,11 +7742,11 @@ msgstr "내 피드에서 제거하시겠습니까?"
 msgid "Remove image"
 msgstr "이미지 제거"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1073
+#: src/view/com/composer/ComposerRecipe.tsx:1104
 msgid "Remove ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1258
+#: src/view/com/composer/ComposerRecipe.tsx:1293
 msgid "Remove instruction"
 msgstr ""
 
@@ -7763,8 +7768,8 @@ msgstr "프로필 제거"
 msgid "Remove repost"
 msgstr "재게시 취소"
 
-#: src/view/com/composer/ComposerRecipe.tsx:993
-#: src/view/com/composer/ComposerRecipe.tsx:1211
+#: src/view/com/composer/ComposerRecipe.tsx:994
+#: src/view/com/composer/ComposerRecipe.tsx:1246
 msgid "Remove section"
 msgstr ""
 
@@ -7823,7 +7828,7 @@ msgstr "스타터 팩에서 제거했습니다"
 
 #: src/screens/Profile/components/ProfileFeedHeader.tsx:122
 #: src/screens/ProfileList/components/MoreOptionsMenu.tsx:74
-#: src/view/com/posts/FeedShutdownMsg.tsx:49
+#: src/view/com/posts/FeedShutdownMsg.tsx:48
 msgid "Removed from your feeds"
 msgstr "내 피드에서 제거했습니다"
 
@@ -7831,8 +7836,8 @@ msgstr "내 피드에서 제거했습니다"
 msgid "Removed verification"
 msgstr "인증을 취소했습니다"
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:134
-#: src/view/com/posts/FeedShutdownMsg.tsx:138
+#: src/view/com/posts/FeedShutdownMsg.tsx:145
+#: src/view/com/posts/FeedShutdownMsg.tsx:149
 msgid "Replace with Discover"
 msgstr "Discover로 교체"
 
@@ -7862,7 +7867,7 @@ msgstr "나에게 답글을 보냈습니다"
 #: src/screens/Settings/NotificationSettings/ActivityNotificationSettings.tsx:218
 #: src/screens/Settings/NotificationSettings/index.tsx:161
 #: src/screens/Settings/NotificationSettings/ReplyNotificationSettings.tsx:41
-#: src/view/screens/Profile.tsx:222
+#: src/view/screens/Profile.tsx:226
 msgid "Replies"
 msgstr "답글"
 
@@ -7885,12 +7890,12 @@ msgid "Reply ({0, plural, one {# reply} other {# replies}})"
 msgstr "답글 ({0, plural, other {#개}})"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:118
-#: src/lib/moderation/useModerationCauseDescription.ts:126
+#: src/lib/moderation/useModerationCauseDescription.ts:123
 msgid "Reply Hidden by Thread Author"
 msgstr "스레드 작성자에 의해 답글 숨겨짐"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:117
-#: src/lib/moderation/useModerationCauseDescription.ts:125
+#: src/lib/moderation/useModerationCauseDescription.ts:122
 msgid "Reply Hidden by You"
 msgstr "나에 의해 답글 숨겨짐"
 
@@ -8205,6 +8210,10 @@ msgstr ""
 msgid "Review/Rating by @{0}"
 msgstr ""
 
+#: src/view/screens/Profile.tsx:238
+msgid "Reviews"
+msgstr ""
+
 #: src/view/com/modals/RecipePreparation.tsx:420
 msgid "s"
 msgstr ""
@@ -8254,7 +8263,7 @@ msgstr "생년월일 저장"
 msgid "Save changes"
 msgstr "변경 사항 저장"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1435
+#: src/view/com/composer/ComposerRecipe.tsx:1470
 msgctxt "action"
 msgid "Save Changes"
 msgstr ""
@@ -8277,8 +8286,8 @@ msgstr "QR 코드 저장"
 msgid "Save to my feeds"
 msgstr "내 피드에 저장"
 
-#: src/view/shell/desktop/LeftNav.tsx:803
-#: src/view/shell/Drawer.tsx:635
+#: src/view/shell/desktop/LeftNav.tsx:805
+#: src/view/shell/Drawer.tsx:651
 msgctxt "link to bookmarks screen"
 msgid "Saved"
 msgstr "저장"
@@ -8325,8 +8334,8 @@ msgstr "맨 위로 스크롤"
 #: src/components/dialogs/SearchablePeopleList.tsx:514
 #: src/components/forms/SearchInput.tsx:34
 #: src/components/forms/SearchInput.tsx:36
-#: src/screens/Search/Shell.tsx:360
-#: src/screens/Search/Shell.tsx:562
+#: src/screens/Search/Shell.tsx:448
+#: src/screens/Search/Shell.tsx:670
 #: src/view/shell/bottom-bar/BottomBar.tsx:200
 msgid "Search"
 msgstr "검색"
@@ -8341,16 +8350,16 @@ msgid "Search by name or interest"
 msgstr "이름 또는 관심 주제로 검색"
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:23
-#: src/view/com/composer/ComposerRecipe.tsx:610
+#: src/view/com/composer/ComposerRecipe.tsx:613
 msgid "Search categories..."
 msgstr ""
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:29
-#: src/view/com/composer/ComposerRecipe.tsx:632
+#: src/view/com/composer/ComposerRecipe.tsx:635
 msgid "Search cuisines..."
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:443
+#: src/view/screens/Feeds.tsx:445
 msgid "Search feeds"
 msgstr "피드 검색"
 
@@ -8376,19 +8385,19 @@ msgstr "다른 사람에게 추천할 피드를 검색하세요."
 msgid "Search for matching {0}"
 msgstr ""
 
-#: src/screens/Search/Explore.tsx:358
+#: src/screens/Search/Explore.tsx:359
 msgid "Search for more accounts"
 msgstr "더 많은 계정 검색하기"
 
-#: src/screens/Search/Explore.tsx:435
+#: src/screens/Search/Explore.tsx:436
 msgid "Search for more feeds"
 msgstr "더 많은 피드 검색하기"
 
-#: src/screens/Search/Shell.tsx:397
+#: src/screens/Search/Shell.tsx:488
 msgid "Search for posts, users, or feeds"
 msgstr "게시물, 사용자 또는 피드 검색"
 
-#: src/screens/Search/Shell.tsx:397
+#: src/screens/Search/Shell.tsx:489
 msgid "Search for recipes"
 msgstr ""
 
@@ -8397,7 +8406,7 @@ msgid "Search GIFs"
 msgstr "GIF 검색하기"
 
 #: src/screens/Hashtag.tsx:221
-#: src/screens/Search/SearchResults.tsx:270
+#: src/screens/Search/SearchResults.tsx:285
 msgid "Search is currently unavailable when logged out"
 msgstr "현재 로그아웃 상태에서는 검색 기능을 사용할 수 없습니다"
 
@@ -8421,7 +8430,7 @@ msgid "Search profiles"
 msgstr "프로필 검색"
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:35
-#: src/view/com/composer/ComposerRecipe.tsx:656
+#: src/view/com/composer/ComposerRecipe.tsx:659
 msgid "Search suitable diets..."
 msgstr ""
 
@@ -8429,7 +8438,7 @@ msgstr ""
 msgid "Search Tenor"
 msgstr "Tenor 검색"
 
-#: src/screens/Search/components/SearchTypeInput/index.web.tsx:10
+#: src/screens/Search/components/SearchTypeInput/index.web.tsx:17
 msgid "Search type"
 msgstr ""
 
@@ -8446,8 +8455,8 @@ msgstr "프로필을 검색합니다"
 msgid "Seconds"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:968
-#: src/view/com/composer/ComposerRecipe.tsx:1186
+#: src/view/com/composer/ComposerRecipe.tsx:969
+#: src/view/com/composer/ComposerRecipe.tsx:1221
 msgid "Section title"
 msgstr ""
 
@@ -8510,7 +8519,7 @@ msgstr "{langName} 선택"
 msgid "Select a color"
 msgstr "색상 선택"
 
-#: src/components/EnvConfigIndicator.tsx:226
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8663,7 +8672,7 @@ msgctxt "action"
 msgid "Send Email"
 msgstr "이메일 보내기"
 
-#: src/view/shell/Drawer.tsx:425
+#: src/view/shell/Drawer.tsx:441
 msgid "Send feedback"
 msgstr "피드백 보내기"
 
@@ -8720,7 +8729,7 @@ msgstr ""
 msgid "Server address"
 msgstr "서버 주소"
 
-#: src/view/com/composer/ComposerRecipe.tsx:847
+#: src/view/com/composer/ComposerRecipe.tsx:850
 msgid "Serving size"
 msgstr ""
 
@@ -8750,8 +8759,8 @@ msgstr "비밀번호 재설정을 위한 이메일을 설정합니다"
 
 #: src/Navigation.tsx:217
 #: src/screens/Settings/Settings.tsx:124
-#: src/view/shell/desktop/LeftNav.tsx:843
-#: src/view/shell/Drawer.tsx:673
+#: src/view/shell/desktop/LeftNav.tsx:845
+#: src/view/shell/Drawer.tsx:689
 msgid "Settings"
 msgstr "설정"
 
@@ -9001,7 +9010,7 @@ msgstr "재게시물 표시"
 msgid "Show samples of your saved feeds in your Following feed"
 msgstr "팔로우 중 피드에서 저장된 피드 샘플 보기"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:580
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:583
 msgid "Show title"
 msgstr ""
 
@@ -9042,7 +9051,7 @@ msgstr "콘텐츠를 표시합니다"
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
 #: src/screens/Login/LoginForm.tsx:184
-#: src/screens/Search/SearchResults.tsx:275
+#: src/screens/Search/SearchResults.tsx:290
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
 #: src/view/com/auth/SplashScreen.web.tsx:129
@@ -9121,16 +9130,16 @@ msgstr "@{0}(으)로 로그인했습니다"
 msgid "Similar accounts"
 msgstr "비슷한 계정"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:309
-#: src/screens/Onboarding/StepFinished/index.tsx:331
+#: src/screens/Onboarding/StepFinished/index.tsx:302
+#: src/screens/Onboarding/StepFinished/index.tsx:324
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:222
 #: src/screens/Onboarding/StepSuggestedStarterpacks/index.tsx:102
 #: src/screens/StarterPack/Wizard/index.tsx:217
 msgid "Skip"
 msgstr "건너뛰기"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:302
-#: src/screens/Onboarding/StepFinished/index.tsx:328
+#: src/screens/Onboarding/StepFinished/index.tsx:295
+#: src/screens/Onboarding/StepFinished/index.tsx:321
 msgid "Skip introduction and start using your account"
 msgstr "소개를 건너뛰고 계정 사용 시작하기"
 
@@ -9319,8 +9328,8 @@ msgstr "내 스타터 팩"
 msgid "Starter pack is invalid"
 msgstr "스타터 팩이 유효하지 않음"
 
-#: src/screens/Search/Explore.tsx:626
-#: src/view/screens/Profile.tsx:227
+#: src/screens/Search/Explore.tsx:627
+#: src/view/screens/Profile.tsx:263
 msgid "Starter Packs"
 msgstr "스타터 팩"
 
@@ -9422,7 +9431,7 @@ msgstr ""
 msgid "Sugar content must be a number"
 msgstr ""
 
-#: src/screens/Search/Explore.tsx:355
+#: src/screens/Search/Explore.tsx:356
 msgid "Suggested Accounts"
 msgstr "추천 계정"
 
@@ -9439,7 +9448,7 @@ msgstr "나를 위한 추천"
 msgid "Suggestive"
 msgstr "외설적"
 
-#: src/view/com/composer/ComposerRecipe.tsx:655
+#: src/view/com/composer/ComposerRecipe.tsx:658
 msgid "Suitable diets"
 msgstr ""
 
@@ -9569,8 +9578,8 @@ msgstr "이용약관"
 #: src/screens/Settings/AboutSettings.tsx:91
 #: src/screens/Settings/AboutSettings.tsx:94
 #: src/view/screens/TermsOfService.tsx:35
-#: src/view/shell/Drawer.tsx:761
-#: src/view/shell/Drawer.tsx:763
+#: src/view/shell/Drawer.tsx:777
+#: src/view/shell/Drawer.tsx:779
 msgid "Terms of Service"
 msgstr "서비스 이용약관"
 
@@ -9640,7 +9649,11 @@ msgstr "이상입니다, 여러분!"
 msgid "That's everything!"
 msgstr "그게 다예요!"
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:107
+#: src/view/com/posts/DiscoverFallbackHeader.tsx:50
+msgid "That's the end of posts from this feed."
+msgstr ""
+
+#: src/view/com/posts/FeedShutdownMsg.tsx:109
 msgid "The {0} feed"
 msgstr ""
 
@@ -9659,7 +9672,7 @@ msgid "The app will be restarted"
 msgstr "앱을 다시 시작합니다"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:121
-#: src/lib/moderation/useModerationCauseDescription.ts:129
+#: src/lib/moderation/useModerationCauseDescription.ts:126
 msgid "The author of this thread has hidden this reply."
 msgstr "이 스레드의 작성자가 이 답글을 숨겼습니다."
 
@@ -9687,7 +9700,7 @@ msgstr "Discover 피드는 이제 당신이 무엇을 좋아하는지 알 테죠
 msgid "The experience is better in the app. Download {0} now and we'll pick back up where you left off."
 msgstr ""
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:72
+#: src/view/com/posts/FeedShutdownMsg.tsx:71
 msgid "The feed has been replaced with Discover."
 msgstr "피드를 Discover로 교체했습니다."
 
@@ -9781,8 +9794,8 @@ msgstr "서버에 연결하는 동안 문제가 발생했습니다. 인터넷 �
 msgid "There was an issue fetching notifications. Tap here to try again."
 msgstr "알림을 가져오는 동안 문제가 발생했습니다. 다시 시도하려면 이곳을 탭하세요."
 
-#: src/screens/Search/Explore.tsx:993
-#: src/view/com/posts/PostFeed.tsx:714
+#: src/screens/Search/Explore.tsx:994
+#: src/view/com/posts/PostFeed.tsx:713
 msgid "There was an issue fetching posts. Tap here to try again."
 msgstr "게시물을 가져오는 동안 문제가 발생했습니다. 다시 시도하려면 이곳을 탭하세요."
 
@@ -9813,8 +9826,8 @@ msgid "There was an issue sending your report. Please check your internet connec
 msgstr "신고를 전송하는 동안 문제가 발생했습니다. 인터넷 연결을 확인해 주세요."
 
 #: src/screens/Profile/components/ProfileFeedHeader.tsx:138
-#: src/view/com/posts/FeedShutdownMsg.tsx:57
-#: src/view/com/posts/FeedShutdownMsg.tsx:76
+#: src/view/com/posts/FeedShutdownMsg.tsx:56
+#: src/view/com/posts/FeedShutdownMsg.tsx:75
 msgid "There was an issue updating your feeds, please check your internet connection and try again."
 msgstr "피드를 업데이트하는 동안 문제가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요."
 
@@ -9915,7 +9928,7 @@ msgid "This content is hosted by {0}. Do you want to enable external media?"
 msgstr "이 콘텐츠는 {0}에서 호스팅됩니다. 외부 미디어를 사용하시겠습니까?"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:86
-#: src/lib/moderation/useModerationCauseDescription.ts:85
+#: src/lib/moderation/useModerationCauseDescription.ts:82
 msgid "This content is not available because one of the users involved has blocked the other."
 msgstr "관련 사용자 중 한 명이 다른 사용자를 차단했기 때문에 이 콘텐츠를 사용할 수 없습니다."
 
@@ -9962,7 +9975,7 @@ msgid "This feed is empty."
 msgstr "이 피드는 비어 있습니다."
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:104
-msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
+msgid "This feed is no longer online. We are showing {0} instead."
 msgstr ""
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:616
@@ -10067,7 +10080,7 @@ msgid "This user has blocked you"
 msgstr "이 사용자는 나를 차단했습니다"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:81
-#: src/lib/moderation/useModerationCauseDescription.ts:76
+#: src/lib/moderation/useModerationCauseDescription.ts:73
 msgid "This user has blocked you. You cannot view their content."
 msgstr "이 사용자는 나를 차단했습니다. 이 사용자의 콘텐츠를 볼 수 없습니다."
 
@@ -10139,7 +10152,7 @@ msgstr ""
 msgid "Timers"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:429
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:431
 msgid "Title"
 msgstr ""
 
@@ -10193,7 +10206,7 @@ msgid "Too many diets selected"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:90
-#: src/screens/Search/SearchResults.tsx:63
+#: src/screens/Search/SearchResults.tsx:75
 #: src/screens/Topic.tsx:71
 msgid "Top"
 msgstr "인기"
@@ -10389,9 +10402,9 @@ msgstr ""
 msgid "Unfortunately, none of your subscribed labelers supports this report type."
 msgstr "안타깝게도 구독하는 라벨러 중 이 신고 유형을 지원하는 라벨러가 없습니다."
 
-#: src/view/com/composer/ComposerRecipe.tsx:510
-#: src/view/com/composer/ComposerRecipe.tsx:867
-#: src/view/com/composer/ComposerRecipe.tsx:1052
+#: src/view/com/composer/ComposerRecipe.tsx:511
+#: src/view/com/composer/ComposerRecipe.tsx:870
+#: src/view/com/composer/ComposerRecipe.tsx:1079
 msgid "Unit"
 msgstr ""
 
@@ -10541,7 +10554,7 @@ msgstr "원치 않는 성적 콘텐츠"
 msgid "UPC"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:655
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:658
 msgid "UPC (optional)"
 msgstr ""
 
@@ -10624,15 +10637,15 @@ msgstr "링크 미리보기 업로드 중…"
 msgid "Uploading video..."
 msgstr "동영상 업로드 중…"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:519
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:521
 msgid "URL"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:315
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:346
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:464
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:609
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:662
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:316
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:347
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:466
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:612
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:665
 msgid "URL (optional)"
 msgstr ""
 
@@ -10649,7 +10662,7 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:180
+#: src/components/EnvConfigIndicator.tsx:179
 msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
@@ -10694,11 +10707,11 @@ msgid "User blocked"
 msgstr "사용자를 차단했습니다"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:73
-#: src/lib/moderation/useModerationCauseDescription.ts:64
+#: src/lib/moderation/useModerationCauseDescription.ts:61
 msgid "User Blocked"
 msgstr "사용자 차단됨"
 
-#: src/lib/moderation/useModerationCauseDescription.ts:56
+#: src/lib/moderation/useModerationCauseDescription.ts:53
 msgid "User Blocked by \"{0}\""
 msgstr " \"{0}\"에서 차단된 사용자"
 
@@ -10710,7 +10723,7 @@ msgstr "리스트로 사용자 차단됨"
 msgid "User Blocked by List"
 msgstr "리스트로 사용자 차단됨"
 
-#: src/lib/moderation/useModerationCauseDescription.ts:74
+#: src/lib/moderation/useModerationCauseDescription.ts:71
 msgid "User Blocking You"
 msgstr "나를 차단한 사용자"
 
@@ -10915,7 +10928,7 @@ msgstr "동영상 업로드됨"
 msgid "Video: {0}"
 msgstr "동영상: {0}"
 
-#: src/view/screens/Profile.tsx:224
+#: src/view/screens/Profile.tsx:250
 msgid "Videos"
 msgstr "동영상"
 
@@ -11116,13 +11129,13 @@ msgstr ""
 msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "<0>{0}</0>(으)로 또 다른 인증 이메일을 보냈습니다."
 
-#: src/screens/Onboarding/StepFinished/index.tsx:386
+#: src/screens/Onboarding/StepFinished/index.tsx:379
 msgid "We hope you have a wonderful time. Remember, {0} is:"
 msgstr ""
 
-#: src/view/com/posts/DiscoverFallbackHeader.tsx:34
-msgid "We ran out of posts from your follows. Here's the latest from <0/>."
-msgstr "팔로우하는 사용자의 게시물이 부족합니다. 대신 <0/>의 최신 게시물을 표시합니다."
+#: src/view/com/posts/DiscoverFallbackHeader.tsx:31
+msgid "We ran out of posts from your follows. Here's the latest from {0}."
+msgstr ""
 
 #: src/screens/Settings/InterestsSettings.tsx:158
 msgid "We recommend selecting at least two interests."
@@ -11205,7 +11218,7 @@ msgstr "죄송하지만 이 리스트를 불러올 수 없습니다. 이 문제�
 msgid "We're sorry, but we weren't able to load your muted words at this time. Please try again."
 msgstr "죄송하지만 현재 뮤트한 단어를 불러올 수 없습니다. 다시 시도해 주세요."
 
-#: src/screens/Search/SearchResults.tsx:302
+#: src/screens/Search/SearchResults.tsx:317
 msgid "We're sorry, but your search could not be completed. Please try again in a few minutes."
 msgstr "죄송하지만 검색을 완료할 수 없습니다. 몇 분 후에 다시 시도해 주세요."
 
@@ -11246,7 +11259,7 @@ msgstr "내 연령 확인 상태를 확인했습니다. 이제 이 대화 상자
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:512
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:514
 msgid "Website name"
 msgstr ""
 
@@ -11286,7 +11299,7 @@ msgstr "답글을 달 수 있는 사용자"
 msgid "Who can verify?"
 msgstr "누가 인증을 받을 수 있나요?"
 
-#: src/screens/Home/NoFeedsPinned.tsx:79
+#: src/screens/Home/NoFeedsPinned.tsx:76
 #: src/screens/Messages/ChatList.tsx:270
 #: src/screens/Messages/Inbox.tsx:198
 msgid "Whoops!"
@@ -11404,11 +11417,11 @@ msgstr "어제"
 msgid "Yield"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:523
+#: src/view/com/composer/ComposerRecipe.tsx:524
 msgid "Yield explanation"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:526
+#: src/view/com/composer/ComposerRecipe.tsx:527
 msgid "Yield is used to indicate how much a recipe will produce. Use the units to indicate whether this is a number of servings, items, or a measurement like grams or litres."
 msgstr ""
 
@@ -11560,8 +11573,8 @@ msgid "You have blocked this user"
 msgstr "이 사용자를 차단했습니다"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:75
-#: src/lib/moderation/useModerationCauseDescription.ts:58
-#: src/lib/moderation/useModerationCauseDescription.ts:66
+#: src/lib/moderation/useModerationCauseDescription.ts:55
+#: src/lib/moderation/useModerationCauseDescription.ts:63
 msgid "You have blocked this user. You cannot view their content."
 msgstr "이 사용자를 차단했습니다. 해당 사용자의 콘텐츠를 볼 수 없습니다."
 
@@ -11575,7 +11588,7 @@ msgstr "답글, 인용, 멘션 알림을 완전히 비활성화했으므로 이 
 msgid "You have entered an invalid code. It should look like XXXXX-XXXXX."
 msgstr "잘못된 코드를 입력했습니다. XXXXX-XXXXX와 같은 형식이어야 합니다."
 
-#: src/lib/moderation/useModerationCauseDescription.ts:117
+#: src/lib/moderation/useModerationCauseDescription.ts:114
 msgid "You have hidden this post"
 msgstr "내가 이 게시물을 숨겼습니다"
 
@@ -11584,11 +11597,11 @@ msgid "You have hidden this post."
 msgstr "내가 이 게시물을 숨겼습니다."
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:106
-#: src/lib/moderation/useModerationCauseDescription.ts:100
+#: src/lib/moderation/useModerationCauseDescription.ts:97
 msgid "You have muted this account."
 msgstr "내가 이 계정을 뮤트했습니다."
 
-#: src/lib/moderation/useModerationCauseDescription.ts:94
+#: src/lib/moderation/useModerationCauseDescription.ts:91
 msgid "You have muted this user"
 msgstr "내가 이 사용자를 뮤트했습니다"
 
@@ -11638,7 +11651,7 @@ msgid "You haven't muted any words or tags yet"
 msgstr "아직 어떤 단어나 태그도 뮤트하지 않았습니다"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:120
-#: src/lib/moderation/useModerationCauseDescription.ts:128
+#: src/lib/moderation/useModerationCauseDescription.ts:125
 msgid "You hid this reply."
 msgstr "내가 이 답글을 숨겼습니다."
 
@@ -11788,7 +11801,7 @@ msgstr "다음 피드를 구독하게 됩니다"
 msgid "You're in line"
 msgstr "대기 중입니다"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:383
+#: src/screens/Onboarding/StepFinished/index.tsx:376
 msgid "You're ready to go!"
 msgstr "준비가 끝났습니다!"
 
@@ -11798,7 +11811,7 @@ msgid "You're signed in with an App Password. Please sign in with your main pass
 msgstr "앱 비밀번호로 로그인한 상태입니다. 계정 비활성화를 계속하려면 원래 비밀번호로 로그인하세요."
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:110
-#: src/lib/moderation/useModerationCauseDescription.ts:109
+#: src/lib/moderation/useModerationCauseDescription.ts:106
 msgid "You've chosen to hide a word or tag within this post."
 msgstr "이 글에서 단어 또는 태그를 숨기도록 설정했습니다."
 
@@ -11937,7 +11950,7 @@ msgid "Your interests help us find what you like!"
 msgstr "관심 주제는 내가 좋아하는 것을 찾도록 도와줍니다!"
 
 #: src/view/shell/desktop/RightNav.tsx:226
-#: src/view/shell/Drawer.tsx:187
+#: src/view/shell/Drawer.tsx:192
 msgid "Your invite codes are hidden when logged in using an App Password"
 msgstr ""
 
@@ -11965,7 +11978,7 @@ msgstr "게시물을 보냈습니다"
 msgid "Your posts were sent"
 msgstr "게시물을 보냈습니다"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:401
+#: src/screens/Onboarding/StepFinished/index.tsx:394
 msgid "Your posts, likes, and blocks are public. Mutes are private."
 msgstr "게시물, 좋아요, 차단 목록은 공개됩니다. 뮤트 목록은 공개되지 않습니다."
 
