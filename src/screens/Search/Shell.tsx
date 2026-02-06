@@ -9,6 +9,7 @@ import {
 } from 'react'
 import {
   type StyleProp,
+  StyleSheet,
   type TextInput,
   View,
   type ViewStyle,
@@ -532,44 +533,44 @@ export function SearchScreenShell({
         </Layout.Center>
       </View>
 
-      <View
-        style={{
-          display: showAutocomplete && !fixedParams ? 'flex' : 'none',
-          flex: 1,
-        }}>
-        {query.trim() ? (
-          <AutocompleteResults
-            isAutocompleteFetching={isAutocompleteFetching}
-            autocompleteData={autocompleteData}
-            queryType={searchType}
-            onSubmit={onSubmit}
-            onResultPress={onAutocompleteResultPress}
-            onProfileClick={handleProfileClick}
+      <View style={a.flex_1}>
+        {/* Always render SearchScreenInner to prevent Android PagerView from
+            losing its page state when hidden via display:none */}
+        <View
+          style={a.flex_1}
+          pointerEvents={showAutocomplete && !fixedParams ? 'none' : 'auto'}>
+          <SearchScreenInner
+            query={query}
+            queryWithParams={queryWithParams}
+            headerHeight={headerHeight}
+            focusSearchInput={focusSearchInput}
+            updateCurrentTab={updateCurrentTab}
           />
-        ) : (
-          <SearchHistory
-            searchHistory={termHistory}
-            selectedProfiles={accountHistoryProfiles?.profiles || []}
-            onItemClick={handleHistoryItemClick}
-            onProfileClick={handleProfileClick}
-            onRemoveItemClick={deleteSearchHistoryItem}
-            onRemoveProfileClick={deleteProfileHistoryItem}
-          />
+        </View>
+        {/* Overlay autocomplete on top when active */}
+        {showAutocomplete && !fixedParams && (
+          <View style={[StyleSheet.absoluteFill, t.atoms.bg]}>
+            {query.trim() ? (
+              <AutocompleteResults
+                isAutocompleteFetching={isAutocompleteFetching}
+                autocompleteData={autocompleteData}
+                queryType={searchType}
+                onSubmit={onSubmit}
+                onResultPress={onAutocompleteResultPress}
+                onProfileClick={handleProfileClick}
+              />
+            ) : (
+              <SearchHistory
+                searchHistory={termHistory}
+                selectedProfiles={accountHistoryProfiles?.profiles || []}
+                onItemClick={handleHistoryItemClick}
+                onProfileClick={handleProfileClick}
+                onRemoveItemClick={deleteSearchHistoryItem}
+                onRemoveProfileClick={deleteProfileHistoryItem}
+              />
+            )}
+          </View>
         )}
-      </View>
-      <View
-        style={{
-          display: showAutocomplete ? 'none' : 'flex',
-          flex: 1,
-        }}>
-        <SearchScreenInner
-          query={query}
-          queryWithParams={queryWithParams}
-          headerHeight={headerHeight}
-          focusSearchInput={focusSearchInput}
-          updateCurrentTab={updateCurrentTab}
-          isHidden={showAutocomplete}
-        />
       </View>
     </Layout.Screen>
   )
@@ -588,38 +589,18 @@ let SearchScreenInner = ({
   headerHeight,
   focusSearchInput,
   updateCurrentTab,
-  isHidden,
 }: {
   query: string
   queryWithParams: string
   headerHeight: number
   focusSearchInput: (tab?: SearchTabOptions) => void
   updateCurrentTab: (tab?: SearchTabOptions) => void
-  isHidden: boolean
 }): React.ReactNode => {
   const t = useTheme()
   const setMinimalShellMode = useSetMinimalShellMode()
   const {hasSession} = useSession()
   const {gtTablet} = useBreakpoints()
   const route = useRoute()
-
-  const isHiddenRef = useRef(isHidden)
-  const wasHiddenRef = useRef(isHidden)
-  const justBecameVisibleRef = useRef(false)
-  const [visibilityCounter, setVisibilityCounter] = useState(0)
-
-  if (wasHiddenRef.current && !isHidden) {
-    justBecameVisibleRef.current = true
-  }
-  wasHiddenRef.current = isHidden
-  isHiddenRef.current = isHidden
-
-  useLayoutEffect(() => {
-    if (!isHidden && justBecameVisibleRef.current) {
-      setVisibilityCounter(c => c + 1)
-      justBecameVisibleRef.current = false
-    }
-  }, [isHidden])
 
   // Get tab parameter from route params
   const tabParam = (route.params as {q?: string; tab?: SearchTabOptions})?.tab
@@ -656,20 +637,11 @@ let SearchScreenInner = ({
 
   const onPageSelected = useCallback(
     (index: number) => {
-      if (isHiddenRef.current) {
-        return
-      }
-      if (justBecameVisibleRef.current) {
-        const expectedIndex = getInitialTabIndex()
-        if (index !== expectedIndex) {
-          return
-        }
-      }
       setMinimalShellMode(false)
       setActiveTab(index)
       updateCurrentTab(tabIndexToTab[index])
     },
-    [setMinimalShellMode, updateCurrentTab, activeTab, tabParam, getInitialTabIndex],
+    [setMinimalShellMode, updateCurrentTab],
   )
   return queryWithParams ? (
     <SearchResults
@@ -679,7 +651,6 @@ let SearchScreenInner = ({
       headerHeight={headerHeight}
       onPageSelected={onPageSelected}
       initialPage={activeTab}
-      visibilityKey={visibilityCounter}
     />
   ) : hasSession ? (
     <Explore focusSearchInput={focusSearchInput} headerHeight={headerHeight} />
