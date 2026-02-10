@@ -583,6 +583,12 @@ export const SWITCHING_ENABLED = !isProductionEnv
 
 function getFallbackEnvConfig(): EnvConfig {
   // the default env-config to use when one can't be loaded from stored settings
+  if (SWITCHING_ENABLED) {
+    const configuredEnvName = device.get(['envName'])
+    if (configuredEnvName && configuredEnvName in DOMAIN_ENVCONFIGS) {
+      return DOMAIN_ENVCONFIGS[configuredEnvName]
+    }
+  }
   return __DEV__ ? DOMAIN_ENVCONFIGS.development : determineDomainEnvConfig()
 }
 
@@ -591,7 +597,8 @@ function isCustomDomain() {
     return false
   }
   // Non-production: custom if a custom server has been stored
-  const storedHost = device.get(['customServerHost'])
+  const storedHost =
+    device.get(['envName']) === 'custom' && device.get(['customServerHost'])
   return !!storedHost
 }
 
@@ -1019,6 +1026,7 @@ export async function switchToBuiltinEnvironment(
     logger.info(
       `Switching environment config to ${envName}: ${renderEnvConfig(newEnvConfig)}`,
     )
+    device.set(['envName'], envName)
     setStoredEnvConfig(newEnvConfig)
     device.remove(['customServerHost'])
     if (setEnvConfig) setEnvConfig(getStoredEnvConfig())
@@ -1060,6 +1068,7 @@ export async function switchToCustomEnvironment(
     )
     setStoredEnvConfig(newEnvConfig)
     device.set(['customServerHost'], serverName)
+    device.set(['envName'], 'custom')
     setEnvConfig(getStoredEnvConfig())
 
     if (newEnvContent !== null && newEnvContent !== undefined) {
@@ -1086,6 +1095,8 @@ export async function switchToCustomEnvironment(
 export async function resetStoredEnvironment(
   setEnvConfig: (config: EnvConfig) => void,
 ): Promise<{success: boolean; message: string}> {
+  device.remove(['envName'])
+  device.remove(['customServerHost'])
   clearStoredEnvConfig()
   beginResolveEnvConfig()
   setEnvConfig(getStoredEnvConfig())

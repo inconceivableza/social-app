@@ -34,7 +34,8 @@ export type Device = {
     regionCode: string | undefined
   }
 
-  /** The hostname of the custom server the app has switched to, in non-production envs */
+  /** The environment name and/or hostname of the custom server the app has switched to, in non-production envs */
+  envName?: string
   customServerHost?: string
   trendingBetaEnabled: boolean
   devMode: boolean
