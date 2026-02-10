@@ -1,7 +1,9 @@
 import EventEmitter from 'eventemitter3'
 
 import BroadcastChannel from '#/lib/broadcast'
+import {BSKY_SERVICE} from '#/lib/constants'
 import {logger} from '#/logger'
+import {SWITCHING_ENABLED} from '#/state/env-config'
 import {
   defaults,
   type Schema,
@@ -26,8 +28,24 @@ export async function init() {
   broadcast.onmessage = onBroadcastMessage
   window.onstorage = onStorage
   const stored = readFromStorage()
-  if (stored) {
-    _state = stored
+  const loaded =
+    stored === undefined
+      ? undefined
+      : SWITCHING_ENABLED
+        ? {
+            ...stored,
+            session: {
+              ...stored?.session,
+              accounts: stored?.session.accounts.filter(
+                account =>
+                  account.service.replace(/\/$/, '') ===
+                  BSKY_SERVICE.replace(/\/$/, ''),
+              ),
+            },
+          }
+        : stored
+  if (loaded) {
+    _state = loaded
   }
 }
 init satisfies PersistedApi['init']

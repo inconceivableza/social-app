@@ -17,8 +17,10 @@ import {
 import {type Action, getInitialState, reducer, type State} from './reducer'
 
 export {isSignupQueued} from './util'
+import {SWITCHING_ENABLED} from '#/state/env-config'
 import {addSessionDebugLog} from './logging'
 export type {SessionAccount} from '#/state/session/types'
+import {BSKY_SERVICE} from '#/lib/constants'
 import {logger} from '#/logger'
 import {
   type SessionApiContext,
@@ -52,7 +54,15 @@ class SessionStore {
 
   constructor() {
     // Careful: By the time this runs, `persisted` needs to already be filled.
-    const initialState = getInitialState(persisted.get('session').accounts)
+    const persistedAccounts = persisted.get('session').accounts
+    const loadedAccounts = SWITCHING_ENABLED
+      ? persistedAccounts.filter(
+          value =>
+            value.service.replace(/\/$/, '') ===
+            BSKY_SERVICE.replace(/\/$/, ''),
+        )
+      : persistedAccounts
+    const initialState = getInitialState(loadedAccounts)
     addSessionDebugLog({type: 'reducer:init', state: initialState})
     this.state = initialState
   }
