@@ -274,7 +274,7 @@ if [ "$do_android" == 1 ]; then
   sdkmanager $sdkmanager_params --licenses
 
   echo "Checking Android Versions" "configured in social-app"
-  android_versions="$(npx_run_script @dotenvx/dotenvx $script_dir/scripts/get-social-app-android-build-properties.js)"
+  android_versions="$(npx_run_script @dotenvx/dotenvx $base_dir/scripts/get-social-app-android-build-properties.js)"
   android_platform="$(echo "$android_versions" | jq -r .compileSdkVersion)"
   android_build_tools="$(echo "$android_versions" | jq -r .buildToolsVersion)"
   # - In "SDK Platforms": "Android x" (where x is Android's current version).
