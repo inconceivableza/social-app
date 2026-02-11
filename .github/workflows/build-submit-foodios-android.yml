@@ -1,4 +1,4 @@
-name: Build and push foodios-social-app
+name: Build foodios-social-app for Android
 on:
   workflow_dispatch:
     inputs:
