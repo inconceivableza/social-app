@@ -49,7 +49,7 @@ function potential_android_homes {
       echo "$HOME/Android/Sdk/"
   else
       echo pmmmm$os >&2
-      show_warning "Could not determine potential android home" "for OS $os" >&2
+      echo "Could not determine potential android home" "for OS $os" >&2
   fi
 }
 
@@ -69,14 +69,14 @@ function check_android_home {
         done
       if [ "$ANDROID_HOME" == "" ]
         then
-          show_error "Android Sdk not found:" "set ANDROID_HOME in $params_file to point to sdk install"
+          echo "Android Sdk not found:" "set ANDROID_HOME in $params_file to point to sdk install"
           return 1
         fi
   elif [ -d "$ANDROID_HOME" ]
     then
       return 0
   else
-      show_error "Android Sdk not found:" "ANDROID_HOME in $params_file points to $ANDROID_HOME but it doesn't exist"
+      echo "Android Sdk not found:" "ANDROID_HOME in $params_file points to $ANDROID_HOME but it doesn't exist"
       return 1
   fi
 }
@@ -85,21 +85,20 @@ function exec_sudo() {
   if [ "$do_sudo" == 1 ]; then
     sudo "$@"
   else
-    show_info --oneline "sudo command required but --no-sudo given" "please run the following command manually:"
+    echo "sudo command required but --no-sudo given" "please run the following command manually:"
     echo "sudo $@"
   fi
 }
 
 if ! which docker >/dev/null
   then
-    show_error --oneline "Docker install required" "in order to use this self-hosting environment"
-    show_info --oneline "Please install docker manually" "by following the docker installation instructions"
+    echo "Docker install required" "in order to use this self-hosting environment"
+    echo "Please install docker manually" "by following the docker installation instructions"
     exit 1
   fi
-
 if [ "$os" == "linux-ubuntu" ]
   then
-    show_heading "Setting up apt packages" that are requirements for building running and testing these docker images
+    echo "Setting up apt packages" that are requirements for building running and testing these docker images
     # make is used to run setup scripts etc
     # pwgen is used to generate new securish passwords
     # jq in are used in extracting json data for config and tests
@@ -107,38 +106,38 @@ if [ "$os" == "linux-ubuntu" ]
 
     if dpkg-query -s $apt_packages >/dev/null
       then
-        show_info "No install required:" all packages already installed
+        echo "No install required:" all packages already installed
       else
         exec_sudo apt update
         exec_sudo apt install -y $apt_packages
       fi
 
-    show_heading "Setting up snap packages" that are requirements for building running and testing these docker images
+    echo "Setting up snap packages" that are requirements for building running and testing these docker images
     # yq is used in extracting yaml data for config and tests; the current ubuntu apt package is 3.x, but we want 4.x
     snap_packages="yq"
     old_apt_packages="yq"
     if dpkg-query -l $old_apt_packages 2>/dev/null
       then
-        show_warning "Old version of $old_apt_packages found" "installed using apt; will remove and install snap version"
+        echo "Old version of $old_apt_packages found" "installed using apt; will remove and install snap version"
         exec_sudo apt remove $old_apt_packages
     fi
     if snap list $snap_packages 2>/dev/null
       then
-        show_info "No install required:" all packages already installed
+        echo "No install required:" all packages already installed
       else
         exec_sudo snap install $snap_packages
       fi
     
-    show_heading "Setting up websocat" directly from executable download, in /usr/local/bin
+    echo "Setting up websocat" directly from executable download, in /usr/local/bin
     if [ -x /usr/local/bin/websocat ] && websocat --version
       then
-        show_info "No install required:" websocat already present
+        echo "No install required:" websocat already present
       else
         (exec_sudo curl -o /usr/local/bin/websocat -L https://github.com/vi/websocat/releases/download/v1.13.0/websocat.x86_64-unknown-linux-musl; exec_sudo chmod a+x /usr/local/bin/websocat)
       fi
 
     # Zulu Java needs a separate repository set up
-    show_heading "Setting up Zulu JDK" "using azul debian repository"
+    echo "Setting up Zulu JDK" "using azul debian repository"
     need_apt_update=0
     [ -f /usr/share/keyrings/azul.gpg ] || {  echo will set up repo key ; curl -s https://repos.azul.com/azul-repo.key | sudo gpg --dearmor -o /usr/share/keyrings/azul.gpg ; need_apt_update=1 ; }
     [ -f /etc/apt/sources.list.d/zulu.list ] || { echo will set up deb repository ; echo "deb [signed-by=/usr/share/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main" | sudo tee /etc/apt/sources.list.d/zulu.list ; need_apt_update=1 ; }
@@ -163,16 +162,16 @@ elif [ "$os" == "macos" ]
           done
         if [ "$required_packages" == "" ]
           then
-            show_info "All requirements met" so not installing brew packages
+            echo "All requirements met" so not installing brew packages
           else
-            show_heading "Setting up brew packages" that are requirements for building ios app on macos: $required_packages
+            echo "Setting up brew packages" that are requirements for building ios app on macos: $required_packages
             brew install $required_packages
           fi
       else
-        show_error "Brew not found but is required:" please install homebrew before continuing
+        echo "Brew not found but is required:" please install homebrew before continuing
         exit 1
       fi
-  show_info "Checking other build requirements" "for iOS builds"
+  echo "Checking other build requirements" "for iOS builds"
 
   # Check required certificates - see https://stackoverflow.com/a/78231028/120398 
   target_keychain=~/Library/Keychains/login.keychain-db
@@ -183,7 +182,7 @@ elif [ "$os" == "macos" ]
       cert_sha="${cert_sha_pair#*:}"
       if ! security find-certificate -a -c "Apple Worldwide Developer Relations Certification Authority" -Z "${target_keychain}" | grep ${cert_sha} >/dev/null
         then
-          show_heading "Installing certificate" $cert_filename
+          echo "Installing certificate" $cert_filename
           curl https://www.apple.com/certificateauthority/$cert_filename -o ~/Downloads/$cert_filename
           security add-trusted-cert -d -r unspecified -k "${target_keychain}" ~/Downloads/$cert_filename
         fi
@@ -194,69 +193,69 @@ elif [ "$os" == "macos" ]
   expected_xcode=/Applications/Xcode.app/Contents/Developer
   if [ "$(xcode-select -p)" != "$expected_xcode" ]
     then
-      show_heading "Correcting xcode location" "which will require password for sudo rights"
+      echo "Correcting xcode location" "which will require password for sudo rights"
       exec_sudo xcode-select -s "$expected_xcode"
     fi
 fi
 
-show_heading "Setting up nvm" and node
+echo "Setting up nvm" and node
 export NVM_DIR="$HOME/.nvm"
 export NVM_VER=0.40.1
 export NODE_VER=20
 if [ ! -d "$NVM_DIR/.git" ]
   then
-    show_info "Installing nvm" version $NVM_VER
+    echo "Installing nvm" version $NVM_VER
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VER/install.sh | bash
   fi
 # this is manually sourcing nvm so we can use its functions
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-show_info "Checking node" version $NODE_VER
+echo "Checking node" version $NODE_VER
 nvm ls $NODE_VER || {
-  show_info "Installing node" version $NODE_VER
+  echo "Installing node" version $NODE_VER
   nvm install $NODE_VER
 }
 
-show_info "Checking yarn" "in node $NODE_VER"
+echo "Checking yarn" "in node $NODE_VER"
 (
   nvm use $NODE_VER
   which yarn > /dev/null || npm install -g yarn
 )
 
-show_info "Checking pnpm" "in node $NODE_VER"
+echo "Checking pnpm" "in node $NODE_VER"
 (
   nvm use $NODE_VER
   which pnpm > /dev/null || npm install -g pnpm
 )
 
 if [ "$do_android" == 1 ]; then
-  show_heading "Installing Android tools" "and checking that licenses have been accepted (on $os)"
+  echo "Installing Android tools" "and checking that licenses have been accepted (on $os)"
 
   new_android_home=$(check_android_home) || {
-    show_error "Android home not found" "please configure ANDROID_HOME and run again"
-    show_info -1 "Default location for ANDROID_HOME" "$(potential_android_homes | head -n 1)"
-    show_info -1 "Set ANDROID_HOME" "then mkdir \$ANDROID_HOME and run again"
+    echo "Android home not found" "please configure ANDROID_HOME and run again"
+    echo -1 "Default location for ANDROID_HOME" "$(potential_android_homes | head -n 1)"
+    echo -1 "Set ANDROID_HOME" "then mkdir \$ANDROID_HOME and run again"
     exit 1
   }
   if [ "$new_android_home" != "" ]
     then
       export ANDROID_HOME="$new_android_home"
-      show_info "Default Android SDK" "found at $ANDROID_HOME"
+      echo "Default Android SDK" "found at $ANDROID_HOME"
     fi
 
   if [ "${os/linux/}" != "$os" ]
     then
       # we have to install cmdline-tools manually on Linux
       [ -d $ANDROID_HOME/cmdline-tools ] || {
-        show_info "Installing Android SDK Manager" "into $ANDROID_HOME"
+        echo "Installing Android SDK Manager" "into $ANDROID_HOME"
         downloads_dir="$script_dir/downloads"
         mkdir -p "$downloads_dir"
         commandlinetools_url="$(curl -s 'https://developer.android.com/studio#command-line-tools-only' | grep 'href="[^"]*commandlinetools-linux.*latest[.]zip"' | sed 's/^.*href="\([^"]*\)".*/\1/g')"
         commandlinetools_zip="$downloads_dir/$(basename "$commandlinetools_url")"
         [ -f "$commandlinetools_zip" ] || {
-          show_info --oneline "Downloading latest commandlinetools" "from $commandlinetools_url into $commandlinetools_zip"
-          curl -o "$commandlinetools_zip" "$commandlinetools_url" || { show_error "Could not download" "$commandlinetools_url" ; exit 1 ; }
+          echo "Downloading latest commandlinetools" "from $commandlinetools_url into $commandlinetools_zip"
+          curl -o "$commandlinetools_zip" "$commandlinetools_url" || { echo "Could not download" "$commandlinetools_url" ; exit 1 ; }
         }
-        show_info --oneline "Unpacking latest commandlinetools" "from $commandlinetools_zip into $ANDROID_HOME"
+        echo "Unpacking latest commandlinetools" "from $commandlinetools_zip into $ANDROID_HOME"
         unzip -d "$ANDROID_HOME" "$commandlinetools_zip"
       }
       sdkmanager_params="--sdk_root=$ANDROID_HOME"
@@ -265,14 +264,14 @@ if [ "$do_android" == 1 ]; then
   which sdkmanager >/dev/null 2>&1 || export PATH="$PATH:$ANDROID_HOME/cmdline-tools/bin"
 
   which sdkmanager >/dev/null 2>&1 || {
-    show_error "Android SDK Manager not found;" "check that you have the commandlinetools installed"
+    echo "Android SDK Manager not found;" "check that you have the commandlinetools installed"
     exit 1
   }
 
-  show_info "Checking License Acceptance" "for Android SDK packages; accept as required"
+  echo "Checking License Acceptance" "for Android SDK packages; accept as required"
   sdkmanager $sdkmanager_params --licenses
 
-  show_info --oneline "Checking Android Versions" "configured in social-app"
+  echo "Checking Android Versions" "configured in social-app"
   android_versions="$(npx_run_script @dotenvx/dotenvx $script_dir/scripts/get-social-app-android-build-properties.js)"
   android_platform="$(echo "$android_versions" | jq -r .compileSdkVersion)"
   android_build_tools="$(echo "$android_versions" | jq -r .buildToolsVersion)"
@@ -289,10 +288,10 @@ if [ "$do_android" == 1 ]; then
     then
       for android_req in $android_reqs
         do
-          show_info "Installing Android SDK" "$android_req"
+          echo "Installing Android SDK" "$android_req"
           sdkmanager $sdkmanager_params --install $android_req
         done
     else
-      show_info "Android SDK requirements already installed:" "no install required"
+      echo "Android SDK requirements already installed:" "no install required"
     fi
 fi
