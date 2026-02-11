@@ -1,0 +1,172 @@
+name: Build and push foodios-social-app
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        type: choice
+        description: Build profile to use
+        options:
+          - testflight
+          - production
+
+env:
+  profile_name: {{ inputs.profile }}
+
+jobs:
+  build:
+    if: github.repository == 'inconceivableza/social-app'
+    runs-on: 'ubuntu-24.04'
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: >
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: 🔧 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: 🪛 Setup jq
+        uses: dcarbone/install-jq-action@v2
+
+      - name: 🔨 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: ⛏️ Setup EAS local builds
+        run: yarn global add eas-cli-local-build-plugin
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Create .env.test file
+        run: |
+          cat > .env.test << 'EOF'
+          # Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          EXPO_PUBLIC_ATP_APPVIEW_DID=did:web:${{ vars.APIFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_APPVIEW_URL=https://${{ vars.APIFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PDS_DID=did:web:${{ vars.PDSFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PDS_URL=https://${{ vars.PDSFQDN_STAGING }}
+          EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL=https://public.api.${{ vars.DOMAIN_STAGING }}
+          EXPO_PUBLIC_BLUESKY_PROXY_DID=did:web:${{ vars.BSKYFQDN_STAGING }}
+          EXPO_PUBLIC_CHAT_PROXY_DID=${{ vars.DMSERVICEDID_STAGING }}
+          EXPO_PUBLIC_CORS_ALLOWED_ORIGINS=https://${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_DM_SERVICE_DID=${{ vars.DMSERVICEDID_STAGING }}
+          EXPO_PUBLIC_GIF_HOST=${{ vars.GIFFQDN_STAGING }}
+          EXPO_PUBLIC_GEOLOCATION_CONFIG_URL=${{ vars.GEOLOCATION_CONFIG_URL_STAGING }}
+          EXPO_PUBLIC_LINK_HOST=${{ vars.LINKFQDN_STAGING }}
+          EXPO_PUBLIC_OGCARD_URL=https://${{ vars.CARDFQDN_STAGING }}
+          EXPO_PUBLIC_PREVIEW_LINK_META_PROXY=
+          EXPO_PUBLIC_SOCIAL_APP_HOST=${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_APP_URL=https://${{ vars.SOCIALAPPFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_EMBED_SERVICE=https://${{ vars.EMBEDFQDN_STAGING }}
+          EXPO_PUBLIC_SOCIAL_HELP_DESK_URL=${{ vars.SOCIAL_HELP_DESK_URL_STAGING }}
+          EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL=${{ vars.SOCIAL_POLICY_BASE_URL_STAGING }}
+          EXPO_PUBLIC_STATSIG_CLIENT_KEY=${{ vars.STATSIG_CLIENT_KEY_STAGING }}
+          EXPO_PUBLIC_STATSIG_API_URL=${{ vars.STATSIG_API_URL_STAGING }}
+          EXPO_PUBLIC_STATUS_PAGE_URL=${{ vars.STATUS_PAGE_URL_STAGING }}
+          EXPO_PUBLIC_VIDEO_SERVICE=https://video.${{ vars.DOMAIN_STAGING }}
+          EXPO_PUBLIC_VIDEO_SERVICE_DID=did:web:video.${{ vars.DOMAIN_STAGING }}
+
+          EOF
+
+      - name: Create .env.production file
+        run: |
+          cat > .env.production << 'EOF'
+          # Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          EXPO_PUBLIC_ATP_APPVIEW_DID=did:web:${{ vars.APIFQDN_PROD }}
+          EXPO_PUBLIC_ATP_APPVIEW_URL=https://${{ vars.APIFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PDS_DID=did:web:${{ vars.PDSFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PDS_URL=https://${{ vars.PDSFQDN_PROD }}
+          EXPO_PUBLIC_ATP_PUBLIC_APPVIEW_URL=https://public.api.${{ vars.DOMAIN_PROD }}
+          EXPO_PUBLIC_BLUESKY_PROXY_DID=did:web:${{ vars.BSKYFQDN_PROD }}
+          EXPO_PUBLIC_CHAT_PROXY_DID=${{ vars.DMSERVICEDID_PROD }}
+          EXPO_PUBLIC_CORS_ALLOWED_ORIGINS=https://${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_DM_SERVICE_DID=${{ vars.DMSERVICEDID_PROD }}
+          EXPO_PUBLIC_GIF_HOST=${{ vars.GIFFQDN_PROD }}
+          EXPO_PUBLIC_GEOLOCATION_CONFIG_URL=${{ vars.GEOLOCATION_CONFIG_URL_PROD }}
+          EXPO_PUBLIC_LINK_HOST=${{ vars.LINKFQDN_PROD }}
+          EXPO_PUBLIC_OGCARD_URL=https://${{ vars.CARDFQDN_PROD }}
+          EXPO_PUBLIC_PREVIEW_LINK_META_PROXY=
+          EXPO_PUBLIC_SOCIAL_APP_HOST=${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_APP_URL=https://${{ vars.SOCIALAPPFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_EMBED_SERVICE=https://${{ vars.EMBEDFQDN_PROD }}
+          EXPO_PUBLIC_SOCIAL_HELP_DESK_URL=${{ vars.SOCIAL_HELP_DESK_URL_PROD }}
+          EXPO_PUBLIC_SOCIAL_POLICY_BASE_URL=${{ vars.SOCIAL_POLICY_BASE_URL_PROD }}
+          EXPO_PUBLIC_STATSIG_CLIENT_KEY=${{ vars.STATSIG_CLIENT_KEY_PROD }}
+          EXPO_PUBLIC_STATSIG_API_URL=${{ vars.STATSIG_API_URL_PROD }}
+          EXPO_PUBLIC_STATUS_PAGE_URL=${{ vars.STATUS_PAGE_URL_PROD }}
+          EXPO_PUBLIC_VIDEO_SERVICE=https://video.${{ vars.DOMAIN_PROD }}
+          EXPO_PUBLIC_VIDEO_SERVICE_DID=did:web:video.${{ vars.DOMAIN_PROD }}
+
+          EOF
+
+      - name: Env
+        id: env
+        run: |
+          export json='${{ secrets.GOOGLE_SERVICES_TOKEN }}'
+          echo "${{ secrets.ENV_TOKEN }}" > .env
+          echo "EXPO_PUBLIC_RELEASE_VERSION=$(jq -r '.version' package.json)" >> .env
+          echo "EXPO_PUBLIC_RELEASE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+          echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$(git rev-parse HEAD)" >> .env
+          echo "EXPO_PUBLIC_BUNDLE_IDENTIFIER=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "EXPO_PUBLIC_BUNDLE_DATE=$(date -u +"%y%m%d%H")" >> .env
+          echo "EXPO_PUBLIC_SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+          echo "EXPO_PUBLIC_BITDRIFT_API_KEY=${{ secrets.BITDRIFT_API_KEY }}" >> .env
+          echo "EXPO_PUBLIC_GCP_PROJECT_ID=${{ secrets.EXPO_PUBLIC_GCP_PROJECT_ID }}" >> .env
+          echo "$json" > google-services.json
+
+      - name: ⚙️ Install dependencies
+        run: yarn install
+
+      - name: 🔤 Compile translations
+        run: yarn intl:build 2>&1 | tee i18n.log
+
+      - name: Check for i18n compilation errors
+        run: if grep -q "invalid syntax" "i18n.log"; then echo "\n\nFound compilation errors!\n\n" && exit 1; else echo "\n\nNo compilation errors!\n\n"; fi
+
+      - name: 🏗️ EAS Build
+        run: >
+          SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_RELEASE=${{ steps.env.outputs.EXPO_PUBLIC_RELEASE_VERSION }}
+          SENTRY_DIST=${{ steps.env.outputs.EXPO_PUBLIC_BUNDLE_IDENTIFIER }}
+          yarn use-build-number-with-bump
+          eas build -p android --profile ${{ inputs.profile || 'testflight' }} --local --output build.aab --non-interactive
+
+      - name: ✍️ Rename Testflight bundle
+        if: ${{ inputs.profile != 'production' }}
+        run: mv build.aab build.apk
+
+      - name: ⏰ Get a timestamp
+        id: timestamp
+        uses: nanzm/get-time-action@master
+        with:
+          format: "MM-DD-HH-mm-ss"
+
+      - name: ⬇️ Restore Cache
+        id: get-base-commit
+        uses: actions/cache@v4
+        if: ${{ inputs.profile == 'testflight' }}
+        with:
+          path: most-recent-testflight-commit.txt
+          key: most-recent-testflight-commit
+
+      - name: ✏️ Write commit hash to cache
+        if: ${{ inputs.profile == 'testflight' }}
+        run: echo ${{ github.sha }} > most-recent-testflight-commit.txt
