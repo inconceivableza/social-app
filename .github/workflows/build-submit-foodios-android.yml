@@ -36,6 +36,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           cache: true
+          package_json_file: 'submodules/atproto/package.json'
 
       - name: 🪛 Setup jq
         uses: dcarbone/install-jq-action@v2
