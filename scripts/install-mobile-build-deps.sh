@@ -2,7 +2,9 @@
 
 script_path="`realpath "$0"`"
 script_dir="`dirname "$script_path"`"
-. "../../utils-logging.sh"
+base_dir="`dirname "$script_dir"`"
+
+cd "$base_dir"
 
 do_android=1
 do_sudo=1
@@ -247,7 +249,7 @@ if [ "$do_android" == 1 ]; then
       # we have to install cmdline-tools manually on Linux
       [ -d $ANDROID_HOME/cmdline-tools ] || {
         echo "Installing Android SDK Manager" "into $ANDROID_HOME"
-        downloads_dir="$script_dir/downloads"
+        downloads_dir="$base_dir/downloads"
         mkdir -p "$downloads_dir"
         commandlinetools_url="$(curl -s 'https://developer.android.com/studio#command-line-tools-only' | grep 'href="[^"]*commandlinetools-linux.*latest[.]zip"' | sed 's/^.*href="\([^"]*\)".*/\1/g')"
         commandlinetools_zip="$downloads_dir/$(basename "$commandlinetools_url")"
