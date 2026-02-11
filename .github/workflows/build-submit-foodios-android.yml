@@ -1,4 +1,4 @@
-name: Build and push foodios-social-app
+name: Build foodios-social-app for Android
 on:
   workflow_dispatch:
     inputs:
@@ -31,6 +31,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: yarn
+
+      - name: 🔧 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          cache: true
 
       - name: 🪛 Setup jq
         uses: dcarbone/install-jq-action@v2
