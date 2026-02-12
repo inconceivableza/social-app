@@ -5,6 +5,15 @@ import {type VideoFeedSourceContext} from '#/screens/VideoFeed/types'
 
 export type {NativeStackScreenProps} from '@react-navigation/native-stack'
 
+export type SearchTabOptions =
+  | 'user'
+  | 'profile'
+  | 'feed'
+  | 'top'
+  | 'latest'
+  | 'people'
+  | 'feeds'
+
 export type CommonNavigatorParams = {
   NotFound: undefined
   Lists: undefined
@@ -70,7 +79,7 @@ export type CommonNavigatorParams = {
   InterestsSettings: undefined
   AboutSettings: undefined
   AppIconSettings: undefined
-  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
+  Search: {q?: string; tab?: SearchTabOptions}
   Hashtag: {tag: string; author?: string}
   Topic: {topic: string}
   MessagesConversation: {conversation: string; embed?: string; accept?: true}
@@ -105,7 +114,7 @@ export type HomeTabNavigatorParams = CommonNavigatorParams & {
 }
 
 export type SearchTabNavigatorParams = CommonNavigatorParams & {
-  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
+  Search: {q?: string; tab?: SearchTabOptions}
 }
 
 export type NotificationsTabNavigatorParams = CommonNavigatorParams & {
@@ -122,7 +131,7 @@ export type MessagesTabNavigatorParams = CommonNavigatorParams & {
 
 export type FlatNavigatorParams = CommonNavigatorParams & {
   Home: undefined
-  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
+  Search: {q?: string; tab?: SearchTabOptions}
   Feeds: undefined
   Notifications: undefined
   Messages: {pushToConversation?: string; animation?: 'push' | 'pop'}
@@ -132,7 +141,7 @@ export type AllNavigatorParams = CommonNavigatorParams & {
   HomeTab: undefined
   Home: undefined
   SearchTab: undefined
-  Search: {q?: string; tab?: 'user' | 'profile' | 'feed'}
+  Search: {q?: string; tab?: SearchTabOptions}
   Feeds: undefined
   NotificationsTab: undefined
   Notifications: undefined

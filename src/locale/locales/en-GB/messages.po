@@ -82,7 +82,7 @@ msgstr "{0, plural, one {# second} other {# seconds}}"
 
 #: src/view/shell/bottom-bar/BottomBar.tsx:228
 #: src/view/shell/bottom-bar/BottomBar.tsx:261
-#: src/view/shell/Drawer.tsx:562
+#: src/view/shell/Drawer.tsx:578
 msgid "{0, plural, one {# unread item} other {# unread items}}"
 msgstr "{0, plural, one {# unread item} other {# unread items}}"
 
@@ -145,9 +145,14 @@ msgstr "{0, plural, other {# people have}} used this starter pack!"
 msgid "{0, plural, other {+# more}}"
 msgstr "{0, plural, other {+# more}}"
 
-#: src/components/EnvConfigIndicator.tsx:118
-#: src/components/EnvConfigIndicator.tsx:140
-#: src/components/forms/ComboBox/index.tsx:64
+#: src/screens/SavedFeeds.tsx:415
+msgctxt "feed-name"
+msgid "{0}"
+msgstr ""
+
+#: src/components/EnvConfigIndicator.tsx:117
+#: src/components/EnvConfigIndicator.tsx:139
+#: src/components/forms/ComboBox/index.tsx:60
 #: src/screens/Settings/Settings.tsx:611
 #: src/screens/Settings/Settings.tsx:632
 #: src/screens/Settings/Settings.tsx:649
@@ -265,8 +270,8 @@ msgstr "{0}, a feed by {1}, liked by {2}"
 msgid "{0}, a list by {1}"
 msgstr "{0}, a list by {1}"
 
-#: src/components/EnvConfigIndicator.tsx:111
-#: src/components/EnvConfigIndicator.tsx:132
+#: src/components/EnvConfigIndicator.tsx:110
+#: src/components/EnvConfigIndicator.tsx:131
 #: src/screens/Settings/Settings.tsx:625
 #: src/screens/Settings/Settings.tsx:642
 msgid "{0}. {reloadMessage}"
@@ -507,12 +512,10 @@ msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr "{hours, plural, one {# hour} other {# hours}}"
 
 #: src/view/shell/desktop/RightNav.tsx:231
-#: src/view/shell/Drawer.tsx:191
 msgid "{invitesAvailable} invite code available"
 msgstr ""
 
 #: src/view/shell/desktop/RightNav.tsx:233
-#: src/view/shell/Drawer.tsx:193
 msgid "{invitesAvailable} invite codes available"
 msgstr ""
 
@@ -520,11 +523,11 @@ msgstr ""
 msgid "{joinedAllTimeCount, plural, other {# users have}} joined!"
 msgstr "{joinedAllTimeCount, plural, other {# users have}} joined!"
 
-#: src/components/forms/ComboBox/index.tsx:196
+#: src/components/forms/ComboBox/index.tsx:195
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:197
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:305
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:420
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:554
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:421
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:556
 msgid "{label}"
 msgstr ""
 
@@ -594,6 +597,10 @@ msgstr "<0>{0}</0> {1, plural, one {follower} other {followers}}"
 msgid "<0>{0}</0> {1, plural, one {following} other {following}}"
 msgstr "<0>{0}</0> {1, plural, one {following} other {following}}"
 
+#: src/view/shell/Drawer.tsx:196
+msgid "<0>{0}</0> {1, plural, one {invite code available} other {invite codes available}}"
+msgstr ""
+
 #: src/screens/StarterPack/Wizard/index.tsx:510
 #: src/screens/StarterPack/Wizard/index.tsx:564
 msgid "<0>{0}</0> and<1> </1><2>{1} </2>are included in your starter pack"
@@ -611,7 +618,7 @@ msgstr "<0>{0}</0> members"
 msgid "<0>{date}</0> at {time}"
 msgstr "<0>{date}</0> at {time}"
 
-#: src/screens/Search/SearchResults.tsx:272
+#: src/screens/Search/SearchResults.tsx:287
 msgid "<0>Sign in</0><1> or </1><2>create an account</2><3> </3><4>to search for news, sports, politics, and everything else happening on {appName}.</4>"
 msgstr ""
 
@@ -731,7 +738,7 @@ msgid "Account muted"
 msgstr "Account muted"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:105
-#: src/lib/moderation/useModerationCauseDescription.ts:99
+#: src/lib/moderation/useModerationCauseDescription.ts:96
 msgid "Account Muted"
 msgstr "Account Muted"
 
@@ -866,7 +873,7 @@ msgstr "Add emoji reaction"
 msgid "Add ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1286
+#: src/view/com/composer/ComposerRecipe.tsx:1321
 msgid "Add instruction"
 msgstr ""
 
@@ -901,17 +908,17 @@ msgstr "Add people to list"
 msgid "Add Reaction"
 msgstr "Add Reaction"
 
-#: src/screens/Home/NoFeedsPinned.tsx:99
+#: src/screens/Home/NoFeedsPinned.tsx:96
 msgid "Add recommended feeds"
 msgstr "Add recommended feeds"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1114
-#: src/view/com/composer/ComposerRecipe.tsx:1301
+#: src/view/com/composer/ComposerRecipe.tsx:1151
+#: src/view/com/composer/ComposerRecipe.tsx:1336
 msgid "Add section"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1116
-#: src/view/com/composer/ComposerRecipe.tsx:1303
+#: src/view/com/composer/ComposerRecipe.tsx:1153
+#: src/view/com/composer/ComposerRecipe.tsx:1338
 msgid "Add Section"
 msgstr ""
 
@@ -978,7 +985,7 @@ msgstr "Adult"
 
 #: src/components/moderation/ContentHider.tsx:120
 #: src/lib/moderation/useGlobalLabelStrings.ts:34
-#: src/lib/moderation/useModerationCauseDescription.ts:149
+#: src/lib/moderation/useModerationCauseDescription.ts:146
 #: src/view/com/composer/labels/LabelsBtn.tsx:127
 msgid "Adult Content"
 msgstr "Adult Content"
@@ -1021,7 +1028,7 @@ msgstr "Age assurance only takes a few minutes"
 msgid "Air date"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:601
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:604
 msgid "Air date (optional)"
 msgstr ""
 
@@ -1032,6 +1039,7 @@ msgstr "alice@example.com"
 #. the default tab in the interests tab bar
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:146
 #: src/view/screens/Notifications.tsx:84
+#: src/view/screens/Profile.tsx:220
 msgid "All"
 msgstr "All"
 
@@ -1047,7 +1055,7 @@ msgstr "All accounts have been followed!"
 msgid "All languages"
 msgstr "All languages"
 
-#: src/view/screens/Feeds.tsx:696
+#: src/view/screens/Feeds.tsx:709
 msgid "All the feeds you've saved, right in one place."
 msgstr "All the feeds you've saved, right in one place."
 
@@ -1215,7 +1223,7 @@ msgid "An mockup of a iPhone showing the {0} app open to the profile of a verifi
 msgstr ""
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:136
-#: src/lib/moderation/useModerationCauseDescription.ts:145
+#: src/lib/moderation/useModerationCauseDescription.ts:142
 msgid "an unknown labeler"
 msgstr "an unknown labeller"
 
@@ -1337,7 +1345,7 @@ msgid "Appearance"
 msgstr "Appearance"
 
 #: src/screens/Feeds/NoSavedFeedsOfAnyType.tsx:51
-#: src/screens/Home/NoFeedsPinned.tsx:93
+#: src/screens/Home/NoFeedsPinned.tsx:90
 msgid "Apply default recommended feeds"
 msgstr "Apply default recommended feeds"
 
@@ -1438,7 +1446,7 @@ msgstr ""
 msgid "At least one instruction required"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:686
+#: src/view/com/composer/ComposerRecipe.tsx:689
 #: src/view/com/posts/ExpandableRecipePost.tsx:252
 msgid "Attribution"
 msgstr ""
@@ -1466,7 +1474,7 @@ msgctxt "Name of app icon variant"
 msgid "Aurora"
 msgstr "Aurora"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:436
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:438
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:142
 msgid "Author"
 msgstr ""
@@ -1651,7 +1659,7 @@ msgstr "Blog"
 #: src/components/dialogs/DeviceLocationRequestDialog.tsx:64
 #: src/components/PolicyUpdateOverlay/updates/202508/index.tsx:21
 #: src/components/WelcomeModal.tsx:33
-#: src/screens/Search/SearchResults.tsx:196
+#: src/screens/Search/SearchResults.tsx:211
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:49
 msgid "Bluesky"
 msgstr "Bluesky"
@@ -1669,7 +1677,7 @@ msgstr "Blur images and filter from feeds"
 msgid "Books"
 msgstr "Books"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:641
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:644
 msgid "Brand"
 msgstr ""
 
@@ -1690,8 +1698,8 @@ msgstr "Browse more suggestions"
 msgid "Browse more suggestions on the Explore page"
 msgstr "Browse more suggestions on the Explore page"
 
-#: src/screens/Home/NoFeedsPinned.tsx:103
-#: src/screens/Home/NoFeedsPinned.tsx:109
+#: src/screens/Home/NoFeedsPinned.tsx:100
+#: src/screens/Home/NoFeedsPinned.tsx:106
 msgid "Browse other feeds"
 msgstr "Browse other feeds"
 
@@ -1722,7 +1730,7 @@ msgstr "Business"
 #: src/components/LabelingServiceCard/index.tsx:62
 #: src/components/moderation/ReportDialog/index.tsx:686
 #: src/screens/Search/components/StarterPackCard.tsx:106
-#: src/screens/Search/Explore.tsx:937
+#: src/screens/Search/Explore.tsx:938
 msgid "By {0}"
 msgstr "By {0}"
 
@@ -1778,7 +1786,7 @@ msgstr "Camera"
 #: src/screens/Deactivated.tsx:158
 #: src/screens/Profile/Header/EditProfileDialog.tsx:218
 #: src/screens/Profile/Header/EditProfileDialog.tsx:226
-#: src/screens/Search/Shell.tsx:412
+#: src/screens/Search/Shell.tsx:504
 #: src/screens/Settings/AppIconSettings/index.tsx:45
 #: src/screens/Settings/AppIconSettings/index.tsx:231
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:85
@@ -1790,8 +1798,8 @@ msgstr "Camera"
 #: src/screens/Takendown.tsx:113
 #: src/view/com/composer/Composer.tsx:1161
 #: src/view/com/composer/Composer.tsx:1172
-#: src/view/com/composer/ComposerRecipe.tsx:1399
-#: src/view/com/composer/ComposerRecipe.tsx:1410
+#: src/view/com/composer/ComposerRecipe.tsx:1434
+#: src/view/com/composer/ComposerRecipe.tsx:1445
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:43
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:52
 #: src/view/com/modals/UserFeedback.tsx:269
@@ -1819,7 +1827,7 @@ msgstr "Cancel quote post"
 msgid "Cancel reactivation and sign out"
 msgstr "Cancel reactivation and sign out"
 
-#: src/screens/Search/Shell.tsx:404
+#: src/screens/Search/Shell.tsx:496
 msgid "Cancel search"
 msgstr "Cancel search"
 
@@ -1851,7 +1859,7 @@ msgstr "Subtitles & alt text"
 msgid "Carbohydrate content must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:609
+#: src/view/com/composer/ComposerRecipe.tsx:612
 msgid "Categories"
 msgstr ""
 
@@ -1899,7 +1907,7 @@ msgstr "Change password dialog"
 msgid "Change report reason"
 msgstr "Change report reason"
 
-#: src/components/EnvConfigIndicator.tsx:206
+#: src/components/EnvConfigIndicator.tsx:205
 msgid "Change server domain"
 msgstr ""
 
@@ -1923,8 +1931,8 @@ msgstr "Changes saved"
 #: src/lib/hooks/useNotificationHandler.ts:102
 #: src/Navigation.tsx:577
 #: src/view/shell/bottom-bar/BottomBar.tsx:224
-#: src/view/shell/desktop/LeftNav.tsx:646
-#: src/view/shell/Drawer.tsx:530
+#: src/view/shell/desktop/LeftNav.tsx:648
+#: src/view/shell/Drawer.tsx:546
 msgid "Chat"
 msgstr "Chat"
 
@@ -2022,7 +2030,7 @@ msgstr "Choose People"
 msgid "Choose Post Languages"
 msgstr "Choose Post Languages"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:431
+#: src/screens/Onboarding/StepFinished/index.tsx:424
 msgid "Choose the algorithms that power your custom feeds."
 msgstr "Choose the algorithms that power your custom feeds."
 
@@ -2034,7 +2042,7 @@ msgstr "Choose this colour as your avatar"
 msgid "Choose your account provider"
 msgstr "Choose your account provider"
 
-#: src/view/screens/Feeds.tsx:722
+#: src/view/screens/Feeds.tsx:735
 msgid "Choose your own timeline! Feeds built by the community help you find content you love."
 msgstr "Choose your own timeline! Feeds built by the community help you find content you love."
 
@@ -2046,7 +2054,7 @@ msgstr "Choose your password"
 msgid "Choose your username"
 msgstr "Choose your username"
 
-#: src/view/com/composer/ComposerRecipe.tsx:886
+#: src/view/com/composer/ComposerRecipe.tsx:889
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:218
 msgid "Clear"
 msgstr ""
@@ -2068,7 +2076,7 @@ msgstr ""
 msgid "Clear image cache"
 msgstr "Clear image cache"
 
-#: src/view/com/composer/ComposerRecipe.tsx:880
+#: src/view/com/composer/ComposerRecipe.tsx:883
 msgid "Clear nutrition"
 msgstr ""
 
@@ -2220,7 +2228,7 @@ msgid "Closes password update alert"
 msgstr "Closes password update alert"
 
 #: src/view/com/composer/Composer.tsx:1169
-#: src/view/com/composer/ComposerRecipe.tsx:1407
+#: src/view/com/composer/ComposerRecipe.tsx:1442
 msgid "Closes post composer and discards post draft"
 msgstr "Closes post composer and discards post draft"
 
@@ -2270,8 +2278,8 @@ msgstr ""
 msgid "Community Guidelines"
 msgstr "Community Guidelines"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:343
-#: src/screens/Onboarding/StepFinished/index.tsx:444
+#: src/screens/Onboarding/StepFinished/index.tsx:336
+#: src/screens/Onboarding/StepFinished/index.tsx:437
 msgid "Complete onboarding and start using your account"
 msgstr "Complete onboarding and start using your account"
 
@@ -2283,11 +2291,11 @@ msgstr "Complete the challenge"
 msgid "Compose"
 msgstr ""
 
-#: src/view/shell/desktop/LeftNav.tsx:611
+#: src/view/shell/desktop/LeftNav.tsx:613
 msgid "Compose new post"
 msgstr "Compose new post"
 
-#: src/view/shell/desktop/LeftNav.tsx:543
+#: src/view/shell/desktop/LeftNav.tsx:544
 msgid "Compose new recipe"
 msgstr ""
 
@@ -2338,7 +2346,7 @@ msgstr "Confirm content language settings"
 msgid "Confirm delete account"
 msgstr "Confirm delete account"
 
-#: src/components/forms/ComboBox/index.tsx:121
+#: src/components/forms/ComboBox/index.tsx:116
 msgid "Confirm selection"
 msgstr ""
 
@@ -2373,7 +2381,7 @@ msgstr "Confirm your location with GPS. Your location data is not tracked and do
 msgid "Confirmation code"
 msgstr "Confirmation code"
 
-#: src/components/EnvConfigIndicator.tsx:177
+#: src/components/EnvConfigIndicator.tsx:176
 msgid "Connect"
 msgstr ""
 
@@ -2431,14 +2439,14 @@ msgid "Content Languages"
 msgstr "Content Languages"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:84
-#: src/lib/moderation/useModerationCauseDescription.ts:83
+#: src/lib/moderation/useModerationCauseDescription.ts:80
 msgid "Content Not Available"
 msgstr "Content Not Available"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:52
 #: src/components/moderation/ScreenHider.tsx:99
 #: src/lib/moderation/useGlobalLabelStrings.ts:22
-#: src/lib/moderation/useModerationCauseDescription.ts:46
+#: src/lib/moderation/useModerationCauseDescription.ts:43
 msgid "Content Warning"
 msgstr "Content Warning"
 
@@ -2501,7 +2509,7 @@ msgstr ""
 msgid "Cooking"
 msgstr "Cooking"
 
-#: src/view/com/composer/ComposerRecipe.tsx:561
+#: src/view/com/composer/ComposerRecipe.tsx:564
 msgid "Cooking time"
 msgstr ""
 
@@ -2718,7 +2726,7 @@ msgstr "Create Account"
 #: src/components/dialogs/Signin.tsx:87
 #: src/components/dialogs/Signin.tsx:89
 #: src/screens/Hashtag.tsx:232
-#: src/screens/Search/SearchResults.tsx:283
+#: src/screens/Search/SearchResults.tsx:298
 msgid "Create an account"
 msgstr "Create an account"
 
@@ -2774,7 +2782,7 @@ msgstr "Creator has been blocked"
 msgid "Cuisine"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:631
+#: src/view/com/composer/ComposerRecipe.tsx:634
 msgid "Cuisine type"
 msgstr ""
 
@@ -2788,7 +2796,7 @@ msgstr "Culture"
 msgid "Custom"
 msgstr "Custom"
 
-#: src/components/EnvConfigIndicator.tsx:172
+#: src/components/EnvConfigIndicator.tsx:171
 msgid "Custom server domain"
 msgstr ""
 
@@ -2929,8 +2937,8 @@ msgstr "Delete my account"
 msgid "Delete post"
 msgstr "Delete post"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1001
-#: src/view/com/composer/ComposerRecipe.tsx:1219
+#: src/view/com/composer/ComposerRecipe.tsx:1002
+#: src/view/com/composer/ComposerRecipe.tsx:1254
 msgid "Delete Section"
 msgstr ""
 
@@ -2970,7 +2978,7 @@ msgstr "Deleted list"
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:436
 #: src/screens/Profile/Header/EditProfileDialog.tsx:363
 #: src/screens/Profile/Header/EditProfileDialog.tsx:370
-#: src/view/com/composer/ComposerRecipe.tsx:449
+#: src/view/com/composer/ComposerRecipe.tsx:447
 msgid "Description"
 msgstr "Description"
 
@@ -3076,8 +3084,8 @@ msgstr "Discourage apps from showing my account to logged-out users"
 msgid "Discover new custom feeds"
 msgstr "Discover new custom feeds"
 
-#: src/screens/Search/Explore.tsx:432
-#: src/view/screens/Feeds.tsx:719
+#: src/screens/Search/Explore.tsx:433
+#: src/view/screens/Feeds.tsx:732
 msgid "Discover New Feeds"
 msgstr "Discover New Feeds"
 
@@ -3086,7 +3094,7 @@ msgid "Dismiss"
 msgstr "Dismiss"
 
 #: src/view/com/composer/Composer.tsx:1930
-#: src/view/com/composer/ComposerRecipe.tsx:760
+#: src/view/com/composer/ComposerRecipe.tsx:763
 msgid "Dismiss error"
 msgstr "Dismiss error"
 
@@ -3157,9 +3165,9 @@ msgstr "Don't worry! All existing messages and settings are saved and will be av
 #: src/components/dialogs/BirthDateSettings.tsx:149
 #: src/components/dialogs/BirthDateSettings.tsx:156
 #: src/components/dms/ReportDialog.tsx:321
-#: src/components/forms/ComboBox/index.tsx:127
-#: src/components/forms/ComboBox/index.tsx:210
-#: src/components/forms/ComboBox/index.tsx:215
+#: src/components/forms/ComboBox/index.tsx:122
+#: src/components/forms/ComboBox/index.tsx:209
+#: src/components/forms/ComboBox/index.tsx:213
 #: src/components/forms/DateField/index.tsx:103
 #: src/components/forms/DateField/index.tsx:109
 #: src/components/Select/index.tsx:185
@@ -3315,7 +3323,7 @@ msgid "Edit moderation list"
 msgstr "Edit moderation list"
 
 #: src/Navigation.tsx:374
-#: src/view/screens/Feeds.tsx:517
+#: src/view/screens/Feeds.tsx:519
 msgid "Edit My Feeds"
 msgstr "Edit My Feeds"
 
@@ -3560,7 +3568,7 @@ msgstr "Enters fullscreen"
 msgid "Entertainment"
 msgstr "Entertainment"
 
-#: src/components/EnvConfigIndicator.tsx:98
+#: src/components/EnvConfigIndicator.tsx:97
 msgid "Environment Config {currentEnvName}: {envConfigText}"
 msgstr ""
 
@@ -3568,7 +3576,7 @@ msgstr ""
 msgid "Episode"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:587
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:590
 msgid "Episode (optional)"
 msgstr ""
 
@@ -3597,7 +3605,7 @@ msgstr "Error occurred while saving file"
 msgid "Error receiving captcha response."
 msgstr "Error receiving captcha response."
 
-#: src/screens/Search/SearchResults.tsx:160
+#: src/screens/Search/SearchResults.tsx:175
 msgid "Error: {error}"
 msgstr "Error: {error}"
 
@@ -3714,9 +3722,9 @@ msgid "Explicit sexual images."
 msgstr "Explicit sexual images."
 
 #: src/Navigation.tsx:791
-#: src/screens/Search/Shell.tsx:360
-#: src/view/shell/desktop/LeftNav.tsx:728
-#: src/view/shell/Drawer.tsx:478
+#: src/screens/Search/Shell.tsx:448
+#: src/view/shell/desktop/LeftNav.tsx:730
+#: src/view/shell/Drawer.tsx:494
 msgid "Explore"
 msgstr "Explore"
 
@@ -3812,10 +3820,10 @@ msgstr "Failed to follow all suggested accounts, please try again"
 msgid "Failed to load conversations"
 msgstr "Failed to load conversations"
 
-#: src/screens/Search/Explore.tsx:468
-#: src/screens/Search/Explore.tsx:520
-#: src/screens/Search/Explore.tsx:558
-#: src/screens/Search/Explore.tsx:597
+#: src/screens/Search/Explore.tsx:469
+#: src/screens/Search/Explore.tsx:521
+#: src/screens/Search/Explore.tsx:559
+#: src/screens/Search/Explore.tsx:598
 msgid "Failed to load feeds preferences"
 msgstr "Failed to load feeds preferences"
 
@@ -3846,14 +3854,14 @@ msgstr "Failed to load past messages"
 msgid "Failed to load preference."
 msgstr "Failed to load preference."
 
-#: src/screens/Search/Explore.tsx:461
-#: src/screens/Search/Explore.tsx:513
-#: src/screens/Search/Explore.tsx:551
-#: src/screens/Search/Explore.tsx:590
+#: src/screens/Search/Explore.tsx:462
+#: src/screens/Search/Explore.tsx:514
+#: src/screens/Search/Explore.tsx:552
+#: src/screens/Search/Explore.tsx:591
 msgid "Failed to load suggested feeds"
 msgstr "Failed to load suggested feeds"
 
-#: src/screens/Search/Explore.tsx:371
+#: src/screens/Search/Explore.tsx:372
 msgid "Failed to load suggested follows"
 msgstr "Failed to load suggested follows"
 
@@ -3993,7 +4001,7 @@ msgstr "Feed unavailable"
 
 #: src/view/shell/desktop/RightNav.tsx:126
 #: src/view/shell/desktop/RightNav.tsx:133
-#: src/view/shell/Drawer.tsx:432
+#: src/view/shell/Drawer.tsx:448
 msgid "Feedback"
 msgstr "Feedback"
 
@@ -4013,12 +4021,12 @@ msgstr ""
 
 #: src/Navigation.tsx:604
 #: src/screens/SavedFeeds.tsx:108
-#: src/screens/Search/SearchResults.tsx:91
+#: src/screens/Search/SearchResults.tsx:104
 #: src/screens/StarterPack/StarterPackScreen.tsx:190
-#: src/view/screens/Feeds.tsx:510
-#: src/view/screens/Profile.tsx:226
-#: src/view/shell/desktop/LeftNav.tsx:766
-#: src/view/shell/Drawer.tsx:594
+#: src/view/screens/Feeds.tsx:512
+#: src/view/screens/Profile.tsx:257
+#: src/view/shell/desktop/LeftNav.tsx:768
+#: src/view/shell/Drawer.tsx:610
 msgid "Feeds"
 msgstr "Feeds"
 
@@ -4068,8 +4076,8 @@ msgstr "Filter who can opt to receive notifications for your activity"
 msgid "Filter who you receive notifications from"
 msgstr "Filter who you receive notifications from"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:349
-#: src/screens/Onboarding/StepFinished/index.tsx:447
+#: src/screens/Onboarding/StepFinished/index.tsx:342
+#: src/screens/Onboarding/StepFinished/index.tsx:440
 msgid "Finalizing"
 msgstr "Finalising"
 
@@ -4093,7 +4101,7 @@ msgstr "Find accounts to follow"
 msgid "Find people to follow"
 msgstr "Find people to follow"
 
-#: src/screens/Search/Shell.tsx:574
+#: src/screens/Search/Shell.tsx:682
 msgid "Find posts, users, and feeds on {0}"
 msgstr ""
 
@@ -4124,7 +4132,7 @@ msgctxt "Name of app icon variant"
 msgid "Flat White"
 msgstr "Flat White"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:427
+#: src/screens/Onboarding/StepFinished/index.tsx:420
 msgid "Flexible"
 msgstr "Flexible"
 
@@ -4229,12 +4237,6 @@ msgstr "Followers you know"
 msgid "Following"
 msgstr "Following"
 
-#: src/screens/SavedFeeds.tsx:410
-#: src/view/screens/Feeds.tsx:592
-msgctxt "feed-name"
-msgid "Following"
-msgstr "Following"
-
 #: src/components/ProfileCard.tsx:474
 #: src/screens/Profile/Header/ProfileHeaderStandard.tsx:96
 msgid "Following {0}"
@@ -4258,7 +4260,7 @@ msgstr "Following Feed Preferences"
 msgid "Follows you"
 msgstr "Follows you"
 
-#: src/components/Pills.tsx:175
+#: src/components/Pills.tsx:176
 msgid "Follows You"
 msgstr "Follows You"
 
@@ -4382,7 +4384,7 @@ msgstr ""
 msgid "Generate a starter pack"
 msgstr "Generate a starter pack"
 
-#: src/view/shell/Drawer.tsx:436
+#: src/view/shell/Drawer.tsx:452
 msgid "Get help"
 msgstr "Get help"
 
@@ -4571,7 +4573,7 @@ msgstr "Go to profile"
 msgid "Go to user's profile"
 msgstr "Go to user's profile"
 
-#: src/components/EnvConfigIndicator.tsx:52
+#: src/components/EnvConfigIndicator.tsx:51
 #: src/screens/Settings/Settings.tsx:606
 msgid "Going to reload app..."
 msgstr ""
@@ -4640,7 +4642,7 @@ msgstr "Having trouble?"
 #: src/screens/Settings/Settings.tsx:267
 #: src/view/shell/desktop/RightNav.tsx:147
 #: src/view/shell/desktop/RightNav.tsx:148
-#: src/view/shell/Drawer.tsx:445
+#: src/view/shell/Drawer.tsx:461
 msgid "Help"
 msgstr "Help"
 
@@ -4784,8 +4786,8 @@ msgstr "Hold up! We’re gradually giving access to video and you’re still wai
 #: src/Navigation.tsx:786
 #: src/Navigation.tsx:808
 #: src/view/shell/bottom-bar/BottomBar.tsx:180
-#: src/view/shell/desktop/LeftNav.tsx:710
-#: src/view/shell/Drawer.tsx:504
+#: src/view/shell/desktop/LeftNav.tsx:712
+#: src/view/shell/Drawer.tsx:520
 msgid "Home"
 msgstr "Home"
 
@@ -4962,11 +4964,11 @@ msgstr ""
 msgid "Ingredient quantity must be a number"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:973
+#: src/view/com/composer/ComposerRecipe.tsx:974
 msgid "Ingredient section options"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:579
+#: src/view/com/composer/ComposerRecipe.tsx:582
 #: src/view/com/modals/RecipePreparation.tsx:118
 #: src/view/com/posts/ExpandableRecipePost.tsx:208
 msgctxt "recipe"
@@ -4993,11 +4995,11 @@ msgstr "Input password for account deletion"
 msgid "Input the code which has been emailed to you"
 msgstr "Input the code which has been emailed to you"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1232
+#: src/view/com/composer/ComposerRecipe.tsx:1267
 msgid "Instruction"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1191
+#: src/view/com/composer/ComposerRecipe.tsx:1226
 msgid "Instruction section options"
 msgstr ""
 
@@ -5005,7 +5007,7 @@ msgstr ""
 msgid "Instruction text cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:594
+#: src/view/com/composer/ComposerRecipe.tsx:597
 #: src/view/com/modals/RecipePreparation.tsx:156
 #: src/view/com/posts/ExpandableRecipePost.tsx:218
 msgctxt "recipe"
@@ -5078,7 +5080,7 @@ msgid "Invite codes: {0} available"
 msgstr ""
 
 #: src/view/shell/desktop/RightNav.tsx:193
-#: src/view/shell/Drawer.tsx:172
+#: src/view/shell/Drawer.tsx:173
 msgid "Invite codes: {invitesAvailable} available"
 msgstr ""
 
@@ -5106,7 +5108,7 @@ msgstr "Is your location not accurate? <0>Tap here to confirm your location.</0>
 msgid "ISBN"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:450
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:452
 msgid "ISBN (optional)"
 msgstr ""
 
@@ -5122,7 +5124,7 @@ msgstr "It's just <0>{0} </0>right now! Add more people to your starter pack by 
 msgid "It's just you right now! Add more people to your starter pack by searching above."
 msgstr "It's just you right now! Add more people to your starter pack by searching above."
 
-#: src/view/com/composer/ComposerRecipe.tsx:1015
+#: src/view/com/composer/ComposerRecipe.tsx:1022
 msgid "Item"
 msgstr ""
 
@@ -5185,7 +5187,7 @@ msgid "Labeled by the author."
 msgstr "Labelled by the author."
 
 #: src/view/com/composer/labels/LabelsBtn.tsx:75
-#: src/view/screens/Profile.tsx:219
+#: src/view/screens/Profile.tsx:217
 msgid "Labels"
 msgstr "Labels"
 
@@ -5228,7 +5230,7 @@ msgid "Last initiated just now"
 msgstr "Last initiated just now"
 
 #: src/screens/Hashtag.tsx:101
-#: src/screens/Search/SearchResults.tsx:73
+#: src/screens/Search/SearchResults.tsx:85
 #: src/screens/Topic.tsx:77
 msgid "Latest"
 msgstr "Latest"
@@ -5336,8 +5338,8 @@ msgstr "Let me choose"
 msgid "Let's get your password reset!"
 msgstr "Let's get your password reset!"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:351
-#: src/screens/Onboarding/StepFinished/index.tsx:447
+#: src/screens/Onboarding/StepFinished/index.tsx:344
+#: src/screens/Onboarding/StepFinished/index.tsx:440
 msgid "Let's go!"
 msgstr "Let's go!"
 
@@ -5348,8 +5350,8 @@ msgstr ""
 
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:284
 #: src/view/com/composer/recipe/RecipeAttribution.tsx:294
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:533
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:543
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:535
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:545
 msgid "License type"
 msgstr ""
 
@@ -5420,7 +5422,7 @@ msgstr "Liked by {likeCount, plural, one {# user} other {# users}}"
 #: src/lib/hooks/useNotificationHandler.ts:131
 #: src/screens/Settings/NotificationSettings/index.tsx:139
 #: src/screens/Settings/NotificationSettings/LikeNotificationSettings.tsx:41
-#: src/view/screens/Profile.tsx:225
+#: src/view/screens/Profile.tsx:253
 msgid "Likes"
 msgstr "Likes"
 
@@ -5525,10 +5527,9 @@ msgstr "List unmuted"
 
 #: src/Navigation.tsx:176
 #: src/view/screens/Lists.tsx:67
-#: src/view/screens/Profile.tsx:220
-#: src/view/screens/Profile.tsx:228
-#: src/view/shell/desktop/LeftNav.tsx:784
-#: src/view/shell/Drawer.tsx:609
+#: src/view/screens/Profile.tsx:269
+#: src/view/shell/desktop/LeftNav.tsx:786
+#: src/view/shell/Drawer.tsx:625
 msgid "Lists"
 msgstr "Lists"
 
@@ -5552,12 +5553,12 @@ msgstr "Live feature is in beta testing"
 msgid "Live link"
 msgstr "Live link"
 
-#: src/screens/Search/Explore.tsx:84
+#: src/screens/Search/Explore.tsx:85
 msgid "Load more"
 msgstr "Load more"
 
-#: src/screens/Search/Explore.tsx:502
-#: src/screens/Search/Explore.tsx:579
+#: src/screens/Search/Explore.tsx:503
+#: src/screens/Search/Explore.tsx:580
 msgid "Load more suggested feeds"
 msgstr "Load more suggested feeds"
 
@@ -5568,7 +5569,7 @@ msgstr "Load new notifications"
 #: src/screens/Profile/ProfileFeed/index.tsx:221
 #: src/screens/Profile/Sections/Feed.tsx:94
 #: src/screens/ProfileList/FeedSection.tsx:105
-#: src/view/com/feeds/FeedPage.tsx:167
+#: src/view/com/feeds/FeedPage.tsx:170
 msgid "Load new posts"
 msgstr "Load new posts"
 
@@ -5589,7 +5590,7 @@ msgid "Logo by @sawaratsuki.bsky.social"
 msgstr "Logo by @sawaratsuki.bsky.social"
 
 #: src/view/shell/desktop/RightNav.tsx:156
-#: src/view/shell/Drawer.tsx:773
+#: src/view/shell/Drawer.tsx:789
 msgid "Logo by <0>@sawaratsuki.bsky.social</0>"
 msgstr "Logo by <0>@sawaratsuki.bsky.social</0>"
 
@@ -5605,7 +5606,7 @@ msgstr "Looks like XXXXX-XXXXX"
 msgid "Looks like you haven't saved any feeds! Use our recommendations or browse more below."
 msgstr "Looks like you haven't saved any feeds! Use our recommendations or browse more below."
 
-#: src/screens/Home/NoFeedsPinned.tsx:83
+#: src/screens/Home/NoFeedsPinned.tsx:80
 msgid "Looks like you unpinned all your feeds. But don't worry, you can add some below 😄"
 msgstr "Looks like you unpinned all your feeds. But don't worry, you can add some below 😄"
 
@@ -5663,7 +5664,7 @@ msgstr "Marked all as read"
 msgid "Maybe later"
 msgstr "Maybe later"
 
-#: src/view/screens/Profile.tsx:223
+#: src/view/screens/Profile.tsx:244
 msgid "Media"
 msgstr "Media"
 
@@ -5742,13 +5743,13 @@ msgctxt "Name of app icon variant"
 msgid "Midnight"
 msgstr "Midnight"
 
-#: src/view/com/composer/ComposerRecipe.tsx:552
-#: src/view/com/composer/ComposerRecipe.tsx:569
+#: src/view/com/composer/ComposerRecipe.tsx:554
+#: src/view/com/composer/ComposerRecipe.tsx:572
 msgid "min"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:551
-#: src/view/com/composer/ComposerRecipe.tsx:568
+#: src/view/com/composer/ComposerRecipe.tsx:553
+#: src/view/com/composer/ComposerRecipe.tsx:571
 #: src/view/com/posts/ExpandableRecipePost.tsx:192
 msgid "minutes"
 msgstr ""
@@ -5828,7 +5829,7 @@ msgid "Moderation tools"
 msgstr "Moderation tools"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:54
-#: src/lib/moderation/useModerationCauseDescription.ts:48
+#: src/lib/moderation/useModerationCauseDescription.ts:45
 msgid "Moderator has chosen to set a general warning on the content."
 msgstr "Moderator has chosen to set a general warning on the content."
 
@@ -5843,8 +5844,8 @@ msgid "More languages..."
 msgstr "More languages..."
 
 #: src/screens/ProfileList/components/MoreOptionsMenu.tsx:149
-#: src/view/com/composer/ComposerRecipe.tsx:979
-#: src/view/com/composer/ComposerRecipe.tsx:1197
+#: src/view/com/composer/ComposerRecipe.tsx:980
+#: src/view/com/composer/ComposerRecipe.tsx:1232
 #: src/view/com/profile/ProfileMenu.tsx:228
 #: src/view/com/profile/ProfileMenu.tsx:234
 msgid "More options"
@@ -5953,7 +5954,7 @@ msgstr "Muted Accounts"
 msgid "Muted accounts have their posts removed from your feed and from your notifications. Mutes are completely private."
 msgstr "Muted accounts have their posts removed from your feed and from your notifications. Mutes are completely private."
 
-#: src/lib/moderation/useModerationCauseDescription.ts:93
+#: src/lib/moderation/useModerationCauseDescription.ts:90
 msgid "Muted by \"{0}\""
 msgstr "Muted by \"{0}\""
 
@@ -5970,13 +5971,13 @@ msgstr "Muting is private. Muted accounts can interact with you, but you will no
 msgid "My Birthday"
 msgstr "My Birthday"
 
-#: src/view/screens/Feeds.tsx:693
+#: src/view/screens/Feeds.tsx:706
 msgid "My Feeds"
 msgstr "My Feeds"
 
 #: src/components/dialogs/lists/CreateOrEditListDialog.tsx:399
-#: src/view/com/composer/ComposerRecipe.tsx:435
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:339
+#: src/view/com/composer/ComposerRecipe.tsx:433
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:340
 msgid "Name"
 msgstr "Name"
 
@@ -6027,12 +6028,12 @@ msgstr "Need to report a copyright violation, legal request, or regulatory compl
 msgid "Need to report a copyright violation?"
 msgstr "Need to report a copyright violation?"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:594
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:597
 #: src/view/com/recipe/RecipeAttributionDisplay.tsx:201
 msgid "Network"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:415
+#: src/screens/Onboarding/StepFinished/index.tsx:408
 msgid "Never lose access to your followers or data."
 msgstr "Never lose access to your followers or data."
 
@@ -6110,7 +6111,7 @@ msgctxt "action"
 msgid "New post"
 msgstr "New post"
 
-#: src/view/shell/desktop/LeftNav.tsx:619
+#: src/view/shell/desktop/LeftNav.tsx:621
 msgctxt "action"
 msgid "New Post"
 msgstr "New Post"
@@ -6123,7 +6124,7 @@ msgstr "New posts from {firstAuthorLink} and <0>{additionalAuthorsCount, plural,
 msgid "New posts from {firstAuthorName} and {additionalAuthorsCount, plural, one {{formattedAuthorsCount} other} other {{formattedAuthorsCount} others}}"
 msgstr "New posts from {firstAuthorName} and {additionalAuthorsCount, plural, one {{formattedAuthorsCount} other} other {{formattedAuthorsCount} others}}"
 
-#: src/view/shell/desktop/LeftNav.tsx:551
+#: src/view/shell/desktop/LeftNav.tsx:552
 msgctxt "action"
 msgid "New Recipe"
 msgstr ""
@@ -6155,8 +6156,8 @@ msgstr "News"
 #: src/screens/Login/LoginForm.tsx:355
 #: src/screens/Login/SetNewPasswordForm.tsx:182
 #: src/screens/Login/SetNewPasswordForm.tsx:188
-#: src/screens/Onboarding/StepFinished/index.tsx:344
-#: src/screens/Onboarding/StepFinished/index.tsx:353
+#: src/screens/Onboarding/StepFinished/index.tsx:337
+#: src/screens/Onboarding/StepFinished/index.tsx:346
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:157
 #: src/screens/Settings/components/AddAppPasswordDialog.tsx:165
 #: src/screens/Signup/BackNextButtons.tsx:67
@@ -6265,27 +6266,27 @@ msgstr "No result"
 msgid "No results"
 msgstr "No results"
 
-#: src/screens/Search/Explore.tsx:794
+#: src/screens/Search/Explore.tsx:795
 msgid "No results for \"{0}\"."
 msgstr "No results for \"{0}\"."
 
-#: src/components/forms/ComboBox/ComboBoxOptions.tsx:58
-#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:71
+#: src/components/forms/ComboBox/ComboBoxOptions.tsx:54
+#: src/components/forms/ComboBox/ComboBoxOptions.web.tsx:67
 #: src/components/Lists.tsx:189
-#: src/screens/Search/SearchResults.tsx:328
+#: src/screens/Search/SearchResults.tsx:343
 msgid "No results found"
 msgstr "No results found"
 
-#: src/view/screens/Feeds.tsx:472
+#: src/view/screens/Feeds.tsx:474
 msgid "No results found for \"{query}\""
 msgstr "No results found for \"{query}\""
 
-#: src/screens/Search/SearchResults.tsx:364
-#: src/screens/Search/SearchResults.tsx:409
+#: src/screens/Search/SearchResults.tsx:379
+#: src/screens/Search/SearchResults.tsx:424
 msgid "No results found for {query}"
 msgstr "No results found for {query}"
 
-#: src/screens/Search/Explore.tsx:798
+#: src/screens/Search/Explore.tsx:799
 msgid "No results."
 msgstr "No results."
 
@@ -6352,11 +6353,11 @@ msgstr ""
 msgid "Note: This post is only visible to logged-in users."
 msgstr "Note: This post is only visible to logged-in users."
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:353
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:471
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:526
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:616
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:669
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:354
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:473
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:528
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:619
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:672
 msgid "Notes (optional)"
 msgstr ""
 
@@ -6401,8 +6402,8 @@ msgstr "Notification Sounds"
 #: src/screens/Settings/Settings.tsx:226
 #: src/view/screens/Notifications.tsx:126
 #: src/view/shell/bottom-bar/BottomBar.tsx:256
-#: src/view/shell/desktop/LeftNav.tsx:747
-#: src/view/shell/Drawer.tsx:557
+#: src/view/shell/desktop/LeftNav.tsx:749
+#: src/view/shell/Drawer.tsx:573
 msgid "Notifications"
 msgstr "Notifications"
 
@@ -6428,7 +6429,7 @@ msgstr "Nudity"
 msgid "Nudity or adult content not labeled as such"
 msgstr "Nudity or adult content not labelled as such"
 
-#: src/view/com/composer/ComposerRecipe.tsx:677
+#: src/view/com/composer/ComposerRecipe.tsx:680
 #: src/view/com/posts/ExpandableRecipePost.tsx:246
 msgid "Nutritional Information"
 msgstr ""
@@ -6527,7 +6528,7 @@ msgstr "Oops, something went wrong!"
 msgid "Oops!"
 msgstr "Oops!"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:411
+#: src/screens/Onboarding/StepFinished/index.tsx:404
 msgid "Open"
 msgstr "Open"
 
@@ -6546,7 +6547,7 @@ msgstr "Open drawer menu"
 
 #: src/screens/Messages/components/MessageInput.web.tsx:181
 #: src/view/com/composer/Composer.tsx:1595
-#: src/view/com/composer/ComposerRecipe.tsx:1589
+#: src/view/com/composer/ComposerRecipe.tsx:1624
 msgid "Open emoji picker"
 msgstr "Open emoji picker"
 
@@ -6647,7 +6648,7 @@ msgid "Opens device gallery to select up to {MAX_IMAGES, plural, other {# images
 msgstr "Opens device gallery to select up to {MAX_IMAGES, plural, other {# images}}, or a single video or GIF."
 
 #: src/view/com/composer/Composer.tsx:1596
-#: src/view/com/composer/ComposerRecipe.tsx:1590
+#: src/view/com/composer/ComposerRecipe.tsx:1625
 msgid "Opens emoji picker"
 msgstr "Opens emoji picker"
 
@@ -6679,7 +6680,7 @@ msgstr "Opens link {0}"
 
 #: src/view/com/modals/InviteCodes.tsx:174
 #: src/view/shell/desktop/RightNav.tsx:194
-#: src/view/shell/Drawer.tsx:173
+#: src/view/shell/Drawer.tsx:174
 msgid "Opens list of invite codes"
 msgstr ""
 
@@ -6777,7 +6778,7 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:456
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:458
 msgid "Page (optional)"
 msgstr ""
 
@@ -6830,7 +6831,7 @@ msgid "Pause video"
 msgstr "Pause video"
 
 #: src/screens/ProfileList/index.tsx:163
-#: src/screens/Search/SearchResults.tsx:85
+#: src/screens/Search/SearchResults.tsx:98
 #: src/screens/StarterPack/StarterPackScreen.tsx:189
 msgid "People"
 msgstr "People"
@@ -7051,7 +7052,7 @@ msgstr "Please enter your password as well:"
 msgid "Please enter your username"
 msgstr "Please enter your username"
 
-#: src/components/EnvConfigIndicator.tsx:53
+#: src/components/EnvConfigIndicator.tsx:52
 #: src/screens/Settings/Settings.tsx:607
 msgid "Please exit and reload app manually..."
 msgstr ""
@@ -7126,7 +7127,7 @@ msgid "Post"
 msgstr ""
 
 #: src/view/com/composer/Composer.tsx:1238
-#: src/view/com/composer/ComposerRecipe.tsx:1437
+#: src/view/com/composer/ComposerRecipe.tsx:1472
 msgctxt "action"
 msgid "Post"
 msgstr "Post"
@@ -7166,12 +7167,12 @@ msgid "Post has been deleted"
 msgstr "Post has been deleted"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:109
-#: src/lib/moderation/useModerationCauseDescription.ts:107
+#: src/lib/moderation/useModerationCauseDescription.ts:104
 msgid "Post Hidden by Muted Word"
 msgstr "Post Hidden by Muted Word"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:112
-#: src/lib/moderation/useModerationCauseDescription.ts:116
+#: src/lib/moderation/useModerationCauseDescription.ts:113
 msgid "Post Hidden by You"
 msgstr "Post Hidden by You"
 
@@ -7237,7 +7238,7 @@ msgstr "Potentially misleading link"
 msgid "Potentially misleading link warning"
 msgstr "Potentially misleading link warning"
 
-#: src/view/com/composer/ComposerRecipe.tsx:544
+#: src/view/com/composer/ComposerRecipe.tsx:546
 msgid "Prep time"
 msgstr ""
 
@@ -7308,8 +7309,8 @@ msgstr "Privacy and Security settings"
 #: src/screens/Settings/AboutSettings.tsx:99
 #: src/screens/Settings/AboutSettings.tsx:102
 #: src/view/screens/PrivacyPolicy.tsx:35
-#: src/view/shell/Drawer.tsx:768
-#: src/view/shell/Drawer.tsx:769
+#: src/view/shell/Drawer.tsx:784
+#: src/view/shell/Drawer.tsx:785
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
@@ -7331,19 +7332,19 @@ msgstr ""
 msgid "Product attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:648
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:651
 msgid "Product name"
 msgstr ""
 
 #: src/view/screens/DebugMod.tsx:943
-#: src/view/screens/Profile.tsx:363
+#: src/view/screens/Profile.tsx:357
 msgid "profile"
 msgstr "profile"
 
 #: src/view/shell/bottom-bar/BottomBar.tsx:320
-#: src/view/shell/desktop/LeftNav.tsx:825
+#: src/view/shell/desktop/LeftNav.tsx:827
 #: src/view/shell/Drawer.tsx:86
-#: src/view/shell/Drawer.tsx:660
+#: src/view/shell/Drawer.tsx:676
 msgid "Profile"
 msgstr "Profile"
 
@@ -7360,7 +7361,7 @@ msgstr ""
 msgid "Protein content must be a number"
 msgstr ""
 
-#: src/screens/Onboarding/StepFinished/index.tsx:397
+#: src/screens/Onboarding/StepFinished/index.tsx:390
 msgid "Public"
 msgstr "Public"
 
@@ -7380,8 +7381,8 @@ msgstr ""
 msgid "Publication attribution title cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:399
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:409
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:400
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:410
 msgid "Publication type"
 msgstr ""
 
@@ -7398,7 +7399,7 @@ msgid "Publish posts"
 msgstr "Publish posts"
 
 #. Accessibility label for button to publish a recipe
-#: src/view/com/composer/ComposerRecipe.tsx:1422
+#: src/view/com/composer/ComposerRecipe.tsx:1457
 msgid "Publish recipe"
 msgstr ""
 
@@ -7420,7 +7421,7 @@ msgstr ""
 msgid "Publisher"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:443
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:445
 msgid "Publisher (optional)"
 msgstr ""
 
@@ -7452,7 +7453,7 @@ msgstr "QR code has been downloaded!"
 msgid "QR code saved to your camera roll!"
 msgstr "QR code saved to your camera roll!"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1033
+#: src/view/com/composer/ComposerRecipe.tsx:1060
 msgid "Quantity"
 msgstr ""
 
@@ -7630,6 +7631,10 @@ msgstr ""
 msgid "Recipe yield quantity must be greater than zero"
 msgstr ""
 
+#: src/view/screens/Profile.tsx:232
+msgid "Recipes"
+msgstr ""
+
 #: src/screens/Search/modules/ExploreRecommendations.tsx:54
 msgid "Recommended"
 msgstr "Recommended"
@@ -7697,8 +7702,8 @@ msgstr "Remove Banner"
 msgid "Remove embed"
 msgstr "Remove embed"
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:121
-#: src/view/com/posts/FeedShutdownMsg.tsx:125
+#: src/view/com/posts/FeedShutdownMsg.tsx:132
+#: src/view/com/posts/FeedShutdownMsg.tsx:136
 #: src/view/com/posts/PostFeedErrorMessage.tsx:174
 msgid "Remove feed"
 msgstr "Remove feed"
@@ -7737,11 +7742,11 @@ msgstr "Remove from your feeds?"
 msgid "Remove image"
 msgstr "Remove image"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1073
+#: src/view/com/composer/ComposerRecipe.tsx:1104
 msgid "Remove ingredient"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:1258
+#: src/view/com/composer/ComposerRecipe.tsx:1293
 msgid "Remove instruction"
 msgstr ""
 
@@ -7763,8 +7768,8 @@ msgstr "Remove profile"
 msgid "Remove repost"
 msgstr "Remove repost"
 
-#: src/view/com/composer/ComposerRecipe.tsx:993
-#: src/view/com/composer/ComposerRecipe.tsx:1211
+#: src/view/com/composer/ComposerRecipe.tsx:994
+#: src/view/com/composer/ComposerRecipe.tsx:1246
 msgid "Remove section"
 msgstr ""
 
@@ -7823,7 +7828,7 @@ msgstr "Removed from starter pack"
 
 #: src/screens/Profile/components/ProfileFeedHeader.tsx:122
 #: src/screens/ProfileList/components/MoreOptionsMenu.tsx:74
-#: src/view/com/posts/FeedShutdownMsg.tsx:49
+#: src/view/com/posts/FeedShutdownMsg.tsx:48
 msgid "Removed from your feeds"
 msgstr "Removed from your feeds"
 
@@ -7831,8 +7836,8 @@ msgstr "Removed from your feeds"
 msgid "Removed verification"
 msgstr "Removed verification"
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:134
-#: src/view/com/posts/FeedShutdownMsg.tsx:138
+#: src/view/com/posts/FeedShutdownMsg.tsx:145
+#: src/view/com/posts/FeedShutdownMsg.tsx:149
 msgid "Replace with Discover"
 msgstr "Replace with Discover"
 
@@ -7862,7 +7867,7 @@ msgstr "Replied to you"
 #: src/screens/Settings/NotificationSettings/ActivityNotificationSettings.tsx:218
 #: src/screens/Settings/NotificationSettings/index.tsx:161
 #: src/screens/Settings/NotificationSettings/ReplyNotificationSettings.tsx:41
-#: src/view/screens/Profile.tsx:222
+#: src/view/screens/Profile.tsx:226
 msgid "Replies"
 msgstr "Replies"
 
@@ -7885,12 +7890,12 @@ msgid "Reply ({0, plural, one {# reply} other {# replies}})"
 msgstr "Reply ({0, plural, one {# reply} other {# replies}})"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:118
-#: src/lib/moderation/useModerationCauseDescription.ts:126
+#: src/lib/moderation/useModerationCauseDescription.ts:123
 msgid "Reply Hidden by Thread Author"
 msgstr "Reply Hidden by Thread Author"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:117
-#: src/lib/moderation/useModerationCauseDescription.ts:125
+#: src/lib/moderation/useModerationCauseDescription.ts:122
 msgid "Reply Hidden by You"
 msgstr "Reply Hidden by You"
 
@@ -8205,6 +8210,10 @@ msgstr ""
 msgid "Review/Rating by @{0}"
 msgstr ""
 
+#: src/view/screens/Profile.tsx:238
+msgid "Reviews"
+msgstr ""
+
 #: src/view/com/modals/RecipePreparation.tsx:420
 msgid "s"
 msgstr ""
@@ -8254,7 +8263,7 @@ msgstr "Save birthday"
 msgid "Save changes"
 msgstr "Save changes"
 
-#: src/view/com/composer/ComposerRecipe.tsx:1435
+#: src/view/com/composer/ComposerRecipe.tsx:1470
 msgctxt "action"
 msgid "Save Changes"
 msgstr ""
@@ -8277,8 +8286,8 @@ msgstr "Save QR code"
 msgid "Save to my feeds"
 msgstr "Save to my feeds"
 
-#: src/view/shell/desktop/LeftNav.tsx:803
-#: src/view/shell/Drawer.tsx:635
+#: src/view/shell/desktop/LeftNav.tsx:805
+#: src/view/shell/Drawer.tsx:651
 msgctxt "link to bookmarks screen"
 msgid "Saved"
 msgstr "Saved"
@@ -8325,8 +8334,8 @@ msgstr "Scroll to top"
 #: src/components/dialogs/SearchablePeopleList.tsx:514
 #: src/components/forms/SearchInput.tsx:34
 #: src/components/forms/SearchInput.tsx:36
-#: src/screens/Search/Shell.tsx:360
-#: src/screens/Search/Shell.tsx:562
+#: src/screens/Search/Shell.tsx:448
+#: src/screens/Search/Shell.tsx:670
 #: src/view/shell/bottom-bar/BottomBar.tsx:200
 msgid "Search"
 msgstr "Search"
@@ -8341,16 +8350,16 @@ msgid "Search by name or interest"
 msgstr "Search by name or interest"
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:23
-#: src/view/com/composer/ComposerRecipe.tsx:610
+#: src/view/com/composer/ComposerRecipe.tsx:613
 msgid "Search categories..."
 msgstr ""
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:29
-#: src/view/com/composer/ComposerRecipe.tsx:632
+#: src/view/com/composer/ComposerRecipe.tsx:635
 msgid "Search cuisines..."
 msgstr ""
 
-#: src/view/screens/Feeds.tsx:443
+#: src/view/screens/Feeds.tsx:445
 msgid "Search feeds"
 msgstr "Search feeds"
 
@@ -8376,19 +8385,19 @@ msgstr "Search for feeds that you want to suggest to others."
 msgid "Search for matching {0}"
 msgstr ""
 
-#: src/screens/Search/Explore.tsx:358
+#: src/screens/Search/Explore.tsx:359
 msgid "Search for more accounts"
 msgstr "Search for more accounts"
 
-#: src/screens/Search/Explore.tsx:435
+#: src/screens/Search/Explore.tsx:436
 msgid "Search for more feeds"
 msgstr "Search for more feeds"
 
-#: src/screens/Search/Shell.tsx:397
+#: src/screens/Search/Shell.tsx:488
 msgid "Search for posts, users, or feeds"
 msgstr "Search for posts, users, or feeds"
 
-#: src/screens/Search/Shell.tsx:397
+#: src/screens/Search/Shell.tsx:489
 msgid "Search for recipes"
 msgstr ""
 
@@ -8397,7 +8406,7 @@ msgid "Search GIFs"
 msgstr "Search GIFs"
 
 #: src/screens/Hashtag.tsx:221
-#: src/screens/Search/SearchResults.tsx:270
+#: src/screens/Search/SearchResults.tsx:285
 msgid "Search is currently unavailable when logged out"
 msgstr "Search is currently unavailable when logged out"
 
@@ -8421,7 +8430,7 @@ msgid "Search profiles"
 msgstr "Search profiles"
 
 #: src/screens/Search/components/RecipeSearchFields.tsx:35
-#: src/view/com/composer/ComposerRecipe.tsx:656
+#: src/view/com/composer/ComposerRecipe.tsx:659
 msgid "Search suitable diets..."
 msgstr ""
 
@@ -8429,7 +8438,7 @@ msgstr ""
 msgid "Search Tenor"
 msgstr "Search Tenor"
 
-#: src/screens/Search/components/SearchTypeInput/index.web.tsx:10
+#: src/screens/Search/components/SearchTypeInput/index.web.tsx:17
 msgid "Search type"
 msgstr ""
 
@@ -8446,8 +8455,8 @@ msgstr "Searches for profiles"
 msgid "Seconds"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:968
-#: src/view/com/composer/ComposerRecipe.tsx:1186
+#: src/view/com/composer/ComposerRecipe.tsx:969
+#: src/view/com/composer/ComposerRecipe.tsx:1221
 msgid "Section title"
 msgstr ""
 
@@ -8510,7 +8519,7 @@ msgstr "Select {langName}"
 msgid "Select a color"
 msgstr "Select a colour"
 
-#: src/components/EnvConfigIndicator.tsx:226
+#: src/components/EnvConfigIndicator.tsx:225
 msgid "Select a server domain"
 msgstr ""
 
@@ -8663,7 +8672,7 @@ msgctxt "action"
 msgid "Send Email"
 msgstr "Send Email"
 
-#: src/view/shell/Drawer.tsx:425
+#: src/view/shell/Drawer.tsx:441
 msgid "Send feedback"
 msgstr "Send feedback"
 
@@ -8720,7 +8729,7 @@ msgstr ""
 msgid "Server address"
 msgstr "Server address"
 
-#: src/view/com/composer/ComposerRecipe.tsx:847
+#: src/view/com/composer/ComposerRecipe.tsx:850
 msgid "Serving size"
 msgstr ""
 
@@ -8750,8 +8759,8 @@ msgstr "Sets email for password reset"
 
 #: src/Navigation.tsx:217
 #: src/screens/Settings/Settings.tsx:124
-#: src/view/shell/desktop/LeftNav.tsx:843
-#: src/view/shell/Drawer.tsx:673
+#: src/view/shell/desktop/LeftNav.tsx:845
+#: src/view/shell/Drawer.tsx:689
 msgid "Settings"
 msgstr "Settings"
 
@@ -9001,7 +9010,7 @@ msgstr "Show reposts"
 msgid "Show samples of your saved feeds in your Following feed"
 msgstr "Show samples of your saved feeds in your Following feed"
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:580
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:583
 msgid "Show title"
 msgstr ""
 
@@ -9042,7 +9051,7 @@ msgstr "Shows the content"
 #: src/screens/Login/index.tsx:136
 #: src/screens/Login/index.tsx:157
 #: src/screens/Login/LoginForm.tsx:184
-#: src/screens/Search/SearchResults.tsx:275
+#: src/screens/Search/SearchResults.tsx:290
 #: src/view/com/auth/SplashScreen.tsx:83
 #: src/view/com/auth/SplashScreen.tsx:91
 #: src/view/com/auth/SplashScreen.web.tsx:129
@@ -9121,16 +9130,16 @@ msgstr "Signed in as @{0}"
 msgid "Similar accounts"
 msgstr "Similar accounts"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:309
-#: src/screens/Onboarding/StepFinished/index.tsx:331
+#: src/screens/Onboarding/StepFinished/index.tsx:302
+#: src/screens/Onboarding/StepFinished/index.tsx:324
 #: src/screens/Onboarding/StepSuggestedAccounts/index.tsx:222
 #: src/screens/Onboarding/StepSuggestedStarterpacks/index.tsx:102
 #: src/screens/StarterPack/Wizard/index.tsx:217
 msgid "Skip"
 msgstr "Skip"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:302
-#: src/screens/Onboarding/StepFinished/index.tsx:328
+#: src/screens/Onboarding/StepFinished/index.tsx:295
+#: src/screens/Onboarding/StepFinished/index.tsx:321
 msgid "Skip introduction and start using your account"
 msgstr "Skip introduction and start using your account"
 
@@ -9319,8 +9328,8 @@ msgstr "Starter pack by you"
 msgid "Starter pack is invalid"
 msgstr "Starter pack is invalid"
 
-#: src/screens/Search/Explore.tsx:626
-#: src/view/screens/Profile.tsx:227
+#: src/screens/Search/Explore.tsx:627
+#: src/view/screens/Profile.tsx:263
 msgid "Starter Packs"
 msgstr "Starter Packs"
 
@@ -9422,7 +9431,7 @@ msgstr ""
 msgid "Sugar content must be a number"
 msgstr ""
 
-#: src/screens/Search/Explore.tsx:355
+#: src/screens/Search/Explore.tsx:356
 msgid "Suggested Accounts"
 msgstr "Suggested Accounts"
 
@@ -9439,7 +9448,7 @@ msgstr "Suggested for you"
 msgid "Suggestive"
 msgstr "Suggestive"
 
-#: src/view/com/composer/ComposerRecipe.tsx:655
+#: src/view/com/composer/ComposerRecipe.tsx:658
 msgid "Suitable diets"
 msgstr ""
 
@@ -9569,8 +9578,8 @@ msgstr "Terms"
 #: src/screens/Settings/AboutSettings.tsx:91
 #: src/screens/Settings/AboutSettings.tsx:94
 #: src/view/screens/TermsOfService.tsx:35
-#: src/view/shell/Drawer.tsx:761
-#: src/view/shell/Drawer.tsx:763
+#: src/view/shell/Drawer.tsx:777
+#: src/view/shell/Drawer.tsx:779
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -9640,7 +9649,11 @@ msgstr "That's all, folks!"
 msgid "That's everything!"
 msgstr "That's everything!"
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:107
+#: src/view/com/posts/DiscoverFallbackHeader.tsx:50
+msgid "That's the end of posts from this feed."
+msgstr ""
+
+#: src/view/com/posts/FeedShutdownMsg.tsx:109
 msgid "The {0} feed"
 msgstr ""
 
@@ -9659,7 +9672,7 @@ msgid "The app will be restarted"
 msgstr "The app will be restarted"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:121
-#: src/lib/moderation/useModerationCauseDescription.ts:129
+#: src/lib/moderation/useModerationCauseDescription.ts:126
 msgid "The author of this thread has hidden this reply."
 msgstr "The author of this thread has hidden this reply."
 
@@ -9687,7 +9700,7 @@ msgstr "The Discover feed now knows what you like"
 msgid "The experience is better in the app. Download {0} now and we'll pick back up where you left off."
 msgstr ""
 
-#: src/view/com/posts/FeedShutdownMsg.tsx:72
+#: src/view/com/posts/FeedShutdownMsg.tsx:71
 msgid "The feed has been replaced with Discover."
 msgstr "The feed has been replaced with Discover."
 
@@ -9781,8 +9794,8 @@ msgstr "There was an issue contacting the server, please check your internet con
 msgid "There was an issue fetching notifications. Tap here to try again."
 msgstr "There was an issue fetching notifications. Tap here to try again."
 
-#: src/screens/Search/Explore.tsx:993
-#: src/view/com/posts/PostFeed.tsx:714
+#: src/screens/Search/Explore.tsx:994
+#: src/view/com/posts/PostFeed.tsx:713
 msgid "There was an issue fetching posts. Tap here to try again."
 msgstr "There was an issue fetching posts. Tap here to try again."
 
@@ -9813,8 +9826,8 @@ msgid "There was an issue sending your report. Please check your internet connec
 msgstr "There was an issue sending your report. Please check your internet connection."
 
 #: src/screens/Profile/components/ProfileFeedHeader.tsx:138
-#: src/view/com/posts/FeedShutdownMsg.tsx:57
-#: src/view/com/posts/FeedShutdownMsg.tsx:76
+#: src/view/com/posts/FeedShutdownMsg.tsx:56
+#: src/view/com/posts/FeedShutdownMsg.tsx:75
 msgid "There was an issue updating your feeds, please check your internet connection and try again."
 msgstr "There was an issue updating your feeds, please check your internet connection and try again."
 
@@ -9915,7 +9928,7 @@ msgid "This content is hosted by {0}. Do you want to enable external media?"
 msgstr "This content is hosted by {0}. Do you want to enable external media?"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:86
-#: src/lib/moderation/useModerationCauseDescription.ts:85
+#: src/lib/moderation/useModerationCauseDescription.ts:82
 msgid "This content is not available because one of the users involved has blocked the other."
 msgstr "This content is not available because one of the users involved has blocked the other."
 
@@ -9962,7 +9975,7 @@ msgid "This feed is empty."
 msgstr "This feed is empty."
 
 #: src/view/com/posts/FeedShutdownMsg.tsx:104
-msgid "This feed is no longer online. We are showing <0>{0}</0> instead."
+msgid "This feed is no longer online. We are showing {0} instead."
 msgstr ""
 
 #: src/screens/Settings/components/ChangeHandleDialog.tsx:616
@@ -10067,7 +10080,7 @@ msgid "This user has blocked you"
 msgstr "This user has blocked you"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:81
-#: src/lib/moderation/useModerationCauseDescription.ts:76
+#: src/lib/moderation/useModerationCauseDescription.ts:73
 msgid "This user has blocked you. You cannot view their content."
 msgstr "This user has blocked you. You cannot view their content."
 
@@ -10139,7 +10152,7 @@ msgstr ""
 msgid "Timers"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:429
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:431
 msgid "Title"
 msgstr ""
 
@@ -10193,7 +10206,7 @@ msgid "Too many diets selected"
 msgstr ""
 
 #: src/screens/Hashtag.tsx:90
-#: src/screens/Search/SearchResults.tsx:63
+#: src/screens/Search/SearchResults.tsx:75
 #: src/screens/Topic.tsx:71
 msgid "Top"
 msgstr "Top"
@@ -10389,9 +10402,9 @@ msgstr ""
 msgid "Unfortunately, none of your subscribed labelers supports this report type."
 msgstr "Unfortunately, none of your subscribed labellers support this report type."
 
-#: src/view/com/composer/ComposerRecipe.tsx:510
-#: src/view/com/composer/ComposerRecipe.tsx:867
-#: src/view/com/composer/ComposerRecipe.tsx:1052
+#: src/view/com/composer/ComposerRecipe.tsx:511
+#: src/view/com/composer/ComposerRecipe.tsx:870
+#: src/view/com/composer/ComposerRecipe.tsx:1079
 msgid "Unit"
 msgstr ""
 
@@ -10541,7 +10554,7 @@ msgstr "Unwanted Sexual Content"
 msgid "UPC"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:655
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:658
 msgid "UPC (optional)"
 msgstr ""
 
@@ -10624,15 +10637,15 @@ msgstr "Uploading link thumbnail..."
 msgid "Uploading video..."
 msgstr "Uploading video..."
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:519
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:521
 msgid "URL"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:315
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:346
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:464
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:609
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:662
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:316
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:347
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:466
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:612
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:665
 msgid "URL (optional)"
 msgstr ""
 
@@ -10649,7 +10662,7 @@ msgstr ""
 msgid "Use app passwords to sign in to other {0} clients without giving full access to your account or password."
 msgstr ""
 
-#: src/components/EnvConfigIndicator.tsx:180
+#: src/components/EnvConfigIndicator.tsx:179
 msgid "Use custom server domain to retrieve configuration"
 msgstr ""
 
@@ -10694,11 +10707,11 @@ msgid "User blocked"
 msgstr "User blocked"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:73
-#: src/lib/moderation/useModerationCauseDescription.ts:64
+#: src/lib/moderation/useModerationCauseDescription.ts:61
 msgid "User Blocked"
 msgstr "User Blocked"
 
-#: src/lib/moderation/useModerationCauseDescription.ts:56
+#: src/lib/moderation/useModerationCauseDescription.ts:53
 msgid "User Blocked by \"{0}\""
 msgstr "User Blocked by \"{0}\""
 
@@ -10710,7 +10723,7 @@ msgstr "User blocked by list"
 msgid "User Blocked by List"
 msgstr "User Blocked by List"
 
-#: src/lib/moderation/useModerationCauseDescription.ts:74
+#: src/lib/moderation/useModerationCauseDescription.ts:71
 msgid "User Blocking You"
 msgstr "User Blocking You"
 
@@ -10915,7 +10928,7 @@ msgstr "Video uploaded"
 msgid "Video: {0}"
 msgstr "Video: {0}"
 
-#: src/view/screens/Profile.tsx:224
+#: src/view/screens/Profile.tsx:250
 msgid "Videos"
 msgstr "Videos"
 
@@ -11116,13 +11129,13 @@ msgstr ""
 msgid "We have sent another verification email to <0>{0}</0>."
 msgstr "We have sent another verification email to <0>{0}</0>."
 
-#: src/screens/Onboarding/StepFinished/index.tsx:386
+#: src/screens/Onboarding/StepFinished/index.tsx:379
 msgid "We hope you have a wonderful time. Remember, {0} is:"
 msgstr ""
 
-#: src/view/com/posts/DiscoverFallbackHeader.tsx:34
-msgid "We ran out of posts from your follows. Here's the latest from <0/>."
-msgstr "We ran out of posts from your follows. Here's the latest from <0/>."
+#: src/view/com/posts/DiscoverFallbackHeader.tsx:31
+msgid "We ran out of posts from your follows. Here's the latest from {0}."
+msgstr ""
 
 #: src/screens/Settings/InterestsSettings.tsx:158
 msgid "We recommend selecting at least two interests."
@@ -11205,7 +11218,7 @@ msgstr "We're sorry, but we were unable to resolve this list. If this persists, 
 msgid "We're sorry, but we weren't able to load your muted words at this time. Please try again."
 msgstr "We're sorry, but we weren't able to load your muted words at this time. Please try again."
 
-#: src/screens/Search/SearchResults.tsx:302
+#: src/screens/Search/SearchResults.tsx:317
 msgid "We're sorry, but your search could not be completed. Please try again in a few minutes."
 msgstr "We're sorry, but your search could not be completed. Please try again in a few minutes."
 
@@ -11246,7 +11259,7 @@ msgstr "We've confirmed your age assurance status. You can now close this dialog
 msgid "Website attribution name cannot be empty"
 msgstr ""
 
-#: src/view/com/composer/recipe/RecipeAttribution.tsx:512
+#: src/view/com/composer/recipe/RecipeAttribution.tsx:514
 msgid "Website name"
 msgstr ""
 
@@ -11286,7 +11299,7 @@ msgstr "Who can reply"
 msgid "Who can verify?"
 msgstr "Who can verify?"
 
-#: src/screens/Home/NoFeedsPinned.tsx:79
+#: src/screens/Home/NoFeedsPinned.tsx:76
 #: src/screens/Messages/ChatList.tsx:270
 #: src/screens/Messages/Inbox.tsx:198
 msgid "Whoops!"
@@ -11404,11 +11417,11 @@ msgstr "Yesterday"
 msgid "Yield"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:523
+#: src/view/com/composer/ComposerRecipe.tsx:524
 msgid "Yield explanation"
 msgstr ""
 
-#: src/view/com/composer/ComposerRecipe.tsx:526
+#: src/view/com/composer/ComposerRecipe.tsx:527
 msgid "Yield is used to indicate how much a recipe will produce. Use the units to indicate whether this is a number of servings, items, or a measurement like grams or litres."
 msgstr ""
 
@@ -11560,8 +11573,8 @@ msgid "You have blocked this user"
 msgstr "You have blocked this user"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:75
-#: src/lib/moderation/useModerationCauseDescription.ts:58
-#: src/lib/moderation/useModerationCauseDescription.ts:66
+#: src/lib/moderation/useModerationCauseDescription.ts:55
+#: src/lib/moderation/useModerationCauseDescription.ts:63
 msgid "You have blocked this user. You cannot view their content."
 msgstr "You have blocked this user. You cannot view their content."
 
@@ -11575,7 +11588,7 @@ msgstr "You have completely disabled reply, quote and mention notifications, so 
 msgid "You have entered an invalid code. It should look like XXXXX-XXXXX."
 msgstr "You have entered an invalid code. It should look like XXXXX-XXXXX."
 
-#: src/lib/moderation/useModerationCauseDescription.ts:117
+#: src/lib/moderation/useModerationCauseDescription.ts:114
 msgid "You have hidden this post"
 msgstr "You have hidden this post"
 
@@ -11584,11 +11597,11 @@ msgid "You have hidden this post."
 msgstr "You have hidden this post."
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:106
-#: src/lib/moderation/useModerationCauseDescription.ts:100
+#: src/lib/moderation/useModerationCauseDescription.ts:97
 msgid "You have muted this account."
 msgstr "You have muted this account."
 
-#: src/lib/moderation/useModerationCauseDescription.ts:94
+#: src/lib/moderation/useModerationCauseDescription.ts:91
 msgid "You have muted this user"
 msgstr "You have muted this user"
 
@@ -11638,7 +11651,7 @@ msgid "You haven't muted any words or tags yet"
 msgstr "You haven't muted any words or tags yet"
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:120
-#: src/lib/moderation/useModerationCauseDescription.ts:128
+#: src/lib/moderation/useModerationCauseDescription.ts:125
 msgid "You hid this reply."
 msgstr "You hid this reply."
 
@@ -11788,7 +11801,7 @@ msgstr "You'll stay updated with these feeds"
 msgid "You're in line"
 msgstr "You're in line"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:383
+#: src/screens/Onboarding/StepFinished/index.tsx:376
 msgid "You're ready to go!"
 msgstr "You're ready to go!"
 
@@ -11798,7 +11811,7 @@ msgid "You're signed in with an App Password. Please sign in with your main pass
 msgstr "You're signed in with an App Password. Please sign in with your main password to continue deactivating your account."
 
 #: src/components/moderation/ModerationDetailsDialog.tsx:110
-#: src/lib/moderation/useModerationCauseDescription.ts:109
+#: src/lib/moderation/useModerationCauseDescription.ts:106
 msgid "You've chosen to hide a word or tag within this post."
 msgstr "You've chosen to hide a word or tag within this post."
 
@@ -11937,7 +11950,7 @@ msgid "Your interests help us find what you like!"
 msgstr "Your interests help us find what you like!"
 
 #: src/view/shell/desktop/RightNav.tsx:226
-#: src/view/shell/Drawer.tsx:187
+#: src/view/shell/Drawer.tsx:192
 msgid "Your invite codes are hidden when logged in using an App Password"
 msgstr ""
 
@@ -11965,7 +11978,7 @@ msgstr "Your post was sent"
 msgid "Your posts were sent"
 msgstr "Your posts were sent"
 
-#: src/screens/Onboarding/StepFinished/index.tsx:401
+#: src/screens/Onboarding/StepFinished/index.tsx:394
 msgid "Your posts, likes, and blocks are public. Mutes are private."
 msgstr "Your posts, likes and blocks are public. Mutes are private."
 
